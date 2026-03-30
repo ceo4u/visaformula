@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronRight, Star, School, Briefcase, Map, Building2 } from "lucide-react";
+import { ChevronRight, Star, School, Briefcase, Map, Building2, Verified } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { VisaDropdown } from "@/components/shared/visa-dropdown";
@@ -36,7 +36,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary-fixed text-on-secondary-fixed rounded-full text-sm font-medium">
-              <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
+              <Verified className="w-4 h-4 text-blue-600" />
               Trusted by 10,000+ applicants
             </div>
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">

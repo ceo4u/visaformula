@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, Search, Verified, CheckCircle, Circle, Headset } from "lucide-react";
+import { ChevronDown, Search, Verified, CheckCircle, Circle, Headset, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -164,7 +164,7 @@ export default function VisaFinderPage() {
                         </div>
                         <div className="bg-surface-container-low p-6 rounded-2xl">
                             <h4 className="text-sm font-bold mb-4 flex items-center text-on-surface-variant gap-2">
-                                <span className="material-symbols-outlined text-base">description</span> Required Documents (8)
+                                <FileText className="w-4 h-4" /> Required Documents (8)
                             </h4>
                             <ul className="space-y-2">
                                 <li className="flex items-center gap-2 text-sm font-medium"><CheckCircle className="w-4 h-4 text-tertiary" /> Valid Passport</li>

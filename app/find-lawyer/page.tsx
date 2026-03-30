@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Star, Verified, CheckCircle, ChevronLeft, ChevronRight, SlidersHorizontal } from "lucide-react";
+import { Star, Verified, CheckCircle, ChevronLeft, ChevronRight, SlidersHorizontal, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
@@ -107,7 +107,7 @@ export default function FindLawyerPage() {
                                                 <span className="text-sm font-bold text-tertiary">{lawyer.success}% Success</span>
                                             </div>
                                             <div className="hidden md:flex items-center gap-2">
-                                                <span className="material-symbols-outlined text-on-surface-variant">translate</span>
+                                                <Languages className="w-4 h-4 text-on-surface-variant" />
                                                 <span className="text-sm font-medium">{lawyer.languages.join(", ")}</span>
                                             </div>
                                         </div>

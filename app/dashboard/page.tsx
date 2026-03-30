@@ -147,10 +147,10 @@ export default function DashboardPage() {
                                             <div className="relative pt-2 pb-6">
                                                 <div className="flex justify-between items-center mb-3">
                                                     {["Submitted", app.stage, "Review", "Decision"].map((stage, i) => (
-                                                        <div key={stage} className="flex flex-col items-center z-10">
+                                                        <div key={`${stage}-${i}`} className="flex flex-col items-center z-10">
                                                             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${i <= (app.stage === "Biometrics" ? 1 : app.stage === "Review" ? 2 : 1)
-                                                                    ? "bg-tertiary text-white"
-                                                                    : "bg-surface-container-high text-on-surface-variant"
+                                                                ? "bg-tertiary text-white"
+                                                                : "bg-surface-container-high text-on-surface-variant"
                                                                 }`}>
                                                                 {i <= (app.stage === "Biometrics" ? 1 : app.stage === "Review" ? 2 : 1) ? (
                                                                     <CheckCircle className="w-4 h-4" />
@@ -159,8 +159,8 @@ export default function DashboardPage() {
                                                                 )}
                                                             </div>
                                                             <span className={`text-[10px] mt-2 font-bold uppercase ${i <= (app.stage === "Biometrics" ? 1 : app.stage === "Review" ? 2 : 1)
-                                                                    ? "text-tertiary"
-                                                                    : "text-on-surface-variant"
+                                                                ? "text-tertiary"
+                                                                : "text-on-surface-variant"
                                                                 }`}>{stage}</span>
                                                         </div>
                                                     ))}
@@ -196,8 +196,8 @@ export default function DashboardPage() {
                                         </div>
                                         <p className="text-sm font-medium text-balance">{doc.name}</p>
                                         <p className={`text-[10px] font-bold uppercase mt-2 tracking-wider ${doc.status === "verified" ? "text-tertiary" :
-                                                doc.status === "processing" ? "text-secondary" :
-                                                    doc.status === "missing" ? "text-destructive" : "text-on-surface-variant"
+                                            doc.status === "processing" ? "text-secondary" :
+                                                doc.status === "missing" ? "text-destructive" : "text-on-surface-variant"
                                             }`}>
                                             {doc.status}
                                         </p>

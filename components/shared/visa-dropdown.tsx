@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Globe, Briefcase } from "lucide-react";
 
 interface VisaDropdownProps {
     className?: string;
@@ -21,7 +22,7 @@ export function VisaDropdown({ className }: VisaDropdownProps) {
     return (
         <div className={cn("flex flex-col md:flex-row gap-2 p-2 glass-card rounded-2xl shadow-xl", className)}>
             <div className="flex-1 px-4 py-3 flex items-center gap-3 bg-surface-container-low rounded-xl">
-                <span className="material-symbols-outlined text-outline">public</span>
+                <Globe className="w-5 h-5 text-outline" />
                 <div className="flex flex-col flex-1">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-outline">Destination</label>
                     <select
@@ -38,7 +39,7 @@ export function VisaDropdown({ className }: VisaDropdownProps) {
                 </div>
             </div>
             <div className="flex-1 px-4 py-3 flex items-center gap-3 bg-surface-container-low rounded-xl">
-                <span className="material-symbols-outlined text-outline">badge</span>
+                <Briefcase className="w-5 h-5 text-outline" />
                 <div className="flex flex-col flex-1">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-outline">Visa Type</label>
                     <select

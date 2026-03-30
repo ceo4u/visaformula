@@ -1,26 +1,58 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 240 20% 99%;
+    --foreground: 222 35% 12%;
+    --primary: 212 100% 28%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 196 100% 27%;
+    --secondary-foreground: 0 0% 100%;
+    --tertiary: 118 100% 16%;
+    --tertiary-foreground: 0 0% 100%;
+    --muted: 226 100% 96%;
+    --muted-foreground: 228 12% 30%;
+    --accent: 196 100% 62%;
+    --accent-foreground: 196 100% 16%;
+    --destructive: 0 78% 42%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 228 18% 83%;
+    --input: 228 18% 83%;
+    --ring: 212 100% 28%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222 35% 8%;
+    --foreground: 226 100% 96%;
+    --primary: 212 100% 62%;
+    --primary-foreground: 222 35% 8%;
+    --secondary: 196 100% 62%;
+    --secondary-foreground: 196 100% 16%;
+    --muted: 222 35% 16%;
+    --muted-foreground: 228 12% 70%;
+    --border: 222 35% 20%;
+    --input: 222 35% 20%;
+    --ring: 212 100% 62%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800/50;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
 }

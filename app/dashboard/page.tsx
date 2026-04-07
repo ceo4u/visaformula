@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import {
     Bell, Search, Calendar, FileText, CheckCircle, Clock,
@@ -18,7 +18,7 @@ const user = {
     name: "Alexander",
     email: "alexander@example.com",
     avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDDZxmleQxRiDSZVjffvePEDs4y4voorzfZuSjxJkHHZwdEQVt-tUSw3Tn_DDkkQUA-v52HjraDZ8Y44RHi-tJBnHUhci1aS-6g-iwrvojPWdGPYFKTd0Y6XAH9VUtXumTcdVdf5O4ZpLGXsOBny6SX8CL6S-SCPGm1KihzJR4VfyEa_YBQHkUzCkvbJcZhMOa81r_dravL_oDj9c5jjXx4UH_s_KTOeGZK_r2bfUOV2Yghpoc90VqJ6Bsw0mg7ABA9zqpawiZY4zn2",
-    memberSince: "2024",
+    memberSince: "2026",
     applications: 2,
 };
 
@@ -29,7 +29,7 @@ const activeApplications = [
         status: "Biometrics Pending",
         stage: "Biometrics",
         progress: 33,
-        nextAction: "Biometric appointment: Oct 14, 09:30 AM",
+        nextAction: "Biometric appointment: May 14, 09:30 AM",
         priority: true,
     },
     {
@@ -55,12 +55,43 @@ const upcomingAppointments = [
 ];
 
 const recentBookings = [
-    { title: "Consultation with Marc S.", date: "Oct 10, 2024", status: "completed", amount: "$150" },
-    { title: "Visa Processing Fee", date: "Oct 08, 2024", status: "paid", amount: "$450" },
+    { title: "Consultation with Marc S.", date: "May 10, 2026", status: "completed", amount: "$150" },
+    { title: "Visa Processing Fee", date: "May 08, 2026", status: "paid", amount: "$450" },
 ];
 
 export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState("overview");
+    const [isDragging, setIsDragging] = useState(false);
+    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+        const files = Array.from(e.dataTransfer.files);
+        if (files.length > 0) handleFiles(files);
+    };
+
+    const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            handleFiles(Array.from(e.target.files));
+        }
+    };
+
+    const handleFiles = (files: File[]) => {
+        // Just mock the file addition immediately for visual feedback
+        setUploadedFiles(prev => [...prev, ...files]);
+    };
 
     return (
         <div className="pt-24 pb-20 px-6 max-w-7xl mx-auto">
@@ -211,14 +242,49 @@ export default function DashboardPage() {
                 {/* Right Column - Appointments & Activity */}
                 <div className="space-y-6">
                     {/* Upload Zone */}
-                    <Card className="border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer">
-                        <CardContent className="p-8 text-center">
-                            <div className="w-16 h-16 rounded-full bg-white shadow-md flex items-center justify-center mx-auto mb-4">
-                                <Upload className="w-7 h-7 text-primary" />
+                    <Card
+                        className={`border-2 border-dashed transition-all cursor-pointer relative overflow-hidden ${isDragging
+                            ? "border-primary bg-primary/10 shadow-inner scale-[1.01]"
+                            : "border-primary/30 bg-primary/5 hover:bg-primary/10"
+                            }`}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        onClick={() => fileInputRef.current?.click()}
+                    >
+                        <input
+                            type="file"
+                            className="hidden"
+                            ref={fileInputRef}
+                            onChange={handleFileInput}
+                            multiple
+                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                        />
+                        <CardContent className="p-8 text-center flex flex-col items-center justify-center">
+                            <div className={`w-16 h-16 rounded-full bg-white shadow-md flex items-center justify-center mx-auto mb-4 transition-transform ${isDragging ? "scale-110" : ""}`}>
+                                <Upload className={`w-7 h-7 ${isDragging ? "text-primary transition-all" : "text-primary"}`} />
                             </div>
-                            <h3 className="font-bold text-lg text-primary">Drop your files here</h3>
-                            <p className="text-sm text-on-surface-variant mt-1">Drag and drop any legal documents</p>
-                            <div className="flex items-center justify-center gap-2 mt-4">
+                            <h3 className="font-bold text-lg text-primary">
+                                {isDragging ? "Drop to upload" : "Drop your files here"}
+                            </h3>
+                            <p className="text-sm text-on-surface-variant mt-1">
+                                Drag and drop any legal documents or click to browse
+                            </p>
+
+                            {/* Render Uploaded Files visually below */}
+                            {uploadedFiles.length > 0 && (
+                                <div className="mt-4 w-full space-y-2 max-h-[120px] overflow-y-auto no-scrollbar pt-2 border-t border-primary/20">
+                                    {uploadedFiles.map((file, i) => (
+                                        <div key={i} className="flex items-center gap-2 bg-white/60 dark:bg-slate-900/60 p-2 rounded-lg text-left shadow-sm">
+                                            <FileText className="w-4 h-4 text-green-600 flex-shrink-0" />
+                                            <span className="text-xs font-semibold truncate text-slate-700 dark:text-slate-200">{file.name}</span>
+                                            <CheckCircle className="w-3 h-3 text-green-500 ml-auto flex-shrink-0" />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="flex items-center justify-center gap-2 mt-4 pt-2">
                                 <span className="bg-on-surface text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
                                     AI Verified
                                 </span>

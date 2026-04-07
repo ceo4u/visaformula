@@ -44,7 +44,7 @@ const supportChannels = [
 ];
 
 const categories = [
-    { icon: FileText, title: "Visa Applications", description: "Document requirements, processing times, eligibility", href: "/visa-finder" },
+    { icon: FileText, title: "Visa Applications", description: "Document requirements, processing times", href: "#" },
     { icon: Users, title: "Lawyer Related", description: "Booking, payments, cancellations, reviews", href: "/find-lawyer" },
     { icon: CreditCard, title: "Billing & Payments", description: "Invoices, refunds, payment methods", href: "#" },
     { icon: Shield, title: "Security & Privacy", description: "Data protection, encryption, compliance", href: "#" },

@@ -14,7 +14,6 @@ export function Footer() {
                     <h4 className="font-bold mb-4">Resources</h4>
                     <ul className="space-y-3">
                         <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-blue-600 transition-colors font-medium" href="/find-lawyer">Find Lawyer</a></li>
-                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-blue-600 transition-colors font-medium" href="/visa-finder">Visa Finder</a></li>
                         <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-blue-600 transition-colors font-medium" href="/dashboard">Dashboard</a></li>
                     </ul>
                 </div>
@@ -38,7 +37,7 @@ export function Footer() {
                 </div>
             </div>
             <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p className="text-slate-500 dark:text-slate-400 font-medium text-sm">© 2024 VisaHub. The Digital Diplomat for Global Migration.</p>
+                <p className="text-slate-500 dark:text-slate-400 font-medium text-sm">© 2026 VisaHub. The Digital Diplomat for Global Migration.</p>
                 <div className="flex gap-6">
                     <Globe className="w-5 h-5 text-slate-400 cursor-pointer hover:text-primary transition-colors" />
                     <Shield className="w-5 h-5 text-slate-400 cursor-pointer hover:text-primary transition-colors" />

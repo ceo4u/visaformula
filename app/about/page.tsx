@@ -97,13 +97,10 @@ export default function AboutPage() {
                                 lack of expert access, and outdated systems. We're changing that.
                             </p>
                             <p className="text-on-surface-variant leading-relaxed">
-                                VisaHub combines AI-powered eligibility checking with a curated network of top-tier
+                                VisaHub connects you with a curated network of top-tier
                                 immigration lawyers. Our platform handles everything from document verification to
                                 application tracking—so you can focus on your future.
                             </p>
-                            <Button className="mt-8 gap-2" asChild>
-                                <Link href="/visa-finder">Check Your Eligibility <ChevronRight className="w-4 h-4" /></Link>
-                            </Button>
                         </motion.div>
                         <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
                             <div className="rounded-2xl overflow-hidden shadow-2xl">
@@ -188,9 +185,6 @@ export default function AboutPage() {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-primary-fixed" asChild>
-                                <Link href="/visa-finder">Check Eligibility</Link>
-                            </Button>
-                            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
                                 <Link href="/find-lawyer">Find an Expert</Link>
                             </Button>
                         </div>

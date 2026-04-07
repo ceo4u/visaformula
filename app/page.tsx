@@ -9,10 +9,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 const categories = [
-  { icon: School, title: "Student Visa", description: "Pursue your academic dreams in top-tier global universities.", color: "bg-blue-50 text-blue-600", href: "/visa-finder?type=Student" },
-  { icon: Briefcase, title: "Work Visa", description: "Expert assistance for skilled worker permits and corporate sponsorship.", color: "bg-blue-50 text-blue-600", href: "/visa-finder?type=Work" },
-  { icon: Map, title: "Tourist Visa", description: "Seamless travel authorizations for leisure, visiting family, or short-term stays.", color: "bg-blue-50 text-blue-600", href: "/visa-finder?type=Tourist" },
-  { icon: Building2, title: "Business Visa", description: "Strategic migration solutions for entrepreneurs and investors.", color: "bg-blue-50 text-blue-600", href: "/visa-finder?type=Business" },
+  { icon: School, title: "Student Visa", description: "Pursue your academic dreams in top-tier global universities.", color: "bg-blue-50 text-blue-600", href: "/find-lawyer" },
+  { icon: Briefcase, title: "Work Visa", description: "Expert assistance for skilled worker permits and corporate sponsorship.", color: "bg-blue-50 text-blue-600", href: "/find-lawyer" },
+  { icon: Map, title: "Tourist Visa", description: "Seamless travel authorizations for leisure, visiting family, or short-term stays.", color: "bg-blue-50 text-blue-600", href: "/find-lawyer" },
+  { icon: Building2, title: "Business Visa", description: "Strategic migration solutions for entrepreneurs and investors.", color: "bg-blue-50 text-blue-600", href: "/find-lawyer" },
 ];
 
 const experts = [
@@ -43,7 +43,7 @@ export default function HomePage() {
               Apply Visa <span className="text-primary">Smarter.</span><br />Faster. Safer.
             </h1>
             <p className="text-xl text-on-surface-variant max-w-xl leading-relaxed">
-              Check eligibility, connect experts, and track your visa — all in one place with our Digital Diplomat platform.
+              Connect with experts and track your visa — all in one place with our Digital Diplomat platform.
             </p>
             <VisaDropdown />
             <div className="flex items-center gap-4">

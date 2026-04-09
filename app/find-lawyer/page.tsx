@@ -21,10 +21,10 @@ export default function FindLawyerPage() {
     return (
         <div className="pt-24 pb-20 px-6 max-w-7xl mx-auto">
             <div className="mb-12">
-                <h1 className="text-[2.75rem] md:text-5xl font-heading font-extrabold tracking-tight mb-2 leading-tight">
-                    Find Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Immigration Expert</span>
+                <h1 className="text-5xl md:text-6xl font-light tracking-tight mb-4 leading-tight text-slate-900 font-serif">
+                    Find Your <span className="italic text-[#5B58F6]">Immigration Expert</span>
                 </h1>
-                <p className="text-lg text-on-surface-variant max-w-2xl">
+                <p className="text-lg text-slate-500 max-w-2xl font-light">
                     Browse verified lawyers and legal consultants specializing in global migration, student visas, and permanent residency.
                 </p>
             </div>
@@ -32,8 +32,8 @@ export default function FindLawyerPage() {
             <div className="grid lg:grid-cols-12 gap-10">
                 {/* Sidebar Filters */}
                 <aside className="hidden lg:block lg:col-span-3 space-y-8">
-                    <div className="bg-surface-container-low p-6 rounded-2xl">
-                        <h3 className="font-heading font-bold text-lg mb-6">Filters</h3>
+                    <div className="bg-white rounded-[2rem] p-6 border border-slate-200/60" style={{ boxShadow: 'inset 0 2px 4px rgba(255,255,255,1), inset 0 -1px 2px rgba(0,0,0,0.02), 0 10px 20px -5px rgba(0,0,0,0.03)' }}>
+                        <h3 className="font-medium text-lg text-slate-900 mb-6 font-serif">Filters</h3>
                         <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-bold mb-3">Country Expertise</label>

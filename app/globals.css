@@ -4,42 +4,46 @@
 
 @layer base {
   :root {
-    --background: 220 20% 98%;
-    --foreground: 220 30% 10%;
-    --primary: 217 85% 48%;
-    --primary-rgb: 24, 107, 227;
+    --background: 0 0% 98%;
+    --foreground: 215 25% 15%;
+    --primary: 242 91% 59%;
+    --primary-rgb: 91, 88, 246;
     --primary-foreground: 0 0% 100%;
-    --secondary: 45 95% 50%;
-    --secondary-foreground: 220 30% 10%;
-    --tertiary: 45 95% 50%;
-    --tertiary-foreground: 220 30% 10%;
-    --muted: 218 40% 95%;
-    --muted-foreground: 220 15% 40%;
-    --accent: 45 95% 50%;
-    --accent-foreground: 220 30% 10%;
+    --secondary: 242 50% 95%;
+    --secondary-foreground: 242 91% 45%;
+    --tertiary: 242 91% 59%;
+    --tertiary-foreground: 0 0% 100%;
+    --muted: 215 25% 95%;
+    --muted-foreground: 215 15% 45%;
+    --accent: 242 50% 95%;
+    --accent-foreground: 242 91% 45%;
     --destructive: 0 78% 42%;
     --destructive-foreground: 0 0% 100%;
-    --border: 218 25% 86%;
-    --input: 218 25% 86%;
-    --ring: 217 85% 48%;
+    --border: 215 20% 90%;
+    --input: 215 20% 90%;
+    --ring: 242 91% 59%;
     --radius: 0.75rem;
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
   }
 
   .dark {
-    --background: 220 30% 7%;
-    --foreground: 218 40% 95%;
-    --primary: 217 91% 60%;
-    --primary-rgb: 84, 151, 255;
+    --background: 222 30% 7%;
+    --foreground: 215 40% 93%;
+    --primary: 242 85% 67%;
+    --primary-rgb: 118, 115, 255;
     --primary-foreground: 0 0% 100%;
-    --secondary: 45 95% 53%;
-    --secondary-foreground: 220 30% 10%;
-    --tertiary: 45 95% 53%;
-    --tertiary-foreground: 220 30% 10%;
-    --muted: 220 30% 14%;
-    --muted-foreground: 218 15% 65%;
-    --border: 220 30% 18%;
-    --input: 220 30% 18%;
-    --ring: 217 91% 60%;
+    --secondary: 242 40% 15%;
+    --secondary-foreground: 242 85% 80%;
+    --tertiary: 242 85% 67%;
+    --tertiary-foreground: 0 0% 100%;
+    --muted: 222 25% 14%;
+    --muted-foreground: 215 15% 60%;
+    --border: 222 25% 18%;
+    --input: 222 25% 18%;
+    --ring: 242 85% 67%;
+    --card: 222 25% 10%;
+    --card-foreground: 215 40% 93%;
   }
 }
 
@@ -49,31 +53,61 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#FAFAFA] text-slate-600 antialiased;
+    font-family: 'Inter', sans-serif;
   }
 
   body::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     pointer-events: none;
     z-index: -10;
-    background: radial-gradient(circle at top left, rgba(var(--primary-rgb), 0.04), transparent 40%),
-      radial-gradient(circle at bottom right, rgba(var(--primary-rgb), 0.04), transparent 40%);
+    background:
+      radial-gradient(circle at 80% 0%, hsla(242, 100%, 70%, 0.06) 0px, transparent 50%),
+      radial-gradient(circle at 0% 50%, hsla(355, 100%, 93%, 0.3) 0px, transparent 50%),
+      radial-gradient(circle at 80% 50%, hsla(242, 100%, 70%, 0.04) 0px, transparent 50%);
   }
 
   .dark body::before {
-    background: radial-gradient(circle at top left, rgba(var(--primary-rgb), 0.06), transparent 45%),
-      radial-gradient(circle at bottom right, rgba(var(--primary-rgb), 0.06), transparent 45%);
+    background:
+      radial-gradient(circle at 80% 0%, hsla(242, 100%, 70%, 0.08) 0px, transparent 50%),
+      radial-gradient(circle at 0% 50%, hsla(242, 100%, 60%, 0.05) 0px, transparent 50%);
   }
 }
 
 @layer utilities {
+  .font-serif {
+    font-family: 'Playfair Display', serif;
+  }
+
   .glass-card {
-    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800/50 transform-gpu;
+    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/50 dark:border-slate-800/50 transform-gpu;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .skeuo-shadow {
+    box-shadow:
+      0 20px 40px -10px rgba(15, 23, 42, 0.08),
+      0 8px 16px -8px rgba(15, 23, 42, 0.06),
+      inset 0 2px 4px rgba(255, 255, 255, 0.8),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.03);
+  }
+
+  .skeuo-shadow-hover {
+    box-shadow:
+      0 30px 60px -15px rgba(15, 23, 42, 0.12),
+      0 10px 24px -10px rgba(15, 23, 42, 0.08),
+      inset 0 2px 4px rgba(255, 255, 255, 0.8),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.04);
   }
 
   .text-balance {

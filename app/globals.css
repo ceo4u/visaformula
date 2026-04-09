@@ -4,38 +4,42 @@
 
 @layer base {
   :root {
-    --background: 240 20% 99%;
-    --foreground: 222 35% 12%;
-    --primary: 212 100% 28%;
+    --background: 220 20% 98%;
+    --foreground: 220 30% 10%;
+    --primary: 217 85% 48%;
+    --primary-rgb: 24, 107, 227;
     --primary-foreground: 0 0% 100%;
-    --secondary: 196 100% 27%;
+    --secondary: 25 95% 53%;
     --secondary-foreground: 0 0% 100%;
-    --tertiary: 118 100% 16%;
+    --tertiary: 25 95% 53%;
     --tertiary-foreground: 0 0% 100%;
-    --muted: 226 100% 96%;
-    --muted-foreground: 228 12% 30%;
-    --accent: 196 100% 62%;
-    --accent-foreground: 196 100% 16%;
+    --muted: 218 40% 95%;
+    --muted-foreground: 220 15% 40%;
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 78% 42%;
     --destructive-foreground: 0 0% 100%;
-    --border: 228 18% 83%;
-    --input: 228 18% 83%;
-    --ring: 212 100% 28%;
+    --border: 218 25% 86%;
+    --input: 218 25% 86%;
+    --ring: 217 85% 48%;
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222 35% 8%;
-    --foreground: 226 100% 96%;
-    --primary: 212 100% 62%;
-    --primary-foreground: 222 35% 8%;
-    --secondary: 196 100% 62%;
-    --secondary-foreground: 196 100% 16%;
-    --muted: 222 35% 16%;
-    --muted-foreground: 228 12% 70%;
-    --border: 222 35% 20%;
-    --input: 222 35% 20%;
-    --ring: 212 100% 62%;
+    --background: 220 30% 7%;
+    --foreground: 218 40% 95%;
+    --primary: 217 91% 60%;
+    --primary-rgb: 84, 151, 255;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 25 95% 53%;
+    --secondary-foreground: 0 0% 100%;
+    --tertiary: 25 95% 53%;
+    --tertiary-foreground: 0 0% 100%;
+    --muted: 220 30% 14%;
+    --muted-foreground: 218 15% 65%;
+    --border: 220 30% 18%;
+    --input: 220 30% 18%;
+    --ring: 217 91% 60%;
   }
 }
 
@@ -46,6 +50,24 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: -10;
+    background: radial-gradient(circle at top left, rgba(var(--primary-rgb), 0.04), transparent 40%),
+      radial-gradient(circle at bottom right, rgba(var(--primary-rgb), 0.04), transparent 40%);
+  }
+
+  .dark body::before {
+    background: radial-gradient(circle at top left, rgba(var(--primary-rgb), 0.06), transparent 45%),
+      radial-gradient(circle at bottom right, rgba(var(--primary-rgb), 0.06), transparent 45%);
   }
 }
 

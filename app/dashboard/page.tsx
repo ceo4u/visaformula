@@ -99,7 +99,7 @@ export default function DashboardPage() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+                        <h1 className="text-3xl md:text-4xl font-heading font-bold tracking-tight">
                             Welcome back, <span className="text-primary">{user.name}</span>
                         </h1>
                         <p className="text-on-surface-variant mt-1">Member since {user.memberSince} • {user.applications} active applications</p>
@@ -125,10 +125,10 @@ export default function DashboardPage() {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                 {[
-                    { label: "Active Applications", value: "2", icon: Briefcase, change: "+1 this month", color: "bg-blue-50 text-blue-600" },
-                    { label: "Upcoming Consultations", value: "1", icon: Calendar, change: "Today at 2 PM", color: "bg-green-50 text-green-600" },
-                    { label: "Documents Verified", value: "4/8", icon: Shield, change: "50% complete", color: "bg-purple-50 text-purple-600" },
-                    { label: "Success Rate", value: "98%", icon: TrendingUp, change: "Top 5% of users", color: "bg-orange-50 text-orange-600" },
+                    { label: "Active Applications", value: "2", icon: Briefcase, change: "+1 this month", color: "bg-primary/10 text-primary" },
+                    { label: "Upcoming Consultations", value: "1", icon: Calendar, change: "Today at 2 PM", color: "bg-secondary/10 text-secondary" },
+                    { label: "Documents Verified", value: "4/8", icon: Shield, change: "50% complete", color: "bg-primary/10 text-primary" },
+                    { label: "Success Rate", value: "98%", icon: TrendingUp, change: "Top 5% of users", color: "bg-secondary/10 text-secondary" },
                 ].map((stat, idx) => (
                     <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}>
                         <Card className="border-none shadow-sm">
@@ -156,7 +156,7 @@ export default function DashboardPage() {
                     {/* Active Trackers */}
                     <div>
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-bold">Active Applications</h2>
+                            <h2 className="text-xl font-heading font-bold">Active Applications</h2>
                             <Button variant="ghost" className="text-primary text-sm gap-1">View All <ChevronRight className="w-4 h-4" /></Button>
                         </div>
                         <div className="space-y-4">
@@ -215,7 +215,7 @@ export default function DashboardPage() {
                     {/* Document Vault */}
                     <div>
                         <div className="flex justify-between items-center mb-4 mt-8">
-                            <h2 className="text-xl font-bold">Document Vault</h2>
+                            <h2 className="text-xl font-heading font-bold">Document Vault</h2>
                             <Button variant="ghost" className="text-primary text-sm gap-1">Upload New <Upload className="w-4 h-4" /></Button>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -295,7 +295,7 @@ export default function DashboardPage() {
 
                     {/* Upcoming Appointments */}
                     <div>
-                        <h2 className="text-xl font-bold mb-4">Upcoming Consultations</h2>
+                        <h2 className="text-xl font-heading font-bold mb-4">Upcoming Consultations</h2>
                         {upcomingAppointments.map((apt) => (
                             <Card key={apt.lawyer} className="border-none shadow-sm">
                                 <CardContent className="p-5">
@@ -323,7 +323,7 @@ export default function DashboardPage() {
                     {/* Recent Activity */}
                     <div>
                         <div className="flex justify-between items-center mb-4 mt-6">
-                            <h2 className="text-xl font-bold">Recent Billing</h2>
+                            <h2 className="text-xl font-heading font-bold">Recent Billing</h2>
                             <Button variant="ghost" className="text-primary text-sm">View All</Button>
                         </div>
                         <Card className="border-none shadow-sm">

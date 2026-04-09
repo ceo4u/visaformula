@@ -44,7 +44,7 @@ export function Header() {
         )}>
             <div className="flex justify-between items-center h-16 px-6 md:px-12 max-w-7xl mx-auto">
                 <Link href="/" className="flex items-center gap-2 text-xl font-black">
-                    <Gavel className="w-6 h-6 text-blue-700 dark:text-blue-400" />
+                    <Gavel className="w-6 h-6 text-primary dark:text-blue-400" />
                     <span className="tracking-tight text-on-surface">VisaHub</span>
                 </Link>
 

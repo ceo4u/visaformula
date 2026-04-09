@@ -23,7 +23,7 @@ export function VisaDropdown({ className }: VisaDropdownProps) {
     return (
         <div className={cn("grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 glass-card rounded-[2rem] md:rounded-[2.5rem] shadow-2xl backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border border-white/60 dark:border-slate-800/60", className)}>
             <div className="px-5 py-4 flex items-center gap-4 bg-white/90 dark:bg-slate-950/90 hover:bg-white dark:hover:bg-slate-900 transition-colors rounded-2xl shadow-sm border border-transparent hover:border-slate-200 dark:hover:border-slate-800">
-                <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary shrink-0">
                     <User className="w-5 h-5" />
                 </div>
                 <div className="flex flex-col min-w-0">
@@ -43,7 +43,7 @@ export function VisaDropdown({ className }: VisaDropdownProps) {
             </div>
 
             <div className="px-5 py-4 flex items-center gap-4 bg-white/90 dark:bg-slate-950/90 hover:bg-white dark:hover:bg-slate-900 transition-colors rounded-2xl shadow-sm border border-transparent hover:border-slate-200 dark:hover:border-slate-800">
-                <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-secondary/10 dark:bg-secondary/20 flex items-center justify-center text-secondary shrink-0">
                     <Globe className="w-5 h-5" />
                 </div>
                 <div className="flex flex-col min-w-0">
@@ -63,7 +63,7 @@ export function VisaDropdown({ className }: VisaDropdownProps) {
             </div>
 
             <div className="px-5 py-4 flex items-center gap-4 bg-white/90 dark:bg-slate-950/90 hover:bg-white dark:hover:bg-slate-900 transition-colors rounded-2xl shadow-sm border border-transparent hover:border-slate-200 dark:hover:border-slate-800">
-                <div className="w-10 h-10 rounded-full bg-violet-50 dark:bg-violet-900/30 flex items-center justify-center text-violet-600 dark:text-violet-400 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-accent/10 dark:bg-accent/20 flex items-center justify-center text-accent shrink-0">
                     <Briefcase className="w-5 h-5" />
                 </div>
                 <div className="flex flex-col min-w-0">

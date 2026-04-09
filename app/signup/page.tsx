@@ -56,10 +56,10 @@ export default function SignupPage() {
             >
                 <div className="text-center mb-8">
                     <Link href="/" className="inline-flex items-center gap-2 text-2xl font-black mb-4">
-                        <Gavel className="w-7 h-7 text-blue-700" />
+                        <Gavel className="w-7 h-7 text-primary" />
                         <span>VisaHub</span>
                     </Link>
-                    <h1 className="text-3xl font-bold tracking-tight mt-4">Create an account</h1>
+                    <h1 className="text-3xl font-heading font-extrabold tracking-tight mt-4">Create an <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">account</span></h1>
                     <p className="text-on-surface-variant mt-2">Join thousands of successful migrants</p>
                 </div>
 
@@ -99,7 +99,7 @@ export default function SignupPage() {
 
                         <form onSubmit={handleSignup} className="space-y-4">
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Full Name</label>
+                                <label className="text-sm font-heading font-bold mb-1.5 block">Full name</label>
                                 <div className="relative">
                                     <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                                     <input
@@ -114,7 +114,7 @@ export default function SignupPage() {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Email</label>
+                                <label className="text-sm font-heading font-bold mb-1.5 block">Email address</label>
                                 <div className="relative">
                                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                                     <input
@@ -129,7 +129,7 @@ export default function SignupPage() {
                             </div>
 
                             <div className="space-y-2 pb-2">
-                                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Password</label>
+                                <label className="text-sm font-heading font-bold mb-1.5 block">Password</label>
                                 <div className="relative">
                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                                     <input
@@ -152,10 +152,10 @@ export default function SignupPage() {
                             </Button>
                         </form>
 
-                        <p className="text-center text-sm text-slate-500 mt-6">
+                        <div className="text-center font-heading font-bold text-sm text-on-surface-variant my-6">
                             Already have an account?{" "}
                             <Link href="/login" className="font-bold text-primary hover:underline">Sign in</Link>
-                        </p>
+                        </div>
                     </CardContent>
                 </Card>
             </motion.div>

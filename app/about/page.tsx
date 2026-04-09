@@ -46,8 +46,8 @@ export default function AboutPage() {
             <section className="relative bg-gradient-to-br from-primary/5 via-transparent to-transparent px-6 py-16 md:py-24">
                 <div className="max-w-7xl mx-auto">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-3xl mx-auto">
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                            Making Immigration <span className="text-primary">Simple</span> for Everyone
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold tracking-tight mb-6">
+                            Making Immigration <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Simple</span> for Everyone
                         </h1>
                         <p className="text-lg md:text-xl text-on-surface-variant leading-relaxed">
                             VisaHub was founded to solve the #1 problem in global migration: the overwhelming complexity
@@ -89,7 +89,7 @@ export default function AboutPage() {
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
                             <span className="text-sm font-bold text-primary uppercase tracking-wider">Our Mission</span>
-                            <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-6">
+                            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-3 mb-6">
                                 We believe borders shouldn't be barriers to human potential
                             </h2>
                             <p className="text-on-surface-variant leading-relaxed mb-6">
@@ -115,7 +115,7 @@ export default function AboutPage() {
             <section className="py-20 px-6 bg-surface-container-low">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center max-w-2xl mx-auto mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Core Values</h2>
+                        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Our Core Values</h2>
                         <p className="text-on-surface-variant">The principles that guide everything we do at VisaHub.</p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-8">
@@ -132,7 +132,7 @@ export default function AboutPage() {
                                         <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
                                             <value.icon className="w-7 h-7 text-primary" />
                                         </div>
-                                        <h3 className="text-xl font-bold mb-3">{value.title}</h3>
+                                        <h3 className="text-xl font-heading font-bold mb-3">{value.title}</h3>
                                         <p className="text-on-surface-variant text-sm leading-relaxed">{value.description}</p>
                                     </CardContent>
                                 </Card>
@@ -146,7 +146,7 @@ export default function AboutPage() {
             <section className="py-20 px-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center max-w-2xl mx-auto mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Meet Our Architects</h2>
+                        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Meet Our Architects</h2>
                         <p className="text-on-surface-variant">The legal and technical minds building the future of migration.</p>
                     </div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -163,7 +163,7 @@ export default function AboutPage() {
                                         <img src={member.image} alt={member.name} className="object-cover w-full h-full" />
                                     </div>
                                     <CardContent className="p-5 text-center">
-                                        <h3 className="font-bold text-lg">{member.name}</h3>
+                                        <h3 className="font-heading font-bold text-xl">{member.name}</h3>
                                         <p className="text-sm text-primary font-medium mb-2">{member.role}</p>
                                         <p className="text-xs text-on-surface-variant">{member.bio}</p>
                                     </CardContent>
@@ -179,7 +179,7 @@ export default function AboutPage() {
                 <div className="max-w-7xl mx-auto rounded-3xl bg-primary relative overflow-hidden p-12 md:p-20 text-center">
                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
                     <div className="relative z-10">
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to start your journey?</h2>
+                        <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">Ready to start your journey?</h2>
                         <p className="text-primary-fixed text-lg mb-8 max-w-xl mx-auto">
                             Join thousands of successful migrants who found their path with VisaHub.
                         </p>

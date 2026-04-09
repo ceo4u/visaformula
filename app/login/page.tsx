@@ -57,10 +57,10 @@ export default function LoginPage() {
             >
                 <div className="text-center mb-8">
                     <Link href="/" className="inline-flex items-center gap-2 text-2xl font-black mb-4">
-                        <Gavel className="w-7 h-7 text-blue-700" />
+                        <Gavel className="w-7 h-7 text-primary" />
                         <span>VisaHub</span>
                     </Link>
-                    <h1 className="text-3xl font-bold tracking-tight mt-4">Welcome back</h1>
+                    <h1 className="text-3xl font-heading font-extrabold tracking-tight mt-4">Welcome <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Back</span></h1>
                     <p className="text-on-surface-variant mt-2">Sign in to continue to your dashboard</p>
                 </div>
 
@@ -100,7 +100,7 @@ export default function LoginPage() {
 
                         <form onSubmit={handleEmailLogin} className="space-y-5">
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Email</label>
+                                <label className="text-sm font-heading font-bold mb-1.5 block">Email address</label>
                                 <div className="relative">
                                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                                     <input
@@ -116,7 +116,7 @@ export default function LoginPage() {
 
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Password</label>
+                                    <label className="text-sm font-heading font-bold mb-1.5 block">Password</label>
                                     <Link href="#" className="text-xs font-bold text-primary hover:underline">Forgot password?</Link>
                                 </div>
                                 <div className="relative">
@@ -141,10 +141,10 @@ export default function LoginPage() {
                             </Button>
                         </form>
 
-                        <p className="text-center text-sm text-slate-500 mt-6">
+                        <div className="text-center font-heading font-bold text-sm text-on-surface-variant my-6 relative">
                             Don&apos;t have an account?{" "}
                             <Link href="/signup" className="font-bold text-primary hover:underline">Create one</Link>
-                        </p>
+                        </div>
                     </CardContent>
                 </Card>
             </motion.div>

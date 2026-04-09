@@ -6,23 +6,23 @@ export function Footer() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
                 <div className="col-span-1 md:col-span-1">
                     <div className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-4 flex items-center gap-2">
-                        <Gavel className="w-6 h-6 text-blue-700 dark:text-blue-400" /> VisaHub
+                        <Gavel className="w-6 h-6 text-primary dark:text-blue-400" /> VisaHub
                     </div>
                     <p className="text-slate-500 dark:text-slate-400 font-medium text-sm leading-relaxed">The Digital Diplomat for Global Migration. Simplifying the complex for thousands of dreamers daily.</p>
                 </div>
                 <div>
                     <h4 className="font-bold mb-4">Resources</h4>
                     <ul className="space-y-3">
-                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-blue-600 transition-colors font-medium" href="/find-lawyer">Find Lawyer</a></li>
-                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-blue-600 transition-colors font-medium" href="/dashboard">Dashboard</a></li>
+                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-primary transition-colors font-medium" href="/find-lawyer">Find Lawyer</a></li>
+                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-primary transition-colors font-medium" href="/dashboard">Dashboard</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 className="font-bold mb-4">Support</h4>
                     <ul className="space-y-3">
-                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-blue-600 transition-colors font-medium" href="/emergency">Emergency Help</a></li>
-                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-blue-600 transition-colors font-medium" href="/support">Support Center</a></li>
-                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-blue-600 transition-colors font-medium" href="#">Privacy Policy</a></li>
+                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-primary transition-colors font-medium" href="/emergency">Emergency Help</a></li>
+                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-primary transition-colors font-medium" href="/support">Support Center</a></li>
+                        <li><a className="text-slate-500 dark:text-slate-400 text-sm hover:text-primary transition-colors font-medium" href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div>

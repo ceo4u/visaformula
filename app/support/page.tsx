@@ -38,9 +38,9 @@ const faqs = [
 ];
 
 const supportChannels = [
-    { icon: MessageCircle, title: "Live Chat", description: "Instant messaging with support team", availability: "24/7", action: "Start Chat", color: "bg-blue-50 text-blue-600" },
-    { icon: Phone, title: "Phone Support", description: "Speak directly with an agent", availability: "8 AM - 8 PM EST", action: "Call Now", number: "+1 (800) 555-VISA", color: "bg-green-50 text-green-600" },
-    { icon: Mail, title: "Email Support", description: "Get detailed responses within 24h", availability: "Response within 24h", action: "Send Email", email: "support@visahub.com", color: "bg-purple-50 text-purple-600" },
+    { icon: MessageCircle, title: "Live Chat", description: "Instant messaging with support team", availability: "24/7", action: "Start Chat", color: "bg-primary/10 text-primary" },
+    { icon: Phone, title: "Phone Support", description: "Speak directly with an agent", availability: "8 AM - 8 PM EST", action: "Call Now", number: "+1 (800) 555-VISA", color: "bg-secondary/10 text-secondary" },
+    { icon: Mail, title: "Email Support", description: "Get detailed responses within 24h", availability: "Response within 24h", action: "Send Email", email: "support@visahub.com", color: "bg-accent/10 text-accent" },
 ];
 
 const categories = [
@@ -70,8 +70,8 @@ export default function SupportPage() {
                                 <Headphones className="w-10 h-10 text-primary" />
                             </div>
                         </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                            How can we <span className="text-primary">help</span> you today?
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight mb-6">
+                            How can we <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">help</span> you today?
                         </h1>
                         <p className="text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto mb-10">
                             Get instant answers to your questions or connect with our support team.
@@ -98,7 +98,7 @@ export default function SupportPage() {
             <section className="py-20 px-6 bg-surface-container-low">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold mb-4">Get Support Anytime, Anywhere</h2>
+                        <h2 className="text-3xl font-heading font-bold mb-4">Get Support Anytime, Anywhere</h2>
                         <p className="text-on-surface-variant">Choose the channel that works best for you</p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-8">
@@ -115,7 +115,7 @@ export default function SupportPage() {
                                         <div className={`w-16 h-16 rounded-2xl ${channel.color} flex items-center justify-center mb-6 shadow-sm`}>
                                             <channel.icon className="w-8 h-8" />
                                         </div>
-                                        <h3 className="text-2xl font-bold mb-3">{channel.title}</h3>
+                                        <h3 className="text-2xl font-heading font-bold mb-3">{channel.title}</h3>
                                         <p className="text-on-surface-variant mb-6 flex-grow">{channel.description}</p>
                                         <div className="flex items-center justify-center gap-2 text-sm font-bold text-tertiary mb-6 bg-tertiary/10 px-4 py-2 rounded-full">
                                             <Clock className="w-4 h-4" />
@@ -146,7 +146,7 @@ export default function SupportPage() {
             <section className="py-20 px-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold mb-4">Browse by Category</h2>
+                        <h2 className="text-3xl font-heading font-bold mb-4">Browse by Category</h2>
                         <p className="text-on-surface-variant">Find answers specific to your needs</p>
                     </div>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -163,7 +163,7 @@ export default function SupportPage() {
                                         <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors shadow-sm">
                                             <cat.icon className="w-7 h-7" />
                                         </div>
-                                        <h3 className="font-bold text-xl mb-3 group-hover:text-primary transition-colors">{cat.title}</h3>
+                                        <h3 className="font-heading font-bold text-xl mb-3 group-hover:text-primary transition-colors">{cat.title}</h3>
                                         <p className="text-on-surface-variant mb-6 leading-relaxed">{cat.description}</p>
                                         <Button variant="link" className="p-0 text-primary font-bold gap-2 group-hover:gap-3 transition-all">
                                             Learn More <ArrowRight className="w-4 h-4" />
@@ -182,7 +182,7 @@ export default function SupportPage() {
 
                     {/* FAQ */}
                     <div>
-                        <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
+                        <h2 className="text-3xl font-heading font-bold mb-4">Frequently Asked Questions</h2>
                         <p className="text-on-surface-variant mb-8">Quick answers to common questions about our platform and services.</p>
                         <div className="space-y-4">
                             {filteredFaqs.map((faq, idx) => (
@@ -217,7 +217,7 @@ export default function SupportPage() {
 
                     {/* Contact Form */}
                     <div>
-                        <h2 className="text-3xl font-bold mb-4">Send us a message</h2>
+                        <h2 className="text-3xl font-heading font-bold mb-4">Send us a message</h2>
                         <p className="text-on-surface-variant mb-8">Our support team will get back to you within 24 hours.</p>
                         <Card className="border-none shadow-xl">
                             <CardContent className="p-8">

@@ -21,7 +21,9 @@ export default function FindLawyerPage() {
     return (
         <div className="pt-24 pb-20 px-6 max-w-7xl mx-auto">
             <div className="mb-12">
-                <h1 className="text-[2.75rem] md:text-5xl font-bold tracking-tight mb-2 leading-tight">Find Your Immigration Expert</h1>
+                <h1 className="text-[2.75rem] md:text-5xl font-heading font-extrabold tracking-tight mb-2 leading-tight">
+                    Find Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Immigration Expert</span>
+                </h1>
                 <p className="text-lg text-on-surface-variant max-w-2xl">
                     Browse verified lawyers and legal consultants specializing in global migration, student visas, and permanent residency.
                 </p>
@@ -31,7 +33,7 @@ export default function FindLawyerPage() {
                 {/* Sidebar Filters */}
                 <aside className="hidden lg:block lg:col-span-3 space-y-8">
                     <div className="bg-surface-container-low p-6 rounded-2xl">
-                        <h3 className="font-bold text-lg mb-6">Filters</h3>
+                        <h3 className="font-heading font-bold text-lg mb-6">Filters</h3>
                         <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-bold mb-3">Country Expertise</label>
@@ -43,7 +45,7 @@ export default function FindLawyerPage() {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-bold mb-3">Service Type</label>
+                                <label className="block text-sm font-heading font-bold mb-3">Service Type</label>
                                 <div className="space-y-2">
                                     {["Skilled Worker Visa", "Student Permits", "Asylum / Refugee"].map((type) => (
                                         <label key={type} className="flex items-center gap-3 text-sm">
@@ -69,7 +71,7 @@ export default function FindLawyerPage() {
                 <div className="lg:col-span-9 space-y-6">
                     {lawyers.map((lawyer, idx) => (
                         <motion.div key={lawyer.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}>
-                            <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-[0_12px_40px_rgba(19,27,46,0.04)] hover:shadow-[0_12px_40px_rgba(19,27,46,0.08)] transition-all">
+                            <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-premium-soft hover:shadow-premium-hover transition-all duration-300">
                                 <div className="flex flex-col md:flex-row gap-6">
                                     <div className="relative shrink-0">
                                         <div className="w-24 h-24 rounded-full overflow-hidden bg-muted">
@@ -83,7 +85,7 @@ export default function FindLawyerPage() {
                                         <div className="flex flex-col md:flex-row md:items-start justify-between gap-2">
                                             <div>
                                                 <div className="flex items-center gap-2">
-                                                    <h2 className="text-xl font-bold">{lawyer.name}</h2>
+                                                    <h2 className="text-xl font-heading font-bold">{lawyer.name}</h2>
                                                     <span className="bg-secondary-fixed text-on-secondary-container text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wide">VERIFIED</span>
                                                 </div>
                                                 <p className="text-on-surface-variant text-sm mt-1">BAR ID: {lawyer.barId}</p>

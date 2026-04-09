@@ -9,10 +9,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 const categories = [
-  { icon: School, title: "Student Visa", description: "Pursue your academic dreams in top-tier global universities.", color: "bg-blue-50 text-blue-600", href: "/find-lawyer" },
-  { icon: Briefcase, title: "Work Visa", description: "Expert assistance for skilled worker permits and corporate sponsorship.", color: "bg-blue-50 text-blue-600", href: "/find-lawyer" },
-  { icon: Map, title: "Tourist Visa", description: "Seamless travel authorizations for leisure, visiting family, or short-term stays.", color: "bg-blue-50 text-blue-600", href: "/find-lawyer" },
-  { icon: Building2, title: "Business Visa", description: "Strategic migration solutions for entrepreneurs and investors.", color: "bg-blue-50 text-blue-600", href: "/find-lawyer" },
+  { icon: School, title: "Student Visa", description: "Pursue your academic dreams in top-tier global universities.", color: "bg-primary/10 text-primary", href: "/find-lawyer" },
+  { icon: Briefcase, title: "Work Visa", description: "Expert assistance for skilled worker permits and corporate sponsorship.", color: "bg-primary/10 text-primary", href: "/find-lawyer" },
+  { icon: Map, title: "Tourist Visa", description: "Seamless travel authorizations for leisure, visiting family, or short-term stays.", color: "bg-primary/10 text-primary", href: "/find-lawyer" },
+  { icon: Building2, title: "Business Visa", description: "Strategic migration solutions for entrepreneurs and investors.", color: "bg-primary/10 text-primary", href: "/find-lawyer" },
 ];
 
 const experts = [
@@ -36,11 +36,11 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary-fixed text-on-secondary-fixed rounded-full text-sm font-medium">
-              <Verified className="w-4 h-4 text-blue-600" />
+              <Verified className="w-4 h-4 text-primary" />
               Trusted by 10,000+ applicants
             </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">
-              Apply Visa <span className="text-primary">Smarter.</span><br />Faster. Safer.
+            <h1 className="text-5xl md:text-7xl font-heading font-extrabold tracking-tight leading-[1.1]">
+              Apply Visa <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Smarter.</span><br />Faster. Safer.
             </h1>
             <p className="text-xl text-on-surface-variant max-w-xl leading-relaxed">
               Connect with experts and track your visa — all in one place with our Digital Diplomat platform.
@@ -70,19 +70,19 @@ export default function HomePage() {
       <section className="py-20 px-6 bg-surface-container-low">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12">
-            <h2 className="text-3xl font-bold tracking-tight mb-4">Choose Your Pathway</h2>
+            <h2 className="text-3xl font-heading font-bold tracking-tight mb-4">Choose Your Pathway</h2>
             <div className="w-20 h-1 bg-primary rounded-full" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((cat, idx) => (
               <motion.div key={cat.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} viewport={{ once: true }}>
                 <Link href={cat.href}>
-                  <Card className="group hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer h-full border-none">
+                  <Card className="group shadow-premium-soft hover:shadow-premium-hover hover:-translate-y-2 transition-all duration-300 cursor-pointer h-full border-none bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm">
                     <CardContent className="p-6 flex flex-col items-start h-full">
                       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${cat.color} group-hover:bg-primary group-hover:text-white transition-colors`}>
                         <cat.icon className="w-7 h-7" />
                       </div>
-                      <h3 className="text-xl font-bold mb-3">{cat.title}</h3>
+                      <h3 className="text-xl font-heading font-bold mb-3">{cat.title}</h3>
                       <p className="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">{cat.description}</p>
                       <Button variant="link" className="mt-auto p-0 text-primary font-bold gap-1 group-hover:gap-2 transition-all">
                         Explore <ChevronRight className="w-4 h-4" />
@@ -101,7 +101,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight">Top Rated Immigration Experts</h2>
+              <h2 className="text-3xl font-heading font-bold tracking-tight">Top Rated Immigration Experts</h2>
               <p className="text-on-surface-variant mt-2">Verified legal professionals with 99% success rates.</p>
             </div>
             <Button variant="ghost" className="text-primary font-bold gap-2" asChild>
@@ -111,7 +111,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {experts.map((expert, idx) => (
               <motion.div key={expert.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} viewport={{ once: true }}>
-                <Card className="overflow-hidden hover:shadow-xl transition-all h-full flex flex-col border-none bg-surface-container-lowest shadow-[0_12px_40px_rgba(19,27,46,0.06)]">
+                <Card className="overflow-hidden shadow-premium-soft hover:shadow-premium-hover transition-all duration-300 h-full flex flex-col border-none bg-surface-container-lowest">
                   <div className="relative h-64 mx-6 mt-6 rounded-2xl overflow-hidden">
                     <img src={expert.image} alt={expert.name} className="object-cover w-full h-full" />
                     <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 text-sm font-bold shadow-sm">
@@ -119,7 +119,7 @@ export default function HomePage() {
                     </div>
                   </div>
                   <CardContent className="p-6 flex-grow flex flex-col">
-                    <h3 className="text-xl font-bold">{expert.name}</h3>
+                    <h3 className="text-xl font-heading font-bold">{expert.name}</h3>
                     <p className="text-on-surface-variant text-sm mb-4">{expert.title}</p>
                     <div className="flex items-center justify-between mt-auto pt-4 border-t">
                       <span className="text-lg font-black">${expert.price}<span className="text-xs font-normal text-on-surface-variant">/consultation</span></span>
@@ -141,7 +141,7 @@ export default function HomePage() {
           <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none" />
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
             <div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Need urgent visa help?</h2>
+              <h2 className="text-4xl md:text-5xl font-heading font-extrabold text-white mb-6">Need urgent visa help?</h2>
               <p className="text-primary-fixed text-xl max-w-xl">Our emergency response team is available 24/7 to handle visa rejections, expiration issues, and legal appeals.</p>
             </div>
             <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-primary-fixed shadow-2xl py-8 px-10 rounded-2xl text-lg font-black" asChild>

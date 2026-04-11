@@ -29,7 +29,7 @@ export default function EmergencyPage() {
                                 Visa expired or facing legal risk?
                             </h1>
                             <p className="text-lg text-on-surface-variant mb-8 max-w-md">
-                                Our AI-driven emergency response engine analyzes your status in seconds and connects you to active legal representation.
+                                Upload your documents to get a quick preliminary check and connect with available lawyers immediately.
                             </p>
                             <div className="flex flex-wrap gap-8">
                                 {[

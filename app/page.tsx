@@ -45,42 +45,49 @@ export default function HomePage() {
             src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&h=800&fit=crop"
             alt="City skyline"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-slate-900/40" />
         </div>
-        <div className="relative z-10 text-center max-w-4xl mx-auto">
+        <div className="relative z-10 text-center max-w-4xl mx-auto mt-10">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-white text-4xl md:text-6xl font-black tracking-tight mb-8 leading-tight font-heading"
+            className="text-white text-5xl md:text-7xl font-black tracking-tight mb-6 leading-tight font-heading drop-shadow-lg"
           >
-            Find Verified Immigration <br />Experts Near You
+            Navigate your immigration <br />journey with confidence.
           </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-white/90 text-lg md:text-xl font-medium mb-10 drop-shadow max-w-2xl mx-auto"
+          >
+            Connect with verified legal professionals and simplify your path forward.
+          </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col md:flex-row w-full max-w-[580px] h-[50px] mx-auto bg-white rounded-lg overflow-hidden shadow-2xl"
+            className="flex flex-col md:flex-row w-full max-w-[600px] h-14 mx-auto bg-white/95 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl p-1"
           >
             <input
-              className="flex-1 border-none px-6 focus:ring-0 text-base bg-white text-on-surface placeholder:text-neutral-400"
-              placeholder="Search Visa Services..."
+              className="flex-1 border-none px-6 focus:ring-0 text-base bg-transparent text-on-surface placeholder:text-on-surface-variant font-medium"
+              placeholder="What do you need help with?"
               type="text"
             />
-            <button className="bg-primary text-white font-bold px-8 hover:bg-primary-container transition-colors flex items-center justify-center gap-2">
-              <Search className="w-4 h-4" />
-              Find Help
+            <button className="bg-primary text-white font-bold px-8 rounded-xl hover:bg-primary-container transition-all flex items-center justify-center shadow-sm">
+              Search
             </button>
           </motion.div>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mt-8 flex flex-wrap justify-center gap-6 text-white font-medium"
+            className="mt-8 flex flex-wrap justify-center gap-6 text-white font-medium text-sm"
           >
-            <Link href="/find-lawyer" className="flex items-center gap-2 hover:opacity-80 transition-opacity"><Gavel className="w-4 h-4" /> Lawyers</Link>
-            <Link href="/find-lawyer" className="flex items-center gap-2 hover:opacity-80 transition-opacity"><span>🎓</span> Study Visa</Link>
-            <Link href="/find-lawyer" className="flex items-center gap-2 hover:opacity-80 transition-opacity"><span>💼</span> Work Permit</Link>
+            <Link href="/find-lawyer" className="flex items-center gap-2 hover:text-primary-container transition-colors drop-shadow"><Gavel className="w-4 h-4" /> Lawyers</Link>
+            <Link href="/find-lawyer" className="flex items-center gap-2 hover:text-primary-container transition-colors drop-shadow"><span>🎓</span> Study</Link>
+            <Link href="/find-lawyer" className="flex items-center gap-2 hover:text-primary-container transition-colors drop-shadow"><span>💼</span> Work</Link>
           </motion.div>
         </div>
       </section>

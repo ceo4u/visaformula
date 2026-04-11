@@ -15,13 +15,13 @@ type Message = {
 const initialMessages: Message[] = [
     {
         type: "ai",
-        content: "Welcome to VisaHub's Sovereign Assistant. I will help you determine your eligibility for international residency and education pathways.\n\nWhich country are you targeting for your next professional or academic chapter?",
-        time: "VisaHub AI • 10:02 AM",
+        content: "Hi there. I can help you figure out your options for moving, studying, or working abroad.\n\nWhich country are you hoping to move to?",
+        time: "VisaHub Guide • 10:02 AM",
     },
     { type: "user", content: "Canada", time: "You • 10:03 AM" },
     {
         type: "ai",
-        content: "Excellent choice. Canada offers robust pathways for skilled workers and students. What is the primary purpose of your visit?",
+        content: "Canada is a great choice. What's your main goal for moving there?",
     },
     {
         type: "choices",
@@ -132,7 +132,7 @@ export default function AiAssistantPage() {
                                             </div>
                                         </div>
                                     </div>
-                                    <span className="text-[11px] font-bold text-on-surface-variant mt-2 uppercase tracking-wider px-1">VisaHub AI • Just now</span>
+                                    <span className="text-[11px] font-bold text-on-surface-variant mt-2 uppercase tracking-wider px-1">VisaHub Guide • Just now</span>
                                 </motion.div>
                             );
                         }

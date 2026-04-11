@@ -1,29 +1,41 @@
 "use client";
 
-import { Home, Search, FileText, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Home, Search, LayoutDashboard, User, Bot } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const mobileNavItems = [
+    { href: "/", label: "Home", icon: Home },
+    { href: "/find-lawyer", label: "Search", icon: Search },
+    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/ai-assistant", label: "AI", icon: Bot },
+    { href: "/login", label: "Profile", icon: User },
+];
 
 export function MobileNav() {
     const pathname = usePathname();
 
     return (
-        <nav className="fixed bottom-0 w-full rounded-t-2xl z-50 md:hidden bg-white/90 dark:bg-slate-900/90 backdrop-blur-md transform-gpu shadow-[0_-4px_20px_rgba(0,0,0,0.05)] border-t border-slate-100 dark:border-slate-800">
-            <div className="flex justify-around items-center pt-3 pb-8 px-4">
-                <Link className={`flex flex-col items-center gap-1 ${pathname === "/" ? "text-primary" : "text-slate-500 hover:text-primary"} transition-colors`} href="/">
-                    <Home className={`w-6 h-6 ${pathname === "/" ? "fill-primary/20" : ""}`} />
-                    <span className="text-[11px] font-semibold">Home</span>
-                </Link>
-
-                <Link className={`flex flex-col items-center gap-1 ${pathname?.includes("/dashboard") ? "text-primary" : "text-slate-500 hover:text-primary"} transition-colors`} href="/dashboard">
-                    <FileText className="w-6 h-6" />
-                    <span className="text-[11px] font-semibold">Apps</span>
-                </Link>
-                <Link className={`flex flex-col items-center gap-1 ${pathname?.includes("/about") || pathname?.includes("/support") ? "text-primary" : "text-slate-500 hover:text-primary"} transition-colors`} href="/support">
-                    <User className="w-6 h-6" />
-                    <span className="text-[11px] font-semibold">Profile</span>
-                </Link>
-            </div>
+        <nav className="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-white dark:bg-neutral-900 h-16 border-t border-neutral-200 dark:border-neutral-800 shadow-[0_-1px_4px_rgba(0,0,0,0.1)]">
+            {mobileNavItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                            "flex flex-col items-center justify-center flex-1 py-2 transition-all duration-100",
+                            isActive
+                                ? "text-primary font-bold"
+                                : "text-neutral-500 dark:text-neutral-400"
+                        )}
+                    >
+                        <item.icon className="w-5 h-5" />
+                        <span className="text-[11px] font-bold mt-0.5">{item.label}</span>
+                    </Link>
+                );
+            })}
         </nav>
     );
 }

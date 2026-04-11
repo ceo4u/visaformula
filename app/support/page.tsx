@@ -70,8 +70,8 @@ export default function SupportPage() {
                                 <Headphones className="w-10 h-10 text-primary" />
                             </div>
                         </div>
-                        <h1 className="text-5xl md:text-6xl font-light tracking-tight text-slate-900 mb-6 font-serif">
-                            How can we <span className="italic text-[#5B58F6]">help</span> you today?
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight mb-6">
+                            How can we <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">help</span> you today?
                         </h1>
                         <p className="text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto mb-10">
                             Get instant answers to your questions or connect with our support team.

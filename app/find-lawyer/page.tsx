@@ -1,148 +1,179 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Star, Verified, CheckCircle, ChevronLeft, ChevronRight, SlidersHorizontal, Languages } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Star, ChevronLeft, ChevronRight, Sparkles, Flag, Users, Briefcase, Globe, MapPin, Plus, Minus } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 
-const lawyers = [
-    { id: 1, name: "Marcus Thorne", title: "H1-B Specialist, EB-5 Investor", barId: "#US-882941-NY", rating: 4.9, reviews: 142, success: 98, price: 150, image: "https://lh3.googleusercontent.com/aida-public/AB6AXuACg-9-3tlUWuf_4g-q31wC6GHqfq7o_4Pq_XwQ7GV1WjHLdgGUocHPwoNHQCkRh17S7Iaexex1susM3oAUtCn0d6EmHiD3edVn0lMaRa-qtNvJsGBSE77Oyqv9zN1hXH-7s-e5J_a-1u5W5VzTgr8SnCbc7HDzuSnDajSwQzqu2bvORvm9gpk23jZ5baQZmwYTgiLNtuOgBtnBoretwQ9NNth8VNd2-zyVNER9kyxVBRdKnv_xS0faZf08ftwvMMFlTRkdtv3wPzr7", specialties: ["H1-B Specialist", "EB-5 Investor", "Green Card"], languages: ["English", "Spanish"] },
-    { id: 2, name: "Sarah Jenkins", title: "Express Entry, PNP Program", barId: "#CA-112093-TOR", rating: 5.0, reviews: 89, success: 96, price: 180, image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBB7StQIgDELHfmuRNxiQeCkHYZx7ple7wsHDY9OhBwedBPYJvR5o1NjYsGY6ieZIeUdeOvJ9vrP66vCBc2SXB8JEQ39JkO-uuUK6jDFdQXCzIX0kDCLim96rVMSG_gq07B0PVroVE882SaSdbXOtxvVj_gFZk3ktghXMcJmnlEGK5wketRYODF8I2LuQgLFV0PFkZyuX2zOyYh2CSvfZN3NfC-K6dnDNNXF6D5WFqmdFHX1qEjrCmgQYnKObGR9y2vqa5K_q3csenE", specialties: ["Express Entry", "PNP Program", "Family Sponsorship"], languages: ["English", "French"] },
-    { id: 3, name: "David Chen", title: "Student Visas, Work Permits", barId: "#AU-554210-SYD", rating: 4.8, reviews: 210, success: 94, price: 130, image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCmDsGHt81YPmyNbrGnT1bqUcS1Jr5x-8twNhzp-mkwtsr0D4Qi2xu9ny37Cr7psjC7IfPzBPaoHrwPTXpvnnqRONz0fLRhjMsuhLAlaoPiC3fbnYO_ZZbbZqGuxiKs0Yc4-r3KX8hUFgYGviCb9buHviLn4rS1Fk_F6Uyx_cBz52n4CIr2n8YsBphmaIlsY3ClsiJihqjNvJC7dTlvWPskn2D9y0tbte8jv7Dj-u50ZPXVK3GAvZNssB72wpmvFe_bFHddxHzU1vKl", specialties: ["Student Visas", "Work Permits", "Appeals"], languages: ["English", "Mandarin"] },
+const results = [
+    {
+        rank: 1,
+        name: "Aristha Law Group, P.C.",
+        rating: 4.5,
+        reviews: 128,
+        status: "Open",
+        statusOpen: true,
+        price: "$$$",
+        distance: "1.2 mi",
+        tags: [{ icon: Flag, label: "Employment Visa" }, { icon: Briefcase, label: "Emergency Services" }],
+        desc: "Specializing in H-1B, O-1, and EB-1 petitions for tech professionals. Known for high success rates in complex RFE responses.",
+        aiInsight: "Users report Aristha handled an urgent deportation stay within 4 hours. Highly recommended for critical timelines.",
+        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face",
+        emergency: true,
+    },
+    {
+        rank: 2,
+        name: "Marcus Chen & Associates",
+        rating: 5.0,
+        reviews: 84,
+        status: "Closes 5PM",
+        statusOpen: false,
+        price: "$$",
+        distance: "3.5 mi",
+        tags: [{ icon: Users, label: "Family Reunification" }],
+        desc: "Dedicated to connecting families across borders. Expertise in K-1 visas, green card renewals, and naturalization interviews.",
+        aiInsight: "Consistently rated 5 stars for clear communication and transparent flat-fee pricing structures.",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
+        emergency: false,
+    },
+    {
+        rank: 3,
+        name: "Global Frontier Legal",
+        rating: 4.5,
+        reviews: 214,
+        status: "Open",
+        statusOpen: true,
+        price: "$$$$",
+        distance: "0.8 mi",
+        tags: [{ icon: Briefcase, label: "EB-5 Investor" }, { icon: Globe, label: "Asylum" }],
+        desc: "Premium legal advisory for high-net-worth investors and complex corporate relocation. Multilingual staff available 24/7.",
+        aiInsight: "Expert team handles large-scale corporate transfers with high precision. Best for institutional clients.",
+        image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=face",
+        emergency: false,
+    },
 ];
 
-export default function FindLawyerPage() {
-    const [selectedExpertise, setSelectedExpertise] = useState<string[]>([]);
-    const [priceRange, setPriceRange] = useState(250);
-
+function StarRating({ count }: { count: number }) {
     return (
-        <div className="pt-24 pb-20 px-6 max-w-7xl mx-auto">
-            <div className="mb-12">
-                <h1 className="text-5xl md:text-6xl font-light tracking-tight mb-4 leading-tight text-slate-900 font-serif">
-                    Find Your <span className="italic text-[#5B58F6]">Immigration Expert</span>
-                </h1>
-                <p className="text-lg text-slate-500 max-w-2xl font-light">
-                    Browse verified lawyers and legal consultants specializing in global migration, student visas, and permanent residency.
-                </p>
-            </div>
+        <div className="flex text-primary">
+            {[1, 2, 3, 4, 5].map((i) => (
+                <Star key={i} className="w-[18px] h-[18px]" fill={i <= count ? "currentColor" : "none"} strokeWidth={i <= count ? 0 : 1.5} />
+            ))}
+        </div>
+    );
+}
 
-            <div className="grid lg:grid-cols-12 gap-10">
-                {/* Sidebar Filters */}
-                <aside className="hidden lg:block lg:col-span-3 space-y-8">
-                    <div className="bg-white rounded-[2rem] p-6 border border-slate-200/60" style={{ boxShadow: 'inset 0 2px 4px rgba(255,255,255,1), inset 0 -1px 2px rgba(0,0,0,0.02), 0 10px 20px -5px rgba(0,0,0,0.03)' }}>
-                        <h3 className="font-medium text-lg text-slate-900 mb-6 font-serif">Filters</h3>
-                        <div className="space-y-6">
-                            <div>
-                                <label className="block text-sm font-bold mb-3">Country Expertise</label>
-                                <select className="w-full bg-surface-container-lowest border-none rounded-xl text-sm focus:ring-2 focus:ring-primary h-12 px-4">
-                                    <option>United States</option>
-                                    <option>Canada</option>
-                                    <option>United Kingdom</option>
-                                    <option>Australia</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-heading font-bold mb-3">Service Type</label>
-                                <div className="space-y-2">
-                                    {["Skilled Worker Visa", "Student Permits", "Asylum / Refugee"].map((type) => (
-                                        <label key={type} className="flex items-center gap-3 text-sm">
-                                            <input type="checkbox" className="rounded border-outline-variant text-primary focus:ring-primary" defaultChecked={type === "Skilled Worker Visa"} /> {type}
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-bold mb-3">Fee Range (USD)</label>
-                                <input type="range" min="50" max="500" value={priceRange} onChange={(e) => setPriceRange(parseInt(e.target.value))} className="w-full accent-primary" />
-                                <div className="flex justify-between text-xs font-medium text-on-surface-variant mt-2">
-                                    <span>$50</span>
-                                    <span>${priceRange}+</span>
-                                </div>
-                            </div>
-                            <Button className="w-full bg-tertiary hover:opacity-90 font-bold py-3 text-white rounded-xl">Apply Filters</Button>
+export default function FindLawyerPage() {
+    return (
+        <div>
+            {/* Filter Bar */}
+            <header className="bg-surface-container-lowest border-b border-surface-container-high py-4 sticky top-16 z-40">
+                <div className="max-w-[1440px] mx-auto px-6">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
+                            <span className="text-sm font-bold text-on-surface whitespace-nowrap mr-2">243 experts found</span>
+                            {["Lawyers", "4.5+ ★", "Emergency", "Price ▾"].map((filter, i) => (
+                                <button key={filter} className={`flex items-center gap-1 px-3 py-1.5 border rounded-full text-sm font-medium transition-colors whitespace-nowrap ${i === 2 ? "border-red-200 bg-red-50 text-red-700" : "border-surface-container-highest hover:bg-surface-container-low"}`}>
+                                    {filter}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs text-on-surface-variant font-medium">Sort:</span>
+                            <button className="flex items-center gap-1 text-sm font-bold text-on-surface">
+                                Recommended ▾
+                            </button>
                         </div>
                     </div>
-                </aside>
+                </div>
+            </header>
 
-                {/* Lawyer Listings */}
-                <div className="lg:col-span-9 space-y-6">
-                    {lawyers.map((lawyer, idx) => (
-                        <motion.div key={lawyer.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}>
-                            <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-premium-soft hover:shadow-premium-hover transition-all duration-300">
-                                <div className="flex flex-col md:flex-row gap-6">
-                                    <div className="relative shrink-0">
-                                        <div className="w-24 h-24 rounded-full overflow-hidden bg-muted">
-                                            <img src={lawyer.image} alt={lawyer.name} className="object-cover w-full h-full" />
-                                        </div>
-                                        <div className="absolute -bottom-1 -right-1 bg-tertiary text-white p-1 rounded-full border-4 border-white">
-                                            <Verified className="w-4 h-4" />
+            <main className="max-w-[1440px] mx-auto flex flex-col md:flex-row">
+                {/* Results List */}
+                <section className="w-full md:w-[60%] p-6 space-y-6">
+                    {results.map((r, idx) => (
+                        <motion.div
+                            key={r.name}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                        >
+                            <Link href={`/lawyer/${r.rank}`}>
+                                <div className={`bg-surface-container-lowest rounded-xl shadow-editorial overflow-hidden flex flex-col sm:flex-row p-5 gap-5 hover:shadow-editorial-lg transition-shadow ${r.emergency ? "border-l-[3px] border-primary" : ""}`}>
+                                    <div className="flex-shrink-0 flex flex-col items-center">
+                                        <span className="text-lg font-black text-on-surface mb-2">{r.rank}.</span>
+                                        <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-surface-container-high">
+                                            <img alt={r.name} src={r.image} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
-                                    <div className="flex-grow">
-                                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-2">
+                                    <div className="flex-grow space-y-2">
+                                        <div className="flex justify-between items-start">
                                             <div>
-                                                <div className="flex items-center gap-2">
-                                                    <h2 className="text-xl font-heading font-bold">{lawyer.name}</h2>
-                                                    <span className="bg-secondary-fixed text-on-secondary-container text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wide">VERIFIED</span>
+                                                <h2 className="text-xl font-bold text-on-surface hover:text-primary transition-colors font-heading">{r.name}</h2>
+                                                <div className="flex items-center gap-1 mt-0.5">
+                                                    <StarRating count={Math.floor(r.rating)} />
+                                                    <span className="text-sm font-medium text-on-surface-variant ml-1">{r.reviews} reviews</span>
                                                 </div>
-                                                <p className="text-on-surface-variant text-sm mt-1">BAR ID: {lawyer.barId}</p>
                                             </div>
-                                            <div className="text-right md:text-right">
-                                                <p className="text-2xl font-black text-primary">${lawyer.price}<span className="text-sm font-normal text-on-surface-variant">/hr</span></p>
+                                            <div className="text-right">
+                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${r.statusOpen ? "bg-tertiary-container text-white" : "bg-surface-container-highest text-on-surface-variant"}`}>
+                                                    {r.status}
+                                                </span>
+                                                <div className="text-xs font-bold text-on-surface-variant mt-1">{r.price} • {r.distance}</div>
                                             </div>
                                         </div>
-                                        <div className="flex flex-wrap gap-2 mt-4">
-                                            {lawyer.specialties.map((spec) => (
-                                                <span key={spec} className="bg-surface-container-low px-3 py-1 rounded-lg text-xs font-medium">{spec}</span>
+                                        <div className="flex flex-wrap gap-2 py-1">
+                                            {r.tags.map((tag) => (
+                                                <span key={tag.label} className="inline-flex items-center gap-1 px-2 py-0.5 bg-surface-container text-xs font-bold text-on-surface rounded-lg">
+                                                    <tag.icon className="w-3 h-3" /> {tag.label}
+                                                </span>
                                             ))}
                                         </div>
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 py-4 border-y border-outline-variant/10">
-                                            <div className="flex items-center gap-2">
-                                                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                                                <span className="text-sm font-bold">{lawyer.rating} <span className="font-normal text-on-surface-variant">({lawyer.reviews})</span></span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <CheckCircle className="w-4 h-4 text-tertiary" />
-                                                <span className="text-sm font-bold text-tertiary">{lawyer.success}% Success</span>
-                                            </div>
-                                            <div className="hidden md:flex items-center gap-2">
-                                                <Languages className="w-4 h-4 text-on-surface-variant" />
-                                                <span className="text-sm font-medium">{lawyer.languages.join(", ")}</span>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-3 mt-6">
-                                            <button className="flex-1 bg-surface-container-highest text-on-surface py-3 rounded-xl font-bold text-sm hover:bg-outline-variant/30 transition-colors">
-                                                View Profile
-                                            </button>
-                                            <button className="flex-1 bg-tertiary text-white py-3 rounded-xl font-bold text-sm shadow-sm hover:opacity-90 transition-opacity">
-                                                Book Now
-                                            </button>
+                                        <p className="text-sm text-on-surface-variant line-clamp-2 leading-relaxed">{r.desc}</p>
+                                        <div className="bg-surface-container-low p-3 rounded-lg flex gap-3 items-start border border-surface-container-high mt-3">
+                                            <Sparkles className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                                            <p className="text-xs text-on-surface italic">&ldquo;{r.aiInsight}&rdquo; — VisaHub AI</p>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         </motion.div>
                     ))}
 
                     {/* Pagination */}
-                    <div className="flex items-center justify-between pt-12 border-t border-outline-variant/20">
-                        <button className="flex items-center gap-2 px-6 py-3 rounded-xl border border-outline-variant/30 font-bold hover:bg-surface-container-low transition-colors">
-                            <ChevronLeft className="w-4 h-4" /> Previous
+                    <div className="flex items-center justify-center pt-8 gap-2">
+                        <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-surface-container-high hover:bg-surface-container-low text-on-surface-variant transition-colors">
+                            <ChevronLeft className="w-4 h-4" />
                         </button>
-                        <div className="hidden md:flex gap-2">
-                            <button className="w-10 h-10 rounded-lg bg-primary text-white font-bold">1</button>
-                            <button className="w-10 h-10 rounded-lg font-bold hover:bg-surface-container-low">2</button>
-                            <button className="w-10 h-10 rounded-lg font-bold hover:bg-surface-container-low">3</button>
-                        </div>
-                        <button className="flex items-center gap-2 px-6 py-3 rounded-xl border border-outline-variant/30 font-bold hover:bg-surface-container-low transition-colors">
-                            Next <ChevronRight className="w-4 h-4" />
+                        {[1, 2, 3, 4].map((p) => (
+                            <button key={p} className={`w-10 h-10 flex items-center justify-center rounded-lg font-medium ${p === 1 ? "bg-primary text-white font-bold shadow-md" : "border border-surface-container-high hover:bg-surface-container-low text-on-surface-variant"} transition-colors`}>
+                                {p}
+                            </button>
+                        ))}
+                        <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-surface-container-high hover:bg-surface-container-low text-on-surface-variant transition-colors">
+                            <ChevronRight className="w-4 h-4" />
                         </button>
                     </div>
-                </div>
-            </div>
+                </section>
+
+                {/* Map Panel */}
+                <aside className="hidden md:block w-[40%] sticky top-32 h-[calc(100vh-8rem)] overflow-hidden bg-surface-container border-l border-surface-container-high">
+                    <div className="relative w-full h-full">
+                        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&h=900&fit=crop')" }} />
+                        {/* Map Pins */}
+                        {[{ top: "25%", left: "35%", rank: 1 }, { top: "55%", left: "60%", rank: 2 }, { top: "40%", left: "20%", rank: 3 }].map((pin) => (
+                            <div key={pin.rank} className="absolute group" style={{ top: pin.top, left: pin.left }}>
+                                <div className="bg-primary text-white font-bold text-xs px-2 py-1 rounded shadow-lg transform -translate-x-1/2 -translate-y-full mb-1">{pin.rank}</div>
+                                <MapPin className="w-8 h-8 text-primary drop-shadow-md" fill="currentColor" />
+                            </div>
+                        ))}
+                        {/* Zoom Controls */}
+                        <div className="absolute top-4 left-4 flex flex-col gap-2">
+                            <button className="bg-white p-2 rounded-lg shadow-md hover:bg-neutral-50 transition-colors"><Plus className="w-4 h-4" /></button>
+                            <button className="bg-white p-2 rounded-lg shadow-md hover:bg-neutral-50 transition-colors"><Minus className="w-4 h-4" /></button>
+                        </div>
+                    </div>
+                </aside>
+            </main>
         </div>
     );
 }

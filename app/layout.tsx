@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -8,8 +8,8 @@ import { EmergencyFab } from "@/components/shared/emergency-fab";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", weight: ["300", "400", "500", "600"] });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair", weight: ["400", "500", "600"], style: ["normal", "italic"] });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
 
 export const metadata: Metadata = {
   title: "VisaHub | The Digital Diplomat for Global Migration",
@@ -37,11 +37,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased text-slate-600 bg-[#FAFAFA] selection:bg-[#EEF0FF] selection:text-[#5B58F6]`}>
+      <body className={`${jakarta.variable} ${outfit.variable} font-sans antialiased text-on-surface bg-background selection:bg-primary/20 selection:text-primary`}>
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
             <Header />
-            <main className="min-h-screen pt-20">{children}</main>
+            <main className="min-h-screen">{children}</main>
             <Footer />
             <MobileNav />
             <EmergencyFab />

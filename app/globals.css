@@ -4,46 +4,80 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 215 25% 15%;
-    --primary: 242 91% 59%;
-    --primary-rgb: 91, 88, 246;
+    --background: 0 0% 96%;
+    --foreground: 200 10% 10%;
+    --primary: 217 85% 48%;
+    --primary-rgb: 24, 107, 227;
     --primary-foreground: 0 0% 100%;
-    --secondary: 242 50% 95%;
-    --secondary-foreground: 242 91% 45%;
-    --tertiary: 242 91% 59%;
+    --primary-container: 217 85% 42%;
+    --secondary: 207 100% 31%;
+    --secondary-foreground: 0 0% 100%;
+    --tertiary: 120 100% 17%;
     --tertiary-foreground: 0 0% 100%;
-    --muted: 215 25% 95%;
-    --muted-foreground: 215 15% 45%;
-    --accent: 242 50% 95%;
-    --accent-foreground: 242 91% 45%;
-    --destructive: 0 78% 42%;
+    --tertiary-container: 120 100% 23%;
+    --accent: 45 95% 50%;
+    --accent-foreground: 220 30% 10%;
+    --muted: 0 0% 91%;
+    --muted-foreground: 0 0% 36%;
+    --destructive: 0 73% 41%;
     --destructive-foreground: 0 0% 100%;
-    --border: 215 20% 90%;
-    --input: 215 20% 90%;
-    --ring: 242 91% 59%;
+    --error: 0 73% 41%;
+    --error-container: 0 100% 92%;
+    --border: 0 0% 87%;
+    --input: 0 0% 87%;
+    --ring: 217 85% 48%;
     --radius: 0.75rem;
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card-foreground: 200 10% 10%;
+
+    /* Surface tokens */
+    --surface: 0 0% 98%;
+    --surface-container: 0 0% 93%;
+    --surface-container-low: 0 0% 95%;
+    --surface-container-lowest: 0 0% 100%;
+    --surface-container-high: 0 0% 91%;
+    --surface-container-highest: 0 0% 89%;
+    --on-surface: 200 10% 10%;
+    --on-surface-variant: 15 19% 30%;
+    --outline: 15 15% 49%;
+    --outline-variant: 15 28% 82%;
   }
 
   .dark {
-    --background: 222 30% 7%;
-    --foreground: 215 40% 93%;
-    --primary: 242 85% 67%;
-    --primary-rgb: 118, 115, 255;
+    --background: 200 20% 7%;
+    --foreground: 0 0% 95%;
+    --primary: 217 91% 60%;
+    --primary-rgb: 84, 151, 255;
     --primary-foreground: 0 0% 100%;
-    --secondary: 242 40% 15%;
-    --secondary-foreground: 242 85% 80%;
-    --tertiary: 242 85% 67%;
+    --primary-container: 217 80% 50%;
+    --secondary: 207 100% 40%;
+    --secondary-foreground: 0 0% 100%;
+    --tertiary: 120 90% 35%;
     --tertiary-foreground: 0 0% 100%;
-    --muted: 222 25% 14%;
-    --muted-foreground: 215 15% 60%;
-    --border: 222 25% 18%;
-    --input: 222 25% 18%;
-    --ring: 242 85% 67%;
-    --card: 222 25% 10%;
-    --card-foreground: 215 40% 93%;
+    --tertiary-container: 120 100% 23%;
+    --accent: 45 95% 53%;
+    --accent-foreground: 220 30% 10%;
+    --muted: 200 15% 15%;
+    --muted-foreground: 0 0% 60%;
+    --destructive: 0 73% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --error: 0 73% 50%;
+    --error-container: 0 50% 20%;
+    --border: 200 15% 20%;
+    --input: 200 15% 20%;
+    --ring: 217 91% 60%;
+    --card: 200 20% 10%;
+    --card-foreground: 0 0% 95%;
+    --surface: 200 20% 7%;
+    --surface-container: 200 15% 11%;
+    --surface-container-low: 200 15% 9%;
+    --surface-container-lowest: 200 20% 5%;
+    --surface-container-high: 200 10% 14%;
+    --surface-container-highest: 200 8% 17%;
+    --on-surface: 0 0% 95%;
+    --on-surface-variant: 15 10% 65%;
+    --outline: 15 10% 45%;
+    --outline-variant: 15 10% 25%;
   }
 }
 
@@ -53,64 +87,43 @@
   }
 
   body {
-    @apply bg-[#FAFAFA] text-slate-600 antialiased;
-    font-family: 'Inter', sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-jakarta), sans-serif;
   }
 
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -10;
-    background:
-      radial-gradient(circle at 80% 0%, hsla(242, 100%, 70%, 0.06) 0px, transparent 50%),
-      radial-gradient(circle at 0% 50%, hsla(355, 100%, 93%, 0.3) 0px, transparent 50%),
-      radial-gradient(circle at 80% 50%, hsla(242, 100%, 70%, 0.04) 0px, transparent 50%);
-  }
-
-  .dark body::before {
-    background:
-      radial-gradient(circle at 80% 0%, hsla(242, 100%, 70%, 0.08) 0px, transparent 50%),
-      radial-gradient(circle at 0% 50%, hsla(242, 100%, 60%, 0.05) 0px, transparent 50%);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-outfit), sans-serif;
   }
 }
 
 @layer utilities {
-  .font-serif {
-    font-family: 'Playfair Display', serif;
+  .editorial-shadow {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .editorial-shadow-lg {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   }
 
   .glass-card {
-    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/50 dark:border-slate-800/50 transform-gpu;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-
-  .skeuo-shadow {
-    box-shadow:
-      0 20px 40px -10px rgba(15, 23, 42, 0.08),
-      0 8px 16px -8px rgba(15, 23, 42, 0.06),
-      inset 0 2px 4px rgba(255, 255, 255, 0.8),
-      inset 0 -1px 2px rgba(0, 0, 0, 0.03);
-  }
-
-  .skeuo-shadow-hover {
-    box-shadow:
-      0 30px 60px -15px rgba(15, 23, 42, 0.12),
-      0 10px 24px -10px rgba(15, 23, 42, 0.08),
-      inset 0 2px 4px rgba(255, 255, 255, 0.8),
-      inset 0 -1px 2px rgba(0, 0, 0, 0.04);
+    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800/50;
   }
 
   .text-balance {
     text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

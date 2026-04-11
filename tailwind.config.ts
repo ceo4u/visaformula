@@ -26,6 +26,7 @@ const config: Config = {
                 primary: {
                     DEFAULT: "hsl(var(--primary))",
                     foreground: "hsl(var(--primary-foreground))",
+                    container: "hsl(var(--primary-container))",
                 },
                 secondary: {
                     DEFAULT: "hsl(var(--secondary))",
@@ -34,10 +35,15 @@ const config: Config = {
                 tertiary: {
                     DEFAULT: "hsl(var(--tertiary))",
                     foreground: "hsl(var(--tertiary-foreground))",
+                    container: "hsl(var(--tertiary-container))",
                 },
                 destructive: {
                     DEFAULT: "hsl(var(--destructive))",
                     foreground: "hsl(var(--destructive-foreground))",
+                },
+                error: {
+                    DEFAULT: "hsl(var(--error))",
+                    container: "hsl(var(--error-container))",
                 },
                 muted: {
                     DEFAULT: "hsl(var(--muted))",
@@ -51,15 +57,32 @@ const config: Config = {
                     DEFAULT: "hsl(var(--card))",
                     foreground: "hsl(var(--card-foreground))",
                 },
-                "surface-container-low": "hsl(240 10% 97%)",
-                "surface-container-lowest": "hsl(0 0% 100%)",
-                "surface-container-highest": "hsl(240 8% 94%)",
-                "on-surface": "hsl(215 25% 15%)",
-                "on-surface-variant": "hsl(215 12% 45%)",
-                "secondary-fixed": "hsl(242 50% 95%)",
-                "on-secondary-fixed": "hsl(242 91% 30%)",
-                "primary-fixed": "hsl(242 50% 95%)",
-                "on-primary-fixed": "hsl(242 91% 30%)",
+                surface: {
+                    DEFAULT: "hsl(var(--surface))",
+                    container: "hsl(var(--surface-container))",
+                    "container-low": "hsl(var(--surface-container-low))",
+                    "container-lowest": "hsl(var(--surface-container-lowest))",
+                    "container-high": "hsl(var(--surface-container-high))",
+                    "container-highest": "hsl(var(--surface-container-highest))",
+                },
+                "on-surface": {
+                    DEFAULT: "hsl(var(--on-surface))",
+                    variant: "hsl(var(--on-surface-variant))",
+                },
+                outline: {
+                    DEFAULT: "hsl(var(--outline))",
+                    variant: "hsl(var(--outline-variant))",
+                },
+                /* Legacy compat */
+                "surface-container-low": "hsl(var(--surface-container-low))",
+                "surface-container-lowest": "hsl(var(--surface-container-lowest))",
+                "surface-container-highest": "hsl(var(--surface-container-highest))",
+                "on-surface": "hsl(var(--on-surface))",
+                "on-surface-variant": "hsl(var(--on-surface-variant))",
+                "secondary-fixed": "hsl(45 100% 90%)",
+                "on-secondary-fixed": "hsl(45 80% 20%)",
+                "primary-fixed": "hsl(217 80% 93%)",
+                "on-primary-fixed": "hsl(217 80% 15%)",
             },
             borderRadius: {
                 lg: "var(--radius)",
@@ -67,13 +90,13 @@ const config: Config = {
                 sm: "calc(var(--radius) - 4px)",
             },
             fontFamily: {
-                sans: ["var(--font-inter)", "'Inter'", "sans-serif"],
-                serif: ["var(--font-playfair)", "'Playfair Display'", "serif"],
-                heading: ["var(--font-playfair)", "'Playfair Display'", "serif"],
+                sans: ["var(--font-jakarta)", "sans-serif"],
+                heading: ["var(--font-outfit)", "sans-serif"],
             },
             boxShadow: {
-                "premium-soft": "0 20px 40px -10px rgba(15,23,42,0.06), 0 8px 16px -8px rgba(15,23,42,0.04), inset 0 2px 4px rgba(255,255,255,0.8), inset 0 -1px 2px rgba(0,0,0,0.03)",
-                "premium-hover": "0 30px 60px -15px rgba(15,23,42,0.1), 0 10px 24px -10px rgba(15,23,42,0.06), inset 0 2px 4px rgba(255,255,255,0.8), inset 0 -1px 2px rgba(0,0,0,0.04)",
+                "editorial": "0 1px 4px rgba(0,0,0,0.1)",
+                "editorial-lg": "0 4px 16px rgba(0,0,0,0.08)",
+                "editorial-xl": "0 8px 30px rgba(0,0,0,0.12)",
             },
             animation: {
                 "accordion-down": "accordion-down 0.2s ease-out",

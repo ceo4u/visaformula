@@ -77,7 +77,6 @@ const config: Config = {
                 "surface-container-low": "hsl(var(--surface-container-low))",
                 "surface-container-lowest": "hsl(var(--surface-container-lowest))",
                 "surface-container-highest": "hsl(var(--surface-container-highest))",
-                "on-surface": "hsl(var(--on-surface))",
                 "on-surface-variant": "hsl(var(--on-surface-variant))",
                 "secondary-fixed": "hsl(45 100% 90%)",
                 "on-secondary-fixed": "hsl(45 80% 20%)",

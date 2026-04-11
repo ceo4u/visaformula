@@ -44,7 +44,7 @@ export function Header() {
                             type="text"
                         />
                     </div>
-                    <button className="bg-primary hover:bg-primary-container px-5 flex items-center justify-center transition-colors">
+                    <button className="bg-primary hover:bg-primary/80 px-5 flex items-center justify-center transition-colors">
                         <span className="text-white text-xs font-bold tracking-wide">Search</span>
                     </button>
                 </div>
@@ -81,7 +81,7 @@ export function Header() {
                 </Link>
                 <Link
                     href="/signup"
-                    className="bg-primary text-white font-bold px-5 py-2 rounded-full hover:bg-primary-container transition-all text-sm shadow-[0_2px_10px_rgba(36,154,250,0.3)] hover:shadow-[0_4px_14px_rgba(36,154,250,0.4)]"
+                    className="bg-primary text-white font-bold px-5 py-2 rounded-full hover:bg-primary/80 transition-all text-sm shadow-[0_2px_10px_rgba(36,154,250,0.3)] hover:shadow-[0_4px_14px_rgba(36,154,250,0.4)]"
                 >
                     Sign up
                 </Link>

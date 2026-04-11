@@ -13,7 +13,7 @@ export default function EmergencyPage() {
     return (
         <div className="mb-20">
             {/* ALERT BAR */}
-            <div className="bg-primary-container text-white py-2 px-4 text-center sticky top-16 z-40 shadow-md">
+            <div className="bg-primary text-white py-2 px-4 text-center sticky top-16 z-40 shadow-md">
                 <div className="max-w-7xl mx-auto flex items-center justify-center gap-3">
                     <Gavel className="w-4 h-4" />
                     <span className="text-xs md:text-sm font-bold tracking-wider uppercase">Emergency Legal Help — 24/7 Response Available</span>
@@ -71,7 +71,7 @@ export default function EmergencyPage() {
 
                 {/* ANALYZE BUTTON */}
                 <div className="mb-16">
-                    <button className="w-full bg-primary-container text-white py-4 rounded-lg text-lg font-black uppercase tracking-widest shadow-lg hover:bg-primary transition-all flex items-center justify-center gap-3 active:scale-95">
+                    <button className="w-full bg-primary text-white py-4 rounded-lg text-lg font-black uppercase tracking-widest shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-3 active:scale-95">
                         <BarChart3 className="w-5 h-5" />
                         Analyze Legal Status Now
                     </button>
@@ -158,7 +158,7 @@ export default function EmergencyPage() {
                         </div>
                     </div>
 
-                    <button className="w-full bg-primary py-4 rounded-lg text-white font-black uppercase tracking-widest flex items-center justify-center gap-3 shadow-xl hover:bg-primary-container transition-all active:scale-95">
+                    <button className="w-full bg-primary py-4 rounded-lg text-white font-black uppercase tracking-widest flex items-center justify-center gap-3 shadow-xl hover:bg-primary/90 transition-all active:scale-95">
                         <Phone className="w-5 h-5" />
                         Connect to Emergency Lawyer
                     </button>

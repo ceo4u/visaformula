@@ -112,7 +112,7 @@ export default function DashboardPage() {
                                         </div>
                                     </div>
                                 </div>
-                                <button className="bg-primary text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-primary-container transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
+                                <button className="bg-primary text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-primary/80 transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
                                     <Video className="w-4 h-4" />
                                     Join Call
                                 </button>

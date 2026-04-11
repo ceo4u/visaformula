@@ -232,7 +232,7 @@ export default function LawyerProfilePage() {
                                 </div>
                             </div>
 
-                            <button className="w-full bg-primary-container text-white py-4 rounded-lg font-black text-sm uppercase tracking-widest shadow-lg hover:bg-primary transition-all active:scale-95">
+                            <button className="w-full bg-primary text-white py-4 rounded-lg font-black text-sm uppercase tracking-widest shadow-lg hover:bg-primary/90 transition-all active:scale-95">
                                 Request to Book
                             </button>
                             <p className="text-[10px] text-center text-on-surface-variant">

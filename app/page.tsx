@@ -75,7 +75,7 @@ export default function HomePage() {
               placeholder="What do you need help with?"
               type="text"
             />
-            <button className="bg-primary text-white font-bold px-8 rounded-xl hover:bg-primary-container transition-all flex items-center justify-center shadow-sm">
+            <button className="bg-primary text-white font-bold px-8 rounded-xl hover:bg-primary/80 transition-all flex items-center justify-center shadow-sm">
               Search
             </button>
           </motion.div>
@@ -191,7 +191,7 @@ export default function HomePage() {
 
       {/* APP DOWNLOAD CTA */}
       <section className="max-w-7xl mx-auto py-24 px-6">
-        <div className="bg-primary-container rounded-2xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
+        <div className="bg-primary rounded-2xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 overflow-hidden relative shadow-xl">
           <div className="flex-1 text-white relative z-10">
             <h2 className="text-3xl md:text-5xl font-black mb-6 leading-tight font-heading">Expert Advice, <br />In Your Pocket.</h2>
             <p className="text-lg opacity-90 mb-10 max-w-md">Download the VisaHub app to chat with experts, track your visa status, and get real-time emergency support.</p>

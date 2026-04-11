@@ -60,7 +60,7 @@ export default function AiAssistantPage() {
                         if (msg.type === "user") {
                             return (
                                 <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }} className="flex flex-col items-end self-end max-w-[85%]">
-                                    <div className="bg-primary-container text-white p-5 rounded-xl rounded-tr-none shadow-editorial">
+                                    <div className="bg-primary text-white p-5 rounded-xl rounded-tr-none shadow-editorial">
                                         <p className="text-sm leading-relaxed">{msg.content}</p>
                                     </div>
                                     {msg.time && <span className="text-[11px] font-bold text-on-surface-variant mt-2 uppercase tracking-wider px-1">{msg.time}</span>}
@@ -74,7 +74,7 @@ export default function AiAssistantPage() {
                                         <button
                                             key={c}
                                             className={`px-4 py-2 text-sm font-bold rounded-lg shadow-editorial transition-colors ${c === msg.selectedChoice
-                                                ? "bg-primary-container text-white"
+                                                ? "bg-primary text-white"
                                                 : "bg-white border border-surface-container-highest text-on-surface hover:border-primary hover:text-primary"}`}
                                         >
                                             {c}
@@ -86,20 +86,20 @@ export default function AiAssistantPage() {
                         if (msg.type === "card") {
                             return (
                                 <motion.div key={idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex flex-col items-start w-full">
-                                    <div className="bg-surface-container-lowest shadow-editorial w-full max-w-2xl rounded-xl p-8 border-l-4 border-primary-container">
+                                    <div className="bg-surface-container-lowest shadow-editorial w-full max-w-2xl rounded-xl p-8 border-l-4 border-primary">
                                         <div className="flex justify-between items-start mb-6">
                                             <div>
                                                 <h3 className="text-xl font-black text-on-surface uppercase tracking-tight font-heading">Eligibility Analysis</h3>
                                                 <p className="text-xs text-on-surface-variant font-bold uppercase mt-1">Federal Skilled Worker Program (FSW)</p>
                                             </div>
                                             <div className="text-right">
-                                                <span className="text-4xl font-black text-primary-container">78%</span>
+                                                <span className="text-4xl font-black text-primary">78%</span>
                                                 <p className="text-[10px] font-bold text-on-surface-variant uppercase">Match Score</p>
                                             </div>
                                         </div>
 
                                         <div className="w-full bg-surface-container-highest h-2 rounded-full mb-8 overflow-hidden">
-                                            <motion.div initial={{ width: 0 }} animate={{ width: "78%" }} transition={{ duration: 1.2, delay: 0.5 }} className="bg-primary-container h-full rounded-full" />
+                                            <motion.div initial={{ width: 0 }} animate={{ width: "78%" }} transition={{ duration: 1.2, delay: 0.5 }} className="bg-primary h-full rounded-full" />
                                         </div>
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -155,7 +155,7 @@ export default function AiAssistantPage() {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                         />
-                        <button className="w-10 h-10 bg-primary-container text-white rounded-lg flex items-center justify-center hover:bg-primary transition-all active:scale-95">
+                        <button className="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-primary/90 transition-all active:scale-95">
                             <Send className="w-4 h-4" />
                         </button>
                     </div>

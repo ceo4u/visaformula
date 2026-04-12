@@ -1,91 +1,86 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Gavel, Search, MapPin } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/find-lawyer", label: "Search" },
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/about", label: "About" },
-    { href: "/support", label: "Support" },
-];
+import { Search, MapPin, Menu } from "lucide-react";
+import { useState } from "react";
 
 export function Header() {
-    const pathname = usePathname();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <header className="sticky top-0 z-50 flex justify-between items-center px-6 h-16 w-full bg-white/90 dark:bg-surface-container-lowest/90 backdrop-blur-md border-b border-surface-container-high">
-            <div className="flex items-center gap-6 flex-1">
-                <Link href="/" className="flex items-center gap-2 group">
-                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                        <Gavel className="w-4 h-4 text-primary" />
-                    </div>
-                    <span className="text-xl font-black tracking-tight text-on-surface">VisaHub</span>
+        <header className="sticky top-0 z-50 flex items-center px-4 md:px-6 h-14 w-full bg-[#0ea5e9] text-white">
+            <div className="flex items-center gap-6 w-full justify-between lg:justify-start">
+                <Link href="/" className="flex items-center gap-1 group shrink-0">
+                    <span className="text-2xl font-bold tracking-tight text-white">visara</span>
                 </Link>
 
                 {/* Integrated Search Bar (Desktop) */}
-                <div className="hidden lg:flex flex-1 max-w-xl bg-surface-container-low rounded-full overflow-hidden h-10 border border-surface-container-high transition-all focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
-                    <div className="flex items-center px-3 border-r border-surface-container-highest flex-1 group">
-                        <Search className="w-4 h-4 text-on-surface-variant mr-2 group-focus-within:text-primary transition-colors" />
+                <div className="hidden lg:flex flex-1 max-w-2xl bg-white rounded flex-row items-center border border-transparent focus-within:border-white focus-within:shadow-md transition-shadow h-10 ml-4">
+                    <div className="flex items-center px-3 border-r border-gray-200 flex-1 h-full">
                         <input
-                            className="w-full border-none focus:ring-0 text-sm text-on-surface bg-transparent placeholder:text-on-surface-variant font-medium"
-                            placeholder="Find lawyers, consultations..."
+                            className="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-500 font-medium h-full outline-none"
+                            placeholder="Find experts, universities, jobs, tours..."
                             type="text"
                         />
                     </div>
-                    <div className="flex items-center px-3 flex-1">
-                        <MapPin className="w-4 h-4 text-on-surface-variant mr-2" />
+                    <div className="flex items-center px-3 flex-[0.5] h-full border-r border-gray-200">
+                        <MapPin className="w-4 h-4 text-gray-500 mr-2 shrink-0" />
                         <input
-                            className="w-full border-none focus:ring-0 text-sm text-on-surface bg-transparent placeholder:text-on-surface-variant font-medium"
+                            className="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-500 font-medium h-full outline-none"
                             placeholder="Location"
                             type="text"
                         />
                     </div>
-                    <button className="bg-primary hover:bg-primary/80 px-5 flex items-center justify-center transition-colors">
-                        <span className="text-white text-xs font-bold tracking-wide">Search</span>
+                    <button className="bg-primary hover:bg-[#0284c7] px-4 h-full flex items-center justify-center rounded-r transition-colors">
+                        <Search className="w-5 h-5 text-white" />
+                    </button>
+                </div>
+
+                <div className="flex lg:hidden items-center ml-auto">
+                    <button className="p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        <Menu className="w-6 h-6 text-white" />
                     </button>
                 </div>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="hidden md:flex gap-1 items-center h-full mx-6">
-                {navLinks.map((link) => {
-                    const isActive = pathname === link.href;
-                    return (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className={cn(
-                                "px-3 py-1.5 text-sm transition-colors duration-200 rounded-full font-semibold",
-                                isActive
-                                    ? "text-primary bg-primary/10"
-                                    : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low"
-                            )}
-                        >
-                            {link.label}
-                        </Link>
-                    );
-                })}
-            </nav>
-
             {/* Auth Buttons */}
-            <div className="flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-4 whitespace-nowrap ml-6 flex-shrink-0">
+                <Link
+                    href="/signup/seeker"
+                    className="text-white hover:text-white/80 font-medium text-sm transition-colors"
+                >
+                    Register as Seeker
+                </Link>
+                <div className="w-px h-4 bg-white/30"></div>
+                <Link
+                    href="/signup/expert"
+                    className="text-white hover:text-white/80 font-medium text-sm transition-colors"
+                >
+                    Register as Expert
+                </Link>
                 <Link
                     href="/login"
-                    className="text-on-surface-variant font-bold hover:text-on-surface hover:bg-surface-container-low px-4 py-2 rounded-full transition-colors text-sm hidden md:block"
+                    className="text-white hover:text-white/80 font-medium text-sm transition-colors ml-2"
                 >
-                    Log in
+                    Log In
                 </Link>
                 <Link
                     href="/signup"
-                    className="bg-primary text-white font-bold px-5 py-2 rounded-full hover:bg-primary/80 transition-all text-sm shadow-[0_2px_10px_rgba(36,154,250,0.3)] hover:shadow-[0_4px_14px_rgba(36,154,250,0.4)]"
+                    className="bg-transparent border border-white text-white font-medium px-4 py-1.5 rounded hover:bg-white hover:text-primary transition-colors text-sm"
                 >
-                    Sign up
+                    Sign Up
                 </Link>
             </div>
+
+            {/* Mobile menu (simple implementation for now) */}
+            {isMobileMenuOpen && (
+                <div className="lg:hidden absolute top-14 left-0 w-full bg-white text-black border-b border-gray-200 flex flex-col shadow-lg">
+                    <Link href="/signup/seeker" className="px-4 py-3 border-b border-gray-100 font-medium">Register as Seeker</Link>
+                    <Link href="/signup/expert" className="px-4 py-3 border-b border-gray-100 font-medium">Register as Expert</Link>
+                    <Link href="/login" className="px-4 py-3 border-b border-gray-100 font-medium">Log In</Link>
+                    <Link href="/signup" className="px-4 py-3 font-medium text-primary">Sign Up</Link>
+                </div>
+            )}
         </header>
     );
 }

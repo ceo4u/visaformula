@@ -86,7 +86,7 @@ export default function EmergencyPage() {
                     </div>
 
                     <div className="flex items-start gap-6 mb-10">
-                        <div className="p-4 bg-red-50 rounded-full text-red-600">
+                        <div className="p-4 bg-sky-50 rounded-full text-red-600">
                             <AlertTriangle className="w-8 h-8" />
                         </div>
                         <div>

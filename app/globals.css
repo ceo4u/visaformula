@@ -4,80 +4,80 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 215 25% 15%;
-    --primary: 208 90% 54%;
-    --primary-rgb: 36, 154, 250;
+    --background: 0 0% 96%;
+    --foreground: 0 0% 13%;
+    --primary: 199 89% 48%;
+    --primary-rgb: 14, 165, 233;
     --primary-foreground: 0 0% 100%;
-    --primary-container: 208 85% 94%;
-    --secondary: 215 30% 40%;
-    --secondary-foreground: 0 0% 100%;
+    --primary-container: 199 89% 90%;
+    --secondary: 45 93% 47%;
+    --secondary-foreground: 0 0% 13%;
     --tertiary: 160 60% 40%;
     --tertiary-foreground: 0 0% 100%;
     --tertiary-container: 160 60% 92%;
-    --accent: 45 95% 50%;
-    --accent-foreground: 220 30% 10%;
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 15% 45%;
-    --destructive: 0 73% 50%;
+    --accent: 45 93% 47%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --error: 0 73% 50%;
+    --error: 0 84% 60%;
     --error-container: 0 100% 96%;
-    --border: 215 15% 90%;
-    --input: 215 15% 90%;
-    --ring: 208 90% 54%;
-    --radius: 0.75rem;
+    --border: 0 0% 91%;
+    --input: 0 0% 91%;
+    --ring: 199 89% 48%;
+    --radius: 0.25rem;
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card-foreground: 0 0% 13%;
 
     /* Surface tokens */
-    --surface: 0 0% 100%;
-    --surface-container: 210 20% 96%;
-    --surface-container-low: 210 20% 98%;
+    --surface: 0 0% 96%;
+    --surface-container: 0 0% 96%;
+    --surface-container-low: 0 0% 98%;
     --surface-container-lowest: 0 0% 100%;
-    --surface-container-high: 210 15% 92%;
-    --surface-container-highest: 210 15% 88%;
-    --on-surface: 215 25% 15%;
-    --on-surface-variant: 215 15% 40%;
-    --outline: 215 15% 70%;
-    --outline-variant: 215 15% 85%;
+    --surface-container-high: 0 0% 92%;
+    --surface-container-highest: 0 0% 88%;
+    --on-surface: 0 0% 13%;
+    --on-surface-variant: 0 0% 40%;
+    --outline: 0 0% 91%;
+    --outline-variant: 0 0% 85%;
   }
 
   .dark {
-    --background: 215 25% 10%;
-    --foreground: 210 20% 98%;
-    --primary: 208 90% 60%;
-    --primary-rgb: 71, 169, 255;
+    --background: 0 0% 10%;
+    --foreground: 0 0% 98%;
+    --primary: 199 89% 50%;
+    --primary-rgb: 56, 189, 248;
     --primary-foreground: 0 0% 100%;
-    --primary-container: 208 60% 20%;
-    --secondary: 215 20% 65%;
-    --secondary-foreground: 0 0% 100%;
+    --primary-container: 199 89% 20%;
+    --secondary: 45 93% 50%;
+    --secondary-foreground: 0 0% 98%;
     --tertiary: 160 50% 50%;
     --tertiary-foreground: 0 0% 100%;
     --tertiary-container: 160 60% 20%;
-    --accent: 45 95% 53%;
-    --accent-foreground: 220 30% 10%;
-    --muted: 215 20% 15%;
-    --muted-foreground: 215 15% 65%;
+    --accent: 45 93% 50%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
     --destructive: 0 73% 50%;
     --destructive-foreground: 0 0% 100%;
     --error: 0 73% 50%;
     --error-container: 0 50% 20%;
-    --border: 215 20% 18%;
-    --input: 215 20% 18%;
-    --ring: 208 90% 60%;
-    --card: 215 25% 12%;
-    --card-foreground: 210 20% 98%;
-    --surface: 215 25% 10%;
-    --surface-container: 215 20% 12%;
-    --surface-container-low: 215 25% 11%;
-    --surface-container-lowest: 215 25% 9%;
-    --surface-container-high: 215 20% 15%;
-    --surface-container-highest: 215 20% 18%;
-    --on-surface: 210 20% 98%;
-    --on-surface-variant: 215 15% 70%;
-    --outline: 215 15% 40%;
-    --outline-variant: 215 15% 25%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 199 89% 50%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 98%;
+    --surface: 0 0% 10%;
+    --surface-container: 0 0% 12%;
+    --surface-container-low: 0 0% 11%;
+    --surface-container-lowest: 0 0% 9%;
+    --surface-container-high: 0 0% 15%;
+    --surface-container-highest: 0 0% 18%;
+    --on-surface: 0 0% 98%;
+    --on-surface-variant: 0 0% 70%;
+    --outline: 0 0% 40%;
+    --outline-variant: 0 0% 25%;
   }
 }
 
@@ -88,16 +88,6 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-jakarta), sans-serif;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-outfit), sans-serif;
   }
 }
 

@@ -66,7 +66,7 @@ export default function SignupPage() {
                 <Card className="border-none shadow-2xl">
                     <CardContent className="p-8">
                         {error && (
-                            <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm font-medium">
+                            <div className="mb-6 p-4 rounded-xl bg-sky-50 dark:bg-red-900/20 border border-sky-200 dark:border-red-800 text-sky-700 dark:text-red-400 text-sm font-medium">
                                 {error}
                             </div>
                         )}

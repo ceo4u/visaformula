@@ -73,15 +73,6 @@ const config: Config = {
                     DEFAULT: "hsl(var(--outline))",
                     variant: "hsl(var(--outline-variant))",
                 },
-                /* Legacy compat */
-                "surface-container-low": "hsl(var(--surface-container-low))",
-                "surface-container-lowest": "hsl(var(--surface-container-lowest))",
-                "surface-container-highest": "hsl(var(--surface-container-highest))",
-                "on-surface-variant": "hsl(var(--on-surface-variant))",
-                "secondary-fixed": "hsl(45 100% 90%)",
-                "on-secondary-fixed": "hsl(45 80% 20%)",
-                "primary-fixed": "hsl(217 80% 93%)",
-                "on-primary-fixed": "hsl(217 80% 15%)",
             },
             borderRadius: {
                 lg: "var(--radius)",
@@ -89,27 +80,13 @@ const config: Config = {
                 sm: "calc(var(--radius) - 4px)",
             },
             fontFamily: {
-                sans: ["var(--font-jakarta)", "sans-serif"],
-                heading: ["var(--font-outfit)", "sans-serif"],
+                sans: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+                heading: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
             },
             boxShadow: {
                 "editorial": "0 1px 4px rgba(0,0,0,0.1)",
-                "editorial-lg": "0 4px 16px rgba(0,0,0,0.08)",
+                "editorial-lg": "0 4px 12px rgba(0,0,0,0.15)",
                 "editorial-xl": "0 8px 30px rgba(0,0,0,0.12)",
-            },
-            animation: {
-                "accordion-down": "accordion-down 0.2s ease-out",
-                "accordion-up": "accordion-up 0.2s ease-out",
-            },
-            keyframes: {
-                "accordion-down": {
-                    from: { height: "0" },
-                    to: { height: "var(--radix-accordion-content-height)" },
-                },
-                "accordion-up": {
-                    from: { height: "var(--radix-accordion-content-height)" },
-                    to: { height: "0" },
-                },
             },
         },
     },

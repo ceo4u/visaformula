@@ -1,0 +1,53 @@
+
+> visahub@2.0.0 build
+> next build
+
+ ΓÜá Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\DT\package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * C:\Users\DT\prashant 2\visahub\package-lock.json
+
+   Γû▓ Next.js 15.5.14
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully in 48s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/15) ...
+   Generating static pages (3/15) 
+   Generating static pages (7/15) 
+   Generating static pages (11/15) 
+ Γ£ô Generating static pages (15/15)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+Γöî Γùï /                                    5.86 kB         111 kB
+Γö£ Γùï /_not-found                            995 B         103 kB
+Γö£ Γùï /about                               6.36 kB         155 kB
+Γö£ Γùï /ai-assistant                           3 kB         141 kB
+Γö£ Γùï /dashboard                           3.09 kB         141 kB
+Γö£ Γùï /emergency                           3.38 kB         142 kB
+Γö£ ╞Æ /expert/[id]                         4.48 kB         110 kB
+Γö£ Γùï /find-lawyer                         4.42 kB         110 kB
+Γö£ ╞Æ /job/[id]                             2.3 kB         104 kB
+Γö£ ╞Æ /lawyer/[id]                         4.67 kB         143 kB
+Γö£ Γùï /login                               5.27 kB         154 kB
+Γö£ Γùï /signup                              5.31 kB         154 kB
+Γö£ Γùï /signup/expert                       3.72 kB         109 kB
+Γö£ Γùï /signup/seeker                       3.25 kB         109 kB
+Γö£ Γùï /support                              6.5 kB         152 kB
+Γö£ ╞Æ /tour/[id]                           2.14 kB         104 kB
+Γöö ╞Æ /university/[id]                     1.89 kB         104 kB
++ First Load JS shared by all             102 kB
+  Γö£ chunks/255-38b49df12a94ee57.js         46 kB
+  Γö£ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  Γöö other shared chunks (total)          1.99 kB
+
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+

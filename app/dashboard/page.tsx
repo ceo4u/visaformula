@@ -71,11 +71,11 @@ export default function DashboardPage() {
                                 {[
                                     { name: "Passport_Final.pdf", time: "Modified 2 days ago", status: "Verified", statusColor: "text-tertiary bg-emerald-50", icon: Verified },
                                     { name: "Proof_of_Funds.jpg", time: "Modified 4 hours ago", status: "Pending", statusColor: "text-secondary bg-blue-50", icon: Clock },
-                                    { name: "Background_Check.pdf", time: "Action Required", status: "Missing", statusColor: "text-red-600 bg-red-50", icon: AlertTriangle, error: true },
+                                    { name: "Background_Check.pdf", time: "Action Required", status: "Missing", statusColor: "text-red-600 bg-sky-50", icon: AlertTriangle, error: true },
                                 ].map((doc) => (
                                     <div key={doc.name} className="p-4 flex items-center justify-between hover:bg-neutral-50 transition-colors">
                                         <div className="flex items-center gap-4">
-                                            <div className={`w-10 h-10 rounded flex items-center justify-center ${doc.error ? "bg-red-50" : "bg-surface-container"}`}>
+                                            <div className={`w-10 h-10 rounded flex items-center justify-center ${doc.error ? "bg-sky-50" : "bg-surface-container"}`}>
                                                 {doc.error ? <AlertTriangle className="w-5 h-5 text-red-500" /> : <FileText className="w-5 h-5 text-on-surface-variant" />}
                                             </div>
                                             <div>

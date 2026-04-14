@@ -25,9 +25,9 @@ export function TourCard({ tour }: { tour: any }) {
                 <div className="mt-auto flex justify-between items-end">
                     <div>
                         <div className="text-xs text-gray-500 mb-0.5">From</div>
-                        <div className="font-bold text-yellow-500 text-lg leading-none">{tour.price}</div>
+                        <div className="font-bold text-[#0ea5e9] text-lg leading-none">{tour.price}</div>
                     </div>
-                    <button className="bg-white border border-[#0ea5e9] text-yellow-500 px-3 py-1.5 rounded text-sm font-medium hover:bg-gray-50 transition-colors">
+                    <button className="bg-white border border-[#0ea5e9] text-[#0ea5e9] px-3 py-1.5 rounded text-sm font-medium hover:bg-sky-50 transition-colors">
                         View Details
                     </button>
                 </div>

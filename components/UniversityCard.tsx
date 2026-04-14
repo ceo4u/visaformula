@@ -26,7 +26,7 @@ export function UniversityCard({ uni }: { uni: any }) {
                     <div className="font-bold">{uni.tuition}</div>
                     <div className="text-xs text-green-700 bg-green-50 inline-block px-1 rounded mt-1">Scholarships available</div>
                 </div>
-                <button className="bg-white border border-[#0ea5e9] text-yellow-500 px-3 py-1.5 rounded text-sm font-medium hover:bg-gray-50 transition-colors">
+                <button className="bg-white border border-[#0ea5e9] text-[#0ea5e9] px-3 py-1.5 rounded text-sm font-medium hover:bg-sky-50 transition-colors">
                     View Programs
                 </button>
             </div>

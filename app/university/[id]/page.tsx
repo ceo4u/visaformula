@@ -11,7 +11,7 @@ export default function UniversityProfilePage() {
                     <div>
                         <h1 className="text-3xl font-bold mb-1">University of Melbourne</h1>
                         <div className="flex items-center gap-2 mb-2 text-sm text-gray-700">
-                            <span className="font-medium text-yellow-500">Global Top 50</span>
+                            <span className="font-medium text-[#0ea5e9]">Global Top 50</span>
                             <span>·</span>
                             <div className="flex text-yellow-500">
                                 {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="w-4 h-4" fill={i <= 4 ? "currentColor" : "none"} />)}

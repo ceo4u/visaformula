@@ -32,7 +32,7 @@ export default function ExpertProfilePage() {
                         </div>
                         <div className="flex flex-wrap gap-2">
                             <span className="bg-green-100 text-green-800 text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-green-200">Open now</span>
-                            <span className="bg-sky-50 text-yellow-500 text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-sky-200">Verified</span>
+                            <span className="bg-sky-50 text-[#0ea5e9] text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-sky-200">Verified</span>
                             <span className="bg-orange-50 text-orange-700 text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-orange-200">Top Rated</span>
                         </div>
                     </div>
@@ -168,7 +168,7 @@ export default function ExpertProfilePage() {
 
                             <label className="block text-sm font-bold mb-2">Session Type</label>
                             <div className="flex gap-2 mb-4">
-                                <button className="flex-1 border-2 border-[#0ea5e9] bg-sky-50 text-yellow-500 font-bold py-2 rounded-[20px] text-sm">Video</button>
+                                <button className="flex-1 border-2 border-[#0ea5e9] bg-sky-50 text-[#0ea5e9] font-bold py-2 rounded-[20px] text-sm">Video</button>
                                 <button className="flex-1 border border-gray-300 hover:border-gray-400 font-medium text-gray-700 py-2 rounded-[20px] text-sm">Phone</button>
                                 <button className="flex-1 border border-gray-300 hover:border-gray-400 font-medium text-gray-700 py-2 rounded-[20px] text-sm hidden sm:block">In-person</button>
                             </div>
@@ -186,7 +186,7 @@ export default function ExpertProfilePage() {
                                 <div className="flex justify-between items-center mb-2">
                                     <ChevronLeft className="w-4 h-4 text-gray-400" />
                                     <span className="text-sm font-bold">November 2023</span>
-                                    <ChevronRight className="w-4 h-4 text-yellow-500 cursor-pointer" />
+                                    <ChevronRight className="w-4 h-4 text-[#0ea5e9] cursor-pointer" />
                                 </div>
                                 <div className="grid grid-cols-7 gap-1 text-center text-xs">
                                     {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map(d => <div key={d} className="font-medium text-gray-400 py-1">{d}</div>)}
@@ -200,7 +200,7 @@ export default function ExpertProfilePage() {
 
                             <label className="block text-sm font-bold mb-2">Available Times for Nov 15</label>
                             <div className="grid grid-cols-3 gap-2 mb-6">
-                                <button className="border border-[#0ea5e9] bg-sky-50 text-yellow-500 rounded py-1.5 text-xs font-bold">10:00 AM</button>
+                                <button className="border border-[#0ea5e9] bg-sky-50 text-[#0ea5e9] rounded py-1.5 text-xs font-bold">10:00 AM</button>
                                 <button className="border border-gray-300 hover:border-gray-400 rounded py-1.5 text-xs font-medium">1:30 PM</button>
                                 <button className="border border-gray-300 hover:border-gray-400 rounded py-1.5 text-xs font-medium">3:00 PM</button>
                             </div>

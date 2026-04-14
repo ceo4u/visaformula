@@ -41,6 +41,40 @@ const emergencyExperts = [
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("Experts");
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [locationQuery, setLocationQuery] = useState("");
+
+  const safeToLower = (val?: string) => (val || "").toLowerCase();
+
+  const matchSearch = (text: string) => safeToLower(text).includes(safeToLower(searchQuery));
+  const matchLocation = (text: string) => safeToLower(text).includes(safeToLower(locationQuery));
+
+  const filteredExperts = experts.filter(e =>
+    (searchQuery === "" || matchSearch(e.name) || matchSearch(e.role) || e.tags?.some(tag => matchSearch(tag))) &&
+    (locationQuery === "" || matchLocation(e.location))
+  );
+
+  const filteredUniversities = universities.filter(u =>
+    (searchQuery === "" || matchSearch(u.name) || matchSearch(u.programs)) &&
+    (locationQuery === "" || matchLocation(u.location))
+  );
+
+  const filteredJobs = jobs.filter(j =>
+    (searchQuery === "" || matchSearch(j.title) || matchSearch(j.company)) &&
+    (locationQuery === "" || matchLocation(j.location))
+  );
+
+  const filteredTours = tours.filter(t =>
+    (searchQuery === "" || matchSearch(t.name) || matchSearch(t.covered) || t.badges?.some(b => matchSearch(b))) &&
+    (locationQuery === "" || matchLocation(t.covered))
+  );
+
+  const filteredEmergency = emergencyExperts.filter(e =>
+    (searchQuery === "" || matchSearch(e.name) || matchSearch(e.desc)) &&
+    (locationQuery === "" || matchLocation(e.desc))
+  );
+
+  const hasResults = filteredExperts.length > 0 || filteredUniversities.length > 0 || filteredJobs.length > 0 || filteredTours.length > 0 || filteredEmergency.length > 0;
 
   return (
     <div className="bg-[#f5f5f5] min-h-screen text-[#222222]">
@@ -91,6 +125,8 @@ export default function HomePage() {
                 <input
                   type="text"
                   placeholder={`Search for ${activeTab.toLowerCase()}...`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded focus:border-[#0ea5e9] focus:ring-1 focus:ring-[#0ea5e9] outline-none"
                 />
               </div>
@@ -99,10 +135,15 @@ export default function HomePage() {
                 <input
                   type="text"
                   placeholder="Location or Destination"
+                  value={locationQuery}
+                  onChange={(e) => setLocationQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded focus:border-[#0ea5e9] focus:ring-1 focus:ring-[#0ea5e9] outline-none"
                 />
               </div>
-              <button className="bg-[#0ea5e9] text-white px-8 py-3 rounded font-bold hover:bg-[#0284c7] transition-colors md:w-auto w-full">
+              <button
+                onClick={() => { }} // Could be used to scroll to results if we want
+                className="bg-[#0ea5e9] text-white px-8 py-3 rounded font-bold hover:bg-[#0284c7] transition-colors md:w-auto w-full"
+              >
                 Search
               </button>
             </div>
@@ -146,116 +187,151 @@ export default function HomePage() {
       </section>
 
       {/* DUAL REGISTRATION BANNER */}
-      <section className="max-w-5xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white border text-center border-gray-200 rounded-lg p-8 shadow-sm flex flex-col items-center justify-center">
-            <h2 className="text-2xl font-bold mb-2">Looking for a Visa?</h2>
-            <p className="text-gray-600 mb-6 text-center">Join thousands of seekers finding the right experts, universities, and jobs.</p>
-            <Link href="/register-seeker">
-              <button className="bg-white border border-[#0ea5e9] text-[#0ea5e9] px-6 py-2.5 rounded hover:bg-sky-50 font-medium transition-colors w-full">
-                Register as Seeker
-              </button>
-            </Link>
+      {(!searchQuery && !locationQuery) && (
+        <section className="max-w-5xl mx-auto px-4 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white border text-center border-gray-200 rounded-lg p-8 shadow-sm flex flex-col items-center justify-center">
+              <h2 className="text-2xl font-bold mb-2">Looking for a Visa?</h2>
+              <p className="text-gray-600 mb-6 text-center">Join thousands of seekers finding the right experts, universities, and jobs.</p>
+              <Link href="/signup/seeker">
+                <button className="bg-white border border-[#0ea5e9] text-[#0ea5e9] px-6 py-2.5 rounded hover:bg-sky-50 font-medium transition-colors w-full">
+                  Register as Seeker
+                </button>
+              </Link>
+            </div>
+            <div className="bg-white border text-center border-gray-200 rounded-lg p-8 shadow-sm flex flex-col items-center justify-center">
+              <h2 className="text-2xl font-bold mb-2">Are you an Expert?</h2>
+              <p className="text-gray-600 mb-6 text-center">List your services, reach more clients, and grow your immigration practice.</p>
+              <Link href="/signup/expert">
+                <button className="bg-[#0ea5e9] text-white px-6 py-2.5 rounded hover:bg-[#0284c7] font-medium transition-colors w-full">
+                  Register as Expert
+                </button>
+              </Link>
+            </div>
           </div>
-          <div className="bg-white border text-center border-gray-200 rounded-lg p-8 shadow-sm flex flex-col items-center justify-center">
-            <h2 className="text-2xl font-bold mb-2">Are you an Expert?</h2>
-            <p className="text-gray-600 mb-6 text-center">List your services, reach more clients, and grow your immigration practice.</p>
-            <Link href="/register-expert">
-              <button className="bg-[#0ea5e9] text-white px-6 py-2.5 rounded hover:bg-[#0284c7] font-medium transition-colors w-full">
-                Register as Expert
-              </button>
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* TRUST STRIP */}
-      <section className="bg-white border-y border-gray-200 py-10">
-        <div className="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 bg-sky-50 rounded-full flex items-center justify-center mb-4">
-              <CheckCircle className="w-6 h-6 text-[#0ea5e9]" />
-            </div>
-            <h3 className="font-bold mb-1">KYC Verified</h3>
-            <p className="text-sm text-gray-500">100% verified professionals</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 bg-sky-50 rounded-full flex items-center justify-center mb-4">
-              <Award className="w-6 h-6 text-[#0ea5e9]" />
-            </div>
-            <h3 className="font-bold mb-1">10K+ Visas</h3>
-            <p className="text-sm text-gray-500">Successfully processed</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 bg-sky-50 rounded-full flex items-center justify-center mb-4">
-              <Users className="w-6 h-6 text-[#0ea5e9]" />
-            </div>
-            <h3 className="font-bold mb-1">50K+ Applicants</h3>
-            <p className="text-sm text-gray-500">Trusted by global seekers</p>
-          </div>
-        </div>
-      </section>
-
-      {/* TOP EXPERTS ROW */}
-      <section className="max-w-6xl mx-auto py-12 px-4">
-        <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Recommended Immigration Experts</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {experts.map((expert, idx) => (
-            <ExpertCard key={idx} expert={expert} />
-          ))}
-        </div>
-      </section>
-
-      {/* TOP UNIVERSITIES ROW */}
-      <section className="max-w-6xl mx-auto py-12 px-4 border-t border-gray-200">
-        <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Top Universities for International Students</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {universities.map((uni, idx) => (
-            <UniversityCard key={idx} uni={uni} />
-          ))}
-        </div>
-      </section>
-
-      {/* OVERSEAS JOBS ROW */}
-      <section className="max-w-6xl mx-auto py-12 px-4 border-t border-gray-200">
-        <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Overseas Jobs (Visa Sponsorship)</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {jobs.map((job, idx) => (
-            <JobCard key={idx} job={job} />
-          ))}
-        </div>
-      </section>
-
-      {/* TOURS ROW */}
-      <section className="max-w-6xl mx-auto py-12 px-4 border-t border-gray-200">
-        <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Campus & Immigration Tours</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tours.map((tour, idx) => (
-            <TourCard key={idx} tour={tour} />
-          ))}
-        </div>
-      </section>
-
-      {/* EMERGENCY ROW */}
-      <section className="max-w-6xl mx-auto py-12 px-4 mb-16 border-t border-gray-200">
-        <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Emergency Legal Assistance</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {emergencyExperts.map((e) => (
-            <div key={e.name} className="bg-white border-2 border-sky-200 flex items-center p-4 rounded-lg shadow-sm">
-              <div className="w-16 h-16 rounded mr-4 shrink-0 overflow-hidden">
-                <img className="w-full h-full object-cover" src={e.image} alt={e.name} />
+      {(!searchQuery && !locationQuery) && (
+        <section className="bg-white border-y border-gray-200 py-10 mt-8 mb-4">
+          <div className="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 bg-sky-50 rounded-full flex items-center justify-center mb-4">
+                <CheckCircle className="w-6 h-6 text-[#0ea5e9]" />
               </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-start mb-1">
-                  <h3 className="font-bold text-sm text-[#222222]">{e.name}</h3>
-                  <span className="bg-green-100 text-green-700 text-[10px] font-bold uppercase px-2 py-0.5 rounded leading-tight">Open now</span>
+              <h3 className="font-bold mb-1">KYC Verified</h3>
+              <p className="text-sm text-gray-500">100% verified professionals</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 bg-sky-50 rounded-full flex items-center justify-center mb-4">
+                <Award className="w-6 h-6 text-[#0ea5e9]" />
+              </div>
+              <h3 className="font-bold mb-1">10K+ Visas</h3>
+              <p className="text-sm text-gray-500">Successfully processed</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 bg-sky-50 rounded-full flex items-center justify-center mb-4">
+                <Users className="w-6 h-6 text-[#0ea5e9]" />
+              </div>
+              <h3 className="font-bold mb-1">50K+ Applicants</h3>
+              <p className="text-sm text-gray-500">Trusted by global seekers</p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <div className={`pt-8 ${(!searchQuery && !locationQuery) ? 'pt-4' : 'max-w-6xl mx-auto px-4'}`}>
+        {/* NO RESULTS STATE */}
+        {!hasResults && (
+          <div className="text-center py-24 px-4 bg-white rounded-lg border border-gray-200 shadow-sm mt-8">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Search className="w-8 h-8 text-gray-400" />
+            </div>
+            <h2 className="text-2xl font-bold text-[#222222] mb-2">No results found</h2>
+            <p className="text-gray-500 max-w-md mx-auto">
+              We couldn't find anything matching "{searchQuery}" {locationQuery ? `in ${locationQuery}` : ''}. Try adjusting your search or filters.
+            </p>
+            <button
+              onClick={() => { setSearchQuery(''); setLocationQuery(''); }}
+              className="mt-6 bg-white border border-[#0ea5e9] text-[#0ea5e9] px-6 py-2 rounded font-medium hover:bg-sky-50 transition-colors"
+            >
+              Clear Search
+            </button>
+          </div>
+        )}
+
+        {/* TOP EXPERTS ROW */}
+        {filteredExperts.length > 0 && (
+          <section className="max-w-6xl mx-auto py-12 px-4 border-b border-gray-200 last:border-0">
+            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Recommended Immigration Experts</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredExperts.map((expert, idx) => (
+                <ExpertCard key={idx} expert={expert} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* TOP UNIVERSITIES ROW */}
+        {filteredUniversities.length > 0 && (
+          <section className="max-w-6xl mx-auto py-12 px-4 border-b border-gray-200 last:border-0">
+            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Top Universities for International Students</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredUniversities.map((uni, idx) => (
+                <UniversityCard key={idx} uni={uni} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* OVERSEAS JOBS ROW */}
+        {filteredJobs.length > 0 && (
+          <section className="max-w-6xl mx-auto py-12 px-4 border-b border-gray-200 last:border-0">
+            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Overseas Jobs (Visa Sponsorship)</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredJobs.map((job, idx) => (
+                <JobCard key={idx} job={job} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* TOURS ROW */}
+        {filteredTours.length > 0 && (
+          <section className="max-w-6xl mx-auto py-12 px-4 border-b border-gray-200 last:border-0">
+            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Campus & Immigration Tours</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredTours.map((tour, idx) => (
+                <TourCard key={idx} tour={tour} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* EMERGENCY ROW */}
+        {filteredEmergency.length > 0 && (
+          <section className="max-w-6xl mx-auto py-12 px-4 mb-16 border-b border-gray-200 last:border-0">
+            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Emergency Legal Assistance</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {filteredEmergency.map((e) => (
+                <div key={e.name} className="bg-white border-2 border-sky-200 flex items-center p-4 rounded-lg shadow-sm">
+                  <div className="w-16 h-16 rounded mr-4 shrink-0 overflow-hidden">
+                    <img className="w-full h-full object-cover" src={e.image} alt={e.name} />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="font-bold text-sm text-[#222222]">{e.name}</h3>
+                      <span className="bg-green-100 text-green-700 text-[10px] font-bold uppercase px-2 py-0.5 rounded leading-tight">Open now</span>
+                    </div>
+                    <p className="text-xs text-gray-500 line-clamp-2">{e.desc}</p>
+                  </div>
                 </div>
-                <p className="text-xs text-gray-500 line-clamp-2">{e.desc}</p>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
+        )}
+      </div>
     </div>
   );
 }

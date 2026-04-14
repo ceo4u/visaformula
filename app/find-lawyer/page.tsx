@@ -61,7 +61,7 @@ export default function FindLawyerPage() {
                     <div className="bg-white rounded-[8px] border border-gray-200 p-4 shadow-sm sticky top-20">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="font-bold text-lg">Filters</h2>
-                            <button className="text-sm text-yellow-500 hover:underline">Clear All</button>
+                            <button className="text-sm text-[#0ea5e9] hover:underline">Clear All</button>
                         </div>
 
                         {/* Filter Group: Expert Type */}
@@ -71,15 +71,15 @@ export default function FindLawyerPage() {
                             </h3>
                             <div className="space-y-2">
                                 <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-yellow-500 focus:ring-[#0ea5e9]" />
+                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                                     <span>Immigration Consultant <span className="text-gray-400">(142)</span></span>
                                 </label>
                                 <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-yellow-500 focus:ring-[#0ea5e9]" />
+                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                                     <span>Immigration Lawyer <span className="text-gray-400">(67)</span></span>
                                 </label>
                                 <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-yellow-500 focus:ring-[#0ea5e9]" />
+                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                                     <span>Education Agent <span className="text-gray-400">(23)</span></span>
                                 </label>
                             </div>
@@ -92,19 +92,19 @@ export default function FindLawyerPage() {
                             </h3>
                             <div className="space-y-2">
                                 <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-yellow-500 focus:ring-[#0ea5e9]" />
+                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                                     <span>Canada <span className="text-gray-400">(89)</span></span>
                                 </label>
                                 <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-yellow-500 focus:ring-[#0ea5e9]" />
+                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                                     <span>UK <span className="text-gray-400">(54)</span></span>
                                 </label>
                                 <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-yellow-500 focus:ring-[#0ea5e9]" />
+                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                                     <span>Australia <span className="text-gray-400">(43)</span></span>
                                 </label>
                                 <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-yellow-500 focus:ring-[#0ea5e9]" />
+                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                                     <span>USA <span className="text-gray-400">(32)</span></span>
                                 </label>
                             </div>
@@ -118,7 +118,7 @@ export default function FindLawyerPage() {
                             <div className="space-y-2">
                                 {["Under $150", "$150 - $300", "Over $300"].map((budget) => (
                                     <label key={budget} className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                        <input type="checkbox" className="rounded border-gray-300 text-yellow-500 focus:ring-[#0ea5e9]" />
+                                        <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                                         <span>{budget}</span>
                                     </label>
                                 ))}
@@ -133,7 +133,7 @@ export default function FindLawyerPage() {
                             <div className="space-y-2">
                                 {["4.5 & up", "4.0 & up", "3.5 & up"].map((rating) => (
                                     <label key={rating} className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                        <input type="checkbox" className="rounded border-gray-300 text-yellow-500 focus:ring-[#0ea5e9]" />
+                                        <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                                         <div className="flex items-center">
                                             <span>{rating}</span>
                                             <Star className="w-3 h-3 text-yellow-500 ml-1" fill="currentColor" />
@@ -189,7 +189,7 @@ export default function FindLawyerPage() {
                                         <div className="flex-1 flex flex-col">
                                             <div className="flex justify-between items-start">
                                                 <div>
-                                                    <h2 className="text-xl font-bold text-yellow-500 hover:underline cursor-pointer">{r.rank}. {r.name}</h2>
+                                                    <h2 className="text-xl font-bold text-[#0ea5e9] hover:underline cursor-pointer">{r.rank}. {r.name}</h2>
                                                     <div className="flex items-center mt-1 text-sm">
                                                         <div className="flex text-yellow-500 mr-1">
                                                             {[1, 2, 3, 4, 5].map((i) => (
@@ -202,7 +202,7 @@ export default function FindLawyerPage() {
                                                 </div>
                                                 <div className="flex flex-col items-end gap-1 shrink-0">
                                                     {r.statusOpen && <span className="bg-green-100 text-green-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-green-200">Open now</span>}
-                                                    {r.verified && <span className="border border-sky-200 text-yellow-500 text-[10px] bg-sky-50 font-bold uppercase tracking-wider px-2 py-0.5 rounded flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Verified</span>}
+                                                    {r.verified && <span className="border border-sky-200 text-[#0ea5e9] text-[10px] bg-sky-50 font-bold uppercase tracking-wider px-2 py-0.5 rounded flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Verified</span>}
                                                 </div>
                                             </div>
 

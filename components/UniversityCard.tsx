@@ -1,35 +1,40 @@
+import Link from "next/link";
 import { Star } from "lucide-react";
 
 export function UniversityCard({ uni }: { uni: any }) {
     return (
-        <div className="bg-white border border-gray-200 rounded-[8px] p-4 flex flex-col gap-3 shadow-[0_1px_4px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
-            <div className="h-32 -mx-4 -mt-4 mb-2 overflow-hidden rounded-t-[8px] relative">
-                <img src={uni.image} alt={uni.name} className="w-full h-full object-cover" />
-                <div className="absolute top-2 left-2 bg-white px-2 py-0.5 rounded font-bold text-sm shadow">
-                    QS #{uni.ranking}
+        <Link href="/university/1">
+            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:border-sky-200 transition-all duration-300 flex flex-col h-full group cursor-pointer">
+                <div className="h-36 overflow-hidden relative">
+                    <img src={uni.image} alt={uni.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg font-bold text-sm shadow-sm">
+                        QS #{uni.ranking}
+                    </div>
+                </div>
+                <div className="p-5 flex flex-col flex-1 gap-2.5">
+                    <div>
+                        <h3 className="font-bold text-[#1a1a2e] text-lg leading-tight group-hover:text-[#0ea5e9] transition-colors">{uni.name}</h3>
+                        <p className="text-xs text-gray-500 mt-1">{uni.location}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-sm">
+                        <Star className="w-4 h-4 text-yellow-400" fill="currentColor" strokeWidth={0} />
+                        <span className="font-bold">{uni.rating}</span>
+                        <span className="text-gray-400">({uni.reviews})</span>
+                    </div>
+                    <div className="text-xs text-gray-600">
+                        <span className="font-semibold text-[#1a1a2e]">Programs:</span> {uni.programs}
+                    </div>
+                    <div className="flex justify-between items-end mt-auto pt-3 border-t border-gray-100">
+                        <div>
+                            <div className="font-extrabold text-lg text-[#1a1a2e]">{uni.tuition}</div>
+                            <div className="text-[10px] text-emerald-600 bg-emerald-50 inline-block px-2 py-0.5 rounded-full mt-1 font-semibold">Scholarships available</div>
+                        </div>
+                        <button className="bg-white border-2 border-[#0ea5e9] text-[#0ea5e9] px-4 py-2 rounded-xl text-sm font-bold hover:bg-[#0ea5e9] hover:text-white transition-all">
+                            View Programs
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div>
-                <h3 className="font-bold text-[#222222] text-lg leading-tight">{uni.name}</h3>
-                <p className="text-xs text-gray-500 mt-1">{uni.location}</p>
-            </div>
-            <div className="flex items-center gap-1 text-sm">
-                <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
-                <span className="font-medium">{uni.rating}</span>
-                <span className="text-gray-500">({uni.reviews})</span>
-            </div>
-            <div className="text-xs text-gray-600">
-                <span className="font-medium text-black">Programs:</span> {uni.programs}
-            </div>
-            <div className="flex justify-between items-end mt-auto pt-2">
-                <div>
-                    <div className="font-bold">{uni.tuition}</div>
-                    <div className="text-xs text-green-700 bg-green-50 inline-block px-1 rounded mt-1">Scholarships available</div>
-                </div>
-                <button className="bg-white border border-[#0ea5e9] text-[#0ea5e9] px-3 py-1.5 rounded text-sm font-medium hover:bg-sky-50 transition-colors">
-                    View Programs
-                </button>
-            </div>
-        </div>
+        </Link>
     );
 }

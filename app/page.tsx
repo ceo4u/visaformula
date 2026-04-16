@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ChevronDown, MapPin, CheckCircle, Users, Award, Shield } from "lucide-react";
+import { Search, ChevronDown, MapPin, CheckCircle, Users, Award, Shield, ArrowRight, Star, Globe, Clock } from "lucide-react";
 import { useState } from "react";
 import { ExpertCard } from "@/components/ExpertCard";
 import { UniversityCard } from "@/components/UniversityCard";
@@ -16,7 +16,7 @@ const experts = [
 
 const universities = [
   { name: "University of Toronto", location: "Toronto, Canada", ranking: "21", rating: 4.8, reviews: 342, programs: "Engineering, CS, Business", tuition: "CAD 45k/yr", image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&h=400&fit=crop" },
-  { name: "University of Melbourne", location: "Melbourne, Australia", ranking: "14", rating: 4.7, reviews: 256, programs: "Medicine, Arts, Law", tuition: "AUD 50k/yr", image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop" },
+  { name: "University of Melbourne", location: "Melbourne, Australia", ranking: "14", rating: 4.7, reviews: 256, programs: "Medicine, Arts, Law", tuition: "AUD 50k/yr", image: "https://images.unsplash.com/photo-1562774053-701939374585?w=600&h=400&fit=crop" },
   { name: "UCL", location: "London, UK", ranking: "9", rating: 4.6, reviews: 412, programs: "Architecture, Economics", tuition: "GBP 30k/yr", image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&h=400&fit=crop" },
 ];
 
@@ -45,7 +45,6 @@ export default function HomePage() {
   const [locationQuery, setLocationQuery] = useState("");
 
   const safeToLower = (val?: string) => (val || "").toLowerCase();
-
   const matchSearch = (text: string) => safeToLower(text).includes(safeToLower(searchQuery));
   const matchLocation = (text: string) => safeToLower(text).includes(safeToLower(locationQuery));
 
@@ -53,130 +52,129 @@ export default function HomePage() {
     (searchQuery === "" || matchSearch(e.name) || matchSearch(e.role) || e.tags?.some(tag => matchSearch(tag))) &&
     (locationQuery === "" || matchLocation(e.location))
   );
-
   const filteredUniversities = universities.filter(u =>
     (searchQuery === "" || matchSearch(u.name) || matchSearch(u.programs)) &&
     (locationQuery === "" || matchLocation(u.location))
   );
-
   const filteredJobs = jobs.filter(j =>
     (searchQuery === "" || matchSearch(j.title) || matchSearch(j.company)) &&
     (locationQuery === "" || matchLocation(j.location))
   );
-
   const filteredTours = tours.filter(t =>
     (searchQuery === "" || matchSearch(t.name) || matchSearch(t.covered) || t.badges?.some(b => matchSearch(b))) &&
     (locationQuery === "" || matchLocation(t.covered))
   );
-
   const filteredEmergency = emergencyExperts.filter(e =>
     (searchQuery === "" || matchSearch(e.name) || matchSearch(e.desc)) &&
     (locationQuery === "" || matchLocation(e.desc))
   );
 
   const hasResults = filteredExperts.length > 0 || filteredUniversities.length > 0 || filteredJobs.length > 0 || filteredTours.length > 0 || filteredEmergency.length > 0;
+  const isSearching = searchQuery !== "" || locationQuery !== "";
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen text-[#222222]">
-      {/* HERO SECTION */}
-      <section className="relative h-[400px] w-full flex flex-col items-center justify-center px-4 overflow-hidden">
+    <div className="bg-[#f0f4f8] min-h-screen text-[#1a1a2e]">
+      {/* ────────────── HERO SECTION ────────────── */}
+      <section className="relative w-full flex flex-col items-center justify-center px-4 overflow-hidden" style={{ minHeight: "480px" }}>
         <div className="absolute inset-0 z-0">
           <img
             className="w-full h-full object-cover"
-            src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&h=800&fit=crop"
+            src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&h=900&fit=crop&q=80"
             alt="City skyline"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
         </div>
-        <div className="relative z-10 text-center max-w-4xl mx-auto mt-10">
-          <h1 className="text-white text-4xl md:text-6xl font-bold mb-4 drop-shadow-md">
-            Find the right expert. Explore your options.
+        <div className="relative z-10 text-center max-w-4xl mx-auto">
+          <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-5 leading-[1.1] drop-shadow-2xl tracking-tight">
+            Find the right expert.<br />
+            <span className="text-[#38bdf8]">Explore your options.</span>
           </h1>
-          <p className="text-white/90 text-lg md:text-xl font-medium mb-12 drop-shadow">
+          <p className="text-white/80 text-base sm:text-lg md:text-xl font-medium max-w-2xl mx-auto mb-8 drop-shadow">
             Your global marketplace for immigration experts, top universities, overseas jobs, and more.
           </p>
+          <div className="flex flex-wrap gap-6 justify-center text-white/70 text-sm font-medium">
+            <span className="flex items-center gap-2"><Globe className="w-4 h-4 text-[#38bdf8]" /> 190+ Countries</span>
+            <span className="flex items-center gap-2"><Users className="w-4 h-4 text-[#38bdf8]" /> 50K+ Users</span>
+            <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-[#38bdf8]" /> Verified Experts</span>
+          </div>
         </div>
       </section>
 
-      {/* SEARCH AREA (Overlapping Hero) */}
-      <section className="max-w-5xl mx-auto px-4 -mt-16 relative z-20">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      {/* ────────────── SEARCH AREA ────────────── */}
+      <section className="max-w-5xl mx-auto px-4 -mt-12 relative z-20">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
           {/* Tabs */}
-          <div className="flex overflow-x-auto border-b border-gray-200">
+          <div className="flex overflow-x-auto border-b border-gray-100 bg-gray-50/50">
             {["Experts", "Universities", "Jobs", "Tours", "Emergency"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-4 text-sm font-bold whitespace-nowrap transition-colors ${activeTab === tab
-                  ? "text-[#0ea5e9] border-b-4 border-[#0ea5e9]"
-                  : "text-gray-600 hover:text-black hover:bg-gray-50"
+                className={`px-6 py-4 text-sm font-bold whitespace-nowrap transition-all relative ${activeTab === tab
+                  ? "text-[#0ea5e9] bg-white"
+                  : "text-gray-500 hover:text-gray-800 hover:bg-white/50"
                   }`}
               >
                 {tab}
+                {activeTab === tab && <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#0ea5e9] rounded-t" />}
               </button>
             ))}
           </div>
 
           {/* Search Inputs */}
-          <div className="p-6">
-            <div className="flex flex-col md:flex-row gap-4 mb-4">
+          <div className="p-5 md:p-6">
+            <div className="flex flex-col md:flex-row gap-3 mb-3">
               <div className="flex-1 relative">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
                   placeholder={`Search for ${activeTab.toLowerCase()}...`}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded focus:border-[#0ea5e9] focus:ring-1 focus:ring-[#0ea5e9] outline-none"
+                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#0ea5e9] focus:ring-2 focus:ring-[#0ea5e9]/20 focus:bg-white outline-none transition-all text-sm"
                 />
               </div>
               <div className="flex-1 relative">
-                <MapPin className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <MapPin className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Location or Destination"
                   value={locationQuery}
                   onChange={(e) => setLocationQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded focus:border-[#0ea5e9] focus:ring-1 focus:ring-[#0ea5e9] outline-none"
+                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#0ea5e9] focus:ring-2 focus:ring-[#0ea5e9]/20 focus:bg-white outline-none transition-all text-sm"
                 />
               </div>
-              <button
-                onClick={() => { }} // Could be used to scroll to results if we want
-                className="bg-[#0ea5e9] text-white px-8 py-3 rounded font-bold hover:bg-[#0284c7] transition-colors md:w-auto w-full"
-              >
+              <button className="bg-[#0ea5e9] text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#0284c7] transition-all hover:shadow-lg hover:shadow-sky-200 md:w-auto w-full text-sm">
                 Search
               </button>
             </div>
 
-            {/* Advanced Filters Toggle */}
             <button
               onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-              className="flex items-center text-sm font-medium text-blue-600 hover:underline"
+              className="flex items-center text-sm font-semibold text-[#0ea5e9] hover:text-[#0284c7] transition-colors"
             >
-              Advanced Filters <ChevronDown className={`w-4 h-4 ml-1 transition-transform ${showAdvancedFilters ? "rotate-180" : ""}`} />
+              Advanced Filters <ChevronDown className={`w-4 h-4 ml-1 transition-transform duration-200 ${showAdvancedFilters ? "rotate-180" : ""}`} />
             </button>
 
-            {/* Collapsible Advanced Filters */}
             {showAdvancedFilters && (
-              <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-4">
-                <select className="border border-gray-300 rounded p-2 text-sm outline-none focus:border-[#0ea5e9]">
+              <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-3">
+                <select className="border border-gray-200 rounded-xl p-3 text-sm outline-none focus:border-[#0ea5e9] bg-gray-50 focus:bg-white transition-colors">
                   <option>Any Budget</option>
                   <option>Under $1,000</option>
                   <option>$1,000 - $3,000</option>
                   <option>Over $3,000</option>
                 </select>
-                <select className="border border-gray-300 rounded p-2 text-sm outline-none focus:border-[#0ea5e9]">
+                <select className="border border-gray-200 rounded-xl p-3 text-sm outline-none focus:border-[#0ea5e9] bg-gray-50 focus:bg-white transition-colors">
                   <option>Any Language</option>
                   <option>English</option>
                   <option>Hindi</option>
                   <option>Mandarin</option>
                 </select>
-                <select className="border border-gray-300 rounded p-2 text-sm outline-none focus:border-[#0ea5e9]">
+                <select className="border border-gray-200 rounded-xl p-3 text-sm outline-none focus:border-[#0ea5e9] bg-gray-50 focus:bg-white transition-colors">
                   <option>Rating: Any</option>
                   <option>4.5 & up</option>
                   <option>4.0 & up</option>
                 </select>
-                <label className="flex items-center space-x-2 text-sm">
+                <label className="flex items-center space-x-2 text-sm font-medium bg-gray-50 rounded-xl p-3 border border-gray-200 cursor-pointer hover:bg-sky-50 transition-colors">
                   <input type="checkbox" className="rounded text-[#0ea5e9] focus:ring-[#0ea5e9]" />
                   <span>Available Today</span>
                 </label>
@@ -186,25 +184,31 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* DUAL REGISTRATION BANNER */}
-      {(!searchQuery && !locationQuery) && (
-        <section className="max-w-5xl mx-auto px-4 py-12">
+      {/* ────────────── DUAL REGISTRATION BANNER ────────────── */}
+      {!isSearching && (
+        <section className="max-w-5xl mx-auto px-4 py-14">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white border text-center border-gray-200 rounded-lg p-8 shadow-sm flex flex-col items-center justify-center">
+            <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+              <div className="w-14 h-14 bg-sky-50 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                <Search className="w-7 h-7 text-[#0ea5e9]" />
+              </div>
               <h2 className="text-2xl font-bold mb-2">Looking for a Visa?</h2>
-              <p className="text-gray-600 mb-6 text-center">Join thousands of seekers finding the right experts, universities, and jobs.</p>
-              <Link href="/signup/seeker">
-                <button className="bg-white border border-[#0ea5e9] text-[#0ea5e9] px-6 py-2.5 rounded hover:bg-sky-50 font-medium transition-colors w-full">
-                  Register as Seeker
+              <p className="text-gray-500 mb-6 text-sm leading-relaxed max-w-xs">Join thousands of seekers finding the right experts, universities, and jobs worldwide.</p>
+              <Link href="/signup/seeker" className="w-full">
+                <button className="bg-white border-2 border-[#0ea5e9] text-[#0ea5e9] px-6 py-3 rounded-xl hover:bg-[#0ea5e9] hover:text-white font-bold transition-all w-full text-sm flex items-center justify-center gap-2 group">
+                  Register as Seeker <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>
             </div>
-            <div className="bg-white border text-center border-gray-200 rounded-lg p-8 shadow-sm flex flex-col items-center justify-center">
+            <div className="bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col items-center text-center text-white group">
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform backdrop-blur-sm">
+                <Award className="w-7 h-7 text-white" />
+              </div>
               <h2 className="text-2xl font-bold mb-2">Are you an Expert?</h2>
-              <p className="text-gray-600 mb-6 text-center">List your services, reach more clients, and grow your immigration practice.</p>
-              <Link href="/signup/expert">
-                <button className="bg-[#0ea5e9] text-white px-6 py-2.5 rounded hover:bg-[#0284c7] font-medium transition-colors w-full">
-                  Register as Expert
+              <p className="text-white/80 mb-6 text-sm leading-relaxed max-w-xs">List your services, reach more clients, and grow your immigration practice globally.</p>
+              <Link href="/signup/expert" className="w-full">
+                <button className="bg-white text-[#0ea5e9] px-6 py-3 rounded-xl hover:bg-white/90 font-bold transition-all w-full text-sm flex items-center justify-center gap-2 group shadow-md">
+                  Register as Expert <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>
             </div>
@@ -212,59 +216,61 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* TRUST STRIP */}
-      {(!searchQuery && !locationQuery) && (
-        <section className="bg-white border-y border-gray-200 py-10 mt-8 mb-4">
-          <div className="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="flex flex-col items-center">
-              <div className="w-12 h-12 bg-sky-50 rounded-full flex items-center justify-center mb-4">
-                <CheckCircle className="w-6 h-6 text-[#0ea5e9]" />
+      {/* ────────────── TRUST STRIP ────────────── */}
+      {!isSearching && (
+        <section className="bg-white border-y border-gray-200 py-12">
+          <div className="max-w-5xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+            {[
+              { icon: CheckCircle, label: "KYC Verified", desc: "100% verified professionals", color: "text-emerald-500", bg: "bg-emerald-50" },
+              { icon: Award, label: "10K+ Visas", desc: "Successfully processed", color: "text-[#0ea5e9]", bg: "bg-sky-50" },
+              { icon: Users, label: "50K+ Applicants", desc: "Trusted by global seekers", color: "text-violet-500", bg: "bg-violet-50" },
+            ].map((item) => (
+              <div key={item.label} className="flex flex-col items-center">
+                <div className={`w-14 h-14 ${item.bg} rounded-2xl flex items-center justify-center mb-4`}>
+                  <item.icon className={`w-7 h-7 ${item.color}`} />
+                </div>
+                <h3 className="font-bold text-lg mb-1">{item.label}</h3>
+                <p className="text-sm text-gray-500">{item.desc}</p>
               </div>
-              <h3 className="font-bold mb-1">KYC Verified</h3>
-              <p className="text-sm text-gray-500">100% verified professionals</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="w-12 h-12 bg-sky-50 rounded-full flex items-center justify-center mb-4">
-                <Award className="w-6 h-6 text-[#0ea5e9]" />
-              </div>
-              <h3 className="font-bold mb-1">10K+ Visas</h3>
-              <p className="text-sm text-gray-500">Successfully processed</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="w-12 h-12 bg-sky-50 rounded-full flex items-center justify-center mb-4">
-                <Users className="w-6 h-6 text-[#0ea5e9]" />
-              </div>
-              <h3 className="font-bold mb-1">50K+ Applicants</h3>
-              <p className="text-sm text-gray-500">Trusted by global seekers</p>
-            </div>
+            ))}
           </div>
         </section>
       )}
 
-      <div className={`pt-8 ${(!searchQuery && !locationQuery) ? 'pt-4' : 'max-w-6xl mx-auto px-4'}`}>
+      {/* ────────────── CONTENT SECTIONS ────────────── */}
+      <div className="pb-16">
         {/* NO RESULTS STATE */}
         {!hasResults && (
-          <div className="text-center py-24 px-4 bg-white rounded-lg border border-gray-200 shadow-sm mt-8">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="w-8 h-8 text-gray-400" />
+          <div className="max-w-5xl mx-auto px-4 mt-12">
+            <div className="text-center py-20 px-4 bg-white rounded-2xl border border-gray-200 shadow-sm">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
+                <Search className="w-8 h-8 text-gray-400" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">No results found</h2>
+              <p className="text-gray-500 max-w-md mx-auto text-sm">
+                We couldn't find anything matching "{searchQuery}" {locationQuery ? `in ${locationQuery}` : ''}. Try adjusting your search or filters.
+              </p>
+              <button
+                onClick={() => { setSearchQuery(''); setLocationQuery(''); }}
+                className="mt-6 bg-[#0ea5e9] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#0284c7] transition-colors text-sm"
+              >
+                Clear Search
+              </button>
             </div>
-            <h2 className="text-2xl font-bold text-[#222222] mb-2">No results found</h2>
-            <p className="text-gray-500 max-w-md mx-auto">
-              We couldn't find anything matching "{searchQuery}" {locationQuery ? `in ${locationQuery}` : ''}. Try adjusting your search or filters.
-            </p>
-            <button
-              onClick={() => { setSearchQuery(''); setLocationQuery(''); }}
-              className="mt-6 bg-white border border-[#0ea5e9] text-[#0ea5e9] px-6 py-2 rounded font-medium hover:bg-sky-50 transition-colors"
-            >
-              Clear Search
-            </button>
           </div>
         )}
 
-        {/* TOP EXPERTS ROW */}
+        {/* TOP EXPERTS */}
         {filteredExperts.length > 0 && (
-          <section className="max-w-6xl mx-auto py-12 px-4 border-b border-gray-200 last:border-0">
-            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Recommended Immigration Experts</h2>
+          <section className="max-w-6xl mx-auto py-14 px-4">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
+                Recommended <span className="text-[#0ea5e9]">Immigration Experts</span>
+              </h2>
+              <Link href="/find-lawyer" className="text-sm font-bold text-[#0ea5e9] hover:underline hidden md:flex items-center gap-1">
+                View All <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredExperts.map((expert, idx) => (
                 <ExpertCard key={idx} expert={expert} />
@@ -273,10 +279,14 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* TOP UNIVERSITIES ROW */}
+        {/* TOP UNIVERSITIES */}
         {filteredUniversities.length > 0 && (
-          <section className="max-w-6xl mx-auto py-12 px-4 border-b border-gray-200 last:border-0">
-            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Top Universities for International Students</h2>
+          <section className="max-w-6xl mx-auto py-14 px-4">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
+                Top <span className="text-[#0ea5e9]">Universities</span> for International Students
+              </h2>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredUniversities.map((uni, idx) => (
                 <UniversityCard key={idx} uni={uni} />
@@ -285,10 +295,14 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* OVERSEAS JOBS ROW */}
+        {/* OVERSEAS JOBS */}
         {filteredJobs.length > 0 && (
-          <section className="max-w-6xl mx-auto py-12 px-4 border-b border-gray-200 last:border-0">
-            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Overseas Jobs (Visa Sponsorship)</h2>
+          <section className="max-w-6xl mx-auto py-14 px-4">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
+                Overseas <span className="text-[#0ea5e9]">Jobs</span> (Visa Sponsorship)
+              </h2>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredJobs.map((job, idx) => (
                 <JobCard key={idx} job={job} />
@@ -297,10 +311,14 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* TOURS ROW */}
+        {/* TOURS */}
         {filteredTours.length > 0 && (
-          <section className="max-w-6xl mx-auto py-12 px-4 border-b border-gray-200 last:border-0">
-            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Campus & Immigration Tours</h2>
+          <section className="max-w-6xl mx-auto py-14 px-4">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
+                Campus & Immigration <span className="text-[#0ea5e9]">Tours</span>
+              </h2>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredTours.map((tour, idx) => (
                 <TourCard key={idx} tour={tour} />
@@ -309,20 +327,26 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* EMERGENCY ROW */}
+        {/* EMERGENCY */}
         {filteredEmergency.length > 0 && (
-          <section className="max-w-6xl mx-auto py-12 px-4 mb-16 border-b border-gray-200 last:border-0">
-            <h2 className="text-2xl font-bold mb-6 text-[#0ea5e9]">Emergency Legal Assistance</h2>
+          <section className="max-w-6xl mx-auto py-14 px-4 mb-8">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
+                Emergency <span className="text-red-500">Legal Assistance</span>
+              </h2>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {filteredEmergency.map((e) => (
-                <div key={e.name} className="bg-white border-2 border-sky-200 flex items-center p-4 rounded-lg shadow-sm">
-                  <div className="w-16 h-16 rounded mr-4 shrink-0 overflow-hidden">
+                <div key={e.name} className="bg-white border-2 border-red-100 hover:border-red-200 flex items-center p-5 rounded-2xl shadow-sm hover:shadow-md transition-all group">
+                  <div className="w-16 h-16 rounded-xl mr-4 shrink-0 overflow-hidden">
                     <img className="w-full h-full object-cover" src={e.image} alt={e.name} />
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between items-start mb-1">
-                      <h3 className="font-bold text-sm text-[#222222]">{e.name}</h3>
-                      <span className="bg-green-100 text-green-700 text-[10px] font-bold uppercase px-2 py-0.5 rounded leading-tight">Open now</span>
+                      <h3 className="font-bold text-sm">{e.name}</h3>
+                      <span className="bg-green-100 text-green-700 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full leading-tight flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Open
+                      </span>
                     </div>
                     <p className="text-xs text-gray-500 line-clamp-2">{e.desc}</p>
                   </div>

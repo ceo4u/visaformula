@@ -1,37 +1,40 @@
-import { Calendar, Star } from "lucide-react";
+import Link from "next/link";
+import { Star } from "lucide-react";
 
 export function TourCard({ tour }: { tour: any }) {
     return (
-        <div className="bg-white border border-gray-200 rounded-[8px] overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow flex flex-col">
-            <div className="h-40 w-full relative">
-                <img src={tour.image} alt={tour.name} className="w-full h-full object-cover" />
-                <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-0.5 rounded text-xs font-bold">
-                    {tour.duration}
-                </div>
-            </div>
-            <div className="p-4 flex flex-col flex-1">
-                <h3 className="font-bold text-[#222222] text-lg leading-tight mb-1">{tour.name}</h3>
-                <div className="flex items-center gap-1 text-sm mb-2">
-                    <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
-                    <span className="font-medium">{tour.rating}</span>
-                    <span className="text-gray-500">({tour.reviews})</span>
-                </div>
-                <p className="text-xs text-gray-600 mb-3 line-clamp-2">{tour.covered}</p>
-                <div className="flex flex-wrap gap-1 mb-4">
-                    {tour.badges?.map((b: string) => (
-                        <span key={b} className="text-[10px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded border border-blue-100">{b}</span>
-                    ))}
-                </div>
-                <div className="mt-auto flex justify-between items-end">
-                    <div>
-                        <div className="text-xs text-gray-500 mb-0.5">From</div>
-                        <div className="font-bold text-[#0ea5e9] text-lg leading-none">{tour.price}</div>
+        <Link href="/tour/1">
+            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:border-sky-200 transition-all duration-300 flex flex-col h-full group cursor-pointer">
+                <div className="h-44 w-full relative overflow-hidden">
+                    <img src={tour.image} alt={tour.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-lg text-xs font-bold">
+                        {tour.duration}
                     </div>
-                    <button className="bg-white border border-[#0ea5e9] text-[#0ea5e9] px-3 py-1.5 rounded text-sm font-medium hover:bg-sky-50 transition-colors">
-                        View Details
-                    </button>
+                </div>
+                <div className="p-5 flex flex-col flex-1 gap-2">
+                    <h3 className="font-bold text-[#1a1a2e] text-lg leading-tight group-hover:text-[#0ea5e9] transition-colors">{tour.name}</h3>
+                    <div className="flex items-center gap-1.5 text-sm">
+                        <Star className="w-4 h-4 text-yellow-400" fill="currentColor" strokeWidth={0} />
+                        <span className="font-bold">{tour.rating}</span>
+                        <span className="text-gray-400">({tour.reviews})</span>
+                    </div>
+                    <p className="text-xs text-gray-500 line-clamp-2">{tour.covered}</p>
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                        {tour.badges?.map((b: string) => (
+                            <span key={b} className="text-[10px] bg-sky-50 text-sky-700 px-2 py-0.5 rounded-full border border-sky-100 font-semibold">{b}</span>
+                        ))}
+                    </div>
+                    <div className="mt-auto flex justify-between items-end pt-3 border-t border-gray-100">
+                        <div>
+                            <div className="text-[10px] text-gray-400 uppercase font-semibold tracking-wider mb-0.5">From</div>
+                            <div className="font-extrabold text-[#0ea5e9] text-xl leading-none">{tour.price}</div>
+                        </div>
+                        <button className="bg-white border-2 border-[#0ea5e9] text-[#0ea5e9] px-4 py-2 rounded-xl text-sm font-bold hover:bg-[#0ea5e9] hover:text-white transition-all">
+                            View Details
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }

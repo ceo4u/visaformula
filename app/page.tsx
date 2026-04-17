@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ChevronDown, MapPin, CheckCircle, Users, Award, Shield, ArrowRight, Star, Globe, Clock } from "lucide-react";
+import { Search, CheckCircle, Users, Award, Shield, ArrowRight, Star, Globe, Briefcase, GraduationCap, BookOpen, Wallet, AlertTriangle, Lock, Heart } from "lucide-react";
 import { useState } from "react";
+import { MagicSearch } from "@/components/shared/magic-search";
 import { ExpertCard } from "@/components/ExpertCard";
 import { UniversityCard } from "@/components/UniversityCard";
 import { JobCard } from "@/components/JobCard";
@@ -32,330 +33,180 @@ const tours = [
   { name: "UK Russell Group Tour", duration: "8 Days", covered: "Oxford, Cambridge, Imperial", rating: 4.8, reviews: 96, price: "$1,899", image: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=600&h=400&fit=crop", badges: ["Visa assistance included"] },
 ];
 
-const emergencyExperts = [
-  { name: "Swift Visa Appeals", desc: "Specializes in last-minute rejection appeals.", image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=200&h=200&fit=crop" },
-  { name: "24/7 Detention Legal", desc: "Round-the-clock emergency legal assistance.", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&h=200&fit=crop" },
-  { name: "Metro Passport Express", desc: "Same-day document processing & courier.", image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=200&h=200&fit=crop" },
+const categories = [
+  { label: "Study Visa", icon: GraduationCap, href: "/visa-guide/canada/study-permit", color: "from-blue-500 to-indigo-600" },
+  { label: "Work Visa", icon: Briefcase, href: "/visa-guide/usa/h1b", color: "from-emerald-500 to-teal-600" },
+  { label: "Express Entry", icon: Globe, href: "/visa-guide/canada/express-entry", color: "from-sky-500 to-blue-600" },
+  { label: "Work Permit", icon: Shield, href: "/work-permit", color: "from-violet-500 to-purple-600" },
+  { label: "IELTS Prep", icon: BookOpen, href: "/training/ielts", color: "from-amber-500 to-orange-600" },
+  { label: "Loan Advisor", icon: Wallet, href: "/training/financial", color: "from-pink-500 to-rose-600" },
+  { label: "Emergency", icon: AlertTriangle, href: "/emergency", color: "from-red-500 to-red-600" },
+  { label: "Escrow", icon: Lock, href: "/escrow", color: "from-emerald-500 to-green-600" },
+];
+
+const successStories = [
+  { name: "Priya Sharma", visa: "Canada PR", quote: "Got my ITA with CRS 472. Visara made it seamless!", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face", helpful: 142 },
+  { name: "Rahul Verma", visa: "H-1B Transfer", quote: "H-1B transfer done in 45 days. Premium processing FTW!", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face", helpful: 89 },
+  { name: "Ananya Patel", visa: "UK Student", quote: "UCL admission + visa in 3 weeks. Incredible support!", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face", helpful: 201 },
 ];
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState("Experts");
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [locationQuery, setLocationQuery] = useState("");
-
-  const safeToLower = (val?: string) => (val || "").toLowerCase();
-  const matchSearch = (text: string) => safeToLower(text).includes(safeToLower(searchQuery));
-  const matchLocation = (text: string) => safeToLower(text).includes(safeToLower(locationQuery));
-
-  const filteredExperts = experts.filter(e =>
-    (searchQuery === "" || matchSearch(e.name) || matchSearch(e.role) || e.tags?.some(tag => matchSearch(tag))) &&
-    (locationQuery === "" || matchLocation(e.location))
-  );
-  const filteredUniversities = universities.filter(u =>
-    (searchQuery === "" || matchSearch(u.name) || matchSearch(u.programs)) &&
-    (locationQuery === "" || matchLocation(u.location))
-  );
-  const filteredJobs = jobs.filter(j =>
-    (searchQuery === "" || matchSearch(j.title) || matchSearch(j.company)) &&
-    (locationQuery === "" || matchLocation(j.location))
-  );
-  const filteredTours = tours.filter(t =>
-    (searchQuery === "" || matchSearch(t.name) || matchSearch(t.covered) || t.badges?.some(b => matchSearch(b))) &&
-    (locationQuery === "" || matchLocation(t.covered))
-  );
-  const filteredEmergency = emergencyExperts.filter(e =>
-    (searchQuery === "" || matchSearch(e.name) || matchSearch(e.desc)) &&
-    (locationQuery === "" || matchLocation(e.desc))
-  );
-
-  const hasResults = filteredExperts.length > 0 || filteredUniversities.length > 0 || filteredJobs.length > 0 || filteredTours.length > 0 || filteredEmergency.length > 0;
-  const isSearching = searchQuery !== "" || locationQuery !== "";
-
   return (
-    <div className="bg-[#f0f4f8] min-h-screen text-[#1a1a2e]">
-      {/* ────────────── HERO SECTION ────────────── */}
-      <section className="relative w-full flex flex-col items-center justify-center px-4 overflow-hidden" style={{ minHeight: "480px" }}>
+    <div className="bg-[#f0f4f8] min-h-screen">
+      {/* ────── HERO ────── */}
+      <section className="relative w-full flex flex-col items-center justify-center px-4 overflow-hidden" style={{ minHeight: "520px" }}>
         <div className="absolute inset-0 z-0">
-          <img
-            className="w-full h-full object-cover"
-            src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&h=900&fit=crop&q=80"
-            alt="City skyline"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+          <img className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&h=900&fit=crop&q=80" alt="City skyline" />
+          <div className="absolute inset-0 bg-gradient-to-b from-navy/70 via-navy/50 to-navy/80" />
         </div>
         <div className="relative z-10 text-center max-w-4xl mx-auto">
-          <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-5 leading-[1.1] drop-shadow-2xl tracking-tight">
+          <h1 className="text-white font-sora text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-5 leading-[1.1] tracking-tight">
             Find the right expert.<br />
             <span className="text-[#38bdf8]">Explore your options.</span>
           </h1>
-          <p className="text-white/80 text-base sm:text-lg md:text-xl font-medium max-w-2xl mx-auto mb-8 drop-shadow">
+          <p className="text-white/75 text-base sm:text-lg md:text-xl font-medium max-w-2xl mx-auto mb-8">
             Your global marketplace for immigration experts, top universities, overseas jobs, and more.
           </p>
-          <div className="flex flex-wrap gap-6 justify-center text-white/70 text-sm font-medium">
+          <div className="flex flex-wrap gap-6 justify-center text-white/60 text-sm font-semibold">
             <span className="flex items-center gap-2"><Globe className="w-4 h-4 text-[#38bdf8]" /> 190+ Countries</span>
             <span className="flex items-center gap-2"><Users className="w-4 h-4 text-[#38bdf8]" /> 50K+ Users</span>
             <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-[#38bdf8]" /> Verified Experts</span>
+            <span className="flex items-center gap-2"><Lock className="w-4 h-4 text-[#38bdf8]" /> Escrow Payments</span>
           </div>
         </div>
       </section>
 
-      {/* ────────────── SEARCH AREA ────────────── */}
-      <section className="max-w-5xl mx-auto px-4 -mt-12 relative z-20">
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-          {/* Tabs */}
-          <div className="flex overflow-x-auto border-b border-gray-100 bg-gray-50/50">
-            {["Experts", "Universities", "Jobs", "Tours", "Emergency"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-6 py-4 text-sm font-bold whitespace-nowrap transition-all relative ${activeTab === tab
-                  ? "text-[#0ea5e9] bg-white"
-                  : "text-gray-500 hover:text-gray-800 hover:bg-white/50"
-                  }`}
-              >
-                {tab}
-                {activeTab === tab && <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#0ea5e9] rounded-t" />}
-              </button>
-            ))}
-          </div>
+      {/* ────── MAGIC SEARCH ────── */}
+      <section className="max-w-5xl mx-auto px-4 -mt-14 relative z-20 mb-12">
+        <MagicSearch />
+      </section>
 
-          {/* Search Inputs */}
-          <div className="p-5 md:p-6">
-            <div className="flex flex-col md:flex-row gap-3 mb-3">
-              <div className="flex-1 relative">
-                <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder={`Search for ${activeTab.toLowerCase()}...`}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#0ea5e9] focus:ring-2 focus:ring-[#0ea5e9]/20 focus:bg-white outline-none transition-all text-sm"
-                />
+      {/* ────── VISA CATEGORIES ────── */}
+      <section className="max-w-6xl mx-auto px-4 mb-14">
+        <h2 className="font-sora text-2xl font-bold text-navy mb-6 text-center">Explore by Category</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          {categories.map(cat => (
+            <Link key={cat.label} href={cat.href}>
+              <div className="flex flex-col items-center bg-white rounded-2xl border border-sky-100 p-4 shadow-sm hover:shadow-card-hover hover:-translate-y-1 transition-all group cursor-pointer">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center mb-2.5 shadow-sm group-hover:scale-110 transition-transform`}>
+                  <cat.icon className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xs font-bold text-navy text-center leading-tight">{cat.label}</span>
               </div>
-              <div className="flex-1 relative">
-                <MapPin className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Location or Destination"
-                  value={locationQuery}
-                  onChange={(e) => setLocationQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#0ea5e9] focus:ring-2 focus:ring-[#0ea5e9]/20 focus:bg-white outline-none transition-all text-sm"
-                />
-              </div>
-              <button className="bg-[#0ea5e9] text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#0284c7] transition-all hover:shadow-lg hover:shadow-sky-200 md:w-auto w-full text-sm">
-                Search
-              </button>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ────── IN-HOUSE EXPERT BANNER ────── */}
+      <section className="max-w-5xl mx-auto px-4 mb-14">
+        <Link href="/smart-search?type=inhouse">
+          <div className="bg-gradient-to-r from-[#0ea5e9] via-[#0284c7] to-[#0369a1] rounded-2xl p-8 text-white flex flex-col md:flex-row items-center gap-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer group">
+            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm shrink-0">
+              <Award className="w-8 h-8 text-white" />
             </div>
-
-            <button
-              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-              className="flex items-center text-sm font-semibold text-[#0ea5e9] hover:text-[#0284c7] transition-colors"
-            >
-              Advanced Filters <ChevronDown className={`w-4 h-4 ml-1 transition-transform duration-200 ${showAdvancedFilters ? "rotate-180" : ""}`} />
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="font-sora text-xl font-bold mb-1">Talk to Our In-House Experts</h3>
+              <p className="text-white/70 text-sm">Visara&apos;s own employed team of immigration professionals. Vetted, trained, and trusted.</p>
+            </div>
+            <button className="bg-white text-[#0ea5e9] px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:bg-white/90 transition-all flex items-center gap-2 group-hover:gap-3 shrink-0">
+              Find In-House Experts <ArrowRight className="w-4 h-4" />
             </button>
-
-            {showAdvancedFilters && (
-              <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-3">
-                <select className="border border-gray-200 rounded-xl p-3 text-sm outline-none focus:border-[#0ea5e9] bg-gray-50 focus:bg-white transition-colors">
-                  <option>Any Budget</option>
-                  <option>Under $1,000</option>
-                  <option>$1,000 - $3,000</option>
-                  <option>Over $3,000</option>
-                </select>
-                <select className="border border-gray-200 rounded-xl p-3 text-sm outline-none focus:border-[#0ea5e9] bg-gray-50 focus:bg-white transition-colors">
-                  <option>Any Language</option>
-                  <option>English</option>
-                  <option>Hindi</option>
-                  <option>Mandarin</option>
-                </select>
-                <select className="border border-gray-200 rounded-xl p-3 text-sm outline-none focus:border-[#0ea5e9] bg-gray-50 focus:bg-white transition-colors">
-                  <option>Rating: Any</option>
-                  <option>4.5 & up</option>
-                  <option>4.0 & up</option>
-                </select>
-                <label className="flex items-center space-x-2 text-sm font-medium bg-gray-50 rounded-xl p-3 border border-gray-200 cursor-pointer hover:bg-sky-50 transition-colors">
-                  <input type="checkbox" className="rounded text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                  <span>Available Today</span>
-                </label>
-              </div>
-            )}
           </div>
+        </Link>
+      </section>
+
+      {/* ────── TRUST BAR ────── */}
+      <section className="bg-white border-y border-gray-200 py-10 mb-14">
+        <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+          {[
+            { icon: CheckCircle, label: "KYC Verified", desc: "100% verified professionals", color: "text-emerald-500", bg: "bg-emerald-50" },
+            { icon: Lock, label: "Escrow Payments", desc: "Pay safe, get service", color: "text-[#0ea5e9]", bg: "bg-sky-50" },
+            { icon: Award, label: "In-House Experts", desc: "Visara employed team", color: "text-violet-500", bg: "bg-violet-50" },
+            { icon: Users, label: "50K+ Applicants", desc: "Trusted by global seekers", color: "text-amber-500", bg: "bg-amber-50" },
+          ].map(item => (
+            <div key={item.label} className="flex flex-col items-center">
+              <div className={`w-12 h-12 ${item.bg} rounded-xl flex items-center justify-center mb-3`}>
+                <item.icon className={`w-6 h-6 ${item.color}`} />
+              </div>
+              <h3 className="font-bold text-sm text-navy mb-0.5">{item.label}</h3>
+              <p className="text-xs text-gray-400">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ────────────── DUAL REGISTRATION BANNER ────────────── */}
-      {!isSearching && (
-        <section className="max-w-5xl mx-auto px-4 py-14">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
-              <div className="w-14 h-14 bg-sky-50 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                <Search className="w-7 h-7 text-[#0ea5e9]" />
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Looking for a Visa?</h2>
-              <p className="text-gray-500 mb-6 text-sm leading-relaxed max-w-xs">Join thousands of seekers finding the right experts, universities, and jobs worldwide.</p>
-              <Link href="/signup/seeker" className="w-full">
-                <button className="bg-white border-2 border-[#0ea5e9] text-[#0ea5e9] px-6 py-3 rounded-xl hover:bg-[#0ea5e9] hover:text-white font-bold transition-all w-full text-sm flex items-center justify-center gap-2 group">
-                  Register as Seeker <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </Link>
-            </div>
-            <div className="bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col items-center text-center text-white group">
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform backdrop-blur-sm">
-                <Award className="w-7 h-7 text-white" />
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Are you an Expert?</h2>
-              <p className="text-white/80 mb-6 text-sm leading-relaxed max-w-xs">List your services, reach more clients, and grow your immigration practice globally.</p>
-              <Link href="/signup/expert" className="w-full">
-                <button className="bg-white text-[#0ea5e9] px-6 py-3 rounded-xl hover:bg-white/90 font-bold transition-all w-full text-sm flex items-center justify-center gap-2 group shadow-md">
-                  Register as Expert <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* ────── EXPERTS ────── */}
+      <section className="max-w-6xl mx-auto py-10 px-4">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="font-sora text-2xl md:text-3xl font-extrabold text-navy">
+            Recommended <span className="text-[#0ea5e9]">Experts</span>
+          </h2>
+          <Link href="/find-lawyer" className="text-sm font-bold text-[#0ea5e9] hover:underline hidden md:flex items-center gap-1">View All <ArrowRight className="w-4 h-4" /></Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {experts.map((expert, idx) => <ExpertCard key={idx} expert={expert} />)}
+        </div>
+      </section>
 
-      {/* ────────────── TRUST STRIP ────────────── */}
-      {!isSearching && (
-        <section className="bg-white border-y border-gray-200 py-12">
-          <div className="max-w-5xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-            {[
-              { icon: CheckCircle, label: "KYC Verified", desc: "100% verified professionals", color: "text-emerald-500", bg: "bg-emerald-50" },
-              { icon: Award, label: "10K+ Visas", desc: "Successfully processed", color: "text-[#0ea5e9]", bg: "bg-sky-50" },
-              { icon: Users, label: "50K+ Applicants", desc: "Trusted by global seekers", color: "text-violet-500", bg: "bg-violet-50" },
-            ].map((item) => (
-              <div key={item.label} className="flex flex-col items-center">
-                <div className={`w-14 h-14 ${item.bg} rounded-2xl flex items-center justify-center mb-4`}>
-                  <item.icon className={`w-7 h-7 ${item.color}`} />
+      {/* ────── UNIVERSITIES ────── */}
+      <section className="max-w-6xl mx-auto py-10 px-4">
+        <h2 className="font-sora text-2xl md:text-3xl font-extrabold text-navy mb-8">Top <span className="text-[#0ea5e9]">Universities</span></h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {universities.map((uni, idx) => <UniversityCard key={idx} uni={uni} />)}
+        </div>
+      </section>
+
+      {/* ────── JOBS ────── */}
+      <section className="max-w-6xl mx-auto py-10 px-4">
+        <h2 className="font-sora text-2xl md:text-3xl font-extrabold text-navy mb-8">Overseas <span className="text-[#0ea5e9]">Jobs</span></h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{jobs.map((job, idx) => <JobCard key={idx} job={job} />)}</div>
+      </section>
+
+      {/* ────── TOURS ────── */}
+      <section className="max-w-6xl mx-auto py-10 px-4">
+        <h2 className="font-sora text-2xl md:text-3xl font-extrabold text-navy mb-8">Campus <span className="text-[#0ea5e9]">Tours</span></h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{tours.map((tour, idx) => <TourCard key={idx} tour={tour} />)}</div>
+      </section>
+
+      {/* ────── SUCCESS STORIES ────── */}
+      <section className="max-w-6xl mx-auto py-14 px-4">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="font-sora text-2xl md:text-3xl font-extrabold text-navy">Success <span className="text-[#0ea5e9]">Stories</span></h2>
+          <Link href="/success-stories" className="text-sm font-bold text-[#0ea5e9] hover:underline flex items-center gap-1">See All <ArrowRight className="w-4 h-4" /></Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {successStories.map(s => (
+            <div key={s.name} className="bg-white rounded-2xl border border-sky-100 p-5 shadow-sm hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
+              <div className="flex items-center gap-3 mb-3">
+                <img src={s.image} alt={s.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-sky-100" />
+                <div>
+                  <h4 className="font-bold text-navy text-sm">{s.name}</h4>
+                  <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-semibold border border-emerald-100">{s.visa}</span>
                 </div>
-                <h3 className="font-bold text-lg mb-1">{item.label}</h3>
-                <p className="text-sm text-gray-500">{item.desc}</p>
               </div>
-            ))}
+              <p className="text-sm text-gray-600 italic leading-relaxed mb-3">&ldquo;{s.quote}&rdquo;</p>
+              <div className="flex items-center text-xs text-gray-400 font-semibold"><Heart className="w-3.5 h-3.5 mr-1" /> {s.helpful} found helpful</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ────── EMERGENCY BANNER ────── */}
+      <section className="max-w-5xl mx-auto px-4 mb-16">
+        <Link href="/emergency">
+          <div className="bg-white border-l-4 border-red-500 rounded-2xl p-6 flex items-center gap-5 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+            <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
+              <AlertTriangle className="w-6 h-6 text-red-500" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-navy text-base mb-0.5">Need Emergency Help?</h3>
+              <p className="text-sm text-gray-500">Overstay, deportation threat, or visa denial? Get urgent legal assistance right now.</p>
+            </div>
+            <span className="text-sm font-bold text-red-500 flex items-center gap-1 shrink-0 group-hover:gap-2 transition-all">Get Help <ArrowRight className="w-4 h-4" /></span>
           </div>
-        </section>
-      )}
-
-      {/* ────────────── CONTENT SECTIONS ────────────── */}
-      <div className="pb-16">
-        {/* NO RESULTS STATE */}
-        {!hasResults && (
-          <div className="max-w-5xl mx-auto px-4 mt-12">
-            <div className="text-center py-20 px-4 bg-white rounded-2xl border border-gray-200 shadow-sm">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
-                <Search className="w-8 h-8 text-gray-400" />
-              </div>
-              <h2 className="text-2xl font-bold mb-2">No results found</h2>
-              <p className="text-gray-500 max-w-md mx-auto text-sm">
-                We couldn't find anything matching "{searchQuery}" {locationQuery ? `in ${locationQuery}` : ''}. Try adjusting your search or filters.
-              </p>
-              <button
-                onClick={() => { setSearchQuery(''); setLocationQuery(''); }}
-                className="mt-6 bg-[#0ea5e9] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#0284c7] transition-colors text-sm"
-              >
-                Clear Search
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* TOP EXPERTS */}
-        {filteredExperts.length > 0 && (
-          <section className="max-w-6xl mx-auto py-14 px-4">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
-                Recommended <span className="text-[#0ea5e9]">Immigration Experts</span>
-              </h2>
-              <Link href="/find-lawyer" className="text-sm font-bold text-[#0ea5e9] hover:underline hidden md:flex items-center gap-1">
-                View All <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredExperts.map((expert, idx) => (
-                <ExpertCard key={idx} expert={expert} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* TOP UNIVERSITIES */}
-        {filteredUniversities.length > 0 && (
-          <section className="max-w-6xl mx-auto py-14 px-4">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
-                Top <span className="text-[#0ea5e9]">Universities</span> for International Students
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredUniversities.map((uni, idx) => (
-                <UniversityCard key={idx} uni={uni} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* OVERSEAS JOBS */}
-        {filteredJobs.length > 0 && (
-          <section className="max-w-6xl mx-auto py-14 px-4">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
-                Overseas <span className="text-[#0ea5e9]">Jobs</span> (Visa Sponsorship)
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredJobs.map((job, idx) => (
-                <JobCard key={idx} job={job} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* TOURS */}
-        {filteredTours.length > 0 && (
-          <section className="max-w-6xl mx-auto py-14 px-4">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
-                Campus & Immigration <span className="text-[#0ea5e9]">Tours</span>
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTours.map((tour, idx) => (
-                <TourCard key={idx} tour={tour} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* EMERGENCY */}
-        {filteredEmergency.length > 0 && (
-          <section className="max-w-6xl mx-auto py-14 px-4 mb-8">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[#1a1a2e]">
-                Emergency <span className="text-red-500">Legal Assistance</span>
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {filteredEmergency.map((e) => (
-                <div key={e.name} className="bg-white border-2 border-red-100 hover:border-red-200 flex items-center p-5 rounded-2xl shadow-sm hover:shadow-md transition-all group">
-                  <div className="w-16 h-16 rounded-xl mr-4 shrink-0 overflow-hidden">
-                    <img className="w-full h-full object-cover" src={e.image} alt={e.name} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start mb-1">
-                      <h3 className="font-bold text-sm">{e.name}</h3>
-                      <span className="bg-green-100 text-green-700 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full leading-tight flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Open
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-500 line-clamp-2">{e.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
+        </Link>
+      </section>
     </div>
   );
 }

@@ -73,6 +73,10 @@ const config: Config = {
                     DEFAULT: "hsl(var(--outline))",
                     variant: "hsl(var(--outline-variant))",
                 },
+                // New Visara design system colors
+                navy: "#0C1A2E",
+                ink: "#1A3347",
+                hint: "#8FAEC4",
             },
             borderRadius: {
                 lg: "var(--radius)",
@@ -80,13 +84,26 @@ const config: Config = {
                 sm: "calc(var(--radius) - 4px)",
             },
             fontFamily: {
-                sans: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-                heading: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+                sans: ["DM Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+                sora: ["Sora", "sans-serif"],
+                dmsans: ["DM Sans", "sans-serif"],
+                heading: ["Sora", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
             },
             boxShadow: {
                 "editorial": "0 1px 4px rgba(0,0,0,0.1)",
                 "editorial-lg": "0 4px 12px rgba(0,0,0,0.15)",
                 "editorial-xl": "0 8px 30px rgba(0,0,0,0.12)",
+                "card": "0 2px 12px rgba(14,165,233,.10), 0 4px 20px rgba(12,26,52,.07)",
+                "card-hover": "0 4px 24px rgba(14,165,233,.15), 0 8px 32px rgba(12,26,52,.09)",
+            },
+            keyframes: {
+                "fade-up": {
+                    "0%": { opacity: "0", transform: "translateY(12px)" },
+                    "100%": { opacity: "1", transform: "translateY(0)" },
+                },
+            },
+            animation: {
+                "fade-up": "fade-up 0.3s ease-out forwards",
             },
         },
     },

@@ -9,12 +9,12 @@ import { AuthProvider } from "@/components/providers/auth-provider";
 
 export const metadata: Metadata = {
   title: "Visara | Immigration Marketplace",
-  description: "Apply visa smarter, faster, safer. Connect experts, and track your visa in one place.",
-  keywords: "visa, immigration, experts, lawyer, consultant, migration, work visa, student visa",
+  description: "Apply visa smarter, faster, safer. Connect with verified experts, top universities, and track your visa journey — all in one place.",
+  keywords: "visa, immigration, experts, lawyer, consultant, migration, work visa, student visa, express entry, work permit, IELTS",
   authors: [{ name: "Visara Team" }],
   openGraph: {
     title: "Visara - Immigration Marketplace",
-    description: "Streamline your visa journey with expert guidance.",
+    description: "Your global marketplace for immigration experts, universities, jobs, and more.",
     type: "website",
     locale: "en_US",
     url: "https://visara.com",
@@ -33,7 +33,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className="font-sans antialiased text-on-surface bg-background selection:bg-primary/20 selection:text-primary">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+      </head>
+      <body className="font-dmsans antialiased text-navy bg-background selection:bg-primary/20 selection:text-primary">
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
             <Header />

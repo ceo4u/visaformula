@@ -1,177 +1,187 @@
 "use client";
 
-import { Star, MapPin, ChevronLeft, ChevronRight, ChevronDown, List, Map as MapIcon, CheckCircle } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
+import { Star, MapPin, ChevronLeft, ChevronRight, ChevronDown, List, Map as MapIcon, CheckCircle, Clock } from "lucide-react";
+import { MultiCitySelect } from "@/components/shared/multi-city-select";
 
 const results = [
     {
         rank: 1,
-        name: "Aristha Law Group, P.C.",
+        name: "Marcus Thorne, JD",
         rating: 4.5,
-        reviews: 128,
+        reviews: 142,
         statusOpen: true,
-        price: "Consultation: $150",
+        price: "$150 / 30 min",
         distance: "1.2 mi",
-        tags: ["Employment Visa", "H-1B"],
-        desc: "Specializing in H-1B, O-1, and EB-1 petitions for tech professionals. Known for high success rates in complex RFE responses.",
-        aiInsight: "Users report Aristha handled an urgent deportation stay within 4 hours. Highly recommended for critical timelines.",
-        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face",
+        tags: ["US Visa", "H-1B", "L-1"],
+        responses: "Usually responds in 1 hour",
+        desc: "Specializing in employment-based petitions for tech professionals. Known for high success rates in complex RFE responses.",
+        aiInsight: "Users report Marcus handled an urgent H-1B transfer within 45 days. Highly recommended for premium processing.",
+        image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=face",
         verified: true,
+        badge: "Fast Responder"
     },
     {
         rank: 2,
-        name: "Marcus Chen & Associates",
+        name: "Elena Rodriguez",
         rating: 5.0,
-        reviews: 84,
-        statusOpen: false,
-        price: "Consultation: $100",
+        reviews: 89,
+        statusOpen: true,
+        price: "$100 / 30 min",
         distance: "3.5 mi",
-        tags: ["Family Reunification", "K-1 Visa"],
-        desc: "Dedicated to connecting families across borders. Expertise in K-1 visas, green card renewals, and naturalization interviews.",
+        tags: ["Green Card", "Family"],
+        responses: "Usually responds in 2 hours",
+        desc: "Dedicated to connecting families across borders. Expertise in marriage-based green cards and consular processing.",
         aiInsight: "Consistently rated 5 stars for clear communication and transparent flat-fee pricing structures.",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
+        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face",
         verified: true,
+        badge: null
     },
     {
         rank: 3,
-        name: "Global Frontier Legal",
-        rating: 4.5,
-        reviews: 214,
-        statusOpen: true,
-        price: "Consultation: $250",
+        name: "Beacon Global Services",
+        rating: 4.8,
+        reviews: 210,
+        statusOpen: false,
+        price: "$80 / 30 min",
         distance: "0.8 mi",
-        tags: ["EB-5 Investor", "Asylum", "L-1 Visa"],
-        desc: "Premium legal advisory for high-net-worth investors and complex corporate relocation. Multilingual staff available 24/7.",
-        aiInsight: "Expert team handles large-scale corporate transfers with high precision. Best for institutional clients.",
-        image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=face",
+        tags: ["F-1 Visa", "Admissions"],
+        responses: "Usually responds same day",
+        desc: "Premium education advisory for studying abroad. End-to-end guidance from university selection to visa approval.",
+        aiInsight: "Excellent track record with UK and US student visas. Good for overall application strategy.",
+        image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&h=200&fit=crop&crop=face",
         verified: false,
+        badge: "Top Rated Agency"
     },
 ];
 
 export default function FindLawyerPage() {
     const [viewMode, setViewMode] = useState<"list" | "map">("list");
+    const [cities, setCities] = useState<string[]>([]);
+
+    // UI state for filter chips
+    const [activeFilters, setActiveFilters] = useState<string[]>(["Immigration Lawyer", "Canada", "4.5 & up"]);
+
+    const toggleFilter = (filter: string) => {
+        if (activeFilters.includes(filter)) {
+            setActiveFilters(activeFilters.filter((f) => f !== filter));
+        } else {
+            setActiveFilters([...activeFilters, filter]);
+        }
+    };
 
     return (
-        <div className="bg-[#f5f5f5] min-h-screen text-[#222222]">
-            <main className="max-w-[1440px] mx-auto flex flex-col md:flex-row py-6 px-4">
+        <div className="bg-[#f0f4f8] min-h-screen">
+            <main className="max-w-7xl mx-auto flex flex-col md:flex-row py-8 px-4 gap-6">
 
                 {/* Left Sidebar Filters */}
-                <aside className="w-full md:w-[280px] shrink-0 md:pr-6 mb-6 md:mb-0">
-                    <div className="bg-white rounded-[8px] border border-gray-200 p-4 shadow-sm sticky top-20">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="font-bold text-lg">Filters</h2>
-                            <button className="text-sm text-[#0ea5e9] hover:underline">Clear All</button>
+                <aside className="w-full md:w-[320px] shrink-0 mb-6 md:mb-0">
+                    <div className="bg-white rounded-2xl border border-sky-100 p-5 shadow-sm sticky top-24">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="font-sora text-lg font-bold text-navy">Filters</h2>
+                            <button className="text-sm font-semibold text-[#0ea5e9] hover:underline" onClick={() => setActiveFilters([])}>Clear All</button>
+                        </div>
+
+                        {/* Selected Locations using MultiCitySelect */}
+                        <div className="mb-6 pb-6 border-b border-gray-100">
+                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Location</label>
+                            <MultiCitySelect
+                                selectedCities={cities}
+                                onChange={setCities}
+                                placeholder="Add city (e.g. Toronto)"
+                            />
                         </div>
 
                         {/* Filter Group: Expert Type */}
-                        <div className="py-4 border-t border-gray-100">
-                            <h3 className="font-bold mb-3 flex justify-between items-center cursor-pointer">
-                                Expert Type <ChevronDown className="w-4 h-4 text-gray-500" />
-                            </h3>
-                            <div className="space-y-2">
-                                <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                                    <span>Immigration Consultant <span className="text-gray-400">(142)</span></span>
-                                </label>
-                                <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                                    <span>Immigration Lawyer <span className="text-gray-400">(67)</span></span>
-                                </label>
-                                <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                                    <span>Education Agent <span className="text-gray-400">(23)</span></span>
-                                </label>
+                        <div className="py-4 border-b border-gray-100">
+                            <h3 className="font-bold text-sm text-navy mb-3">Expert Type</h3>
+                            <div className="flex flex-wrap gap-2">
+                                {["Immigration Lawyer", "Immigration Consultant", "Education Agent"].map(type => (
+                                    <button
+                                        key={type}
+                                        onClick={() => toggleFilter(type)}
+                                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${activeFilters.includes(type)
+                                                ? "bg-[#0ea5e9] text-white border border-[#0ea5e9] shadow-sm"
+                                                : "bg-sky-50 text-sky-700 border border-sky-100 hover:bg-sky-100"
+                                            }`}
+                                    >
+                                        {type}
+                                    </button>
+                                ))}
                             </div>
                         </div>
 
                         {/* Filter Group: Destination */}
-                        <div className="py-4 border-t border-gray-100">
-                            <h3 className="font-bold mb-3 flex justify-between items-center cursor-pointer">
-                                Destination <ChevronDown className="w-4 h-4 text-gray-500" />
-                            </h3>
-                            <div className="space-y-2">
-                                <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                                    <span>Canada <span className="text-gray-400">(89)</span></span>
-                                </label>
-                                <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                                    <span>UK <span className="text-gray-400">(54)</span></span>
-                                </label>
-                                <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                                    <span>Australia <span className="text-gray-400">(43)</span></span>
-                                </label>
-                                <label className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                    <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                                    <span>USA <span className="text-gray-400">(32)</span></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        {/* Filter Group: Budget */}
-                        <div className="py-4 border-t border-gray-100">
-                            <h3 className="font-bold mb-3 flex justify-between items-center cursor-pointer">
-                                Budget <ChevronDown className="w-4 h-4 text-gray-500" />
-                            </h3>
-                            <div className="space-y-2">
-                                {["Under $150", "$150 - $300", "Over $300"].map((budget) => (
-                                    <label key={budget} className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                        <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                                        <span>{budget}</span>
-                                    </label>
+                        <div className="py-4 border-b border-gray-100">
+                            <h3 className="font-bold text-sm text-navy mb-3">Destination Focus</h3>
+                            <div className="flex flex-wrap gap-2">
+                                {["Canada", "USA", "UK", "Australia"].map(dest => (
+                                    <button
+                                        key={dest}
+                                        onClick={() => toggleFilter(dest)}
+                                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${activeFilters.includes(dest)
+                                                ? "bg-navy text-white border border-navy shadow-sm"
+                                                : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                                            }`}
+                                    >
+                                        {dest}
+                                    </button>
                                 ))}
                             </div>
                         </div>
 
                         {/* Filter Group: Rating */}
-                        <div className="py-4 border-t border-gray-100">
-                            <h3 className="font-bold mb-3 flex justify-between items-center cursor-pointer">
-                                Rating <ChevronDown className="w-4 h-4 text-gray-500" />
-                            </h3>
-                            <div className="space-y-2">
-                                {["4.5 & up", "4.0 & up", "3.5 & up"].map((rating) => (
-                                    <label key={rating} className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                                        <input type="checkbox" className="rounded border-gray-300 text-[#0ea5e9] focus:ring-[#0ea5e9]" />
-                                        <div className="flex items-center">
-                                            <span>{rating}</span>
-                                            <Star className="w-3 h-3 text-yellow-500 ml-1" fill="currentColor" />
-                                        </div>
-                                    </label>
+                        <div className="py-4">
+                            <h3 className="font-bold text-sm text-navy mb-3">Minimum Rating</h3>
+                            <div className="flex flex-wrap gap-2">
+                                {["4.5 & up", "4.0 & up", "3.5 & up"].map(rating => (
+                                    <button
+                                        key={rating}
+                                        onClick={() => toggleFilter(rating)}
+                                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center transition-all ${activeFilters.includes(rating)
+                                                ? "bg-amber-100 text-amber-800 border border-amber-200"
+                                                : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                                            }`}
+                                    >
+                                        {rating} <Star className="w-3 h-3 ml-1 fill-current" />
+                                    </button>
                                 ))}
                             </div>
                         </div>
 
-                        <button className="w-full bg-[#0ea5e9] text-white py-2.5 rounded font-bold hover:bg-[#0284c7] transition-colors mt-4">
-                            Apply Filters
-                        </button>
                     </div>
                 </aside>
 
                 {/* Main Content */}
                 <section className="flex-1">
                     {/* View Toggle & Sort */}
-                    <div className="flex justify-between items-center mb-6 bg-white p-3 rounded-[8px] border border-gray-200 shadow-sm">
-                        <h1 className="font-bold text-lg hidden sm:block">Immigration Experts</h1>
-                        <div className="flex items-center gap-4 ml-auto w-full sm:w-auto justify-between sm:justify-start">
-                            <select className="border border-gray-300 rounded p-1.5 text-sm outline-none focus:border-[#0ea5e9] font-medium bg-gray-50">
-                                <option>Recommended</option>
-                                <option>Highest Rated</option>
-                                <option>Nearest First</option>
-                            </select>
-                            <div className="flex bg-gray-100 rounded p-1 border border-gray-200">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 bg-white p-4 rounded-2xl border border-sky-100 shadow-sm gap-4">
+                        <div>
+                            <h1 className="font-sora text-xl font-bold text-navy">Immigration Experts</h1>
+                            <p className="text-sm text-gray-500 mt-0.5">Showing {results.length} professionals based on your filters</p>
+                        </div>
+                        <div className="flex items-center gap-3 w-full sm:w-auto">
+                            <div className="relative flex-1 sm:flex-none">
+                                <select className="w-full appearance-none bg-sky-50 border border-sky-100 rounded-xl py-2 pl-3 pr-8 text-sm font-semibold text-navy outline-none focus:border-[#0ea5e9]">
+                                    <option>Recommended</option>
+                                    <option>Highest Rated</option>
+                                    <option>Price: Low to High</option>
+                                </select>
+                                <ChevronDown className="w-4 h-4 text-gray-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                            </div>
+                            <div className="flex bg-gray-100 rounded-xl p-1 shrink-0">
                                 <button
                                     onClick={() => setViewMode("list")}
-                                    className={`px-3 py-1 text-sm font-medium rounded flex items-center gap-1.5 transition-colors ${viewMode === "list" ? "bg-white shadow text-[#222222]" : "text-gray-500 hover:text-[#222222]"}`}
+                                    className={`px-3 py-1.5 text-sm font-semibold rounded-lg flex items-center gap-1.5 transition-all ${viewMode === "list" ? "bg-white shadow-sm text-navy" : "text-gray-500 hover:text-navy"}`}
                                 >
-                                    <List className="w-4 h-4" /> List
+                                    <List className="w-4 h-4" /> <span className="hidden sm:inline">List</span>
                                 </button>
                                 <button
                                     onClick={() => setViewMode("map")}
-                                    className={`px-3 py-1 text-sm font-medium rounded flex items-center gap-1.5 transition-colors ${viewMode === "map" ? "bg-white shadow text-[#222222]" : "text-gray-500 hover:text-[#222222]"}`}
+                                    className={`px-3 py-1.5 text-sm font-semibold rounded-lg flex items-center gap-1.5 transition-all ${viewMode === "map" ? "bg-white shadow-sm text-navy" : "text-gray-500 hover:text-navy"}`}
                                 >
-                                    <MapIcon className="w-4 h-4" /> Map
+                                    <MapIcon className="w-4 h-4" /> <span className="hidden sm:inline">Map</span>
                                 </button>
                             </div>
                         </div>
@@ -180,58 +190,73 @@ export default function FindLawyerPage() {
                     {/* Content Area */}
                     {viewMode === "list" ? (
                         <div className="space-y-4">
-                            {results.map((r) => (
-                                <Link href={`/expert/${r.rank}`} key={r.rank} className="block">
-                                    <div className="bg-white border border-gray-200 rounded-[8px] p-4 flex flex-col md:flex-row gap-4 shadow-sm hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
-                                        <div className="w-full md:w-[160px] h-[160px] shrink-0">
-                                            <img src={r.image} alt={r.name} className="w-full h-full object-cover rounded border border-gray-200" />
+                            {results.map((r, idx) => (
+                                <Link href={`/expert/${r.rank}`} key={r.rank} className="block group">
+                                    <div className="bg-white border border-sky-100 rounded-2xl p-5 flex flex-col md:flex-row gap-5 shadow-sm hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
+
+                                        {/* Avatar & Badges */}
+                                        <div className="w-full md:w-[140px] flex flex-col items-center shrink-0 space-y-3">
+                                            <div className="relative w-[120px] h-[120px]">
+                                                <img src={r.image} alt={r.name} className="w-full h-full object-cover rounded-2xl shadow-sm" />
+                                                {r.statusOpen && (
+                                                    <span className="absolute -top-2 -right-2 bg-emerald-500 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border-2 border-white shadow-sm flex items-center gap-1">
+                                                        <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" /> Open
+                                                    </span>
+                                                )}
+                                            </div>
+                                            {r.badge && (
+                                                <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-200 flex items-center gap-1 text-center w-full justify-center">
+                                                    <Star className="w-3 h-3 fill-amber-500 text-amber-500" /> {r.badge}
+                                                </span>
+                                            )}
                                         </div>
+
+                                        {/* Details */}
                                         <div className="flex-1 flex flex-col">
-                                            <div className="flex justify-between items-start">
+                                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
                                                 <div>
-                                                    <h2 className="text-xl font-bold text-[#0ea5e9] hover:underline cursor-pointer">{r.rank}. {r.name}</h2>
-                                                    <div className="flex items-center mt-1 text-sm">
-                                                        <div className="flex text-yellow-500 mr-1">
-                                                            {[1, 2, 3, 4, 5].map((i) => (
-                                                                <Star key={i} className="w-4 h-4" fill={i <= r.rating ? "currentColor" : "none"} />
-                                                            ))}
-                                                        </div>
-                                                        <span className="font-bold mr-1">{r.rating}</span>
-                                                        <span className="text-gray-500 hover:underline cursor-pointer">({r.reviews} reviews)</span>
+                                                    <h2 className="text-xl font-bold text-navy group-hover:text-[#0ea5e9] transition-colors flex items-center gap-2">
+                                                        {r.name}
+                                                        {r.verified && <CheckCircle className="w-4 h-4 text-[#0ea5e9]" />}
+                                                    </h2>
+                                                    <div className="flex items-center text-sm font-semibold mt-1">
+                                                        <Star className="w-4 h-4 text-amber-500 fill-amber-500 mr-1" />
+                                                        <span className="text-navy mr-1.5">{r.rating}</span>
+                                                        <span className="text-gray-400 font-normal">({r.reviews} reviews)</span>
                                                     </div>
                                                 </div>
-                                                <div className="flex flex-col items-end gap-1 shrink-0">
-                                                    {r.statusOpen && <span className="bg-green-100 text-green-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-green-200">Open now</span>}
-                                                    {r.verified && <span className="border border-sky-200 text-[#0ea5e9] text-[10px] bg-sky-50 font-bold uppercase tracking-wider px-2 py-0.5 rounded flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Verified</span>}
+                                                <div className="text-left sm:text-right">
+                                                    <div className="font-bold text-navy text-lg">{r.price}</div>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center text-sm font-bold mt-2 gap-2 text-gray-700">
-                                                <div className="flex items-center"><MapPin className="w-4 h-4 mr-1 text-gray-400" /> {r.distance} from center</div>
+                                            <div className="flex flex-col gap-1.5 text-xs font-medium text-gray-500 mb-3">
+                                                <div className="flex items-center"><MapPin className="w-3.5 h-3.5 mr-1.5 text-gray-400 shrink-0" /> {r.distance} from center</div>
+                                                <div className="flex items-center"><Clock className="w-3.5 h-3.5 mr-1.5 text-[#0ea5e9] shrink-0" /> {r.responses}</div>
                                             </div>
 
-                                            <p className="text-sm text-gray-600 mt-2 line-clamp-2">"{r.desc}"</p>
+                                            <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed mb-4">{r.desc}</p>
 
-                                            <div className="mt-3 flex flex-wrap gap-2">
+                                            <div className="flex flex-wrap gap-2 mt-auto">
                                                 {r.tags.map((tag) => (
-                                                    <span key={tag} className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded border border-gray-200">
+                                                    <span key={tag} className="bg-sky-50 text-sky-700 text-xs px-2.5 py-1 rounded-full border border-sky-100 font-semibold">
                                                         {tag}
                                                     </span>
                                                 ))}
                                             </div>
-
-                                            <div className="mt-3 pt-3 border-t border-gray-100 flex justify-between items-center md:hidden">
-                                                <div className="font-bold">{r.price}</div>
-                                                <button className="bg-[#0ea5e9] text-white px-4 py-1.5 rounded font-bold hover:bg-[#0284c7] text-sm">Request</button>
-                                            </div>
                                         </div>
 
-                                        <div className="hidden md:flex flex-col justify-between items-end border-l border-gray-100 pl-4 w-[140px] shrink-0">
-                                            <div className="text-right">
-                                                <div className="font-bold text-gray-900 line-clamp-2 text-sm text-right">{r.price}</div>
-                                            </div>
-                                            <button className="bg-[#0ea5e9] text-white w-full py-2 rounded font-bold hover:bg-[#0284c7] transition-colors text-sm text-center">
-                                                Request
+                                        {/* Actions (Desktop) */}
+                                        <div className="hidden md:flex flex-col justify-end border-l border-sky-100 pl-5 w-[160px] shrink-0">
+                                            <button className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white w-full py-2.5 rounded-xl font-bold hover:shadow-lg hover:shadow-sky-200 transition-all text-sm active:scale-[0.97]">
+                                                Book Free Call
+                                            </button>
+                                        </div>
+
+                                        {/* Actions (Mobile) */}
+                                        <div className="mt-4 pt-4 border-t border-sky-100 flex md:hidden">
+                                            <button className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white w-full py-3 rounded-xl font-bold hover:shadow-lg transition-all text-sm">
+                                                Book Free Consultation
                                             </button>
                                         </div>
                                     </div>
@@ -239,37 +264,43 @@ export default function FindLawyerPage() {
                             ))}
 
                             {/* Pagination */}
-                            <div className="flex items-center justify-center pt-6 gap-2 border-t border-gray-200 mt-6">
-                                <button className="w-8 h-8 flex items-center justify-center rounded border border-gray-300 hover:bg-gray-50 text-gray-500">
-                                    <ChevronLeft className="w-4 h-4" />
+                            <div className="flex items-center justify-center pt-8 pb-4 gap-2">
+                                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-sky-200 bg-white hover:bg-sky-50 text-gray-500 transition-colors">
+                                    <ChevronLeft className="w-5 h-5" />
                                 </button>
                                 {[1, 2, 3, 4].map((p) => (
-                                    <button key={p} className={`w-8 h-8 flex items-center justify-center rounded font-bold text-sm ${p === 1 ? "bg-[#0ea5e9] text-white" : "border border-gray-300 hover:bg-gray-50 text-gray-600"}`}>
+                                    <button key={p} className={`w-10 h-10 flex items-center justify-center rounded-xl font-bold text-sm transition-all ${p === 1 ? "bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] text-white shadow-md shadow-sky-200 border-none" : "border border-sky-200 bg-white hover:bg-sky-50 text-navy"}`}>
                                         {p}
                                     </button>
                                 ))}
-                                <button className="w-8 h-8 flex items-center justify-center rounded border border-gray-300 hover:bg-gray-50 text-gray-500">
-                                    <ChevronRight className="w-4 h-4" />
+                                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-sky-200 bg-white hover:bg-sky-50 text-gray-500 transition-colors">
+                                    <ChevronRight className="w-5 h-5" />
                                 </button>
                             </div>
                         </div>
                     ) : (
-                        <div className="h-[600px] w-full rounded-[8px] overflow-hidden border border-gray-200 shadow-sm relative text-[#222222]">
-                            <div className="absolute inset-0 bg-cover bg-center opacity-80" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&h=900&fit=crop')" }} />
+                        <div className="h-[600px] w-full rounded-2xl overflow-hidden border border-sky-200 shadow-sm relative bg-sky-50">
+                            {/* Map Placeholder */}
+                            <div className="absolute inset-0 bg-cover bg-center opacity-70 mix-blend-multiply" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&h=900&fit=crop')" }} />
+                            <div className="absolute inset-0 bg-blue-500/10" />
 
                             {/* Map Pins */}
                             {[{ top: "25%", left: "35%", r: results[0] }, { top: "55%", left: "60%", r: results[1] }, { top: "40%", left: "20%", r: results[2] }].map((pin) => (
                                 <div key={pin.r.rank} className="absolute group cursor-pointer" style={{ top: pin.top, left: pin.left }}>
-                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity p-2 border border-gray-200 pointer-events-none z-10 hidden md:block">
-                                        <div className="text-xs font-bold truncate">{pin.r.name}</div>
-                                        <div className="flex text-yellow-500 my-1">
-                                            {[1, 2, 3, 4, 5].map((i) => (
-                                                <Star key={i} className="w-3 h-3" fill={i <= pin.r.rating ? "currentColor" : "none"} />
-                                            ))}
+                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 bg-white rounded-xl shadow-xl opacity-0 group-hover:opacity-100 transition-all p-3 border border-sky-100 pointer-events-none z-10 hidden md:block">
+                                        <div className="flex gap-3">
+                                            <img src={pin.r.image} className="w-10 h-10 rounded-lg object-cover" alt="" />
+                                            <div>
+                                                <div className="text-sm font-bold text-navy truncate">{pin.r.name}</div>
+                                                <div className="flex items-center text-xs font-semibold mt-0.5">
+                                                    <Star className="w-3 h-3 text-amber-500 fill-amber-500 mr-1" />
+                                                    {pin.r.rating} ({pin.r.reviews})
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="bg-[#0ea5e9] text-white font-bold text-xs px-2 py-1 rounded shadow-md border border-white relative z-0 before:content-[''] before:absolute before:top-full before:left-1/2 before:-translate-x-1/2 before:border-[5px] before:border-transparent before:border-t-[#0ea5e9]">
-                                        {pin.r.rank}
+                                    <div className="bg-[#0ea5e9] text-white font-bold text-xs px-2.5 py-1.5 rounded-lg shadow-md border-2 border-white relative z-0 hover:scale-110 transition-transform before:content-[''] before:absolute before:top-full before:left-1/2 before:-translate-x-1/2 before:border-[6px] before:border-transparent before:border-t-[#0ea5e9]">
+                                        {pin.r.price.split(' ')[0]}
                                     </div>
                                 </div>
                             ))}

@@ -1,164 +1,115 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Mail, Lock, Eye, EyeOff, Gavel, User as UserIcon, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { useAuth } from "@/components/providers/auth-provider";
+import { Globe, GraduationCap, Briefcase, ArrowRight, Shield, CheckCircle, Star, Award } from "lucide-react";
 
-export default function SignupPage() {
-    const router = useRouter();
-    const { signUp, signInWithGoogle } = useAuth();
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPwd, setShowPwd] = useState(false);
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+const seekerFeatures = [
+    "Find verified immigration experts",
+    "Escrow-protected payments",
+    "Track your visa application",
+    "Access IELTS & training resources",
+    "Connect with universities & jobs",
+];
 
-    const handleSignup = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError("");
-        setLoading(true);
-        try {
-            await signUp(email, password, name);
-            router.push("/dashboard");
-        } catch (err: any) {
-            setError(err?.message || "Sign up failed. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
+const expertFeatures = [
+    "Reach thousands of visa seekers",
+    "Manage bookings & client pipeline",
+    "Guaranteed escrow payments",
+    "Build your verified profile",
+    "In-house expert opportunities",
+];
 
-    const handleGoogleLogin = async () => {
-        setError("");
-        setLoading(true);
-        try {
-            await signInWithGoogle();
-            router.push("/dashboard");
-        } catch (err: any) {
-            setError(err?.message || "Google sign-up failed.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
+export default function SignupChoicePage() {
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-20 bg-gradient-to-br from-primary/5 via-transparent to-transparent">
-            <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full max-w-md"
-            >
-                <div className="text-center mb-8">
-                    <Link href="/" className="inline-flex items-center gap-2 text-2xl font-black mb-4">
-                        <Gavel className="w-7 h-7 text-primary" />
-                        <span>VisaHub</span>
+        <div className="bg-[#f0f4f8] min-h-screen flex flex-col">
+            {/* Top Bar */}
+            <div className="bg-white border-b border-sky-100 py-4 px-6 flex justify-between items-center shadow-sm">
+                <Link href="/" className="flex items-center gap-2">
+                    <Globe className="w-5 h-5 text-[#0ea5e9]" />
+                    <span className="text-xl font-extrabold tracking-tight text-navy">Visara</span>
+                    <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                </Link>
+                <span className="text-sm font-semibold text-gray-500">
+                    Already have an account?{" "}
+                    <Link href="/login" className="text-[#0ea5e9] font-bold hover:underline">
+                        Log in
                     </Link>
-                    <h1 className="text-3xl font-heading font-extrabold tracking-tight mt-4">Create an <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">account</span></h1>
-                    <p className="text-on-surface-variant mt-2">Join thousands of successful migrants</p>
+                </span>
+            </div>
+
+            {/* Main */}
+            <main className="flex-1 flex flex-col items-center justify-center py-14 px-4">
+                {/* Heading */}
+                <div className="text-center mb-12">
+                    <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-navy mb-3 leading-tight">
+                        Join <span className="text-[#0ea5e9]">Visara</span>
+                    </h1>
+                    <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
+                        Tell us who you are — we'll tailor your experience from day one.
+                    </p>
                 </div>
 
-                <Card className="border-none shadow-2xl">
-                    <CardContent className="p-8">
-                        {error && (
-                            <div className="mb-6 p-4 rounded-xl bg-sky-50 dark:bg-red-900/20 border border-sky-200 dark:border-red-800 text-sky-700 dark:text-red-400 text-sm font-medium">
-                                {error}
-                            </div>
-                        )}
+                {/* Role Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full">
 
-                        {/* Google Sign Up */}
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={handleGoogleLogin}
-                            disabled={loading}
-                            className="w-full h-12 rounded-xl font-bold gap-3 text-base border-slate-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900 mb-6"
-                        >
-                            <svg viewBox="0 0 24 24" className="w-5 h-5">
-                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
-                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                            </svg>
-                            Sign up with Google
-                        </Button>
-
-                        <div className="relative mb-6">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-slate-200 dark:border-slate-800" />
+                    {/* Seeker Card */}
+                    <Link href="/signup/seeker" className="group block">
+                        <div className="bg-white rounded-3xl border-2 border-sky-100 p-8 shadow-sm group-hover:shadow-card-hover group-hover:border-[#0ea5e9] group-hover:-translate-y-1 transition-all h-full flex flex-col">
+                            <div className="w-16 h-16 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-2xl flex items-center justify-center mb-5 shadow-md shadow-sky-200 group-hover:scale-110 transition-transform">
+                                <GraduationCap className="w-8 h-8 text-white" />
                             </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-white dark:bg-slate-950 px-3 text-slate-500 font-bold">or sign up with email</span>
-                            </div>
+                            <h2 className="font-sora text-2xl font-bold text-navy mb-1">I&apos;m a Visa Seeker</h2>
+                            <p className="text-sm text-gray-500 mb-6 leading-relaxed">
+                                Looking to study, work, or migrate abroad. Find experts, universities, and resources all in one place.
+                            </p>
+                            <ul className="space-y-3 mb-8 flex-1">
+                                {seekerFeatures.map((f) => (
+                                    <li key={f} className="flex items-center gap-2.5 text-sm text-gray-700 font-medium">
+                                        <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+                                        {f}
+                                    </li>
+                                ))}
+                            </ul>
+                            <button className="w-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-sky-200 group-hover:shadow-xl transition-all active:scale-[0.97]">
+                                Register as Seeker <ArrowRight className="w-5 h-5" />
+                            </button>
+                            <p className="text-xs text-center text-gray-400 mt-3 font-medium">Free · No credit card required</p>
                         </div>
+                    </Link>
 
-                        <form onSubmit={handleSignup} className="space-y-4">
-                            <div className="space-y-2">
-                                <label className="text-sm font-heading font-bold mb-1.5 block">Full name</label>
-                                <div className="relative">
-                                    <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                                    <input
-                                        type="text"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        placeholder="John Doe"
-                                        required
-                                        className="w-full h-12 pl-12 pr-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-primary font-medium"
-                                    />
-                                </div>
+                    {/* Expert Card */}
+                    <Link href="/signup/expert" className="group block">
+                        <div className="bg-white rounded-3xl border-2 border-sky-100 p-8 shadow-sm group-hover:shadow-card-hover group-hover:border-navy group-hover:-translate-y-1 transition-all h-full flex flex-col">
+                            <div className="w-16 h-16 bg-gradient-to-br from-navy to-ink rounded-2xl flex items-center justify-center mb-5 shadow-md group-hover:scale-110 transition-transform">
+                                <Award className="w-8 h-8 text-white" />
                             </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-heading font-bold mb-1.5 block">Email address</label>
-                                <div className="relative">
-                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                                    <input
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="john@example.com"
-                                        required
-                                        className="w-full h-12 pl-12 pr-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-primary font-medium"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 pb-2">
-                                <label className="text-sm font-heading font-bold mb-1.5 block">Password</label>
-                                <div className="relative">
-                                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                                    <input
-                                        type={showPwd ? "text" : "password"}
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="••••••••"
-                                        required
-                                        className="w-full h-12 pl-12 pr-12 rounded-xl border border-slate-200 dark:border-slate-800 bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-primary font-medium"
-                                    />
-                                    <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                                        {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <Button type="submit" disabled={loading} className="w-full h-12 rounded-xl font-bold text-base gap-2 shadow-lg shadow-primary/20">
-                                {loading ? "Creating account..." : "Create Account"}
-                                {!loading && <ArrowRight className="w-4 h-4" />}
-                            </Button>
-                        </form>
-
-                        <div className="text-center font-heading font-bold text-sm text-on-surface-variant my-6">
-                            Already have an account?{" "}
-                            <Link href="/login" className="font-bold text-primary hover:underline">Sign in</Link>
+                            <h2 className="font-sora text-2xl font-bold text-navy mb-1">I&apos;m an Expert</h2>
+                            <p className="text-sm text-gray-500 mb-6 leading-relaxed">
+                                Immigration lawyer, consultant, or education agent. Grow your practice and get paid securely.
+                            </p>
+                            <ul className="space-y-3 mb-8 flex-1">
+                                {expertFeatures.map((f) => (
+                                    <li key={f} className="flex items-center gap-2.5 text-sm text-gray-700 font-medium">
+                                        <CheckCircle className="w-4 h-4 text-[#0ea5e9] shrink-0" />
+                                        {f}
+                                    </li>
+                                ))}
+                            </ul>
+                            <button className="w-full bg-gradient-to-r from-navy to-ink text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg group-hover:shadow-xl transition-all active:scale-[0.97]">
+                                Register as Expert <ArrowRight className="w-5 h-5" />
+                            </button>
+                            <p className="text-xs text-center text-gray-400 mt-3 font-medium">KYC verification required · Takes 24h</p>
                         </div>
-                    </CardContent>
-                </Card>
-            </motion.div>
+                    </Link>
+                </div>
+
+                {/* Trust bar */}
+                <div className="flex flex-wrap items-center justify-center gap-6 mt-12 text-xs font-semibold text-gray-400">
+                    <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-[#0ea5e9]" /> Bank-grade data security</span>
+                    <span className="flex items-center gap-1.5"><Star className="w-4 h-4 text-amber-400 fill-amber-400" /> 4.9 / 5 average platform rating</span>
+                    <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-emerald-500" /> 50,000+ successful applicants</span>
+                </div>
+            </main>
         </div>
     );
 }

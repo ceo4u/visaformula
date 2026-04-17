@@ -1,157 +1,291 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CheckCircle, Clock, Flag, FileText, AlertTriangle, Video, Send, Calendar, Upload, Verified } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
+import {
+    Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
+    ArrowRight, Bell, FileText, Star, Shield, TrendingUp, ChevronRight
+} from "lucide-react";
+
+const bookings = [
+    {
+        expert: "Marcus Thorne, JD",
+        service: "Express Entry Consultation",
+        date: "Apr 20, 2025 · 10:00 AM",
+        status: "upcoming",
+        escrow: "held",
+        amount: "₹2,500",
+        avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face",
+    },
+    {
+        expert: "Elena Rodriguez",
+        service: "Green Card Document Review",
+        date: "Apr 15, 2025 · 2:00 PM",
+        status: "completed",
+        escrow: "released",
+        amount: "₹4,500",
+        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&crop=face",
+    },
+];
+
+const savedExperts = [
+    { name: "Raj Patel", role: "Express Entry Specialist", rating: 4.8, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" },
+    { name: "Aisha Khan", role: "UK Visa Consultant", rating: 4.6, avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face" },
+];
+
+const notifications = [
+    { text: "Your booking with Marcus Thorne is confirmed for Apr 20", time: "2h ago", type: "success" },
+    { text: "New IELTS batch starting May 1 near you — British Council", time: "1d ago", type: "info" },
+    { text: "Update: Canada Express Entry Draw #243 announced", time: "2d ago", type: "info" },
+];
 
 export default function DashboardPage() {
+    const [activeTab, setActiveTab] = useState<"bookings" | "saved" | "notifications">("bookings");
+    const [ieltsScore, setIeltsScore] = useState({ L: 7.5, R: 7.0, W: 6.5, S: 7.0 });
+    const overallBand = ((ieltsScore.L + ieltsScore.R + ieltsScore.W + ieltsScore.S) / 4).toFixed(1);
+
+    const statusMap: Record<string, { label: string; color: string; dot: string }> = {
+        upcoming: { label: "Upcoming", color: "bg-blue-50 text-blue-700 border-blue-200", dot: "bg-blue-500" },
+        completed: { label: "Completed", color: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500" },
+    };
+
+    const escrowMap: Record<string, { label: string; color: string }> = {
+        held: { label: "Escrow: Held", color: "text-amber-600 bg-amber-50 border-amber-200" },
+        released: { label: "Payment Released", color: "text-emerald-600 bg-emerald-50 border-emerald-200" },
+    };
+
     return (
-        <main className="max-w-7xl mx-auto px-6 py-12 pb-24">
-            {/* Dashboard Header */}
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
-                <h1 className="text-4xl md:text-[3.5rem] font-black tracking-tight leading-none text-on-surface mb-2 font-heading">My Dashboard</h1>
-                <p className="text-lg text-on-surface-variant/70 font-medium">Manage your applications</p>
-            </motion.div>
-
-            {/* Stats Row */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0 }} className="bg-surface-container-lowest p-6 rounded-xl shadow-editorial flex flex-col gap-1">
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Active applications</span>
-                    <span className="text-3xl font-black text-primary">2</span>
-                </motion.div>
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-surface-container-lowest p-6 rounded-xl shadow-editorial flex flex-col gap-1">
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Documents</span>
-                    <span className="text-3xl font-black text-on-surface">8/11</span>
-                    <div className="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
-                        <div className="bg-primary h-full w-[72%] rounded-full" />
+        <div className="bg-[#f0f4f8] min-h-screen">
+            {/* Top Banner */}
+            <div className="bg-gradient-to-r from-navy to-ink text-white px-4 py-8">
+                <div className="max-w-6xl mx-auto">
+                    <h1 className="font-sora text-2xl md:text-3xl font-extrabold mb-1">Welcome back, Priya 👋</h1>
+                    <p className="text-white/60 text-sm font-medium">Your immigration journey dashboard</p>
+                    <div className="flex flex-wrap gap-5 mt-5 text-sm font-semibold text-white/70">
+                        <span className="flex items-center gap-2"><Calendar className="w-4 h-4 text-[#38bdf8]" /> 1 upcoming booking</span>
+                        <span className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-emerald-400" /> 1 session completed</span>
+                        <span className="flex items-center gap-2"><Lock className="w-4 h-4 text-amber-400" /> ₹2,500 in escrow</span>
                     </div>
-                </motion.div>
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-surface-container-lowest p-6 rounded-xl shadow-editorial flex flex-col gap-1">
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Next session</span>
-                    <span className="text-lg font-black text-on-surface">Tomorrow, 10:00 AM</span>
-                </motion.div>
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-surface-container-lowest p-6 rounded-xl shadow-editorial flex flex-col gap-1">
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Days until deadline</span>
-                    <span className="text-3xl font-black text-tertiary">14</span>
-                </motion.div>
+                </div>
             </div>
 
-            {/* Horizontal Tracker */}
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-surface-container-lowest p-10 rounded-xl shadow-editorial mb-12 overflow-x-auto">
-                <div className="min-w-[700px] flex items-center justify-between relative">
-                    <div className="absolute top-5 left-0 w-full h-0.5 bg-surface-container-high z-0" />
-                    <div className="absolute top-5 left-0 w-1/3 h-0.5 bg-primary z-0" />
-
-                    {[
-                        { label: "Documents", icon: CheckCircle, done: true },
-                        { label: "Review", icon: CheckCircle, done: true },
-                        { label: "Interview", icon: Clock, done: false, active: true },
-                        { label: "Approved", icon: Flag, done: false },
-                    ].map((step) => (
-                        <div key={step.label} className="relative z-10 flex flex-col items-center gap-3">
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${step.done ? "bg-primary text-white" : step.active ? "bg-white border-2 border-primary text-primary" : "bg-surface-container-high text-on-surface-variant"}`}>
-                                <step.icon className="w-5 h-5" />
-                            </div>
-                            <span className={`text-sm font-bold ${!step.done && !step.active ? "text-on-surface-variant" : ""}`}>{step.label}</span>
-                        </div>
-                    ))}
-                </div>
-            </motion.div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                {/* Left Column */}
-                <div className="lg:col-span-8 flex flex-col gap-12">
-                    {/* Document Vault */}
-                    <section>
-                        <div className="flex justify-between items-end mb-6">
-                            <h2 className="text-2xl font-black tracking-tight font-heading">Document Vault</h2>
-                            <button className="text-secondary font-bold text-sm">Upload New</button>
-                        </div>
-                        <div className="bg-surface-container-lowest rounded-xl shadow-editorial overflow-hidden">
-                            <div className="divide-y divide-surface-container">
-                                {[
-                                    { name: "Passport_Final.pdf", time: "Modified 2 days ago", status: "Verified", statusColor: "text-tertiary bg-emerald-50", icon: Verified },
-                                    { name: "Proof_of_Funds.jpg", time: "Modified 4 hours ago", status: "Pending", statusColor: "text-secondary bg-blue-50", icon: Clock },
-                                    { name: "Background_Check.pdf", time: "Action Required", status: "Missing", statusColor: "text-red-600 bg-sky-50", icon: AlertTriangle, error: true },
-                                ].map((doc) => (
-                                    <div key={doc.name} className="p-4 flex items-center justify-between hover:bg-neutral-50 transition-colors">
-                                        <div className="flex items-center gap-4">
-                                            <div className={`w-10 h-10 rounded flex items-center justify-center ${doc.error ? "bg-sky-50" : "bg-surface-container"}`}>
-                                                {doc.error ? <AlertTriangle className="w-5 h-5 text-red-500" /> : <FileText className="w-5 h-5 text-on-surface-variant" />}
-                                            </div>
-                                            <div>
-                                                <p className={`font-bold text-sm ${doc.error ? "text-red-600" : ""}`}>{doc.name}</p>
-                                                <p className="text-[11px] text-on-surface-variant">{doc.time}</p>
-                                            </div>
-                                        </div>
-                                        <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold ${doc.statusColor}`}>
-                                            <doc.icon className="w-3 h-3" />
-                                            {doc.status}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Upcoming Sessions */}
-                    <section>
-                        <h2 className="text-2xl font-black tracking-tight font-heading mb-6">Upcoming Sessions</h2>
-                        <div className="bg-surface-container-lowest rounded-xl shadow-editorial p-6">
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                <div className="flex gap-6">
-                                    <div className="flex flex-col items-center justify-center bg-surface-container-high w-16 h-16 rounded-xl">
-                                        <span className="text-[11px] font-black uppercase text-primary">Apr</span>
-                                        <span className="text-2xl font-black">24</span>
-                                    </div>
-                                    <div>
-                                        <h3 className="font-black text-lg font-heading">Case Review with Sarah Jenkins</h3>
-                                        <p className="text-on-surface-variant text-sm mb-2">Discussing document verification and final steps.</p>
-                                        <div className="flex items-center gap-4 text-[11px] font-bold text-on-surface-variant">
-                                            <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> 10:00 AM - 10:45 AM</span>
-                                            <span className="flex items-center gap-1"><Video className="w-3 h-3" /> Video Call</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button className="bg-primary text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-primary/80 transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
-                                    <Video className="w-4 h-4" />
-                                    Join Call
+            <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Main Column */}
+                <div className="lg:col-span-2 space-y-6">
+                    {/* Tabs */}
+                    <div className="bg-white rounded-2xl border border-sky-100 shadow-sm overflow-hidden">
+                        <div className="flex border-b border-sky-100">
+                            {(["bookings", "saved", "notifications"] as const).map((tab) => (
+                                <button
+                                    key={tab}
+                                    onClick={() => setActiveTab(tab)}
+                                    className={`flex-1 py-3.5 text-sm font-bold capitalize transition-all ${activeTab === tab
+                                            ? "text-[#0ea5e9] border-b-2 border-[#0ea5e9] bg-sky-50/50"
+                                            : "text-gray-400 hover:text-navy"
+                                        }`}
+                                >
+                                    {tab === "notifications" ? "Updates" : tab.charAt(0).toUpperCase() + tab.slice(1)}
                                 </button>
-                            </div>
+                            ))}
                         </div>
-                    </section>
+
+                        <div className="p-5">
+                            {/* Bookings Tab */}
+                            {activeTab === "bookings" && (
+                                <div className="space-y-4">
+                                    {bookings.map((b, idx) => (
+                                        <div key={idx} className="border border-sky-100 rounded-2xl p-4 hover:shadow-sm transition-all">
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <img src={b.avatar} alt={b.expert} className="w-12 h-12 rounded-xl object-cover" />
+                                                <div className="flex-1">
+                                                    <h4 className="font-bold text-navy text-sm">{b.expert}</h4>
+                                                    <p className="text-xs text-gray-500">{b.service}</p>
+                                                </div>
+                                                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border flex items-center gap-1 ${statusMap[b.status].color}`}>
+                                                    <span className={`w-1.5 h-1.5 rounded-full ${statusMap[b.status].dot}`} />
+                                                    {statusMap[b.status].label}
+                                                </span>
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-gray-500 mb-3">
+                                                <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {b.date}</span>
+                                                <span className={`px-2 py-0.5 rounded-full border font-bold ${escrowMap[b.escrow].color}`}>
+                                                    {escrowMap[b.escrow].label} · {b.amount}
+                                                </span>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                {b.status === "upcoming" && (
+                                                    <>
+                                                        <button className="flex-1 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white py-2 rounded-xl text-xs font-bold hover:shadow-md transition-all">Join Session</button>
+                                                        <button className="px-4 py-2 border border-red-200 text-red-500 rounded-xl text-xs font-bold hover:bg-red-50 transition-all">Reschedule</button>
+                                                    </>
+                                                )}
+                                                {b.status === "completed" && (
+                                                    <>
+                                                        <Link href={`/reviews/new/1`} className="flex-1">
+                                                            <button className="w-full border-2 border-sky-200 text-[#0ea5e9] py-2 rounded-xl text-xs font-bold hover:bg-sky-50 transition-all flex items-center justify-center gap-1">
+                                                                <Star className="w-3.5 h-3.5" /> Leave Review
+                                                            </button>
+                                                        </Link>
+                                                        <button className="px-4 py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-all">
+                                                            Book Again
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <Link href="/find-lawyer">
+                                        <button className="w-full border-2 border-dashed border-sky-200 text-[#0ea5e9] py-3 rounded-2xl text-sm font-bold hover:bg-sky-50 transition-all flex items-center justify-center gap-2">
+                                            <ArrowRight className="w-4 h-4" /> Find & Book a New Expert
+                                        </button>
+                                    </Link>
+                                </div>
+                            )}
+
+                            {/* Saved Tab */}
+                            {activeTab === "saved" && (
+                                <div className="space-y-3">
+                                    {savedExperts.map((e, idx) => (
+                                        <div key={idx} className="flex items-center gap-4 p-4 border border-sky-100 rounded-2xl hover:shadow-sm transition-all">
+                                            <img src={e.avatar} alt={e.name} className="w-12 h-12 rounded-xl object-cover" />
+                                            <div className="flex-1">
+                                                <div className="font-bold text-navy text-sm">{e.name}</div>
+                                                <div className="text-xs text-gray-400">{e.role}</div>
+                                                <div className="flex items-center gap-1 text-xs font-semibold mt-0.5">
+                                                    <Star className="w-3 h-3 text-amber-500 fill-amber-500" /> {e.rating}
+                                                </div>
+                                            </div>
+                                            <Link href="/find-lawyer">
+                                                <button className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-4 py-2 rounded-xl text-xs font-bold hover:shadow-md transition-all">Book</button>
+                                            </Link>
+                                        </div>
+                                    ))}
+                                    {savedExperts.length === 0 && (
+                                        <div className="text-center py-10 text-gray-400">
+                                            <Bookmark className="w-10 h-10 mx-auto mb-3 opacity-40" />
+                                            <p className="text-sm font-medium">No saved experts yet</p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Notifications Tab */}
+                            {activeTab === "notifications" && (
+                                <div className="space-y-3">
+                                    {notifications.map((n, idx) => (
+                                        <div key={idx} className="flex items-start gap-3 p-4 border border-sky-100 rounded-2xl hover:shadow-sm transition-all">
+                                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${n.type === "success" ? "bg-emerald-100" : "bg-sky-100"}`}>
+                                                {n.type === "success" ? <CheckCircle className="w-4 h-4 text-emerald-600" /> : <Bell className="w-4 h-4 text-[#0ea5e9]" />}
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="text-sm text-navy font-medium leading-relaxed">{n.text}</p>
+                                                <p className="text-xs text-gray-400 mt-1">{n.time}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Escrow Status Card */}
+                    <div className="bg-white rounded-2xl border border-sky-100 shadow-sm p-5">
+                        <h3 className="font-sora font-bold text-navy mb-4 flex items-center gap-2">
+                            <Shield className="w-5 h-5 text-[#0ea5e9]" /> Escrow Status
+                        </h3>
+                        <div className="grid grid-cols-3 gap-3">
+                            {[
+                                { label: "Held Safely", amount: "₹2,500", color: "bg-amber-50 border-amber-200 text-amber-700" },
+                                { label: "Released", amount: "₹4,500", color: "bg-emerald-50 border-emerald-200 text-emerald-700" },
+                                { label: "Total Spent", amount: "₹7,000", color: "bg-sky-50 border-sky-200 text-sky-700" },
+                            ].map((item) => (
+                                <div key={item.label} className={`rounded-xl border p-3 text-center ${item.color}`}>
+                                    <div className="font-bold text-base">{item.amount}</div>
+                                    <div className="text-xs font-semibold mt-0.5 opacity-80">{item.label}</div>
+                                </div>
+                            ))}
+                        </div>
+                        <Link href="/escrow">
+                            <button className="mt-4 w-full border border-sky-200 text-[#0ea5e9] py-2.5 rounded-xl text-sm font-bold hover:bg-sky-50 transition-all flex items-center justify-center gap-1">
+                                View Escrow Details <ChevronRight className="w-4 h-4" />
+                            </button>
+                        </Link>
+                    </div>
                 </div>
 
-                {/* Right Column: Messages */}
-                <div className="lg:col-span-4">
-                    <section className="sticky top-24">
-                        <div className="flex justify-between items-end mb-6">
-                            <h2 className="text-2xl font-black tracking-tight font-heading">Messages</h2>
-                            <button className="text-secondary font-bold text-sm">View All</button>
-                        </div>
-                        <div className="bg-surface-container-lowest rounded-xl shadow-editorial overflow-hidden">
-                            <div className="p-6 border-b border-surface-container">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <img alt="Sarah Jenkins" className="w-12 h-12 rounded-full object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" />
-                                    <div>
-                                        <p className="font-black text-sm">Sarah Jenkins</p>
-                                        <p className="text-[11px] text-tertiary font-bold">Online Now</p>
+                {/* Right Column */}
+                <div className="space-y-5">
+                    {/* IELTS Tracker */}
+                    <div className="bg-white rounded-2xl border border-sky-100 shadow-sm p-5">
+                        <h3 className="font-sora font-bold text-navy mb-1 flex items-center gap-2">
+                            <BookOpen className="w-5 h-5 text-[#0ea5e9]" /> IELTS Tracker
+                        </h3>
+                        <p className="text-xs text-gray-400 mb-4">Track your current band scores</p>
+                        <div className="space-y-3">
+                            {(["L", "R", "W", "S"] as const).map((key) => {
+                                const labels: Record<string, string> = { L: "Listening", R: "Reading", W: "Writing", S: "Speaking" };
+                                const score = ieltsScore[key];
+                                return (
+                                    <div key={key}>
+                                        <div className="flex justify-between text-xs font-semibold mb-1">
+                                            <span className="text-gray-600">{labels[key]}</span>
+                                            <span className="text-[#0ea5e9]">{score}</span>
+                                        </div>
+                                        <div className="w-full h-2 bg-sky-50 rounded-full border border-sky-100 overflow-hidden">
+                                            <div className="h-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-full" style={{ width: `${(score / 9) * 100}%` }} />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="bg-surface-container-low p-4 rounded-xl rounded-tl-none mb-4">
-                                    <p className="text-sm leading-relaxed">Hi James, I&apos;ve reviewed your latest upload. Everything looks great except the background check. Could you rescan that with better lighting?</p>
-                                </div>
-                                <p className="text-[11px] text-on-surface-variant font-medium">Delivered 2:45 PM</p>
-                            </div>
-                            <div className="p-4">
-                                <div className="flex items-center gap-2 bg-surface-container rounded-lg px-4 py-2">
-                                    <input className="bg-transparent border-none focus:ring-0 text-sm flex-1 placeholder:text-on-surface-variant" placeholder="Type a message..." type="text" />
-                                    <button className="text-primary hover:text-primary-container transition-colors"><Send className="w-5 h-5" /></button>
-                                </div>
-                            </div>
+                                );
+                            })}
                         </div>
-                    </section>
+                        <div className="mt-4 bg-sky-50 rounded-xl p-3 text-center border border-sky-100">
+                            <span className="text-xs text-gray-500 font-medium">Overall Band</span>
+                            <div className="font-sora text-3xl font-extrabold text-[#0ea5e9]">{overallBand}</div>
+                            <span className="text-xs text-gray-400">Target: 7.0 for Canada PR</span>
+                        </div>
+                        <Link href="/training/ielts">
+                            <button className="mt-3 w-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white py-2.5 rounded-xl text-xs font-bold hover:shadow-md transition-all">
+                                Find IELTS Coaching
+                            </button>
+                        </Link>
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="bg-white rounded-2xl border border-sky-100 shadow-sm p-5">
+                        <h3 className="font-sora font-bold text-navy mb-4">Quick Actions</h3>
+                        <div className="space-y-2">
+                            {[
+                                { label: "Find Immigration Expert", href: "/find-lawyer", icon: Star, color: "text-[#0ea5e9]" },
+                                { label: "Check Visa Guides", href: "/visa-guide/canada/express-entry", icon: FileText, color: "text-violet-500" },
+                                { label: "Work Permit Hub", href: "/work-permit", icon: TrendingUp, color: "text-emerald-500" },
+                                { label: "Emergency Help", href: "/emergency", icon: AlertTriangle, color: "text-red-500" },
+                            ].map((action) => (
+                                <Link key={action.href} href={action.href}>
+                                    <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-sky-50 transition-all cursor-pointer group">
+                                        <action.icon className={`w-5 h-5 ${action.color} shrink-0`} />
+                                        <span className="text-sm font-semibold text-navy group-hover:text-[#0ea5e9] transition-colors">{action.label}</span>
+                                        <ChevronRight className="w-4 h-4 text-gray-300 ml-auto group-hover:text-[#0ea5e9] transition-colors" />
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Emergency Banner */}
+                    <Link href="/emergency">
+                        <div className="bg-white border-l-4 border-red-500 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+                            <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
+                                <AlertTriangle className="w-5 h-5 text-red-500" />
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-navy text-sm">Need Emergency Help?</h4>
+                                <p className="text-xs text-gray-400">Overstay, denial, or deportation risk?</p>
+                            </div>
+                            <ChevronRight className="w-4 h-4 text-red-400 ml-auto group-hover:translate-x-1 transition-transform" />
+                        </div>
+                    </Link>
                 </div>
             </div>
-        </main>
+        </div>
     );
 }

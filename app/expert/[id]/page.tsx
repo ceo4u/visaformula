@@ -1,238 +1,336 @@
 "use client";
 
-import { Star, MapPin, Phone, MessageSquare, Globe, Calendar, Clock, Share, Bookmark, ThumbsUp, ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
+import { Star, MapPin, Globe, Calendar, Clock, Share2, Bookmark, ThumbsUp, ChevronLeft, ChevronRight, CheckCircle, Award, Shield, MessageSquare, Phone, Video, Users } from "lucide-react";
+import Link from "next/link";
+
+const insights = [
+    { label: "Response Quality", score: 4.8, pct: 96 },
+    { label: "Communication", score: 4.5, pct: 90 },
+    { label: "Success Rate", score: 4.9, pct: 98 },
+    { label: "Value for Money", score: 4.2, pct: 84 },
+];
+
+const reviews = [
+    {
+        initials: "PS",
+        name: "Priya Sharma",
+        location: "Bengaluru, India",
+        date: "March 2024",
+        rating: 5,
+        service: "Express Entry",
+        text: "Marcus handled my ITA application with incredible precision. He walked me through every step and was always reachable on WhatsApp. Got my ITA in 4 months!",
+        helpful: 28,
+        reply: "Thank you Priya! Congratulations on your ITA — it was a pleasure working with you. Wishing you the very best in Canada!",
+        color: "bg-indigo-100 text-indigo-700",
+    },
+    {
+        initials: "RV",
+        name: "Rahul Verma",
+        location: "Delhi, India",
+        date: "Jan 2024",
+        rating: 5,
+        service: "H-1B Transfer",
+        text: "H-1B transfer was done in 45 days with Marcus. Zero surprises on fees, very transparent. Highly recommended for anyone dealing with a tight deadline.",
+        helpful: 19,
+        reply: null,
+        color: "bg-emerald-100 text-emerald-700",
+    },
+    {
+        initials: "JD",
+        name: "John Doe",
+        location: "San Francisco, CA",
+        date: "Oct 2023",
+        rating: 4,
+        service: "RFE Response",
+        text: "Marcus handled my RFE with expertise and didn't charge extra when things got complicated. Very organized and professional throughout.",
+        helpful: 12,
+        reply: "Thank you John! RFEs can be stressful but your quick responses made it seamless. Looking forward to your extension!",
+        color: "bg-amber-100 text-amber-700",
+    },
+];
+
+const services = [
+    { label: "Initial Consultation (30 min)", price: "₹2,500" },
+    { label: "Full Visa Application Review (60 min)", price: "₹4,500" },
+    { label: "Document Checklist Audit", price: "₹1,500" },
+    { label: "H-1B / Express Entry Full Filing", price: "₹35,000" },
+];
+
+const photos = [
+    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=300&fit=crop",
+];
 
 export default function ExpertProfilePage() {
-    return (
-        <div className="bg-[#f5f5f5] min-h-screen text-[#222222]">
-            {/* Header Section */}
-            <div className="bg-white border-b border-gray-200 pt-6">
-                <div className="max-w-[1140px] mx-auto px-4 md:px-0 flex flex-col md:flex-row justify-between pb-6 gap-6">
-                    <div>
-                        <h1 className="text-3xl font-bold mb-1">Marcus Thorne, JD</h1>
-                        <div className="flex items-center gap-2 mb-2 text-sm text-gray-700">
-                            <Link href="#" className="font-medium hover:underline">Immigration Attorney</Link>
-                            <span>·</span>
-                            <div className="flex text-yellow-500">
-                                {[1, 2, 3, 4, 5].map((i) => (
-                                    <Star key={i} className="w-4 h-4" fill={i <= 4.5 ? "currentColor" : "none"} />
-                                ))}
-                            </div>
-                            <span className="font-bold">4.5</span>
-                            <a href="#reviews" className="hover:underline text-gray-500">(142 reviews)</a>
-                        </div>
-                        <div className="flex items-center text-sm text-gray-600 mb-4 gap-2">
-                            <span>New York, NY</span>
-                            <span>·</span>
-                            <span>15 years experience</span>
-                            <span>·</span>
-                            <span>1,500+ cases handled</span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            <span className="bg-green-100 text-green-800 text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-green-200">Open now</span>
-                            <span className="bg-sky-50 text-[#0ea5e9] text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-sky-200">Verified</span>
-                            <span className="bg-orange-50 text-orange-700 text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-orange-200">Top Rated</span>
-                        </div>
-                    </div>
+    const [selectedService, setSelectedService] = useState(0);
+    const [selectedSession, setSelectedSession] = useState<"video" | "phone" | "in-person">("video");
+    const [selectedSlot, setSelectedSlot] = useState("10:00 AM");
+    const [helpfulVotes, setHelpfulVotes] = useState<number[]>([]);
+    const [saved, setSaved] = useState(false);
 
-                    <div className="flex flex-row md:flex-col gap-2 shrink-0 self-start md:self-end mt-4 md:mt-0">
-                        <button className="flex items-center gap-1.5 border border-gray-300 px-4 py-2 text-sm font-bold rounded hover:bg-gray-50 transition-colors">
-                            <Share className="w-4 h-4" /> Share
-                        </button>
-                        <button className="flex items-center gap-1.5 border border-gray-300 px-4 py-2 text-sm font-bold rounded hover:bg-gray-50 transition-colors">
-                            <Bookmark className="w-4 h-4" /> Save
-                        </button>
+    const toggleHelpful = (idx: number) => {
+        setHelpfulVotes((prev) => prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]);
+    };
+
+    return (
+        <div className="bg-[#f0f4f8] min-h-screen">
+            {/* Header Info */}
+            <div className="bg-white border-b border-sky-100 pt-6">
+                <div className="max-w-6xl mx-auto px-4 pb-6">
+                    <div className="flex flex-col md:flex-row md:justify-between gap-4">
+                        <div>
+                            <div className="flex flex-wrap items-center gap-2 mb-2">
+                                <span className="bg-emerald-100 text-emerald-700 text-[11px] font-bold uppercase px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> Open Now
+                                </span>
+                                <span className="bg-sky-50 text-[#0ea5e9] text-[11px] font-bold uppercase px-2.5 py-1 rounded-full border border-sky-200 flex items-center gap-1">
+                                    <CheckCircle className="w-3 h-3" /> KYC Verified
+                                </span>
+                                <span className="bg-amber-50 text-amber-700 text-[11px] font-bold uppercase px-2.5 py-1 rounded-full border border-amber-200 flex items-center gap-1">
+                                    <Award className="w-3 h-3" /> Top Rated
+                                </span>
+                            </div>
+                            <h1 className="font-sora text-3xl font-extrabold text-navy mb-1">Marcus Thorne, JD</h1>
+                            <div className="flex items-center gap-2 text-sm font-semibold text-gray-500 mb-2">
+                                <span>Immigration Attorney</span>
+                                <span>·</span>
+                                <span className="flex items-center gap-1"><Star className="w-4 h-4 text-amber-500 fill-amber-500" /> 4.5</span>
+                                <a href="#reviews" className="text-[#0ea5e9] hover:underline">(142 reviews)</a>
+                            </div>
+                            <div className="flex flex-wrap items-center text-sm text-gray-500 gap-3">
+                                <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> New York, NY</span>
+                                <span className="flex items-center gap-1"><Users className="w-4 h-4" /> 15 yrs experience</span>
+                                <span className="flex items-center gap-1"><Shield className="w-4 h-4 text-[#0ea5e9]" /> 1,500+ cases handled</span>
+                            </div>
+                        </div>
+                        <div className="flex items-start gap-2 shrink-0">
+                            <button onClick={() => setSaved(!saved)} className={`flex items-center gap-1.5 border px-4 py-2 text-sm font-bold rounded-xl transition-all ${saved ? "border-[#0ea5e9] bg-sky-50 text-[#0ea5e9]" : "border-sky-200 hover:bg-sky-50 text-gray-500"}`}>
+                                <Bookmark className={`w-4 h-4 ${saved ? "fill-[#0ea5e9]" : ""}`} /> {saved ? "Saved" : "Save"}
+                            </button>
+                            <button className="flex items-center gap-1.5 border border-sky-200 px-4 py-2 text-sm font-bold rounded-xl hover:bg-sky-50 text-gray-500 transition-all">
+                                <Share2 className="w-4 h-4" /> Share
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 {/* Photo Grid */}
-                <div className="max-w-[1140px] mx-auto px-4 md:px-0 pb-8 flex h-[350px] gap-1 relative">
-                    <div className="w-[60%] bg-gray-200 overflow-hidden cursor-pointer">
-                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&h=600&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Main" />
+                <div className="max-w-6xl mx-auto px-4 pb-8 grid grid-cols-4 grid-rows-2 gap-2 h-[320px]">
+                    <div className="col-span-2 row-span-2 rounded-2xl overflow-hidden">
+                        <img src={photos[0]} alt="Expert" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     </div>
-                    <div className="w-[40%] grid grid-cols-2 grid-rows-2 gap-1 h-full">
-                        <div className="bg-gray-200 overflow-hidden cursor-pointer"><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=300&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Office" /></div>
-                        <div className="bg-gray-200 overflow-hidden cursor-pointer"><img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&h=300&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Meeting" /></div>
-                        <div className="bg-gray-200 overflow-hidden cursor-pointer"><img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400&h=300&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Award" /></div>
-                        <div className="bg-gray-200 overflow-hidden cursor-pointer relative">
-                            <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=300&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Team" />
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                <span className="text-white font-bold text-sm">See all photos</span>
-                            </div>
+                    {photos.slice(1, 5).map((p, i) => (
+                        <div key={i} className={`rounded-2xl overflow-hidden relative ${i === 3 ? "cursor-pointer" : ""}`}>
+                            <img src={p} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                            {i === 3 && (
+                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-2xl">
+                                    <span className="text-white font-bold text-sm">See all 12 photos</span>
+                                </div>
+                            )}
                         </div>
-                    </div>
+                    ))}
                 </div>
             </div>
 
-            {/* Main Content Area */}
-            <div className="max-w-[1140px] mx-auto px-4 md:px-0 py-8 flex flex-col md:flex-row gap-8">
-                {/* 65% Left Column */}
-                <div className="w-full md:w-[65%] shrink-0">
-                    {/* About section */}
-                    <section className="mb-10">
-                        <h2 className="text-2xl font-bold mb-4">About the Expert</h2>
-                        <p className="text-sm leading-relaxed mb-4">
-                            Marcus Thorne is an award-winning immigration attorney specializing with over 15 years of experience resolving complex H-1B, O-1, and EB-1 visa cases. He runs a dedicated boutique firm tailored to the tech and creative industries.
+            {/* Main Content */}
+            <div className="max-w-6xl mx-auto px-4 py-10 flex flex-col lg:flex-row gap-8">
+                {/* Left Column */}
+                <div className="flex-1 space-y-8">
+                    {/* About */}
+                    <section className="bg-white rounded-2xl border border-sky-100 p-6 shadow-sm">
+                        <h2 className="font-sora text-xl font-bold text-navy mb-3">About the Expert</h2>
+                        <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                            Marcus Thorne is an award-winning immigration attorney with over 15 years of experience resolving complex H-1B, O-1, EB-1, and Express Entry cases. He runs a boutique firm tailored to tech and creative industry professionals.
                         </p>
-                        <h3 className="font-bold mb-2">Specialties</h3>
                         <div className="flex flex-wrap gap-2">
-                            {["H-1B Visa", "O-1 Extraordinary Ability", "EB-1 Green Card", "L-1 Transfer", "RFE Responses"].map((spec) => (
-                                <span key={spec} className="border border-gray-300 text-sm px-3 py-1.5 rounded-[20px] font-medium bg-white">{spec}</span>
+                            {["H-1B Visa", "O-1 Extraordinary Ability", "EB-1 Green Card", "L-1 Transfer", "Express Entry", "RFE Responses"].map((spec) => (
+                                <span key={spec} className="bg-sky-50 text-sky-700 text-xs px-3 py-1.5 rounded-full border border-sky-100 font-semibold">
+                                    {spec}
+                                </span>
                             ))}
                         </div>
                     </section>
 
-                    <hr className="border-gray-200 mb-8" />
+                    {/* Services & Pricing */}
+                    <section className="bg-white rounded-2xl border border-sky-100 p-6 shadow-sm">
+                        <h2 className="font-sora text-xl font-bold text-navy mb-4">Services & Pricing</h2>
+                        <div className="space-y-3">
+                            {services.map((s, i) => (
+                                <div key={i} className={`flex items-center justify-between p-3.5 rounded-xl border-2 cursor-pointer transition-all ${selectedService === i ? "border-[#0ea5e9] bg-sky-50" : "border-sky-100 hover:border-sky-200"}`}
+                                    onClick={() => setSelectedService(i)}>
+                                    <span className="text-sm font-semibold text-navy">{s.label}</span>
+                                    <span className="font-bold text-[#0ea5e9] text-sm shrink-0 ml-4">{s.price}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
 
                     {/* Review Insights */}
-                    <section className="mb-10" id="reviews">
-                        <h2 className="text-2xl font-bold mb-4">Review Insights</h2>
-                        <div className="bg-white border border-gray-200 rounded-[8px] p-6 shadow-[0_1px_4px_rgba(0,0,0,0.1)]">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1 font-medium"><span>Response Quality</span><span>4.8</span></div>
-                                    <div className="w-full h-2 bg-[#e8e8e8] rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#0ea5e9] w-[96%]"></div>
+                    <section className="bg-white rounded-2xl border border-sky-100 p-6 shadow-sm" id="reviews">
+                        <h2 className="font-sora text-xl font-bold text-navy mb-5">Review Insights</h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            {insights.map((ins) => (
+                                <div key={ins.label}>
+                                    <div className="flex justify-between text-sm font-semibold mb-1.5">
+                                        <span className="text-gray-700">{ins.label}</span>
+                                        <span className="text-[#0ea5e9]">{ins.score}</span>
+                                    </div>
+                                    <div className="w-full h-2.5 bg-sky-50 rounded-full overflow-hidden border border-sky-100">
+                                        <div className="h-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-full transition-all" style={{ width: `${ins.pct}%` }} />
                                     </div>
                                 </div>
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1 font-medium"><span>Communication</span><span>4.5</span></div>
-                                    <div className="w-full h-2 bg-[#e8e8e8] rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#0ea5e9] w-[90%]"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1 font-medium"><span>Success Rate</span><span>4.9</span></div>
-                                    <div className="w-full h-2 bg-[#e8e8e8] rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#0ea5e9] w-[98%]"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1 font-medium"><span>Value</span><span>4.2</span></div>
-                                    <div className="w-full h-2 bg-[#e8e8e8] rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#0ea5e9] w-[84%]"></div>
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </section>
 
                     {/* Reviews List */}
-                    <section>
-                        {/* Sample Review */}
-                        <div className="mb-8 border-b border-gray-100 pb-8">
-                            <div className="flex items-start gap-4 mb-3">
-                                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold shrink-0">JD</div>
-                                <div>
-                                    <div className="font-bold">John Doe</div>
-                                    <div className="text-xs text-gray-500">San Francisco, CA · 15 reviews</div>
+                    <section className="space-y-4">
+                        {reviews.map((r, idx) => (
+                            <div key={idx} className="bg-white rounded-2xl border border-sky-100 p-6 shadow-sm">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className={`w-10 h-10 rounded-full ${r.color} flex items-center justify-center font-bold text-sm shrink-0`}>
+                                        {r.initials}
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="font-bold text-navy text-sm">{r.name}</div>
+                                        <div className="text-xs text-gray-400">{r.location} · {r.date}</div>
+                                    </div>
+                                    <span className="text-[10px] bg-sky-50 text-sky-700 px-2.5 py-1 rounded-full border border-sky-100 font-bold shrink-0">{r.service}</span>
                                 </div>
-                            </div>
-                            <div className="flex items-center gap-2 mb-2">
-                                <div className="flex text-yellow-500">
-                                    {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3 h-3" fill="currentColor" />)}
+                                <div className="flex gap-0.5 mb-2">
+                                    {[1, 2, 3, 4, 5].map((i) => (
+                                        <Star key={i} className={`w-3.5 h-3.5 ${i <= r.rating ? "text-amber-500 fill-amber-500" : "text-gray-200"}`} />
+                                    ))}
                                 </div>
-                                <span className="text-xs text-gray-500">Oct 24, 2023</span>
+                                <p className="text-sm text-gray-600 leading-relaxed mb-3">{r.text}</p>
+                                <button
+                                    onClick={() => toggleHelpful(idx)}
+                                    className={`flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border transition-all ${helpfulVotes.includes(idx) ? "bg-sky-50 border-[#0ea5e9] text-[#0ea5e9]" : "border-gray-200 text-gray-500 hover:bg-gray-50"
+                                        }`}
+                                >
+                                    <ThumbsUp className={`w-3.5 h-3.5 ${helpfulVotes.includes(idx) ? "fill-[#0ea5e9]" : ""}`} />
+                                    Helpful ({r.helpful + (helpfulVotes.includes(idx) ? 1 : 0)})
+                                </button>
+
+                                {r.reply && (
+                                    <div className="mt-4 bg-sky-50/70 rounded-xl p-4 border-l-4 border-[#0ea5e9]">
+                                        <div className="text-xs font-bold text-navy mb-1 flex items-center gap-1.5">
+                                            <CheckCircle className="w-3.5 h-3.5 text-[#0ea5e9]" /> Expert Reply
+                                        </div>
+                                        <p className="text-xs text-gray-600 leading-relaxed">{r.reply}</p>
+                                    </div>
+                                )}
                             </div>
-                            <p className="text-sm leading-relaxed mb-4">
-                                Marcus handled my H-1B RFE with incredible precision. They walked me through everything and didn't charge me extra when things got complicated. They are highly organized.
-                            </p>
-                            <button className="flex items-center gap-1.5 text-xs font-bold text-gray-600 border border-gray-300 px-3 py-1.5 rounded hover:bg-gray-50 transition-colors">
-                                <ThumbsUp className="w-3 h-3" /> Helpful (12)
+                        ))}
+                        <div className="text-center pt-2">
+                            <button className="border-2 border-sky-200 text-navy font-bold px-6 py-2.5 rounded-xl hover:bg-sky-50 transition-all text-sm">
+                                Load more reviews (139)
                             </button>
-
-                            {/* Business Reply */}
-                            <div className="bg-gray-50 mt-4 p-4 rounded ml-4 border-l-[3px] border-[#0ea5e9]">
-                                <div className="text-xs font-bold mb-1">Business Reply</div>
-                                <p className="text-xs text-gray-600 leading-relaxed">
-                                    Thank you John! It was a pleasure working with you. Dealing with an RFE can be stressful, but your quick responses made it a seamless collaborative effort. Looking forward to your extensions!
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* More Reviews (Pagination/Link conceptually) */}
-                        <div className="text-center">
-                            <button className="border-2 border-gray-300 text-gray-700 font-bold px-6 py-2 rounded hover:bg-gray-50 transition-colors">Load more reviews</button>
                         </div>
                     </section>
                 </div>
 
-                {/* 35% Right Column (Sticky) */}
-                <aside className="w-full md:w-[35%]">
-                    <div className="sticky top-20 flex flex-col gap-6">
+                {/* Right Sticky Sidebar */}
+                <aside className="w-full lg:w-[360px] shrink-0">
+                    <div className="sticky top-24 space-y-5">
                         {/* Booking Card */}
-                        <div className="bg-white border border-gray-200 rounded-[8px] p-6 shadow-[0_1px_4px_rgba(0,0,0,0.1)]">
-                            <h3 className="text-xl font-bold mb-4 border-b border-gray-100 pb-4">Book a Consultation</h3>
+                        <div className="bg-white rounded-2xl border border-sky-100 shadow-card p-6">
+                            <h3 className="font-sora text-lg font-bold text-navy mb-5">Book a Consultation</h3>
 
-                            <label className="block text-sm font-bold mb-2">Session Type</label>
-                            <div className="flex gap-2 mb-4">
-                                <button className="flex-1 border-2 border-[#0ea5e9] bg-sky-50 text-[#0ea5e9] font-bold py-2 rounded-[20px] text-sm">Video</button>
-                                <button className="flex-1 border border-gray-300 hover:border-gray-400 font-medium text-gray-700 py-2 rounded-[20px] text-sm">Phone</button>
-                                <button className="flex-1 border border-gray-300 hover:border-gray-400 font-medium text-gray-700 py-2 rounded-[20px] text-sm hidden sm:block">In-person</button>
+                            {/* Session Type */}
+                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Session Type</label>
+                            <div className="grid grid-cols-3 gap-2 mb-5">
+                                {(["video", "phone", "in-person"] as const).map((type) => (
+                                    <button key={type} onClick={() => setSelectedSession(type)}
+                                        className={`py-2 rounded-xl text-xs font-bold border-2 flex flex-col items-center gap-1 transition-all ${selectedSession === type ? "border-[#0ea5e9] bg-sky-50 text-[#0ea5e9]" : "border-sky-100 text-gray-500 hover:bg-sky-50"
+                                            }`}>
+                                        {type === "video" ? <Video className="w-4 h-4" /> : type === "phone" ? <Phone className="w-4 h-4" /> : <Globe className="w-4 h-4" />}
+                                        <span className="capitalize">{type}</span>
+                                    </button>
+                                ))}
                             </div>
 
-                            <label className="block text-sm font-bold mb-2">Duration & Price</label>
-                            <select className="w-full border border-gray-300 rounded p-2 text-sm mb-4 outline-none focus:border-[#0ea5e9]">
-                                <option>30 min ($150)</option>
-                                <option>60 min ($250)</option>
-                                <option>Document Review ($400)</option>
+                            {/* Service selector */}
+                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Service</label>
+                            <select
+                                className="w-full p-3 bg-sky-50/50 border border-sky-100 rounded-xl text-sm font-semibold text-navy outline-none focus:border-[#0ea5e9] mb-5"
+                                value={selectedService}
+                                onChange={(e) => setSelectedService(Number(e.target.value))}
+                            >
+                                {services.map((s, i) => (
+                                    <option key={i} value={i}>{s.label} — {s.price}</option>
+                                ))}
                             </select>
 
-                            <label className="block text-sm font-bold mb-2">Select Date</label>
-                            {/* Mini Calendar placeholder */}
-                            <div className="border border-gray-200 rounded p-3 mb-4">
+                            {/* Mini Calendar */}
+                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Select Date</label>
+                            <div className="bg-sky-50/50 border border-sky-100 rounded-xl p-3 mb-4">
                                 <div className="flex justify-between items-center mb-2">
-                                    <ChevronLeft className="w-4 h-4 text-gray-400" />
-                                    <span className="text-sm font-bold">November 2023</span>
-                                    <ChevronRight className="w-4 h-4 text-[#0ea5e9] cursor-pointer" />
+                                    <ChevronLeft className="w-4 h-4 text-gray-400 cursor-pointer hover:text-navy" />
+                                    <span className="text-sm font-bold text-navy">April 2025</span>
+                                    <ChevronRight className="w-4 h-4 text-[#0ea5e9] cursor-pointer hover:text-[#0284c7]" />
                                 </div>
                                 <div className="grid grid-cols-7 gap-1 text-center text-xs">
-                                    {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map(d => <div key={d} className="font-medium text-gray-400 py-1">{d}</div>)}
+                                    {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => (
+                                        <div key={d} className="font-bold text-gray-400 py-1">{d}</div>
+                                    ))}
                                     {Array.from({ length: 30 }).map((_, i) => (
-                                        <div key={i} className={`py-1.5 rounded cursor-pointer ${i === 14 ? "bg-[#0ea5e9] text-white font-bold" : i > 12 ? "hover:bg-gray-100" : "text-gray-300"}`}>
+                                        <div key={i} className={`py-1.5 rounded-lg cursor-pointer text-xs font-semibold transition-colors ${i === 14 ? "bg-[#0ea5e9] text-white font-bold" :
+                                                i > 12 ? "hover:bg-sky-100 text-navy" : "text-gray-300"
+                                            }`}>
                                             {i + 1}
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            <label className="block text-sm font-bold mb-2">Available Times for Nov 15</label>
-                            <div className="grid grid-cols-3 gap-2 mb-6">
-                                <button className="border border-[#0ea5e9] bg-sky-50 text-[#0ea5e9] rounded py-1.5 text-xs font-bold">10:00 AM</button>
-                                <button className="border border-gray-300 hover:border-gray-400 rounded py-1.5 text-xs font-medium">1:30 PM</button>
-                                <button className="border border-gray-300 hover:border-gray-400 rounded py-1.5 text-xs font-medium">3:00 PM</button>
+                            {/* Time Slots */}
+                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Available Times</label>
+                            <div className="grid grid-cols-3 gap-2 mb-5">
+                                {["10:00 AM", "1:30 PM", "3:00 PM", "4:30 PM", "6:00 PM", "7:00 PM"].map((slot) => (
+                                    <button key={slot} onClick={() => setSelectedSlot(slot)}
+                                        className={`py-2 rounded-xl text-xs font-bold border-2 transition-all ${selectedSlot === slot ? "border-[#0ea5e9] bg-sky-50 text-[#0ea5e9]" : "border-sky-100 text-navy hover:bg-sky-50"
+                                            }`}
+                                    >
+                                        {slot}
+                                    </button>
+                                ))}
                             </div>
 
-                            <button className="w-full bg-[#0ea5e9] text-white font-bold py-3 rounded-[4px] hover:bg-[#0284c7] transition-colors shadow">
-                                Request to Book
-                            </button>
+                            <Link href="/payment/booking-001">
+                                <button className="w-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:shadow-sky-200 transition-all active:scale-[0.97]">
+                                    Book & Pay Securely
+                                </button>
+                            </Link>
+                            <p className="text-center text-xs text-gray-400 mt-2 font-medium flex items-center justify-center gap-1">
+                                <Shield className="w-3 h-3" /> Escrow protected · Cancel free until 24h before
+                            </p>
                         </div>
 
                         {/* Contact Card */}
-                        <div className="bg-white border border-gray-200 rounded-[8px] p-6 shadow-[0_1px_4px_rgba(0,0,0,0.1)]">
-                            <h3 className="font-bold mb-4">Contact Info</h3>
-                            <div className="space-y-4 text-sm text-[#222222]">
+                        <div className="bg-white rounded-2xl border border-sky-100 p-5 shadow-sm">
+                            <h4 className="font-bold text-navy text-sm mb-4">Contact Details</h4>
+                            <div className="space-y-3 text-sm text-gray-600">
                                 <div className="flex items-center gap-3">
-                                    <Globe className="w-5 h-5 text-gray-500" />
-                                    <a href="#" className="text-blue-600 hover:underline">www.thornelaw.com</a>
+                                    <Globe className="w-4 h-4 text-[#0ea5e9] shrink-0" />
+                                    <a href="#" className="text-[#0ea5e9] hover:underline font-medium">www.thornelaw.com</a>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Phone className="w-5 h-5 text-gray-500" />
+                                    <Phone className="w-4 h-4 text-[#0ea5e9] shrink-0" />
                                     <span>(212) 555-0198</span>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <MapPin className="w-5 h-5 text-gray-500" />
-                                    <div>
-                                        120 Broadway, Suite 3400<br />
-                                        New York, NY 10271
-                                    </div>
+                                    <MapPin className="w-4 h-4 text-[#0ea5e9] shrink-0" />
+                                    <span>120 Broadway, Suite 3400, New York, NY</span>
                                 </div>
-                                <button className="mt-2 w-full border-2 border-gray-300 text-gray-800 font-bold py-2 rounded flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors">
-                                    <MessageSquare className="w-4 h-4" /> Message Expert
-                                </button>
                             </div>
+                            <button className="mt-4 w-full border-2 border-sky-200 text-navy font-bold py-2.5 rounded-xl hover:bg-sky-50 transition-all flex items-center justify-center gap-2 text-sm">
+                                <MessageSquare className="w-4 h-4" /> Message Expert
+                            </button>
                         </div>
                     </div>
                 </aside>

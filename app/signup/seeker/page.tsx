@@ -2,81 +2,122 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, ArrowLeft, CheckCircle, Globe, GraduationCap, Briefcase, Plane, Home } from "lucide-react";
+import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft } from "lucide-react";
+
+const goals = [
+    { id: "study", icon: GraduationCap, label: "Study Abroad", desc: "Find universities & student visas" },
+    { id: "work", icon: Briefcase, label: "Work Overseas", desc: "Work permits, H-1B, PR pathways" },
+    { id: "visit", icon: Plane, label: "Visit / Tourist", desc: "Short-stay & tourist visas" },
+    { id: "settle", icon: Home, label: "Settle Permanently", desc: "Express Entry, PR, citizenship" },
+];
+
+const destinations = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
+
+const steps = [
+    { label: "Account", icon: "1" },
+    { label: "Your Goals", icon: "2" },
+    { label: "Destinations", icon: "3" },
+];
 
 export default function SeekerSignupPage() {
     const [step, setStep] = useState(1);
+    const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+    const [selectedDests, setSelectedDests] = useState<string[]>([]);
+    const [submitted, setSubmitted] = useState(false);
 
-    const goals = [
-        { id: "study", icon: GraduationCap, label: "Study Abroad" },
-        { id: "work", icon: Briefcase, label: "Work Overseas" },
-        { id: "visit", icon: Plane, label: "Visit / Tourist" },
-        { id: "settle", icon: Home, label: "Settle Permanently" }
-    ];
+    const toggleItem = (id: string, list: string[], setList: (l: string[]) => void) => {
+        setList(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
+    };
+
+    if (submitted) {
+        return (
+            <div className="bg-[#f0f4f8] min-h-screen flex flex-col items-center justify-center px-4">
+                <div className="bg-white rounded-3xl border border-sky-100 shadow-card p-10 max-w-md w-full text-center">
+                    <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <CheckCircle className="w-10 h-10 text-emerald-500" />
+                    </div>
+                    <h1 className="font-sora text-2xl font-extrabold text-navy mb-2">You&apos;re In! 🎉</h1>
+                    <p className="text-gray-500 text-sm mb-6">Your Visara account is ready. Start exploring experts and opportunities.</p>
+                    <Link href="/">
+                        <button className="w-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white py-3.5 rounded-xl font-bold hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                            Explore the Platform <ArrowRight className="w-4 h-4" />
+                        </button>
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="bg-[#f5f5f5] min-h-screen flex flex-col text-[#222222]">
+        <div className="bg-[#f0f4f8] min-h-screen flex flex-col">
             {/* Top Bar */}
-            <div className="bg-white border-b border-gray-200 py-4 px-6 flex justify-between items-center">
-                <Link href="/" className="font-bold text-xl tracking-tight">Visara.</Link>
-                <Link href="/login" className="text-sm font-bold text-gray-600 hover:text-[#0ea5e9] transition-colors">Log in instead</Link>
+            <div className="bg-white border-b border-sky-100 py-4 px-6 flex justify-between items-center shadow-sm">
+                <Link href="/" className="flex items-center gap-2">
+                    <Globe className="w-5 h-5 text-[#0ea5e9]" />
+                    <span className="text-xl font-extrabold tracking-tight text-navy">Visara</span>
+                </Link>
+                <Link href="/login" className="text-sm font-bold text-gray-500 hover:text-[#0ea5e9] transition-colors">
+                    Log in instead
+                </Link>
             </div>
 
-            <main className="flex-1 flex items-center justify-center py-12 px-4">
-                <div className="bg-white max-w-[600px] w-full rounded-[8px] border border-gray-200 shadow-sm p-8">
+            <main className="flex-1 flex items-center justify-center py-10 px-4">
+                <div className="bg-white max-w-xl w-full rounded-3xl border border-sky-100 shadow-card p-8">
 
-                    {/* Progress Bar */}
-                    <div className="mb-8">
-                        <div className="flex justify-between text-xs font-bold text-gray-500 mb-2">
-                            <span>Personal Info</span>
-                            <span>Your Goals</span>
-                            <span>Destinations</span>
-                        </div>
-                        <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden flex">
-                            <div className={`h-full bg-[#0ea5e9] transition-all duration-300 w-${step === 1 ? '1/3' : step === 2 ? '2/3' : 'full'}`} style={{ width: `${(step / 3) * 100}%` }}></div>
-                        </div>
+                    {/* Step Indicator */}
+                    <div className="flex items-center justify-center gap-2 mb-8">
+                        {steps.map((s, i) => (
+                            <div key={s.label} className="flex items-center gap-2">
+                                <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm transition-all ${step > i + 1 ? "bg-emerald-500 text-white" :
+                                        step === i + 1 ? "bg-[#0ea5e9] text-white shadow-lg shadow-sky-200" :
+                                            "bg-gray-100 text-gray-400"
+                                    }`}>
+                                    {step > i + 1 ? <CheckCircle className="w-4 h-4" /> : s.icon}
+                                </div>
+                                <span className={`text-xs font-bold hidden sm:block ${step >= i + 1 ? "text-navy" : "text-gray-400"}`}>{s.label}</span>
+                                {i < steps.length - 1 && (
+                                    <div className={`w-8 h-[3px] rounded-full mx-1 ${step > i + 1 ? "bg-emerald-400" : "bg-gray-200"}`} />
+                                )}
+                            </div>
+                        ))}
                     </div>
 
-                    {step > 1 && (
-                        <button onClick={() => setStep(step - 1)} className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 mb-6">
-                            <ArrowLeft className="w-4 h-4 mr-1" /> Back
-                        </button>
-                    )}
-
+                    {/* Step 1: Account Details */}
                     {step === 1 && (
-                        <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                            <h1 className="text-2xl font-bold mb-2">Let's get started</h1>
-                            <p className="text-gray-500 mb-6 text-sm">Create an account to explore immigration options and connect with experts.</p>
-
+                        <div>
+                            <h2 className="font-sora text-2xl font-bold text-navy mb-1">Let&apos;s get started</h2>
+                            <p className="text-sm text-gray-500 mb-6">Create your free Visara account in seconds.</p>
                             <div className="space-y-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-bold mb-1">First Name</label>
-                                        <input type="text" className="w-full border border-gray-300 rounded p-2.5 text-sm outline-none focus:border-[#0ea5e9] focus:ring-1 focus:ring-[#0ea5e9]" placeholder="John" />
+                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 block">First Name</label>
+                                        <input type="text" placeholder="John" className="w-full p-3 bg-sky-50/50 border border-sky-100 rounded-xl text-sm outline-none focus:border-[#0ea5e9] transition-colors" />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-bold mb-1">Last Name</label>
-                                        <input type="text" className="w-full border border-gray-300 rounded p-2.5 text-sm outline-none focus:border-[#0ea5e9] focus:ring-1 focus:ring-[#0ea5e9]" placeholder="Doe" />
+                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 block">Last Name</label>
+                                        <input type="text" placeholder="Doe" className="w-full p-3 bg-sky-50/50 border border-sky-100 rounded-xl text-sm outline-none focus:border-[#0ea5e9] transition-colors" />
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-bold mb-1">Email Address</label>
-                                    <input type="email" className="w-full border border-gray-300 rounded p-2.5 text-sm outline-none focus:border-[#0ea5e9] focus:ring-1 focus:ring-[#0ea5e9]" placeholder="john@example.com" />
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 block">Email Address</label>
+                                    <input type="email" placeholder="john@example.com" className="w-full p-3 bg-sky-50/50 border border-sky-100 rounded-xl text-sm outline-none focus:border-[#0ea5e9] transition-colors" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-bold mb-1">Password</label>
-                                    <input type="password" className="w-full border border-gray-300 rounded p-2.5 text-sm outline-none focus:border-[#0ea5e9] focus:ring-1 focus:ring-[#0ea5e9]" placeholder="••••••••" />
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 block">Password</label>
+                                    <input type="password" placeholder="Min. 8 characters" className="w-full p-3 bg-sky-50/50 border border-sky-100 rounded-xl text-sm outline-none focus:border-[#0ea5e9] transition-colors" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-bold mb-1">Passport Country</label>
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 block">Passport Country</label>
                                     <div className="relative">
-                                        <Globe className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                                        <select className="w-full border border-gray-300 rounded p-2.5 pl-10 text-sm outline-none focus:border-[#0ea5e9] focus:ring-1 focus:ring-[#0ea5e9] appearance-none bg-transparent">
-                                            <option>Select a country</option>
+                                        <Globe className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                                        <select className="w-full p-3 pl-9 bg-sky-50/50 border border-sky-100 rounded-xl text-sm outline-none focus:border-[#0ea5e9] transition-colors appearance-none">
+                                            <option value="">Select a country</option>
                                             <option>India</option>
                                             <option>Nigeria</option>
                                             <option>Philippines</option>
                                             <option>Brazil</option>
+                                            <option>Pakistan</option>
+                                            <option>Bangladesh</option>
                                             <option>Other</option>
                                         </select>
                                     </div>
@@ -85,62 +126,88 @@ export default function SeekerSignupPage() {
                         </div>
                     )}
 
+                    {/* Step 2: Goals */}
                     {step === 2 && (
-                        <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                            <h1 className="text-2xl font-bold mb-2">What is your primary goal?</h1>
-                            <p className="text-gray-500 mb-6 text-sm">Select all that apply to help us personalize your experience.</p>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <h2 className="font-sora text-2xl font-bold text-navy mb-1">What&apos;s your goal?</h2>
+                            <p className="text-sm text-gray-500 mb-6">Select all that apply — we&apos;ll personalize your experience.</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {goals.map((goal) => (
-                                    <label key={goal.id} className="relative cursor-pointer group">
-                                        <input type="checkbox" className="peer sr-only" name="goal" value={goal.id} />
-                                        <div className="p-4 border-2 border-gray-200 rounded-[8px] peer-checked:border-[#0ea5e9] peer-checked:bg-sky-50 hover:bg-gray-50 transition-colors flex flex-col items-center text-center gap-2">
-                                            <goal.icon className="w-8 h-8 text-gray-500 peer-checked:text-[#0ea5e9] group-hover:scale-110 transition-transform" />
-                                            <span className="font-bold text-sm text-gray-700 peer-checked:text-[#0ea5e9]">{goal.label}</span>
+                                    <button
+                                        key={goal.id}
+                                        onClick={() => toggleItem(goal.id, selectedGoals, setSelectedGoals)}
+                                        className={`p-4 rounded-2xl border-2 text-left transition-all flex items-start gap-3 ${selectedGoals.includes(goal.id)
+                                                ? "border-[#0ea5e9] bg-sky-50 shadow-sm"
+                                                : "border-sky-100 bg-white hover:border-sky-200"
+                                            }`}
+                                    >
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${selectedGoals.includes(goal.id) ? "bg-[#0ea5e9]" : "bg-sky-50"
+                                            }`}>
+                                            <goal.icon className={`w-5 h-5 ${selectedGoals.includes(goal.id) ? "text-white" : "text-[#0ea5e9]"}`} />
                                         </div>
-                                    </label>
+                                        <div>
+                                            <div className={`font-bold text-sm ${selectedGoals.includes(goal.id) ? "text-navy" : "text-gray-700"}`}>{goal.label}</div>
+                                            <div className="text-xs text-gray-400 mt-0.5">{goal.desc}</div>
+                                        </div>
+                                    </button>
                                 ))}
                             </div>
                         </div>
                     )}
 
+                    {/* Step 3: Destinations */}
                     {step === 3 && (
-                        <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                            <h1 className="text-2xl font-bold mb-2">Where do you want to go?</h1>
-                            <p className="text-gray-500 mb-6 text-sm">Select top destinations you are interested in.</p>
-
-                            <div className="flex flex-wrap gap-3">
-                                {["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "France", "Spain", "Singapore", "UAE"].map((country) => (
-                                    <label key={country} className="relative cursor-pointer">
-                                        <input type="checkbox" className="peer sr-only" />
-                                        <div className="px-4 py-2 border-2 border-gray-200 rounded-[20px] text-sm font-bold text-gray-600 peer-checked:border-[#0ea5e9] peer-checked:bg-[#0ea5e9] peer-checked:text-white hover:border-gray-300 transition-colors">
-                                            {country}
-                                        </div>
-                                    </label>
+                        <div>
+                            <h2 className="font-sora text-2xl font-bold text-navy mb-1">Where do you want to go?</h2>
+                            <p className="text-sm text-gray-500 mb-6">Choose your top destination countries.</p>
+                            <div className="flex flex-wrap gap-2.5 mb-6">
+                                {destinations.map((country) => (
+                                    <button
+                                        key={country}
+                                        onClick={() => toggleItem(country, selectedDests, setSelectedDests)}
+                                        className={`px-4 py-2 rounded-xl text-sm font-bold border-2 transition-all ${selectedDests.includes(country)
+                                                ? "bg-[#0ea5e9] text-white border-[#0ea5e9] shadow-sm"
+                                                : "bg-white text-gray-600 border-sky-100 hover:border-sky-200"
+                                            }`}
+                                    >
+                                        {country}
+                                    </button>
                                 ))}
                             </div>
-
-                            <div className="mt-8 p-4 bg-blue-50 border border-blue-100 rounded text-sm text-blue-800 flex gap-3">
-                                <CheckCircle className="w-5 h-5 shrink-0 text-blue-600" />
-                                <div>
-                                    You're almost done! We will tailor experts and opportunities based on your selections.
+                            {selectedDests.length > 0 && (
+                                <div className="bg-sky-50 rounded-2xl p-4 border border-sky-100 text-sm text-sky-800">
+                                    <strong>Great choice!</strong> We&apos;ll match you with experts specializing in{" "}
+                                    {selectedDests.slice(0, 3).join(", ")}{selectedDests.length > 3 ? ` and ${selectedDests.length - 3} more` : ""}.
                                 </div>
-                            </div>
+                            )}
                         </div>
                     )}
 
-                    <div className="mt-8 pt-6 border-t border-gray-100">
-                        {step < 3 ? (
-                            <button onClick={() => setStep(step + 1)} className="w-full bg-[#0ea5e9] text-white py-3 rounded font-bold hover:bg-[#0284c7] transition-colors flex justify-center items-center">
-                                Next <ChevronRight className="w-4 h-4 ml-1" />
+                    {/* Navigation */}
+                    <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-100">
+                        {step > 1 ? (
+                            <button onClick={() => setStep(step - 1)} className="flex items-center gap-2 text-sm font-semibold text-gray-400 hover:text-navy transition-colors">
+                                <ArrowLeft className="w-4 h-4" /> Back
                             </button>
                         ) : (
-                            <button onClick={() => window.location.href = "/"} className="w-full bg-[#0ea5e9] text-white py-3 rounded font-bold hover:bg-[#0284c7] transition-colors shadow">
-                                Complete Registration
+                            <div />
+                        )}
+                        {step < 3 ? (
+                            <button
+                                onClick={() => setStep(step + 1)}
+                                className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-6 py-3 rounded-xl font-bold text-sm hover:shadow-lg transition-all active:scale-[0.97] flex items-center gap-2"
+                            >
+                                Continue <ArrowRight className="w-4 h-4" />
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => setSubmitted(true)}
+                                className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-bold text-sm hover:shadow-lg transition-all active:scale-[0.97] flex items-center gap-2"
+                            >
+                                <CheckCircle className="w-4 h-4" /> Complete Registration
                             </button>
                         )}
                     </div>
-
                 </div>
             </main>
         </div>

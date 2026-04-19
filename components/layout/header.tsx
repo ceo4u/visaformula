@@ -7,8 +7,8 @@ import { usePathname } from "next/navigation";
 
 const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/find-lawyer", label: "Find Experts" },
-    { href: "/work-permit", label: "Work Permit" },
+    { href: "/find-experts", label: "Find Experts" },
+    { href: "/tours", label: "Tours" },
     { href: "/training", label: "Training Hub" },
     { href: "/emergency", label: "Emergency" },
 ];
@@ -32,8 +32,8 @@ export function Header() {
                     {navLinks.map(link => (
                         <Link key={link.href} href={link.href}
                             className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${pathname === link.href
-                                    ? "text-[#0ea5e9] bg-sky-50"
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                                ? "text-[#0ea5e9] bg-sky-50"
+                                : "text-gray-500 hover:text-navy hover:bg-gray-50"
                                 }`}>
                             {link.label}
                         </Link>

@@ -80,8 +80,8 @@ export default function DashboardPage() {
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
                                     className={`flex-1 py-3.5 text-sm font-bold capitalize transition-all ${activeTab === tab
-                                            ? "text-[#0ea5e9] border-b-2 border-[#0ea5e9] bg-sky-50/50"
-                                            : "text-gray-400 hover:text-navy"
+                                        ? "text-[#0ea5e9] border-b-2 border-[#0ea5e9] bg-sky-50/50"
+                                        : "text-gray-400 hover:text-navy"
                                         }`}
                                 >
                                     {tab === "notifications" ? "Updates" : tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -155,7 +155,7 @@ export default function DashboardPage() {
                                                     <Star className="w-3 h-3 text-amber-500 fill-amber-500" /> {e.rating}
                                                 </div>
                                             </div>
-                                            <Link href="/find-lawyer">
+                                            <Link href="/find-experts">
                                                 <button className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-4 py-2 rounded-xl text-xs font-bold hover:shadow-md transition-all">Book</button>
                                             </Link>
                                         </div>
@@ -210,6 +210,40 @@ export default function DashboardPage() {
                                 View Escrow Details <ChevronRight className="w-4 h-4" />
                             </button>
                         </Link>
+                    </div>
+
+                    {/* Document Vault */}
+                    <div className="bg-white rounded-2xl border border-sky-100 shadow-sm p-5">
+                        <h3 className="font-sora font-bold text-navy mb-4 flex items-center gap-2">
+                            <FileText className="w-5 h-5 text-[#0ea5e9]" /> Document Vault
+                        </h3>
+                        <div className="space-y-3">
+                            {[
+                                { label: "Passport", status: "uploaded", icon: "✅" },
+                                { label: "IELTS Score Card", status: "pending", icon: "⚠️" },
+                                { label: "Financial Statement", status: "missing", icon: "❌" },
+                                { label: "Offer Letter", status: "uploaded", icon: "✅" },
+                                { label: "SOP / Cover Letter", status: "pending", icon: "⚠️" },
+                            ].map((doc) => (
+                                <div key={doc.label} className={`flex items-center justify-between p-3 rounded-xl border ${doc.status === "uploaded" ? "border-emerald-200 bg-emerald-50/50" :
+                                        doc.status === "pending" ? "border-amber-200 bg-amber-50/50" :
+                                            "border-red-200 bg-red-50/50"
+                                    }`}>
+                                    <span className="text-sm font-semibold text-navy">{doc.icon} {doc.label}</span>
+                                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${doc.status === "uploaded" ? "bg-emerald-100 text-emerald-700" :
+                                            doc.status === "pending" ? "bg-amber-100 text-amber-700" :
+                                                "bg-red-100 text-red-700"
+                                        }`}>{doc.status}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="mt-3 bg-sky-50 rounded-xl p-3 text-center border border-sky-100">
+                            <span className="text-xs text-gray-500 font-medium">Documents Ready</span>
+                            <div className="font-sora text-2xl font-extrabold text-[#0ea5e9]">2 / 5</div>
+                            <div className="w-full h-2 bg-sky-100 rounded-full mt-2 overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-full" style={{ width: "40%" }} />
+                            </div>
+                        </div>
                     </div>
                 </div>
 

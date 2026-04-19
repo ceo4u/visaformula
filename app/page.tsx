@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, CheckCircle, Users, Award, Shield, ArrowRight, Star, Globe, Briefcase, GraduationCap, BookOpen, Wallet, AlertTriangle, Lock, Heart } from "lucide-react";
+import { Search, CheckCircle, Users, Award, Shield, ArrowRight, Star, Globe, Briefcase, GraduationCap, BookOpen, Wallet, AlertTriangle, Lock, Heart, Plane, Home, MapPin } from "lucide-react";
 import { useState } from "react";
 import { MagicSearch } from "@/components/shared/magic-search";
 import { ExpertCard } from "@/components/ExpertCard";
@@ -28,20 +28,20 @@ const jobs = [
 ];
 
 const tours = [
-  { name: "Ivy League Campus Tour", duration: "7 Days", covered: "Harvard, MIT, Yale, Columbia", rating: 4.9, reviews: 128, price: "$1,299", image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&h=400&fit=crop", badges: ["Visa assistance included", "Group discount"] },
-  { name: "Australian Uni Explorer", duration: "10 Days", covered: "UniMelb, USyd, UNSW", rating: 4.7, reviews: 84, price: "$2,499", image: "https://images.unsplash.com/photo-1524850011238-e3d235c7d4c9?w=600&h=400&fit=crop", badges: ["Flights included"] },
-  { name: "UK Russell Group Tour", duration: "8 Days", covered: "Oxford, Cambridge, Imperial", rating: 4.8, reviews: 96, price: "$1,899", image: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=600&h=400&fit=crop", badges: ["Visa assistance included"] },
+  { name: "Bali Paradise", duration: "5D/4N", covered: "Temples, Beaches, Rice Terraces", rating: 4.8, reviews: 156, price: "₹25,000", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&h=400&fit=crop", badges: ["Visa included", "Hotel included"] },
+  { name: "Dubai City + Safari", duration: "6D/5N", covered: "Burj Khalifa, Desert Safari, Mall", rating: 4.9, reviews: 234, price: "₹55,000", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=400&fit=crop", badges: ["5★ Hotel", "Visa processing"] },
+  { name: "Europe 5-Country", duration: "14D/13N", covered: "Paris, Rome, Zurich, Munich, Amsterdam", rating: 4.7, reviews: 89, price: "₹1,10,000", image: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&h=400&fit=crop", badges: ["Schengen Visa", "Train pass"] },
 ];
 
 const categories = [
-  { label: "Study Visa", icon: GraduationCap, href: "/visa-guide/canada/study-permit", color: "from-blue-500 to-indigo-600" },
-  { label: "Work Visa", icon: Briefcase, href: "/visa-guide/usa/h1b", color: "from-emerald-500 to-teal-600" },
-  { label: "Express Entry", icon: Globe, href: "/visa-guide/canada/express-entry", color: "from-sky-500 to-blue-600" },
-  { label: "Work Permit", icon: Shield, href: "/work-permit", color: "from-violet-500 to-purple-600" },
-  { label: "IELTS Prep", icon: BookOpen, href: "/training/ielts", color: "from-amber-500 to-orange-600" },
-  { label: "Loan Advisor", icon: Wallet, href: "/training/financial", color: "from-pink-500 to-rose-600" },
-  { label: "Emergency", icon: AlertTriangle, href: "/emergency", color: "from-red-500 to-red-600" },
-  { label: "Escrow", icon: Lock, href: "/escrow", color: "from-emerald-500 to-green-600" },
+  { label: "Student Visa", icon: GraduationCap, href: "/find-experts?category=student", color: "from-blue-500 to-indigo-600" },
+  { label: "Work Permit", icon: Briefcase, href: "/find-experts?category=work", color: "from-emerald-500 to-teal-600" },
+  { label: "Tourist + Holiday", icon: Plane, href: "/tours", color: "from-sky-500 to-blue-600" },
+  { label: "PR / Residency", icon: Home, href: "/find-experts?category=pr", color: "from-violet-500 to-purple-600" },
+  { label: "IELTS Training", icon: BookOpen, href: "/training/ielts", color: "from-amber-500 to-orange-600" },
+  { label: "Language", icon: Globe, href: "/training/language", color: "from-pink-500 to-rose-600" },
+  { label: "Loan / Financial", icon: Wallet, href: "/training/financial", color: "from-cyan-500 to-teal-600" },
+  { label: "Local Expert", icon: MapPin, href: "/find-experts?category=local", color: "from-red-500 to-red-600" },
 ];
 
 const successStories = [
@@ -142,7 +142,7 @@ export default function HomePage() {
           <h2 className="font-sora text-2xl md:text-3xl font-extrabold text-navy">
             Recommended <span className="text-[#0ea5e9]">Experts</span>
           </h2>
-          <Link href="/find-lawyer" className="text-sm font-bold text-[#0ea5e9] hover:underline hidden md:flex items-center gap-1">View All <ArrowRight className="w-4 h-4" /></Link>
+          <Link href="/find-experts" className="text-sm font-bold text-[#0ea5e9] hover:underline hidden md:flex items-center gap-1">View All <ArrowRight className="w-4 h-4" /></Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {experts.map((expert, idx) => <ExpertCard key={idx} expert={expert} />)}
@@ -165,7 +165,10 @@ export default function HomePage() {
 
       {/* ────── TOURS ────── */}
       <section className="max-w-6xl mx-auto py-10 px-4">
-        <h2 className="font-sora text-2xl md:text-3xl font-extrabold text-navy mb-8">Campus <span className="text-[#0ea5e9]">Tours</span></h2>
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="font-sora text-2xl md:text-3xl font-extrabold text-navy">Holiday <span className="text-[#0ea5e9]">Packages</span></h2>
+          <Link href="/tours" className="text-sm font-bold text-[#0ea5e9] hover:underline flex items-center gap-1">View All <ArrowRight className="w-4 h-4" /></Link>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{tours.map((tour, idx) => <TourCard key={idx} tour={tour} />)}</div>
       </section>
 

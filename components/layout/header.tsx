@@ -16,7 +16,6 @@ const secondaryNavLinks = [
 ];
 
 const tourDropdownItems = [
-    { title: "All Tours", desc: "Browse everything", href: "/tours", icon: Globe, iconColor: "text-[#0ea5e9]", bg: "bg-sky-50" },
     { title: "Holiday Packages", desc: "Visa + hotel + itinerary", href: "/tours?category=holiday", icon: Umbrella, iconColor: "text-amber-500", bg: "bg-amber-50" },
     { title: "Sport Tours", desc: "Live events + stadium visits", href: "/tours?category=sports", icon: Trophy, iconColor: "text-emerald-500", bg: "bg-emerald-50" },
     { title: "Cruises", desc: "Ocean & river voyages", href: "/tours?category=cruises", icon: Ship, iconColor: "text-blue-500", bg: "bg-blue-50" },

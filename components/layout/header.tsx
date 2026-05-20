@@ -67,31 +67,34 @@ export function Header() {
                             <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isToursHovered ? "rotate-180" : ""}`} />
                         </button>
 
-                        {/* Dropdown Menu Card */}
-                        <div className={`absolute top-full left-0 mt-1 w-80 bg-white rounded-2xl border border-sky-100 shadow-xl p-2 transition-all duration-300 transform origin-top-left ${
+                        {/* Dropdown Menu Card Wrapper */}
+                        <div className={`absolute top-full left-0 pt-2 w-80 transition-all duration-300 transform origin-top-left ${
                             isToursHovered 
                                 ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" 
                                 : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
                         }`}>
-                            <div className="flex flex-col gap-1">
-                                {tourDropdownItems.map((item, idx) => {
-                                    const IconComponent = item.icon;
-                                    return (
-                                        <Link 
-                                            key={idx} 
-                                            href={item.href}
-                                            className="flex items-center gap-4 p-3 rounded-xl hover:bg-sky-50/80 transition-all duration-200 group"
-                                        >
-                                            <div className={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform`}>
-                                                <IconComponent className={`w-5 h-5 ${item.iconColor}`} />
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="text-sm font-bold text-navy group-hover:text-[#0ea5e9] transition-colors">{item.title}</div>
-                                                <div className="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
-                                            </div>
-                                        </Link>
-                                    );
-                                })}
+                            {/* The Actual Card */}
+                            <div className="bg-white rounded-2xl border border-sky-100 shadow-xl p-2">
+                                <div className="flex flex-col gap-1">
+                                    {tourDropdownItems.map((item, idx) => {
+                                        const IconComponent = item.icon;
+                                        return (
+                                            <Link 
+                                                key={idx} 
+                                                href={item.href}
+                                                className="flex items-center gap-4 p-3 rounded-xl hover:bg-sky-50/80 transition-all duration-200 group"
+                                            >
+                                                <div className={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform`}>
+                                                    <IconComponent className={`w-5 h-5 ${item.iconColor}`} />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="text-sm font-bold text-navy group-hover:text-[#0ea5e9] transition-colors">{item.title}</div>
+                                                    <div className="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
+                                                </div>
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </div>
                     </div>

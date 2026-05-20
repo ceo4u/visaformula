@@ -40,7 +40,7 @@ const categories = [
   { label: "PR / Residency", icon: Home, href: "/find-experts?category=pr", color: "from-violet-500 to-purple-600" },
   { label: "IELTS Training", icon: BookOpen, href: "/training/ielts", color: "from-amber-500 to-orange-600" },
   { label: "Language", icon: Globe, href: "/training/language", color: "from-pink-500 to-rose-600" },
-  { label: "Loan / Financial", icon: Wallet, href: "/training/financial", color: "from-cyan-500 to-teal-600" },
+  { label: "Finance & Loans", icon: Wallet, href: "/training/financial", color: "from-cyan-500 to-teal-600" },
   { label: "Local Expert", icon: MapPin, href: "/find-experts?category=local", color: "from-red-500 to-red-600" },
 ];
 

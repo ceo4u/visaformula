@@ -5,7 +5,7 @@ import { BookOpen, Languages, Wallet, ArrowRight, Star, MapPin, Users } from "lu
 const categories = [
     { title: "IELTS Institutes", desc: "Prepare for IELTS with top-rated coaching centers. Track scores, find batch timings, and ace your exam.", icon: BookOpen, count: 142, href: "/training/ielts", color: "from-blue-500 to-indigo-600", bg: "bg-blue-50" },
     { title: "Language Training", desc: "French, German, Spanish, Arabic — learn the language required for your destination country.", icon: Languages, count: 89, href: "/training/language", color: "from-purple-500 to-violet-600", bg: "bg-purple-50" },
-    { title: "Financial Advisors", desc: "Education loans, GIC specialists, EMI calculators — plan your finances for study abroad.", icon: Wallet, count: 67, href: "/training/financial", color: "from-emerald-500 to-teal-600", bg: "bg-emerald-50" },
+    { title: "Finance and loans", desc: "Education loans, GIC specialists, EMI calculators — plan your finances for study abroad.", icon: Wallet, count: 67, href: "/training/financial", color: "from-emerald-500 to-teal-600", bg: "bg-emerald-50" },
 ];
 
 const featuredInstitutes = [

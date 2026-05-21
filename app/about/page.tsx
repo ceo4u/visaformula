@@ -32,12 +32,7 @@ const values = [
     },
 ];
 
-const team = [
-    { name: "Elena Vance", role: "CEO & Co-Founder", bio: "Former immigration attorney with 15+ years experience at the UN.", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCPX5DdMioKPF507Mg3uao_AKD7Y3D0cr4Oxpjz4j9Zhvn61dy6OJs_n9QaPUnw16htoJMGcQD5P48-Iiv7vxYN7ldHTnhRhVZcJD6vIDKa8nDLb457YmRDk8yMBA54syMEntEGlBvXj7AArUmykZR1L8yeGJ80eTIHcxGbTpw179ybHlUG-c9pydM6kYBqpeeOuXkS7JQZYR50642AqYN6oq9VYLrzRuhFithlymj6S07GbapH1EGotT-47tHyl3bgeiYhNPV4xWaW" },
-    { name: "Marcus Chen", role: "CTO", bio: "Previously led AI scalability at major Silicon Valley firms.", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDDZxmleQxRiDSZVjffvePEDs4y4voorzfZuSjxJkHHZwdEQVt-tUSw3Tn_DDkkQUA-v52HjraDZ8Y44RHi-tJBnHUhci1aS-6g-iwrvojPWdGPYFKTd0Y6XAH9VUtXumTcdVdf5O4ZpLGXsOBny6SX8CL6S-SCPGm1KihzJR4VfyEa_YBQHkUzCkvbJcZhMOa81r_dravL_oDj9c5jjXx4UH_s_KTOeGZK_r2bfUOV2Yghpoc90VqJ6Bsw0mg7ABA9zqpawiZY4zn2" },
-    { name: "Sarah Jenkins", role: "Head of Compliance", bio: "Expert in international data law and migration policy.", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBB7StQIgDELHfmuRNxiQeCkHYZx7ple7wsHDY9OhBwedBPYJvR5o1NjYsGY6ieZIeUdeOvJ9vrP66vCBc2SXB8JEQ39JkO-uuUK6jDFdQXCzIX0kDCLim96rVMSG_gq07B0PVroVE882SaSdbXOtxvVj_gFZk3ktghXMcJmnlEGK5wketRYODF8I2LuQgLFV0PFkZyuX2zOyYh2CSvfZN3NfC-K6dnDNNXF6D5WFqmdFHX1qEjrCmgQYnKObGR9y2vqa5K_q3csenE" },
-    { name: "David Okafor", role: "Legal Director", bio: "Managing a network of 500+ global partners.", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC_Wwi95LSKg3RMtydQX6YvCSPeuzcDOj5hWKgtTuZ-0BCIDD7zL1vytIhVJuFSACGkDOb56RRFEUPzkKlf_swkErAH6JMrNJ4LkJOty4wRe3gjGJCZQt51lEZmYONOmaYrGTP3DY7MDhJBtLz8Fsp8L9nQv2DFaZkwd9rGbYqBQJNk8ad6-i3ejo_N__ZRaC-ugppxRT3bQrU3n1ctZsjGtwSKr9U9fOHIg2s2E7FExx-DcCi87GfA5GEYGpqUzvZ7FGpcM6KzFd2C" },
-];
+
 
 export default function AboutPage() {
     return (
@@ -134,38 +129,6 @@ export default function AboutPage() {
                                         </div>
                                         <h3 className="text-xl font-heading font-bold mb-3">{value.title}</h3>
                                         <p className="text-on-surface-variant text-sm leading-relaxed">{value.description}</p>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Team Section */}
-            <section className="py-20 px-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center max-w-2xl mx-auto mb-12">
-                        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Meet Our Architects</h2>
-                        <p className="text-on-surface-variant">The legal and technical minds building the future of migration.</p>
-                    </div>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {team.map((member, idx) => (
-                            <motion.div
-                                key={member.name}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: idx * 0.1 }}
-                                viewport={{ once: true }}
-                            >
-                                <Card className="overflow-hidden hover:shadow-xl transition-all border-none shadow-md">
-                                    <div className="aspect-square bg-muted overflow-hidden">
-                                        <img src={member.image} alt={member.name} className="object-cover w-full h-full" />
-                                    </div>
-                                    <CardContent className="p-5 text-center">
-                                        <h3 className="font-heading font-bold text-xl">{member.name}</h3>
-                                        <p className="text-sm text-primary font-medium mb-2">{member.role}</p>
-                                        <p className="text-xs text-on-surface-variant">{member.bio}</p>
                                     </CardContent>
                                 </Card>
                             </motion.div>

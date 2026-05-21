@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { 
-    Users, Compass, Globe, GraduationCap, 
-    Briefcase, Shield, ArrowRight, Sparkles 
+import {
+    Users, Compass, Globe, GraduationCap,
+    Briefcase, Shield, ArrowRight, Sparkles
 } from "lucide-react";
 
 const coreServices = [

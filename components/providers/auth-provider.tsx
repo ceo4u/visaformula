@@ -26,14 +26,14 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const DEMO_USER: User = {
     uid: "demo_123",
-    email: "demo@visahub.com",
+    email: "demo@visara.com",
     displayName: "Demo User",
     photoURL: "https://lh3.googleusercontent.com/aida-public/AB6AXuCPX5DdMioKPF507Mg3uao_AKD7Y3D0cr4Oxpjz4j9Zhvn61dy6OJs_n9QaPUnw16htoJMGcQD5P48-Iiv7vxYN7ldHTnhRhVZcJD6vIDKa8nDLb457YmRDk8yMBA54syMEntEGlBvXj7AArUmykZR1L8yeGJ80eTIHcxGbTpw179ybHlUG-c9pydM6kYBqpeeOuXkS7JQZYR50642AqYN6oq9VYLrzRuhFithlymj6S07GbapH1EGotT-47tHyl3bgeiYhNPV4xWaW",
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<User | null>(DEMO_USER);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         // Authenticate immediately for demo speed, or start as logged out.

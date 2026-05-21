@@ -58,7 +58,7 @@ export default function LoginPage() {
                 <div className="text-center mb-8">
                     <Link href="/" className="inline-flex items-center gap-2 text-2xl font-black mb-4">
                         <Gavel className="w-7 h-7 text-primary" />
-                        <span>VisaHub</span>
+                        <span>Visara</span>
                     </Link>
                     <h1 className="text-3xl font-heading font-extrabold tracking-tight mt-4">Welcome <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Back</span></h1>
                     <p className="text-on-surface-variant mt-2">Sign in to continue to your dashboard</p>

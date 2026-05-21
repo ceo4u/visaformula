@@ -1,5 +1,5 @@
 
-> visahub@2.0.0 build
+> visara@2.0.0 build
 > next build
 
  ΓÜá Warning: Next.js inferred your workspace root, but it may not be correct.

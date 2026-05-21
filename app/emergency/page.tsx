@@ -68,13 +68,13 @@ export default function EmergencyPage() {
                         <AlertTriangle className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="font-sora text-4xl md:text-5xl font-extrabold mb-3 leading-tight">
-                        Emergency Immigration Help
+                        Legal Immigration Help
                     </h1>
                     <p className="text-white/75 text-lg mb-6 max-w-2xl mx-auto">
                         Facing an immigration crisis? Overstay, deportation notice, or visa denial? Get urgent help from a vetted expert — right now.
                     </p>
                     <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold text-white/60">
-                        <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-white" /> 24/7 Emergency Support</span>
+                        <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-white" /> 24/7 Legal Support</span>
                         <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-white" /> Verified Specialists</span>
                         <span className="flex items-center gap-2"><Phone className="w-4 h-4 text-white" /> Immediate Response</span>
                     </div>

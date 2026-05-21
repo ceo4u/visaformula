@@ -76,8 +76,8 @@ export function Header() {
                     <Link href="/register-provider" className="text-xs font-bold text-gray-500 hover:text-[#0ea5e9] transition-colors">
                         Visara for Experts
                     </Link>
-                    <Link href="/services" className="text-xs font-bold text-gray-500 hover:text-[#0ea5e9] transition-colors">
-                        Success Stories
+                    <Link href="/support" className="text-xs font-bold text-gray-500 hover:text-[#0ea5e9] transition-colors">
+                        Contact
                     </Link>
                     
                     <div className="w-[1.5px] h-4 bg-sky-100" />
@@ -333,11 +333,11 @@ export function Header() {
                         Visara for Experts
                     </Link>
 
-                    {/* Success Stories */}
-                    <Link href="/services"
+                    {/* Contact */}
+                    <Link href="/support"
                         className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors`}
                         onClick={() => setIsMobileMenuOpen(false)}>
-                        Success Stories
+                        Contact
                     </Link>
 
                     {/* Mobile Log In and Sign Up buttons */}

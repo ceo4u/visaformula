@@ -40,7 +40,7 @@ const faqs = [
 const supportChannels = [
     { icon: MessageCircle, title: "Live Chat", description: "Instant messaging with support team", availability: "24/7", action: "Start Chat", color: "bg-primary/10 text-primary" },
     { icon: Phone, title: "Phone Support", description: "Speak directly with an agent", availability: "8 AM - 8 PM EST", action: "Call Now", number: "+1 (800) 555-VISA", color: "bg-secondary/10 text-secondary" },
-    { icon: Mail, title: "Email Support", description: "Get detailed responses within 24h", availability: "Response within 24h", action: "Send Email", email: "support@visahub.com", color: "bg-accent/10 text-accent" },
+    { icon: Mail, title: "Email Support", description: "Get detailed responses within 24h", availability: "Response within 24h", action: "Send Email", email: "support@visara.com", color: "bg-accent/10 text-accent" },
 ];
 
 const categories = [

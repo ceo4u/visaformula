@@ -13,6 +13,8 @@ const mainNavLinks = [
 const secondaryNavLinks = [
     { href: "/training", label: "Training Hub" },
     { href: "/services", label: "Our Services" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
 ];
 
 const tourDropdownItems = [

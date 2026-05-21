@@ -1,101 +1,128 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { 
-    Users, Compass, Globe, GraduationCap, 
-    Briefcase, Shield, ArrowRight, Sparkles 
-} from "lucide-react";
+import { ArrowRight, Sparkles, Shield } from "lucide-react";
 
-const coreServices = [
+// Toast Helper
+function Toast({ message, visible, onClose }: { message: string, visible: boolean, onClose: () => void }) {
+    useEffect(() => {
+        if (visible) {
+            const timer = setTimeout(onClose, 2600);
+            return () => clearTimeout(timer);
+        }
+    }, [visible, onClose]);
+
+    return (
+        <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-navy text-white px-6 py-3 rounded-full text-xs font-bold z-50 transition-all duration-300 shadow-2xl flex items-center gap-2 border border-sky-950 ${
+            visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95 pointer-events-none"
+        }`}>
+            <Sparkles className="w-4 h-4 text-sky-400 animate-pulse" />
+            {message}
+        </div>
+    );
+}
+
+const serviceItems = [
     {
-        title: "Verified Immigration Experts",
-        desc: "Consult directly with top-tier registered immigration attorneys, consultants, and legal counselors. Get answers to study, work, or permanent residency pathways in real time.",
-        href: "/find-experts",
-        badge: "Vetted Counsel",
-        icon: Users,
-        iconColor: "text-sky-500",
-        bg: "bg-sky-50",
-        borderColor: "group-hover:border-sky-200",
-        btnColor: "bg-sky-500 hover:bg-sky-600",
-        gradient: "from-sky-500 to-[#0284c7]"
+        title: "Student Visa",
+        desc: "Canada, UK, Australia, USA, Germany — end-to-end guidance, SOP review, and university selection.",
+        icon: "🎓",
+        badge: "Popular",
+        badgeType: "blue",
+        href: "/find-experts?category=student"
     },
     {
-        title: "Exclusive Tours & Packages",
-        desc: "Explore Holiday Packages, major Sport Tours (FIFA, F1), Cruise voyages, and global Entertainment Events. Every tour package comes with fully verified, comprehensive visa processing support.",
-        href: "/tours",
-        badge: "All-Inclusive",
-        icon: Compass,
-        iconColor: "text-indigo-500",
-        bg: "bg-indigo-50",
-        borderColor: "group-hover:border-indigo-200",
-        btnColor: "bg-indigo-600 hover:bg-indigo-700",
-        gradient: "from-indigo-500 to-indigo-600"
+        title: "Work Permit & PR",
+        desc: "LMIA, PGWP, Express Entry, skilled worker visas — 1-on-1 with immigration lawyers.",
+        icon: "💼",
+        badge: "",
+        badgeType: "",
+        href: "/work-permit"
     },
     {
-        title: "Global Exhibitions",
-        desc: "Attend prestigious trade shows, tech expos, art exhibitions, and medical conventions worldwide. Delegation packages include official entry passes, premium hotels, and business visas.",
-        href: "/events/exhibitions",
-        badge: "Business Delegation",
-        icon: Globe,
-        iconColor: "text-emerald-500",
-        bg: "bg-emerald-50",
-        borderColor: "group-hover:border-emerald-200",
-        btnColor: "bg-emerald-500 hover:bg-emerald-600",
-        gradient: "from-emerald-500 to-emerald-600"
+        title: "Tourist Visa + Holidays",
+        desc: "Visa + hotel + itinerary bundles for Dubai, Bali, Europe, Thailand and more.",
+        icon: "✈️",
+        badge: "",
+        badgeType: "",
+        href: "/tours"
     },
     {
-        title: "Universities Fairs Hub",
-        desc: "Register for top-tier international student recruitment fairs. Meet global university admission deans, receive conditional offer letters on-the-spot, and access premium visa guidance.",
-        href: "/events/university-fairs",
-        badge: "Academic Placement",
-        icon: GraduationCap,
-        iconColor: "text-purple-500",
-        bg: "bg-purple-50",
-        borderColor: "group-hover:border-purple-200",
-        btnColor: "bg-purple-600 hover:bg-purple-700",
-        gradient: "from-purple-500 to-purple-600"
+        title: "IELTS & Language Training",
+        desc: "Find top-rated institutes, batch booking, and free score gap analysis.",
+        icon: "📚",
+        badge: "",
+        badgeType: "",
+        href: "/training"
     },
     {
-        title: "Work Permits & Verification",
-        desc: "Secure legally compliant employment routes abroad. Obtain fast employer visa sponsorships verification, work permit filings, and certified corporate validation checking.",
-        href: "/work-permit",
-        badge: "Employment Routes",
-        icon: Briefcase,
-        iconColor: "text-amber-500",
-        bg: "bg-amber-50",
-        borderColor: "group-hover:border-amber-200",
-        btnColor: "bg-amber-500 hover:bg-amber-600",
-        gradient: "from-amber-500 to-amber-600"
+        title: "Education Loan & GIC",
+        desc: "Loan specialists for Canada, Australia, UK. Blocked account assistance for Germany.",
+        icon: "💰",
+        badge: "",
+        badgeType: "",
+        href: "/training"
     },
     {
-        title: "Secure Escrow Milestones",
-        desc: "Make secure, milestone-based agent payments. Our smart escrow system keeps your money safe in secure custody, releasing funds to experts only when visa milestones are successfully met.",
-        href: "/escrow",
-        badge: "100% Financial Protection",
-        icon: Shield,
-        iconColor: "text-slate-500",
-        bg: "bg-slate-100",
-        borderColor: "group-hover:border-slate-350",
-        btnColor: "bg-navy hover:bg-sky-950",
-        gradient: "from-navy to-sky-900"
+        title: "Exhibition & Business Fairs",
+        desc: "Trade shows, tech expos, medical fairs — visa + registration + hotel packages.",
+        icon: "🏛️",
+        badge: "",
+        badgeType: "",
+        href: "/events/exhibitions"
+    },
+    {
+        title: "University Fairs",
+        desc: "Meet 500+ universities in India or online. Free registration, spot offers available.",
+        icon: "🎓",
+        badge: "",
+        badgeType: "",
+        href: "/events/university-fairs"
+    },
+    {
+        title: "Emergency Visa Help",
+        desc: "Overstay, deportation, refusal appeal — 24/7 access to immigration lawyers.",
+        icon: "🆘",
+        badge: "Urgent",
+        badgeType: "red",
+        href: "/legal"
+    },
+    {
+        title: "Visara In‑House Experts",
+        desc: "Hand‑picked, salaried consultants for complex cases — available across 6 countries.",
+        icon: "🏢",
+        badge: "",
+        badgeType: "",
+        href: "/find-experts?expert=inhouse"
     }
 ];
 
 export default function ServicesPage() {
+    const [toastMsg, setToastMsg] = useState("");
+    const [isToastVisible, setIsToastVisible] = useState(false);
+
+    const triggerToast = (msg: string) => {
+        setToastMsg(msg);
+        setIsToastVisible(true);
+    };
+
     return (
-        <div className="bg-[#f7fbff] min-h-screen pb-24">
+        <div className="bg-[#f7fbff] min-h-screen pb-20">
+            <Toast message={toastMsg} visible={isToastVisible} onClose={() => setIsToastVisible(false)} />
+
             {/* Elegant Hero Section */}
             <section className="relative bg-gradient-to-br from-navy via-ink to-navy text-white py-16 px-4 overflow-hidden border-b border-sky-950">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_65%_-15%,rgba(14,165,233,0.18),transparent_60%)] pointer-events-none" />
                 <div className="max-w-4xl mx-auto text-center relative z-10">
                     <span className="bg-sky-500/10 text-sky-400 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full border border-sky-500/20 mb-4 inline-block">
-                        💼 Vetted Operations
+                        💼 Unified Operations
                     </span>
                     <h1 className="font-sora text-4xl md:text-5xl font-extrabold mb-3 leading-tight tracking-tight">
-                        Our Unified Services
+                        Our Services
                     </h1>
-                    <p className="text-white/60 text-sm md:text-base max-w-xl mx-auto mb-4 leading-relaxed">
-                        Visara consolidates every stage of your global mobility journey: expert counseling, safe escrow payments, event registrations, work permits, and premium travel packages.
+                    <p className="text-white/60 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+                        From visa consultation to holiday packages — we connect you with verified experts, smart tools, and secure escrow protections.
                     </p>
                 </div>
             </section>
@@ -103,39 +130,60 @@ export default function ServicesPage() {
             {/* Services Grid Display */}
             <div className="max-w-6xl mx-auto px-4 mt-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {coreServices.map((service, idx) => {
-                        const Icon = service.icon;
-                        return (
-                            <Link href={service.href} key={idx} className="group flex">
-                                <div className={`flex flex-col bg-white rounded-2xl border border-sky-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${service.borderColor} w-full`}>
-                                    {/* Icon Box */}
-                                    <div className={`w-12 h-12 rounded-2xl ${service.bg} flex items-center justify-center shrink-0 mb-5 shadow-sm group-hover:scale-110 transition-transform`}>
-                                        <Icon className={`w-6 h-6 ${service.iconColor}`} />
-                                    </div>
+                    {serviceItems.map((service, idx) => (
+                        <Link 
+                            href={service.href} 
+                            key={idx} 
+                            onClick={() => triggerToast(`🔗 Navigating to ${service.title}`)}
+                            className="group flex"
+                        >
+                            <div className="flex flex-col bg-white rounded-2xl border border-sky-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 hover:border-sky-200 w-full relative">
+                                {/* Icon Box */}
+                                <div className="w-12 h-12 rounded-2xl bg-sky-50/50 flex items-center justify-center mb-5 text-2xl shrink-0 group-hover:scale-110 transition-transform">
+                                    {service.icon}
+                                </div>
 
-                                    {/* Header & Badges */}
-                                    <div className="flex-1">
-                                        <span className="text-[9px] font-extrabold text-gray-400 uppercase tracking-widest block mb-1">
-                                            {service.badge}
-                                        </span>
-                                        <h3 className="font-sora font-bold text-navy text-sm mb-2 group-hover:text-[#0ea5e9] transition-colors leading-snug">
+                                {/* Content */}
+                                <div className="flex-1 text-left">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <h3 className="font-sora font-bold text-navy text-sm group-hover:text-[#0ea5e9] transition-colors leading-snug">
                                             {service.title}
                                         </h3>
-                                        <p className="text-xs text-gray-500 leading-relaxed font-medium">
-                                            {service.desc}
-                                        </p>
+                                        {service.badge && (
+                                            <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full ${
+                                                service.badgeType === "red" 
+                                                    ? "bg-red-50 text-red-600 border border-red-100" 
+                                                    : "bg-sky-50 text-sky-600 border border-sky-100"
+                                            }`}>
+                                                {service.badge}
+                                            </span>
+                                        )}
                                     </div>
+                                    <p className="text-xs text-gray-400 leading-relaxed font-medium">
+                                        {service.desc}
+                                    </p>
+                                </div>
 
-                                    {/* Button Action */}
-                                    <div className="mt-6 pt-4 border-t border-sky-50 flex justify-end">
-                                        <div className={`w-8 h-8 rounded-xl ${service.btnColor} text-white flex items-center justify-center shadow-sm transition-colors`}>
-                                            <ArrowRight className="w-4 h-4" />
-                                        </div>
+                                {/* Action Arrow */}
+                                <div className="mt-6 pt-4 border-t border-sky-50 flex justify-end">
+                                    <div className="w-8 h-8 rounded-xl bg-sky-50 text-sky-500 group-hover:bg-[#0ea5e9] group-hover:text-white flex items-center justify-center transition-colors">
+                                        <ArrowRight className="w-4 h-4" />
                                     </div>
                                 </div>
-                            </Link>
-                        );
-                    })}
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+
+                {/* Secure Escrow protection banner */}
+                <div className="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-6 flex gap-4 items-start shadow-sm mt-10">
+                    <div className="text-3xl shrink-0">🔒</div>
+                    <div className="text-left">
+                        <h4 className="font-sora font-bold text-emerald-800 text-xs sm:text-sm mb-1">Escrow Protection — Included in every service</h4>
+                        <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed">
+                            Your milestone payments stay completely safe in custody. Visara guarantees that money is only released to verified experts upon satisfactory delivery of visa milestones.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

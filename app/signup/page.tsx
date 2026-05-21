@@ -6,7 +6,7 @@ import { ArrowRight, Shield, Star, CheckCircle, Sparkles } from "lucide-react";
 export default function SignupChoicePage() {
     return (
         <div className="min-h-screen bg-[#f0f4f8] flex flex-col items-center justify-center px-4 py-12">
-            <style jsx>{`
+            <style dangerouslySetInnerHTML={{ __html: `
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-8px); }
@@ -19,7 +19,7 @@ export default function SignupChoicePage() {
         .circle-float-1 { animation: float 4s ease-in-out infinite; }
         .circle-float-2 { animation: float 4s ease-in-out infinite 0.5s; }
         .pulse-ring { animation: pulse-ring 3s ease-in-out infinite; }
-      `}</style>
+            `}} />
 
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-sky-50 border border-sky-100 rounded-full px-4 py-1.5 mb-6">

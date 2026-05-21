@@ -120,7 +120,7 @@ export function Header() {
                     >
                         <button
                             className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${
-                                isToursHovered || pathname.startsWith("/tours") ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"
+                                isToursHovered || pathname?.startsWith("/tours") ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"
                             }`}
                         >
                             Tours & Packages
@@ -166,7 +166,7 @@ export function Header() {
                     >
                         <button
                             className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${
-                                isEventsHovered || pathname.startsWith("/events") ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"
+                                isEventsHovered || pathname?.startsWith("/events") ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"
                             }`}
                         >
                             Events & Fairs

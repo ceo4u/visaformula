@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Star, MapPin, Globe, Calendar, Clock, Share2, Bookmark, ThumbsUp, ChevronLeft, ChevronRight, CheckCircle, Award, Shield, MessageSquare, Phone, Video, Users } from "lucide-react";
+import { Star, MapPin, Globe, Calendar, Clock, Share2, Bookmark, ThumbsUp, ChevronLeft, ChevronRight, CheckCircle, Award, Shield, MessageSquare, Phone, Video, Users, Mail, Crown, Sparkles, Lock, X } from "lucide-react";
 import Link from "next/link";
 
 const insights = [
@@ -72,18 +72,50 @@ export default function ExpertProfilePage() {
     const [helpfulVotes, setHelpfulVotes] = useState<number[]>([]);
     const [saved, setSaved] = useState(false);
 
+    // Premium Plan Showcase States
+    const [isPremiumPlan, setIsPremiumPlan] = useState(false);
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+
     const toggleHelpful = (idx: number) => {
         setHelpfulVotes((prev) => prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]);
     };
 
     return (
         <div className="bg-[#f0f4f8] min-h-screen">
+            {/* Interactive Plan Mode Selector for demo */}
+            <div className="bg-gradient-to-r from-amber-500/10 via-amber-600/10 to-amber-700/10 border-b border-amber-200/40 py-2.5 px-4 text-center">
+                <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-bold text-amber-900">
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 bg-amber-500 rounded-full animate-ping" />
+                        <span>Interactive Demo: Toggle the Expert's Plan to see direct contact details blocking in action!</span>
+                    </span>
+                    <div className="flex items-center gap-2 bg-white rounded-full p-1 border border-amber-200 shadow-sm">
+                        <button 
+                            onClick={() => setIsPremiumPlan(false)}
+                            className={`px-3 py-1 rounded-full transition-all ${!isPremiumPlan ? "bg-gray-800 text-white" : "text-gray-500 hover:text-gray-900"}`}
+                        >
+                            Free Plan (Masked Contacts)
+                        </button>
+                        <button 
+                            onClick={() => setIsPremiumPlan(true)}
+                            className={`px-3 py-1 rounded-full transition-all ${isPremiumPlan ? "bg-amber-600 text-white" : "text-gray-500 hover:text-gray-900"}`}
+                        >
+                            Premium Plan (Showcase Direct Contacts)
+                        </button>
+                    </div>
+                </div>
+            </div>
             {/* Header Info */}
             <div className="bg-white border-b border-sky-100 pt-6">
                 <div className="max-w-6xl mx-auto px-4 pb-6">
                     <div className="flex flex-col md:flex-row md:justify-between gap-4">
                         <div>
                             <div className="flex flex-wrap items-center gap-2 mb-2">
+                                {isPremiumPlan && (
+                                    <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-full border border-amber-400 flex items-center gap-1 shadow-sm">
+                                        <Crown className="w-3 h-3 text-white fill-white animate-pulse" /> Premium Partner
+                                    </span>
+                                )}
                                 <span className="bg-emerald-100 text-emerald-700 text-[11px] font-bold uppercase px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1">
                                     <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> Open Now
                                 </span>
@@ -94,7 +126,14 @@ export default function ExpertProfilePage() {
                                     <Award className="w-3 h-3" /> Top Rated
                                 </span>
                             </div>
-                            <h1 className="font-sora text-3xl font-extrabold text-navy mb-1">Marcus Thorne, JD</h1>
+                            <h1 className="font-sora text-3xl font-extrabold text-navy mb-1 flex items-center gap-2 flex-wrap">
+                                Marcus Thorne, JD
+                                {isPremiumPlan && (
+                                    <span className="inline-flex items-center justify-center bg-amber-50 border border-amber-200 text-amber-600 p-1.5 rounded-xl text-xs font-black shadow-inner">
+                                        <Crown className="w-4 h-4 fill-amber-500 text-amber-500" />
+                                    </span>
+                                )}
+                            </h1>
                             <div className="flex items-center gap-2 text-sm font-semibold text-gray-500 mb-2">
                                 <span>Immigration Attorney</span>
                                 <span>·</span>
@@ -312,22 +351,85 @@ export default function ExpertProfilePage() {
                         </div>
 
                         {/* Contact Card */}
-                        <div className="bg-white rounded-2xl border border-sky-100 p-5 shadow-sm">
-                            <h4 className="font-bold text-navy text-sm mb-4">Contact Details</h4>
-                            <div className="space-y-3 text-sm text-gray-600">
+                        <div className="bg-white rounded-2xl border border-sky-100 p-5 shadow-sm relative overflow-hidden">
+                            {/* Premium Glow effect if premium */}
+                            {isPremiumPlan && (
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-400/10 to-transparent rounded-bl-full pointer-events-none" />
+                            )}
+                            
+                            <div className="flex items-center justify-between mb-4">
+                                <h4 className="font-bold text-navy text-sm">Contact Details</h4>
+                                {isPremiumPlan ? (
+                                    <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm border border-amber-400">
+                                        <Crown className="w-2.5 h-2.5" /> Premium
+                                    </span>
+                                ) : (
+                                    <span className="bg-slate-100 text-slate-500 text-[9px] font-bold uppercase px-2 py-0.5 rounded-full border border-slate-200">
+                                        Free Plan
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="space-y-3.5 text-sm text-gray-600">
                                 <div className="flex items-center gap-3">
                                     <Globe className="w-4 h-4 text-[#0ea5e9] shrink-0" />
                                     <a href="#" className="text-[#0ea5e9] hover:underline font-medium">www.thornelaw.com</a>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Phone className="w-4 h-4 text-[#0ea5e9] shrink-0" />
-                                    <span>(212) 555-0198</span>
-                                </div>
-                                <div className="flex items-center gap-3">
                                     <MapPin className="w-4 h-4 text-[#0ea5e9] shrink-0" />
                                     <span>120 Broadway, Suite 3400, New York, NY</span>
                                 </div>
+
+                                <div className="h-[1px] bg-sky-50 my-2" />
+
+                                {/* Phone number */}
+                                <div className="flex items-center gap-3">
+                                    <Phone className="w-4 h-4 text-[#0ea5e9] shrink-0" />
+                                    {isPremiumPlan ? (
+                                        <span className="font-semibold text-navy font-mono">(212) 555-0198</span>
+                                    ) : (
+                                        <div className="flex items-center gap-1.5 flex-1 justify-between">
+                                            <span className="font-mono text-gray-400 font-medium">(212) 555-••••</span>
+                                            <span className="text-[9px] bg-amber-50 text-amber-700 font-bold px-1.5 py-0.5 rounded border border-amber-200">Premium Locked</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Email address */}
+                                <div className="flex items-center gap-3">
+                                    <Mail className="w-4 h-4 text-[#0ea5e9] shrink-0" />
+                                    {isPremiumPlan ? (
+                                        <a href="mailto:marcus.thorne@thornelaw.com" className="text-[#0ea5e9] hover:underline font-semibold font-mono text-xs">
+                                            marcus.thorne@thornelaw.com
+                                        </a>
+                                    ) : (
+                                        <div className="flex items-center gap-1.5 flex-1 justify-between">
+                                            <span className="font-mono text-gray-400 font-medium text-xs">marcus.t••••@thornelaw.com</span>
+                                            <span className="text-[9px] bg-amber-50 text-amber-700 font-bold px-1.5 py-0.5 rounded border border-amber-200">Premium Locked</span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
+
+                            {/* Upgrade Premium CTA banner if Free Plan */}
+                            {!isPremiumPlan && (
+                                <div className="mt-5 p-3.5 bg-gradient-to-br from-amber-500/5 via-amber-600/5 to-amber-700/5 rounded-xl border border-amber-200/50 text-center">
+                                    <div className="text-xs font-extrabold text-amber-900 mb-1 flex items-center justify-center gap-1">
+                                        <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" /> Premium Content
+                                    </div>
+                                    <p className="text-[10px] text-amber-700/80 leading-normal mb-3">
+                                        Upgrade Marcus to a premium profile to showcase their direct phone number and email address.
+                                    </p>
+                                    <button 
+                                        type="button"
+                                        onClick={() => setShowUpgradeModal(true)}
+                                        className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-extrabold py-2 rounded-lg hover:shadow-md hover:shadow-amber-100 transition-all text-xs active:scale-[0.97]"
+                                    >
+                                        Upgrade Plan to Unlock
+                                    </button>
+                                </div>
+                            )}
+
                             <button className="mt-4 w-full border-2 border-sky-200 text-navy font-bold py-2.5 rounded-xl hover:bg-sky-50 transition-all flex items-center justify-center gap-2 text-sm">
                                 <MessageSquare className="w-4 h-4" /> Message Expert
                             </button>
@@ -335,6 +437,97 @@ export default function ExpertProfilePage() {
                     </div>
                 </aside>
             </div>
+
+            {/* Upgrade Premium Plan Modal */}
+            {showUpgradeModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-sm transition-all duration-200">
+                    <div className="bg-white rounded-3xl border border-sky-100 shadow-2xl p-6 sm:p-8 max-w-md w-full relative transform transition-all duration-200">
+                        {/* Close button */}
+                        <button 
+                            type="button"
+                            onClick={() => setShowUpgradeModal(false)}
+                            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-navy hover:bg-sky-50 rounded-xl transition-all"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+
+                        <div className="text-center mb-6">
+                            <div className="w-14 h-14 bg-gradient-to-tr from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-3.5 shadow-lg shadow-amber-100">
+                                <Crown className="w-7 h-7 text-white" />
+                            </div>
+                            <h3 className="font-sora text-xl font-extrabold text-navy">Visara Premium Plan</h3>
+                            <p className="text-xs text-gray-400 mt-1">Supercharge your provider visibility and conversions</p>
+                        </div>
+
+                        <div className="space-y-4 mb-6">
+                            <div className="flex items-start gap-3">
+                                <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                                    <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-bold text-navy">Showcase Direct Contacts</h4>
+                                    <p className="text-[11px] text-gray-400 leading-normal mt-0.5">Let visa seekers call and email you directly from your profile page.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start gap-3">
+                                <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                                    <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-bold text-navy">3x Higher Search Visibility</h4>
+                                    <p className="text-[11px] text-gray-400 leading-normal mt-0.5">Get boosted to the very top of local and international search results.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start gap-3">
+                                <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                                    <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-bold text-navy">Verified Premium Badge</h4>
+                                    <p className="text-[11px] text-gray-400 leading-normal mt-0.5">Earn a premium golden crown badge on your listings and profile page.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start gap-3">
+                                <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                                    <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-bold text-navy">Direct WhatsApp Bookings</h4>
+                                    <p className="text-[11px] text-gray-400 leading-normal mt-0.5">Connect your WhatsApp to let seekers initiate chats with a single tap.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Pricing and Button */}
+                        <div className="bg-sky-50/50 rounded-2xl p-4 border border-sky-100 flex items-center justify-between mb-6">
+                            <div>
+                                <span className="text-[9px] uppercase font-bold text-sky-700 tracking-wider">Premium Access</span>
+                                <div className="flex items-baseline gap-1 mt-0.5">
+                                    <span className="text-xl font-black text-navy">₹1,499</span>
+                                    <span className="text-xs text-gray-400 font-bold">/ month</span>
+                                </div>
+                            </div>
+                            <span className="bg-emerald-100 text-emerald-700 text-[9px] font-bold px-2 py-1 rounded-full border border-emerald-200">
+                                Save 20% Yearly
+                            </span>
+                        </div>
+
+                        <button 
+                            type="button"
+                            onClick={() => {
+                                setIsPremiumPlan(true);
+                                setShowUpgradeModal(false);
+                            }}
+                            className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-extrabold py-3.5 rounded-xl hover:shadow-lg hover:shadow-amber-100 transition-all active:scale-[0.97] text-xs text-center"
+                        >
+                            Upgrade Now
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

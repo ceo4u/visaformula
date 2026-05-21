@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Globe, ArrowRight, ArrowLeft, CheckCircle, Upload, GraduationCap, Briefcase, Plane, Home, BookOpen, DollarSign, Scale, MapPin, Clock, Users } from "lucide-react";
+import { Globe, ArrowRight, ArrowLeft, CheckCircle, Upload, GraduationCap, Briefcase, Plane, Home, BookOpen, DollarSign, Scale, MapPin, Clock, Users, Crown, Sparkles } from "lucide-react";
 
 const expertCategories = [
     { id: "student", icon: GraduationCap, label: "Student Visa Expert", desc: "Help students get admission & student visas" },
@@ -33,6 +33,7 @@ export default function RegisterProviderPage() {
     const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
     const [selectedDays, setSelectedDays] = useState<string[]>(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]);
     const [isEmergency, setIsEmergency] = useState(false);
+    const [isPremiumEnroll, setIsPremiumEnroll] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
     // Phone Verification States
@@ -317,6 +318,35 @@ export default function RegisterProviderPage() {
                                         className={`w-12 h-7 rounded-full transition-all flex items-center ${isEmergency ? "bg-red-500 justify-end" : "bg-gray-300 justify-start"}`}>
                                         <span className="w-5 h-5 bg-white rounded-full shadow-md mx-1 transition-all" />
                                     </button>
+                                </div>
+
+                                {/* Visara Premium Plan enrollment card */}
+                                <div className="flex flex-col p-4 bg-gradient-to-br from-amber-500/5 via-amber-600/5 to-amber-700/5 rounded-2xl border-2 border-amber-200/50 shadow-inner relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-amber-400/10 to-transparent rounded-bl-full pointer-events-none" />
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex-1 pr-4">
+                                            <div className="flex items-center gap-1.5 mb-1">
+                                                <Crown className="w-4 h-4 text-amber-600 fill-amber-500/30 animate-pulse" />
+                                                <div className="font-bold text-navy text-sm">Enroll in Visara Premium Profile</div>
+                                            </div>
+                                            <div className="text-xs text-gray-500 leading-relaxed">
+                                                Showcase your direct email and verified phone number directly on your profile. Plus get a verified golden crown badge, 3x search boost, and one-click WhatsApp inquiries.
+                                            </div>
+                                        </div>
+                                        <button 
+                                            type="button"
+                                            onClick={() => setIsPremiumEnroll(!isPremiumEnroll)}
+                                            className={`w-12 h-7 rounded-full transition-all flex items-center ${isPremiumEnroll ? "bg-amber-600 justify-end" : "bg-gray-200 justify-start"}`}
+                                        >
+                                            <span className="w-5 h-5 bg-white rounded-full shadow-md mx-1 transition-all" />
+                                        </button>
+                                    </div>
+                                    {isPremiumEnroll && (
+                                        <div className="mt-3 pt-3 border-t border-amber-200/40 flex justify-between items-center text-xs font-bold text-amber-900 bg-amber-50/50 -mx-4 -mb-4 px-4 py-3 rounded-b-2xl">
+                                            <span>Upgrade Price:</span>
+                                            <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded border border-amber-200/50 text-[10px]">₹1,499/month (billed monthly)</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

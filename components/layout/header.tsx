@@ -5,16 +5,6 @@ import { Search, MapPin, Menu, X, Bell, Globe, ChevronDown, Umbrella, Trophy, Sh
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
-const mainNavLinks = [
-    { href: "/", label: "Home" },
-    { href: "/find-experts", label: "Find Experts" },
-];
-
-const secondaryNavLinks = [
-    { href: "/training", label: "Training Hub" },
-    { href: "/services", label: "Our Services" },
-];
-
 const tourDropdownItems = [
     { title: "Holiday Packages", desc: "Visa + hotel + itinerary", href: "/tours?category=holiday", icon: Umbrella, iconColor: "text-amber-500", bg: "bg-amber-50" },
     { title: "Sport Tours", desc: "Live events + stadium visits", href: "/tours?category=sports", icon: Trophy, iconColor: "text-emerald-500", bg: "bg-emerald-50" },
@@ -36,51 +26,113 @@ export function Header() {
     const pathname = usePathname();
 
     return (
-        <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-lg border-b border-sky-100 shadow-sm">
-            <div className="max-w-7xl mx-auto flex items-center px-4 md:px-6 h-16 gap-4">
-                {/* Logo */}
+        <header className="sticky top-0 z-50 w-full bg-white border-b border-sky-100 shadow-sm">
+            {/* Top Row: Logo + Yelp-Style Split Search Bar + User Portal Links */}
+            <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-20 gap-4">
+                
+                {/* Visara Logo */}
                 <Link href="/" className="flex items-center gap-2 group shrink-0">
-                    <Globe className="w-5 h-5 text-[#0ea5e9]" />
-                    <span className="text-xl font-extrabold tracking-tight text-navy">Visara</span>
+                    <div className="w-9 h-9 bg-gradient-to-tr from-[#0ea5e9] to-[#0284c7] rounded-xl flex items-center justify-center shadow-md shadow-sky-100 group-hover:rotate-12 transition-transform duration-300">
+                        <Globe className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-2xl font-extrabold tracking-tight text-navy">Visara</span>
                     <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
                 </Link>
-                
-                {/* Nav Links - Desktop */}
-                <nav className="hidden lg:flex items-center gap-1 ml-6 relative">
-                    {mainNavLinks.map(link => (
-                        <Link key={link.href} href={link.href}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${pathname === link.href
-                                    ? "text-[#0ea5e9] bg-sky-50"
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
-                                }`}>
-                            {link.label}
-                        </Link>
-                    ))}
 
-                    {/* Tours & Packages Hover Dropdown */}
+                {/* Split Yelp-style Search Bar (Desktop Only) */}
+                <div className="hidden lg:flex flex-1 max-w-xl mx-8 bg-sky-50/50 rounded-xl flex-row items-center h-12 overflow-hidden border border-sky-100 focus-within:border-[#0ea5e9] focus-within:bg-white focus-within:shadow-md transition-all duration-200">
+                    
+                    {/* Search Query Portion */}
+                    <div className="flex items-center px-4 flex-[1.2] h-full">
+                        <Search className="w-4 h-4 text-gray-400 mr-2.5 shrink-0" />
+                        <input
+                            className="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none"
+                            placeholder="Student visa, work permits, experts..."
+                            type="text"
+                        />
+                    </div>
+                    
+                    {/* Split Vertical Line */}
+                    <div className="w-[1.5px] h-6 bg-sky-200 shrink-0" />
+                    
+                    {/* Location Portion */}
+                    <div className="flex items-center px-4 flex-1 h-full">
+                        <MapPin className="w-4 h-4 text-[#0ea5e9] mr-2 shrink-0" />
+                        <input
+                            className="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none"
+                            placeholder="Hyderabad, Delhi, USA..."
+                            type="text"
+                        />
+                    </div>
+                    
+                    {/* Yelp-style Search Button but in Premium Sky-Blue */}
+                    <button className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] hover:from-[#0284c7] hover:to-[#0284c7] px-6 h-full flex items-center justify-center transition-all shrink-0">
+                        <Search className="w-4 h-4 text-white font-bold" />
+                    </button>
+                </div>
+
+                {/* Right Portal Navigation & Buttons */}
+                <div className="hidden lg:flex items-center gap-5 shrink-0">
+                    <Link href="/register-provider" className="text-xs font-bold text-gray-500 hover:text-[#0ea5e9] transition-colors">
+                        Visara for Experts
+                    </Link>
+                    <Link href="/services" className="text-xs font-bold text-gray-500 hover:text-[#0ea5e9] transition-colors">
+                        Success Stories
+                    </Link>
+                    
+                    <div className="w-[1.5px] h-4 bg-sky-100" />
+
+                    <div className="flex items-center gap-2">
+                        {/* Outlined Sign In button */}
+                        <Link href="/login" 
+                            className="text-xs font-bold text-gray-700 hover:text-[#0ea5e9] border border-sky-100 hover:border-[#0ea5e9] px-4 py-2.5 rounded-xl transition-all">
+                            Log In
+                        </Link>
+                        {/* Solid Filled Sign Up button */}
+                        <Link href="/signup" 
+                            className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-bold text-xs px-4 py-2.5 rounded-xl hover:shadow-lg hover:shadow-sky-100 transition-all active:scale-[0.97]">
+                            Sign Up
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Mobile Menu Button */}
+                <button className="lg:hidden ml-auto p-2 hover:bg-sky-50 rounded-xl transition-colors" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                    {isMobileMenuOpen ? <X className="w-6 h-6 text-navy" /> : <Menu className="w-6 h-6 text-navy" />}
+                </button>
+            </div>
+
+            {/* Bottom Row: Premium Category Navigation Bar (Desktop Only) */}
+            <div className="hidden lg:block border-t border-sky-50 bg-sky-50/20">
+                <div className="max-w-7xl mx-auto px-6 h-12 flex items-center gap-8">
+                    
+                    {/* Find Experts Link */}
+                    <Link href="/find-experts"
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/find-experts" ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"}`}>
+                        Find Experts
+                    </Link>
+
+                    {/* Tours & Packages Dropdown */}
                     <div 
-                        className="relative py-2"
+                        className="relative py-3.5"
                         onMouseEnter={() => setIsToursHovered(true)}
                         onMouseLeave={() => setIsToursHovered(false)}
                     >
                         <button
-                            className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${
-                                isToursHovered || pathname.startsWith("/tours") || pathname.startsWith("/tour/")
-                                    ? "text-[#0ea5e9] bg-sky-50"
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                            className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${
+                                isToursHovered || pathname.startsWith("/tours") ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"
                             }`}
                         >
                             Tours & Packages
-                            <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isToursHovered ? "rotate-180" : ""}`} />
+                            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isToursHovered ? "rotate-180" : ""}`} />
                         </button>
 
-                        {/* Dropdown Menu Card Wrapper */}
-                        <div className={`absolute top-full left-0 pt-2 w-80 transition-all duration-300 transform origin-top-left ${
+                        {/* Dropdown Menu Card */}
+                        <div className={`absolute top-full left-0 pt-2 w-80 transition-all duration-300 transform origin-top-left z-50 ${
                             isToursHovered 
                                 ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" 
                                 : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
                         }`}>
-                            {/* The Actual Card */}
                             <div className="bg-white rounded-2xl border border-sky-100 shadow-xl p-2">
                                 <div className="flex flex-col gap-1">
                                     {tourDropdownItems.map((item, idx) => {
@@ -106,30 +158,27 @@ export function Header() {
                         </div>
                     </div>
 
-                    {/* Events Hover Dropdown */}
+                    {/* Events Dropdown */}
                     <div 
-                        className="relative py-2"
+                        className="relative py-3.5"
                         onMouseEnter={() => setIsEventsHovered(true)}
                         onMouseLeave={() => setIsEventsHovered(false)}
                     >
                         <button
-                            className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${
-                                isEventsHovered || pathname.startsWith("/events")
-                                    ? "text-[#0ea5e9] bg-sky-50"
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                            className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${
+                                isEventsHovered || pathname.startsWith("/events") ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"
                             }`}
                         >
-                            Events
-                            <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isEventsHovered ? "rotate-180" : ""}`} />
+                            Events & Fairs
+                            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isEventsHovered ? "rotate-180" : ""}`} />
                         </button>
 
-                        {/* Dropdown Menu Card Wrapper */}
-                        <div className={`absolute top-full left-0 pt-2 w-80 transition-all duration-300 transform origin-top-left ${
+                        {/* Dropdown Menu Card */}
+                        <div className={`absolute top-full left-0 pt-2 w-80 transition-all duration-300 transform origin-top-left z-50 ${
                             isEventsHovered 
                                 ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" 
                                 : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
                         }`}>
-                            {/* The Actual Card */}
                             <div className="bg-white rounded-2xl border border-sky-100 shadow-xl p-2">
                                 <div className="flex flex-col gap-1">
                                     {eventDropdownItems.map((item, idx) => {
@@ -155,69 +204,45 @@ export function Header() {
                         </div>
                     </div>
 
-                    {secondaryNavLinks.map(link => (
-                        <Link key={link.href} href={link.href}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${pathname === link.href
-                                    ? "text-[#0ea5e9] bg-sky-50"
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
-                                }`}>
-                            {link.label}
-                        </Link>
-                    ))}
-                </nav>
+                    {/* Training Hub Link */}
+                    <Link href="/training"
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/training" ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"}`}>
+                        Training Hub
+                    </Link>
 
-                {/* Integrated Search Bar (Desktop) */}
-                <div className="hidden xl:flex flex-1 max-w-md bg-sky-50/80 rounded-xl flex-row items-center h-10 ml-auto overflow-hidden border border-sky-100 hover:border-sky-200 transition-colors">
-                    <div className="flex items-center px-3 flex-1 h-full">
-                        <Search className="w-4 h-4 text-gray-400 mr-2 shrink-0" />
-                        <input
-                            className="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-medium h-full outline-none"
-                            placeholder="Search experts, universities..."
-                            type="text"
-                        />
-                    </div>
-                    <button className="bg-[#0ea5e9] hover:bg-[#0284c7] px-4 h-full flex items-center justify-center transition-colors">
-                        <Search className="w-4 h-4 text-white" />
-                    </button>
-                </div>
-
-                {/* Right Actions */}
-                <div className="hidden lg:flex items-center gap-3 ml-auto lg:ml-4 shrink-0">
-                    <button className="relative p-2 hover:bg-gray-50 rounded-xl transition-colors">
-                        <Bell className="w-5 h-5 text-gray-400" />
-                        <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
-                    </button>
-                    <Link href="/login"
-                        className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-bold px-5 py-2 rounded-xl hover:shadow-lg hover:shadow-sky-200 transition-all text-sm active:scale-[0.97]">
-                        Sign In / Sign Up
+                    {/* Our Services Link */}
+                    <Link href="/services"
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/services" ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"}`}>
+                        Our Services
                     </Link>
                 </div>
-
-                {/* Mobile Menu Button */}
-                <button className="lg:hidden ml-auto p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                    {isMobileMenuOpen ? <X className="w-6 h-6 text-navy" /> : <Menu className="w-6 h-6 text-navy" />}
-                </button>
             </div>
 
             {/* Mobile menu */}
             {isMobileMenuOpen && (
                 <div className="lg:hidden bg-white border-t border-gray-100 shadow-xl max-h-[85vh] overflow-y-auto">
-                    <div className="p-4 border-b border-gray-100">
-                        <div className="flex items-center bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-100">
-                            <Search className="w-4 h-4 text-gray-400 mr-2" />
-                            <input className="flex-1 bg-transparent outline-none text-sm placeholder:text-gray-400" placeholder="Search..." type="text" />
-                        </div>
-                    </div>
                     
-                    {/* Main Links */}
-                    {mainNavLinks.map(link => (
-                        <Link key={link.href} href={link.href}
-                            className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === link.href ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"
-                                } transition-colors`}
-                            onClick={() => setIsMobileMenuOpen(false)}>
-                            {link.label}
-                        </Link>
-                    ))}
+                    {/* Yelp-style Mobile Search bar */}
+                    <div className="p-4 border-b border-sky-50 bg-sky-50/20 space-y-2">
+                        <div className="flex items-center bg-white rounded-xl px-3 py-2 border border-sky-100 shadow-sm">
+                            <Search className="w-4 h-4 text-sky-400 mr-2 shrink-0" />
+                            <input className="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="What are you looking for..." type="text" />
+                        </div>
+                        <div className="flex items-center bg-white rounded-xl px-3 py-2 border border-sky-100 shadow-sm">
+                            <MapPin className="w-4 h-4 text-sky-400 mr-2 shrink-0" />
+                            <input className="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="Location (e.g. Hyderabad)" type="text" />
+                        </div>
+                        <button className="w-full py-2.5 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white rounded-xl font-bold text-xs shadow-sm active:scale-[0.98]">
+                            Search Experts
+                        </button>
+                    </div>
+
+                    {/* Find Experts */}
+                    <Link href="/find-experts"
+                        className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/find-experts" ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"} transition-colors`}
+                        onClick={() => setIsMobileMenuOpen(false)}>
+                        Find Experts
+                    </Link>
 
                     {/* Mobile Expandable Tours & Packages */}
                     <div className="border-b border-gray-50">
@@ -259,7 +284,7 @@ export function Header() {
                             onClick={() => setIsMobileEventsOpen(!isMobileEventsOpen)}
                             className="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                         >
-                            <span>Events</span>
+                            <span>Events & Fairs</span>
                             <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${isMobileEventsOpen ? "rotate-180" : ""}`} />
                         </button>
                         {isMobileEventsOpen && (
@@ -287,17 +312,46 @@ export function Header() {
                         )}
                     </div>
 
-                    {secondaryNavLinks.map(link => (
-                        <Link key={link.href} href={link.href}
-                            className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === link.href ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"
-                                } transition-colors`}
-                            onClick={() => setIsMobileMenuOpen(false)}>
-                            {link.label}
-                        </Link>
-                    ))}
+                    {/* Training Hub */}
+                    <Link href="/training"
+                        className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/training" ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"} transition-colors`}
+                        onClick={() => setIsMobileMenuOpen(false)}>
+                        Training Hub
+                    </Link>
 
-                    <div className="p-4">
-                        <Link href="/login" className="block text-center py-2.5 bg-[#0ea5e9] text-white rounded-xl font-bold text-sm" onClick={() => setIsMobileMenuOpen(false)}>Sign In / Sign Up</Link>
+                    {/* Our Services */}
+                    <Link href="/services"
+                        className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/services" ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"} transition-colors`}
+                        onClick={() => setIsMobileMenuOpen(false)}>
+                        Our Services
+                    </Link>
+
+                    {/* Visara for Experts */}
+                    <Link href="/register-provider"
+                        className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/register-provider" ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"} transition-colors`}
+                        onClick={() => setIsMobileMenuOpen(false)}>
+                        Visara for Experts
+                    </Link>
+
+                    {/* Success Stories */}
+                    <Link href="/services"
+                        className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors`}
+                        onClick={() => setIsMobileMenuOpen(false)}>
+                        Success Stories
+                    </Link>
+
+                    {/* Mobile Log In and Sign Up buttons */}
+                    <div className="p-4 bg-sky-50/10 flex flex-col gap-2">
+                        <Link href="/login" 
+                            className="block text-center py-2.5 border border-sky-100 text-gray-700 font-bold text-sm rounded-xl hover:bg-sky-50 transition-colors" 
+                            onClick={() => setIsMobileMenuOpen(false)}>
+                            Log In
+                        </Link>
+                        <Link href="/signup" 
+                            className="block text-center py-2.5 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white rounded-xl font-bold text-sm shadow-md" 
+                            onClick={() => setIsMobileMenuOpen(false)}>
+                            Sign Up
+                        </Link>
                     </div>
                 </div>
             )}

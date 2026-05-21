@@ -35,6 +35,13 @@ export default function RegisterProviderPage() {
     const [isEmergency, setIsEmergency] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
+    // Phone Verification States
+    const [phone, setPhone] = useState("");
+    const [otp, setOtp] = useState("");
+    const [otpSent, setOtpSent] = useState(false);
+    const [phoneVerified, setPhoneVerified] = useState(false);
+    const [verificationError, setVerificationError] = useState("");
+
     const toggleCountry = (c: string) => setSelectedCountries(prev => prev.includes(c) ? prev.filter(x => x !== c) : [...prev, c]);
     const toggleDay = (d: string) => setSelectedDays(prev => prev.includes(d) ? prev.filter(x => x !== d) : [...prev, d]);
 
@@ -136,6 +143,75 @@ export default function RegisterProviderPage() {
                                 <div>
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 block">Years of Experience *</label>
                                     <input type="number" placeholder="e.g. 5" min={0} className="w-full p-3 bg-sky-50/50 border border-sky-100 rounded-xl text-sm outline-none focus:border-[#0ea5e9]" />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 block">Phone Number *</label>
+                                    <div className="flex gap-2">
+                                        <div className="flex-1 relative">
+                                            <input 
+                                                type="tel" 
+                                                placeholder="+91 99999 99999" 
+                                                value={phone}
+                                                onChange={(e) => setPhone(e.target.value)}
+                                                disabled={phoneVerified}
+                                                className="w-full p-3 bg-sky-50/50 border border-sky-100 rounded-xl text-sm outline-none focus:border-[#0ea5e9] disabled:bg-gray-100 disabled:text-gray-500 transition-colors" 
+                                            />
+                                            {phoneVerified && (
+                                                <span className="absolute right-3 top-1/2 -translate-y-1/2 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200">
+                                                    <CheckCircle className="w-3 h-3 animate-pulse" /> Verified
+                                                </span>
+                                            )}
+                                        </div>
+                                        {!phoneVerified && (
+                                            <button 
+                                                type="button"
+                                                onClick={() => {
+                                                    if (!phone) {
+                                                        setVerificationError("Please enter a valid phone number.");
+                                                        return;
+                                                    }
+                                                    setVerificationError("");
+                                                    setOtpSent(true);
+                                                    alert("Simulated SMS: OTP code is '1234' sent to " + phone);
+                                                }}
+                                                className="bg-sky-50 hover:bg-sky-100 border border-sky-200 text-[#0ea5e9] font-bold px-4 rounded-xl text-xs whitespace-nowrap transition-colors"
+                                            >
+                                                {otpSent ? "Resend OTP" : "Send OTP"}
+                                            </button>
+                                        )}
+                                    </div>
+                                    {otpSent && !phoneVerified && (
+                                        <div className="mt-3 bg-sky-50/40 border border-sky-100 rounded-2xl p-4 space-y-2">
+                                            <div className="text-xs font-bold text-navy">Enter OTP (Simulated: '1234')</div>
+                                            <div className="flex gap-2">
+                                                <input 
+                                                    type="text" 
+                                                    maxLength={4}
+                                                    placeholder="••••" 
+                                                    value={otp}
+                                                    onChange={(e) => setOtp(e.target.value)}
+                                                    className="w-24 p-2.5 bg-white border border-sky-100 rounded-xl text-center font-mono text-sm outline-none focus:border-[#0ea5e9] tracking-widest" 
+                                                />
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => {
+                                                        if (otp === "1234") {
+                                                            setPhoneVerified(true);
+                                                            setVerificationError("");
+                                                        } else {
+                                                            setVerificationError("Incorrect OTP. Try '1234'.");
+                                                        }
+                                                    }}
+                                                    className="bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-bold px-4 rounded-xl text-xs transition-colors"
+                                                >
+                                                    Verify OTP
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {verificationError && (
+                                        <div className="text-xs text-red-500 font-semibold mt-1">{verificationError}</div>
+                                    )}
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Countries You Serve *</label>
@@ -254,9 +330,18 @@ export default function RegisterProviderPage() {
                             </button>
                         ) : <div />}
                         {step < 4 ? (
-                            <button onClick={() => setStep(step + 1)}
+                            <button 
+                                onClick={() => {
+                                    if (step === 2 && !phoneVerified) {
+                                        setVerificationError("You must verify your phone number to continue.");
+                                        return;
+                                    }
+                                    setVerificationError("");
+                                    setStep(step + 1);
+                                }}
                                 disabled={step === 1 && !selectedCategory}
-                                className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-6 py-3 rounded-xl font-bold text-sm hover:shadow-lg transition-all active:scale-[0.97] flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-6 py-3 rounded-xl font-bold text-sm hover:shadow-lg transition-all active:scale-[0.97] flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
                                 Continue <ArrowRight className="w-4 h-4" />
                             </button>
                         ) : (

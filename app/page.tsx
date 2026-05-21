@@ -197,16 +197,16 @@ export default function HomePage() {
 
       {/* ────── EMERGENCY BANNER ────── */}
       <section className="max-w-5xl mx-auto px-4 mb-16">
-        <Link href="/legal">
-          <div className="bg-white border-l-4 border-sky-500 rounded-2xl p-6 flex items-center gap-5 shadow-sm hover:shadow-md transition-all cursor-pointer group">
-            <div className="w-12 h-12 bg-sky-50 rounded-xl flex items-center justify-center shrink-0">
-              <AlertTriangle className="w-6 h-6 text-sky-500" />
+        <Link href="/emergency">
+          <div className="bg-white border-l-4 border-red-500 rounded-2xl p-6 flex items-center gap-5 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+            <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
+              <AlertTriangle className="w-6 h-6 text-red-500" />
             </div>
             <div className="flex-1">
-              <h3 className="font-bold text-navy text-base mb-0.5">Need Legal or Visa Help?</h3>
-              <p className="text-sm text-gray-500">Overstay, deportation notice, or visa denial appeal? Get fast-track legal assistance from certified attorneys.</p>
+              <h3 className="font-bold text-navy text-base mb-0.5">Need Emergency Help?</h3>
+              <p className="text-sm text-gray-500">Overstay, deportation threat, or visa denial? Get urgent legal assistance right now.</p>
             </div>
-            <span className="text-sm font-bold text-sky-500 flex items-center gap-1 shrink-0 group-hover:gap-2 transition-all">Get Legal Help <ArrowRight className="w-4 h-4" /></span>
+            <span className="text-sm font-bold text-red-500 flex items-center gap-1 shrink-0 group-hover:gap-2 transition-all">Get Help <ArrowRight className="w-4 h-4" /></span>
           </div>
         </Link>
       </section>

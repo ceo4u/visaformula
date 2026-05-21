@@ -13,8 +13,6 @@ const mainNavLinks = [
 const secondaryNavLinks = [
     { href: "/training", label: "Training Hub" },
     { href: "/services", label: "Our Services" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
 ];
 
 const tourDropdownItems = [
@@ -190,12 +188,8 @@ export function Header() {
                         <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
                     </button>
                     <Link href="/login"
-                        className="text-gray-500 hover:text-navy font-semibold text-sm px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-all">
-                        Log In
-                    </Link>
-                    <Link href="/signup"
                         className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-bold px-5 py-2 rounded-xl hover:shadow-lg hover:shadow-sky-200 transition-all text-sm active:scale-[0.97]">
-                        Get Started
+                        Sign In / Sign Up
                     </Link>
                 </div>
 
@@ -302,9 +296,8 @@ export function Header() {
                         </Link>
                     ))}
 
-                    <div className="p-4 flex gap-3">
-                        <Link href="/login" className="flex-1 text-center py-2.5 border border-sky-200 text-[#0284c7] rounded-xl font-bold text-sm" onClick={() => setIsMobileMenuOpen(false)}>Log In</Link>
-                        <Link href="/signup" className="flex-1 text-center py-2.5 bg-[#0ea5e9] text-white rounded-xl font-bold text-sm" onClick={() => setIsMobileMenuOpen(false)}>Get Started</Link>
+                    <div className="p-4">
+                        <Link href="/login" className="block text-center py-2.5 bg-[#0ea5e9] text-white rounded-xl font-bold text-sm" onClick={() => setIsMobileMenuOpen(false)}>Sign In / Sign Up</Link>
                     </div>
                 </div>
             )}

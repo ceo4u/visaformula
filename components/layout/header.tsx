@@ -73,10 +73,10 @@ export function Header() {
 
                 {/* Right Portal Navigation & Buttons */}
                 <div className="hidden lg:flex items-center gap-5 shrink-0">
-                    <Link href="/register-provider" className="text-xs font-bold text-gray-500 hover:text-[#0ea5e9] transition-colors">
+                    <Link href="/register-provider" className="text-xs font-bold text-gray-700 hover:text-[#0ea5e9] transition-colors">
                         Visara for Experts
                     </Link>
-                    <Link href="/support" className="text-xs font-bold text-gray-500 hover:text-[#0ea5e9] transition-colors">
+                    <Link href="/support" className="text-xs font-bold text-gray-700 hover:text-[#0ea5e9] transition-colors">
                         Contact
                     </Link>
                     
@@ -108,7 +108,7 @@ export function Header() {
                     
                     {/* Find Experts Link */}
                     <Link href="/find-experts"
-                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/find-experts" ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"}`}>
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/find-experts" ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"}`}>
                         Find Experts
                     </Link>
 
@@ -120,7 +120,7 @@ export function Header() {
                     >
                         <button
                             className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${
-                                isToursHovered || pathname?.startsWith("/tours") ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"
+                                isToursHovered || pathname?.startsWith("/tours") ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"
                             }`}
                         >
                             Tours & Packages
@@ -166,7 +166,7 @@ export function Header() {
                     >
                         <button
                             className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${
-                                isEventsHovered || pathname?.startsWith("/events") ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"
+                                isEventsHovered || pathname?.startsWith("/events") ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"
                             }`}
                         >
                             Events & Fairs
@@ -206,13 +206,13 @@ export function Header() {
 
                     {/* Training Hub Link */}
                     <Link href="/training"
-                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/training" ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"}`}>
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/training" ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"}`}>
                         Training Hub
                     </Link>
 
                     {/* Our Services Link */}
                     <Link href="/services"
-                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/services" ? "text-[#0ea5e9]" : "text-gray-500 hover:text-navy"}`}>
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/services" ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"}`}>
                         Our Services
                     </Link>
                 </div>

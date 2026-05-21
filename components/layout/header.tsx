@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, MapPin, Menu, X, Bell, Globe, ChevronDown, Umbrella, Trophy, Ship, Music } from "lucide-react";
+import { Search, MapPin, Menu, X, Bell, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -22,10 +22,17 @@ const tourDropdownItems = [
     { title: "Entertainment Events", desc: "Concerts, shows & festivals", href: "/tours?category=events", icon: Music, iconColor: "text-rose-500", bg: "bg-rose-50" }
 ];
 
+const eventDropdownItems = [
+    { title: "Exhibitions", desc: "Trade shows & expos worldwide", href: "/events/exhibitions", icon: Globe, iconColor: "text-indigo-500", bg: "bg-indigo-50" },
+    { title: "Universities Fairs", desc: "Meet top universities directly", href: "/events/university-fairs", icon: GraduationCap, iconColor: "text-purple-500", bg: "bg-purple-50" }
+];
+
 export function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isMobileToursOpen, setIsMobileToursOpen] = useState(false);
+    const [isMobileEventsOpen, setIsMobileEventsOpen] = useState(false);
     const [isToursHovered, setIsToursHovered] = useState(false);
+    const [isEventsHovered, setIsEventsHovered] = useState(false);
     const pathname = usePathname();
 
     return (
@@ -37,7 +44,7 @@ export function Header() {
                     <span className="text-xl font-extrabold tracking-tight text-navy">Visara</span>
                     <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
                 </Link>
-
+                
                 {/* Nav Links - Desktop */}
                 <nav className="hidden lg:flex items-center gap-1 ml-6 relative">
                     {mainNavLinks.map(link => (
@@ -77,6 +84,55 @@ export function Header() {
                             <div className="bg-white rounded-2xl border border-sky-100 shadow-xl p-2">
                                 <div className="flex flex-col gap-1">
                                     {tourDropdownItems.map((item, idx) => {
+                                        const IconComponent = item.icon;
+                                        return (
+                                            <Link 
+                                                key={idx} 
+                                                href={item.href}
+                                                className="flex items-center gap-4 p-3 rounded-xl hover:bg-sky-50/80 transition-all duration-200 group"
+                                            >
+                                                <div className={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform`}>
+                                                    <IconComponent className={`w-5 h-5 ${item.iconColor}`} />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="text-sm font-bold text-navy group-hover:text-[#0ea5e9] transition-colors">{item.title}</div>
+                                                    <div className="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
+                                                </div>
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Events Hover Dropdown */}
+                    <div 
+                        className="relative py-2"
+                        onMouseEnter={() => setIsEventsHovered(true)}
+                        onMouseLeave={() => setIsEventsHovered(false)}
+                    >
+                        <button
+                            className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${
+                                isEventsHovered || pathname.startsWith("/events")
+                                    ? "text-[#0ea5e9] bg-sky-50"
+                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                            }`}
+                        >
+                            Events
+                            <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isEventsHovered ? "rotate-180" : ""}`} />
+                        </button>
+
+                        {/* Dropdown Menu Card Wrapper */}
+                        <div className={`absolute top-full left-0 pt-2 w-80 transition-all duration-300 transform origin-top-left ${
+                            isEventsHovered 
+                                ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" 
+                                : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
+                        }`}>
+                            {/* The Actual Card */}
+                            <div className="bg-white rounded-2xl border border-sky-100 shadow-xl p-2">
+                                <div className="flex flex-col gap-1">
+                                    {eventDropdownItems.map((item, idx) => {
                                         const IconComponent = item.icon;
                                         return (
                                             <Link 
@@ -179,6 +235,40 @@ export function Header() {
                         {isMobileToursOpen && (
                             <div className="bg-sky-50/30 px-3 py-1 flex flex-col gap-1">
                                 {tourDropdownItems.map((item, idx) => {
+                                    const IconComponent = item.icon;
+                                    return (
+                                        <Link 
+                                            key={idx} 
+                                            href={item.href}
+                                            className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-sky-50 transition-all duration-200"
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                        >
+                                            <div className={`w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
+                                                <IconComponent className={`w-4 h-4 ${item.iconColor}`} />
+                                            </div>
+                                            <div>
+                                                <div className="text-xs font-bold text-navy">{item.title}</div>
+                                                <div className="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Mobile Expandable Events */}
+                    <div className="border-b border-gray-50">
+                        <button 
+                            onClick={() => setIsMobileEventsOpen(!isMobileEventsOpen)}
+                            className="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                            <span>Events</span>
+                            <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${isMobileEventsOpen ? "rotate-180" : ""}`} />
+                        </button>
+                        {isMobileEventsOpen && (
+                            <div className="bg-sky-50/30 px-3 py-1 flex flex-col gap-1">
+                                {eventDropdownItems.map((item, idx) => {
                                     const IconComponent = item.icon;
                                     return (
                                         <Link 

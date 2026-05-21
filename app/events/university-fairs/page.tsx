@@ -27,9 +27,9 @@ function Toast({ message, visible, onClose }: { message: string, visible: boolea
 
 // 1. Upcoming Local Fairs (Horizontal Cards)
 const localFairs = [
-    { id: "lf1", name: "QS World University Tour — Mumbai", location: "Grand Hyatt, Mumbai", date: "14", monthName: "Jun", month: "June 2025", type: "mumbai", destCountry: "canada", time: "10 AM – 5 PM · Free Entry", tags: ["🇨🇦 Canada", "🇬🇧 UK", "80+ universities"], rating: 4.9, registered: 342, bg: "from-[#a78bfa] to-[#7c3aed]" },
-    { id: "lf2", name: "British Council UK University Fair — Bangalore", location: "Taj West End, Bangalore", date: "05", monthName: "Jul", month: "July 2025", type: "bangalore", destCountry: "uk", time: "10 AM – 4 PM · Free Entry", tags: ["🇬🇧 Russell Group", "Scholarships"], rating: 4.9, registered: 187, bg: "from-[#fb7185] to-[#e11d48]" },
-    { id: "lf3", name: "IDP Study Abroad Fair — Delhi", location: "The Lalit, New Delhi", date: "22", monthName: "Jun", month: "June 2025", type: "delhi", destCountry: "australia", time: "11 AM – 6 PM · Free Entry", tags: ["🇦🇺 Australia", "🇳🇿 New Zealand"], rating: 4.8, registered: 218, bg: "from-[#38bdf8] to-[#0284c7]" }
+    { id: "lf1", name: "QS World University Tour — Mumbai", location: "Grand Hyatt, Mumbai", date: "14", monthName: "Jun", month: "June 2026", type: "mumbai", destCountry: "canada", time: "10 AM – 5 PM · Free Entry", tags: ["🇨🇦 Canada", "🇬🇧 UK", "80+ universities"], rating: 4.9, registered: 342, bg: "from-[#a78bfa] to-[#7c3aed]" },
+    { id: "lf2", name: "British Council UK University Fair — Bangalore", location: "Taj West End, Bangalore", date: "05", monthName: "Jul", month: "July 2026", type: "bangalore", destCountry: "uk", time: "10 AM – 4 PM · Free Entry", tags: ["🇬🇧 Russell Group", "Scholarships"], rating: 4.9, registered: 187, bg: "from-[#fb7185] to-[#e11d48]" },
+    { id: "lf3", name: "IDP Study Abroad Fair — Delhi", location: "The Lalit, New Delhi", date: "22", monthName: "Jun", month: "June 2026", type: "delhi", destCountry: "australia", time: "11 AM – 6 PM · Free Entry", tags: ["🇦🇺 Australia", "🇳🇿 New Zealand"], rating: 4.8, registered: 218, bg: "from-[#38bdf8] to-[#0284c7]" }
 ];
 
 // 2. Grid Premium Packages (₹999 Fairs)
@@ -130,9 +130,9 @@ export default function UniversityFairsPage() {
                                 <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Month</label>
                                 <select value={fairMonth} onChange={e => setFairMonth(e.target.value)} className="w-full bg-purple-50/10 border border-purple-100 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
                                     <option>Any Month</option>
-                                    <option>May 2025</option>
-                                    <option>June 2025</option>
-                                    <option>July 2025</option>
+                                    <option>May 2026</option>
+                                    <option>June 2026</option>
+                                    <option>July 2026</option>
                                 </select>
                             </div>
                         </div>

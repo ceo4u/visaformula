@@ -27,11 +27,11 @@ function Toast({ message, visible, onClose }: { message: string, visible: boolea
 
 // Exhibitions Data
 const exhibitions = [
-    { id: "ex1", name: "GITEX Global 2025", category: "tech", categoryLabel: "💻 Tech", badge: "🔥 Popular", location: "Dubai World Trade Centre", country: "uae", date: "Oct 13–17, 2025", month: "June 2025", price: 48000, tags: ["AI & Technology", "4,500+ exhibitors"], image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=360&fit=crop", description: "The premier global tech show in Dubai, showcasing breakthrough innovations in AI, smart cities, and cloud." },
-    { id: "ex2", name: "Hannover Messe 2025", category: "trade", categoryLabel: "🏭 Industry", badge: "", location: "Hannover, Germany", country: "germany", date: "May 4–8, 2025", month: "May 2025", price: 82000, tags: ["Industrial Tech", "Schengen Visa"], image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=360&fit=crop", description: "The world's leading trade fair for industrial technology. Features automation, machinery, and smart manufacturing." },
-    { id: "ex3", name: "Art Dubai 2026", category: "art", categoryLabel: "🎨 Art", badge: "", location: "Madinat Jumeirah", country: "uae", date: "Mar 18–21, 2026", month: "June 2025", price: 42000, tags: ["Contemporary Art", "100+ galleries"], image: "https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=600&h=360&fit=crop", description: "The leading international art fair in the Middle East, bringing together contemporary works and global curators." },
-    { id: "ex4", name: "MEDICA 2025", category: "medical", categoryLabel: "🏥 Medical", badge: "", location: "Düsseldorf, Germany", country: "germany", date: "Nov 17–20, 2025", month: "May 2025", price: 88000, tags: ["Medical Devices", "Pharma"], image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=360&fit=crop", description: "The world's largest medical trade show, attracting thousands of exhibitors and experts in healthcare technologies." },
-    { id: "ex5", name: "CES 2026 — Las Vegas", category: "tech", categoryLabel: "💡 Electronics", badge: "", location: "Las Vegas, USA", country: "usa", date: "Jan 6–9, 2026", month: "June 2025", price: 115000, tags: ["Consumer Tech", "USA B-1 Visa"], image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=360&fit=crop", description: "The most influential tech event in the world — the proving ground for breakthrough consumer electronics." }
+    { id: "ex1", name: "GITEX Global 2026", category: "tech", categoryLabel: "💻 Tech", badge: "🔥 Popular", location: "Dubai World Trade Centre", country: "uae", date: "Oct 13–17, 2026", month: "June 2026", price: 48000, tags: ["AI & Technology", "4,500+ exhibitors"], image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=360&fit=crop", description: "The premier global tech show in Dubai, showcasing breakthrough innovations in AI, smart cities, and cloud." },
+    { id: "ex2", name: "Hannover Messe 2026", category: "trade", categoryLabel: "🏭 Industry", badge: "", location: "Hannover, Germany", country: "germany", date: "May 4–8, 2026", month: "May 2026", price: 82000, tags: ["Industrial Tech", "Schengen Visa"], image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=360&fit=crop", description: "The world's leading trade fair for industrial technology. Features automation, machinery, and smart manufacturing." },
+    { id: "ex3", name: "Art Dubai 2026", category: "art", categoryLabel: "🎨 Art", badge: "", location: "Madinat Jumeirah", country: "uae", date: "Mar 18–21, 2026", month: "June 2026", price: 42000, tags: ["Contemporary Art", "100+ galleries"], image: "https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=600&h=360&fit=crop", description: "The leading international art fair in the Middle East, bringing together contemporary works and global curators." },
+    { id: "ex4", name: "MEDICA 2026", category: "medical", categoryLabel: "🏥 Medical", badge: "", location: "Düsseldorf, Germany", country: "germany", date: "Nov 17–20, 2026", month: "May 2026", price: 88000, tags: ["Medical Devices", "Pharma"], image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=360&fit=crop", description: "The world's largest medical trade show, attracting thousands of exhibitors and experts in healthcare technologies." },
+    { id: "ex5", name: "CES 2026 — Las Vegas", category: "tech", categoryLabel: "💡 Electronics", badge: "", location: "Las Vegas, USA", country: "usa", date: "Jan 6–9, 2026", month: "June 2026", price: 115000, tags: ["Consumer Tech", "USA B-1 Visa"], image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=360&fit=crop", description: "The most influential tech event in the world — the proving ground for breakthrough consumer electronics." }
 ];
 
 export default function ExhibitionsPage() {
@@ -128,9 +128,9 @@ export default function ExhibitionsPage() {
                                 <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Month</label>
                                 <select value={exhMonth} onChange={e => setExhMonth(e.target.value)} className="w-full bg-sky-50/30 border border-sky-100 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
                                     <option>Any Month</option>
-                                    <option>May 2025</option>
-                                    <option>June 2025</option>
-                                    <option>July 2025</option>
+                                    <option>May 2026</option>
+                                    <option>June 2026</option>
+                                    <option>July 2026</option>
                                 </select>
                             </div>
                         </div>

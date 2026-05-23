@@ -73,10 +73,10 @@ export function Header() {
 
                 {/* Right Portal Navigation & Buttons */}
                 <div className="hidden lg:flex items-center gap-5 shrink-0">
-                    <Link href="/register-provider" className="text-xs font-bold text-gray-700 hover:text-[#0ea5e9] transition-colors">
+                    <Link href="/register-provider" className="text-xs font-bold text-navy hover:text-[#0ea5e9] transition-colors">
                         Visara for Experts
                     </Link>
-                    <Link href="/support" className="text-xs font-bold text-gray-700 hover:text-[#0ea5e9] transition-colors">
+                    <Link href="/support" className="text-xs font-bold text-navy hover:text-[#0ea5e9] transition-colors">
                         Contact
                     </Link>
                     
@@ -85,7 +85,7 @@ export function Header() {
                     <div className="flex items-center gap-2">
                         {/* Outlined Sign In button */}
                         <Link href="/login" 
-                            className="text-xs font-bold text-gray-700 hover:text-[#0ea5e9] border border-sky-100 hover:border-[#0ea5e9] px-4 py-2.5 rounded-xl transition-all">
+                            className="text-xs font-bold text-navy hover:text-[#0ea5e9] border border-sky-100 hover:border-[#0ea5e9] px-4 py-2.5 rounded-xl transition-all">
                             Log In
                         </Link>
                         {/* Solid Filled Sign Up button */}
@@ -108,13 +108,13 @@ export function Header() {
                     
                     {/* Find Experts Link */}
                     <Link href="/find-experts"
-                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/find-experts" ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"}`}>
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/find-experts" ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"}`}>
                         Find Experts
                     </Link>
 
                     {/* Apply Visa Link */}
                     <Link href="/apply-visa"
-                        className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${pathname === "/apply-visa" ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"}`}>
+                        className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${pathname === "/apply-visa" ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"}`}>
                         <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                         Apply Visa
                     </Link>
@@ -127,7 +127,7 @@ export function Header() {
                     >
                         <button
                             className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${
-                                isToursHovered || pathname?.startsWith("/tours") ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"
+                                isToursHovered || pathname?.startsWith("/tours") ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"
                             }`}
                         >
                             Tours & Packages
@@ -173,7 +173,7 @@ export function Header() {
                     >
                         <button
                             className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${
-                                isEventsHovered || pathname?.startsWith("/events") ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"
+                                isEventsHovered || pathname?.startsWith("/events") ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"
                             }`}
                         >
                             Events & Fairs
@@ -213,13 +213,13 @@ export function Header() {
 
                     {/* Training Hub Link */}
                     <Link href="/training"
-                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/training" ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"}`}>
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/training" ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"}`}>
                         Training Hub
                     </Link>
 
                     {/* Our Services Link */}
                     <Link href="/services"
-                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/services" ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"}`}>
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/services" ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"}`}>
                         Our Services
                     </Link>
                 </div>

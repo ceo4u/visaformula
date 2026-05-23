@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { EmergencyFab } from "@/components/shared/emergency-fab";
+import { TalkToUs } from "@/components/shared/talk-to-us";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/components/providers/auth-provider";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
             <Footer />
             <MobileNav />
             <EmergencyFab />
+            <TalkToUs />
           </ThemeProvider>
         </AuthProvider>
       </body>

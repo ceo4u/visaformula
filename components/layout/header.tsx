@@ -112,6 +112,13 @@ export function Header() {
                         Find Experts
                     </Link>
 
+                    {/* Apply Visa Link */}
+                    <Link href="/apply-visa"
+                        className={`text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${pathname === "/apply-visa" ? "text-[#0ea5e9]" : "text-gray-700 hover:text-navy"}`}>
+                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                        Apply Visa
+                    </Link>
+
                     {/* Tours & Packages Dropdown */}
                     <div 
                         className="relative py-3.5"

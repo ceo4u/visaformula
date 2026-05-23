@@ -4,18 +4,18 @@ import Link from "next/link";
 import { Search, MapPin, ChevronRight, CheckCircle, Upload, CreditCard, Shield, Clock, Star, Zap, ArrowRight, Globe } from "lucide-react";
 
 const countries = [
-  { name: "UAE / Dubai", code: "ae", flag: "🇦🇪", type: "e-Visa", days: "30 days", fee: "₹2,499", express: true, popular: true },
-  { name: "Thailand", code: "th", flag: "🇹🇭", type: "e-Visa", days: "30 days", fee: "₹1,499", express: true, popular: true },
-  { name: "United Kingdom", code: "gb", flag: "🇬🇧", type: "e-Visa", days: "6 months", fee: "₹9,999", express: false, popular: true },
-  { name: "Singapore", code: "sg", flag: "🇸🇬", type: "e-Visa", days: "30 days", fee: "₹3,999", express: true, popular: true },
-  { name: "Saudi Arabia", code: "sa", flag: "🇸🇦", type: "e-Visa", days: "365 days", fee: "₹4,999", express: true, popular: false },
-  { name: "Japan", code: "jp", flag: "🇯🇵", type: "Sticker", days: "30 days", fee: "₹5,999", express: false, popular: true },
-  { name: "USA", code: "us", flag: "🇺🇸", type: "B-2 Visa", days: "10 years", fee: "₹12,999", express: false, popular: true },
-  { name: "Australia", code: "au", flag: "🇦🇺", type: "e-Visa", days: "12 months", fee: "₹7,499", express: true, popular: true },
-  { name: "Canada", code: "ca", flag: "🇨🇦", type: "eTA", days: "5 years", fee: "₹6,999", express: false, popular: true },
-  { name: "Germany", code: "de", flag: "🇩🇪", type: "Schengen", days: "90 days", fee: "₹8,499", express: false, popular: false },
-  { name: "France", code: "fr", flag: "🇫🇷", type: "Schengen", days: "90 days", fee: "₹8,499", express: false, popular: false },
-  { name: "New Zealand", code: "nz", flag: "🇳🇿", type: "e-Visa", days: "9 months", fee: "₹5,499", express: true, popular: false },
+  { name: "UAE / Dubai", code: "ae", flag: "🇦🇪", type: "e-Visa", days: "30 days", fee: "₹2,499", express: true, popular: true, image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format&fit=crop&q=80" },
+  { name: "Thailand", code: "th", flag: "🇹🇭", type: "e-Visa", days: "30 days", fee: "₹1,499", express: true, popular: true, image: "https://images.unsplash.com/photo-1528181304800-2f1702413247?w=600&auto=format&fit=crop&q=80" },
+  { name: "United Kingdom", code: "gb", flag: "🇬🇧", type: "e-Visa", days: "6 months", fee: "₹9,999", express: false, popular: true, image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&auto=format&fit=crop&q=80" },
+  { name: "Singapore", code: "sg", flag: "🇸🇬", type: "e-Visa", days: "30 days", fee: "₹3,999", express: true, popular: true, image: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&auto=format&fit=crop&q=80" },
+  { name: "Saudi Arabia", code: "sa", flag: "🇸🇦", type: "e-Visa", days: "365 days", fee: "₹4,999", express: true, popular: false, image: "https://images.unsplash.com/photo-1586724237569-f38559db826c?w=600&auto=format&fit=crop&q=80" },
+  { name: "Japan", code: "jp", flag: "🇯🇵", type: "Sticker", days: "30 days", fee: "₹5,999", express: false, popular: true, image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&auto=format&fit=crop&q=80" },
+  { name: "USA", code: "us", flag: "🇺🇸", type: "B-2 Visa", days: "10 years", fee: "₹12,999", express: false, popular: true, image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&auto=format&fit=crop&q=80" },
+  { name: "Australia", code: "au", flag: "🇦🇺", type: "e-Visa", days: "12 months", fee: "₹7,499", express: true, popular: true, image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600&auto=format&fit=crop&q=80" },
+  { name: "Canada", code: "ca", flag: "🇨🇦", type: "eTA", days: "5 years", fee: "₹6,999", express: false, popular: true, image: "https://images.unsplash.com/photo-1506535772-4523e71c8b41?w=600&auto=format&fit=crop&q=80" },
+  { name: "Germany", code: "de", flag: "🇩🇪", type: "Schengen", days: "90 days", fee: "₹8,499", express: false, popular: false, image: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&auto=format&fit=crop&q=80" },
+  { name: "France", code: "fr", flag: "🇫🇷", type: "Schengen", days: "90 days", fee: "₹8,499", express: false, popular: false, image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&auto=format&fit=crop&q=80" },
+  { name: "New Zealand", code: "nz", flag: "🇳🇿", type: "e-Visa", days: "9 months", fee: "₹5,499", express: true, popular: false, image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&auto=format&fit=crop&q=80" },
 ];
 
 const steps = ["Destination", "Details", "Documents", "Payment"];
@@ -117,15 +117,60 @@ export default function ApplyVisaPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {filtered.map(c => (
-                <button key={c.code} onClick={() => { setSelected(c); setStep(1); }} className={`p-4 bg-white rounded-2xl border-2 text-left hover:border-[#0ea5e9] hover:shadow-md transition-all ${selected?.code === c.code ? "border-[#0ea5e9] bg-sky-50" : "border-sky-100"}`}>
-                  <div className="text-3xl mb-2">{c.flag}</div>
-                  <div className="font-bold text-navy text-sm leading-tight mb-1">{c.name}</div>
-                  <div className="text-[11px] text-sky-600 font-semibold mb-1">{c.type}</div>
-                  <div className="text-[11px] text-gray-400">{c.days}</div>
-                  {c.express && <div className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-full"><Zap className="w-2.5 h-2.5" /> Express</div>}
-                  <div className="mt-2 font-extrabold text-[#0ea5e9] text-sm">{c.fee}</div>
+                <button
+                  key={c.code}
+                  onClick={() => { setSelected(c); setStep(1); }}
+                  className={`group relative h-80 rounded-3xl overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 border-2 ${selected?.code === c.code ? "border-[#0ea5e9] ring-4 ring-sky-100" : "border-white/10 shadow-md bg-white"}`}
+                >
+                  {/* Luxurious Background Image */}
+                  <div className="absolute inset-0 bg-navy">
+                    <img 
+                      src={c.image} 
+                      alt={c.name}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 brightness-[0.8] group-hover:brightness-[0.7]"
+                    />
+                  </div>
+
+                  {/* Elegant Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-black/20" />
+
+                  {/* Top Floating Badges */}
+                  <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+                    {/* Glowing Flag Orb */}
+                    <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full border border-white/35 flex items-center justify-center text-xl shadow-lg">
+                      {c.flag}
+                    </div>
+
+                    {/* Express Badge */}
+                    {c.express && (
+                      <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-amber-400 flex items-center gap-1 shadow-md">
+                        <Zap className="w-3 h-3 fill-white" /> Express
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Card Content Footer */}
+                  <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col justify-end">
+                    <span className="text-emerald-400 text-[11px] font-black uppercase tracking-widest mb-1">{c.type}</span>
+                    <h3 className="font-sora text-lg font-extrabold text-white leading-tight mb-1 group-hover:text-[#38BDF8] transition-colors">{c.name}</h3>
+                    <p className="text-gray-300 text-xs font-semibold mb-2">
+                      🕒 Validity: {c.days}
+                    </p>
+                    
+                    <div className="h-px bg-white/10 my-2" />
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] text-gray-400 block font-bold uppercase tracking-wider">Total Fee</span>
+                        <span className="text-base font-black text-white">{c.fee}</span>
+                      </div>
+                      <span className="bg-white/10 group-hover:bg-[#0ea5e9] group-hover:text-white text-white p-2 rounded-xl transition-all duration-300 backdrop-blur-md border border-white/10">
+                        <ArrowRight className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
                 </button>
               ))}
             </div>

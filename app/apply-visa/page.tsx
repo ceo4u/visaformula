@@ -149,7 +149,7 @@ export default function ApplyVisaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/30 flex flex-col">
+    <div className="min-h-screen bg-[#f7fbff] flex flex-col">
       
       {/* Top Professional Progress Header */}
       {step > 0 && selected && (

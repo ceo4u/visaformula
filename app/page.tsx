@@ -52,7 +52,7 @@ const successStories = [
 
 export default function HomePage() {
   return (
-    <div className="bg-[#f0f4f8] min-h-screen">
+    <div className="bg-[#f7fbff] min-h-screen">
       {/* ────── HERO ────── */}
       <section className="relative w-full flex flex-col items-center justify-center px-4 overflow-hidden" style={{ minHeight: "520px" }}>
         <div className="absolute inset-0 z-0">

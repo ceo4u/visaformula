@@ -90,16 +90,27 @@ export default function UniversityFairsPage() {
             <Toast message={toastMsg} visible={isToastVisible} onClose={() => setIsToastVisible(false)} />
 
             {/* Premium Purple-Indigo Hero */}
-            <div className="relative bg-gradient-to-br from-white via-violet-50/30 to-white pt-16 pb-12 px-4 overflow-hidden border-b border-purple-100">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_65%_-10%,rgba(167,139,250,0.25),transparent_55%)] pointer-events-none" />
-                <div className="max-w-4xl mx-auto text-center relative z-10">
-                    <span className="bg-purple-50 text-[#7c3aed] text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full border border-purple-200/40 mb-4 inline-block">
+            <div className="relative py-24 px-4 overflow-hidden border-b border-purple-950">
+                {/* Full-bleed premium background */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1800&h=900&fit=crop&q=90"
+                        alt="Ivy League university campus"
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Dark purple/navy overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-950/40 to-transparent" />
+                </div>
+
+                <div className="max-w-4xl mx-auto text-center relative z-10 text-white">
+                    <span className="bg-white/10 text-purple-400 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
                         🎓 Universities Fairs
                     </span>
-                    <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-navy tracking-tight mb-3">
-                        Meet Top Universities. <br /><span className="bg-gradient-to-r from-purple-400 to-[#7c3aed] bg-clip-text text-transparent">Get Your Student Visa Ready.</span>
+                    <h1 className="font-sora text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-white leading-tight">
+                        Meet Top Universities. <br /><span className="bg-gradient-to-r from-[#c084fc] to-[#a78bfa] bg-clip-text text-transparent">Get Your Student Visa Ready.</span>
                     </h1>
-                    <p className="text-gray-500 text-sm md:text-base max-w-xl mx-auto mb-8 leading-relaxed">
+                    <p className="text-white/60 text-base md:text-lg max-w-xl mx-auto mb-8 leading-relaxed font-medium">
                         Attend world-class university fairs in India and abroad. Talk directly to admissions officers, explore scholarship options, and receive conditional offers on the spot.
                     </p>
 

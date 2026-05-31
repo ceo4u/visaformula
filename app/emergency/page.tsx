@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, Phone, Clock, Shield, CheckCircle, ArrowRight, Star, MapPin, ChevronDown } from "lucide-react";
+import { AlertTriangle, Phone, Clock, Shield, CheckCircle, ArrowRight, Star, MapPin, ChevronRight, CheckCircle2 } from "lucide-react";
 
 const emergencyTypes = [
     { id: "overstay", label: "Visa Overstay", desc: "Currently in-country beyond visa validity" },
@@ -50,9 +50,33 @@ const experts = [
 ];
 
 const steps = [
-    { icon: Phone, title: "Call our emergency line", desc: "Available 24/7 for urgent cases. Our team will triage your situation immediately.", action: "Call Now: 1800-VISARA" },
-    { icon: Shield, title: "Connect with a specialist", desc: "Get matched to an emergency-vetted immigration expert within minutes.", action: null },
-    { icon: CheckCircle, title: "Get protected", desc: "Your expert will file the necessary stays, appeals, or documents to protect your status.", action: null },
+    {
+        title: "Call Emergency Line",
+        desc: "Our toll-free immigration crisis support helpline is active 24/7 for immediate triage and guidance.",
+        action: "Call Now: 1800-VISARA",
+        icon: Phone,
+        circleBg: "bg-red-600",
+        textColor: "text-red-600",
+        iconColor: "text-white"
+    },
+    {
+        title: "Connect with Lawyer",
+        desc: "Get instantly paired with a verified, emergency-vetted immigration attorney or expert within 30 minutes.",
+        action: null,
+        icon: Shield,
+        circleBg: "bg-[#0c1a2e]",
+        textColor: "text-[#0c1a2e]",
+        iconColor: "text-white"
+    },
+    {
+        title: "Submit Protection Stay",
+        desc: "Your dedicated expert will immediately file stays, appeal rejections, or prepare emergency status files.",
+        action: null,
+        icon: CheckCircle,
+        circleBg: "bg-red-600",
+        textColor: "text-red-600",
+        iconColor: "text-white"
+    }
 ];
 
 export default function EmergencyPage() {
@@ -60,159 +84,175 @@ export default function EmergencyPage() {
     const [showForm, setShowForm] = useState(false);
 
     return (
-        <div className="bg-[#f0f4f8] min-h-screen">
-            {/* Hero */}
-            <section className="bg-gradient-to-br from-red-600 via-red-500 to-rose-600 text-white py-14 px-4">
-                <div className="max-w-4xl mx-auto text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-5 backdrop-blur-sm">
-                        <AlertTriangle className="w-8 h-8 text-white" />
+        <div className="bg-[#f7fbff] min-h-screen pb-24">
+            
+            {/* ────── LUXURIOUS LEGAL HERO SECTION ────── */}
+            <section className="relative text-white py-36 px-4 overflow-hidden border-b border-red-950">
+                {/* Full-bleed premium background */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1800&h=900&fit=crop&q=90"
+                        alt="Courthouse marble columns"
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Dark red/navy overlay matching the services page structure */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#991b1b]/90 via-[#851818]/85 to-[#0c1a2e]/95" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(239,68,68,0.25),transparent_60%)]" />
+                </div>
+
+                {/* Content */}
+                <div className="max-w-4xl mx-auto text-center relative z-10">
+                    <div className="w-14 h-14 bg-white/10 border border-white/20 rounded-2xl flex items-center justify-center mx-auto mb-5 backdrop-blur-md">
+                        <AlertTriangle className="w-7 h-7 text-rose-400" />
                     </div>
-                    <h1 className="font-sora text-4xl md:text-5xl font-extrabold mb-3 leading-tight">
-                        Legal Immigration Help
+                    <h1 className="font-sora text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight text-white">
+                        Legal Help Portal
                     </h1>
-                    <p className="text-white/75 text-lg mb-6 max-w-2xl mx-auto">
-                        Facing an immigration crisis? Overstay, deportation notice, or visa denial? Get urgent help from a vetted expert — right now.
+                    <p className="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
+                        Facing an immigration crisis? Get urgent, verified support from vetted specialists immediately.
                     </p>
-                    <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold text-white/60">
-                        <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-white" /> 24/7 Legal Support</span>
-                        <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-white" /> Verified Specialists</span>
-                        <span className="flex items-center gap-2"><Phone className="w-4 h-4 text-white" /> Immediate Response</span>
+                    <div className="flex flex-wrap justify-center gap-6 text-xs font-bold text-white/70 mt-6">
+                        <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-rose-400" /> 24/7 Support</span>
+                        <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-rose-400" /> Vetted Specialists</span>
+                        <span className="flex items-center gap-2"><Phone className="w-4 h-4 text-rose-400" /> Immediate Triage</span>
                     </div>
                 </div>
             </section>
 
-            <div className="max-w-5xl mx-auto px-4 py-12 space-y-10">
-                {/* How It Works */}
-                <section>
-                    <h2 className="font-sora text-2xl font-bold text-navy text-center mb-8">How Emergency Help Works</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                        {steps.map((step, i) => (
-                            <div key={i} className="bg-white rounded-2xl border border-sky-100 p-6 shadow-sm text-center">
-                                <div className="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                    <step.icon className="w-6 h-6 text-red-500" />
+            {/* ────── OVERLAPPING CIRCULAR SERVICES (HOW IT WORKS) ────── */}
+            <section className="max-w-5xl mx-auto px-4 -mt-20 relative z-20 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {steps.map((step, idx) => {
+                        const Icon = step.icon;
+                        return (
+                            <div key={idx} className="group flex flex-col items-center bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-white/60 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                {/* Large overlapping circle with border */}
+                                <div className={`w-24 h-24 rounded-full border-4 border-white shadow-md ${step.circleBg} flex items-center justify-center ${step.iconColor} group-hover:scale-105 transition-transform duration-300 -mt-16`}>
+                                    <Icon className="w-9 h-9" />
                                 </div>
-                                <div className="font-sora font-bold text-navy mb-2">{step.title}</div>
-                                <p className="text-sm text-gray-500 leading-relaxed mb-3">{step.desc}</p>
+
+                                {/* Service Description below circle */}
+                                <h3 className={`font-sora font-extrabold text-base text-center mt-5 transition-colors ${step.textColor} group-hover:text-red-500`}>
+                                    {step.title}
+                                </h3>
+                                <p className="text-xs text-gray-500 font-medium text-center leading-relaxed mt-2 max-w-xs mx-auto px-1">
+                                    {step.desc}
+                                </p>
                                 {step.action && (
-                                    <span className="inline-block bg-red-50 text-red-600 border border-red-200 text-xs font-bold px-3 py-1.5 rounded-full">
-                                        {step.action}
-                                    </span>
+                                    <a href="tel:18004827272" className="mt-4">
+                                        <button className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[10px] font-black uppercase px-4 py-2 rounded-full transition-colors">
+                                            {step.action}
+                                        </button>
+                                    </a>
                                 )}
                             </div>
-                        ))}
-                    </div>
-                </section>
+                        );
+                    })}
+                </div>
+            </section>
 
-                {/* Situation Selector */}
-                <section className="bg-white rounded-2xl border border-sky-100 shadow-sm p-6">
-                    <h2 className="font-sora text-xl font-bold text-navy mb-2">What&apos;s your situation?</h2>
-                    <p className="text-sm text-gray-500 mb-5">Select the most relevant option so we can match you to the right expert.</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* ────── INTERACTIVE CRISIS SITUATION SELECTOR ────── */}
+            <section className="max-w-4xl mx-auto px-4 mb-16">
+                <div className="bg-white rounded-3xl border border-sky-100 shadow-sm p-8">
+                    <div className="mb-6">
+                        <span className="text-[10px] font-black text-red-600 uppercase tracking-widest block mb-1">Status Restoration</span>
+                        <h2 className="font-sora font-bold text-navy text-xl">What is your current immigration situation?</h2>
+                        <p className="text-xs text-gray-400 mt-1">Select the option below so our emergency coordinators can matching-assign you to the right attorney immediately.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {emergencyTypes.map((type) => (
                             <button
                                 key={type.id}
                                 onClick={() => { setSelectedType(type.id); setShowForm(true); }}
                                 className={`p-4 rounded-2xl border-2 text-left transition-all ${selectedType === type.id
-                                        ? "border-red-400 bg-red-50"
-                                        : "border-sky-100 hover:border-red-200 hover:bg-red-50/30"
+                                        ? "border-red-400 bg-red-50/50"
+                                        : "border-sky-100 hover:border-red-200 hover:bg-red-50/10"
                                     }`}
                             >
                                 <div className="font-bold text-navy text-sm mb-0.5">{type.label}</div>
-                                <div className="text-xs text-gray-400">{type.desc}</div>
+                                <div className="text-xs text-gray-400 leading-normal">{type.desc}</div>
                             </button>
                         ))}
                     </div>
 
                     {showForm && (
-                        <div className="mt-6 space-y-4 animate-fade-up">
-                            <hr className="border-sky-100" />
-                            <h4 className="font-bold text-navy text-sm">Tell us more (brief)</h4>
+                        <div className="mt-8 space-y-4 animate-fade-up">
+                            <hr className="border-sky-50" />
+                            <h4 className="font-sora font-bold text-navy text-sm">Brief Situation Description & Contact</h4>
                             <textarea
-                                placeholder="Briefly describe your situation... (e.g., 'My study visa expired 2 weeks ago, I'm still in Canada')"
+                                placeholder="Describe your case briefly... (e.g. 'My visa expired 1 week ago, I received an inquiry email')"
                                 rows={3}
-                                className="w-full p-3 bg-sky-50/50 border border-sky-100 rounded-xl text-sm outline-none focus:border-red-400 resize-none"
+                                className="w-full p-4 bg-slate-50/50 border border-sky-100 rounded-2xl text-xs outline-none focus:border-red-400 resize-none font-medium text-gray-700"
                             />
                             <input
                                 type="tel"
-                                placeholder="Your WhatsApp number (for urgent callback)"
-                                className="w-full p-3 bg-sky-50/50 border border-sky-100 rounded-xl text-sm outline-none focus:border-red-400"
+                                placeholder="Your WhatsApp number (for urgent legal callback within 15 mins)"
+                                className="w-full p-4 bg-slate-50/50 border border-sky-100 rounded-2xl text-xs outline-none focus:border-red-400 font-medium text-gray-700"
                             />
-                            <button className="w-full bg-gradient-to-r from-red-500 to-rose-600 text-white py-3.5 rounded-xl font-bold hover:shadow-lg transition-all active:scale-[0.97] flex items-center justify-center gap-2">
-                                <Phone className="w-4 h-4" /> Get Urgent Help Now
+                            <button className="w-full bg-gradient-to-r from-red-500 to-rose-600 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-wider hover:shadow-lg transition-all active:scale-[0.97] flex items-center justify-center gap-2">
+                                <Phone className="w-4 h-4" /> Connect with Attorney Now
                             </button>
-                            <p className="text-xs text-gray-400 text-center">By submitting, you agree to be contacted by a Visara representative within 30 minutes.</p>
+                            <p className="text-[10px] text-gray-400 text-center">Your privacy is legally protected. Case details are encrypted under Client-Attorney privilege guidelines.</p>
                         </div>
                     )}
-                </section>
+                </div>
+            </section>
 
-                {/* Available Emergency Experts */}
-                <section>
-                    <h2 className="font-sora text-2xl font-bold text-navy mb-6">
-                        Emergency Experts <span className="text-red-500">Available Now</span>
-                    </h2>
-                    <div className="space-y-4">
-                        {experts.map((expert, idx) => (
-                            <Link href={`/expert/${idx + 1}`} key={idx} className="block group">
-                                <div className="bg-white rounded-2xl border border-sky-100 p-5 flex flex-col md:flex-row gap-5 shadow-sm hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
-                                    <div className="relative w-20 h-20 shrink-0">
-                                        <img src={expert.image} alt={expert.name} className="w-full h-full object-cover rounded-2xl" />
-                                        {expert.available && (
-                                            <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">Live</span>
-                                        )}
+            {/* ────── AVAILABLE EMERGENCY EXPERTS ────── */}
+            <section className="max-w-4xl mx-auto px-4 mt-16">
+                <div className="mb-8">
+                    <span className="text-[10px] font-black text-red-600 uppercase tracking-widest block mb-1">Live Queue</span>
+                    <h2 className="font-sora font-bold text-navy text-2xl">Verified Legal Specialists On-Duty</h2>
+                    <p className="text-xs text-gray-400 mt-1">Consult with verified immigration attorneys who are live on the platform right now.</p>
+                </div>
+
+                <div className="space-y-4">
+                    {experts.map((expert, idx) => (
+                        <Link href={`/expert/${idx + 1}`} key={idx} className="block group">
+                            <div className="bg-white rounded-3xl border border-sky-100 p-6 flex flex-col sm:flex-row gap-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                <div className="relative w-20 h-20 shrink-0 mx-auto sm:mx-0">
+                                    <img src={expert.image} alt={expert.name} className="w-full h-full object-cover rounded-2xl border border-sky-100" />
+                                    {expert.available && (
+                                        <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse">Live</span>
+                                    )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2 text-center sm:text-left">
+                                        <div>
+                                            <h3 className="font-sora font-bold text-navy text-sm group-hover:text-red-500 transition-colors leading-tight">{expert.name}</h3>
+                                            <p className="text-xs text-gray-400">{expert.role}</p>
+                                        </div>
+                                        <div className="flex items-center justify-center sm:justify-end gap-1 text-xs font-bold text-navy">
+                                            <Star className="w-4 h-4 text-amber-500 fill-amber-500" /> {expert.rating}
+                                            <span className="text-gray-400 font-normal">({expert.reviews} reviews)</span>
+                                        </div>
                                     </div>
-                                    <div className="flex-1">
-                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                                            <div>
-                                                <h3 className="font-bold text-navy group-hover:text-[#0ea5e9] transition-colors">{expert.name}</h3>
-                                                <p className="text-sm text-gray-400">{expert.role}</p>
-                                            </div>
-                                            <div className="flex items-center gap-1 text-sm font-semibold">
-                                                <Star className="w-4 h-4 text-amber-500 fill-amber-500" /> {expert.rating}
-                                                <span className="text-gray-400 font-normal">({expert.reviews})</span>
-                                            </div>
+                                    <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-3">
+                                        {expert.specialties.map((s) => (
+                                            <span key={s} className="bg-red-50/50 text-red-700 text-[9px] font-bold px-2.5 py-1 rounded-full border border-red-100/50">{s}</span>
+                                        ))}
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-sky-50">
+                                        <div className="flex justify-center sm:justify-start gap-4 text-xs font-semibold text-gray-500">
+                                            <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5 text-red-500" /> Responds {expert.responseTime}</span>
+                                            <span>·</span>
+                                            <span className="font-bold text-navy">{expert.price} / session</span>
                                         </div>
-                                        <div className="flex flex-wrap gap-1.5 mb-3">
-                                            {expert.specialties.map((s) => (
-                                                <span key={s} className="bg-red-50 text-red-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-100">{s}</span>
-                                            ))}
-                                        </div>
-                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                                            <div className="flex gap-4 text-xs font-semibold text-gray-500">
-                                                <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5 text-red-500" /> Responds {expert.responseTime}</span>
-                                                <span className="font-bold text-navy">{expert.price} / session</span>
-                                            </div>
-                                            <button className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-[0.97] ${expert.available
-                                                    ? "bg-gradient-to-r from-red-500 to-rose-600 text-white hover:shadow-lg"
-                                                    : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                                                }`}>
-                                                {expert.available ? "Book Emergency Call" : "Unavailable"}
-                                            </button>
-                                        </div>
+                                        <button className={`w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.97] ${expert.available
+                                                ? "bg-[#0c1a2e] text-white hover:bg-red-600 hover:shadow-md"
+                                                : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                            }`}>
+                                            {expert.available ? "Book Emergency Call" : "Offline"}
+                                        </button>
                                     </div>
                                 </div>
-                            </Link>
-                        ))}
-                    </div>
-                </section>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </section>
 
-                {/* Emergency Hotline Card */}
-                <section>
-                    <div className="bg-gradient-to-r from-red-500 to-rose-600 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center gap-6">
-                        <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm shrink-0">
-                            <Phone className="w-8 h-8 text-white" />
-                        </div>
-                        <div className="flex-1 text-center md:text-left">
-                            <h3 className="font-sora text-xl font-bold mb-1">24/7 Emergency Hotline</h3>
-                            <p className="text-white/70 text-sm">For life-threatening immigration emergencies, call us directly. Our team is available day and night.</p>
-                        </div>
-                        <a href="tel:18004827272" className="shrink-0">
-                            <button className="bg-white text-red-600 px-6 py-3 rounded-xl font-bold hover:bg-white/90 transition-all text-sm shadow-md flex items-center gap-2">
-                                <Phone className="w-4 h-4" /> 1800-VISARA
-                            </button>
-                        </a>
-                    </div>
-                </section>
-            </div>
         </div>
     );
 }

@@ -73,8 +73,8 @@ export function Header() {
 
                 {/* Right Portal Navigation & Buttons */}
                 <div className="hidden lg:flex items-center gap-5 shrink-0">
-                    <Link href="/register-provider" className="text-xs font-bold text-navy hover:text-[#0ea5e9] transition-colors">
-                        Visara for Experts
+                    <Link href="/agents" className="text-xs font-bold text-navy hover:text-[#0ea5e9] transition-colors">
+                        Our Agents
                     </Link>
                     <Link href="/support" className="text-xs font-bold text-navy hover:text-[#0ea5e9] transition-colors">
                         Contact
@@ -222,6 +222,18 @@ export function Header() {
                         className={`text-xs font-bold tracking-wide transition-all ${pathname === "/services" ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"}`}>
                         Our Services
                     </Link>
+
+                    {/* Overseas Jobs Link */}
+                    <Link href="/jobs"
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/jobs" ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"}`}>
+                        Overseas Jobs
+                    </Link>
+
+                    {/* Legal Link */}
+                    <Link href="/emergency"
+                        className={`text-xs font-bold tracking-wide transition-all ${pathname === "/emergency" ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"}`}>
+                        Legal
+                    </Link>
                 </div>
             </div>
 
@@ -333,11 +345,25 @@ export function Header() {
                         Our Services
                     </Link>
 
-                    {/* Visara for Experts */}
-                    <Link href="/register-provider"
-                        className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/register-provider" ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"} transition-colors`}
+                    {/* Overseas Jobs */}
+                    <Link href="/jobs"
+                        className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/jobs" ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"} transition-colors`}
                         onClick={() => setIsMobileMenuOpen(false)}>
-                        Visara for Experts
+                        Overseas Jobs
+                    </Link>
+
+                    {/* Legal */}
+                    <Link href="/emergency"
+                        className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/emergency" ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"} transition-colors`}
+                        onClick={() => setIsMobileMenuOpen(false)}>
+                        Legal
+                    </Link>
+
+                    {/* Visara for Experts */}
+                    <Link href="/agents"
+                        className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/agents" ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"} transition-colors`}
+                        onClick={() => setIsMobileMenuOpen(false)}>
+                        Our Agents
                     </Link>
 
                     {/* Contact */}

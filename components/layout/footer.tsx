@@ -3,7 +3,7 @@ import { Globe } from "lucide-react";
 
 export function Footer() {
     return (
-        <footer className="bg-[#0f172a] text-white pt-16 pb-8 px-6">
+        <footer className="bg-[#070b12] text-white pt-16 pb-8 px-6">
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-16">
                     <div className="col-span-2 lg:col-span-1">
@@ -50,7 +50,7 @@ export function Footer() {
                         </ul>
                     </div>
                 </div>
-                <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+                <div className="pt-8 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
                     <div className="flex gap-6 font-semibold">
                         <Link className="hover:text-white transition-colors" href="#">Privacy Policy</Link>
                         <Link className="hover:text-white transition-colors" href="#">Terms of Service</Link>

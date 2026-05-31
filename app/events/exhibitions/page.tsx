@@ -87,16 +87,27 @@ export default function ExhibitionsPage() {
             <Toast message={toastMsg} visible={isToastVisible} onClose={() => setIsToastVisible(false)} />
 
             {/* Premium Radial Hero */}
-            <div className="relative bg-gradient-to-br from-white via-sky-50/50 to-white pt-16 pb-12 px-4 overflow-hidden border-b border-sky-100">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_65%_-10%,rgba(186,230,253,0.45),transparent_60%)] pointer-events-none" />
-                <div className="max-w-4xl mx-auto text-center relative z-10">
-                    <span className="bg-sky-100 text-[#0ea5e9] text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full border border-sky-200/40 mb-4 inline-block">
+            <div className="relative py-24 px-4 overflow-hidden border-b border-sky-950">
+                {/* Full-bleed premium background */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1800&h=900&fit=crop&q=90"
+                        alt="Futuristic global exhibition convention hall"
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Dark overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#0369a1]/30 to-transparent" />
+                </div>
+
+                <div className="max-w-4xl mx-auto text-center relative z-10 text-white">
+                    <span className="bg-white/10 text-sky-400 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
                         🏛️ Exhibition Packages
                     </span>
-                    <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-navy tracking-tight mb-3">
-                        Global Exhibitions. <br /><span className="bg-gradient-to-r from-sky-400 to-[#0284c7] bg-clip-text text-transparent">Visa Sorted Before You Go.</span>
+                    <h1 className="font-sora text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-white leading-tight">
+                        Global Exhibitions. <br /><span className="bg-gradient-to-r from-[#38bdf8] to-[#7dd3fc] bg-clip-text text-transparent">Visa Sorted Before You Go.</span>
                     </h1>
-                    <p className="text-gray-500 text-sm md:text-base max-w-xl mx-auto mb-8 leading-relaxed">
+                    <p className="text-white/60 text-base md:text-lg max-w-xl mx-auto mb-8 leading-relaxed font-medium">
                         Trade shows, tech expos, art exhibitions, industry fairs worldwide — attend with your business or tourist visa completely handled by our experts.
                     </p>
 

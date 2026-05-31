@@ -218,9 +218,18 @@ export default function ToursPage() {
 
             {/* Dynamic Hero Section */}
             {activeTab === "holiday" && (
-                <section className="relative bg-gradient-to-br from-navy via-ink to-navy py-14 px-4 overflow-hidden">
-                    <div className="absolute inset-0 opacity-15">
-                        <img src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1600&h=600&fit=crop" className="w-full h-full object-cover" alt="" />
+                <section className="relative py-20 px-4 overflow-hidden">
+                    {/* Full-bleed premium background */}
+                    <div className="absolute inset-0 z-0">
+                        <img
+                            src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1800&h=900&fit=crop&q=90"
+                            alt="Luxury holiday island resort overwater villa"
+                            className="w-full h-full object-cover"
+                        />
+                        {/* Dark navy overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/85 via-[#0c1a2e]/65 to-[#0c1a2e]/90" />
+                        {/* Subtle blue tint */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#0369a1]/25 to-transparent" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center">
                         <span className="bg-sky-50/10 text-[#38bdf8] text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-sky-500/20 mb-4 inline-block">✈️ Holiday Packages</span>
@@ -266,9 +275,18 @@ export default function ToursPage() {
             )}
 
             {activeTab === "sports" && (
-                <section className="relative bg-gradient-to-br from-[#0c1e15] via-[#103020] to-[#0c1e15] py-14 px-4 overflow-hidden">
-                    <div className="absolute inset-0 opacity-10">
-                        <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1600&h=600&fit=crop" className="w-full h-full object-cover" alt="" />
+                <section className="relative py-20 px-4 overflow-hidden">
+                    {/* Full-bleed premium background */}
+                    <div className="absolute inset-0 z-0">
+                        <img
+                            src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1800&h=900&fit=crop&q=90"
+                            alt="Luxury stadium arena"
+                            className="w-full h-full object-cover"
+                        />
+                        {/* Dark overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/85 via-[#0c1a2e]/65 to-[#0c1a2e]/90" />
+                        {/* Subtle green/blue tint */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/35 to-transparent" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center">
                         <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-500/20 mb-4 inline-block">⚽ Sport Tours</span>
@@ -321,9 +339,18 @@ export default function ToursPage() {
             )}
 
             {activeTab === "cruises" && (
-                <section className="relative bg-gradient-to-br from-[#0c142e] via-[#15234d] to-[#0c142e] py-14 px-4 overflow-hidden">
-                    <div className="absolute inset-0 opacity-15">
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&h=600&fit=crop" className="w-full h-full object-cover" alt="" />
+                <section className="relative py-20 px-4 overflow-hidden">
+                    {/* Full-bleed premium background */}
+                    <div className="absolute inset-0 z-0">
+                        <img
+                            src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1800&h=900&fit=crop&q=90"
+                            alt="Luxury cruise yacht at sea"
+                            className="w-full h-full object-cover"
+                        />
+                        {/* Dark overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/85 via-[#0c1a2e]/65 to-[#0c1a2e]/90" />
+                        {/* Subtle blue/indigo tint */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-950/30 to-transparent" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center">
                         <span className="bg-indigo-500/10 text-indigo-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-indigo-500/20 mb-4 inline-block">🚢 Cruises</span>
@@ -374,9 +401,18 @@ export default function ToursPage() {
             )}
 
             {activeTab === "events" && (
-                <section className="relative bg-gradient-to-br from-[#2e1d0c] via-[#4d2d15] to-[#2e1d0c] py-14 px-4 overflow-hidden">
-                    <div className="absolute inset-0 opacity-15">
-                        <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1600&h=600&fit=crop" className="w-full h-full object-cover" alt="" />
+                <section className="relative py-20 px-4 overflow-hidden">
+                    {/* Full-bleed premium background */}
+                    <div className="absolute inset-0 z-0">
+                        <img
+                            src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1800&h=900&fit=crop&q=90"
+                            alt="Luxury music concert stage show"
+                            className="w-full h-full object-cover"
+                        />
+                        {/* Dark overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/85 via-[#0c1a2e]/65 to-[#0c1a2e]/90" />
+                        {/* Subtle warm/orange tint */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-amber-950/25 to-transparent" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center">
                         <span className="bg-orange-500/10 text-orange-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-orange-500/20 mb-4 inline-block">🎭 Entertainment Events</span>

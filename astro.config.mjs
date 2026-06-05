@@ -3,6 +3,10 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
 import sitemap from '@astrojs/sitemap';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
@@ -28,7 +32,7 @@ export default defineConfig({
     },
     resolve: {
       alias: {
-        '@': '/src',
+        '@': path.resolve(__dirname, './src'),
       },
     },
   },

@@ -1,0 +1,238 @@
+---
+// src/pages/services.astro
+import Layout from '../layouts/Layout.astro';
+import {
+    Users, Plane, CalendarCheck, Shield,
+    Compass, Globe, GraduationCap, Briefcase,
+    ArrowRight, CheckCircle2, BadgePercent, ShieldCheck
+} from 'lucide-react';
+
+const primaryServices = [
+    {
+        title: "Verified Experts",
+        desc: "Consult directly with top-tier registered immigration attorneys, consultants, and legal counselors. Get verified support in real time.",
+        href: "/find-experts",
+        icon: Users,
+        circleBg: "bg-slate-950",
+        textColor: "text-slate-950",
+        iconColor: "text-white"
+    },
+    {
+        title: "Apply Visa Online",
+        desc: "Apply for study, work, tourist visas, and PR programs entirely online. Complete step-by-step guidance and document checklists.",
+        href: "/apply-visa",
+        icon: Plane,
+        circleBg: "bg-slate-900",
+        textColor: "text-slate-900",
+        iconColor: "text-white"
+    },
+    {
+        title: "VFS Booking",
+        desc: "Book your VFS Global visa appointment with zero hassle. We manage slot selection, biometric scheduling, and on-the-day coordination.",
+        href: "/vfs-booking",
+        icon: CalendarCheck,
+        circleBg: "bg-slate-950",
+        textColor: "text-slate-950",
+        iconColor: "text-white"
+    },
+    {
+        title: "Secure Escrow",
+        desc: "Make secure, milestone-based agent payments. Our smart escrow system keeps your money safe until your visa milestones are met.",
+        href: "/escrow",
+        icon: Shield,
+        circleBg: "bg-slate-900",
+        textColor: "text-slate-900",
+        iconColor: "text-white"
+    }
+];
+
+const secondaryServices = [
+    {
+        title: "Exclusive Tours & Packages",
+        desc: "Explore Holiday Packages, major Sport Tours (FIFA, F1), Cruise voyages, and global Entertainment Events. Every tour package comes with fully verified, comprehensive visa processing support.",
+        href: "/tours",
+        badge: "All-Inclusive",
+        icon: Compass,
+        iconBg: "bg-slate-50",
+        iconColor: "text-slate-950",
+        borderColor: "hover:border-slate-200"
+    },
+    {
+        title: "Global Exhibitions",
+        desc: "Attend prestigious trade shows, tech expos, art exhibitions, and medical conventions worldwide. Delegation packages include official entry passes, premium hotels, and business visas.",
+        href: "/events/exhibitions",
+        badge: "Business Delegation",
+        icon: Globe,
+        iconBg: "bg-slate-50",
+        iconColor: "text-slate-950",
+        borderColor: "hover:border-slate-200"
+    },
+    {
+        title: "Universities Fairs Hub",
+        desc: "Register for top-tier international student recruitment fairs. Meet global university admission deans, receive conditional offer letters on-the-spot, and access premium student visa guidance.",
+        href: "/events/university-fairs",
+        badge: "Academic Placement",
+        icon: GraduationCap,
+        iconBg: "bg-slate-50",
+        iconColor: "text-slate-950",
+        borderColor: "hover:border-slate-200"
+    },
+    {
+        title: "Overseas Jobs & Sponsorships",
+        desc: "Browse premium global career opportunities with verified employers who offer official visa sponsorships. Search by industry, location, and salary, and apply in one click.",
+        href: "/jobs",
+        badge: "International Careers",
+        icon: Briefcase,
+        iconBg: "bg-slate-50",
+        iconColor: "text-slate-950",
+        borderColor: "hover:border-slate-200"
+    }
+];
+---
+
+<Layout title="Our Services" description="Premium global mobility services tailored for your journey. Trusted, verified, and guaranteed.">
+    <div class="bg-white min-h-screen pb-24">
+        
+        <!-- LUXURIOUS HERO SECTION -->
+        <section class="relative text-white py-36 px-4 overflow-hidden border-b border-slate-950">
+            <!-- Full-bleed background -->
+            <div class="absolute inset-0 z-0">
+                <img
+                    src="https://images.unsplash.com/photo-1542744094-3a31f103e35f?w=1800&h=900&fit=crop&q=90"
+                    alt="High-end presentation meeting"
+                    class="w-full h-full object-cover"
+                />
+                <!-- Deep slate/black overlay -->
+                <div class="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-950/85 to-black/95"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(255,255,255,0.05),transparent_60%)]"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <h1 class="font-sora text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight text-white">
+                    Our Services
+                </h1>
+                <p class="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
+                    Premium global mobility services tailored for your journey. Trusted, verified, and guaranteed.
+                </p>
+            </div>
+        </section>
+
+        <!-- OVERLAPPING CIRCULAR SERVICES -->
+        <section class="max-w-6xl mx-auto px-4 -mt-20 relative z-20 mb-16">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {primaryServices.map((service) => {
+                    const Icon = service.icon;
+                    return (
+                        <a href={service.href} class="group block">
+                            <div class="flex flex-col items-center">
+                                <!-- Large overlapping circle with border -->
+                                <div class={`w-28 h-28 rounded-full border-4 border-white shadow-xl ${service.circleBg} flex items-center justify-center ${service.iconColor} group-hover:scale-105 transition-transform duration-300`}>
+                                    <Icon class="w-10 h-10" />
+                                </div>
+
+                                <!-- Service Description below circle -->
+                                <h3 class={`font-sora font-extrabold text-base text-center mt-5 transition-colors ${service.textColor} group-hover:text-slate-700`}>
+                                    {service.title}
+                                </h3>
+                                <p class="text-xs text-gray-500 font-medium text-center leading-relaxed mt-2 max-w-xs mx-auto px-2">
+                                    {service.desc}
+                                </p>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </section>
+
+        <!-- SECTION BREAK: ADDITIONAL SERVICES -->
+        <section class="max-w-6xl mx-auto px-4 mt-20">
+            <div class="text-center mb-10">
+                <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">More Options</span>
+                <h2 class="font-sora font-bold text-navy text-2xl">Premium Travel & Global Opportunities</h2>
+                <p class="text-xs text-gray-400 mt-1 max-w-md mx-auto">Explore all-inclusive student placements, business expo delegations, high-end vacation packages, and overseas career pathways.</p>
+            </div>
+
+            <!-- Secondary Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {secondaryServices.map((service) => {
+                    const Icon = service.icon;
+                    return (
+                        <a href={service.href} class="group block">
+                            <div class={`flex flex-col bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${service.borderColor} h-full`}>
+                                
+                                <!-- Circular Icon -->
+                                <div class={`w-12 h-12 rounded-2xl ${service.iconBg} flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform shrink-0`}>
+                                    <Icon class={`w-6 h-6 ${service.iconColor}`} />
+                                </div>
+
+                                <!-- Body -->
+                                <div class="flex-1">
+                                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">
+                                        {service.badge}
+                                    </span>
+                                    <h3 class="font-sora font-bold text-navy text-sm mb-2 group-hover:text-slate-800 transition-colors leading-snug">
+                                        {service.title}
+                                    </h3>
+                                    <p class="text-xs text-gray-500 leading-relaxed font-medium">
+                                        {service.desc}
+                                    </p>
+                                </div>
+
+                                <!-- Action Button -->
+                                <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                                    <div class="w-8 h-8 rounded-xl bg-slate-50 text-gray-400 group-hover:bg-[#111111] group-hover:text-white flex items-center justify-center shadow-inner transition-all">
+                                        <ArrowRight class="w-4 h-4" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </section>
+
+        <!-- VALUE PROPS BANNER -->
+        <section class="max-w-6xl mx-auto px-4 mt-20">
+            <div class="bg-gradient-to-r from-slate-900 via-slate-950 to-black rounded-3xl p-8 md:p-10 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-slate-500/10 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-slate-500/10 rounded-full blur-2xl"></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center shrink-0 backdrop-blur-md border border-white/15">
+                            <ShieldCheck class="w-6 h-6 text-slate-400" />
+                        </div>
+                        <div>
+                            <h4 class="font-sora font-bold text-sm mb-1 text-white">100% Secure Payments</h4>
+                            <p class="text-xs text-white/60 leading-relaxed">Our premium escrow system safeguards your money and releases it to agents upon milestone validation.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center shrink-0 backdrop-blur-md border border-white/15">
+                            <CheckCircle2 class="w-6 h-6 text-slate-400" />
+                        </div>
+                        <div>
+                            <h4 class="font-sora font-bold text-sm mb-1 text-white">Vetted Service Providers</h4>
+                            <p class="text-xs text-white/60 leading-relaxed">Every immigration consultant, attorney, and travel agency is fully licensed and screened by Visara.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center shrink-0 backdrop-blur-md border border-white/15">
+                            <BadgePercent class="w-6 h-6 text-slate-400" />
+                        </div>
+                        <div>
+                            <h4 class="font-sora font-bold text-sm mb-1 text-white">Transparent Pricing</h4>
+                            <p class="text-xs text-white/60 leading-relaxed">Get fixed rates on visa processing, local expert advice, and premium bookings with zero hidden charges.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</Layout>
+

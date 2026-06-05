@@ -1,0 +1,12 @@
+---
+// src/pages/vfs-booking.astro
+import Layout from '../layouts/Layout.astro';
+import { VFSBookingPortal } from '../components/interactive/VFSBookingPortal';
+---
+
+<Layout 
+  title="VFS Global Booking Services" 
+  description="Book biometrics, visa appointments, passport submission and collection slots for UK, Canada, Schengen, Australia and more — directly via Visara Agent Portal."
+>
+  <VFSBookingPortal client:only="react" />
+</Layout>

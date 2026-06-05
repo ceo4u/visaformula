@@ -1,0 +1,12 @@
+---
+// src/pages/events/university-fairs.astro
+import Layout from '../../layouts/Layout.astro';
+import { UniversityFairsPortal } from '../../components/interactive/UniversityFairsPortal';
+---
+
+<Layout 
+  title="International Universities Recruitment Fairs Hub" 
+  description="Register for top-tier international student recruitment fairs. Meet global university admission deans, receive conditional offer letters on-the-spot, and access premium student visa guidance."
+>
+  <UniversityFairsPortal client:only="react" />
+</Layout>

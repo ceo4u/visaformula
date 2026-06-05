@@ -1,0 +1,13 @@
+---
+// src/pages/login.astro
+import Layout from '../layouts/Layout.astro';
+import { LoginPortal } from '../components/interactive/LoginPortal';
+---
+
+<Layout 
+  title="Sign In to Visara" 
+  description="Sign in to your Visara visa consultation account. Complete your application filing, check upcoming session schedules, and upload passport document scans."
+>
+  <!-- Mount client-only React login portal island -->
+  <LoginPortal client:only="react" />
+</Layout>

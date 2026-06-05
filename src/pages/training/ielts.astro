@@ -1,0 +1,12 @@
+---
+// src/pages/training/ielts.astro
+import Layout from '../../layouts/Layout.astro';
+import { IELTSPortal } from '../../components/interactive/IELTSPortal';
+---
+
+<Layout 
+  title="IELTS, TOEFL & PTE Preparation Batches" 
+  description="Compare top language coaching centers, verify batch schedules, read reviews, and register for IELTS preparation course slots."
+>
+  <IELTSPortal client:only="react" />
+</Layout>

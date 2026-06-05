@@ -1,0 +1,12 @@
+---
+// src/pages/escrow.astro
+import Layout from '../layouts/Layout.astro';
+import { EscrowPortal } from '../components/interactive/EscrowPortal';
+---
+
+<Layout 
+  title="Secured Escrow Payments" 
+  description="Make secure, milestone-based agent payments. Our smart escrow system keeps your money safe until your visa milestones are met."
+>
+  <EscrowPortal client:only="react" />
+</Layout>

@@ -1,0 +1,19 @@
+---
+// src/pages/payment/[bookingId].astro
+import Layout from '../../layouts/Layout.astro';
+import { PaymentPortal } from '../../components/interactive/PaymentPortal';
+
+// Make this route render on the server dynamically (SSR)
+export const prerender = false;
+
+const { bookingId } = Astro.params;
+const finalBookingId = bookingId || "VISA-DEFAULT";
+---
+
+<Layout 
+  title="Secured Escrow Checkout" 
+  description="Secured travel booking checkout. Your payment is held safely in escrow until the service is successfully delivered."
+>
+  <!-- Mount client-side React checkout island -->
+  <PaymentPortal client:load bookingId={finalBookingId} />
+</Layout>

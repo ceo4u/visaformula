@@ -1,0 +1,14 @@
+---
+// src/pages/smart-search.astro
+import Layout from '../layouts/Layout.astro';
+import { SmartSearchPortal } from '../components/interactive/SmartSearchPortal';
+---
+
+<Layout 
+  title="Smart Expert Search & Eligibility Calculator" 
+  description="Input your visa requirements, passport details, and residency to find matched experts. Built-in CRS score calculator."
+>
+  <div class="bg-white min-h-screen">
+    <SmartSearchPortal client:load />
+  </div>
+</Layout>

@@ -1,0 +1,36 @@
+---
+// src/pages/tours.astro
+import Layout from '../layouts/Layout.astro';
+import { ToursPortal } from '../components/interactive/ToursPortal';
+
+// SEO Structured Data (JSON-LD)
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "Visara Tours & Travel",
+  "description": "Premium holiday packages, sports tours, international cruises, and entertainment events with all-inclusive visa processing.",
+  "url": "https://visara.com/tours",
+  "telephone": "1800-VISARA",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "India"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "lowPrice": "22000",
+    "highPrice": "225000",
+    "priceCurrency": "INR"
+  }
+};
+---
+
+<Layout 
+  title="Luxury Tours & Event Packages" 
+  description="Explore premium holiday packages, sporting events, cruises, and live entertainment concerts worldwide. Complete hotel stays and multi-country transit visas fully sorted."
+>
+  <!-- JSON-LD SEO Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <!-- Mount client-side React island for luxury tour filtering -->
+  <ToursPortal client:load />
+</Layout>

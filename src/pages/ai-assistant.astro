@@ -1,0 +1,12 @@
+---
+// src/pages/ai-assistant.astro
+import Layout from '../layouts/Layout.astro';
+import { AIAssistantPortal } from '../components/interactive/AIAssistantPortal';
+---
+
+<Layout 
+  title="AI Eligibility Assistant & Visa Checklists" 
+  description="Audit your eligibility subclass match scores, review document checklists, and talk to our Digital Diplomat immigration assistant."
+>
+  <AIAssistantPortal client:only="react" />
+</Layout>

@@ -1,0 +1,107 @@
+﻿---
+// src/pages/signup/index.astro
+import Layout from '../../layouts/Layout.astro';
+import { ArrowRight, Shield, Star, CheckCircle, Sparkles } from 'lucide-react';
+---
+
+<Layout 
+  title="Choose Account Type - Visara" 
+  description="Register a free Visara account. Select whether to join as a Seeker to find top visa experts, or as an Agent/Consultant to grow your global immigration practice."
+>
+  <div class="min-h-screen bg-[#fff5f5] flex flex-col items-center justify-center px-4 py-16">
+      
+      <!-- CSS animations for high luxury floating circles -->
+      <style is:inline>
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+          }
+          @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.08); opacity: 0.15; }
+            100% { transform: scale(1); opacity: 0.4; }
+          }
+          .circle-float-1 { animation: float 4s ease-in-out infinite; }
+          .circle-float-2 { animation: float 4s ease-in-out infinite 0.5s; }
+          .pulse-ring { animation: pulse-ring 3s ease-in-out infinite; }
+      </style>
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 bg-yellow-50 border border-yellow-100 rounded-full px-4 py-1.5 mb-6">
+          <Sparkles class="w-3.5 h-3.5 text-[#f59e0b] animate-pulse" />
+          <span class="text-xs font-bold text-amber-700">Join 50,000+ users</span>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="font-sora text-3xl sm:text-4xl font-extrabold text-navy mb-2 text-center">
+          I want to <span class="text-[#f59e0b]">join as</span>
+      </h1>
+      <p class="text-gray-400 text-sm mb-12 text-center">Select your role to get started with Visara</p>
+
+      <!-- Two Circles -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-20 mb-12">
+          
+          <!-- Seeker Option -->
+          <a href="/signup/seeker" class="group flex flex-col items-center text-center">
+              <div class="relative circle-float-1">
+                  <!-- Outer pulse ring -->
+                  <div class="absolute inset-[-6px] rounded-full border-2 border-yellow-100 pulse-ring"></div>
+                  <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-yellow-50 to-white border-2 border-navy/15 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-xl group-hover:border-[#f59e0b] transition-all duration-300 relative z-10">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" class="sm:w-14 sm:h-14">
+                          <circle cx="12" cy="8" r="3.5" fill="#f59e0b" opacity="0.2"></circle>
+                          <circle cx="12" cy="8" r="3.5" stroke="#f59e0b" stroke-width="1.8" fill="none"></circle>
+                          <path d="M5 20c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" fill="none"></path>
+                          <path d="M16 4l1.5 1.5L16 7" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                          <path d="M17.5 5.5H15" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"></path>
+                      </svg>
+                  </div>
+              </div>
+              <span class="mt-5 font-sora font-extrabold text-navy text-base sm:text-lg group-hover:text-[#f59e0b] transition-colors">Visa Seeker</span>
+              <span class="text-xs text-gray-400 mt-1 mb-4 font-medium">Find, consult & book immigration experts</span>
+              <span class="bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 group-hover:shadow-md group-hover:shadow-yellow-100 transition-all active:scale-[0.97]">
+                  Register as Seeker <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </span>
+          </a>
+
+          <!-- Divider -->
+          <div class="flex flex-row sm:flex-col items-center gap-2 text-gray-300 font-bold text-xs uppercase tracking-widest py-4">
+              <div class="w-12 sm:w-px h-px sm:h-10 bg-gray-200"></div>
+              <span class="text-gray-400">OR</span>
+              <div class="w-12 sm:w-px h-px sm:h-10 bg-gray-200"></div>
+          </div>
+
+          <!-- Expert Option -->
+          <a href="/agents" class="group flex flex-col items-center text-center">
+              <div class="relative circle-float-2">
+                  <!-- Outer pulse ring -->
+                  <div class="absolute inset-[-6px] rounded-full border-2 border-purple-100 pulse-ring"></div>
+                  <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-purple-50/50 to-white border-2 border-navy/15 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-xl group-hover:border-purple-500 transition-all duration-300 relative z-10">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" class="sm:w-14 sm:h-14">
+                          <rect x="5" y="2" width="14" height="20" rx="3" fill="#7c3aed" opacity="0.12"></rect>
+                          <rect x="5" y="2" width="14" height="20" rx="3" stroke="#7c3aed" stroke-width="1.8" fill="none"></rect>
+                          <circle cx="12" cy="10" r="2.5" stroke="#7c3aed" stroke-width="1.5" fill="none"></circle>
+                          <path d="M8.5 16c0-1.5 1.6-2.8 3.5-2.8s3.5 1.3 3.5 2.8" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" fill="none"></path>
+                          <circle cx="16" cy="5" r="0.7" fill="#7c3aed"></circle>
+                          <circle cx="16" cy="7.5" r="0.7" fill="#7c3aed"></circle>
+                      </svg>
+                  </div>
+              </div>
+              <span class="mt-5 font-sora font-extrabold text-navy text-base sm:text-lg group-hover:text-purple-600 transition-colors">Freelance Agent</span>
+              <span class="text-xs text-gray-400 mt-1 mb-4 font-medium">Grow your global client consulting practice</span>
+              <span class="bg-gradient-to-r from-purple-500 to-[#7c3aed] text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 group-hover:shadow-md group-hover:shadow-purple-100 transition-all active:scale-[0.97]">
+                  Register as Agent <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </span>
+          </a>
+
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="flex items-center gap-6 text-[10px] font-black uppercase tracking-wider text-gray-400 mt-4">
+          <span class="flex items-center gap-1.5"><Shield class="w-4 h-4 text-[#f59e0b]" /> Escrow protected</span>
+          <span class="flex items-center gap-1.5"><Star class="w-4 h-4 text-amber-500" /> 4.9★ rated</span>
+          <span class="flex items-center gap-1.5"><CheckCircle class="w-4 h-4 text-emerald-500" /> KYC verified</span>
+      </div>
+
+  </div>
+</Layout>
+

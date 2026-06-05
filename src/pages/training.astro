@@ -1,0 +1,206 @@
+---
+// src/pages/training.astro
+import Layout from '../layouts/Layout.astro';
+import { BookOpen, Languages, Wallet, ArrowRight, Star, MapPin, CheckCircle2, GraduationCap } from 'lucide-react';
+
+const trainingCategories = [
+    {
+        title: "IELTS Preparation",
+        desc: "Prepare for IELTS, TOEFL, or PTE with top-rated coaches. Access standard practice guides, structured mock exams, and score builders.",
+        href: "/training/ielts",
+        icon: BookOpen,
+        circleBg: "bg-slate-950",
+        textColor: "text-slate-950",
+        iconColor: "text-white"
+    },
+    {
+        title: "Language Training",
+        desc: "Learn French, German, Spanish, or Arabic required for immigration points or university admissions. Guided interactive courses.",
+        href: "/training/language",
+        icon: Languages,
+        circleBg: "bg-slate-900",
+        textColor: "text-slate-900",
+        iconColor: "text-white"
+    },
+    {
+        title: "Finance & Loans",
+        desc: "Secure education loans, GIC accounts, blocked accounts, and professional financial planning advice for international travel.",
+        href: "/training/financial",
+        icon: Wallet,
+        circleBg: "bg-slate-950",
+        textColor: "text-slate-950",
+        iconColor: "text-white"
+    }
+];
+
+const featuredInstitutes = [
+    { name: "IELTS Academy Pro", city: "Mumbai", rating: 4.9, students: "2.5K+", type: "IELTS", image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop" },
+    { name: "Alliance Française", city: "Delhi", rating: 4.8, students: "1.8K+", type: "French", image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop" },
+    { name: "Goethe-Institut", city: "Bangalore", rating: 4.7, students: "1.2K+", type: "German", image: "https://images.unsplash.com/photo-1577036421869-7c8d388d2123?w=400&h=300&fit=crop" },
+    { name: "FinVisa Advisors", city: "Pune", rating: 4.8, students: "900+", type: "Finance", image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop" },
+];
+---
+
+<Layout title="Training Hub" description="Coaching, language training, and financial planning designed to secure your international success.">
+    <div class="bg-white min-h-screen pb-24">
+        
+        <!-- LUXURIOUS HERO SECTION -->
+        <section class="relative text-white py-36 px-4 overflow-hidden border-b border-slate-950">
+            <!-- Full-bleed background -->
+            <div class="absolute inset-0 z-0">
+                <img
+                    src="https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1800&h=900&fit=crop&q=90"
+                    alt="Luxurious study"
+                    class="w-full h-full object-cover"
+                />
+                <!-- Deep slate/black overlay -->
+                <div class="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-950/85 to-black/95"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(255,255,255,0.05),transparent_60%)]"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <h1 class="font-sora text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight text-white">
+                    Training & Preparation
+                </h1>
+                <p class="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
+                    Coaching, language training, and financial planning designed to secure your international success.
+                </p>
+            </div>
+        </section>
+
+        <!-- OVERLAPPING CIRCULAR SERVICES -->
+        <section class="max-w-5xl mx-auto px-4 -mt-20 relative z-20 mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {trainingCategories.map((cat) => {
+                    const Icon = cat.icon;
+                    return (
+                        <a href={cat.href} class="group block">
+                            <div class="flex flex-col items-center bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-slate-100 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <!-- Large overlapping circle with border -->
+                                <div class={`w-24 h-24 rounded-full border-4 border-white shadow-md ${cat.circleBg} flex items-center justify-center ${cat.iconColor} group-hover:scale-105 transition-transform duration-300 -mt-16`}>
+                                    <Icon class="w-9 h-9" />
+                                </div>
+
+                                <!-- Service Description below circle -->
+                                <h3 class={`font-sora font-extrabold text-base text-center mt-5 transition-colors ${cat.textColor} group-hover:text-slate-800`}>
+                                    {cat.title}
+                                </h3>
+                                <p class="text-xs text-gray-500 font-medium text-center leading-relaxed mt-2 max-w-xs mx-auto px-1">
+                                    {cat.desc}
+                                </p>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </section>
+
+        <!-- STUDY ABROAD STATS SECTION -->
+        <section class="max-w-5xl mx-auto px-4 py-8 mb-8">
+            <div class="bg-white border border-slate-100 rounded-3xl p-8 shadow-sm flex flex-col md:flex-row justify-around gap-6 text-center">
+                <div>
+                    <div class="font-sora font-extrabold text-slate-950 text-3xl">98%</div>
+                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-1">IELTS Pass Rate</div>
+                </div>
+                <div class="w-px bg-slate-100 hidden md:block"></div>
+                <div>
+                    <div class="font-sora font-extrabold text-navy text-3xl">4.9 ★</div>
+                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-1">Average Rating</div>
+                </div>
+                <div class="w-px bg-slate-100 hidden md:block"></div>
+                <div>
+                    <div class="font-sora font-extrabold text-slate-950 text-3xl">15K+</div>
+                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-1">Students Prepared</div>
+                </div>
+                <div class="w-px bg-slate-100 hidden md:block"></div>
+                <div>
+                    <div class="font-sora font-extrabold text-slate-950 text-3xl">₹1.2 Cr+</div>
+                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-1">Loans Sanctioned</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VALUE PROPS SECTION -->
+        <section class="max-w-5xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Global Standard</span>
+                    <h2 class="font-sora font-bold text-navy text-2xl mb-4 leading-tight">Everything You Need Before You Board the Flight</h2>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-6">Preparing for study, work, or resettlement abroad requires more than just submitting a visa form. Visara matches you with verified training centers to guarantee you ace all requirements early.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="flex gap-2 items-center text-xs font-semibold text-gray-600">
+                            <CheckCircle2 class="w-4 h-4 text-slate-700 shrink-0" /> Official training partnerships (British Council, IDP, Goethe)
+                        </div>
+                        <div class="flex gap-2 items-center text-xs font-semibold text-gray-600">
+                            <CheckCircle2 class="w-4 h-4 text-slate-700 shrink-0" /> Customized study kits and blocked account setups
+                        </div>
+                        <div class="flex gap-2 items-center text-xs font-semibold text-gray-600">
+                            <CheckCircle2 class="w-4 h-4 text-slate-700 shrink-0" /> Direct scholarship channels and bank-vetted loan providers
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-tr from-slate-50 to-white border border-slate-100 rounded-3xl p-8 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-slate-200/25 rounded-full blur-xl"></div>
+                    <h3 class="font-sora font-bold text-navy text-base mb-2">Planning for Canada, UK or Australia?</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed mb-6">Most immigration programs require verified language competency (IELTS 6.5+ or French CLB 7). Connect with coaching centers to get tailored schedules, expert prep tips, and mock tests today.</p>
+                    
+                    <div class="flex justify-between items-center bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                        <div class="flex gap-3 items-center">
+                            <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center shrink-0">
+                                <GraduationCap class="w-5 h-5 text-slate-700" />
+                            </div>
+                            <div>
+                                <div class="font-bold text-xs text-navy">IELTS Centers near you</div>
+                                <div class="text-[10px] text-gray-400">140+ verified options</div>
+                            </div>
+                        </div>
+                        <a href="/training/ielts">
+                            <button class="bg-slate-950 text-white font-bold text-xs px-4 py-2 rounded-xl hover:bg-slate-900 transition-colors shadow-sm flex items-center gap-1">
+                                Explore <ArrowRight class="w-3.5 h-3.5" />
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED TRAINING INSTITUTES -->
+        <section class="max-w-5xl mx-auto px-4 mt-16">
+            <div class="text-center mb-10">
+                <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Top Rated</span>
+                <h2 class="font-sora font-bold text-navy text-2xl">Featured Training Institutes</h2>
+                <p class="text-xs text-gray-400 mt-1 max-w-md mx-auto">Learn from certified instructors and access premium classroom setups.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {featuredInstitutes.map((inst) => (
+                    <div class="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all group">
+                        <div class="h-40 overflow-hidden relative">
+                            <img src={inst.image} alt={inst.name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <span class="absolute top-3 left-3 text-[10px] font-bold text-slate-700 bg-white border border-slate-100 px-3 py-1 rounded-full shadow-sm">{inst.type}</span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-sora font-bold text-navy text-sm mt-1 group-hover:text-slate-800 transition-colors">{inst.name}</h3>
+                            <div class="flex items-center gap-2 mt-2.5 text-xs text-gray-500">
+                                <span class="flex items-center gap-0.5"><MapPin class="w-3 h-3 text-slate-500" /> {inst.city}</span>
+                                <span>·</span>
+                                <span class="flex items-center gap-0.5"><Star class="w-3 h-3 text-amber-500 fill-amber-500" /> {inst.rating}</span>
+                            </div>
+                            <div class="flex justify-between items-center mt-4 pt-3 border-t border-slate-100">
+                                <span class="text-[10px] text-gray-400 font-bold uppercase">{inst.students} students trained</span>
+                                <div class="w-7 h-7 bg-slate-50 text-gray-400 group-hover:bg-[#111111] group-hover:text-white flex items-center justify-center rounded-lg transition-all shadow-inner">
+                                    <ArrowRight class="w-3.5 h-3.5" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+    </div>
+</Layout>
+

@@ -1,0 +1,13 @@
+---
+// src/pages/apply-visa.astro
+import Layout from '../layouts/Layout.astro';
+import { ApplyVisaPortal } from '../components/interactive/ApplyVisaPortal';
+---
+
+<Layout 
+  title="Apply Visa Online" 
+  description="Apply for travel visas, electronic e-Visas, and tourist permits online. Complete your application in 4 simple steps with verified document scanning and instant processing updates."
+>
+  <!-- Mount client-side React island for multi-step stepper -->
+  <ApplyVisaPortal client:only="react" />
+</Layout>

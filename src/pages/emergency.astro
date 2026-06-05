@@ -1,0 +1,205 @@
+---
+// src/pages/emergency.astro
+import Layout from '../layouts/Layout.astro';
+import { CrisisSelector } from '../components/interactive/CrisisSelector';
+import { AlertTriangle, Phone, Clock, Shield, CheckCircle, Star, MapPin } from 'lucide-react';
+
+const experts = [
+    {
+        name: "Marcus Thorne, JD",
+        role: "Emergency Immigration Attorney",
+        rating: 4.9,
+        reviews: 142,
+        price: "₹3,000",
+        responseTime: "< 30 min",
+        available: true,
+        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
+        specialties: ["Deportation Stay", "Overstay Relief", "Detention Hearings"],
+    },
+    {
+        name: "Elena Rodriguez",
+        role: "Immigration Consultant",
+        rating: 5.0,
+        reviews: 89,
+        price: "₹2,000",
+        responseTime: "< 1 hour",
+        available: true,
+        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
+        specialties: ["Visa Denial Appeals", "Status Restoration"],
+    },
+    {
+        name: "Raj Patel",
+        role: "Express Entry & Emergency Specialist",
+        rating: 4.8,
+        reviews: 234,
+        price: "₹1,800",
+        responseTime: "< 2 hours",
+        available: false,
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
+        specialties: ["Asylum Claims", "Refugee Protection"],
+    },
+];
+
+const steps = [
+    {
+        title: "Call Emergency Line",
+        desc: "Our toll-free immigration crisis support helpline is active 24/7 for immediate triage and guidance.",
+        action: "Call Now: 1800-VISARA",
+        icon: Phone,
+        circleBg: "bg-slate-950",
+        textColor: "text-slate-950",
+        iconColor: "text-white"
+    },
+    {
+        title: "Connect with Lawyer",
+        desc: "Get instantly paired with a verified, emergency-vetted immigration attorney or expert within 30 minutes.",
+        action: null,
+        icon: Shield,
+        circleBg: "bg-slate-900",
+        textColor: "text-slate-900",
+        iconColor: "text-white"
+    },
+    {
+        title: "Submit Protection Stay",
+        desc: "Your dedicated expert will immediately file stays, appeal rejections, or prepare emergency status files.",
+        action: null,
+        icon: CheckCircle,
+        circleBg: "bg-slate-950",
+        textColor: "text-slate-950",
+        iconColor: "text-white"
+    }
+];
+---
+
+<Layout title="Legal Help Portal" description="Facing an immigration crisis? Get urgent, verified support from vetted specialists immediately.">
+    <div class="bg-white min-h-screen pb-24">
+        
+        <!-- LUXURIOUS LEGAL HERO SECTION -->
+        <section class="relative text-white py-36 px-4 overflow-hidden border-b border-slate-800">
+            <!-- Full-bleed premium background -->
+            <div class="absolute inset-0 z-0">
+                <img
+                    src="/images/law_office.png"
+                    alt="Premium legal advisor office interior background"
+                    class="w-full h-full object-cover"
+                />
+                <!-- Clean Dark Slate/Black Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-950/85 to-black/95"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(255,255,255,0.05),transparent_60%)]"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <div class="w-14 h-14 bg-white/10 border border-white/20 rounded-2xl flex items-center justify-center mx-auto mb-5 backdrop-blur-md">
+                    <AlertTriangle class="w-7 h-7 text-slate-300" />
+                </div>
+                <h1 class="font-sora text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight text-white">
+                    Legal Help Portal
+                </h1>
+                <p class="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
+                    Facing an immigration crisis? Get urgent, verified support from vetted specialists immediately.
+                </p>
+                <div class="flex flex-wrap justify-center gap-6 text-xs font-bold text-white/70 mt-6">
+                    <span class="flex items-center gap-2"><Clock class="w-4 h-4 text-slate-300" /> 24/7 Support</span>
+                    <span class="flex items-center gap-2"><Shield class="w-4 h-4 text-slate-300" /> Vetted Specialists</span>
+                    <span class="flex items-center gap-2"><Phone class="w-4 h-4 text-slate-300" /> Immediate Triage</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- OVERLAPPING CIRCULAR SERVICES (HOW IT WORKS) -->
+        <section class="max-w-5xl mx-auto px-4 -mt-20 relative z-20 mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {steps.map((step) => {
+                    const Icon = step.icon;
+                    return (
+                        <div class="group flex flex-col items-center bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-slate-100 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                            <!-- Large overlapping circle with border -->
+                            <div class={`w-24 h-24 rounded-full border-4 border-white shadow-md ${step.circleBg} flex items-center justify-center ${step.iconColor} group-hover:scale-105 transition-transform duration-300 -mt-16`}>
+                                <Icon class="w-9 h-9" />
+                            </div>
+
+                            <!-- Service Description below circle -->
+                            <h3 class={`font-sora font-extrabold text-base text-center mt-5 transition-colors ${step.textColor} group-hover:text-slate-700`}>
+                                {step.title}
+                            </h3>
+                            <p class="text-xs text-gray-500 font-medium text-center leading-relaxed mt-2 max-w-xs mx-auto px-1">
+                                {step.desc}
+                            </p>
+                            {step.action && (
+                                <a href="tel:18004827272" class="mt-4">
+                                    <button class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 text-[10px] font-black uppercase px-4 py-2 rounded-full transition-colors">
+                                        {step.action}
+                                    </button>
+                                </a>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+        </section>
+
+        <!-- INTERACTIVE CRISIS SITUATION SELECTOR -->
+        <section class="max-w-4xl mx-auto px-4 mb-16">
+            <CrisisSelector client:load />
+        </section>
+
+        <!-- AVAILABLE EMERGENCY EXPERTS -->
+        <section class="max-w-4xl mx-auto px-4 mt-16">
+            <div class="mb-8">
+                <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Live Queue</span>
+                <h2 class="font-sora font-bold text-navy text-2xl">Verified Legal Specialists On-Duty</h2>
+                <p class="text-xs text-gray-400 mt-1">Consult with verified immigration attorneys who are live on the platform right now.</p>
+            </div>
+
+            <div class="space-y-4">
+                {experts.map((expert, idx) => (
+                    <a href={`/expert/${idx + 1}`} class="block group">
+                        <div class="bg-white rounded-3xl border border-slate-100 p-6 flex flex-col sm:flex-row gap-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                            <div class="relative w-16 h-16 shrink-0 mx-auto sm:mx-0">
+                                <div class="w-full h-full rounded-xl overflow-hidden ring-2 ring-gray-100 group-hover:ring-slate-200 transition-all">
+                                    <img src={expert.image} alt={expert.name} class="w-full h-full object-cover" />
+                                </div>
+                                {expert.available && (
+                                    <span class="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse z-10">Live</span>
+                                )}
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2 text-center sm:text-left">
+                                    <div>
+                                        <h3 class="font-sora font-bold text-navy text-sm group-hover:text-slate-800 transition-colors leading-tight">{expert.name}</h3>
+                                        <p class="text-xs text-gray-400">{expert.role}</p>
+                                    </div>
+                                    <div class="flex items-center justify-center sm:justify-end gap-1 text-xs font-bold text-navy">
+                                        <Star class="w-4 h-4 text-amber-500 fill-amber-500" /> {expert.rating}
+                                        <span class="text-gray-400 font-normal">({expert.reviews} reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-3">
+                                    {expert.specialties.map((s) => (
+                                        <span class="bg-slate-50 text-slate-700 text-[9px] font-bold px-2.5 py-1 rounded-full border border-slate-100">{s}</span>
+                                    ))}
+                                </div>
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-slate-100">
+                                    <div class="flex justify-center sm:justify-start gap-4 text-xs font-semibold text-gray-500">
+                                        <span class="flex items-center gap-1"><Clock class="w-3.5 h-3.5 text-slate-500" /> Responds {expert.responseTime}</span>
+                                        <span>·</span>
+                                        <span class="font-bold text-navy">{expert.price} / session</span>
+                                    </div>
+                                    <button class={`w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.97] ${expert.available
+                                            ? "bg-[#0c1a2e] text-white hover:bg-slate-900 hover:shadow-md"
+                                            : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                        }`}>
+                                        {expert.available ? "Book Emergency Call" : "Offline"}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                ))}
+            </div>
+        </section>
+
+    </div>
+</Layout>
+

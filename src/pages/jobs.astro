@@ -1,0 +1,9 @@
+---
+// src/pages/jobs.astro
+import Layout from '../layouts/Layout.astro';
+import { JobsPortal } from '../components/interactive/JobsPortal';
+---
+
+<Layout title="Overseas Jobs & Visa Sponsorships" description="Browse premium global career opportunities with verified employers who offer official visa sponsorships.">
+    <JobsPortal client:load />
+</Layout>

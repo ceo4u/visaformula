@@ -1,0 +1,12 @@
+---
+// src/pages/events/exhibitions.astro
+import Layout from '../../layouts/Layout.astro';
+import { ExhibitionsPortal } from '../../components/interactive/ExhibitionsPortal';
+---
+
+<Layout 
+  title="Global Exhibition & Trade Show Delegation Packages" 
+  description="Attend prestigious trade shows, tech expos, art exhibitions, and medical conventions worldwide. Delegation packages include official entry passes, premium hotels, and business visas."
+>
+  <ExhibitionsPortal client:only="react" />
+</Layout>

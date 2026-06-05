@@ -1,0 +1,46 @@
+---
+// src/components/shared/EmergencyFab.astro
+import { AlertTriangle } from 'lucide-react';
+---
+
+<div 
+  id="emergency-fab" 
+  class="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-50 translate-y-10 scale-90 opacity-0 pointer-events-none transition-all duration-300 ease-out"
+>
+  <a href="/emergency">
+    <button class="group relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-destructive text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200">
+      <AlertTriangle class="w-6 h-6 md:w-7 md:h-7" />
+      <span class="absolute right-full mr-3 px-3 py-1.5 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+        Emergency Help 24/7
+      </span>
+    </button>
+  </a>
+</div>
+
+<script>
+  const fab = document.getElementById('emergency-fab');
+  
+  if (fab) {
+    let ticking = false;
+    
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY > 300) {
+            fab.classList.remove('translate-y-10', 'scale-90', 'opacity-0', 'pointer-events-none');
+            fab.classList.add('translate-y-0', 'scale-100', 'opacity-100');
+          } else {
+            fab.classList.add('translate-y-10', 'scale-90', 'opacity-0', 'pointer-events-none');
+            fab.classList.remove('translate-y-0', 'scale-100', 'opacity-100');
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Initial check
+    handleScroll();
+  }
+</script>

@@ -1,0 +1,16 @@
+﻿---
+// src/pages/find-experts.astro
+import Layout from '../layouts/Layout.astro';
+import { FindExpertsPortal } from '../components/interactive/FindExpertsPortal';
+---
+
+<Layout 
+  title="Find Verified Immigration Experts & Attorneys" 
+  description="Consult directly with top-tier registered immigration attorneys, Express Entry consultants, and legal counselors. Connect, compare, and secure payments with escrow."
+>
+  <div class="bg-[#fff5f5] min-h-screen">
+
+    <!-- INTERACTIVE FIND EXPERTS PORTAL -->
+    <FindExpertsPortal client:load />
+  </div>
+</Layout>

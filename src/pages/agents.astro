@@ -1,0 +1,10 @@
+---
+// src/pages/agents.astro
+import Layout from '../layouts/Layout.astro';
+import { AgentsPortal } from '../components/interactive/AgentsPortal';
+---
+
+<Layout title="Our Agents Portal" description="Join Visara as a freelance agent — verify expert profiles, review packages, and earn weekly commission from home.">
+    <!-- Load the AgentsPortal purely on the client side since it manages extensive private state grids -->
+    <AgentsPortal client:only="react" />
+</Layout>

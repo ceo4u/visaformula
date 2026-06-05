@@ -1,0 +1,33 @@
+﻿---
+// src/components/layout/MobileNav.astro
+import { Home, Search, FileText, LifeBuoy } from 'lucide-react';
+
+const pathname = Astro.url.pathname;
+
+const mobileNavItems = [
+    { href: "/", label: "Home", icon: Home },
+    { href: "/find-lawyer", label: "Experts", icon: Search },
+    { href: "/dashboard", label: "My Visas", icon: FileText },
+    { href: "/emergency", label: "Help", icon: LifeBuoy },
+];
+---
+
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-white/95 backdrop-blur-lg h-16 border-t border-yellow-100 shadow-[0_-2px_12px_rgba(14,165,233,0.08)]">
+  {mobileNavItems.map((item) => {
+    // Exact or prefix matching
+    const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+    const Icon = item.icon;
+    return (
+      <a
+        href={item.href}
+        class={`flex flex-col items-center justify-center flex-1 py-2 transition-all duration-150 ${
+          isActive ? "text-[#f59e0b] font-bold" : "text-hint hover:text-slate-700"
+        }`}
+      >
+        <Icon class={`w-5 h-5 transition-transform ${isActive ? "scale-110" : ""}`} />
+        <span class="text-[10px] font-bold mt-0.5">{item.label}</span>
+      </a>
+    );
+  })}
+</nav>
+

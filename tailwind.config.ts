@@ -74,8 +74,8 @@ const config: Config = {
                     variant: "hsl(var(--outline-variant))",
                 },
                 // New Visara design system colors
-                navy: "#0C1A2E",
-                ink: "#1A3347",
+                navy: "#000000",
+                ink: "#111111",
                 hint: "#8FAEC4",
             },
             borderRadius: {

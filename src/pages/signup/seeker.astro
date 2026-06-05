@@ -1,0 +1,13 @@
+---
+// src/pages/signup/seeker.astro
+import Layout from '../../layouts/Layout.astro';
+import { SeekerSignupPortal } from '../../components/interactive/SeekerSignupPortal';
+---
+
+<Layout 
+  title="Register as Seeker" 
+  description="Register as a visa seeker on Visara. Setup your immigration goals, passport country, and select target study/work destinations to connect with top verified migration experts."
+>
+  <!-- Mount client-only React signup seeker island -->
+  <SeekerSignupPortal client:only="react" />
+</Layout>

@@ -1,0 +1,222 @@
+---
+// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
+import { MagicSearch } from '../components/interactive/MagicSearch';
+import { ExpertCard } from '../components/ExpertCard';
+import { UniversityCard } from '../components/UniversityCard';
+import { JobCard } from '../components/JobCard';
+import { TourCard } from '../components/TourCard';
+import { Globe, Users, Shield, Lock, Award, ArrowRight, Heart, AlertTriangle, GraduationCap, Briefcase, Plane, Home, BookOpen, MapPin, Wallet, CheckCircle } from 'lucide-react';
+
+const experts = [
+  { name: "Marcus Thorne, JD", role: "Immigration Attorney", rating: 4.5, reviews: 142, location: "New York, NY", price: "from $150", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face", badges: ["Open now", "Verified"], tags: ["US Visa", "H-1B", "L-1"] },
+  { name: "Elena Rodriguez", role: "Immigration Consultant", rating: 5.0, reviews: 89, location: "Brooklyn, NY", price: "from $100", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face", badges: ["Verified"], tags: ["Green Card", "Family"] },
+  { name: "Beacon Global Services", role: "Education Agent", rating: 4.0, reviews: 210, location: "Queens, NY", price: "from $80", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face", badges: [], tags: ["F-1 Visa", "Admissions"] },
+];
+
+const universities = [
+  { name: "University of Toronto", location: "Toronto, Canada", ranking: "21", rating: 4.8, reviews: 342, programs: "Engineering, CS, Business", tuition: "CAD 45k/yr", image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&h=400&fit=crop" },
+  { name: "University of Melbourne", location: "Melbourne, Australia", ranking: "14", rating: 4.7, reviews: 256, programs: "Medicine, Arts, Law", tuition: "AUD 50k/yr", image: "https://images.unsplash.com/photo-1562774053-701939374585?w=600&h=400&fit=crop" },
+  { name: "UCL", location: "London, UK", ranking: "9", rating: 4.6, reviews: 412, programs: "Architecture, Economics", tuition: "GBP 30k/yr", image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&h=400&fit=crop" },
+];
+
+const jobs = [
+  { title: "Senior Software Engineer", company: "TechCorp Inc.", location: "San Francisco, USA", salary: "$140k - $180k", posted: "2d ago" },
+  { title: "Registered Nurse", company: "HealthCare Plus", location: "Toronto, Canada", salary: "CAD 80k - 100k", posted: "5h ago" },
+  { title: "Data Analyst", company: "DataViz GmbH", location: "Berlin, Germany", salary: "€60k - €80k", posted: "1w ago" },
+];
+
+const tours = [
+  { name: "Bali Paradise", duration: "5D/4N", covered: "Temples, Beaches, Rice Terraces", rating: 4.8, reviews: 156, price: "₹25,000", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&h=400&fit=crop", badges: ["Visa included", "Hotel included"] },
+  { name: "Dubai City + Safari", duration: "6D/5N", covered: "Burj Khalifa, Desert Safari, Mall", rating: 4.9, reviews: 234, price: "₹55,000", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=400&fit=crop", badges: ["5★ Hotel", "Visa processing"] },
+  { name: "Europe 5-Country", duration: "14D/13N", covered: "Paris, Rome, Zurich, Munich, Amsterdam", rating: 4.7, reviews: 89, price: "₹1,10,000", image: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&h=400&fit=crop", badges: ["Schengen Visa", "Train pass"] },
+];
+
+const categories = [
+  { label: "Student Visa", icon: GraduationCap, href: "/find-experts?category=student", color: "from-red-500 to-red-600" },
+  { label: "Work Permit", icon: Briefcase, href: "/find-experts?category=work", color: "from-red-400 to-red-500" },
+  { label: "Tourist + Holiday", icon: Plane, href: "/tours", color: "from-red-500 to-rose-600" },
+  { label: "PR / Residency", icon: Home, href: "/find-experts?category=pr", color: "from-red-400 to-rose-500" },
+  { label: "IELTS Training", icon: BookOpen, href: "/training/ielts", color: "from-red-500 to-red-600" },
+  { label: "Language", icon: Globe, href: "/training/language", color: "from-red-400 to-red-500" },
+  { label: "Finance & Loans", icon: Wallet, href: "/training/financial", color: "from-red-500 to-rose-600" },
+  { label: "Local Expert", icon: MapPin, href: "/find-experts?category=local", color: "from-red-400 to-rose-500" },
+];
+
+const successStories = [
+  { name: "Priya Sharma", visa: "Canada PR", quote: "Got my ITA with CRS 472. Visara made it seamless!", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face", helpful: 142 },
+  { name: "Rahul Verma", visa: "H-1B Transfer", quote: "H-1B transfer done in 45 days. Premium processing FTW!", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face", helpful: 89 },
+  { name: "Ananya Patel", visa: "UK Student", quote: "UCL admission + visa in 3 weeks. Incredible support!", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face", helpful: 201 },
+];
+---
+
+<Layout title="Home" description="Your premium global marketplace for immigration experts, top universities, overseas jobs, and more.">
+  <div class="bg-white min-h-screen">
+    <!-- HERO -->
+    <section class="relative w-full flex flex-col items-center justify-center px-4 overflow-hidden pt-32 lg:pt-48 pb-36" style="min-height: 720px;">
+      <div class="absolute inset-0 z-0">
+        <img class="w-full h-full object-cover" src="/images/hero_lounge.png" alt="Luxurious global travel background" />
+        <div class="absolute inset-0 bg-gradient-to-b from-navy/70 via-navy/50 to-navy/80"></div>
+      </div>
+      <div class="relative z-10 text-center max-w-4xl mx-auto">
+        <h1 class="text-white font-sora text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-5 leading-[1.1] tracking-tight">
+          Find the right expert.<br />
+          <span class="text-[#fca5a5]">Explore your options.</span>
+        </h1>
+        <p class="text-white/75 text-base sm:text-lg md:text-xl font-medium max-w-2xl mx-auto mb-8">
+          Your global marketplace for immigration experts, top universities, overseas jobs, and more.
+        </p>
+        <div class="flex flex-wrap gap-6 justify-center text-white/60 text-sm font-semibold">
+          <span class="flex items-center gap-2"><Globe class="w-4 h-4 text-[#fca5a5]" /> 190+ Countries</span>
+          <span class="flex items-center gap-2"><Users class="w-4 h-4 text-[#fca5a5]" /> 50K+ Users</span>
+          <span class="flex items-center gap-2"><Shield class="w-4 h-4 text-[#fca5a5]" /> Verified Experts</span>
+          <span class="flex items-center gap-2"><Lock class="w-4 h-4 text-[#fca5a5]" /> Escrow Payments</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAGIC SEARCH React Island Hydrated client-side immediately -->
+    <section class="max-w-5xl mx-auto px-4 -mt-14 relative z-20 mb-12">
+      <MagicSearch client:load />
+    </section>
+
+    <!-- VISA CATEGORIES -->
+    <section class="max-w-6xl mx-auto px-4 mb-14">
+      <h2 class="font-sora text-2xl font-bold text-navy mb-8 text-center">Explore by Category</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+        {categories.map(cat => {
+          const Icon = cat.icon;
+          return (
+            <a href={cat.href} class="block group">
+              <div class="flex flex-col items-center justify-center bg-white rounded-sm border border-gray-200/60 p-6 md:p-8 h-36 text-center hover:border-gray-300 hover:shadow-sm transition-all duration-300 cursor-pointer">
+                <Icon class="w-8 h-8 text-slate-700 group-hover:text-[#ef4444] transition-colors duration-300 mb-3" strokeWidth={1.5} />
+                <span class="text-sm font-semibold text-slate-800 group-hover:text-slate-900 transition-colors duration-300">{cat.label}</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- IN-HOUSE EXPERT BANNER -->
+    <section class="max-w-5xl mx-auto px-4 mb-14">
+      <a href="/smart-search?type=inhouse" class="block">
+        <div class="bg-slate-950 border border-slate-900 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center gap-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer group">
+          <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm shrink-0">
+            <Award class="w-8 h-8 text-white" />
+          </div>
+          <div class="flex-1 text-center md:text-left">
+            <h3 class="font-sora text-xl font-bold mb-1">Talk to Our In-House Experts</h3>
+            <p class="text-white/70 text-sm">Visara's own employed team of immigration professionals. Vetted, trained, and trusted.</p>
+          </div>
+          <button class="bg-white text-slate-950 px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:bg-white/90 transition-all flex items-center gap-2 group-hover:gap-3 shrink-0">
+            Find In-House Experts <ArrowRight class="w-4 h-4" />
+          </button>
+        </div>
+      </a>
+    </section>
+
+    <!-- TRUST BAR -->
+    <section class="bg-white border-y border-gray-200 py-10 mb-14">
+      <div class="max-w-5xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+        {[
+          { icon: CheckCircle, label: "KYC Verified", desc: "100% verified professionals", color: "text-[#ef4444]", bg: "bg-red-50" },
+          { icon: Lock, label: "Escrow Payments", desc: "Pay safe, get service", color: "text-[#ef4444]", bg: "bg-red-50" },
+          { icon: Award, label: "In-House Experts", desc: "Visara employed team", color: "text-[#ef4444]", bg: "bg-red-50" },
+          { icon: Users, label: "50K+ Applicants", desc: "Trusted by global seekers", color: "text-[#ef4444]", bg: "bg-red-50" },
+        ].map(item => {
+          const Icon = item.icon;
+          return (
+            <div class="flex flex-col items-center">
+              <div class={`w-12 h-12 ${item.bg} rounded-xl flex items-center justify-center mb-3`}>
+                <Icon class={`w-6 h-6 ${item.color}`} />
+              </div>
+              <h3 class="font-bold text-sm text-navy mb-0.5">{item.label}</h3>
+              <p class="text-xs text-gray-400">{item.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- RECOMMENDED EXPERTS -->
+    <section class="max-w-6xl mx-auto py-10 px-4">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="font-sora text-2xl md:text-3xl font-extrabold text-navy">
+          Recommended <span class="text-[#ef4444]">Experts</span>
+        </h2>
+        <a href="/find-experts" class="text-sm font-bold text-[#ef4444] hover:underline hidden md:flex items-center gap-1">View All <ArrowRight class="w-4 h-4" /></a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {experts.map((expert) => <ExpertCard expert={expert} />)}
+      </div>
+    </section>
+
+    <!-- UNIVERSITIES -->
+    <section class="max-w-6xl mx-auto py-10 px-4">
+      <h2 class="font-sora text-2xl md:text-3xl font-extrabold text-navy mb-8">Top <span class="text-[#ef4444]">Universities</span></h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {universities.map((uni) => <UniversityCard uni={uni} />)}
+      </div>
+    </section>
+
+    <!-- JOBS -->
+    <section class="max-w-6xl mx-auto py-10 px-4">
+      <h2 class="font-sora text-2xl md:text-3xl font-extrabold text-navy mb-8">Overseas <span class="text-[#ef4444]">Jobs</span></h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {jobs.map((job) => <JobCard job={job} />)}
+      </div>
+    </section>
+
+    <!-- TOURS -->
+    <section class="max-w-6xl mx-auto py-10 px-4">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="font-sora text-2xl md:text-3xl font-extrabold text-navy">Holiday <span class="text-[#ef4444]">Packages</span></h2>
+        <a href="/tours" class="text-sm font-bold text-[#ef4444] hover:underline flex items-center gap-1">View All <ArrowRight class="w-4 h-4" /></a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tours.map((tour) => <TourCard tour={tour} />)}
+      </div>
+    </section>
+
+    <!-- SUCCESS STORIES -->
+    <section class="max-w-6xl mx-auto py-14 px-4">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="font-sora text-2xl md:text-3xl font-extrabold text-navy">Success <span class="text-[#ef4444]">Stories</span></h2>
+        <a href="/success-stories" class="text-sm font-bold text-[#ef4444] hover:underline flex items-center gap-1">See All <ArrowRight class="w-4 h-4" /></a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {successStories.map(s => (
+          <div class="bg-white rounded-2xl border border-red-100 p-5 shadow-sm hover:shadow-card-hover hover:-translate-y-0.5 transition-all">
+            <div class="flex items-center gap-3 mb-3">
+              <img src={s.image} alt={s.name} class="w-10 h-10 rounded-full object-cover ring-2 ring-red-100" />
+              <div>
+                <h4 class="font-bold text-navy text-sm">{s.name}</h4>
+                <span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-semibold border border-emerald-100">{s.visa}</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 italic leading-relaxed mb-3">&ldquo;{s.quote}&rdquo;</p>
+            <div class="flex items-center text-xs text-gray-400 font-semibold"><Heart class="w-3.5 h-3.5 mr-1" /> {s.helpful} found helpful</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- EMERGENCY BANNER -->
+    <section class="max-w-5xl mx-auto px-4 mb-16">
+      <a href="/emergency" class="block">
+        <div class="bg-white border-l-4 border-red-500 rounded-2xl p-6 flex items-center gap-5 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+          <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
+            <AlertTriangle class="w-6 h-6 text-red-500" />
+          </div>
+          <div class="flex-1">
+            <h3 class="font-bold text-navy text-base mb-0.5">Need Emergency Help?</h3>
+            <p class="text-sm text-gray-500">Overstay, deportation threat, or visa denial? Get urgent legal assistance right now.</p>
+          </div>
+          <span class="text-sm font-bold text-red-500 flex items-center gap-1 shrink-0 group-hover:gap-2 transition-all">Get Help <ArrowRight class="w-4 h-4" /></span>
+        </div>
+      </a>
+    </section>
+  </div>
+</Layout>
+

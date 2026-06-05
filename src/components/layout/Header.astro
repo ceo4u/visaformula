@@ -1,0 +1,477 @@
+---
+// src/components/layout/Header.astro
+import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap } from 'lucide-react';
+
+const pathname = Astro.url.pathname;
+
+const tourDropdownItems = [
+    { title: "Holiday Packages", desc: "Visa + hotel + itinerary", href: "/tours?category=holiday", icon: Umbrella, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Sport Tours", desc: "Live events + stadium visits", href: "/tours?category=sports", icon: Trophy, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Cruises", desc: "Ocean & river voyages", href: "/tours?category=cruises", icon: Ship, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Entertainment Events", desc: "Concerts, shows & festivals", href: "/tours?category=events", icon: Music, iconColor: "text-rose-500", bg: "bg-rose-50" }
+];
+
+const eventDropdownItems = [
+    { title: "Exhibitions", desc: "Trade shows & expos worldwide", href: "/events/exhibitions", icon: Globe, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Universities Fairs", desc: "Meet top universities directly", href: "/events/university-fairs", icon: GraduationCap, iconColor: "text-red-500", bg: "bg-red-50" }
+];
+---
+
+<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white border-b border-red-100 shadow-sm transition-all duration-300">
+    <!-- Top Row: Logo + Yelp-Style Split Search Bar + User Portal Links -->
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-20 gap-4">
+        
+        <!-- Visara Logo -->
+        <a href="/" class="flex items-center gap-2 group shrink-0">
+            <div class="w-9 h-9 bg-gradient-to-tr from-[#ef4444] to-[#dc2626] rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+                <Globe class="w-5 h-5 text-white" />
+            </div>
+            <span id="logo-text" class="text-2xl font-extrabold tracking-tight text-navy transition-colors duration-300">Visara</span>
+            <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
+        </a>
+
+        <!-- Split Yelp-style Search Bar (Desktop Only) -->
+        <div id="search-bar" class="hidden lg:flex flex-1 max-w-md xl:max-w-xl mx-4 xl:mx-8 bg-red-50/50 rounded-xl flex-row items-center h-12 overflow-hidden border border-red-100 focus-within:border-[#ef4444] focus-within:bg-white focus-within:shadow-md transition-all duration-200">
+            <!-- Search Query Portion -->
+            <div class="flex items-center px-4 flex-[1.2] h-full">
+                <Search class="w-4 h-4 text-gray-400 mr-2.5 shrink-0" />
+                <input
+                    id="search-input-query"
+                    class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+                    placeholder="Student visa, work permits, experts..."
+                    type="text"
+                />
+            </div>
+            
+            <!-- Split Vertical Line -->
+            <div id="search-divider" class="w-[1.5px] h-6 bg-red-200 shrink-0 transition-colors duration-300" />
+            
+            <!-- Location Portion -->
+            <div class="flex items-center px-4 flex-1 h-full">
+                <MapPin id="search-loc-icon" class="w-4 h-4 text-[#ef4444] mr-2 shrink-0 transition-colors duration-300" />
+                <input
+                    id="search-input-location"
+                    class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+                    placeholder="Hyderabad, Delhi, USA..."
+                    type="text"
+                />
+            </div>
+            
+            <!-- Search Button -->
+            <button class="bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#dc2626] px-6 h-full flex items-center justify-center transition-all shrink-0">
+                <Search class="w-4 h-4 text-white font-bold" />
+            </button>
+        </div>
+
+        <!-- Right Portal Navigation & Buttons -->
+        <div class="hidden lg:flex items-center gap-3 xl:gap-5 shrink-0">
+            <a href="/agents" class="top-menu-link text-xs font-bold text-navy hover:text-[#ef4444] transition-colors duration-300">
+                Our Agents
+            </a>
+            <a href="/support" class="top-menu-link text-xs font-bold text-navy hover:text-[#ef4444] transition-colors duration-300">
+                Contact
+            </a>
+            
+            <div class="w-[1.5px] h-4 bg-red-100"></div>
+
+            <div class="flex items-center gap-1.5 xl:gap-2">
+                <a href="/login" id="login-btn" class="text-xs font-bold text-navy hover:text-[#ef4444] border border-red-100 hover:border-[#ef4444] px-3 xl:px-4 py-2 xl:py-2.5 rounded-xl transition-all duration-300">
+                    Log In
+                </a>
+                <a href="/signup" class="bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white font-bold text-xs px-3 xl:px-4 py-2 xl:py-2.5 rounded-xl hover:shadow-lg hover:shadow-red-100 transition-all active:scale-[0.97]">
+                    Sign Up
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Toggler -->
+        <button id="mobile-menu-btn" class="lg:hidden ml-auto p-2 hover:bg-yellow-50 rounded-xl transition-colors">
+            <Menu id="menu-icon" class="w-6 h-6 text-navy" />
+            <X id="close-icon" class="w-6 h-6 text-navy hidden" />
+        </button>
+    </div>
+
+    <!-- Bottom Row: Premium Category Navigation Bar (Desktop Only) -->
+    <div id="category-bar" class="hidden lg:block border-t border-red-50 bg-red-50/20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 xl:px-6 h-12 flex items-center justify-between lg:justify-start gap-4 xl:gap-8">
+            
+            <!-- Find Experts Link -->
+            <a href="/find-experts"
+                class={`category-menu-link text-xs font-bold tracking-wide transition-all ${pathname === "/find-experts" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                Find Experts
+            </a>
+
+            <!-- Apply Visa Link -->
+            <a href="/apply-visa"
+                class={`category-menu-link text-xs font-bold tracking-wide transition-all flex items-center gap-1 ${pathname === "/apply-visa" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse"></span>
+                Apply Visa
+            </a>
+
+            <!-- Tours & Packages Dropdown -->
+            <div class="relative py-3.5 group">
+                <button
+                    class={`category-menu-link text-xs font-bold tracking-wide transition-all flex items-center gap-1 group-hover:text-[#ef4444] ${
+                        pathname?.startsWith("/tours") ? "text-[#ef4444]" : "text-navy"
+                    }`}
+                >
+                    Tours & Packages
+                    <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                </button>
+
+                <!-- Dropdown Menu Card -->
+                <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                    <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-2">
+                        <div class="flex flex-col gap-1">
+                            {tourDropdownItems.map((item) => {
+                                const IconComponent = item.icon;
+                                return (
+                                    <a 
+                                        href={item.href}
+                                        class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                    >
+                                        <div class={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
+                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} />
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                            <div class="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
+                                        </div>
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Dropdown -->
+            <div class="relative py-3.5 group">
+                <button
+                    class={`category-menu-link text-xs font-bold tracking-wide transition-all flex items-center gap-1 group-hover:text-[#ef4444] ${
+                        pathname?.startsWith("/events") ? "text-[#ef4444]" : "text-navy"
+                    }`}
+                >
+                    Events & Fairs
+                    <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                </button>
+
+                <!-- Dropdown Menu Card -->
+                <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                    <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-2">
+                        <div class="flex flex-col gap-1">
+                            {eventDropdownItems.map((item) => {
+                                const IconComponent = item.icon;
+                                return (
+                                    <a 
+                                        href={item.href}
+                                        class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                    >
+                                        <div class={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
+                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} />
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                            <div class="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
+                                        </div>
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Hub Link -->
+            <a href="/training"
+                class={`category-menu-link text-xs font-bold tracking-wide transition-all ${pathname === "/training" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                Training Hub
+            </a>
+
+            <!-- Our Services Link -->
+            <a href="/services"
+                class={`category-menu-link text-xs font-bold tracking-wide transition-all ${pathname === "/services" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                Our Services
+            </a>
+
+            <!-- Overseas Jobs Link -->
+            <a href="/jobs"
+                class={`category-menu-link text-xs font-bold tracking-wide transition-all ${pathname === "/jobs" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                Overseas Jobs
+            </a>
+
+            <!-- Legal Link -->
+            <a href="/emergency"
+                class={`category-menu-link text-xs font-bold tracking-wide transition-all ${pathname === "/emergency" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                Legal
+            </a>
+        </div>
+    </div>
+
+    <!-- Mobile Drawer menu -->
+    <div id="mobile-menu-drawer" class="hidden lg:hidden bg-white border-t border-gray-100 shadow-xl max-h-[85vh] overflow-y-auto">
+        <!-- Yelp-style Mobile Search bar -->
+        <div class="p-4 border-b border-red-50 bg-red-50/20 space-y-2">
+            <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-red-100 shadow-sm">
+                <Search class="w-4 h-4 text-red-400 mr-2 shrink-0" />
+                <input class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="What are you looking for..." type="text" />
+            </div>
+            <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-red-100 shadow-sm">
+                <MapPin class="w-4 h-4 text-red-400 mr-2 shrink-0" />
+                <input class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="Location (e.g. Hyderabad)" type="text" />
+            </div>
+            <button class="w-full py-2.5 bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white rounded-xl font-bold text-xs shadow-sm active:scale-[0.98]">
+                Search Experts
+            </button>
+        </div>
+
+        <!-- Links -->
+        <a href="/find-experts"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/find-experts" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Find Experts
+        </a>
+
+        <!-- Tours -->
+        <div class="border-b border-gray-50">
+            <button 
+                id="mobile-tours-btn"
+                class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+                <span>Tours & Packages</span>
+                <ChevronDown id="mobile-tours-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+            </button>
+            <div id="mobile-tours-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
+                {tourDropdownItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                        <a 
+                            href={item.href}
+                            class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
+                        >
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-navy">{item.title}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </div>
+
+        <!-- Events -->
+        <div class="border-b border-gray-50">
+            <button 
+                id="mobile-events-btn"
+                class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+                <span>Events & Fairs</span>
+                <ChevronDown id="mobile-events-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+            </button>
+            <div id="mobile-events-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
+                {eventDropdownItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                        <a 
+                            href={item.href}
+                            class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
+                        >
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-navy">{item.title}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </div>
+
+        <!-- Other Pages -->
+        <a href="/training"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/training" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Training Hub
+        </a>
+
+        <a href="/services"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/services" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Our Services
+        </a>
+
+        <a href="/jobs"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/jobs" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Overseas Jobs
+        </a>
+
+        <a href="/emergency"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/emergency" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Legal
+        </a>
+
+        <a href="/agents"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/agents" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Our Agents
+        </a>
+
+        <a href="/support"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm text-gray-700 hover:bg-gray-50`}>
+            Contact
+        </a>
+
+        <!-- Portal Actions -->
+        <div class="p-4 bg-red-50/10 flex flex-col gap-2">
+            <a href="/login" class="block text-center py-2.5 border border-red-100 text-gray-700 font-bold text-sm rounded-xl hover:bg-red-50 transition-colors">
+                Log In
+            </a>
+            <a href="/signup" class="block text-center py-2.5 bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white rounded-xl font-bold text-sm shadow-md">
+                Sign Up
+            </a>
+        </div>
+    </div>
+</header>
+
+<style is:global>
+  /* Header styling and dynamic transition modes */
+  #main-header.header-transparent {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+  #main-header.header-transparent #logo-text {
+    color: white !important;
+  }
+  #main-header.header-transparent #search-bar {
+    background-color: #ffffff !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+  }
+  #main-header.header-transparent #search-bar:focus-within {
+    background-color: #ffffff !important;
+    border-color: #ef4444 !important;
+  }
+  #main-header.header-transparent #search-bar input {
+    color: #1f2937 !important;
+  }
+  #main-header.header-transparent #search-bar input::placeholder {
+    color: #9ca3af !important;
+  }
+  #main-header.header-transparent #search-bar #search-divider {
+    background-color: #e5e7eb !important;
+  }
+  #main-header.header-transparent #search-bar #search-loc-icon {
+    color: #ef4444 !important;
+  }
+  #main-header.header-transparent .top-menu-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  #main-header.header-transparent .top-menu-link:hover {
+    color: white !important;
+  }
+  #main-header.header-transparent #login-btn {
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  #main-header.header-transparent #login-btn:hover {
+    border-color: white !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  #main-header.header-transparent #category-bar {
+    border-top-color: transparent !important;
+    background-color: transparent !important;
+  }
+  #main-header.header-transparent .category-menu-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  #main-header.header-transparent .category-menu-link:hover {
+    color: white !important;
+  }
+  #main-header.header-transparent #mobile-menu-btn svg {
+    color: white !important;
+  }
+</style>
+
+<script>
+    // Toggle Mobile Drawer Menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    if (mobileMenuBtn && mobileMenuDrawer && menuIcon && closeIcon) {
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = !mobileMenuDrawer.classList.contains('hidden');
+            if (isOpen) {
+                mobileMenuDrawer.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            } else {
+                mobileMenuDrawer.classList.remove('hidden');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            }
+            // Update header transparency immediately when drawer toggles
+            updateHeader();
+        });
+    }
+
+    // Toggle Mobile Tours Dropdown
+    const mobileToursBtn = document.getElementById('mobile-tours-btn');
+    const mobileToursDrawer = document.getElementById('mobile-tours-drawer');
+    const mobileToursArrow = document.getElementById('mobile-tours-arrow');
+
+    if (mobileToursBtn && mobileToursDrawer && mobileToursArrow) {
+        mobileToursBtn.addEventListener('click', () => {
+            const isHidden = mobileToursDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileToursDrawer.classList.remove('hidden');
+                mobileToursArrow.classList.add('rotate-180');
+            } else {
+                mobileToursDrawer.classList.add('hidden');
+                mobileToursArrow.classList.remove('rotate-180');
+            }
+        });
+    }
+
+    // Toggle Mobile Events Dropdown
+    const mobileEventsBtn = document.getElementById('mobile-events-btn');
+    const mobileEventsDrawer = document.getElementById('mobile-events-drawer');
+    const mobileEventsArrow = document.getElementById('mobile-events-arrow');
+
+    if (mobileEventsBtn && mobileEventsDrawer && mobileEventsArrow) {
+        mobileEventsBtn.addEventListener('click', () => {
+            const isHidden = mobileEventsDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileEventsDrawer.classList.remove('hidden');
+                mobileEventsArrow.classList.add('rotate-180');
+            } else {
+                mobileEventsDrawer.classList.add('hidden');
+                mobileEventsArrow.classList.remove('rotate-180');
+            }
+        });
+    }
+
+    // Dynamic Header Scroll Effects
+    const header = document.getElementById('main-header');
+    const isHome = window.location.pathname === '/' || window.location.pathname === '';
+
+    function updateHeader() {
+        const isDrawerOpen = mobileMenuDrawer && !mobileMenuDrawer.classList.contains('hidden');
+        if (isHome && window.scrollY < 550 && !isDrawerOpen) {
+            header.classList.add('header-transparent');
+        } else {
+            header.classList.remove('header-transparent');
+        }
+    }
+
+    if (header) {
+        if (isHome) {
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+        }
+    }
+</script>
+

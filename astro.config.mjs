@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
-import sitemap from '@astrojs/sitemap';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -21,9 +20,6 @@ export default defineConfig({
     react(),
     tailwind({
       applyBaseStyles: false,
-    }),
-    sitemap({
-      filter: (page) => !page.includes('/dashboard') && !page.includes('/consultant'),
     }),
   ],
   vite: {

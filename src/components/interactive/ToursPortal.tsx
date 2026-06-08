@@ -263,77 +263,16 @@ export function ToursPortal() {
         <div className="bg-[#fff5f5] min-h-screen">
             <Toast message={toastMsg} visible={isToastVisible} onClose={() => setIsToastVisible(false)} />
 
-            {/* Category Navigation Bar */}
-            <div className="bg-white border-b border-red-100 sticky top-16 z-30 shadow-sm">
-                <div className="max-w-6xl mx-auto px-4 flex justify-between items-center overflow-x-auto h-14 scrollbar-none">
-                    <div className="flex gap-2 shrink-0 py-2">
-                        {/* Tab: Holiday */}
-                        <button 
-                            onClick={() => { setActiveTab("holiday"); setSortBy("popular"); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
-                                activeTab === "holiday" 
-                                    ? "bg-red-50 text-[#ef4444] border border-red-100 shadow-sm" 
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
-                            }`}
-                        >
-                            <Umbrella className="w-4 h-4 shrink-0" />
-                            Holiday Packages
-                        </button>
-
-                        {/* Tab: Sports */}
-                        <button 
-                            onClick={() => { setActiveTab("sports"); setSortBy("popular"); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
-                                activeTab === "sports" 
-                                    ? "bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-sm" 
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
-                            }`}
-                        >
-                            <Trophy className="w-4 h-4 shrink-0" />
-                            Sport Tours
-                            <span className="bg-emerald-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-extrabold animate-pulse">NEW</span>
-                        </button>
-
-                        {/* Tab: Cruises */}
-                        <button 
-                            onClick={() => { setActiveTab("cruises"); setSortBy("popular"); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
-                                activeTab === "cruises" 
-                                    ? "bg-indigo-50 text-indigo-600 border border-indigo-100 shadow-sm" 
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
-                            }`}
-                        >
-                            <Ship className="w-4 h-4 shrink-0" />
-                            Cruises
-                        </button>
-
-                        {/* Tab: Events */}
-                        <button 
-                            onClick={() => { setActiveTab("events"); setSortBy("popular"); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
-                                activeTab === "events" 
-                                    ? "bg-orange-50 text-orange-600 border border-orange-100 shadow-sm" 
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
-                            }`}
-                        >
-                            <Music className="w-4 h-4 shrink-0" />
-                            Entertainment Events
-                        </button>
-                    </div>
-                </div>
-            </div>
-
             {/* Dynamic Hero Section */}
             {activeTab === "holiday" && (
-                <section className="relative py-24 px-4 overflow-hidden border-b border-slate-200">
+                <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-slate-200">
                     <div className="absolute inset-0 z-0">
                         <img
-                            src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1800&h=900&fit=crop&q=90"
-                            alt="Luxury holiday island resort overwater villa"
+                            src="/holiday-bg.jpg"
+                            alt="Luxury beach holiday scenery"
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/70 to-[#0c1a2e]/95" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/35 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/40" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center">
                         <span className="bg-slate-100/10 text-slate-350 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-white/20 mb-4 inline-block">✈️ Holiday Packages</span>
@@ -379,7 +318,7 @@ export function ToursPortal() {
             )}
 
             {activeTab === "sports" && (
-                <section className="relative py-24 px-4 overflow-hidden border-b border-red-100">
+                <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-red-100">
                     <div className="absolute inset-0 z-0">
                         <img
                             src="/luxury_stadium.png"
@@ -440,7 +379,7 @@ export function ToursPortal() {
             )}
 
             {activeTab === "cruises" && (
-                <section className="relative py-24 px-4 overflow-hidden border-b border-red-100">
+                <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-red-100">
                     <div className="absolute inset-0 z-0">
                         <img
                             src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1800&h=900&fit=crop&q=90"
@@ -499,7 +438,7 @@ export function ToursPortal() {
             )}
 
             {activeTab === "events" && (
-                <section className="relative py-24 px-4 overflow-hidden border-b border-red-100">
+                <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-red-100">
                     <div className="absolute inset-0 z-0">
                         <img
                             src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1800&h=900&fit=crop&q=90"
@@ -564,6 +503,66 @@ export function ToursPortal() {
                     </div>
                 </section>
             )}
+
+            {/* Category Navigation Bar */}
+            <div className="bg-white border-b border-red-100 sticky top-32 z-30 shadow-sm">
+                <div className="max-w-6xl mx-auto px-4 flex justify-between items-center overflow-x-auto h-14 scrollbar-none">
+                    <div className="flex gap-2 shrink-0 py-2">
+                        {/* Tab: Holiday */}
+                        <button 
+                            onClick={() => { setActiveTab("holiday"); setSortBy("popular"); }}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                                activeTab === "holiday" 
+                                    ? "bg-red-50 text-[#ef4444] border border-red-100 shadow-sm" 
+                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                            }`}
+                        >
+                            <Umbrella className="w-4 h-4 shrink-0" />
+                            Holiday Packages
+                        </button>
+
+                        {/* Tab: Sports */}
+                        <button 
+                            onClick={() => { setActiveTab("sports"); setSortBy("popular"); }}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                                activeTab === "sports" 
+                                    ? "bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-sm" 
+                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                            }`}
+                        >
+                            <Trophy className="w-4 h-4 shrink-0" />
+                            Sport Tours
+                            <span className="bg-emerald-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-extrabold animate-pulse">NEW</span>
+                        </button>
+
+                        {/* Tab: Cruises */}
+                        <button 
+                            onClick={() => { setActiveTab("cruises"); setSortBy("popular"); }}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                                activeTab === "cruises" 
+                                    ? "bg-indigo-50 text-indigo-600 border border-indigo-100 shadow-sm" 
+                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                            }`}
+                        >
+                            <Ship className="w-4 h-4 shrink-0" />
+                            Cruises
+                        </button>
+
+                        {/* Tab: Events */}
+                        <button 
+                            onClick={() => { setActiveTab("events"); setSortBy("popular"); }}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                                activeTab === "events" 
+                                    ? "bg-orange-50 text-orange-600 border border-orange-100 shadow-sm" 
+                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                            }`}
+                        >
+                            <Music className="w-4 h-4 shrink-0" />
+                            Entertainment Events
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             {/* Filter Category Chips & Category Title Rows */}
             <div className="max-w-6xl mx-auto px-4 mt-8">
@@ -677,8 +676,7 @@ export function ToursPortal() {
                         {sortedTours.map(tour => (
                             <div
                                 key={tour.id}
-                                className="group relative rounded-[22px] overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer"
-                                style={{ background: "#0d1b2a" }}
+                                className="group relative rounded-[22px] bg-white border border-slate-200 hover:border-rose-500/40 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer flex flex-col justify-between"
                                 onClick={() => handleBooking(tour.name)}
                             >
                                 {/* ── FULL IMAGE ── */}
@@ -690,92 +688,73 @@ export function ToursPortal() {
                                         loading="lazy"
                                     />
                                     {/* dark gradient */}
-                                    <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.08) 40%, rgba(13,27,42,0.85) 100%)" }} />
-
-                                    {/* top-left: country code pill */}
-                                    <div className="absolute top-3 left-3 bg-white/20 backdrop-blur-md border border-white/25 text-white text-[11px] font-extrabold px-2.5 py-1 rounded-lg tracking-widest">
-                                        {tour.countryCode}
-                                    </div>
+                                    <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.85) 100%)" }} />
 
                                     {/* top-right: badge */}
                                     {tour.badge && (
                                         <div
-                                            className="absolute top-3 right-3 text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-lg flex items-center gap-1"
+                                            className="absolute top-3 right-3 text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-lg"
                                             style={{ background: tour.badgeColor }}
                                         >
-                                            <Sparkles className="w-2.5 h-2.5" />
                                             {tour.badge}
                                         </div>
                                     )}
 
-                                    {/* bottom overlay on image: tagline + name */}
+                                    {/* bottom overlay on image: name */}
                                     <div className="absolute bottom-0 left-0 right-0 p-4">
-                                        <p className="text-[10px] font-bold uppercase tracking-widest mb-1 text-slate-400">
-                                            HOLIDAY PACKAGE
-                                        </p>
-                                        <h3 className="font-sora font-extrabold text-white text-[17px] leading-tight mb-1">
+                                        <h3 className="font-sora font-extrabold text-white text-[17px] leading-tight">
                                             {tour.name}
                                         </h3>
-                                        <p className="text-white/60 text-[11px] font-semibold flex items-center gap-1">
-                                            <MapPin className="w-3 h-3 shrink-0 text-slate-400" />
-                                            {tour.tagline}
-                                        </p>
                                     </div>
                                 </div>
 
-                                {/* ── DARK CARD BODY ── */}
-                                <div className="px-4 pt-4 pb-3" style={{ background: "#0d1b2a" }}>
-
-                                    {/* Stats row */}
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <div className="flex items-center gap-1 bg-white/8 px-2.5 py-1 rounded-full">
-                                            <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
-                                            <span className="text-[11px] font-bold text-white">{tour.rating}</span>
-                                            <span className="text-[10px] text-white/40">({tour.reviews.toLocaleString()})</span>
-                                        </div>
-                                        <div className="flex items-center gap-1 text-white/50 text-[11px] font-semibold">
-                                            <Calendar className="w-3 h-3" />
-                                            {tour.days}D / {tour.nights}N
-                                        </div>
-                                        <div className="flex items-center gap-1 text-white/50 text-[11px] font-semibold">
-                                            <Users className="w-3 h-3" />
-                                            {tour.group}
+                                {/* ── WHITE CARD BODY ── */}
+                                <div className="px-4 pt-4 pb-3 bg-white">
+                                    {/* Tagline and Duration Metadata */}
+                                    <div className="mb-4">
+                                        <p className="text-slate-700 text-[11px] font-bold flex items-center gap-1">
+                                            <MapPin className="w-3.5 h-3.5 shrink-0 text-[#f43f5e]" />
+                                            {tour.tagline}
+                                        </p>
+                                        <div className="text-slate-500 text-[10px] font-semibold pl-4.5 mt-1 flex items-center flex-wrap gap-1.5">
+                                            <span>{tour.days}D/{tour.nights}N</span>
+                                            <span>&bull;</span>
+                                            <span>{tour.group}</span>
+                                            <span>&bull;</span>
+                                            <div className="flex items-center gap-0.5">
+                                                <Star className="w-2.5 h-2.5 text-amber-500 fill-amber-500" />
+                                                <span className="font-bold text-slate-800">{tour.rating}</span>
+                                                <span>({tour.reviews.toLocaleString()})</span>
+                                            </div>
                                         </div>
                                     </div>
 
                                     {/* Inclusions chips */}
                                     <div className="flex flex-wrap gap-1.5 mb-4">
-                                        {tour.includes?.slice(0,4).map((inc: any) => (
-                                            <span key={inc} className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full"
-                                                style={{ background: "rgba(255,255,255,0.06)", color: "#e2e8f0", border: "1px solid rgba(255,255,255,0.12)" }}>
-                                                <CheckCircle className="w-2.5 h-2.5 shrink-0 text-slate-400" /> {inc}
+                                        {tour.includes?.slice(0,2).map((inc: any) => (
+                                            <span key={inc} className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-50 text-black border border-slate-200">
+                                                <CheckCircle className="w-2.5 h-2.5 shrink-0 text-rose-500" /> {inc}
                                             </span>
                                         ))}
-                                        {tour.includes?.length > 4 && (
-                                            <span className="text-[10px] font-bold px-2.5 py-1 rounded-full text-white/40"
-                                                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                                                +{tour.includes.length - 4} more
-                                            </span>
-                                        )}
                                     </div>
 
                                     {/* ── PRICE STRIP ── */}
-                                    <div className="flex items-center justify-between pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+                                    <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                                         <div>
-                                            <p className="text-[9px] font-black uppercase tracking-widest text-white/35 mb-0.5">STARTING FROM</p>
+                                            <p className="text-[9px] font-extrabold uppercase tracking-widest text-slate-500 mb-0.5">STARTING FROM</p>
                                             <div className="flex items-baseline gap-1.5">
                                                 {tour.originalPrice && (
-                                                    <span className="text-[11px] text-white/30 line-through">₹{tour.originalPrice.toLocaleString()}</span>
+                                                    <span className="text-[11px] text-slate-400 line-through">₹{tour.originalPrice.toLocaleString()}</span>
                                                 )}
-                                                <span className="font-sora font-extrabold text-white text-xl">₹{tour.price.toLocaleString()}</span>
-                                                <span className="text-[10px] text-white/40">/ person</span>
+                                                <span className="font-sora font-black text-black text-xl">₹{tour.price.toLocaleString()}</span>
+                                                <span className="text-[10px] text-slate-600 font-semibold">/ person</span>
                                             </div>
                                         </div>
                                         <button
                                             onClick={(e) => { e.stopPropagation(); handleBooking(tour.name); }}
-                                            className="w-10 h-10 rounded-full flex items-center justify-center text-white bg-slate-900 hover:bg-black hover:scale-110 transition-all shadow-lg"
+                                            className="border-2 border-black hover:bg-black text-black hover:text-white text-xs font-bold px-6 py-2.5 rounded-full transition-all shadow-sm hover:scale-[1.03] active:scale-[0.97]"
                                         >
-                                            <ArrowRight className="w-4 h-4" />
+                                            Book Now
                                         </button>
                                     </div>
                                 </div>

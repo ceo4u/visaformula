@@ -101,7 +101,7 @@ export function UniversityFairsPortal() {
             <Toast message={toastMsg} visible={isToastVisible} onClose={() => setIsToastVisible(false)} />
 
             {/* Premium Purple-Indigo Hero */}
-            <div className="relative py-24 px-4 overflow-hidden border-b border-slate-900">
+            <div className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-slate-900">
                 {/* Full-bleed premium background */}
                 <div className="absolute inset-0 z-0">
                     <img

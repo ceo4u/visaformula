@@ -27,6 +27,10 @@ const {
 
 const currentUrl = canonical || Astro.url.href;
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const isJobs = Astro.url.pathname === '/jobs' || Astro.url.pathname === '/jobs/';
+const isTours = Astro.url.pathname === '/tours' || Astro.url.pathname === '/tours/';
+const isEvents = Astro.url.pathname.startsWith('/events');
+const isTransparentHeaderPage = isHome || isJobs || isTours || isEvents;
 ---
 
 <!DOCTYPE html>
@@ -59,7 +63,7 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
   <!-- Google Fonts Preconnect & Fetch -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
   
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -71,7 +75,7 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 </head>
 <body class="font-sans antialiased text-navy bg-white selection:bg-primary/20 selection:text-primary min-h-screen flex flex-col overflow-x-hidden">
   <Header />
-  <main class={`flex-grow ${isHome ? "" : "pt-20 lg:pt-32"}`}>
+  <main class={`flex-grow ${isTransparentHeaderPage ? "" : "pt-20 lg:pt-32"}`}>
     <slot />
   </main>
   <Footer />

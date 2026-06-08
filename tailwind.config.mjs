@@ -83,7 +83,8 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["Plus Jakarta Sans", "DM Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        sans: ["Open Sans", "Plus Jakarta Sans", "DM Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        opensans: ["Open Sans", "sans-serif"],
         plusjakarta: ["Plus Jakarta Sans", "sans-serif"],
         sora: ["Sora", "sans-serif"],
         dmsans: ["DM Sans", "sans-serif"],

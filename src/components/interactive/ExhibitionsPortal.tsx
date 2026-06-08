@@ -91,7 +91,7 @@ export function ExhibitionsPortal() {
             <Toast message={toastMsg} visible={isToastVisible} onClose={() => setIsToastVisible(false)} />
 
             {/* Premium Radial Hero */}
-            <div className="relative py-24 px-4 overflow-hidden border-b border-slate-900">
+            <div className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-slate-900">
                 {/* Full-bleed premium background */}
                 <div className="absolute inset-0 z-0">
                     <img
@@ -213,7 +213,7 @@ export function ExhibitionsPortal() {
                     {filtered.map(ex => {
                         const countryCode = ex.country ? ex.country.toUpperCase() : "EX";
                         return (
-                            <div key={ex.id} onClick={() => handleBooking(ex.name)} className="group bg-[#0b1329] rounded-[2rem] border border-slate-800/80 overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col justify-between">
+                            <div key={ex.id} onClick={() => handleBooking(ex.name)} className="group bg-[#090f1f] rounded-[2rem] border border-slate-800/80 hover:border-rose-500/30 overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-rose-950/15 hover:-translate-y-1.5 transition-all duration-300 cursor-pointer flex flex-col justify-between">
                                 <div>
                                     {/* Image with gradient overlay and text */}
                                     <div className="relative h-60 overflow-hidden">
@@ -223,36 +223,32 @@ export function ExhibitionsPortal() {
                                         
                                         {/* Badges on top of image */}
                                         <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-                                            <span className="bg-white/10 backdrop-blur-md text-white font-extrabold border border-white/20 rounded-lg px-2.5 py-1 text-[10px] tracking-wider">
+                                            <span className="bg-white/10 backdrop-blur-md text-white font-extrabold border border-white/20 rounded-lg px-2.5 py-1 text-[9px] tracking-wider uppercase">
                                                 {countryCode}
                                             </span>
-                                            <span className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-extrabold text-[8px] tracking-widest px-2.5 py-1 rounded-full uppercase">
+                                            <span className="bg-white/10 backdrop-blur-md text-white font-extrabold border border-white/20 rounded-lg px-2.5 py-1 text-[9px] tracking-wider uppercase">
                                                 {ex.categoryLabel}
                                             </span>
                                         </div>
 
-                                        {/* Overlaid Title and Info */}
+                                        {/* Overlaid Title */}
                                         <div className="absolute bottom-4 left-5 right-5 z-10">
                                             <span className="text-rose-400 font-extrabold tracking-widest text-[9px] uppercase block mb-1">GLOBAL EXHIBITION</span>
-                                            <h3 className="font-sora font-extrabold text-white text-base leading-snug mb-1">{ex.name}</h3>
-                                            <div className="text-[10px] text-slate-300 font-medium flex items-center gap-1.5">
-                                                <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" /> {ex.location}
-                                            </div>
+                                            <h3 className="font-sora font-extrabold text-white text-base leading-snug">{ex.name}</h3>
                                         </div>
                                     </div>
 
                                     {/* Card Content body */}
                                     <div className="p-5 pt-4">
-                                        {/* Info Row: Rating, Dates, Details */}
-                                        <div className="flex flex-wrap items-center gap-y-1 text-slate-300 text-[10px] font-bold mb-4 justify-between border-b border-slate-800/60 pb-3">
-                                            <div className="flex items-center gap-1">
-                                                <span className="text-yellow-400">★</span> 4.9 <span className="text-slate-500 font-medium">(2.4k)</span>
+                                        {/* Date & Location Group */}
+                                        <div className="flex flex-col gap-2 text-slate-300 text-[11px] font-bold mb-4 border-b border-slate-800/60 pb-3">
+                                            <div className="flex items-center gap-2">
+                                                <Calendar className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                                                <span>{ex.date}</span>
                                             </div>
-                                            <div className="flex items-center gap-1">
-                                                <Calendar className="w-3 h-3 text-slate-500" /> {ex.date.split(",")[0]}
-                                            </div>
-                                            <div className="flex items-center gap-1">
-                                                <Globe className="w-3 h-3 text-slate-500" /> B2B Delegation
+                                            <div className="flex items-center gap-2">
+                                                <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                                                <span>{ex.location}</span>
                                             </div>
                                         </div>
 
@@ -281,9 +277,9 @@ export function ExhibitionsPortal() {
                                     </div>
                                     <button 
                                         onClick={(e) => { e.stopPropagation(); handleBooking(ex.name); }}
-                                        className="bg-rose-500 hover:bg-rose-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-md shadow-rose-900/20"
+                                        className="bg-rose-500 hover:bg-rose-600 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all hover:scale-[1.03] active:scale-[0.97] shadow-md shadow-rose-950/20"
                                     >
-                                        <ArrowRight className="w-5 h-5" />
+                                        Book Now
                                     </button>
                                 </div>
                             </div>

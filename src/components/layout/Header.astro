@@ -26,7 +26,7 @@ const eventDropdownItems = [
             <div class="w-9 h-9 bg-gradient-to-tr from-[#ef4444] to-[#dc2626] rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
                 <Globe class="w-5 h-5 text-white" />
             </div>
-            <span id="logo-text" class="font-sora text-2xl font-extrabold tracking-tight text-navy transition-colors duration-300">Visara</span>
+            <span id="logo-text" class="font-opensans text-2xl font-extrabold tracking-tight text-navy transition-colors duration-300">Visara</span>
             <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
         </a>
 
@@ -65,20 +65,20 @@ const eventDropdownItems = [
 
         <!-- Right Portal Navigation & Buttons -->
         <div class="hidden lg:flex items-center gap-3 xl:gap-5 shrink-0">
-            <a href="/agents" class="font-sora top-menu-link text-[13.5px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
+            <a href="/agents" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300">
                 Our Agents
             </a>
-            <a href="/support" class="font-sora top-menu-link text-[13.5px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
+            <a href="/support" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300">
                 Contact
             </a>
             
             <div class="w-[1.5px] h-4 bg-red-100"></div>
 
             <div class="flex items-center gap-1.5 xl:gap-2">
-                <a href="/login" id="login-btn" class="font-sora text-[13px] font-bold text-navy hover:text-[#ef4444] border border-red-100 hover:border-[#ef4444] px-4 py-2.5 rounded-xl transition-all duration-300">
+                <a href="/login" id="login-btn" class="font-opensans text-[14px] font-bold text-navy hover:text-[#ef4444] border border-red-100 hover:border-[#ef4444] px-4 py-2.5 rounded-xl transition-all duration-300">
                     Log In
                 </a>
-                <a href="/signup" class="font-sora bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white font-bold text-[13px] px-4 py-2.5 rounded-xl hover:shadow-lg hover:shadow-red-100 transition-all active:scale-[0.97]">
+                <a href="/signup" class="font-opensans bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white font-bold text-[14px] px-4 py-2.5 rounded-xl hover:shadow-lg hover:shadow-red-100 transition-all active:scale-[0.97]">
                     Sign Up
                 </a>
             </div>
@@ -97,13 +97,13 @@ const eventDropdownItems = [
             
             <!-- Find Experts Link -->
             <a href="/find-experts"
-                class={`font-sora category-menu-link text-[13.5px] font-semibold tracking-wide transition-all ${pathname === "/find-experts" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/find-experts" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                 Find Experts
             </a>
 
             <!-- Apply Visa Link -->
             <a href="/apply-visa"
-                class={`font-sora category-menu-link text-[13.5px] font-semibold tracking-wide transition-all flex items-center gap-1.5 ${pathname === "/apply-visa" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 ${pathname === "/apply-visa" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                 <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse"></span>
                 Apply Visa
             </a>
@@ -111,7 +111,7 @@ const eventDropdownItems = [
             <!-- Tours & Packages Dropdown -->
             <div class="relative py-3.5 group">
                 <button
-                    class={`font-sora category-menu-link text-[13.5px] font-semibold tracking-wide transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
                         pathname?.startsWith("/tours") ? "text-[#ef4444]" : "text-navy"
                     }`}
                 >
@@ -148,7 +148,7 @@ const eventDropdownItems = [
             <!-- Events Dropdown -->
             <div class="relative py-3.5 group">
                 <button
-                    class={`font-sora category-menu-link text-[13.5px] font-semibold tracking-wide transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
                         pathname?.startsWith("/events") ? "text-[#ef4444]" : "text-navy"
                     }`}
                 >
@@ -184,25 +184,25 @@ const eventDropdownItems = [
 
             <!-- Training Hub Link -->
             <a href="/training"
-                class={`font-sora category-menu-link text-[13.5px] font-semibold tracking-wide transition-all ${pathname === "/training" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/training" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                 Training Hub
             </a>
 
             <!-- Our Services Link -->
             <a href="/services"
-                class={`font-sora category-menu-link text-[13.5px] font-semibold tracking-wide transition-all ${pathname === "/services" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/services" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                 Our Services
             </a>
 
             <!-- Overseas Jobs Link -->
             <a href="/jobs"
-                class={`font-sora category-menu-link text-[13.5px] font-semibold tracking-wide transition-all ${pathname === "/jobs" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/jobs" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                 Overseas Jobs
             </a>
 
             <!-- Legal Link -->
             <a href="/emergency"
-                class={`font-sora category-menu-link text-[13.5px] font-semibold tracking-wide transition-all ${pathname === "/emergency" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/emergency" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                 Legal
             </a>
         </div>
@@ -457,10 +457,15 @@ const eventDropdownItems = [
     // Dynamic Header Scroll Effects
     const header = document.getElementById('main-header');
     const isHome = window.location.pathname === '/' || window.location.pathname === '';
+    const isJobs = window.location.pathname === '/jobs' || window.location.pathname === '/jobs/';
+    const isTours = window.location.pathname === '/tours' || window.location.pathname === '/tours/';
+    const isEvents = window.location.pathname.startsWith('/events');
+    const isTransparentPage = isHome || isJobs || isTours || isEvents;
 
     function updateHeader() {
         const isDrawerOpen = mobileMenuDrawer && !mobileMenuDrawer.classList.contains('hidden');
-        if (isHome && window.scrollY < 550 && !isDrawerOpen) {
+        const threshold = 50;
+        if (isTransparentPage && window.scrollY < threshold && !isDrawerOpen) {
             header.classList.add('header-transparent');
         } else {
             header.classList.remove('header-transparent');
@@ -468,7 +473,7 @@ const eventDropdownItems = [
     }
 
     if (header) {
-        if (isHome) {
+        if (isTransparentPage) {
             updateHeader();
             window.addEventListener('scroll', updateHeader);
         }

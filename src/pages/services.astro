@@ -4,7 +4,8 @@ import Layout from '../layouts/Layout.astro';
 import {
     Users, Plane, CalendarCheck, Shield,
     Compass, Globe, GraduationCap, Briefcase,
-    ArrowRight, CheckCircle2, BadgePercent, ShieldCheck
+    ArrowRight, CheckCircle2, BadgePercent, ShieldCheck,
+    FileText, Calendar
 } from 'lucide-react';
 
 const primaryServices = [
@@ -142,6 +143,71 @@ const secondaryServices = [
                         </a>
                     );
                 })}
+            </div>
+        </section>
+
+        <!-- DIRECT VISA & BOOKING ASSISTANCE -->
+        <section class="max-w-6xl mx-auto px-4 mt-20">
+            <div class="text-center mb-10">
+                <span class="text-[10px] font-black text-red-500 uppercase tracking-widest block mb-1">Direct Assistance</span>
+                <h2 class="font-sora font-bold text-navy text-2xl">Visa Application & Booking Services</h2>
+                <p class="text-xs text-gray-400 mt-1 max-w-md mx-auto">Get professional, error-free support for your documentation, form filing, and VFS biometric slot bookings.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a href="/visa-documentation" class="group block">
+                    <div class="flex flex-col bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 hover:border-slate-200 h-full">
+                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform shrink-0">
+                            <FileText class="w-6 h-6 text-red-500" />
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">Document Prep</span>
+                            <h3 class="font-sora font-bold text-navy text-sm mb-2 group-hover:text-slate-800 transition-colors leading-snug">Visa Documentation Filing</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed font-medium">Professional check, preparation, and structuring of your visa files. Maximize approval rates with audit-ready documents.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                            <div class="w-8 h-8 rounded-xl bg-slate-50 text-gray-400 group-hover:bg-[#111111] group-hover:text-white flex items-center justify-center shadow-inner transition-all">
+                                <ArrowRight class="w-4 h-4" />
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/visa-form-filing" class="group block">
+                    <div class="flex flex-col bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 hover:border-slate-200 h-full">
+                        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform shrink-0">
+                            <FileText class="w-6 h-6 text-red-500" />
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">Form Completion</span>
+                            <h3 class="font-sora font-bold text-navy text-sm mb-2 group-hover:text-slate-800 transition-colors leading-snug">Visa Form Filing</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed font-medium">Complete guidance and professional entry for complex visa forms. Eliminate errors that lead to visa rejections.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                            <div class="w-8 h-8 rounded-xl bg-slate-50 text-gray-400 group-hover:bg-[#111111] group-hover:text-white flex items-center justify-center shadow-inner transition-all">
+                                <ArrowRight class="w-4 h-4" />
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/vfs-appointment" class="group block">
+                    <div class="flex flex-col bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 hover:border-slate-200 h-full">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform shrink-0">
+                            <Calendar class="w-6 h-6 text-rose-500" />
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">Slot Monitoring</span>
+                            <h3 class="font-sora font-bold text-navy text-sm mb-2 group-hover:text-slate-800 transition-colors leading-snug">VFS Appointment Booking</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed font-medium">24/7 automated monitoring of VFS Global slot availability. We secure your biometric slot the moment it releases.</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                            <div class="w-8 h-8 rounded-xl bg-slate-50 text-gray-400 group-hover:bg-[#111111] group-hover:text-white flex items-center justify-center shadow-inner transition-all">
+                                <ArrowRight class="w-4 h-4" />
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
         </section>
 

@@ -1,0 +1,12 @@
+---
+// src/pages/visa-documentation.astro
+import Layout from '../layouts/Layout.astro';
+import { VisaDocumentationPortal } from '../components/interactive/VisaDocumentationPortal';
+---
+
+<Layout 
+  title="Visa Documentation Filing" 
+  description="Get your visa documents verified by AI and human experts. Submit clean, audit-ready files to maximize approval rates for student, tourist, and work visas."
+>
+  <VisaDocumentationPortal client:only="react" />
+</Layout>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   CheckCircle, ArrowRight, ArrowLeft, Users, Star, Trophy,
   Bell, FileText, Briefcase, Globe, ShieldCheck,
@@ -118,6 +118,50 @@ export function AgentsPortal() {
   const [regDone, setRegDone]   = useState(false);
   const [toast, setToast]       = useState({ show: false, msg: "" });
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const pageParam = params.get("page");
+      if (pageParam === "register") {
+        setPage("register");
+      } else if (pageParam === "dashboard") {
+        setPage("dashboard");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const shouldHide = page === "register" || page === "dashboard";
+    let styleEl = document.getElementById("portal-mode-hide-layout");
+    
+    if (shouldHide) {
+      if (!styleEl) {
+        styleEl = document.createElement("style");
+        styleEl.id = "portal-mode-hide-layout";
+        styleEl.innerHTML = `
+          #main-header, footer, nav, [class*="talk-to-us"] {
+            display: none !important;
+          }
+          main {
+            padding-top: 0 !important;
+          }
+        `;
+        document.head.appendChild(styleEl);
+      }
+    } else {
+      if (styleEl) {
+        styleEl.remove();
+      }
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has("page")) {
+          const newUrl = window.location.pathname;
+          window.history.pushState({}, "", newUrl);
+        }
+      }
+    }
+  }, [page]);
+
   const [langs, setLangs]       = useState<string[]>(["English"]);
   const allLangs = ["English","Hindi","Marathi","Tamil","Telugu","Kannada","Bengali","Gujarati"];
 
@@ -159,9 +203,14 @@ export function AgentsPortal() {
               </p>
 
               <div className="flex flex-wrap gap-4 mb-8">
-                <button onClick={() => setPage("register")} className="bg-white hover:bg-slate-50 text-[#0c1a2e] font-bold px-7 py-4 rounded-2xl text-sm shadow-lg border border-slate-200 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2">
+                <a 
+                  href="/agents?page=register" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="bg-white hover:bg-slate-50 text-[#0c1a2e] font-bold px-7 py-4 rounded-2xl text-sm shadow-lg border border-slate-200 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2"
+                >
                   Register as Agent <ArrowRight className="w-4 h-4" />
-                </button>
+                </a>
                 <button onClick={() => setPage("dashboard")} className="bg-white/10 border border-white/20 text-white font-bold px-7 py-4 rounded-2xl text-sm hover:bg-white/20 transition-all backdrop-blur flex items-center gap-2">
                   Agent Login
                 </button>
@@ -321,19 +370,22 @@ export function AgentsPortal() {
 
     const regSteps = ["Personal Info","Availability & Skills","KYC Upload","Bank Details"];
     return (
-      <div className="bg-[#fff5f5] min-h-screen">
-        <div className="bg-gradient-to-r from-[#0c1a2e] to-[#0f2a40] border-b border-sky-900 py-5 px-6">
-          <div className="max-w-2xl mx-auto">
-            <button onClick={() => setPage("landing")} className="text-xs text-white/50 hover:text-white/80 font-semibold mb-3 flex items-center gap-1.5 transition-colors outline-none">
+      <div className="bg-slate-50 min-h-screen flex flex-col justify-center items-center py-10 px-4">
+        <div className="w-full max-w-2xl">
+          <div className="mb-4 text-left">
+            <button onClick={() => setPage("landing")} className="text-xs text-gray-500 hover:text-black font-semibold flex items-center gap-1.5 transition-colors outline-none">
               <ArrowLeft className="w-3.5 h-3.5" /> Back
             </button>
-            <span className="text-[11px] font-extrabold text-slate-300 uppercase tracking-widest block mb-1">Agent Registration</span>
-            <h2 className="font-sora font-extrabold text-white text-2xl mb-1">Create Your Agent Account</h2>
-            <p className="text-white/50 text-sm">Takes 5 minutes · Approved within 48 hours</p>
           </div>
-        </div>
 
-        <div className="max-w-2xl mx-auto px-6 py-8">
+          <div className="text-center mb-8">
+            <a href="/" className="inline-flex items-center gap-2 mb-3">
+              <Globe className="w-6 h-6 text-red-500" />
+              <span className="text-2xl font-extrabold tracking-tight text-[#0c1a2e]">Visara</span>
+            </a>
+            <h1 className="font-sora text-3xl font-extrabold text-black mb-1.5">Create Your Agent Account</h1>
+            <p className="text-sm text-gray-500">Takes 5 minutes · Approved within 48 hours</p>
+          </div>
           <div className="flex items-center mb-8">
             {regSteps.map((label, i) => (
               <div key={label} className="flex items-center flex-1 last:flex-none">
@@ -356,7 +408,7 @@ export function AgentsPortal() {
             ))}
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-3xl p-7 md:p-8 shadow-xl">
             {regStep === 1 && (
               <div>
                 <h3 className="font-sora font-bold text-lg text-[#0c1a2e] mb-5">Step 1 — Personal Information</h3>

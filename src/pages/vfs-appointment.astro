@@ -1,0 +1,12 @@
+---
+// src/pages/vfs-appointment.astro
+import Layout from '../layouts/Layout.astro';
+import { VFSAppointmentPortal } from '../components/interactive/VFSAppointmentPortal';
+---
+
+<Layout 
+  title="VFS Appointment Booking" 
+  description="Schedule your VFS biometrics collection, document submission, or passport submission appointments. We monitor VFS 24/7 and secure slots the moment they open."
+>
+  <VFSAppointmentPortal client:only="react" />
+</Layout>

@@ -2,7 +2,7 @@ import { Star, MapPin } from "lucide-react";
 
 export function ExpertCard({ expert }: { expert: any }) {
     return (
-        <a href="/expert/1" className="block h-full cursor-pointer">
+        <a href={`/expert/${expert.id}`} className="block h-full cursor-pointer">
             <div className="bg-white border border-gray-200 rounded-2xl p-5 flex flex-col gap-4 shadow-sm hover:shadow-xl hover:border-red-300 transition-all duration-300 h-full group">
                 <div className="flex gap-4">
                     <div className="w-16 h-16 shrink-0 rounded-xl overflow-hidden ring-2 ring-gray-100 group-hover:ring-red-200 transition-all">
@@ -51,7 +51,7 @@ export function ExpertCard({ expert }: { expert: any }) {
                         <div className="font-extrabold text-lg text-[#1a1a2e]">{expert.price}</div>
                     </div>
                     <button className="bg-red-500 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-red-600 transition-all text-sm shadow-sm hover:shadow-md">
-                        Request to Book
+                        View Profile
                     </button>
                 </div>
             </div>

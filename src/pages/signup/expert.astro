@@ -7,6 +7,8 @@ import { ExpertSignupPortal } from '../../components/interactive/ExpertSignupPor
 <Layout 
   title="Sign Up as Expert - Visara" 
   description="Register as an immigration expert on Visara to consult clients and grow your global practice."
+  hideHeader={true}
+  hideFooter={true}
 >
   <!-- Mount client-only React signup expert island -->
   <ExpertSignupPortal client:only="react" />

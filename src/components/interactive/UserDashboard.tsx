@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import {
     Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
     ArrowRight, Bell, FileText, Star, Shield, TrendingUp, ChevronRight
@@ -8,26 +8,26 @@ const bookings = [
     {
         expert: "Marcus Thorne, JD",
         service: "Express Entry Consultation",
-        date: "Apr 20, 2025 · 10:00 AM",
+        date: "Apr 20, 2026 · 10:00 AM",
         status: "upcoming",
         escrow: "held",
         amount: "₹2,500",
-        avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face",
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
     },
     {
         expert: "Elena Rodriguez",
         service: "Green Card Document Review",
-        date: "Apr 15, 2025 · 2:00 PM",
+        date: "Apr 15, 2026 · 2:00 PM",
         status: "completed",
         escrow: "released",
         amount: "₹4,500",
-        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&crop=face",
+        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face",
     },
 ];
 
 const savedExperts = [
-    { name: "Raj Patel", role: "Express Entry Specialist", rating: 4.8, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" },
-    { name: "Aisha Khan", role: "UK Visa Consultant", rating: 4.6, avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face" },
+    { name: "Raj Patel", role: "Express Entry Specialist", rating: 4.8, avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" },
+    { name: "Aisha Khan", role: "UK Visa Consultant", rating: 4.6, avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face" },
 ];
 
 const notifications = [
@@ -42,43 +42,44 @@ export function UserDashboard() {
     const overallBand = ((ieltsScore.L + ieltsScore.R + ieltsScore.W + ieltsScore.S) / 4).toFixed(1);
 
     const statusMap: Record<string, { label: string; color: string; dot: string }> = {
-        upcoming: { label: "Upcoming", color: "bg-blue-50 text-blue-700 border-blue-200", dot: "bg-blue-500" },
+        upcoming: { label: "Upcoming", color: "bg-red-50 text-red-700 border-red-200", dot: "bg-red-500" },
         completed: { label: "Completed", color: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500" },
     };
 
     const escrowMap: Record<string, { label: string; color: string }> = {
-        held: { label: "Escrow: Held", color: "text-amber-600 bg-amber-50 border-amber-200" },
+        held: { label: "Escrow: Held", color: "text-red-650 bg-red-50/55 border-red-150" },
         released: { label: "Payment Released", color: "text-emerald-600 bg-emerald-50 border-emerald-200" },
     };
 
     return (
-        <div className="bg-[#fff5f5] min-h-screen">
+        <div className="bg-slate-50/30 min-h-screen">
             {/* Top Banner */}
-            <div className="bg-gradient-to-r from-[#0c1a2e] to-[#1a3347] text-white px-4 py-12">
-                <div className="max-w-6xl mx-auto">
+            <div className="bg-gradient-to-r from-[#0c1a2e] to-[#1a3347] text-white px-6 py-12 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-red-500/10 via-transparent to-transparent pointer-events-none" />
+                <div className="max-w-6xl mx-auto relative z-10">
                     <h1 className="font-sora text-3xl font-extrabold mb-1">Welcome back, Priya 👋</h1>
                     <p className="text-white/60 text-sm font-medium">Your immigration journey dashboard</p>
                     <div className="flex flex-wrap gap-5 mt-5 text-xs font-bold uppercase tracking-wider text-white/70">
-                        <span className="flex items-center gap-2"><Calendar className="w-4 h-4 text-[#fef08a]" /> 1 upcoming booking</span>
+                        <span className="flex items-center gap-2"><Calendar className="w-4 h-4 text-red-400" /> 1 upcoming booking</span>
                         <span className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-emerald-400" /> 1 session completed</span>
-                        <span className="flex items-center gap-2"><Lock className="w-4 h-4 text-amber-400" /> ₹2,500 in escrow</span>
+                        <span className="flex items-center gap-2"><Lock className="w-4 h-4 text-red-400" /> ₹2,500 in escrow</span>
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="max-w-6xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Main Column */}
                 <div className="lg:col-span-2 space-y-6">
                     {/* Tabs */}
-                    <div className="bg-white rounded-3xl border border-yellow-100 shadow-sm overflow-hidden">
-                        <div className="flex border-b border-yellow-100">
+                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div className="flex border-b border-slate-200">
                             {(["bookings", "saved", "notifications"] as const).map((tab) => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
                                     className={`flex-1 py-3.5 text-xs font-black uppercase tracking-wider transition-all duration-300 ${activeTab === tab
-                                        ? "text-[#f59e0b] border-b-2 border-[#f59e0b] bg-yellow-50/50"
-                                        : "text-gray-400 hover:text-navy"
+                                        ? "text-red-550 border-b-2 border-red-500 bg-red-50/20"
+                                        : "text-gray-400 hover:text-[#0C1A2E]"
                                         }`}
                                 >
                                     {tab === "notifications" ? "Updates" : tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -91,7 +92,7 @@ export function UserDashboard() {
                             {activeTab === "bookings" && (
                                 <div className="space-y-4">
                                     {bookings.map((b, idx) => (
-                                        <div key={idx} className="border border-yellow-100 rounded-2xl p-4 hover:shadow-sm transition-all">
+                                        <div key={idx} className="border border-slate-100 rounded-2xl p-4 hover:shadow-sm transition-all bg-white">
                                             <div className="flex items-center gap-3 mb-3">
                                                 <img src={b.avatar} alt={b.expert} className="w-12 h-12 rounded-xl object-cover" />
                                                 <div className="flex-1">
@@ -112,14 +113,14 @@ export function UserDashboard() {
                                             <div className="flex gap-2">
                                                 {b.status === "upcoming" && (
                                                     <>
-                                                        <button className="flex-1 bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white py-2 rounded-xl text-xs font-bold hover:shadow-md transition-all active:scale-[0.98]">Join Session</button>
-                                                        <button className="px-4 py-2 border border-yellow-200 text-amber-500 rounded-xl text-xs font-bold hover:bg-yellow-50 transition-all active:scale-[0.98]">Reschedule</button>
+                                                        <button className="flex-1 bg-slate-900 text-white py-2 rounded-xl text-xs font-bold hover:bg-black transition-all active:scale-[0.98] shadow-sm">Join Session</button>
+                                                        <button className="px-4 py-2 border border-red-200 text-red-700 rounded-xl text-xs font-bold hover:bg-red-50 transition-all active:scale-[0.98]">Reschedule</button>
                                                     </>
                                                 )}
                                                 {b.status === "completed" && (
                                                     <>
-                                                        <a href="/expert" className="flex-1">
-                                                            <button className="w-full border-2 border-yellow-200 text-[#f59e0b] py-2 rounded-xl text-xs font-bold hover:bg-yellow-50 transition-all flex items-center justify-center gap-1">
+                                                        <a href="/find-experts" className="flex-1">
+                                                            <button className="w-full border-2 border-red-200 text-red-650 py-2 rounded-xl text-xs font-bold hover:bg-red-50/50 transition-all flex items-center justify-center gap-1">
                                                                 <Star className="w-3.5 h-3.5" /> Leave Review
                                                             </button>
                                                         </a>
@@ -131,8 +132,8 @@ export function UserDashboard() {
                                             </div>
                                         </div>
                                     ))}
-                                    <a href="/expert" className="block">
-                                        <button className="w-full border-2 border-dashed border-yellow-200 text-[#f59e0b] py-3 rounded-2xl text-xs font-black uppercase tracking-wider hover:bg-yellow-50 transition-all flex items-center justify-center gap-2">
+                                    <a href="/find-experts" className="block">
+                                        <button className="w-full border-2 border-dashed border-red-200 text-red-600 py-3 rounded-2xl text-xs font-black uppercase tracking-wider hover:bg-red-50/20 transition-all flex items-center justify-center gap-2">
                                             <ArrowRight className="w-4 h-4" /> Find & Book a New Expert
                                         </button>
                                     </a>
@@ -143,17 +144,17 @@ export function UserDashboard() {
                             {activeTab === "saved" && (
                                 <div className="space-y-3">
                                     {savedExperts.map((e, idx) => (
-                                        <div key={idx} className="flex items-center gap-4 p-4 border border-yellow-100 rounded-2xl hover:shadow-sm transition-all">
+                                        <div key={idx} className="flex items-center gap-4 p-4 border border-slate-100 rounded-2xl hover:shadow-sm transition-all bg-white">
                                             <img src={e.avatar} alt={e.name} className="w-12 h-12 rounded-xl object-cover" />
                                             <div className="flex-1">
                                                 <div className="font-bold text-navy text-sm">{e.name}</div>
                                                 <div className="text-xs text-gray-400">{e.role}</div>
                                                 <div className="flex items-center gap-1 text-xs font-semibold mt-0.5">
-                                                    <Star className="w-3 h-3 text-amber-500 fill-amber-500" /> {e.rating}
+                                                    <Star className="w-3 h-3 text-amber-550 fill-amber-500" /> {e.rating}
                                                 </div>
                                             </div>
-                                            <a href="/expert">
-                                                <button className="bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white px-4 py-2 rounded-xl text-xs font-bold hover:shadow-md transition-all active:scale-[0.98]">Book</button>
+                                            <a href="/find-experts">
+                                                <button className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition-all active:scale-[0.98] shadow-sm">Book</button>
                                             </a>
                                         </div>
                                     ))}
@@ -170,9 +171,9 @@ export function UserDashboard() {
                             {activeTab === "notifications" && (
                                 <div className="space-y-3">
                                     {notifications.map((n, idx) => (
-                                        <div key={idx} className="flex items-start gap-3 p-4 border border-yellow-100 rounded-2xl hover:shadow-sm transition-all">
-                                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${n.type === "success" ? "bg-emerald-100" : "bg-yellow-100"}`}>
-                                                {n.type === "success" ? <CheckCircle className="w-4 h-4 text-emerald-600" /> : <Bell className="w-4 h-4 text-[#f59e0b]" />}
+                                        <div key={idx} className="flex items-start gap-3 p-4 border border-slate-100 rounded-2xl hover:shadow-sm transition-all bg-white">
+                                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${n.type === "success" ? "bg-emerald-100" : "bg-red-50"}`}>
+                                                {n.type === "success" ? <CheckCircle className="w-4 h-4 text-emerald-600" /> : <Bell className="w-4 h-4 text-red-500" />}
                                             </div>
                                             <div className="flex-1">
                                                 <p className="text-sm text-navy font-medium leading-relaxed">{n.text}</p>
@@ -186,15 +187,15 @@ export function UserDashboard() {
                     </div>
 
                     {/* Escrow Status Card */}
-                    <div className="bg-white rounded-3xl border border-yellow-100 shadow-sm p-5">
+                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-5">
                         <h3 className="font-sora font-bold text-navy mb-4 flex items-center gap-2">
-                            <Shield className="w-5 h-5 text-[#f59e0b]" /> Escrow Status
+                            <Shield className="w-5 h-5 text-red-500" /> Escrow Status
                         </h3>
                         <div className="grid grid-cols-3 gap-3">
                             {[
-                                { label: "Held Safely", amount: "₹2,500", color: "bg-amber-50 border-amber-200 text-amber-700" },
+                                { label: "Held Safely", amount: "₹2,500", color: "bg-red-50/50 border-red-100 text-red-750" },
                                 { label: "Released", amount: "₹4,500", color: "bg-emerald-50 border-emerald-200 text-emerald-700" },
-                                { label: "Total Spent", amount: "₹7,000", color: "bg-yellow-50 border-yellow-200 text-amber-700" },
+                                { label: "Total Spent", amount: "₹7,000", color: "bg-slate-50 border-slate-200 text-slate-700" },
                             ].map((item) => (
                                 <div key={item.label} className={`rounded-2xl border p-3 text-center ${item.color}`}>
                                     <div className="font-bold text-base">{item.amount}</div>
@@ -203,16 +204,16 @@ export function UserDashboard() {
                             ))}
                         </div>
                         <a href="/escrow">
-                            <button className="mt-4 w-full border border-yellow-200 text-[#f59e0b] py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-yellow-50 transition-all flex items-center justify-center gap-1">
-                                View Escrow Details <ChevronRight className="w-4 h-4" />
+                            <button className="mt-4 w-full border border-slate-200 text-slate-700 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-slate-50 transition-all flex items-center justify-center gap-1 shadow-sm">
+                                View Escrow Details <ChevronRight className="w-4 h-4 text-red-500" />
                             </button>
                         </a>
                     </div>
 
                     {/* Document Vault */}
-                    <div className="bg-white rounded-3xl border border-yellow-100 shadow-sm p-5">
+                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-5">
                         <h3 className="font-sora font-bold text-navy mb-4 flex items-center gap-2">
-                            <FileText className="w-5 h-5 text-[#f59e0b]" /> Document Vault
+                            <FileText className="w-5 h-5 text-red-500" /> Document Vault
                         </h3>
                         <div className="space-y-3">
                             {[
@@ -222,23 +223,23 @@ export function UserDashboard() {
                                 { label: "Offer Letter", status: "uploaded", icon: "✅" },
                                 { label: "SOP / Cover Letter", status: "pending", icon: "⚠️" },
                             ].map((doc) => (
-                                <div key={doc.label} className={`flex items-center justify-between p-3 rounded-2xl border ${doc.status === "uploaded" ? "border-emerald-200 bg-emerald-50/50" :
-                                        doc.status === "pending" ? "border-amber-200 bg-amber-50/50" :
-                                            "border-yellow-200 bg-yellow-50/50"
+                                <div key={doc.label} className={`flex items-center justify-between p-3 rounded-2xl border ${doc.status === "uploaded" ? "border-emerald-250 bg-emerald-50/30" :
+                                        doc.status === "pending" ? "border-red-150 bg-red-50/20" :
+                                            "border-slate-200 bg-slate-50/50"
                                     }`}>
                                     <span className="text-xs font-bold text-navy">{doc.icon} {doc.label}</span>
                                     <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-full ${doc.status === "uploaded" ? "bg-emerald-100 text-emerald-700" :
-                                            doc.status === "pending" ? "bg-amber-100 text-amber-700" :
-                                                "bg-yellow-100 text-amber-700"
+                                            doc.status === "pending" ? "bg-red-100 text-red-700" :
+                                                "bg-slate-200 text-slate-700"
                                         }`}>{doc.status}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="mt-3 bg-yellow-50 rounded-2xl p-4 text-center border border-yellow-100">
+                        <div className="mt-3 bg-red-50/30 rounded-2xl p-4 text-center border border-red-100">
                             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Documents Ready</span>
-                            <div className="font-sora text-3xl font-extrabold text-[#f59e0b]">2 / 5</div>
-                            <div className="w-full h-2 bg-yellow-100 rounded-full mt-2 overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-[#f59e0b] to-[#d97706] rounded-full" style={{ width: "40%" }} />
+                            <div className="font-sora text-3xl font-extrabold text-red-500">2 / 5</div>
+                            <div className="w-full h-2 bg-slate-100 rounded-full mt-2 overflow-hidden">
+                                <div className="h-full bg-red-500 rounded-full" style={{ width: "40%" }} />
                             </div>
                         </div>
                     </div>
@@ -247,9 +248,9 @@ export function UserDashboard() {
                 {/* Right Column */}
                 <div className="space-y-5">
                     {/* IELTS Tracker */}
-                    <div className="bg-white rounded-3xl border border-yellow-100 shadow-sm p-5">
+                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-5">
                         <h3 className="font-sora font-bold text-navy mb-1 flex items-center gap-2">
-                            <BookOpen className="w-5 h-5 text-[#f59e0b]" /> IELTS Tracker
+                            <BookOpen className="w-5 h-5 text-red-500" /> IELTS Tracker
                         </h3>
                         <p className="text-xs text-gray-400 mb-4">Track your current band scores</p>
                         <div className="space-y-3">
@@ -259,42 +260,42 @@ export function UserDashboard() {
                                 return (
                                     <div key={key}>
                                         <div className="flex justify-between text-xs font-semibold mb-1">
-                                            <span className="text-gray-600">{labels[key]}</span>
-                                            <span className="text-[#f59e0b]">{score}</span>
+                                            <span className="text-gray-600 font-medium">{labels[key]}</span>
+                                            <span className="text-red-500 font-bold">{score}</span>
                                         </div>
-                                        <div className="w-full h-2 bg-yellow-50 rounded-full border border-yellow-100 overflow-hidden">
-                                            <div className="h-full bg-gradient-to-r from-[#f59e0b] to-[#d97706] rounded-full" style={{ width: `${(score / 9) * 100}%` }} />
+                                        <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                            <div className="h-full bg-red-500 rounded-full" style={{ width: `${(score / 9) * 100}%` }} />
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
-                        <div className="mt-4 bg-yellow-50 rounded-2xl p-4 text-center border border-yellow-100">
+                        <div className="mt-4 bg-red-50/20 rounded-2xl p-4 text-center border border-red-100">
                             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Overall Band</span>
-                            <div className="font-sora text-4xl font-extrabold text-[#f59e0b]">{overallBand}</div>
+                            <div className="font-sora text-4xl font-extrabold text-red-500">{overallBand}</div>
                             <span className="text-[10px] text-gray-400 font-bold">Target: 7.0 for Canada PR</span>
                         </div>
                         <a href="/training" className="block mt-3">
-                            <button className="w-full bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white py-2.5 rounded-xl text-xs font-bold hover:shadow-md transition-all active:scale-[0.98]">
+                            <button className="w-full bg-slate-900 text-white py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-all active:scale-[0.98] shadow-sm">
                                 Find IELTS Coaching
                             </button>
                         </a>
                     </div>
 
                     {/* Quick Actions */}
-                    <div className="bg-white rounded-3xl border border-yellow-100 shadow-sm p-5">
+                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-5">
                         <h3 className="font-sora font-bold text-navy mb-4">Quick Actions</h3>
                         <div className="space-y-2">
                             {[
-                                { label: "Find Immigration Expert", href: "/expert", icon: Star, color: "text-[#f59e0b]" },
+                                { label: "Find Immigration Expert", href: "/find-experts", icon: Star, color: "text-red-500" },
                                 { label: "Check Visa Guides", href: "/visa-guide/canada/express-entry", icon: FileText, color: "text-violet-500" },
-                                { label: "Emergency Help Portal", href: "/emergency", icon: AlertTriangle, color: "text-amber-500" },
+                                { label: "Emergency Help Portal", href: "/emergency", icon: AlertTriangle, color: "text-red-500" },
                             ].map((action) => (
                                 <a key={action.href} href={action.href} className="block">
-                                    <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-all cursor-pointer group">
+                                    <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-red-50/45 transition-all cursor-pointer group">
                                         <action.icon className={`w-5 h-5 ${action.color} shrink-0`} />
-                                        <span className="text-xs font-bold text-navy group-hover:text-[#f59e0b] transition-colors">{action.label}</span>
-                                        <ChevronRight className="w-4 h-4 text-gray-300 ml-auto group-hover:text-[#f59e0b] transition-colors" />
+                                        <span className="text-xs font-bold text-navy group-hover:text-red-500 transition-colors">{action.label}</span>
+                                        <ChevronRight className="w-4 h-4 text-gray-300 ml-auto group-hover:text-red-500 transition-colors" />
                                     </div>
                                 </a>
                             ))}
@@ -303,15 +304,15 @@ export function UserDashboard() {
 
                     {/* Emergency Banner */}
                     <a href="/emergency" className="block">
-                        <div className="bg-white border-l-4 border-amber-500 rounded-3xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-all cursor-pointer group">
-                            <div className="w-10 h-10 bg-yellow-50 rounded-xl flex items-center justify-center shrink-0">
-                                <AlertTriangle className="w-5 h-5 text-amber-500" />
+                        <div className="bg-white border-l-4 border-red-500 rounded-3xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+                            <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
+                                <AlertTriangle className="w-5 h-5 text-red-500" />
                             </div>
                             <div>
                                 <h4 className="font-bold text-navy text-sm">Need Emergency Help?</h4>
-                                <p className="text-xs text-gray-400">Overstay, denial, or deportation risk?</p>
+                                <p className="text-xs text-gray-400 font-medium">Overstay, denial, or deportation risk?</p>
                             </div>
-                            <ChevronRight className="w-4 h-4 text-amber-400 ml-auto group-hover:translate-x-1 transition-transform" />
+                            <ChevronRight className="w-4 h-4 text-red-400 ml-auto group-hover:translate-x-1 transition-transform" />
                         </div>
                     </a>
                 </div>
@@ -319,4 +320,3 @@ export function UserDashboard() {
         </div>
     );
 }
-

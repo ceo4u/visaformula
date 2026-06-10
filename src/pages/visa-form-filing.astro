@@ -1,0 +1,12 @@
+---
+// src/pages/visa-form-filing.astro
+import Layout from '../layouts/Layout.astro';
+import { VisaFormFilingPortal } from '../components/interactive/VisaFormFilingPortal';
+---
+
+<Layout 
+  title="Visa Form Filing" 
+  description="Get your visa application forms filled accurately by professionals. DS-160, IMM 1294, VAF, or Schengen visa forms filled with 12-hour turnaround time."
+>
+  <VisaFormFilingPortal client:only="react" />
+</Layout>

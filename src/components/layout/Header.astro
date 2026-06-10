@@ -17,9 +17,9 @@ const eventDropdownItems = [
 ];
 
 const servicesDropdownItems = [
-    { title: "Visa Documentation Filing", desc: "Expert check & filing of files", href: "/apply-visa", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
-    { title: "Visa Form Filing", desc: "Complete support for application forms", href: "/apply-visa", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
-    { title: "VFS Appointment", desc: "Schedule and slot booking support", href: "/vfs-booking", icon: Calendar, iconColor: "text-rose-500", bg: "bg-rose-50" }
+    { title: "Visa Documentation Filing", desc: "Expert check & filing of files", href: "/visa-documentation", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Visa Form Filing", desc: "Complete support for application forms", href: "/visa-form-filing", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "VFS Appointment", desc: "Schedule and slot booking support", href: "/vfs-appointment", icon: Calendar, iconColor: "text-rose-500", bg: "bg-rose-50" }
 ];
 ---
 
@@ -198,7 +198,11 @@ const servicesDropdownItems = [
             <div class="relative py-3.5 group">
                 <button
                     class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
-                        pathname?.startsWith("/services") || pathname?.startsWith("/vfs-booking") ? "text-[#ef4444]" : "text-navy"
+                        pathname?.startsWith("/services") || 
+                        pathname?.startsWith("/vfs-booking") || 
+                        pathname?.startsWith("/visa-documentation") || 
+                        pathname?.startsWith("/visa-form-filing") || 
+                        pathname?.startsWith("/vfs-appointment") ? "text-[#ef4444]" : "text-navy"
                     }`}
                 >
                     Our Services

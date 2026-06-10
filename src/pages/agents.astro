@@ -5,6 +5,24 @@ import { AgentsPortal } from '../components/interactive/AgentsPortal';
 ---
 
 <Layout title="Our Agents Portal" description="Join Visara as a freelance agent — verify expert profiles, review packages, and earn weekly commission from home.">
+    <script is:inline>
+        // Check query parameters immediately before rendering/hydration to avoid layout shift/flashing
+        const params = new URLSearchParams(window.location.search);
+        const pageParam = params.get("page");
+        if (pageParam === "register" || pageParam === "dashboard") {
+            const style = document.createElement("style");
+            style.id = "portal-mode-hide-layout";
+            style.innerHTML = `
+                #main-header, footer, nav, [class*="talk-to-us"] {
+                    display: none !important;
+                }
+                main {
+                    padding-top: 0 !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
     <!-- Load the AgentsPortal purely on the client side since it manages extensive private state grids -->
     <AgentsPortal client:only="react" />
 </Layout>

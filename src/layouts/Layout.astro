@@ -14,6 +14,8 @@ export interface Props {
   ogImage?: string;
   canonical?: string;
   schema?: Record<string, any>;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
 }
 
 const { 
@@ -22,7 +24,9 @@ const {
   keywords = "visa, immigration, experts, lawyer, consultant, migration, work visa, student visa, express entry, work permit, IELTS",
   ogImage = "/og-image.jpg", 
   canonical,
-  schema
+  schema,
+  hideHeader = false,
+  hideFooter = false
 } = Astro.props;
 
 const currentUrl = canonical || Astro.url.href;
@@ -74,13 +78,13 @@ const isTransparentHeaderPage = isHome || isJobs || isTours || isEvents;
   )}
 </head>
 <body class="font-sans antialiased text-navy bg-white selection:bg-primary/20 selection:text-primary min-h-screen flex flex-col overflow-x-hidden">
-  <Header />
-  <main class={`flex-grow ${isTransparentHeaderPage ? "" : "pt-20 lg:pt-32"}`}>
+  {!hideHeader && <Header />}
+  <main class={`flex-grow ${isTransparentHeaderPage || hideHeader ? "" : "pt-20 lg:pt-32"}`}>
     <slot />
   </main>
-  <Footer />
-  <MobileNav />
+  {!hideFooter && <Footer />}
+  {!hideHeader && <MobileNav />}
 
-  <TalkToUs client:idle />
+  {!hideHeader && <TalkToUs client:idle />}
 </body>
 </html>

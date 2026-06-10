@@ -1,6 +1,6 @@
 ---
 // src/components/layout/Header.astro
-import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap } from 'lucide-react';
+import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar } from 'lucide-react';
 
 const pathname = Astro.url.pathname;
 
@@ -14,6 +14,12 @@ const tourDropdownItems = [
 const eventDropdownItems = [
     { title: "Exhibitions", desc: "Trade shows & expos worldwide", href: "/events/exhibitions", icon: Globe, iconColor: "text-red-500", bg: "bg-red-50" },
     { title: "Universities Fairs", desc: "Meet top universities directly", href: "/events/university-fairs", icon: GraduationCap, iconColor: "text-red-500", bg: "bg-red-50" }
+];
+
+const servicesDropdownItems = [
+    { title: "Visa Documentation Filing", desc: "Expert check & filing of files", href: "/apply-visa", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Visa Form Filing", desc: "Complete support for application forms", href: "/apply-visa", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "VFS Appointment", desc: "Schedule and slot booking support", href: "/vfs-booking", icon: Calendar, iconColor: "text-rose-500", bg: "bg-rose-50" }
 ];
 ---
 
@@ -188,11 +194,42 @@ const eventDropdownItems = [
                 Training Hub
             </a>
 
-            <!-- Our Services Link -->
-            <a href="/services"
-                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/services" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                Our Services
-            </a>
+            <!-- Our Services Dropdown -->
+            <div class="relative py-3.5 group">
+                <button
+                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                        pathname?.startsWith("/services") || pathname?.startsWith("/vfs-booking") ? "text-[#ef4444]" : "text-navy"
+                    }`}
+                >
+                    Our Services
+                    <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                </button>
+
+                <!-- Dropdown Menu Card -->
+                <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                    <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-2">
+                        <div class="flex flex-col gap-1">
+                            {servicesDropdownItems.map((item) => {
+                                const IconComponent = item.icon;
+                                return (
+                                    <a 
+                                        href={item.href}
+                                        class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                    >
+                                        <div class={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
+                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} />
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                            <div class="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
+                                        </div>
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Overseas Jobs Link -->
             <a href="/jobs"
@@ -297,10 +334,35 @@ const eventDropdownItems = [
             Training Hub
         </a>
 
-        <a href="/services"
-            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/services" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
-            Our Services
-        </a>
+        <!-- Our Services Dropdown (Mobile) -->
+        <div class="border-b border-gray-50">
+            <button 
+                id="mobile-services-btn"
+                class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+                <span>Our Services</span>
+                <ChevronDown id="mobile-services-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+            </button>
+            <div id="mobile-services-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
+                {servicesDropdownItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                        <a 
+                            href={item.href}
+                            class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
+                        >
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-navy">{item.title}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </div>
 
         <a href="/jobs"
             class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/jobs" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
@@ -450,6 +512,24 @@ const eventDropdownItems = [
             } else {
                 mobileEventsDrawer.classList.add('hidden');
                 mobileEventsArrow.classList.remove('rotate-180');
+            }
+        });
+    }
+
+    // Toggle Mobile Services Dropdown
+    const mobileServicesBtn = document.getElementById('mobile-services-btn');
+    const mobileServicesDrawer = document.getElementById('mobile-services-drawer');
+    const mobileServicesArrow = document.getElementById('mobile-services-arrow');
+
+    if (mobileServicesBtn && mobileServicesDrawer && mobileServicesArrow) {
+        mobileServicesBtn.addEventListener('click', () => {
+            const isHidden = mobileServicesDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileServicesDrawer.classList.remove('hidden');
+                mobileServicesArrow.classList.add('rotate-180');
+            } else {
+                mobileServicesDrawer.classList.add('hidden');
+                mobileServicesArrow.classList.remove('rotate-180');
             }
         });
     }

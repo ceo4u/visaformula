@@ -265,16 +265,16 @@ export function ToursPortal() {
 
             {/* Dynamic Hero Section */}
             {activeTab === "holiday" && (
-                <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-slate-200">
+                <section className="relative pt-32 pb-28 lg:pt-48 lg:pb-36 px-4 overflow-hidden border-b border-slate-200 flex flex-col items-center justify-center" style={{ minHeight: "640px" }}>
                     <div className="absolute inset-0 z-0">
                         <img
                             src="/holiday-bg.jpg"
                             alt="Luxury beach holiday scenery"
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/40" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
                     </div>
-                    <div className="relative z-10 max-w-4xl mx-auto text-center">
+                    <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
                         <span className="bg-slate-100/10 text-slate-350 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-white/20 mb-4 inline-block">✈️ Holiday Packages</span>
                         <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
                             Dream Holidays. <span className="text-slate-300">Visas Sorted.</span>
@@ -318,17 +318,17 @@ export function ToursPortal() {
             )}
 
             {activeTab === "sports" && (
-                <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-red-100">
+                <section className="relative pt-32 pb-28 lg:pt-48 lg:pb-36 px-4 overflow-hidden border-b border-red-100 flex flex-col items-center justify-center" style={{ minHeight: "640px" }}>
                     <div className="absolute inset-0 z-0">
                         <img
                             src="/luxury_stadium.png"
                             alt="Luxury stadium arena"
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/70 to-[#0c1a2e]/95" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
                         <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/40 to-transparent" />
                     </div>
-                    <div className="relative z-10 max-w-4xl mx-auto text-center">
+                    <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
                         <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-500/20 mb-4 inline-block">⚽ Sport Tours</span>
                         <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
                             Live the Game. <span className="text-emerald-400">Visas Sorted.</span>
@@ -379,17 +379,17 @@ export function ToursPortal() {
             )}
 
             {activeTab === "cruises" && (
-                <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-red-100">
+                <section className="relative pt-32 pb-28 lg:pt-48 lg:pb-36 px-4 overflow-hidden border-b border-red-100 flex flex-col items-center justify-center" style={{ minHeight: "640px" }}>
                     <div className="absolute inset-0 z-0">
                         <img
                             src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1800&h=900&fit=crop&q=90"
                             alt="Luxury cruise yacht at sea"
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/70 to-[#0c1a2e]/95" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
                         <div className="absolute inset-0 bg-gradient-to-r from-indigo-950/40 to-transparent" />
                     </div>
-                    <div className="relative z-10 max-w-4xl mx-auto text-center">
+                    <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
                         <span className="bg-indigo-500/10 text-indigo-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-indigo-500/20 mb-4 inline-block">🚢 Cruises</span>
                         <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
                             Sail the World. <span className="text-indigo-400">Ports & Visas Sorted.</span>
@@ -438,17 +438,17 @@ export function ToursPortal() {
             )}
 
             {activeTab === "events" && (
-                <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-24 px-4 overflow-hidden border-b border-red-100">
+                <section className="relative pt-32 pb-28 lg:pt-48 lg:pb-36 px-4 overflow-hidden border-b border-red-100 flex flex-col items-center justify-center" style={{ minHeight: "640px" }}>
                     <div className="absolute inset-0 z-0">
                         <img
                             src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1800&h=900&fit=crop&q=90"
                             alt="Luxury music concert stage show"
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/70 to-[#0c1a2e]/95" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
                         <div className="absolute inset-0 bg-gradient-to-r from-amber-950/35 to-transparent" />
                     </div>
-                    <div className="relative z-10 max-w-4xl mx-auto text-center">
+                    <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
                         <span className="bg-orange-500/10 text-orange-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-orange-500/20 mb-4 inline-block">🎭 Entertainment Events</span>
                         <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
                             See the Show. <span className="text-orange-400">Visas Sorted.</span>

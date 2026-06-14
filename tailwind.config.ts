@@ -85,9 +85,10 @@ const config: Config = {
             },
             fontFamily: {
                 sans: ["DM Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-                sora: ["Sora", "sans-serif"],
+                sora: ["Plus Jakarta Sans", "sans-serif"],
                 dmsans: ["DM Sans", "sans-serif"],
-                heading: ["Sora", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+                heading: ["Plus Jakarta Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+                jakarta: ["Plus Jakarta Sans", "sans-serif"],
             },
             boxShadow: {
                 "editorial": "0 1px 4px rgba(0,0,0,0.1)",

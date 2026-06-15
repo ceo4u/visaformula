@@ -176,7 +176,7 @@ export function Header() {
                                 isEventsHovered || pathname?.startsWith("/events") ? "text-[#0ea5e9]" : "text-navy hover:text-[#0ea5e9]"
                             }`}
                         >
-                            Events & Fairs
+                            Event Visa
                             <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isEventsHovered ? "rotate-180" : ""}`} />
                         </button>
 
@@ -303,7 +303,7 @@ export function Header() {
                             onClick={() => setIsMobileEventsOpen(!isMobileEventsOpen)}
                             className="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                         >
-                            <span>Events & Fairs</span>
+                            <span>Event Visa</span>
                             <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${isMobileEventsOpen ? "rotate-180" : ""}`} />
                         </button>
                         {isMobileEventsOpen && (

@@ -31,33 +31,57 @@ const DEMO_USER: User = {
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User | null>(DEMO_USER);
-    const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (typeof window !== "undefined") {
+            const stored = localStorage.getItem("visara_user");
+            if (stored && stored !== "null") {
+                try {
+                    setUser(JSON.parse(stored));
+                } catch (e) {
+                    localStorage.removeItem("visara_user");
+                }
+            }
+        }
         setLoading(false);
     }, []);
 
     const signIn = async (email: string, password: string) => {
         await delay(1200); // simulate auth delay
         if (password.length < 6) throw new Error("Invalid email or password.");
-        setUser({ ...DEMO_USER, email, displayName: email.split("@")[0] });
+        const loggedInUser = { ...DEMO_USER, email, displayName: email.split("@")[0] };
+        setUser(loggedInUser);
+        if (typeof window !== "undefined") {
+            localStorage.setItem("visara_user", JSON.stringify(loggedInUser));
+        }
     };
 
     const signUp = async (email: string, password: string, name: string) => {
         await delay(1500);
         if (password.length < 6) throw new Error("Password must be at least 6 characters.");
-        setUser({ ...DEMO_USER, email, displayName: name });
+        const signedUpUser = { ...DEMO_USER, email, displayName: name };
+        setUser(signedUpUser);
+        if (typeof window !== "undefined") {
+            localStorage.setItem("visara_user", JSON.stringify(signedUpUser));
+        }
     };
 
     const signInWithGoogle = async () => {
         await delay(1000);
         setUser(DEMO_USER);
+        if (typeof window !== "undefined") {
+            localStorage.setItem("visara_user", JSON.stringify(DEMO_USER));
+        }
     };
 
     const signOut = async () => {
         await delay(500);
         setUser(null);
+        if (typeof window !== "undefined") {
+            localStorage.setItem("visara_user", "null");
+        }
     };
 
     return (

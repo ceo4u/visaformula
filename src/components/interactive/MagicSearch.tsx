@@ -15,6 +15,23 @@ export function MagicSearch({ className = "" }: { className?: string }) {
     const [selectedPurposes, setSelectedPurposes] = useState<string[]>([]);
     const showVisaField = residing !== "" && residing !== "India";
 
+    const checkAuthAndPrevent = (e: React.MouseEvent | React.FocusEvent) => {
+        if (typeof window !== "undefined") {
+            const user = localStorage.getItem("visara_user");
+            if (!user || user === "null") {
+                e.preventDefault();
+                e.stopPropagation();
+                if (e.target && 'blur' in e.target) {
+                    (e.target as any).blur();
+                }
+                alert("you must login for accessing the search option above");
+                window.location.href = "/login";
+                return false;
+            }
+        }
+        return true;
+    };
+
     const togglePurpose = (p: string) => {
         setSelectedPurposes(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]);
     };
@@ -38,7 +55,13 @@ export function MagicSearch({ className = "" }: { className?: string }) {
                     <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Passport / Citizenship</label>
                     <div className="relative">
                         <Globe className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <select value={passport} onChange={(e) => setPassport(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer">
+                        <select 
+                            value={passport} 
+                            onChange={(e) => setPassport(e.target.value)} 
+                            onMouseDown={checkAuthAndPrevent}
+                            onFocus={checkAuthAndPrevent}
+                            className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer"
+                        >
                             <option value="">Select country</option>
                             {countries.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
@@ -51,8 +74,13 @@ export function MagicSearch({ className = "" }: { className?: string }) {
                     <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Currently Residing In</label>
                     <div className="relative">
                         <MapPin className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <select value={residing} onChange={(e) => { setResiding(e.target.value); if (e.target.value === "India") setCurrentVisa(""); }}
-                            className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer">
+                        <select 
+                            value={residing} 
+                            onChange={(e) => { setResiding(e.target.value); if (e.target.value === "India") setCurrentVisa(""); }}
+                            onMouseDown={checkAuthAndPrevent}
+                            onFocus={checkAuthAndPrevent}
+                            className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer"
+                        >
                             <option value="">Select country</option>
                             {residingCountries.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
@@ -66,8 +94,13 @@ export function MagicSearch({ className = "" }: { className?: string }) {
                         <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Current Visa Type</label>
                         <div className="relative">
                             <Briefcase className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                            <select value={currentVisa} onChange={(e) => setCurrentVisa(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-200 rounded-xl text-sm font-medium appearance-none outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all cursor-pointer">
+                            <select 
+                                value={currentVisa} 
+                                onChange={(e) => setCurrentVisa(e.target.value)}
+                                onMouseDown={checkAuthAndPrevent}
+                                onFocus={checkAuthAndPrevent}
+                                className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-200 rounded-xl text-sm font-medium appearance-none outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all cursor-pointer"
+                            >
                                 <option value="">Select visa type</option>
                                 <option value="Other">Other</option>
                                 {visaTypes.map(v => <option key={v} value={v}>{v}</option>)}
@@ -82,8 +115,13 @@ export function MagicSearch({ className = "" }: { className?: string }) {
                     <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">I Want To Go To</label>
                     <div className="relative">
                         <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <select value={destination} onChange={(e) => setDestination(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer">
+                        <select 
+                            value={destination} 
+                            onChange={(e) => setDestination(e.target.value)}
+                            onMouseDown={checkAuthAndPrevent}
+                            onFocus={checkAuthAndPrevent}
+                            className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer"
+                        >
                             <option value="">Select destination</option>
                             {destinationCountries.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
@@ -97,7 +135,9 @@ export function MagicSearch({ className = "" }: { className?: string }) {
                 <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Purpose</label>
                 <div className="flex flex-wrap gap-2">
                     {purposes.map(p => (
-                        <button key={p} onClick={() => togglePurpose(p)}
+                        <button 
+                            key={p} 
+                            onClick={(e) => { if (checkAuthAndPrevent(e)) togglePurpose(p); }}
                             className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${selectedPurposes.includes(p)
                                     ? "bg-red-500 text-white shadow-sm"
                                     : "bg-red-50 text-red-700 border border-red-200 hover:bg-red-100"
@@ -109,8 +149,10 @@ export function MagicSearch({ className = "" }: { className?: string }) {
                 </div>
             </div>
 
-            <button onClick={handleSearch}
-                className="w-full bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white py-4 rounded-xl font-bold text-base hover:shadow-lg hover:shadow-red-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+            <button 
+                onClick={(e) => { if (checkAuthAndPrevent(e)) handleSearch(); }}
+                className="w-full bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white py-4 rounded-xl font-bold text-base hover:shadow-lg hover:shadow-red-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+            >
                 <Search className="w-5 h-5" />
                 Find Experts
             </button>

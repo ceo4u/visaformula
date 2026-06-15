@@ -64,7 +64,7 @@ const servicesDropdownItems = [
             </div>
             
             <!-- Search Button -->
-            <button class="bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#dc2626] px-6 h-full flex items-center justify-center transition-all shrink-0">
+            <button id="search-btn" class="bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#dc2626] px-6 h-full flex items-center justify-center transition-all shrink-0">
                 <Search class="w-4 h-4 text-white font-bold" />
             </button>
         </div>
@@ -158,7 +158,7 @@ const servicesDropdownItems = [
                         pathname?.startsWith("/events") ? "text-[#ef4444]" : "text-navy"
                     }`}
                 >
-                    Events & Fairs
+                    Event Visa
                     <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
                 </button>
 
@@ -255,13 +255,13 @@ const servicesDropdownItems = [
         <div class="p-4 border-b border-red-50 bg-red-50/20 space-y-2">
             <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-red-100 shadow-sm">
                 <Search class="w-4 h-4 text-red-400 mr-2 shrink-0" />
-                <input class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="What are you looking for..." type="text" />
+                <input id="mobile-search-input-query" class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="What are you looking for..." type="text" />
             </div>
             <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-red-100 shadow-sm">
                 <MapPin class="w-4 h-4 text-red-400 mr-2 shrink-0" />
-                <input class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="Location (e.g. Hyderabad)" type="text" />
+                <input id="mobile-search-input-location" class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="Location (e.g. Hyderabad)" type="text" />
             </div>
-            <button class="w-full py-2.5 bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white rounded-xl font-bold text-xs shadow-sm active:scale-[0.98]">
+            <button id="mobile-search-btn" class="w-full py-2.5 bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white rounded-xl font-bold text-xs shadow-sm active:scale-[0.98]">
                 Search Experts
             </button>
         </div>
@@ -308,7 +308,7 @@ const servicesDropdownItems = [
                 id="mobile-events-btn"
                 class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
             >
-                <span>Events & Fairs</span>
+                <span>Event Visa</span>
                 <ChevronDown id="mobile-events-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
             </button>
             <div id="mobile-events-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
@@ -560,6 +560,69 @@ const servicesDropdownItems = [
         if (isTransparentPage) {
             updateHeader();
             window.addEventListener('scroll', updateHeader);
+        }
+    }
+
+    // Auth gate for search elements
+    const searchInputs = [
+        document.getElementById('search-input-query'),
+        document.getElementById('search-input-location'),
+        document.getElementById('search-btn'),
+        document.getElementById('mobile-search-input-query'),
+        document.getElementById('mobile-search-input-location'),
+        document.getElementById('mobile-search-btn')
+    ];
+
+    searchInputs.forEach(el => {
+        if (el) {
+            ['focus', 'mousedown', 'keydown'].forEach(evt => {
+                el.addEventListener(evt, (e) => {
+                    const user = localStorage.getItem("visara_user");
+                    if (!user || user === "null") {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (el instanceof HTMLInputElement) {
+                            el.blur();
+                        }
+                        alert("you must login for accessing the search option above");
+                        window.location.href = "/login";
+                    }
+                });
+            });
+        }
+    });
+
+    // Dynamic Auth Header Button Updates
+    const userStr = localStorage.getItem("visara_user");
+    if (userStr && userStr !== "null") {
+        const loginBtn = document.getElementById("login-btn");
+        const signupBtn = document.querySelector('a[href="/signup"]');
+        if (loginBtn && signupBtn) {
+            loginBtn.textContent = "Dashboard";
+            loginBtn.setAttribute("href", "/dashboard");
+            
+            signupBtn.textContent = "Log Out";
+            signupBtn.setAttribute("href", "#");
+            signupBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                localStorage.removeItem("visara_user");
+                window.location.href = "/";
+            });
+        }
+        
+        const mobileLoginBtn = document.querySelector('#mobile-menu-drawer a[href="/login"]');
+        const mobileSignupBtn = document.querySelector('#mobile-menu-drawer a[href="/signup"]');
+        if (mobileLoginBtn && mobileSignupBtn) {
+            mobileLoginBtn.textContent = "Dashboard";
+            mobileLoginBtn.setAttribute("href", "/dashboard");
+            
+            mobileSignupBtn.textContent = "Log Out";
+            mobileSignupBtn.setAttribute("href", "#");
+            mobileSignupBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                localStorage.removeItem("visara_user");
+                window.location.href = "/";
+            });
         }
     }
 </script>

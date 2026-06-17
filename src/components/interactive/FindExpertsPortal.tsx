@@ -202,15 +202,8 @@ export function FindExpertsPortal() {
                                         <div className="flex-1">
                                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2 text-center sm:text-left">
                                                 <div>
-                                                    <h3 className="text-lg font-bold font-sora text-navy group-hover:text-slate-900 transition-colors flex flex-wrap items-center justify-center sm:justify-start gap-2 leading-tight">
-                                                        {e.name}
-                                                        <CheckCircle className="w-4 h-4 text-slate-900 fill-slate-50 shrink-0" />
-                                                        <span className="text-[9px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md shrink-0">
-                                                            ✓ Verified License
-                                                        </span>
-                                                        <span className="text-[9px] font-black uppercase tracking-wider text-red-800 bg-red-50 border border-red-200 px-2 py-0.5 rounded-md shrink-0">
-                                                            🔒 Visa Formula Protected Escrow
-                                                        </span>
+                                                    <h3 className="text-lg font-bold font-sora text-navy group-hover:text-slate-900 transition-colors flex items-center justify-center sm:justify-start gap-2 leading-tight">
+                                                        {e.name} <CheckCircle className="w-4 h-4 text-slate-900 fill-slate-50" />
                                                     </h3>
                                                     <p className="text-xs text-gray-400 mt-0.5">{e.role} · {e.experience} yrs experience</p>
                                                 </div>

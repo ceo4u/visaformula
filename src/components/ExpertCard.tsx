@@ -9,23 +9,13 @@ export function ExpertCard({ expert }: { expert: any }) {
                         <img src={expert.image} alt={expert.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <div className="flex flex-col gap-1">
-                            <div className="flex items-center justify-between gap-2">
-                                <h3 className="text-base font-bold text-[#1a1a2e] leading-tight truncate group-hover:text-red-500 transition-colors">{expert.name}</h3>
-                                {expert.badges?.includes("Open now") && (
-                                    <span className="text-[9px] uppercase font-bold tracking-wider text-green-700 bg-green-100 px-2 py-0.5 rounded-full shrink-0 flex items-center gap-1">
-                                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Open
-                                    </span>
-                                )}
-                            </div>
-                            <div className="flex flex-wrap gap-1.5 mt-0.5">
-                                <span className="text-[9px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-250 px-2 py-0.5 rounded-md shrink-0">
-                                    ✓ Verified License
+                        <div className="flex justify-between items-start gap-2">
+                            <h3 className="text-base font-bold text-[#1a1a2e] leading-tight truncate group-hover:text-red-500 transition-colors">{expert.name}</h3>
+                            {expert.badges?.includes("Open now") && (
+                                <span className="text-[9px] uppercase font-bold tracking-wider text-green-700 bg-green-100 px-2 py-0.5 rounded-full shrink-0 flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Open
                                 </span>
-                                <span className="text-[9px] font-black uppercase tracking-wider text-red-800 bg-red-50 border border-red-200 px-2 py-0.5 rounded-md shrink-0">
-                                    🔒 Visa Formula Protected Escrow
-                                </span>
-                            </div>
+                            )}
                         </div>
                         <div className="flex items-center gap-1 mt-1.5">
                             <div className="flex text-yellow-400">

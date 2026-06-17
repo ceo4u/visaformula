@@ -27,12 +27,15 @@ const servicesDropdownItems = [
     <!-- Top Row: Logo + Yelp-Style Split Search Bar + User Portal Links -->
     <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-20 gap-4">
         
-        <!-- Visara Logo -->
         <a href="/" class="flex items-center gap-2 group shrink-0">
-            <div class="w-9 h-9 bg-gradient-to-tr from-[#ef4444] to-[#dc2626] rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                <Globe class="w-5 h-5 text-white" />
+            <div id="logo-icon-container" class="w-9 h-9 bg-gradient-to-tr from-[#ef4444] to-[#dc2626] border border-black text-white rounded-xl flex items-center justify-center group-hover:rotate-12 transition-all duration-300">
+                <svg id="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 transition-colors duration-300">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                    <path d="M2 12h20"/>
+                </svg>
             </div>
-            <span id="logo-text" class="font-opensans text-2xl font-extrabold tracking-tight text-navy transition-colors duration-300">Visa Formula</span>
+            <span id="logo-text" class="font-opensans text-2xl font-extrabold tracking-tight text-navy transition-colors duration-300">Visara</span>
             <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
         </a>
 
@@ -136,8 +139,8 @@ const servicesDropdownItems = [
                                         href={item.href}
                                         class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
                                     >
-                                        <div class={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} />
+                                        <div class={`w-10 h-10 rounded-xl ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
+                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} className="w-5 h-5" color="currentColor" />
                                         </div>
                                         <div class="flex-1">
                                             <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
@@ -173,8 +176,8 @@ const servicesDropdownItems = [
                                         href={item.href}
                                         class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
                                     >
-                                        <div class={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} />
+                                        <div class={`w-10 h-10 rounded-xl ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
+                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} className="w-5 h-5" color="currentColor" />
                                         </div>
                                         <div class="flex-1">
                                             <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
@@ -191,7 +194,7 @@ const servicesDropdownItems = [
             <!-- Training Hub Link -->
             <a href="/training"
                 class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/training" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                Studies
+                Training Hub
             </a>
 
             <!-- Our Services Dropdown -->
@@ -220,8 +223,8 @@ const servicesDropdownItems = [
                                         href={item.href}
                                         class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
                                     >
-                                        <div class={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} />
+                                        <div class={`w-10 h-10 rounded-xl ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
+                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} className="w-5 h-5" color="currentColor" />
                                         </div>
                                         <div class="flex-1">
                                             <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
@@ -238,13 +241,13 @@ const servicesDropdownItems = [
             <!-- Overseas Jobs Link -->
             <a href="/jobs"
                 class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/jobs" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                Jobs
+                Job Visa
             </a>
 
             <!-- Legal Link -->
             <a href="/emergency"
                 class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/emergency" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                PR
+                Immigration Assistance
             </a>
         </div>
     </div>
@@ -289,8 +292,8 @@ const servicesDropdownItems = [
                             href={item.href}
                             class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
                         >
-                            <div class={`w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
-                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} />
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-navy">{item.title}</div>
@@ -319,8 +322,8 @@ const servicesDropdownItems = [
                             href={item.href}
                             class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
                         >
-                            <div class={`w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
-                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} />
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-navy">{item.title}</div>
@@ -335,7 +338,7 @@ const servicesDropdownItems = [
         <!-- Other Pages -->
         <a href="/training"
             class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/training" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
-            Studies
+            Training Hub
         </a>
 
         <!-- Our Services Dropdown (Mobile) -->
@@ -355,8 +358,8 @@ const servicesDropdownItems = [
                             href={item.href}
                             class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
                         >
-                            <div class={`w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
-                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} />
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-navy">{item.title}</div>
@@ -370,12 +373,12 @@ const servicesDropdownItems = [
 
         <a href="/jobs"
             class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/jobs" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
-            Jobs
+            Job Visa
         </a>
 
         <a href="/emergency"
             class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/emergency" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
-            PR
+            Immigration Assistance
         </a>
 
         <a href="/agents"
@@ -409,6 +412,13 @@ const servicesDropdownItems = [
   }
   #main-header.header-transparent #logo-text {
     color: white !important;
+  }
+  #main-header.header-transparent #logo-icon-container {
+    background: white !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05) !important;
+  }
+  #main-header.header-transparent #logo-icon-container svg {
+    color: #ef4444 !important;
   }
   #main-header.header-transparent #search-bar {
     background-color: #ffffff !important;

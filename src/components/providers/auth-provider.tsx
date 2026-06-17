@@ -25,7 +25,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const DEMO_USER: User = {
     uid: "demo_123",
-    email: "demo@visara.com",
+    email: "demo@visaformula.com",
     displayName: "Demo User",
     photoURL: "https://lh3.googleusercontent.com/aida-public/AB6AXuCPX5DdMioKPF507Mg3uao_AKD7Y3D0cr4Oxpjz4j9Zhvn61dy6OJs_n9QaPUnw16htoJMGcQD5P48-Iiv7vxYN7ldHTnhRhVZcJD6vIDKa8nDLb457YmRDk8yMBA54syMEntEGlBvXj7AArUmykZR1L8yeGJ80eTIHcxGbTpw179ybHlUG-c9pydM6kYBqpeeOuXkS7JQZYR50642AqYN6oq9VYLrzRuhFithlymj6S07GbapH1EGotT-47tHyl3bgeiYhNPV4xWaW",
 };
@@ -36,12 +36,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const stored = localStorage.getItem("visara_user");
+            const stored = localStorage.getItem("visaformula_user");
             if (stored && stored !== "null") {
                 try {
                     setUser(JSON.parse(stored));
                 } catch (e) {
-                    localStorage.removeItem("visara_user");
+                    localStorage.removeItem("visaformula_user");
                 }
             }
         }
@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const loggedInUser = { ...DEMO_USER, email, displayName: email.split("@")[0] };
         setUser(loggedInUser);
         if (typeof window !== "undefined") {
-            localStorage.setItem("visara_user", JSON.stringify(loggedInUser));
+            localStorage.setItem("visaformula_user", JSON.stringify(loggedInUser));
         }
     };
 
@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const signedUpUser = { ...DEMO_USER, email, displayName: name };
         setUser(signedUpUser);
         if (typeof window !== "undefined") {
-            localStorage.setItem("visara_user", JSON.stringify(signedUpUser));
+            localStorage.setItem("visaformula_user", JSON.stringify(signedUpUser));
         }
     };
 
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await delay(1000);
         setUser(DEMO_USER);
         if (typeof window !== "undefined") {
-            localStorage.setItem("visara_user", JSON.stringify(DEMO_USER));
+            localStorage.setItem("visaformula_user", JSON.stringify(DEMO_USER));
         }
     };
 
@@ -80,7 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await delay(500);
         setUser(null);
         if (typeof window !== "undefined") {
-            localStorage.setItem("visara_user", "null");
+            localStorage.setItem("visaformula_user", "null");
         }
     };
 

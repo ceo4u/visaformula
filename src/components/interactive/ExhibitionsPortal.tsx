@@ -293,7 +293,7 @@ export function ExhibitionsPortal() {
                     <div>
                         <h4 className="font-sora font-bold text-navy text-xs sm:text-sm mb-1">Business Visa Included in Every Exhibition Package</h4>
                         <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed">
-                            Visara assigns a verified business visa coordinator for every delegation booking. We handle local sponsor invitations, event registration confirmation documents, premium hotel bookings, and fast-track processing.
+                            VisaFormula assigns a verified business visa coordinator for every delegation booking. We handle local sponsor invitations, event registration confirmation documents, premium hotel bookings, and fast-track processing.
                         </p>
                     </div>
                 </div>

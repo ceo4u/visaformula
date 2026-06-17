@@ -43,7 +43,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
                     </div>
                     
                     <a href="/" className="block w-full bg-gradient-to-r from-[#fef08a] to-[#f59e0b] text-white font-bold py-4 rounded-xl text-center hover:shadow-lg transition-all">
-                        Back to Visara Home
+                        Back to VisaFormula Home
                     </a>
                 </div>
             </div>

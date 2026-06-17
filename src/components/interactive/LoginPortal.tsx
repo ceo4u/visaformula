@@ -53,7 +53,7 @@ export function LoginPortal() {
                         <span className="w-10 h-10 bg-slate-900 rounded-2xl flex items-center justify-center shadow-md">
                           <Gavel className="w-5 h-5 text-white" />
                         </span>
-                        <span className="font-sora font-extrabold text-navy">Visara</span>
+                        <span className="font-sora font-extrabold text-navy">VisaFormula</span>
                     </a>
                     <h1 className="text-3xl font-sora font-extrabold tracking-tight text-navy mt-4">
                       Welcome <span className="text-red-500">Back</span>

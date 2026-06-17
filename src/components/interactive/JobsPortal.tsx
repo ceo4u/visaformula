@@ -355,7 +355,7 @@ export function JobsPortal() {
               </h1>
 
               <p className="text-white/60 text-base md:text-lg max-w-xl mb-8 font-medium leading-relaxed">
-                Jobs in Canada, UK, Australia, Dubai & 40+ countries — every listing includes work permit guidance from a Visara expert.
+                Jobs in Canada, UK, Australia, Dubai & 40+ countries — every listing includes work permit guidance from a VisaFormula expert.
               </p>
 
               {/* Search bar */}
@@ -763,7 +763,7 @@ export function JobsPortal() {
               {[
                 { step: "01", title: "Search & Apply",      desc: "Browse 4,200+ jobs across 40+ countries with your ideal filters.",                    icon: Search,       color: "from-neutral-800 to-black"   },
                 { step: "02", title: "Get Offer Letter",    desc: "Receive official employer letter — the key document for your work visa.",              icon: CheckCircle,  color: "from-neutral-700 to-neutral-900" },
-                { step: "03", title: "Apply for Work Visa", desc: "Visara immigration expert handles LMIA, DHA, TSS 482, and EU Blue Card.",             icon: Shield,       color: "from-neutral-800 to-black"},
+                { step: "03", title: "Apply for Work Visa", desc: "VisaFormula immigration expert handles LMIA, DHA, TSS 482, and EU Blue Card.",             icon: Shield,       color: "from-neutral-800 to-black"},
                 { step: "04", title: "Fly & Start Working", desc: "Settlement support: SIM card, accommodation, and onboarding assistance.",             icon: Plane,        color: "from-neutral-700 to-neutral-900" },
               ].map(hs => {
                 const ProcessIcon = hs.icon;

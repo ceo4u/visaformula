@@ -9,7 +9,7 @@ export function Footer() {
                     <div className="col-span-2 lg:col-span-1">
                         <Link href="/" className="flex items-center gap-2 mb-5">
                             <Globe className="w-5 h-5 text-[#38bdf8]" />
-                            <span className="text-2xl font-extrabold tracking-tight text-white">Visara</span>
+                            <span className="text-2xl font-extrabold tracking-tight text-white">VisaFormula</span>
                         </Link>
                         <p className="text-slate-400 text-sm leading-relaxed mb-6">
                             The Digital Diplomat for Global Migration. Simplifying the complex for thousands of dreamers daily.
@@ -28,7 +28,7 @@ export function Footer() {
                         <h4 className="font-bold mb-5 uppercase text-[11px] tracking-widest text-slate-500">Resources</h4>
                         <ul className="space-y-3 text-sm text-slate-400">
                             <li><Link className="hover:text-white transition-colors" href="/support">Support Center</Link></li>
-                            <li><Link className="hover:text-white transition-colors" href="/about">About Visara</Link></li>
+                            <li><Link className="hover:text-white transition-colors" href="/about">About VisaFormula</Link></li>
                             <li><Link className="hover:text-white transition-colors" href="/emergency">Emergency Help</Link></li>
                             <li><Link className="hover:text-white transition-colors" href="/ai-assistant">AI Assistant</Link></li>
                         </ul>
@@ -55,7 +55,7 @@ export function Footer() {
                         <Link className="hover:text-white transition-colors" href="#">Privacy Policy</Link>
                         <Link className="hover:text-white transition-colors" href="#">Terms of Service</Link>
                     </div>
-                    <p className="font-medium">© {new Date().getFullYear()} Visara. All rights reserved.</p>
+                    <p className="font-medium">© {new Date().getFullYear()} VisaFormula. All rights reserved.</p>
                 </div>
             </div>
         </footer>

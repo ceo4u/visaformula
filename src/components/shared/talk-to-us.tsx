@@ -24,14 +24,14 @@ function getAIResponse(msg: string): { text: string; quickReplies?: string[] } {
   if (lower.includes("work") || lower.includes("h1") || lower.includes("permit")) return { text: aiResponses["Work permit help"], quickReplies: ["USA H-1B", "Canada LMIA", "UK Skilled Worker", "Talk to a human expert"] };
   if (lower.includes("fifa") || lower.includes("concert") || lower.includes("event")) return { text: aiResponses["Event visa for FIFA / concert"], quickReplies: ["Apply now ₹12,999", "Talk to a human expert"] };
   if (lower.includes("human") || lower.includes("expert") || lower.includes("talk")) return { text: aiResponses["Talk to a human expert"], quickReplies: ["Tell me your visa need first"] };
-  return { text: "Thanks! 💬 A Visara expert will join this chat within 2–3 minutes to help you. Meanwhile, can you tell me more about which country and visa type you need?", quickReplies: defaultReplies };
+  return { text: "Thanks! 💬 A VisaFormula expert will join this chat within 2–3 minutes to help you. Meanwhile, can you tell me more about which country and visa type you need?", quickReplies: defaultReplies };
 }
 
 export function TalkToUs() {
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<"options" | "chat" | "call">("options");
   const [msgs, setMsgs] = useState<Msg[]>([
-    { role: "ai", text: "Hi! 👋 I'm the Visara AI assistant. How can I help you today?", quickReplies: ["Apply for a tourist visa", "Student visa for Canada", "Event visa for FIFA / concert", "Work permit help", "Talk to a human expert"] }
+    { role: "ai", text: "Hi! 👋 I'm the VisaFormula AI assistant. How can I help you today?", quickReplies: ["Apply for a tourist visa", "Student visa for Canada", "Event visa for FIFA / concert", "Work permit help", "Talk to a human expert"] }
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
@@ -58,7 +58,7 @@ export function TalkToUs() {
     { icon: Ticket, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Event Visa", sub: "FIFA · Concerts · Exhibitions", action: () => { setView("chat"); setTimeout(() => sendMsg("Event visa for FIFA / concert"), 200); } },
     { icon: Briefcase, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Work Permit", sub: "H-1B · LMIA · UK Skilled Worker", action: () => { setView("chat"); setTimeout(() => sendMsg("Work permit help"), 200); } },
     { icon: Phone, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Call Us", sub: "+91 98765 43210 · 9AM–8PM", action: () => setView("call") },
-    { icon: Mail, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Email Support", sub: "support@visara.com", action: () => setView("call") },
+    { icon: Mail, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Email Support", sub: "support@visaformula.com", action: () => setView("call") },
   ];
 
   return (
@@ -73,7 +73,7 @@ export function TalkToUs() {
               <div className="bg-black p-4 flex items-center gap-3">
                 <div className="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center text-white shrink-0"><MessageSquare className="w-5 h-5 text-white" /></div>
                 <div className="flex-1">
-                  <div className="font-sora font-bold text-white text-sm">Talk to Visara</div>
+                  <div className="font-sora font-bold text-white text-sm">Talk to VisaFormula</div>
                   <div className="flex items-center gap-1.5 text-slate-300 text-xs"><span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />8 experts online now</div>
                 </div>
                 <button onClick={() => setOpen(false)} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><X className="w-4 h-4" /></button>
@@ -106,7 +106,7 @@ export function TalkToUs() {
                 <button onClick={() => setView("options")} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><ArrowLeft className="w-4 h-4" /></button>
                 <div className="w-9 h-9 bg-slate-800 rounded-full flex items-center justify-center"><Bot className="w-4 h-4 text-white" /></div>
                 <div className="flex-1">
-                  <div className="font-bold text-white text-sm">Visara AI + Expert</div>
+                  <div className="font-bold text-white text-sm">VisaFormula AI + Expert</div>
                   <div className="flex items-center gap-1.5 text-slate-300 text-xs"><span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />Expert joining in ~2 min</div>
                 </div>
                 <button onClick={() => setOpen(false)} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><X className="w-4 h-4" /></button>
@@ -158,11 +158,11 @@ export function TalkToUs() {
                 </div>
                 <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center gap-4">
                   <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center"><Mail className="w-5 h-5 text-black" /></div>
-                  <div><div className="font-bold text-black text-sm">Email Support</div><div className="text-black font-extrabold text-sm">support@visara.com</div><div className="text-xs text-gray-400">Response within 2–4 hours</div></div>
+                  <div><div className="font-bold text-black text-sm">Email Support</div><div className="text-black font-extrabold text-sm">support@visaformula.com</div><div className="text-xs text-gray-400">Response within 2–4 hours</div></div>
                 </div>
                 <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
                   <div className="font-bold text-black text-sm mb-2 flex items-center gap-2"><Calendar className="w-4 h-4 text-black" /> Book a Free Consultation</div>
-                  <div className="text-xs text-gray-500 mb-3">30-minute video call with a Visara expert — completely free.</div>
+                  <div className="text-xs text-gray-500 mb-3">30-minute video call with a VisaFormula expert — completely free.</div>
                   <button onClick={() => setView("chat")} className="w-full bg-black text-white font-bold py-2.5 rounded-xl text-xs hover:bg-slate-900 transition-all">Book Now → Free</button>
                 </div>
                 <button onClick={() => setView("chat")} className="w-full border border-slate-350 text-slate-800 font-bold py-2.5 rounded-xl text-xs hover:bg-slate-50 transition-all flex items-center justify-center gap-2"><MessageSquare className="w-4 h-4" /> Chat with AI instead</button>

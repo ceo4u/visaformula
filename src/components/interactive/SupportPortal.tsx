@@ -210,8 +210,8 @@ export function SupportPortal() {
                                 <Mail className="w-4.5 h-4.5 text-[#0c1a2e]" />
                             </div>
                             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Email Us</span>
-                            <a href="mailto:support@visara.com" className="text-xs font-extrabold text-[#0c1a2e] hover:underline">
-                                support@visara.com
+                            <a href="mailto:support@visaformula.com" className="text-xs font-extrabold text-[#0c1a2e] hover:underline">
+                                support@visaformula.com
                             </a>
                         </div>
                         <div className="flex flex-col items-center">

@@ -48,7 +48,7 @@ export function SeekerSignupPortal() {
                         <CheckCircle className="w-10 h-10 text-emerald-600" />
                     </div>
                     <h1 className="font-sora text-2xl font-extrabold text-navy mb-2">You're In! 🎉</h1>
-                    <p className="text-gray-500 text-sm mb-6">Your Visara account is ready. Start exploring experts and opportunities.</p>
+                    <p className="text-gray-500 text-sm mb-6">Your VisaFormula account is ready. Start exploring experts and opportunities.</p>
                     <a href="/dashboard" className="block">
                         <button className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold hover:bg-black transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
                             Explore the Platform <ArrowRight className="w-4 h-4" />
@@ -65,7 +65,7 @@ export function SeekerSignupPortal() {
                 <div className="text-center mb-8">
                     <a href="/" className="inline-flex items-center gap-2 mb-3">
                         <Globe className="w-6 h-6 text-red-500" />
-                        <span className="text-2xl font-extrabold tracking-tight text-navy">Visara</span>
+                        <span className="text-2xl font-extrabold tracking-tight text-navy">VisaFormula</span>
                     </a>
                     <h1 className="font-sora text-3xl font-extrabold text-black mb-1.5">Register as Seeker</h1>
                     <p className="text-sm text-gray-500">Setup immigration goals and match with verified advisors.</p>
@@ -97,7 +97,7 @@ export function SeekerSignupPortal() {
                         <div className="space-y-4">
                             <div>
                                 <h2 className="font-sora text-xl font-bold text-navy mb-1">Let's get started</h2>
-                                <p className="text-xs text-gray-500 mb-6">Create your free Visara account in seconds.</p>
+                                <p className="text-xs text-gray-500 mb-6">Create your free VisaFormula account in seconds.</p>
                             </div>
                             <div className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">

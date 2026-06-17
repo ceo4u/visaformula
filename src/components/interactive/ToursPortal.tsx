@@ -848,7 +848,7 @@ export function ToursPortal() {
                             <div>
                                 <h4 className="font-sora font-bold text-navy text-xs sm:text-sm mb-1">Multi-Port Visa — We Handle It All</h4>
                                 <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed font-medium">
-                                    Multi-country cruises require separate transit visas for each port country. Visara's expert travel coordinators submit and secure all required port visas for you in a single unified booking.
+                                    Multi-country cruises require separate transit visas for each port country. VisaFormula's expert travel coordinators submit and secure all required port visas for you in a single unified booking.
                                 </p>
                             </div>
                         </div>

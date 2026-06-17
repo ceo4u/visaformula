@@ -8,8 +8,8 @@ import { getStorage } from "firebase/storage";
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "dev-api-key",
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "localhost",
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "visara-dev",
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "visara-dev.appspot.com",
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "visaformula-dev",
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "visaformula-dev.appspot.com",
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "123456789",
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "dev-app-id",
 };
@@ -45,7 +45,7 @@ if (isBrowser) {
 // Mock auth functions for development (prevents errors)
 const mockSignIn = async () => {
     console.log("🔐 Mock login - Firebase not configured");
-    return { user: { uid: "mock-user-123", email: "dev@visara.com" } };
+    return { user: { uid: "mock-user-123", email: "dev@visaformula.com" } };
 };
 
 const mockSignOut = async () => {

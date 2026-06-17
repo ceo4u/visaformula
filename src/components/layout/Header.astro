@@ -35,7 +35,7 @@ const servicesDropdownItems = [
                     <path d="M2 12h20"/>
                 </svg>
             </div>
-            <span id="logo-text" class="font-opensans text-2xl font-extrabold tracking-tight text-navy transition-colors duration-300">Visara</span>
+            <span id="logo-text" class="font-opensans text-2xl font-extrabold tracking-tight text-navy transition-colors duration-300">VisaFormula</span>
             <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
         </a>
 
@@ -587,7 +587,7 @@ const servicesDropdownItems = [
         if (el) {
             ['focus', 'mousedown', 'keydown'].forEach(evt => {
                 el.addEventListener(evt, (e) => {
-                    const user = localStorage.getItem("visara_user");
+                    const user = localStorage.getItem("visaformula_user");
                     if (!user || user === "null") {
                         e.preventDefault();
                         e.stopPropagation();
@@ -603,7 +603,7 @@ const servicesDropdownItems = [
     });
 
     // Dynamic Auth Header Button Updates
-    const userStr = localStorage.getItem("visara_user");
+    const userStr = localStorage.getItem("visaformula_user");
     if (userStr && userStr !== "null") {
         const loginBtn = document.getElementById("login-btn");
         const signupBtn = document.querySelector('a[href="/signup"]');
@@ -615,7 +615,7 @@ const servicesDropdownItems = [
             signupBtn.setAttribute("href", "#");
             signupBtn.addEventListener("click", (e) => {
                 e.preventDefault();
-                localStorage.removeItem("visara_user");
+                localStorage.removeItem("visaformula_user");
                 window.location.href = "/";
             });
         }
@@ -630,7 +630,7 @@ const servicesDropdownItems = [
             mobileSignupBtn.setAttribute("href", "#");
             mobileSignupBtn.addEventListener("click", (e) => {
                 e.preventDefault();
-                localStorage.removeItem("visara_user");
+                localStorage.removeItem("visaformula_user");
                 window.location.href = "/";
             });
         }

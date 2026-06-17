@@ -9,7 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://visara.com',
+  site: 'https://visaformula.com',
   output: 'hybrid',
   adapter: vercel({
     webAnalytics: {

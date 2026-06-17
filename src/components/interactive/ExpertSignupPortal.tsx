@@ -48,7 +48,7 @@ export function ExpertSignupPortal() {
         <div className="bg-slate-50 min-h-screen py-10 px-4 font-sans flex items-center justify-center">
             <div className="max-w-4xl w-full mx-auto">
                 <h1 className="font-sora text-3xl font-extrabold text-black mb-2 text-center">Register as Expert</h1>
-                <p className="text-sm text-gray-500 text-center mb-10">Join Visara's marketplace and offer consulting to clients globally.</p>
+                <p className="text-sm text-gray-500 text-center mb-10">Join VisaFormula's marketplace and offer consulting to clients globally.</p>
 
                 {/* Progress Bar */}
                 <div className="flex items-center justify-center gap-2 mb-12">

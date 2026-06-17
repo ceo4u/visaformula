@@ -72,7 +72,7 @@ export default {
           DEFAULT: "hsl(var(--outline))",
           variant: "hsl(var(--outline-variant))",
         },
-        // New Visara design system colors
+        // New VisaFormula design system colors
         navy: "#0C1A2E",
         ink: "#1A3347",
         hint: "#8FAEC4",

@@ -314,7 +314,7 @@ export function UniversityFairsPortal() {
                     <div>
                         <h4 className="font-sora font-bold text-slate-900 text-xs sm:text-sm mb-1">Free Entry to Most Fairs — You Only Pay for Premium Visa Prep</h4>
                         <p className="text-[11px] sm:text-xs text-slate-500 leading-relaxed">
-                            While fair entrance is officially free, Visara's ₹999 premium prep package saves months of effort: includes pre-fair profiles and transcript checks, post-fair student visa consults with certified advisors, and customized application checklists.
+                            While fair entrance is officially free, VisaFormula's ₹999 premium prep package saves months of effort: includes pre-fair profiles and transcript checks, post-fair student visa consults with certified advisors, and customized application checklists.
                         </p>
                     </div>
                 </div>

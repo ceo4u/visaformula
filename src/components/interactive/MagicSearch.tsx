@@ -17,7 +17,7 @@ export function MagicSearch({ className = "" }: { className?: string }) {
 
     const checkAuthAndPrevent = (e: React.MouseEvent | React.FocusEvent) => {
         if (typeof window !== "undefined") {
-            const user = localStorage.getItem("visara_user");
+            const user = localStorage.getItem("visaformula_user");
             if (!user || user === "null") {
                 e.preventDefault();
                 e.stopPropagation();

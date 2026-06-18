@@ -28,7 +28,7 @@ const servicesDropdownItems = [
     <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-20 gap-4">
         
         <a href="/" class="flex items-center gap-2 group shrink-0">
-            <div id="logo-icon-container" class="w-9 h-9 bg-black border border-white text-white rounded-xl flex items-center justify-center group-hover:rotate-12 transition-all duration-300">
+            <div id="logo-icon-container" class="w-9 h-9 bg-black border border-black text-white rounded-xl flex items-center justify-center group-hover:rotate-12 transition-all duration-300">
                 <svg id="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 transition-colors duration-300">
                     <circle cx="12" cy="12" r="10"/>
                     <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
@@ -68,7 +68,7 @@ const servicesDropdownItems = [
             
             <!-- Search Button -->
             <button id="search-btn" class="bg-black hover:bg-slate-900 px-6 h-full flex items-center justify-center transition-all shrink-0">
-                <Search class="w-4 h-4 text-white font-bold" />
+                <Search className="w-4 h-4" color="white" strokeWidth={3} />
             </button>
         </div>
 
@@ -418,7 +418,7 @@ const servicesDropdownItems = [
   }
   #main-header.header-transparent #logo-icon-container {
     background: black !important;
-    border-color: white !important;
+    border-color: black !important;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05) !important;
   }
   #main-header.header-transparent #logo-icon-container svg {
@@ -444,6 +444,10 @@ const servicesDropdownItems = [
   }
   #main-header.header-transparent #search-bar #search-loc-icon {
     color: black !important;
+  }
+  #search-btn svg {
+    color: white !important;
+    stroke: white !important;
   }
   #main-header.header-transparent .top-menu-link {
     color: rgba(255, 255, 255, 0.9) !important;

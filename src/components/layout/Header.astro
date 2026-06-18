@@ -134,9 +134,6 @@ const expertDropdownItems = [
                             <div class="grid grid-cols-2 gap-4">
                                 <!-- Column 1: Visa Types -->
                                 <div class="flex flex-col gap-1">
-                                    <h4 class="text-[11px] font-black uppercase tracking-wider text-gray-400 flex items-center gap-1.5 px-3 mb-2 font-opensans">
-                                        📋 Browse by Visa Type
-                                    </h4>
                                     {expertDropdownItems.slice(0, 4).map((item) => {
                                         const IconComponent = item.icon;
                                         return (
@@ -158,9 +155,6 @@ const expertDropdownItems = [
                                 
                                 <!-- Column 2: Destinations -->
                                 <div class="flex flex-col gap-1">
-                                    <h4 class="text-[11px] font-black uppercase tracking-wider text-gray-400 flex items-center gap-1.5 px-3 mb-2 font-opensans">
-                                        🌍 Browse Top Destinations
-                                    </h4>
                                     {expertDropdownItems.slice(4, 8).map((item) => {
                                         const IconComponent = item.icon;
                                         return (
@@ -361,53 +355,24 @@ const expertDropdownItems = [
                 <span>Find Experts</span>
                 <ChevronDown id="mobile-experts-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
             </button>
-            <div id="mobile-experts-drawer" class="hidden bg-red-50/30 px-3 py-2 flex flex-col gap-3">
-                <!-- Section 1: Visa Types -->
-                <div>
-                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-wider px-2.5 mb-2 font-opensans">📋 Browse by Visa Type</div>
-                    <div class="flex flex-col gap-1">
-                        {expertDropdownItems.slice(0, 4).map((item) => {
-                            const IconComponent = item.icon;
-                            return (
-                                <a 
-                                    href={item.href}
-                                    class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
-                                >
-                                    <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
-                                        <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
-                                    </div>
-                                    <div>
-                                        <div class="text-xs font-bold text-navy">{item.title}</div>
-                                        <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
-                                    </div>
-                                </a>
-                            );
-                        })}
-                    </div>
-                </div>
-                <!-- Section 2: Destinations -->
-                <div>
-                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-wider px-2.5 mb-2 font-opensans">🌍 Browse Top Destinations</div>
-                    <div class="flex flex-col gap-1">
-                        {expertDropdownItems.slice(4, 8).map((item) => {
-                            const IconComponent = item.icon;
-                            return (
-                                <a 
-                                    href={item.href}
-                                    class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
-                                >
-                                    <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
-                                        <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
-                                    </div>
-                                    <div>
-                                        <div class="text-xs font-bold text-navy">{item.title}</div>
-                                        <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
-                                    </div>
-                                </a>
-                            );
-                        })}
-                    </div>
-                </div>
+            <div id="mobile-experts-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
+                {expertDropdownItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                        <a 
+                            href={item.href}
+                            class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
+                        >
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-navy">{item.title}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                            </div>
+                        </a>
+                    );
+                })}
             </div>
         </div>
 

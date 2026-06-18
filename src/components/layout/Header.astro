@@ -102,153 +102,245 @@ const servicesDropdownItems = [
 
     <!-- Bottom Row: Premium Category Navigation Bar (Desktop Only) -->
     <div id="category-bar" class="hidden lg:block border-t border-red-50 bg-red-50/20 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 xl:px-6 h-12 flex items-center justify-between lg:justify-start gap-4 xl:gap-8">
+        <div class="max-w-7xl mx-auto px-4 xl:px-6 h-12 flex items-center justify-between gap-4">
             
-            <!-- Find Experts Link -->
-            <a href="/find-experts"
-                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/find-experts" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                Find Experts
-            </a>
+            <!-- Left Side: Nav Links -->
+            <div class="flex items-center gap-4 xl:gap-8 h-full">
+                <!-- Find Experts Dropdown (Mega Menu) -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/find-experts") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Find Experts
+                        <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
 
-            <!-- Apply Visa Link -->
-            <a href="/apply-visa"
-                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 ${pathname === "/apply-visa" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse"></span>
-                Apply Visa
-            </a>
-
-            <!-- Tours & Packages Dropdown -->
-            <div class="relative py-3.5 group">
-                <button
-                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
-                        pathname?.startsWith("/tours") ? "text-[#ef4444]" : "text-navy"
-                    }`}
-                >
-                    Tourist Visa
-                    <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
-                </button>
-
-                <!-- Dropdown Menu Card -->
-                <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                    <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-2">
-                        <div class="flex flex-col gap-1">
-                            {tourDropdownItems.map((item) => {
-                                const IconComponent = item.icon;
-                                return (
-                                    <a 
-                                        href={item.href}
-                                        class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
-                                    >
-                                        <div class={`w-10 h-10 rounded-xl ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} className="w-5 h-5" color="currentColor" />
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
-                                            <div class="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
-                                        </div>
-                                    </a>
-                                );
-                            })}
+                    <!-- Mega Menu Dropdown Card -->
+                    <div class="absolute top-full left-0 pt-2 w-[550px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-3xl border border-red-100 shadow-2xl p-6">
+                            <!-- Two Columns -->
+                            <div class="grid grid-cols-2 gap-6">
+                                
+                                <!-- Column 1: Visa Types -->
+                                <div class="space-y-4">
+                                    <h4 class="text-[11px] font-black uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
+                                        📋 Browse by Visa Type
+                                    </h4>
+                                    <div class="flex flex-col gap-1.5">
+                                        <a href="/find-experts?category=student" class="flex flex-col p-2.5 rounded-xl transition-all duration-250 border-l-2 border-transparent hover:border-black hover:bg-gradient-to-r hover:from-red-50/50 hover:to-white group/item">
+                                            <span class="text-xs font-extrabold text-navy group-hover/item:text-[#ef4444] flex items-center gap-1.5">
+                                                🎓 Student Visa Experts
+                                            </span>
+                                            <span class="text-[10px] text-gray-450 mt-0.5 font-medium leading-normal">Top university admission guides</span>
+                                        </a>
+                                        <a href="/find-experts?category=work" class="flex flex-col p-2.5 rounded-xl transition-all duration-250 border-l-2 border-transparent hover:border-black hover:bg-gradient-to-r hover:from-red-50/50 hover:to-white group/item">
+                                            <span class="text-xs font-extrabold text-navy group-hover/item:text-[#ef4444] flex items-center gap-1.5">
+                                                💼 Work & Job Visa Experts
+                                            </span>
+                                            <span class="text-[10px] text-gray-450 mt-0.5 font-medium leading-normal">Work permit & job offer assistance</span>
+                                        </a>
+                                        <a href="/find-experts?category=pr" class="flex flex-col p-2.5 rounded-xl transition-all duration-250 border-l-2 border-transparent hover:border-black hover:bg-gradient-to-r hover:from-red-50/50 hover:to-white group/item">
+                                            <span class="text-xs font-extrabold text-navy group-hover/item:text-[#ef4444] flex items-center gap-1.5">
+                                                🏡 PR Agencies
+                                            </span>
+                                            <span class="text-[10px] text-gray-450 mt-0.5 font-medium leading-normal">Express Entry & permanent residency</span>
+                                        </a>
+                                        <a href="/find-experts?category=tourist" class="flex flex-col p-2.5 rounded-xl transition-all duration-250 border-l-2 border-transparent hover:border-black hover:bg-gradient-to-r hover:from-red-50/50 hover:to-white group/item">
+                                            <span class="text-xs font-extrabold text-navy group-hover/item:text-[#ef4444] flex items-center gap-1.5">
+                                                🏖️ Tourist Visa Agents
+                                            </span>
+                                            <span class="text-[10px] text-gray-450 mt-0.5 font-medium leading-normal">Visitor visa & holiday packages</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <!-- Column 2: Destinations -->
+                                <div class="space-y-4">
+                                    <h4 class="text-[11px] font-black uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
+                                        🌍 Browse Top Destinations
+                                    </h4>
+                                    <div class="flex flex-col gap-1.5">
+                                        <a href="/find-experts?country=Canada" class="flex flex-col p-2.5 rounded-xl transition-all duration-250 border-l-2 border-transparent hover:border-black hover:bg-gradient-to-r hover:from-red-50/50 hover:to-white group/item">
+                                            <span class="text-xs font-extrabold text-navy group-hover/item:text-[#ef4444] flex items-center gap-1.5">
+                                                🇨🇦 Canada Specialists
+                                            </span>
+                                            <span class="text-[10px] text-gray-450 mt-0.5 font-medium leading-normal">Express Entry, PNP & study visas</span>
+                                        </a>
+                                        <a href="/find-experts?country=USA" class="flex flex-col p-2.5 rounded-xl transition-all duration-250 border-l-2 border-transparent hover:border-black hover:bg-gradient-to-r hover:from-red-50/50 hover:to-white group/item">
+                                            <span class="text-xs font-extrabold text-navy group-hover/item:text-[#ef4444] flex items-center gap-1.5">
+                                                🇺🇸 US Immigration Lawyers
+                                            </span>
+                                            <span class="text-[10px] text-gray-450 mt-0.5 font-medium leading-normal">H-1B, L-1 & green card advisors</span>
+                                        </a>
+                                        <a href="/find-experts?country=UK" class="flex flex-col p-2.5 rounded-xl transition-all duration-250 border-l-2 border-transparent hover:border-black hover:bg-gradient-to-r hover:from-red-50/50 hover:to-white group/item">
+                                            <span class="text-xs font-extrabold text-navy group-hover/item:text-[#ef4444] flex items-center gap-1.5">
+                                                🇬🇧 UK Consultants
+                                            </span>
+                                            <span class="text-[10px] text-gray-450 mt-0.5 font-medium leading-normal">UK student & work sponsorship visas</span>
+                                        </a>
+                                        <a href="/find-experts?country=Schengen" class="flex flex-col p-2.5 rounded-xl transition-all duration-250 border-l-2 border-transparent hover:border-black hover:bg-gradient-to-r hover:from-red-50/50 hover:to-white group/item">
+                                            <span class="text-xs font-extrabold text-navy group-hover/item:text-[#ef4444] flex items-center gap-1.5">
+                                                🇪🇺 Schengen / Europe Experts
+                                            </span>
+                                            <span class="text-[10px] text-gray-450 mt-0.5 font-medium leading-normal">Schengen visitor & European blue cards</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Events Dropdown -->
-            <div class="relative py-3.5 group">
-                <button
-                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
-                        pathname?.startsWith("/events") ? "text-[#ef4444]" : "text-navy"
-                    }`}
-                >
-                    Event Visa
-                    <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
-                </button>
+                <!-- Apply Visa Link -->
+                <a href="/apply-visa"
+                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 ${pathname === "/apply-visa" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                    <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse"></span>
+                    Apply Visa
+                </a>
 
-                <!-- Dropdown Menu Card -->
-                <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                    <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-2">
-                        <div class="flex flex-col gap-1">
-                            {eventDropdownItems.map((item) => {
-                                const IconComponent = item.icon;
-                                return (
-                                    <a 
-                                        href={item.href}
-                                        class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
-                                    >
-                                        <div class={`w-10 h-10 rounded-xl ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} className="w-5 h-5" color="currentColor" />
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
-                                            <div class="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
-                                        </div>
-                                    </a>
-                                );
-                            })}
+                <!-- Tours & Packages Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/tours") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Tourist Visa
+                        <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Menu Card -->
+                    <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-2">
+                            <div class="flex flex-col gap-1">
+                                {tourDropdownItems.map((item) => {
+                                    const IconComponent = item.icon;
+                                    return (
+                                        <a 
+                                            href={item.href}
+                                            class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                        >
+                                            <div class={`w-10 h-10 rounded-xl ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
+                                                <IconComponent class={`w-5 h-5 ${item.iconColor}`} className="w-5 h-5" color="currentColor" />
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                                <div class="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
+                                            </div>
+                                        </a>
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Training Hub Link -->
-            <a href="/training"
-                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/training" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                Training Hub
-            </a>
+                <!-- Events Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/events") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Event Visa
+                        <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
 
-            <!-- Our Services Dropdown -->
-            <div class="relative py-3.5 group">
-                <button
-                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
-                        pathname?.startsWith("/services") || 
-                        pathname?.startsWith("/vfs-booking") || 
-                        pathname?.startsWith("/visa-documentation") || 
-                        pathname?.startsWith("/visa-form-filing") || 
-                        pathname?.startsWith("/vfs-appointment") ? "text-[#ef4444]" : "text-navy"
-                    }`}
-                >
-                    Our Services
-                    <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
-                </button>
-
-                <!-- Dropdown Menu Card -->
-                <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                    <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-2">
-                        <div class="flex flex-col gap-1">
-                            {servicesDropdownItems.map((item) => {
-                                const IconComponent = item.icon;
-                                return (
-                                    <a 
-                                        href={item.href}
-                                        class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
-                                    >
-                                        <div class={`w-10 h-10 rounded-xl ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                            <IconComponent class={`w-5 h-5 ${item.iconColor}`} className="w-5 h-5" color="currentColor" />
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
-                                            <div class="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
-                                        </div>
-                                    </a>
-                                );
-                            })}
+                    <!-- Dropdown Menu Card -->
+                    <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-2">
+                            <div class="flex flex-col gap-1">
+                                {eventDropdownItems.map((item) => {
+                                    const IconComponent = item.icon;
+                                    return (
+                                        <a 
+                                            href={item.href}
+                                            class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                        >
+                                            <div class={`w-10 h-10 rounded-xl ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
+                                                <IconComponent class={`w-5 h-5 ${item.iconColor}`} className="w-5 h-5" color="currentColor" />
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                                <div class="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
+                                            </div>
+                                        </a>
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Training Hub Link -->
+                <a href="/training"
+                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/training" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                    Training Hub
+                </a>
+
+                <!-- Our Services Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/services") || 
+                            pathname?.startsWith("/vfs-booking") || 
+                            pathname?.startsWith("/visa-documentation") || 
+                            pathname?.startsWith("/visa-form-filing") || 
+                            pathname?.startsWith("/vfs-appointment") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Our Services
+                        <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Menu Card -->
+                    <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-2">
+                            <div class="flex flex-col gap-1">
+                                {servicesDropdownItems.map((item) => {
+                                    const IconComponent = item.icon;
+                                    return (
+                                        <a 
+                                            href={item.href}
+                                            class="flex items-center gap-4 p-3 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                        >
+                                            <div class={`w-10 h-10 rounded-xl ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
+                                                <IconComponent class={`w-5 h-5 ${item.iconColor}`} className="w-5 h-5" color="currentColor" />
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="text-sm font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                                <div class="text-xs text-gray-400 mt-0.5 leading-normal">{item.desc}</div>
+                                            </div>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overseas Jobs Link -->
+                <a href="/jobs"
+                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/jobs" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                    Job Visa
+                </a>
+
+                <!-- Legal Link -->
+                <a href="/emergency"
+                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/emergency" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                    Immigration Assistance
+                </a>
             </div>
 
-            <!-- Overseas Jobs Link -->
-            <a href="/jobs"
-                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/jobs" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                Job Visa
-            </a>
-
-            <!-- Legal Link -->
-            <a href="/emergency"
-                class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/emergency" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                Immigration Assistance
-            </a>
+            <!-- Right Side: List Your Practice Gradient Button -->
+            <div class="flex items-center h-full">
+                <a href="/signup/expert" class="font-opensans bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white font-bold text-[12.5px] px-4 py-1.5 rounded-xl hover:shadow-lg hover:shadow-red-200/50 transition-all active:scale-[0.97] flex items-center gap-1.5 shadow-sm">
+                    💼 List Your Practice
+                </a>
+            </div>
         </div>
     </div>
 
@@ -270,10 +362,62 @@ const servicesDropdownItems = [
         </div>
 
         <!-- Links -->
-        <a href="/find-experts"
-            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/find-experts" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
-            Find Experts
-        </a>
+        <!-- Find Experts Dropdown (Mobile) -->
+        <div class="border-b border-gray-50">
+            <button 
+                id="mobile-experts-btn"
+                class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+                <span>Find Experts</span>
+                <ChevronDown id="mobile-experts-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+            </button>
+            <div id="mobile-experts-drawer" class="hidden bg-red-50/30 px-3 py-2 flex flex-col gap-3">
+                <!-- Section 1: Visa Types -->
+                <div>
+                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-wider px-2.5 mb-1">📋 Browse by Visa Type</div>
+                    <div class="flex flex-col gap-1">
+                        <a href="/find-experts?category=student" class="flex flex-col p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200">
+                            <span class="text-xs font-bold text-navy">🎓 Student Visa Experts</span>
+                            <span class="text-[9px] text-gray-400 mt-0.5">Top university admission guides</span>
+                        </a>
+                        <a href="/find-experts?category=work" class="flex flex-col p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200">
+                            <span class="text-xs font-bold text-navy">💼 Work & Job Visa Experts</span>
+                            <span class="text-[9px] text-gray-400 mt-0.5">Work permit & job offer assistance</span>
+                        </a>
+                        <a href="/find-experts?category=pr" class="flex flex-col p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200">
+                            <span class="text-xs font-bold text-navy">🏡 PR Agencies</span>
+                            <span class="text-[9px] text-gray-400 mt-0.5">Express Entry & permanent residency</span>
+                        </a>
+                        <a href="/find-experts?category=tourist" class="flex flex-col p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200">
+                            <span class="text-xs font-bold text-navy">🏖️ Tourist Visa Agents</span>
+                            <span class="text-[9px] text-gray-400 mt-0.5">Visitor visa & holiday packages</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Section 2: Destinations -->
+                <div>
+                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-wider px-2.5 mb-1">🌍 Browse Top Destinations</div>
+                    <div class="flex flex-col gap-1">
+                        <a href="/find-experts?country=Canada" class="flex flex-col p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200">
+                            <span class="text-xs font-bold text-navy">🇨🇦 Canada Specialists</span>
+                            <span class="text-[9px] text-gray-400 mt-0.5">Express Entry, PNP & study visas</span>
+                        </a>
+                        <a href="/find-experts?country=USA" class="flex flex-col p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200">
+                            <span class="text-xs font-bold text-navy">🇺🇸 US Immigration Lawyers</span>
+                            <span class="text-[9px] text-gray-400 mt-0.5">H-1B, L-1 & green card advisors</span>
+                        </a>
+                        <a href="/find-experts?country=UK" class="flex flex-col p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200">
+                            <span class="text-xs font-bold text-navy">🇬🇧 UK Consultants</span>
+                            <span class="text-[9px] text-gray-400 mt-0.5">UK student & work sponsorship visas</span>
+                        </a>
+                        <a href="/find-experts?country=Schengen" class="flex flex-col p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200">
+                            <span class="text-xs font-bold text-navy">🇪🇺 Schengen / Europe Experts</span>
+                            <span class="text-[9px] text-gray-400 mt-0.5">Schengen visitor & European blue cards</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Tours -->
         <div class="border-b border-gray-50">
@@ -399,6 +543,9 @@ const servicesDropdownItems = [
             <a href="/signup" class="block text-center py-2.5 bg-black hover:bg-slate-900 text-white rounded-xl font-bold text-sm shadow-md">
                 Sign Up
             </a>
+            <a href="/signup/expert" class="block text-center py-2.5 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-650 hover:to-rose-750 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg active:scale-[0.97] transition-all">
+                💼 List Your Practice
+            </a>
         </div>
     </div>
 </header>
@@ -499,6 +646,24 @@ const servicesDropdownItems = [
             }
             // Update header transparency immediately when drawer toggles
             updateHeader();
+        });
+    }
+
+    // Toggle Mobile Experts Dropdown
+    const mobileExpertsBtn = document.getElementById('mobile-experts-btn');
+    const mobileExpertsDrawer = document.getElementById('mobile-experts-drawer');
+    const mobileExpertsArrow = document.getElementById('mobile-experts-arrow');
+
+    if (mobileExpertsBtn && mobileExpertsDrawer && mobileExpertsArrow) {
+        mobileExpertsBtn.addEventListener('click', () => {
+            const isHidden = mobileExpertsDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileExpertsDrawer.classList.remove('hidden');
+                mobileExpertsArrow.classList.add('rotate-180');
+            } else {
+                mobileExpertsDrawer.classList.add('hidden');
+                mobileExpertsArrow.classList.remove('rotate-180');
+            }
         });
     }
 

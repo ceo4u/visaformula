@@ -24,6 +24,7 @@ export function FindExpertsPortal() {
     const [sortBy, setSortBy] = useState("recommended");
     const [searchText, setSearchText] = useState("");
     const [showMobileFilters, setShowMobileFilters] = useState(false);
+    const [selectedCountry, setSelectedCountry] = useState("All");
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -35,6 +36,10 @@ export function FindExpertsPortal() {
                 if (catQuery === "pr") setCategory("PR");
                 if (catQuery === "local") setCategory("Local Expert");
             }
+            const countryQuery = params.get("country");
+            if (countryQuery) {
+                setSelectedCountry(countryQuery);
+            }
         }
     }, []);
 
@@ -43,6 +48,15 @@ export function FindExpertsPortal() {
             if (category === "Student Visa" && e.category !== "student") return false;
             if (category === "Work Permit" && e.category !== "work") return false;
             if (category === "PR" && e.category !== "pr") return false;
+        }
+        if (selectedCountry !== "All") {
+            const countryLower = selectedCountry.toLowerCase();
+            if (countryLower === "schengen" || countryLower === "europe") {
+                const schengenCountries = ["germany", "france", "schengen", "italy", "spain", "europe"];
+                if (!e.countries.some(c => schengenCountries.includes(c.toLowerCase()))) return false;
+            } else {
+                if (!e.countries.some(c => c.toLowerCase() === countryLower)) return false;
+            }
         }
         if (city !== "All Cities" && city !== "Remote" && e.city !== city) return false;
         if (city === "Remote" && !e.isRemote) return false;
@@ -116,7 +130,7 @@ export function FindExpertsPortal() {
                     ))}
                 </div>
             </div>
-            <button onClick={() => { setCategory("All"); setCity("All Cities"); setRating("Any"); setAvail("Anytime"); }}
+            <button onClick={() => { setCategory("All"); setCity("All Cities"); setRating("Any"); setAvail("Anytime"); setSelectedCountry("All"); }}
                 className="w-full text-xs font-black uppercase tracking-wider text-slate-900 hover:underline mt-2">Clear All Filters</button>
         </div>
     );
@@ -184,7 +198,17 @@ export function FindExpertsPortal() {
                         </div>
                     </div>
 
-                    <p className="text-xs font-black uppercase tracking-wider text-gray-400 mb-5">{sorted.length} expert{sorted.length !== 1 ? "s" : ""} found</p>
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                        <p className="text-xs font-black uppercase tracking-wider text-gray-400">{sorted.length} expert{sorted.length !== 1 ? "s" : ""} found</p>
+                        {selectedCountry !== "All" && (
+                            <div className="flex items-center gap-2">
+                                <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-sm">
+                                    🌍 Destination: {selectedCountry}
+                                    <button onClick={() => setSelectedCountry("All")} className="hover:text-red-400 font-extrabold text-[12px] ml-1">×</button>
+                                </span>
+                            </div>
+                        )}
+                    </div>
 
                     {viewMode === "list" ? (
                         <div className="space-y-4">

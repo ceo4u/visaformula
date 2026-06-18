@@ -40,7 +40,7 @@ const servicesDropdownItems = [
         </a>
 
         <!-- Split Yelp-style Search Bar (Desktop Only) -->
-        <div id="search-bar" class="hidden lg:flex flex-1 max-w-md xl:max-w-xl mx-4 xl:mx-8 bg-red-50/50 rounded-xl flex-row items-center h-12 overflow-hidden border border-red-100 focus-within:border-[#ef4444] focus-within:bg-white focus-within:shadow-md transition-all duration-200">
+        <div id="search-bar" class="hidden lg:flex flex-1 max-w-md xl:max-w-xl mx-4 xl:mx-8 bg-gray-50/50 rounded-xl flex-row items-center h-12 overflow-hidden border border-gray-200 focus-within:border-black focus-within:bg-white focus-within:shadow-md transition-all duration-200">
             <!-- Search Query Portion -->
             <div class="flex items-center px-4 flex-[1.2] h-full">
                 <Search class="w-4 h-4 text-gray-400 mr-2.5 shrink-0" />
@@ -53,11 +53,11 @@ const servicesDropdownItems = [
             </div>
             
             <!-- Split Vertical Line -->
-            <div id="search-divider" class="w-[1.5px] h-6 bg-red-200 shrink-0 transition-colors duration-300" />
+            <div id="search-divider" class="w-[1.5px] h-6 bg-gray-200 shrink-0 transition-colors duration-300" />
             
             <!-- Location Portion -->
             <div class="flex items-center px-4 flex-1 h-full">
-                <MapPin id="search-loc-icon" class="w-4 h-4 text-[#ef4444] mr-2 shrink-0 transition-colors duration-300" />
+                <MapPin id="search-loc-icon" class="w-4 h-4 text-black mr-2 shrink-0 transition-colors duration-300" />
                 <input
                     id="search-input-location"
                     class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
@@ -67,7 +67,7 @@ const servicesDropdownItems = [
             </div>
             
             <!-- Search Button -->
-            <button id="search-btn" class="bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#dc2626] px-6 h-full flex items-center justify-center transition-all shrink-0">
+            <button id="search-btn" class="bg-black hover:bg-slate-900 px-6 h-full flex items-center justify-center transition-all shrink-0">
                 <Search class="w-4 h-4 text-white font-bold" />
             </button>
         </div>
@@ -255,16 +255,16 @@ const servicesDropdownItems = [
     <!-- Mobile Drawer menu -->
     <div id="mobile-menu-drawer" class="hidden lg:hidden bg-white border-t border-gray-100 shadow-xl max-h-[85vh] overflow-y-auto">
         <!-- Yelp-style Mobile Search bar -->
-        <div class="p-4 border-b border-red-50 bg-red-50/20 space-y-2">
-            <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-red-100 shadow-sm">
-                <Search class="w-4 h-4 text-red-400 mr-2 shrink-0" />
+        <div class="p-4 border-b border-gray-100 bg-gray-50/30 space-y-2">
+            <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-gray-200 shadow-sm">
+                <Search class="w-4 h-4 text-gray-400 mr-2 shrink-0" />
                 <input id="mobile-search-input-query" class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="What are you looking for..." type="text" />
             </div>
-            <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-red-100 shadow-sm">
-                <MapPin class="w-4 h-4 text-red-400 mr-2 shrink-0" />
+            <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-gray-200 shadow-sm">
+                <MapPin class="w-4 h-4 text-gray-400 mr-2 shrink-0" />
                 <input id="mobile-search-input-location" class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="Location (e.g. Hyderabad)" type="text" />
             </div>
-            <button id="mobile-search-btn" class="w-full py-2.5 bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white rounded-xl font-bold text-xs shadow-sm active:scale-[0.98]">
+            <button id="mobile-search-btn" class="w-full py-2.5 bg-black hover:bg-slate-900 text-white rounded-xl font-bold text-xs shadow-sm active:scale-[0.98]">
                 Search Experts
             </button>
         </div>
@@ -431,7 +431,7 @@ const servicesDropdownItems = [
   }
   #main-header.header-transparent #search-bar:focus-within {
     background-color: #ffffff !important;
-    border-color: #ef4444 !important;
+    border-color: black !important;
   }
   #main-header.header-transparent #search-bar input {
     color: #1f2937 !important;
@@ -443,7 +443,7 @@ const servicesDropdownItems = [
     background-color: #e5e7eb !important;
   }
   #main-header.header-transparent #search-bar #search-loc-icon {
-    color: #ef4444 !important;
+    color: black !important;
   }
   #main-header.header-transparent .top-menu-link {
     color: rgba(255, 255, 255, 0.9) !important;

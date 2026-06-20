@@ -116,16 +116,16 @@ const expertDropdownItems = [
         <div class="max-w-7xl mx-auto px-4 xl:px-6 h-12 flex items-center justify-between gap-4">
             
             <!-- Left Side: Nav Links -->
-            <div class="flex items-center gap-4 xl:gap-8 h-full">
+            <div class="flex items-center gap-2 xl:gap-5 h-full">
                 <!-- Find Experts Dropdown (Tourist Visa style) -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[13px] xl:text-[13.5px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/find-experts") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
                         Find Experts
-                        <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
                     </button>
 
                     <!-- Dropdown Menu Card -->
@@ -180,7 +180,7 @@ const expertDropdownItems = [
 
                 <!-- Apply Visa Link -->
                 <a href="/apply-visa"
-                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 ${pathname === "/apply-visa" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                    class={`font-opensans category-menu-link text-[13px] xl:text-[13.5px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap ${pathname === "/apply-visa" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                     <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse"></span>
                     Apply Visa
                 </a>
@@ -188,12 +188,12 @@ const expertDropdownItems = [
                 <!-- Tours & Packages Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[13px] xl:text-[13.5px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/tours") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
                         Tourist Visa
-                        <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
                     </button>
 
                     <!-- Dropdown Menu Card -->
@@ -225,12 +225,12 @@ const expertDropdownItems = [
                 <!-- Events Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[13px] xl:text-[13.5px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/events") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
                         Event Visa
-                        <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
                     </button>
 
                     <!-- Dropdown Menu Card -->
@@ -261,14 +261,14 @@ const expertDropdownItems = [
 
                 <!-- Training Hub Link -->
                 <a href="/training"
-                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/training" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                    class={`font-opensans category-menu-link text-[13px] xl:text-[13.5px] font-bold tracking-tight transition-all whitespace-nowrap ${pathname === "/training" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                     Training Hub
                 </a>
 
                 <!-- Our Services Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all flex items-center gap-1.5 group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[13px] xl:text-[13.5px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/services") || 
                             pathname?.startsWith("/vfs-booking") || 
                             pathname?.startsWith("/visa-documentation") || 
@@ -277,7 +277,7 @@ const expertDropdownItems = [
                         }`}
                     >
                         Our Services
-                        <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
                     </button>
 
                     <!-- Dropdown Menu Card -->
@@ -308,20 +308,20 @@ const expertDropdownItems = [
 
                 <!-- Overseas Jobs Link -->
                 <a href="/jobs"
-                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/jobs" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                    class={`font-opensans category-menu-link text-[13px] xl:text-[13.5px] font-bold tracking-tight transition-all whitespace-nowrap ${pathname === "/jobs" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                     Job Visa
                 </a>
 
                 <!-- Legal Link -->
                 <a href="/emergency"
-                    class={`font-opensans category-menu-link text-[14.5px] font-bold tracking-tight transition-all ${pathname === "/emergency" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                    class={`font-opensans category-menu-link text-[13px] xl:text-[13.5px] font-bold tracking-tight transition-all whitespace-nowrap ${pathname === "/emergency" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
                     Immigration Assistance
                 </a>
             </div>
 
-            <!-- Right Side: List Your Practice Button (Styled like Sign Up) -->
-            <div class="flex items-center h-full">
-                <a href="/list-practice" class="font-opensans bg-black hover:bg-slate-900 text-white font-bold text-[12.5px] px-4 py-1.5 rounded-xl hover:shadow-lg transition-all active:scale-[0.97] flex items-center justify-center shadow-sm">
+            <!-- Right Side: List Your Practice Button (Styled exactly like Sign Up) -->
+            <div class="flex items-center h-full shrink-0">
+                <a href="/list-practice" class="font-opensans bg-black hover:bg-slate-900 text-white font-bold text-[14px] px-4 py-2.5 rounded-xl hover:shadow-lg hover:shadow-gray-200 transition-all active:scale-[0.97] whitespace-nowrap">
                     List Your Practice
                 </a>
             </div>

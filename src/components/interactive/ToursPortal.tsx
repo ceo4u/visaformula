@@ -827,12 +827,12 @@ export function ToursPortal() {
                                         <p className="text-[11.5px] text-gray-500 leading-relaxed mb-4">{tour.description}</p>
                                         <div className="flex items-center justify-between pt-3 border-t border-red-50">
                                             <div>
-                                                <div className="font-sora font-extrabold text-indigo-600 text-base">₹{tour.price.toLocaleString()}</div>
+                                                <div className="font-sora font-extrabold text-navy text-base">₹{tour.price.toLocaleString()}</div>
                                                 <div className="text-[9px] text-gray-400">per person</div>
                                             </div>
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); handleBooking(tour.name); }}
-                                                className="bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:shadow-md transition-all active:scale-[0.97]"
+                                                className="bg-black hover:bg-slate-900 text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:shadow-md transition-all active:scale-[0.97]"
                                             >
                                                 Book Cabin
                                             </button>

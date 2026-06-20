@@ -83,13 +83,14 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["DM Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-        sora: ["Poppins", "sans-serif"],
-        dmsans: ["DM Sans", "sans-serif"],
-        heading: ["Poppins", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-        plusjakarta: ["Plus Jakarta Sans", "sans-serif"],
-        jakarta: ["Plus Jakarta Sans", "sans-serif"],
-        poppins: ["Poppins", "sans-serif"],
+        sans: ["Montserrat", "DM Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
+        sora: ["Montserrat", "Poppins", "sans-serif"],
+        dmsans: ["Montserrat", "DM Sans", "sans-serif"],
+        heading: ["Montserrat", "Poppins", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        plusjakarta: ["Montserrat", "Plus Jakarta Sans", "sans-serif"],
+        jakarta: ["Montserrat", "Plus Jakarta Sans", "sans-serif"],
+        poppins: ["Montserrat", "Poppins", "sans-serif"],
       },
       boxShadow: {
         "editorial": "0 1px 4px rgba(0,0,0,0.1)",
@@ -97,6 +98,8 @@ export default {
         "editorial-xl": "0 8px 30px rgba(0,0,0,0.12)",
         "card": "0 2px 12px rgba(14,165,233,.10), 0 4px 20px rgba(12,26,52,.07)",
         "card-hover": "0 4px 24px rgba(14,165,233,.15), 0 8px 32px rgba(12,26,52,.09)",
+        "premium-card": "0 4px 10px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
+        "premium-card-hover": "0 20px 38px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.06)",
       },
       keyframes: {
         "fade-up": {

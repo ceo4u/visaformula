@@ -135,19 +135,17 @@ const expertDropdownItems = [
 
                     <!-- Dropdown Menu Card -->
                     <div class="absolute top-full left-0 pt-2 w-[540px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                        <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-3">
-                            <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
                                 {expertDropdownItems.map((item) => {
                                     const IconComponent = item.icon;
                                     return (
                                         <a 
                                             href={item.href}
-                                            class="flex items-center gap-3 p-2 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                            class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
                                         >
-                                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
-                                            </div>
-                                            <div class="text-xs font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                            <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
                                         </a>
                                     );
                                 })}
@@ -176,19 +174,17 @@ const expertDropdownItems = [
 
                     <!-- Dropdown Menu Card -->
                     <div class="absolute top-full left-0 pt-2 w-[500px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                        <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-3">
-                            <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
                                 {tourDropdownItems.map((item) => {
                                     const IconComponent = item.icon;
                                     return (
                                         <a 
                                             href={item.href}
-                                            class="flex items-center gap-3 p-2 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                            class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
                                         >
-                                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
-                                            </div>
-                                            <div class="text-xs font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                            <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
                                         </a>
                                     );
                                 })}
@@ -210,19 +206,17 @@ const expertDropdownItems = [
 
                     <!-- Dropdown Menu Card -->
                     <div class="absolute top-full left-0 pt-2 w-80 opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                        <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-3">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
                             <div class="flex flex-col gap-2">
                                 {eventDropdownItems.map((item) => {
                                     const IconComponent = item.icon;
                                     return (
                                         <a 
                                             href={item.href}
-                                            class="flex items-center gap-3 p-2 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                            class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
                                         >
-                                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
-                                            </div>
-                                            <div class="text-xs font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                            <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
                                         </a>
                                     );
                                 })}
@@ -243,68 +237,58 @@ const expertDropdownItems = [
                     </button>
 
                     <!-- Dropdown Card -->
-                    <div class="absolute top-full left-0 pt-2 w-[500px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl p-3">
-                            <div class="grid grid-cols-2 gap-2">
+                    <div class="absolute top-full left-0 pt-2 w-[540px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
 
                                 <!-- Find Consultants -->
-                                <a href="/find-experts?category=student" class="flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                            <circle cx="12" cy="7" r="4"/>
-                                            <polyline points="16 11 18 13 22 9"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-teal-600 transition-colors">Find Consultants</div>
+                                <a href="/find-experts?category=student" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                        <polyline points="16 11 18 13 22 9"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Find Consultants</span>
                                 </a>
 
                                 <!-- Search Top Universities -->
-                                <a href="/universities" class="flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-blue-600 transition-colors">Search Top Universities</div>
+                                <a href="/universities" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Search Top Universities</span>
                                 </a>
 
                                 <!-- Admissions by Country -->
-                                <a href="/admissions" class="flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <line x1="2" y1="12" x2="22" y2="12"/>
-                                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-purple-600 transition-colors">Admissions by Country</div>
+                                <a href="/admissions" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="2" y1="12" x2="22" y2="12"/>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Admissions by Country</span>
                                 </a>
 
                                 <!-- Funding Assistance -->
-                                <a href="/funding" class="flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <rect x="2" y="5" width="20" height="14" rx="2"/>
-                                            <line x1="2" y1="10" x2="22" y2="10"/>
-                                            <path d="M12 15v-2m0 0V11m0 2h2m-2 0H10"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-green-600 transition-colors">Funding Assistance</div>
+                                <a href="/funding" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                        <line x1="2" y1="10" x2="22" y2="10"/>
+                                        <path d="M12 15v-2m0 0V11m0 2h2m-2 0H10"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Funding Assistance</span>
                                 </a>
 
                                 <!-- Language Coaching & Training -->
-                                <a href="/training" class="flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                                            <line x1="9" y1="9" x2="15" y2="9"/>
-                                            <line x1="9" y1="13" x2="13" y2="13"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-orange-600 transition-colors">Language Coaching & Training</div>
+                                <a href="/training" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                        <line x1="9" y1="9" x2="15" y2="9"/>
+                                        <line x1="9" y1="13" x2="13" y2="13"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Language Coaching & Training</span>
                                 </a>
 
                             </div>
@@ -329,20 +313,18 @@ const expertDropdownItems = [
                     </button>
 
                     <!-- Dropdown Menu Card -->
-                    <div class="absolute top-full left-0 pt-2 w-[500px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                        <div class="bg-white rounded-2xl border border-red-100 shadow-xl p-3">
-                            <div class="grid grid-cols-2 gap-2">
+                    <div class="absolute top-full left-0 pt-2 w-[540px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
                                 {servicesDropdownItems.map((item) => {
                                     const IconComponent = item.icon;
                                     return (
                                         <a 
                                             href={item.href}
-                                            class="flex items-center gap-3 p-2 rounded-xl hover:bg-red-50/80 transition-all duration-200 group/item"
+                                            class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
                                         >
-                                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-sm group-hover/item:scale-110 transition-transform`}>
-                                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
-                                            </div>
-                                            <div class="text-xs font-bold text-navy group-hover/item:text-[#ef4444] transition-colors">{item.title}</div>
+                                            <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
                                         </a>
                                     );
                                 })}
@@ -363,47 +345,41 @@ const expertDropdownItems = [
                     </button>
 
                     <!-- Dropdown Card -->
-                    <div class="absolute top-full left-0 pt-2 w-[500px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl p-3">
-                            <div class="grid grid-cols-2 gap-2">
+                    <div class="absolute top-full left-0 pt-2 w-[540px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
 
                                 <!-- Work Permit Consultants -->
-                                <a href="/find-experts?category=work" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-                                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-                                            <line x1="12" y1="12" x2="12" y2="12"/>
-                                            <path d="M12 12h.01"/>
-                                            <path d="M2 12h20"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-blue-600 transition-colors">Work Permit Consultants</div>
+                                <a href="/find-experts?category=work" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                                        <line x1="12" y1="12" x2="12" y2="12"/>
+                                        <path d="M12 12h.01"/>
+                                        <path d="M2 12h20"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Work Permit Consultants</span>
                                 </a>
 
                                 <!-- Search for Jobs -->
-                                <a href="/jobs" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <circle cx="11" cy="11" r="8"/>
-                                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                                            <path d="M11 8v6M8 11h6"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-teal-600 transition-colors">Search for Jobs</div>
+                                <a href="/jobs" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                        <path d="M11 8v6M8 11h6"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Search for Jobs</span>
                                 </a>
 
                                 <!-- Digital Nomad -->
-                                <a href="/digital-nomad" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <rect x="2" y="3" width="20" height="14" rx="2"/>
-                                            <line x1="8" y1="21" x2="16" y2="21"/>
-                                            <line x1="12" y1="17" x2="12" y2="21"/>
-                                            <path d="M2 8h20"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-indigo-600 transition-colors">Digital Nomad</div>
+                                <a href="/digital-nomad" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                        <line x1="8" y1="21" x2="16" y2="21"/>
+                                        <line x1="12" y1="17" x2="12" y2="21"/>
+                                        <path d="M2 8h20"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Digital Nomad</span>
                                 </a>
 
                             </div>
@@ -423,32 +399,28 @@ const expertDropdownItems = [
                     </button>
 
                     <!-- Dropdown Card -->
-                    <div class="absolute top-full left-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl p-3">
-                            <div class="grid grid-cols-2 gap-2">
+                    <div class="absolute top-full left-0 pt-2 w-[540px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
 
                                 <!-- Migration Agents & Lawyers -->
-                                <a href="/emergency" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                            <path d="M9 12l2 2 4-4"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-amber-600 transition-colors">Migration Agents & Lawyers</div>
+                                <a href="/emergency" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        <path d="M9 12l2 2 4-4"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Agents & Lawyers</span>
                                 </a>
 
                                 <!-- Migration Visa -->
-                                <a href="/migration-visa" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <line x1="2" y1="12" x2="22" y2="12"/>
-                                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                                            <path d="M17 8l-5 4-5-4"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-orange-500 transition-colors">Migration Visa</div>
+                                <a href="/migration-visa" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="2" y1="12" x2="22" y2="12"/>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                        <path d="M17 8l-5 4-5-4"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Visa</span>
                                 </a>
 
                             </div>
@@ -468,31 +440,27 @@ const expertDropdownItems = [
                     </button>
 
                     <!-- Dropdown Card -->
-                    <div class="absolute top-full left-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl p-3">
-                            <div class="grid grid-cols-2 gap-2">
+                    <div class="absolute top-full left-0 pt-2 w-[540px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
 
                                 <!-- Skilled Migration -->
-                                <a href="/find-experts?category=pr" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                                            <polyline points="17 6 23 6 23 12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-emerald-600 transition-colors">Skilled Migration</div>
+                                <a href="/find-experts?category=pr" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                        <polyline points="17 6 23 6 23 12"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Skilled Migration</span>
                                 </a>
 
                                 <!-- Find Migration Experts -->
-                                <a href="/find-experts?category=migration" class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
-                                    <div class="w-8 h-8 rounded-lg bg-cyan-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
-                                        <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <circle cx="11" cy="11" r="8"/>
-                                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                                            <path d="M11 8v3H8m3 0h3"/>
-                                        </svg>
-                                    </div>
-                                    <div class="text-xs font-bold text-navy group-hover/item:text-cyan-600 transition-colors">Find Migration Experts</div>
+                                <a href="/find-experts?category=migration" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                        <path d="M11 8v3H8m3 0h3"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Find Migration Experts</span>
                                 </a>
 
                             </div>

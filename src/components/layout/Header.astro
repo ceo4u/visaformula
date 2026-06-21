@@ -259,11 +259,102 @@ const expertDropdownItems = [
                     </div>
                 </div>
 
-                <!-- Student Visa Link -->
-                <a href="/training"
-                    class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all whitespace-nowrap ${pathname === "/training" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                    Student Visa
-                </a>
+                <!-- Student Visa Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/training") || pathname?.startsWith("/student") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Student Visa
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Card -->
+                    <div class="absolute top-full left-0 pt-2 w-[340px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
+                            <div class="flex flex-col gap-0.5">
+
+                                <!-- Find Consultants -->
+                                <a href="/find-experts?category=student" class="flex items-center gap-4 p-3 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                            <polyline points="16 11 18 13 22 9"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-teal-600 transition-colors">Find Consultants</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Connect with verified visa experts near you.</div>
+                                    </div>
+                                </a>
+
+                                <!-- Search Top Universities -->
+                                <a href="/universities" class="flex items-center gap-4 p-3 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-blue-600 transition-colors">Search Top Universities</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Explore world-class campuses and courses.</div>
+                                    </div>
+                                </a>
+
+                                <!-- Admissions by Country -->
+                                <a href="/admissions" class="flex items-center gap-4 p-3 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="2" y1="12" x2="22" y2="12"/>
+                                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-purple-600 transition-colors">Admissions by Country</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Filter intake criteria by global destinations.</div>
+                                    </div>
+                                </a>
+
+                                <!-- Funding Assistance -->
+                                <a href="/funding" class="flex items-center gap-4 p-3 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                            <line x1="2" y1="10" x2="22" y2="10"/>
+                                            <path d="M12 15v-2m0 0V11m0 2h2m-2 0H10"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-green-600 transition-colors">Funding Assistance</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Scholarships, fellowship grants & student loans.</div>
+                                    </div>
+                                </a>
+
+                                <!-- Language Coaching & Training -->
+                                <a href="/language-training" class="flex items-center gap-4 p-3 rounded-xl hover:bg-neutral-50 transition-all duration-200 group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                            <line x1="9" y1="9" x2="15" y2="9"/>
+                                            <line x1="9" y1="13" x2="13" y2="13"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-orange-600 transition-colors">Language Coaching & Training</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Prepare for IELTS, TOEFL, and core tests.</div>
+                                    </div>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Our Services Dropdown -->
                 <div class="relative py-3.5 group">

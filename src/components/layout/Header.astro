@@ -1,6 +1,6 @@
 ---
 // src/components/layout/Header.astro
-import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map } from 'lucide-react';
+import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake } from 'lucide-react';
 
 const pathname = Astro.url.pathname;
 
@@ -8,7 +8,9 @@ const tourDropdownItems = [
     { title: "Holiday Packages", desc: "Visa + hotel + itinerary", href: "/tours?category=holiday", icon: Umbrella, iconColor: "text-red-500", bg: "bg-red-50" },
     { title: "Sport Tours", desc: "Live events + stadium visits", href: "/tours?category=sports", icon: Trophy, iconColor: "text-red-500", bg: "bg-red-50" },
     { title: "Cruises", desc: "Ocean & river voyages", href: "/tours?category=cruises", icon: Ship, iconColor: "text-red-500", bg: "bg-red-50" },
-    { title: "Entertainment Events", desc: "Concerts, shows & festivals", href: "/tours?category=events", icon: Music, iconColor: "text-rose-500", bg: "bg-rose-50" }
+    { title: "Entertainment Events", desc: "Concerts, shows & festivals", href: "/tours?category=events", icon: Music, iconColor: "text-rose-500", bg: "bg-rose-50" },
+    { title: "E-visas / Visa Free Travel", desc: "Fast-track electronic visas & visa-on-arrival guide templates.", href: "/apply-visa?type=evisa", icon: Plane, iconColor: "text-blue-500", bg: "bg-blue-50" },
+    { title: "Custom Tour Packages", desc: "Tailored international itineraries, sports tours & vacation deals.", href: "/tours?category=custom", icon: Compass, iconColor: "text-sky-500", bg: "bg-sky-50" }
 ];
 
 const eventDropdownItems = [
@@ -19,7 +21,10 @@ const eventDropdownItems = [
 const servicesDropdownItems = [
     { title: "Visa Documentation Filing", desc: "Expert check & filing of files", href: "/visa-documentation", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
     { title: "Visa Form Filing", desc: "Complete support for application forms", href: "/visa-form-filing", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
-    { title: "VFS Appointment", desc: "Schedule and slot booking support", href: "/vfs-appointment", icon: Calendar, iconColor: "text-rose-500", bg: "bg-rose-50" }
+    { title: "VFS Appointment", desc: "Schedule and slot booking support", href: "/vfs-appointment", icon: Calendar, iconColor: "text-rose-500", bg: "bg-rose-50" },
+    { title: "Visa Form Fillers", desc: "Error-free application drafting and bio-data sheet execution.", href: "/services/form-fillers", icon: PenLine, iconColor: "text-indigo-500", bg: "bg-indigo-50" },
+    { title: "Travel Insurance Providers", desc: "Mandatory international travel health cover and trip insurance.", href: "/services/travel-insurance", icon: HeartHandshake, iconColor: "text-rose-500", bg: "bg-rose-50" },
+    { title: "Airfares Booking", desc: "Flight itinerary reservations for immigration documentation.", href: "/services/airfares", icon: Plane, iconColor: "text-purple-500", bg: "bg-purple-50" }
 ];
 
 const expertDropdownItems = [
@@ -509,6 +514,42 @@ const expertDropdownItems = [
                                     <div class="flex-1 min-w-0">
                                         <div class="text-sm font-bold text-navy group-hover/item:text-orange-500 transition-colors">Migration Visa</div>
                                         <div class="text-xs text-gray-400 mt-0.5 leading-normal">Permanent residency, skilled migration & family reunion visas.</div>
+                                    </div>
+                                </a>
+
+                                <!-- Divider: Migration Visas Section -->
+                                <div class="flex items-center gap-2 px-3 pt-2 pb-1">
+                                    <div class="h-px flex-1 bg-gray-100"></div>
+                                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Migration Visas</span>
+                                    <div class="h-px flex-1 bg-gray-100"></div>
+                                </div>
+
+                                <!-- Skilled Migration -->
+                                <a href="/find-experts?category=pr" class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                            <polyline points="17 6 23 6 23 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-emerald-600 transition-colors">Skilled Migration</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Points-based migration, express entry & corporate sponsorship.</div>
+                                    </div>
+                                </a>
+
+                                <!-- Find Migration Experts -->
+                                <a href="/find-experts?category=migration" class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-cyan-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <circle cx="11" cy="11" r="8"/>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                            <path d="M11 8v3H8m3 0h3"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-cyan-600 transition-colors">Find Migration Experts</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Connect with registered, top-tier migration consultants.</div>
                                     </div>
                                 </a>
 

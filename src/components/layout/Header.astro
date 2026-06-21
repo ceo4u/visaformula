@@ -397,23 +397,125 @@ const expertDropdownItems = [
                     </div>
                 </div>
 
-                <!-- Overseas Jobs Link -->
-                <a href="/jobs"
-                    class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all whitespace-nowrap ${pathname === "/jobs" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                    Job Visa
-                </a>
+                <!-- Job Seeker Visas Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/jobs") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Job Seeker Visas
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
 
-                <!-- Legal Link -->
-                <a href="/emergency"
-                    class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all whitespace-nowrap ${pathname === "/emergency" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                    Legal Assistance
-                </a>
+                    <!-- Dropdown Card -->
+                    <div class="absolute top-full left-0 pt-2 w-[360px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
+                            <div class="flex flex-col gap-0.5">
 
-                <!-- Migration Visa Link -->
-                <a href="/migration-visa"
-                    class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all whitespace-nowrap ${pathname === "/migration-visa" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
-                    Migration Visa
-                </a>
+                                <!-- Work Permit Consultants -->
+                                <a href="/find-experts?category=work" class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                                            <line x1="12" y1="12" x2="12" y2="12"/>
+                                            <path d="M12 12h.01"/>
+                                            <path d="M2 12h20"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-blue-600 transition-colors">Work Permit Consultants</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Connect with verified commercial work permit specialists.</div>
+                                    </div>
+                                </a>
+
+                                <!-- Search for Jobs -->
+                                <a href="/jobs" class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <circle cx="11" cy="11" r="8"/>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                            <path d="M11 8v6M8 11h6"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-teal-600 transition-colors">Search for Jobs</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Explore verified global job boards and corporate listings.</div>
+                                    </div>
+                                </a>
+
+                                <!-- Digital Nomad -->
+                                <a href="/digital-nomad" class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                            <line x1="8" y1="21" x2="16" y2="21"/>
+                                            <line x1="12" y1="17" x2="12" y2="21"/>
+                                            <path d="M2 8h20"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-indigo-600 transition-colors">Digital Nomad</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Remote work visas, freelance pathways, and stay setups.</div>
+                                    </div>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legal Assistance Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Legal Assistance
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Card -->
+                    <div class="absolute top-full left-0 pt-2 w-[360px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl p-2">
+                            <div class="flex flex-col gap-0.5">
+
+                                <!-- Migration Agents & Lawyers -->
+                                <a href="/emergency" class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                            <path d="M9 12l2 2 4-4"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-amber-600 transition-colors">Migration Agents & Lawyers</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Certified legal counselors, appeals & complex case handlers.</div>
+                                    </div>
+                                </a>
+
+                                <!-- Migration Visa -->
+                                <a href="/migration-visa" class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-all duration-200 ease-in-out group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200 group-hover/item:scale-105">
+                                        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="2" y1="12" x2="22" y2="12"/>
+                                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                            <path d="M17 8l-5 4-5-4"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-bold text-navy group-hover/item:text-orange-500 transition-colors">Migration Visa</div>
+                                        <div class="text-xs text-gray-400 mt-0.5 leading-normal">Permanent residency, skilled migration & family reunion visas.</div>
+                                    </div>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

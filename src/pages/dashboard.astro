@@ -7,6 +7,8 @@ import { UserDashboard } from '../components/interactive/UserDashboard';
 <Layout 
   title="My Journey Dashboard" 
   description="Manage your immigration journey. Check your upcoming sessions, view files in your Document Vault, and track your GIC/IELTS scores online."
+  hideHeader={true}
+  hideFooter={true}
 >
   <!-- Mount client-only React user dashboard island -->
   <UserDashboard client:only="react" />

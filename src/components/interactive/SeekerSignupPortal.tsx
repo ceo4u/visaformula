@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Shield, Star } from "lucide-react";
+import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, User, Upload } from "lucide-react";
 
 const goals = [
     { id: "study", icon: GraduationCap, label: "Study Abroad", desc: "Find universities & student visas" },
@@ -11,7 +11,7 @@ const goals = [
 const destinations = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
 
 const steps = [
-    { label: "Account", icon: "1" },
+    { label: "Account Details", icon: "1" },
     { label: "Your Goals", icon: "2" },
     { label: "Destinations", icon: "3" },
 ];
@@ -42,91 +42,137 @@ export function SeekerSignupPortal() {
 
     if (submitted) {
         return (
-            <div className="bg-slate-50 min-h-screen flex flex-col items-center justify-center px-4 py-12">
-                <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl p-10 max-w-md w-full text-center">
-                    <div className="w-20 h-20 bg-emerald-50 border border-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-                        <CheckCircle className="w-10 h-10 text-emerald-600" />
+            <div className="min-h-screen text-[#111111] font-sans flex flex-col justify-between selection:bg-black selection:text-white" style={{ 
+                fontFamily: "'Sora', sans-serif",
+                background: "radial-gradient(circle at 90% 10%, rgba(253, 244, 215, 0.45) 0%, transparent 40%), radial-gradient(circle at 10% 90%, rgba(224, 231, 255, 0.4) 0%, transparent 40%), #fafbfc"
+            }}>
+                <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
+                    <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-full border-4 border-black flex-shrink-0"></div>
+                        <span className="font-bold text-black text-xl tracking-tight">VisaFormula</span>
                     </div>
-                    <h1 className="font-sora text-2xl font-extrabold text-navy mb-2">You're In! 🎉</h1>
-                    <p className="text-gray-500 text-sm mb-6">Your VisaFormula account is ready. Start exploring experts and opportunities.</p>
-                    <a href="/dashboard" className="block">
-                        <button className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold hover:bg-black transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
-                            Explore the Platform <ArrowRight className="w-4 h-4" />
-                        </button>
-                    </a>
+                </header>
+
+                <div className="flex-grow flex flex-col items-center justify-center px-4 py-12">
+                    <div className="bg-white rounded-3xl border border-slate-150 shadow-2xl p-10 max-w-md w-full text-center">
+                        <div className="w-20 h-20 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                            <CheckCircle className="w-10 h-10 text-black" />
+                        </div>
+                        <h1 className="text-2xl font-bold text-black mb-2">You're In! 🎉</h1>
+                        <p className="text-slate-400 text-sm mb-8 font-medium">Your VisaFormula account is ready. Start exploring experts and opportunities.</p>
+                        <a href="/dashboard" className="block">
+                            <button className="w-full bg-[#111111] hover:bg-black text-white py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 active:scale-[0.98] shadow-md cursor-pointer text-sm">
+                                Explore the Platform <ArrowRight className="w-4 h-4" />
+                            </button>
+                        </a>
+                    </div>
                 </div>
+
+                <footer className="py-6 text-center text-xs text-slate-400 font-medium">
+                    © 2026 VisaFormula. All rights reserved.
+                </footer>
             </div>
         );
     }
 
     return (
-        <div className="bg-slate-50 min-h-screen flex flex-col justify-center items-center py-10 px-4">
-            <div className="max-w-4xl w-full mx-auto">
-                <div className="text-center mb-8">
-                    <a href="/" className="inline-flex items-center gap-2 mb-3">
-                        <Globe className="w-6 h-6 text-red-500" />
-                        <span className="text-2xl font-extrabold tracking-tight text-navy">VisaFormula</span>
-                    </a>
-                    <h1 className="font-sora text-3xl font-extrabold text-black mb-1.5">Register as Seeker</h1>
-                    <p className="text-sm text-gray-500">Setup immigration goals and match with verified advisors.</p>
+        <div className="min-h-screen text-[#111111] font-sora flex flex-col justify-between selection:bg-black selection:text-white" style={{ 
+            fontFamily: "'Sora', sans-serif",
+            background: "radial-gradient(circle at 90% 10%, rgba(253, 244, 215, 0.45) 0%, transparent 40%), radial-gradient(circle at 10% 90%, rgba(224, 231, 255, 0.4) 0%, transparent 40%), #fafbfc"
+        }}>
+            <style dangerouslySetInnerHTML={{__html: `
+                .font-sora, .font-sora * {
+                    font-family: 'Sora', sans-serif !important;
+                }
+            `}} />
+            <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
+                <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full border-4 border-black flex-shrink-0"></div>
+                    <span className="font-bold text-black text-xl tracking-tight">VisaFormula</span>
+                </div>
+                <div className="text-base font-medium text-slate-500">
+                    Already a member? <a href="/login" className="text-black font-bold hover:underline">Login</a>
+                </div>
+            </header>
+
+            <div className="flex-grow flex flex-col justify-start py-10 px-6 max-w-4xl w-full mx-auto">
+                <div className="text-center my-8">
+                    <h1 className="text-3xl md:text-4xl font-semibold text-black tracking-tight mb-3">Register as Seeker</h1>
+                    <p className="text-base text-slate-400 font-medium">Setup immigration goals and match with verified advisors.</p>
                 </div>
 
-                <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 md:p-8">
-
-                    {/* Step Indicator */}
-                    <div className="flex items-center justify-center gap-2 mb-8">
-                        {steps.map((s, i) => (
-                            <div key={s.label} className="flex items-center gap-2">
-                                <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
-                                    step > i + 1 ? "bg-emerald-500 text-white" :
-                                    step === i + 1 ? "bg-slate-900 text-white shadow-md" :
-                                    "bg-gray-100 text-gray-400"
-                                }`}>
-                                    {step > i + 1 ? <CheckCircle className="w-4 h-4" /> : s.icon}
-                                </div>
-                                <span className={`text-xs font-bold hidden sm:block ${step >= i + 1 ? "text-navy" : "text-gray-400"}`}>{s.label}</span>
-                                {i < steps.length - 1 && (
-                                    <div className={`w-8 h-[3px] rounded-full mx-1 ${step > i + 1 ? "bg-emerald-500" : "bg-gray-200"}`} />
-                                )}
+                {/* Step Indicator */}
+                <div className="flex items-center justify-center gap-8 my-10 font-sans">
+                    {steps.map((s, i) => (
+                        <div key={s.label} className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
+                                step > i + 1 ? "bg-black text-white" :
+                                step === i + 1 ? "bg-black text-white shadow-md" :
+                                "border-2 border-slate-350 text-slate-500"
+                            }`}>
+                                {step > i + 1 ? "✓" : s.icon}
                             </div>
-                        ))}
-                    </div>
+                            <span className={`text-base font-semibold ${step >= i + 1 ? "text-black" : "text-slate-450"}`}>{s.label}</span>
+                            {i < steps.length - 1 && (
+                                <div className={`h-0.5 w-16 md:w-24 ${step > i + 1 ? "bg-black" : "bg-slate-200"}`} />
+                            )}
+                        </div>
+                    ))}
+                </div>
 
+                <div className="w-full mx-auto transition-all duration-300 font-sans mt-4">
                     {/* Step 1: Account Details */}
                     {step === 1 && (
-                        <div className="space-y-4">
-                            <div>
-                                <h2 className="font-sora text-xl font-bold text-navy mb-1">Let's get started</h2>
-                                <p className="text-xs text-gray-500 mb-6">Create your free VisaFormula account in seconds.</p>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">First Name</label>
-                                        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="John" className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-red-500 transition-colors font-semibold text-black" />
-                                    </div>
-                                    <div>
-                                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Last Name</label>
-                                        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Doe" className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-red-500 transition-colors font-semibold text-black" />
-                                    </div>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            if (!emailVerified) {
+                                setVerificationError("You must verify your email address to continue.");
+                                return;
+                            }
+                            setVerificationError("");
+                            setStep(2);
+                        }} className="space-y-10">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">First Name*</label>
+                                    <input 
+                                        type="text" 
+                                        required
+                                        value={firstName} 
+                                        onChange={(e) => setFirstName(e.target.value)} 
+                                        placeholder="Enter first name" 
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                    />
                                 </div>
-                                
-                                <div>
-                                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Email Address *</label>
-                                    <div className="flex gap-2">
-                                        <div className="flex-1 relative">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">Last Name*</label>
+                                    <input 
+                                        type="text" 
+                                        required
+                                        value={lastName} 
+                                        onChange={(e) => setLastName(e.target.value)} 
+                                        placeholder="Enter last name" 
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">Verify Email*</label>
+                                    <div className="flex gap-3.5">
+                                        <div className="relative flex-grow">
                                             <input 
                                                 type="email" 
+                                                required
                                                 placeholder="john@example.com" 
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 disabled={emailVerified}
-                                                className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-red-500 disabled:bg-gray-100 disabled:text-gray-500 transition-colors font-semibold text-black" 
+                                                className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 disabled:bg-slate-50 transition-all shadow-sm"
                                             />
                                             {emailVerified && (
-                                                <span className="absolute right-3 top-1/2 -translate-y-1/2 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200">
-                                                    <CheckCircle className="w-3 h-3 animate-pulse" /> Verified
-                                                </span>
+                                                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
+                                                    <span className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-[10px] font-bold">✓</span>
+                                                </div>
                                             )}
                                         </div>
                                         {!emailVerified && (
@@ -141,23 +187,23 @@ export function SeekerSignupPortal() {
                                                     setOtpSent(true);
                                                     alert("Simulated Email: OTP verification code is '999' sent to " + email);
                                                 }}
-                                                className="bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 font-bold px-4 rounded-xl text-xs whitespace-nowrap transition-colors"
+                                                className="bg-black hover:bg-slate-900 text-white text-sm font-semibold px-6 py-4 rounded-xl active:scale-95 transition-all shadow-sm cursor-pointer"
                                             >
-                                                {otpSent ? "Resend OTP" : "Send OTP"}
+                                                {otpSent ? "Resend" : "Send OTP"}
                                             </button>
                                         )}
                                     </div>
                                     {otpSent && !emailVerified && (
-                                        <div className="mt-3 bg-red-50/20 border border-red-100 rounded-2xl p-4 space-y-2">
-                                            <div className="text-xs font-bold text-navy">Enter Email OTP (Simulated: '999')</div>
-                                            <div className="flex gap-2">
+                                        <div className="mt-3 bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3 shadow-inner">
+                                            <div className="text-xs font-bold text-slate-700">Enter Email OTP (Simulated: '999')</div>
+                                            <div className="flex gap-3">
                                                 <input 
                                                     type="text" 
                                                     maxLength={3}
                                                     placeholder="•••" 
                                                     value={otp}
                                                     onChange={(e) => setOtp(e.target.value)}
-                                                    className="w-24 p-2.5 bg-white border border-red-150 rounded-xl text-center font-mono text-sm outline-none focus:border-red-500 tracking-widest font-semibold text-black" 
+                                                    className="w-24 p-3 bg-white border border-slate-250 rounded-xl text-center font-mono text-sm outline-none focus:border-black tracking-widest font-semibold text-black shadow-sm" 
                                                 />
                                                 <button 
                                                     type="button"
@@ -169,7 +215,7 @@ export function SeekerSignupPortal() {
                                                             setVerificationError("Incorrect OTP. Try '999'.");
                                                         }
                                                     }}
-                                                    className="bg-slate-900 hover:bg-black text-white font-bold px-4 rounded-xl text-xs transition-colors"
+                                                    className="bg-black hover:bg-slate-900 text-white font-semibold px-6 py-3 rounded-xl text-xs transition-colors shadow-sm cursor-pointer"
                                                 >
                                                     Verify OTP
                                                 </button>
@@ -181,15 +227,26 @@ export function SeekerSignupPortal() {
                                     )}
                                 </div>
 
-                                <div>
-                                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Password</label>
-                                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Min. 8 characters" className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-red-500 transition-colors font-semibold text-black" />
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">Password*</label>
+                                    <input 
+                                        type="password" 
+                                        required
+                                        value={password} 
+                                        onChange={(e) => setPassword(e.target.value)} 
+                                        placeholder="Min. 8 characters" 
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                    />
                                 </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Passport Country</label>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">Passport Country*</label>
                                     <div className="relative">
-                                        <Globe className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                                        <select value={passportCountry} onChange={(e) => setPassportCountry(e.target.value)} className="w-full p-3.5 pl-10 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-red-500 transition-colors appearance-none font-semibold text-black">
+                                        <select 
+                                            required
+                                            value={passportCountry} 
+                                            onChange={(e) => setPassportCountry(e.target.value)} 
+                                            className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm appearance-none cursor-pointer"
+                                        >
                                             <option value="">Select a country</option>
                                             <option>India</option>
                                             <option>Nigeria</option>
@@ -199,116 +256,157 @@ export function SeekerSignupPortal() {
                                             <option>Bangladesh</option>
                                             <option>Other</option>
                                         </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Phone Number</label>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">Phone Number*</label>
                                     <input 
                                         type="tel" 
+                                        required
                                         placeholder="+91 99999 99999" 
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
-                                        className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-red-500 transition-colors font-semibold text-black" 
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm" 
                                     />
                                 </div>
                             </div>
-                        </div>
+
+                            <div className="pt-8 flex justify-center">
+                                <button 
+                                    type="submit"
+                                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+                                >
+                                    Continue
+                                </button>
+                            </div>
+                        </form>
                     )}
 
                     {/* Step 2: Goals */}
                     {step === 2 && (
-                        <div>
-                            <h2 className="font-sora text-xl font-bold text-navy mb-1">What's your goal?</h2>
-                            <p className="text-xs text-gray-500 mb-6">Select all that apply — we'll personalize your experience.</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                {goals.map((goal) => (
-                                    <button
-                                        key={goal.id}
-                                        onClick={() => toggleItem(goal.id, selectedGoals, setSelectedGoals)}
-                                        className={`p-4 rounded-2xl border transition-all duration-300 flex items-start gap-3 ${
-                                            selectedGoals.includes(goal.id)
-                                                ? "border-red-500 bg-red-50/20 shadow-sm"
-                                                : "border-slate-205 bg-white hover:border-slate-300"
-                                        }`}
-                                    >
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                                            selectedGoals.includes(goal.id) ? "bg-red-500" : "bg-red-50"
-                                        }`}>
-                                            <goal.icon className={`w-5 h-5 ${selectedGoals.includes(goal.id) ? "text-white" : "text-red-500"}`} />
-                                        </div>
-                                        <div>
-                                            <div className={`font-bold text-sm ${selectedGoals.includes(goal.id) ? "text-navy" : "text-gray-700"}`}>{goal.label}</div>
-                                            <div className="text-xs text-gray-400 mt-0.5">{goal.desc}</div>
-                                        </div>
-                                    </button>
-                                ))}
+                        <div className="space-y-8">
+                            <div className="bg-slate-50 rounded-xl p-5 border border-slate-150 text-sm shadow-sm">
+                                <span className="text-slate-750 font-semibold text-slate-700">Choose all immigration goals that apply to you:</span>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                {goals.map((goal) => {
+                                    const isSelected = selectedGoals.includes(goal.id);
+                                    return (
+                                        <button
+                                            key={goal.id}
+                                            onClick={() => toggleItem(goal.id, selectedGoals, setSelectedGoals)}
+                                            className={`p-6 rounded-2xl border transition-all duration-300 flex items-start gap-4 text-left shadow-sm ${
+                                                isSelected
+                                                    ? "border-black bg-white ring-2 ring-black scale-[1.02]"
+                                                    : "border-slate-200 bg-white hover:border-slate-400"
+                                            }`}
+                                        >
+                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                                                isSelected ? "bg-black text-white" : "bg-slate-50 text-slate-700 border border-slate-200"
+                                            }`}>
+                                                <goal.icon className="w-6 h-6" />
+                                            </div>
+                                            <div>
+                                                <div className="font-bold text-base text-black">{goal.label}</div>
+                                                <div className="text-xs text-slate-400 mt-1 font-medium">{goal.desc}</div>
+                                            </div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="pt-8 border-t border-slate-100 flex items-center justify-between gap-4">
+                                <button 
+                                    type="button"
+                                    onClick={() => setStep(1)}
+                                    className="text-sm font-semibold text-slate-550 hover:text-black flex items-center gap-1 transition-colors"
+                                >
+                                    ← Back
+                                </button>
+
+                                <button 
+                                    type="button"
+                                    onClick={() => setStep(3)}
+                                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+                                >
+                                    Continue
+                                </button>
                             </div>
                         </div>
                     )}
 
                     {/* Step 3: Destinations */}
                     {step === 3 && (
-                        <div>
-                            <h2 className="font-sora text-xl font-bold text-navy mb-1">Where do you want to go?</h2>
-                            <p className="text-xs text-gray-500 mb-6">Choose your top destination countries.</p>
-                            <div className="flex flex-wrap gap-2.5 mb-6">
-                                {destinations.map((country) => (
-                                    <button
-                                        key={country}
-                                        onClick={() => toggleItem(country, selectedDests, setSelectedDests)}
-                                        className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-300 ${
-                                            selectedDests.includes(country)
-                                                ? "bg-red-500 text-white border-red-500 shadow-sm"
-                                                : "bg-white text-gray-600 border-slate-200 hover:border-slate-355"
-                                        }`}
-                                    >
-                                        {country}
-                                    </button>
-                                ))}
+                        <div className="space-y-8">
+                            <div className="bg-slate-50 rounded-xl p-5 border border-slate-150 text-sm shadow-sm">
+                                <span className="text-slate-750 font-semibold text-slate-700">Choose your top destination countries:</span>
                             </div>
+
+                            <div className="flex flex-wrap gap-3.5 justify-center py-6">
+                                {destinations.map((country) => {
+                                    const isSelected = selectedDests.includes(country);
+                                    return (
+                                        <button
+                                            key={country}
+                                            onClick={() => toggleItem(country, selectedDests, setSelectedDests)}
+                                            className={`px-5 py-3 rounded-xl text-sm font-semibold border transition-all duration-200 shadow-sm ${
+                                                isSelected
+                                                    ? "bg-black text-white border-black scale-105"
+                                                    : "bg-white text-slate-650 border-slate-250 hover:border-slate-400"
+                                            }`}
+                                        >
+                                            {country}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
                             {selectedDests.length > 0 && (
-                                <div className="bg-red-50/50 rounded-2xl p-4 border border-red-100 text-xs font-medium text-red-700">
+                                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 text-xs font-semibold text-slate-700 shadow-inner text-center">
                                     <strong>Great choice!</strong> We'll match you with experts specializing in{" "}
-                                    {selectedDests.slice(0, 3).join(", ")}{selectedDests.length > 3 ? ` and ${selectedDests.length - 3} more` : ""}.
+                                    <span className="text-black uppercase font-bold">{selectedDests.slice(0, 3).join(", ")}</span>
+                                    {selectedDests.length > 3 ? ` and ${selectedDests.length - 3} more` : ""}.
                                 </div>
                             )}
+
+                            <div className="pt-8 border-t border-slate-100 flex items-center justify-between gap-4">
+                                <button 
+                                    type="button"
+                                    onClick={() => setStep(2)}
+                                    className="text-sm font-semibold text-slate-550 hover:text-black flex items-center gap-1 transition-colors"
+                                >
+                                    ← Back
+                                </button>
+
+                                <button 
+                                    type="button"
+                                    onClick={() => {
+                                        localStorage.setItem("seeker_firstName", firstName);
+                                        localStorage.setItem("seeker_lastName", lastName);
+                                        localStorage.setItem("seeker_phone", phone);
+                                        localStorage.setItem("seeker_email", email);
+                                        localStorage.setItem("seeker_passportCountry", passportCountry);
+                                        localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
+                                        localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
+                                        setSubmitted(true);
+                                    }}
+                                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+                                >
+                                    Submit
+                                </button>
+                            </div>
                         </div>
                     )}
-
-                    {/* Navigation */}
-                    <div className="flex justify-between items-center mt-8 pt-6 border-t border-slate-100">
-                        {step > 1 ? (
-                            <button onClick={() => setStep(step - 1)} className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-navy transition-colors">
-                                <ArrowLeft className="w-4 h-4" /> Back
-                            </button>
-                        ) : (
-                            <div />
-                        )}
-                        {step < 3 ? (
-                            <button
-                                onClick={() => {
-                                    if (step === 1 && !emailVerified) {
-                                        setVerificationError("You must verify your email address to continue.");
-                                        return;
-                                    }
-                                    setVerificationError("");
-                                    setStep(step + 1);
-                                }}
-                                className="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-black transition-all active:scale-[0.97] flex items-center gap-2"
-                            >
-                                Continue <ArrowRight className="w-4 h-4" />
-                            </button>
-                        ) : (
-                            <button
-                                onClick={() => setSubmitted(true)}
-                                className="bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 transition-all active:scale-[0.97] flex items-center gap-2"
-                            >
-                                <CheckCircle className="w-4 h-4" /> Complete Registration
-                            </button>
-                        )}
-                    </div>
                 </div>
             </div>
+
+            <footer className="py-6 text-center text-xs text-slate-400 font-medium">
+                © 2026 VisaFormula. All rights reserved.
+            </footer>
         </div>
     );
 }

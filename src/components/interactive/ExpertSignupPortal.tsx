@@ -637,29 +637,65 @@ export function ExpertSignupPortal() {
           <main className="flex-grow p-8 overflow-y-auto space-y-8">
             
             <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-3xl">
-                {/* Profile Badge (Larger) */}
-                <div className="flex items-center gap-4 bg-white border border-slate-200/60 rounded-2xl px-6 py-4.5 shadow-sm min-w-[250px]">
-                  <div className="w-12 h-12 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center font-bold text-sm border border-slate-200 flex-shrink-0">
-                    {profilePhoto ? (
-                      <img src={profilePhoto} alt="expert avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      "XP"
-                    )}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-4xl">
+                {/* Profile Badge (Premium Style matching screenshot) */}
+                <div className="bg-white border border-slate-200/80 rounded-[28px] shadow-sm flex items-center overflow-hidden max-w-md w-full relative">
+                  {/* Top right gradient banner background */}
+                  <div className="absolute top-0 right-0 left-[35%] h-[45px] bg-gradient-to-br from-[#818CF8]/35 via-[#C084FC]/20 to-transparent rounded-bl-[40px] pointer-events-none" />
+                  
+                  {/* Left side: Avatar */}
+                  <div className="p-4 pr-2 flex-shrink-0 z-10">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-[24px] bg-slate-100 overflow-hidden border border-slate-150 flex items-center justify-center font-black text-xl text-slate-400 shadow-inner">
+                      {profilePhoto ? (
+                        <img src={profilePhoto} alt="expert avatar" className="w-full h-full object-cover" />
+                      ) : (
+                        "XP"
+                      )}
+                    </div>
                   </div>
-                  <div className="text-left">
-                    <div className="text-base font-semibold text-black leading-none">{businessName || "Apex Immigration"}</div>
-                    <span className="text-xs text-slate-400 font-bold uppercase mt-1.5 block">{consultantType}</span>
+
+                  {/* Right side: Info */}
+                  <div className="p-4 pl-3 flex flex-col justify-between flex-grow z-10">
+                    {/* Name and PRO Badge */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{businessName || "Apex Immigration"}</h2>
+                      <span className="inline-flex items-center gap-0.5 bg-[#4A72FF] text-white px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider">
+                        PRO <Sparkles className="w-2.5 h-2.5 fill-current text-white" />
+                      </span>
+                    </div>
+
+                    {/* Description/Location */}
+                    <p className="text-[11px] text-slate-500 font-semibold mt-1 leading-tight max-w-[200px]">
+                      {consultantType || "Visa Expert"} based in {officeAddress ? officeAddress.split(',')[0] : "Delhi, India"}
+                    </p>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2 mt-3">
+                      <button 
+                        type="button"
+                        onClick={() => setActiveTab("dashboard")}
+                        className="px-4 py-2 bg-[#111111] hover:bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all shadow-xs cursor-pointer"
+                      >
+                        Follow
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => setActiveTab("profile")}
+                        className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-black rounded-xl text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all shadow-xs cursor-pointer"
+                      >
+                        Get in touch
+                      </button>
+                    </div>
                   </div>
                 </div>
 
                 {/* Search Bar next to Profile */}
-                <div className="relative w-full sm:w-80">
+                <div className="relative w-full sm:w-80 flex-shrink-0">
                   <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input 
                     type="text"
                     placeholder="Search consultations, tasks, files..."
-                    className="w-full pl-11 pr-5 py-3.5 bg-white border border-slate-200 rounded-full text-xs font-semibold focus:border-black outline-none shadow-sm transition-all"
+                    className="w-full pl-11 pr-5 py-4 bg-white border border-slate-200 rounded-full text-xs font-semibold focus:border-black outline-none shadow-sm transition-all"
                   />
                 </div>
               </div>

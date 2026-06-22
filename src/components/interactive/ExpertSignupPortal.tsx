@@ -672,7 +672,7 @@ export function ExpertSignupPortal() {
                 </div>
 
                 {/* Search Bar next to Profile */}
-                <div className="relative w-full sm:w-80 flex-shrink-0">
+                <div className="relative w-full sm:w-[450px] flex-shrink-0">
                   <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input 
                     type="text"

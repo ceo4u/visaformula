@@ -585,11 +585,15 @@ export function ExpertSignupPortal() {
       ) : (
         <div className="flex-grow flex bg-[#f3f7fa] min-h-screen text-[#111111] antialiased animate-premium-fade">
           
-          <aside className="w-20 bg-white border-r border-slate-200/65 flex flex-col justify-between py-8 items-center flex-shrink-0">
-            <div className="flex flex-col items-center gap-10">
-              <div className="w-10 h-10 rounded-full border-4 border-black flex items-center justify-center font-bold text-lg">V</div>
+          <aside className="w-64 bg-white border-r border-slate-200/65 flex flex-col justify-between py-8 px-5 flex-shrink-0">
+            <div className="flex flex-col items-stretch gap-8">
+              {/* Logo / Branding */}
+              <div className="flex items-center gap-3 px-3">
+                <div className="w-9 h-9 rounded-full border-[3px] border-black flex items-center justify-center font-black text-base">V</div>
+                <span className="font-extrabold text-sm tracking-wider uppercase">VisaHub</span>
+              </div>
               
-              <nav className="flex flex-col gap-6">
+              <nav className="flex flex-col gap-2">
                 {[
                   { id: "dashboard", label: "Dashboard", icon: Layers },
                   { id: "profile", label: "Edit Profile", icon: User },
@@ -604,16 +608,19 @@ export function ExpertSignupPortal() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      title={tab.label}
-                      className={`p-3 rounded-2xl transition-all relative ${
+                      className={`flex items-center gap-3 px-5 py-3.5 rounded-full font-bold text-xs tracking-wide transition-all relative ${
                         isActive 
-                          ? "bg-black text-white shadow-md active:scale-95" 
-                          : "text-slate-400 hover:text-black hover:bg-slate-50"
+                          ? "bg-[#1C1C1E] text-white shadow-sm active:scale-[0.98]" 
+                          : "text-slate-700 hover:text-black hover:bg-slate-50"
                       }`}
                     >
-                      <IconComponent className="w-5 h-5" />
+                      <IconComponent className="w-4 h-4 flex-shrink-0" />
+                      <span>{tab.label}</span>
+                      
                       {tab.count !== undefined && tab.count > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-black text-white text-[8px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
+                        <span className={`absolute right-4 px-2 py-0.5 rounded-full text-[9px] font-black transition-all ${
+                          isActive ? "bg-white text-black" : "bg-slate-100 text-slate-700"
+                        }`}>
                           {tab.count}
                         </span>
                       )}
@@ -622,14 +629,14 @@ export function ExpertSignupPortal() {
                 })}
               </nav>
             </div>
-
-            <div className="flex flex-col gap-6">
+ 
+            <div className="px-2">
               <button 
                 onClick={() => setStep(1)} 
-                title="Log Out"
-                className="p-3 text-slate-400 hover:text-black hover:bg-slate-50 rounded-2xl transition-all"
+                className="flex items-center gap-3 px-5 py-3.5 text-slate-700 hover:text-red-600 hover:bg-red-50/50 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer"
               >
-                <LogOut className="w-5 h-5" />
+                <LogOut className="w-4 h-4" />
+                <span>Log Out</span>
               </button>
             </div>
           </aside>

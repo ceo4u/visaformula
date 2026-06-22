@@ -588,9 +588,9 @@ export function ExpertSignupPortal() {
           <aside className="w-64 bg-white border-r border-slate-200/65 flex flex-col justify-between py-8 px-5 flex-shrink-0">
             <div className="flex flex-col items-stretch gap-8">
               {/* Logo / Branding */}
-              <div className="flex items-center gap-3 px-3">
-                <div className="w-9 h-9 rounded-full border-[3px] border-black flex items-center justify-center font-black text-base">V</div>
-                <span className="font-extrabold text-sm tracking-wider uppercase">VisaHub</span>
+              <div className="flex items-center gap-2.5 px-3">
+                <div className="w-5.5 h-5.5 rounded-full border-[3.5px] border-black flex-shrink-0"></div>
+                <span className="font-extrabold text-black text-lg tracking-tight">VisaFormula</span>
               </div>
               
               <nav className="flex flex-col gap-2">

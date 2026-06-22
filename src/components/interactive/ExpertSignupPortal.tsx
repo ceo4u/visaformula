@@ -190,44 +190,46 @@ export function ExpertSignupPortal() {
       
       {step < 3 && (
         <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full border-4 border-black flex-shrink-0"></div>
-            <span className="font-bold text-black text-xl tracking-tight">VisaFormula</span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-5.5 h-5.5 rounded-full border-[3.5px] border-black flex-shrink-0"></div>
+            <span className="font-extrabold text-black text-xl tracking-tight">VisaFormula</span>
           </div>
-          <div className="text-base font-medium text-slate-500">
-            Already a member? <a href="/login" className="text-black font-bold hover:underline">Login</a>
+          <div className="text-sm font-semibold text-slate-500">
+            Already a member? <a href="/login" className="text-black font-extrabold hover:underline">Login</a>
           </div>
         </header>
       )}
 
       {step < 3 ? (
-        <div className="flex-grow flex flex-col justify-start py-10 px-6 max-w-4xl w-full mx-auto">
-          <div className="text-center my-8">
-            <h1 className="text-3xl md:text-4xl font-semibold text-black tracking-tight mb-3">Let's get you started</h1>
-            <p className="text-base text-slate-400 font-medium">Enter the details to get going</p>
+        <div className="flex-grow flex flex-col justify-start py-6 px-6 max-w-4xl w-full mx-auto">
+          <div className="text-center my-6">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-black tracking-tight mb-2">Let's get you started</h1>
+            <p className="text-sm text-slate-400 font-semibold">Enter your details to initialize your portal</p>
           </div>
 
-          <div className="flex items-center justify-center gap-8 my-10 font-sans">
+          <div className="flex items-center justify-center gap-8 my-8 font-sans">
             <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold bg-black text-white`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black ${
+                step > 1 ? "bg-emerald-500 text-white" : "bg-[#1C1C1E] text-white shadow-sm"
+              }`}>
                 {step > 1 ? "✓" : "1"}
               </div>
-              <span className={`text-base font-semibold ${step === 1 ? "text-black" : "text-slate-450"}`}>
+              <span className={`text-sm font-bold ${step === 1 ? "text-black" : "text-slate-400"}`}>
                 General Details
               </span>
             </div>
             
-            <div className={`h-0.5 w-16 md:w-24 ${step > 1 ? "bg-black" : "bg-slate-200"}`}></div>
+            <div className={`h-0.5 w-16 md:w-24 transition-all ${step > 1 ? "bg-emerald-500" : "bg-slate-200"}`}></div>
 
             <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${
                 step === 2 
-                  ? "bg-black text-white" 
-                  : "border-2 border-slate-350 text-slate-500"
+                  ? "bg-[#1C1C1E] text-white shadow-sm" 
+                  : "border border-slate-200 bg-white text-slate-400"
               }`}>
                 2
               </div>
-              <span className={`text-base font-semibold ${step === 2 ? "text-black" : "text-slate-450"}`}>
+              <span className={`text-sm font-bold ${step === 2 ? "text-black" : "text-slate-400"}`}>
                 Credentials & Service
               </span>
             </div>

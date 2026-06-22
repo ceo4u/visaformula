@@ -636,14 +636,11 @@ export function ExpertSignupPortal() {
 
           <main className="flex-grow p-8 overflow-y-auto space-y-8">
             
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-5">
-                <div>
-                  <span className="text-slate-400 text-xs font-bold uppercase tracking-wider block">Manage and track your global practice</span>
-                  <h1 className="text-3xl font-bold text-black tracking-tight mt-1">Expert Dashboard</h1>
-                </div>
-                <div className="flex items-center gap-3 bg-white border border-slate-200/60 rounded-2xl px-4 py-2 shadow-sm">
-                  <div className="w-9 h-9 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center font-bold text-xs border border-slate-200 flex-shrink-0">
+            <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-3xl">
+                {/* Profile Badge (Larger) */}
+                <div className="flex items-center gap-4 bg-white border border-slate-200/60 rounded-2xl px-6 py-4.5 shadow-sm min-w-[250px]">
+                  <div className="w-12 h-12 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center font-bold text-sm border border-slate-200 flex-shrink-0">
                     {profilePhoto ? (
                       <img src={profilePhoto} alt="expert avatar" className="w-full h-full object-cover" />
                     ) : (
@@ -651,14 +648,13 @@ export function ExpertSignupPortal() {
                     )}
                   </div>
                   <div className="text-left">
-                    <div className="text-xs font-semibold text-black leading-none">{businessName || "Apex Immigration"}</div>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase mt-1 block">{consultantType}</span>
+                    <div className="text-base font-semibold text-black leading-none">{businessName || "Apex Immigration"}</div>
+                    <span className="text-xs text-slate-400 font-bold uppercase mt-1.5 block">{consultantType}</span>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex items-center gap-4 flex-grow max-w-md md:ml-auto">
-                <div className="relative w-full">
+                {/* Search Bar next to Profile */}
+                <div className="relative w-full sm:w-80">
                   <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input 
                     type="text"
@@ -668,6 +664,7 @@ export function ExpertSignupPortal() {
                 </div>
               </div>
 
+              {/* Action buttons on the right */}
               <div className="flex items-center gap-3">
                 <button 
                   onClick={() => setShowAdModal(true)}

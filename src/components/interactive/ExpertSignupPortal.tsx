@@ -590,9 +590,14 @@ export function ExpertSignupPortal() {
           <aside className="w-64 bg-white border-r border-slate-200/65 flex flex-col justify-between py-8 px-5 flex-shrink-0">
             <div className="flex flex-col items-stretch gap-8">
               {/* Logo / Branding */}
-              <div className="flex items-center gap-2.5 px-3">
-                <div className="w-5.5 h-5.5 rounded-full border-[3.5px] border-black flex-shrink-0"></div>
-                <span className="font-extrabold text-black text-lg tracking-tight">VisaFormula</span>
+              <div className="flex flex-col gap-3 px-3">
+                <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-black transition-colors">
+                  <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
+                </a>
+                <div className="flex items-center gap-2.5 mt-1">
+                  <div className="w-5.5 h-5.5 rounded-full border-[3.5px] border-black flex-shrink-0"></div>
+                  <span className="font-extrabold text-black text-lg tracking-tight">VisaFormula</span>
+                </div>
               </div>
               
               <nav className="flex flex-col gap-2">

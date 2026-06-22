@@ -655,7 +655,7 @@ export function ExpertSignupPortal() {
                   </div>
 
                   {/* Right side: Info */}
-                  <div className="p-4 pl-3 flex flex-col justify-between flex-grow z-10">
+                  <div className="p-4 pl-3 flex flex-col justify-center flex-grow z-10">
                     {/* Name and PRO Badge */}
                     <div className="flex items-center gap-2 flex-wrap">
                       <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{businessName || "Apex Immigration"}</h2>
@@ -665,27 +665,9 @@ export function ExpertSignupPortal() {
                     </div>
 
                     {/* Description/Location */}
-                    <p className="text-[11px] text-slate-500 font-semibold mt-1 leading-tight max-w-[200px]">
+                    <p className="text-[11.5px] text-slate-500 font-semibold mt-1 leading-tight max-w-[220px]">
                       {consultantType || "Visa Expert"} based in {officeAddress ? officeAddress.split(',')[0] : "Delhi, India"}
                     </p>
-
-                    {/* Action Buttons */}
-                    <div className="flex items-center gap-2 mt-3">
-                      <button 
-                        type="button"
-                        onClick={() => setActiveTab("dashboard")}
-                        className="px-4 py-2 bg-[#111111] hover:bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all shadow-xs cursor-pointer"
-                      >
-                        Follow
-                      </button>
-                      <button 
-                        type="button"
-                        onClick={() => setActiveTab("profile")}
-                        className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-black rounded-xl text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all shadow-xs cursor-pointer"
-                      >
-                        Get in touch
-                      </button>
-                    </div>
                   </div>
                 </div>
 

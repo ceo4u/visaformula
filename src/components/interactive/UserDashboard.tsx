@@ -3,7 +3,7 @@ import {
     Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
     ArrowRight, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, Layers, MessageSquare, Settings, HelpCircle, Briefcase,
-    Video, User, LogOut, CheckSquare
+    Video, User, LogOut, CheckSquare, Sparkles
 } from "lucide-react";
 
 const destinations = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
@@ -54,6 +54,7 @@ export function UserDashboard() {
     const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
     const [selectedDests, setSelectedDests] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [activeTab, setActiveTab] = useState("dashboard");
 
     const [documents, setDocuments] = useState([
         { id: 1, label: "Passport scan", status: "uploaded", icon: "✅", bg: "bg-emerald-50/40 text-emerald-800 border-emerald-100" },
@@ -109,72 +110,99 @@ export function UserDashboard() {
     return (
         <div className="flex bg-[#f3f7fa] min-h-screen antialiased text-black">
 
-            {/* Narrow Left Sidebar */}
-            <aside className="w-20 bg-white border-r border-slate-200/60 flex flex-col items-center py-8 justify-between flex-shrink-0">
-                <div className="flex flex-col items-center gap-10">
-                    <div className="w-10 h-10 rounded-full border-4 border-black flex items-center justify-center font-bold text-lg">V</div>
+            {/* Redesigned Premium Sidebar Navigation */}
+            <aside className="w-64 bg-white border-r border-slate-200/65 flex flex-col justify-between py-8 px-5 flex-shrink-0">
+                <div className="flex flex-col items-stretch gap-8">
+                    {/* Logo / Branding */}
+                    <div className="flex items-center gap-2.5 px-3">
+                        <div className="w-5.5 h-5.5 rounded-full border-[3.5px] border-black flex-shrink-0"></div>
+                        <span className="font-extrabold text-black text-lg tracking-tight">VisaFormula</span>
+                    </div>
                     
-                    <nav className="flex flex-col gap-6">
-                        <button className="p-3 bg-black text-white rounded-2xl shadow-md transition-all active:scale-95">
-                            <Layers className="w-5 h-5" />
-                        </button>
-                        <button className="p-3 text-slate-400 hover:text-black hover:bg-slate-50 rounded-2xl transition-all">
-                            <Calendar className="w-5 h-5" />
-                        </button>
-                        <button className="p-3 text-slate-400 hover:text-black hover:bg-slate-50 rounded-2xl transition-all">
-                            <Briefcase className="w-5 h-5" />
-                        </button>
-                        <button className="p-3 text-slate-400 hover:text-black hover:bg-slate-50 rounded-2xl transition-all">
-                            <BookOpen className="w-5 h-5" />
-                        </button>
-                        <button className="p-3 text-slate-400 hover:text-black hover:bg-slate-50 rounded-2xl transition-all">
-                            <Shield className="w-5 h-5" />
-                        </button>
-                        <button className="p-3 text-slate-400 hover:text-black hover:bg-slate-50 rounded-2xl transition-all">
-                            <MessageSquare className="w-5 h-5" />
-                        </button>
+                    <nav className="flex flex-col gap-2">
+                        {[
+                            { id: "dashboard", label: "Dashboard", icon: Layers },
+                            { id: "consultations", label: "Consultations", icon: Calendar },
+                            { id: "cases", label: "Active Cases", icon: Briefcase },
+                            { id: "training", label: "IELTS Coaching", icon: BookOpen },
+                            { id: "upgrade", label: "Upgrade Tier", icon: Shield },
+                            { id: "inquiries", label: "Inquiries", icon: MessageSquare }
+                        ].map(tab => {
+                            const isActive = activeTab === tab.id;
+                            const IconComponent = tab.icon;
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={`flex items-center gap-3 px-5 py-3.5 rounded-full font-bold text-xs tracking-wide transition-all relative ${
+                                        isActive 
+                                            ? "bg-[#1C1C1E] text-white shadow-sm active:scale-[0.98]" 
+                                            : "text-slate-700 hover:text-black hover:bg-slate-50"
+                                    }`}
+                                >
+                                    <IconComponent className="w-4 h-4 flex-shrink-0" />
+                                    <span>{tab.label}</span>
+                                </button>
+                            );
+                        })}
                     </nav>
                 </div>
 
-                <div className="flex flex-col gap-6">
-                    <button className="p-3 text-slate-400 hover:text-black hover:bg-slate-50 rounded-2xl transition-all">
-                        <HelpCircle className="w-5 h-5" />
-                    </button>
-                    <button className="p-3 text-slate-400 hover:text-black hover:bg-slate-50 rounded-2xl transition-all">
-                        <Settings className="w-5 h-5" />
+                <div className="px-2">
+                    <button 
+                        onClick={() => window.location.href = '/login'} 
+                        className="flex items-center gap-3 px-5 py-3.5 text-slate-700 hover:text-red-600 hover:bg-red-50/50 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer"
+                    >
+                        <LogOut className="w-4 h-4" />
+                        <span>Log Out</span>
                     </button>
                 </div>
             </aside>
 
             {/* Main Content Area */}
             <main className="flex-grow p-8 overflow-y-auto space-y-8">
-                {/* Top Header Bar */}
-                <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <span className="text-slate-400 text-xs font-bold uppercase tracking-wider block">Manage and track your visa process</span>
-                        <h1 className="text-3xl font-bold text-black tracking-tight mt-1">Seeker Dashboard</h1>
-                    </div>
+                {/* Redesigned Premium Header Bar */}
+                <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-4xl">
+                        {/* Seeker Profile Card */}
+                        <div className="bg-white border border-slate-200/80 rounded-[28px] shadow-sm flex items-center overflow-hidden max-w-md w-full relative">
+                            {/* Top right gradient banner background */}
+                            <div className="absolute top-0 right-0 left-[35%] h-[45px] bg-gradient-to-br from-[#818CF8]/35 via-[#C084FC]/20 to-transparent rounded-bl-[40px] pointer-events-none" />
+                            
+                            {/* Left side: Avatar */}
+                            <div className="p-4 pr-2 flex-shrink-0 z-10">
+                                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-[24px] bg-slate-100 overflow-hidden border border-slate-150 flex items-center justify-center font-black text-xl text-slate-400 shadow-inner">
+                                    {firstName.substring(0, 2).toUpperCase()}
+                                </div>
+                            </div>
 
-                    <div className="flex items-center gap-4 flex-grow max-w-md md:ml-auto">
-                        <div className="relative w-full">
+                            {/* Right side: Info */}
+                            <div className="p-4 pl-3 flex flex-col justify-center flex-grow z-10">
+                                {/* Name and Badge */}
+                                <div className="flex items-center gap-2 flex-wrap">
+                                    <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{firstName} {lastName || "Sharma"}</h2>
+                                    <span className="inline-flex items-center gap-0.5 bg-[#4A72FF] text-white px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider">
+                                        MEMBER <Sparkles className="w-2.5 h-2.5 fill-current text-white" />
+                                    </span>
+                                </div>
+
+                                {/* Description/Location */}
+                                <p className="text-[11.5px] text-slate-500 font-semibold mt-1 leading-tight max-w-[220px]">
+                                    Passport holder from {passportCountry || "India"}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Search Bar next to Profile */}
+                        <div className="relative w-full sm:w-[450px] flex-shrink-0">
                             <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                             <input 
                                 type="text"
-                                placeholder="Search consultants, tasks, files..."
+                                placeholder="Search consultations, tasks, files..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-11 pr-5 py-3.5 bg-white border border-slate-200 rounded-full text-xs font-semibold focus:border-black outline-none shadow-sm transition-all"
+                                className="w-full pl-11 pr-5 py-4 bg-white border border-slate-200 rounded-full text-xs font-semibold focus:border-black outline-none shadow-sm transition-all"
                             />
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center font-bold text-sm text-black border border-slate-200">
-                            {firstName.substring(0, 2).toUpperCase()}
-                        </div>
-                        <div className="hidden lg:block text-left">
-                            <div className="text-xs font-semibold text-black leading-none">{firstName} {lastName}</div>
-                            <span className="text-[10px] text-slate-400 font-bold uppercase mt-1 block">{passportCountry || "Client"}</span>
                         </div>
                     </div>
                 </header>

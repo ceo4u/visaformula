@@ -81,7 +81,6 @@ const expertDropdownItems = [
                     type="text"
                 />
             </div>
-            
             <!-- Search Button -->
             <button id="search-btn" class="bg-black hover:bg-slate-900 px-6 h-full flex items-center justify-center transition-all shrink-0">
                 <Search className="w-4 h-4" color="white" strokeWidth={3} />
@@ -90,8 +89,8 @@ const expertDropdownItems = [
 
         <!-- Right Portal Navigation & Buttons -->
         <div class="hidden lg:flex items-center gap-3 xl:gap-5 shrink-0">
-            <a href="/agents" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300">
-                Our Agents
+            <a href="/announcements" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300">
+                Announcements
             </a>
             <a href="/support" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300">
                 Contact
@@ -624,9 +623,9 @@ const expertDropdownItems = [
             Legal Assistance
         </a>
 
-        <a href="/agents"
-            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/agents" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
-            Our Agents
+        <a href="/announcements"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/announcements" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Announcements
         </a>
 
         <a href="/support"

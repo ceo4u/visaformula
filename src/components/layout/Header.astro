@@ -70,12 +70,12 @@ const isEventsPage = pathname?.startsWith('/events') || pathname?.startsWith('/t
         <span class={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full bg-[#0C1A2E] transition-all duration-200 ${pathname?.startsWith('/visa') ? 'w-full' : 'w-0 group-hover:w-1/2'}`}></span>
       </a>
 
-      <!-- Events / Tours -->
+      <!-- Visit Visa -->
       <a href="/tours"
-        class={`vf-nav-item flex flex-col items-center gap-1.5 pb-3 px-3 xl:px-5 h-full relative transition-colors duration-200 group ${isEventsPage ? 'active' : ''}`}>
-        <div class="text-[34px] leading-none group-hover:scale-110 transition-transform duration-200 select-none">🎟️</div>
-        <span class="text-[13px] font-semibold text-[#0C1A2E] group-hover:text-[#0EA5E9] whitespace-nowrap transition-colors duration-200" style="font-family:'Inter',sans-serif;">Events</span>
-        <span class={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full bg-[#0C1A2E] transition-all duration-200 ${isEventsPage ? 'w-full' : 'w-0 group-hover:w-1/2'}`}></span>
+        class={`vf-nav-item flex flex-col items-center gap-1.5 pb-3 px-3 xl:px-5 h-full relative transition-colors duration-200 group ${pathname?.startsWith('/tours') ? 'active' : ''}`}>
+        <div class="text-[34px] leading-none group-hover:scale-110 transition-transform duration-200 select-none">✈️</div>
+        <span class="text-[13px] font-semibold text-[#0C1A2E] group-hover:text-[#0EA5E9] whitespace-nowrap transition-colors duration-200" style="font-family:'Inter',sans-serif;">Visit Visa</span>
+        <span class={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full bg-[#0C1A2E] transition-all duration-200 ${pathname?.startsWith('/tours') ? 'w-full' : 'w-0 group-hover:w-1/2'}`}></span>
       </a>
 
     </nav>
@@ -231,10 +231,10 @@ const isEventsPage = pathname?.startsWith('/events') || pathname?.startsWith('/t
         </div>
       </a>
       <a href="/tours" class="flex items-center gap-3 px-5 py-4 text-[#0C1A2E] hover:bg-gray-50 transition-colors">
-        <span class="text-2xl">🎟️</span>
+        <span class="text-2xl">✈️</span>
         <div>
-          <div class="text-[14px] font-bold">Events</div>
-          <div class="text-[11px] text-gray-400">Tours, fairs & exhibitions</div>
+          <div class="text-[14px] font-bold">Visit Visa</div>
+          <div class="text-[11px] text-gray-400">Visitor visa & tours</div>
         </div>
       </a>
       <a href="/announcements" class="flex items-center gap-3 px-5 py-4 text-[#0C1A2E] hover:bg-gray-50 transition-colors">

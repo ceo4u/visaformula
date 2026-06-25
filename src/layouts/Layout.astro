@@ -79,7 +79,7 @@ const isTransparentHeaderPage = isHome || isJobs || isTours || isEvents;
 </head>
 <body class="font-montserrat antialiased bg-white selection:bg-primary/20 selection:text-primary min-h-screen flex flex-col overflow-x-hidden">
   {!hideHeader && <Header />}
-  <main class={`flex-grow ${isTransparentHeaderPage || hideHeader ? "" : "pt-20 lg:pt-32"}`}>
+  <main class={`flex-grow ${isTransparentHeaderPage || hideHeader ? "" : "pt-24 lg:pt-40"}`}>
     <slot />
   </main>
   {!hideFooter && <Footer />}

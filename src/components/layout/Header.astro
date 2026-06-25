@@ -1,6 +1,7 @@
 ---
-// src/components/layout/Header.astro
 import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake } from 'lucide-react';
+import { Logo } from '../navbar/logo';
+
 
 const pathname = Astro.url.pathname;
 
@@ -49,17 +50,7 @@ const supportiveServicesItems = [
     <!-- Top Row: Logo + Yelp-Style Split Search Bar + User Portal Links -->
     <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-20 gap-4">
         
-        <a href="/" class="flex items-center gap-2 group shrink-0">
-            <div id="logo-icon-container" class="w-9 h-9 bg-black border border-black text-white rounded-xl flex items-center justify-center group-hover:rotate-12 transition-all duration-300">
-                <svg id="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 transition-colors duration-300">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                    <path d="M2 12h20"/>
-                </svg>
-            </div>
-            <span id="logo-text" class="font-opensans text-2xl font-extrabold tracking-tight text-navy transition-colors duration-300">VisaFormula</span>
-            <span id="logo-dot" class="w-2 h-2 bg-black rounded-full animate-pulse" />
-        </a>
+        <Logo theme="light" />
 
         <!-- Split Yelp-style Search Bar (Desktop Only) -->
         <div id="search-bar" class="hidden lg:flex flex-1 max-w-md xl:max-w-xl mx-4 xl:mx-8 bg-gray-50/50 rounded-xl flex-row items-center h-12 overflow-hidden border border-gray-200 focus-within:border-black focus-within:bg-white focus-within:shadow-md transition-all duration-200">

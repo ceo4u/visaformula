@@ -1,382 +1,911 @@
 ---
 // src/components/layout/Header.astro
+import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake } from 'lucide-react';
+
 const pathname = Astro.url.pathname;
 
-const isExplorePage = pathname === '/' || pathname?.startsWith('/find-experts') || pathname?.startsWith('/apply-visa');
-const isEventsPage = pathname?.startsWith('/events') || pathname?.startsWith('/tours');
+const tourDropdownItems = [
+    { title: "Holiday Packages", desc: "Visa + hotel + itinerary", href: "/tours?category=holiday", icon: Umbrella, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Sport Tours", desc: "Live events + stadium visits", href: "/tours?category=sports", icon: Trophy, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Cruises", desc: "Ocean & river voyages", href: "/tours?category=cruises", icon: Ship, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Entertainment Events", desc: "Concerts, shows & festivals", href: "/tours?category=events", icon: Music, iconColor: "text-rose-500", bg: "bg-rose-50" },
+    { title: "E-visas / Visa Free Travel", desc: "Fast-track electronic visas & visa-on-arrival guide templates.", href: "/apply-visa?type=evisa", icon: Plane, iconColor: "text-blue-500", bg: "bg-blue-50" },
+    { title: "Custom Tour Packages", desc: "Tailored international itineraries, sports tours & vacation deals.", href: "/tours?category=custom", icon: Compass, iconColor: "text-sky-500", bg: "bg-sky-50" }
+];
+
+const eventDropdownItems = [
+    { title: "Exhibitions", desc: "Trade shows & expos worldwide", href: "/events/exhibitions", icon: Globe, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Universities Fairs", desc: "Meet top universities directly", href: "/events/university-fairs", icon: GraduationCap, iconColor: "text-red-500", bg: "bg-red-50" }
+];
+
+const servicesDropdownItems = [
+    { title: "Visa Documentation Filing", desc: "Expert check & filing of files", href: "/visa-documentation", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Visa Form Filing", desc: "Complete support for application forms", href: "/visa-form-filing", icon: FileText, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "VFS Appointment", desc: "Schedule and slot booking support", href: "/vfs-appointment", icon: Calendar, iconColor: "text-rose-500", bg: "bg-rose-50" },
+    { title: "Visa Form Fillers", desc: "Error-free application drafting and bio-data sheet execution.", href: "/services/form-fillers", icon: PenLine, iconColor: "text-indigo-500", bg: "bg-indigo-50" },
+    { title: "Travel Insurance Providers", desc: "Mandatory international travel health cover and trip insurance.", href: "/services/travel-insurance", icon: HeartHandshake, iconColor: "text-rose-500", bg: "bg-rose-50" },
+    { title: "Airfares Booking", desc: "Flight itinerary reservations for immigration documentation.", href: "/services/airfares", icon: Plane, iconColor: "text-purple-500", bg: "bg-purple-50" }
+];
+
+const expertDropdownItems = [
+    { title: "Student Visa Experts", desc: "Top university admission guides", href: "/find-experts?category=student", icon: GraduationCap, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Work & Job Visa Experts", desc: "Work permit & job offer assistance", href: "/find-experts?category=work", icon: Briefcase, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "PR Agencies", desc: "Express Entry & permanent residency", href: "/find-experts?category=pr", icon: Compass, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Tourist Visa Agents", desc: "Visitor visa & holiday packages", href: "/find-experts?category=tourist", icon: Umbrella, iconColor: "text-red-500", bg: "bg-red-50" },
+    { title: "Canada Specialists", desc: "Express Entry, PNP & study visas", href: "/find-experts?country=Canada", icon: MapPin, iconColor: "text-rose-500", bg: "bg-rose-50" },
+    { title: "US Immigration Lawyers", desc: "H-1B, L-1 & green card advisors", href: "/find-experts?country=USA", icon: Scale, iconColor: "text-rose-500", bg: "bg-rose-50" },
+    { title: "UK Consultants", desc: "UK student & work sponsorship visas", href: "/find-experts?country=UK", icon: Map, iconColor: "text-rose-500", bg: "bg-rose-50" },
+    { title: "Schengen / Europe Experts", desc: "Schengen visitor & European blue cards", href: "/find-experts?country=Schengen", icon: Globe, iconColor: "text-rose-500", bg: "bg-rose-50" }
+];
 ---
 
-<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-100 transition-all duration-300">
-
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- MAIN HEADER ROW                                      -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div class="max-w-[1200px] mx-auto px-5 sm:px-8 h-[72px] flex items-center gap-6">
-
-    <!-- LEFT: Logo -->
-    <a href="/" class="flex flex-col shrink-0 group select-none" style="text-decoration:none;">
-      <div class="flex items-center gap-0">
-        <span class="font-black text-[20px] tracking-[-1px] text-[#0C1A2E] group-hover:text-[#0EA5E9] transition-colors duration-200" style="font-family:'Inter',sans-serif;">VISA</span>
-        <!-- Arrow icon like Atlys -->
-        <svg class="w-4 h-4 mx-0.5 text-[#0EA5E9]" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-        </svg>
-        <span class="font-black text-[20px] tracking-[-1px] text-[#0C1A2E] group-hover:text-[#0EA5E9] transition-colors duration-200" style="font-family:'Inter',sans-serif;">FORMULA</span>
-      </div>
-      <span class="text-[8px] font-bold tracking-[1.5px] text-[#0EA5E9] uppercase ml-0.5" style="font-family:'Inter',sans-serif;">Global Visa Marketplace</span>
-    </a>
-
-    <!-- DIVIDER -->
-    <div class="hidden sm:block w-px h-9 bg-gray-200 shrink-0"></div>
-
-    <!-- TRUST BADGE -->
-    <div class="hidden sm:flex items-center gap-2 shrink-0">
-      <div class="w-8 h-8 rounded-full border border-[#0EA5E9]/30 bg-[#EFF9FF] flex items-center justify-center shrink-0">
-        <svg class="w-4 h-4 text-[#0EA5E9]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          <path d="M9 12l2 2 4-4"/>
-        </svg>
-      </div>
-      <div class="leading-tight">
-        <div class="text-[12px] font-bold text-[#0C1A2E]"><span class="text-[#0EA5E9]">Visas</span> On Time</div>
-        <div class="text-[11px] font-semibold text-[#0EA5E9]">Guaranteed</div>
-      </div>
-    </div>
-
-    <!-- CENTER: Nav Icons -->
-    <nav class="hidden md:flex items-end gap-2 xl:gap-6 flex-1 justify-center h-full pt-2">
-
-      <!-- Find Expert / Explore -->
-      <a href="/find-experts"
-        class={`vf-nav-item flex flex-col items-center gap-1.5 pb-3 px-3 xl:px-5 h-full relative transition-colors duration-200 group ${isExplorePage ? 'active' : ''}`}>
-        <div class="text-[34px] leading-none group-hover:scale-110 transition-transform duration-200 select-none">🎓</div>
-        <span class="text-[13px] font-semibold text-[#0C1A2E] group-hover:text-[#0EA5E9] whitespace-nowrap transition-colors duration-200" style="font-family:'Inter',sans-serif;">Find Expert</span>
-        <span class={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full bg-[#0C1A2E] transition-all duration-200 ${isExplorePage ? 'w-full' : 'w-0 group-hover:w-1/2'}`}></span>
-      </a>
-
-      <!-- Explore Visa -->
-      <a href="/apply-visa"
-        class={`vf-nav-item flex flex-col items-center gap-1.5 pb-3 px-3 xl:px-5 h-full relative transition-colors duration-200 group ${pathname === '/apply-visa' ? 'active' : ''}`}>
-        <div class="text-[34px] leading-none group-hover:scale-110 transition-transform duration-200 select-none">✈️</div>
-        <span class="text-[13px] font-semibold text-[#0C1A2E] group-hover:text-[#0EA5E9] whitespace-nowrap transition-colors duration-200" style="font-family:'Inter',sans-serif;">Explore Visa</span>
-        <span class={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full bg-[#0C1A2E] transition-all duration-200 ${pathname === '/apply-visa' ? 'w-full' : 'w-0 group-hover:w-1/2'}`}></span>
-      </a>
-
-      <!-- Apply Visa -->
-      <a href="/visa-documentation"
-        class={`vf-nav-item flex flex-col items-center gap-1.5 pb-3 px-3 xl:px-5 h-full relative transition-colors duration-200 group ${pathname?.startsWith('/visa') ? 'active' : ''}`}>
-        <div class="text-[34px] leading-none group-hover:scale-110 transition-transform duration-200 select-none">📋</div>
-        <span class="text-[13px] font-semibold text-[#0C1A2E] group-hover:text-[#0EA5E9] whitespace-nowrap transition-colors duration-200" style="font-family:'Inter',sans-serif;">Apply Visa</span>
-        <span class={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full bg-[#0C1A2E] transition-all duration-200 ${pathname?.startsWith('/visa') ? 'w-full' : 'w-0 group-hover:w-1/2'}`}></span>
-      </a>
-
-      <!-- Visit Visa -->
-      <a href="/tours"
-        class={`vf-nav-item flex flex-col items-center gap-1.5 pb-3 px-3 xl:px-5 h-full relative transition-colors duration-200 group ${pathname?.startsWith('/tours') ? 'active' : ''}`}>
-        <div class="text-[34px] leading-none group-hover:scale-110 transition-transform duration-200 select-none">✈️</div>
-        <span class="text-[13px] font-semibold text-[#0C1A2E] group-hover:text-[#0EA5E9] whitespace-nowrap transition-colors duration-200" style="font-family:'Inter',sans-serif;">Visit Visa</span>
-        <span class={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] rounded-full bg-[#0C1A2E] transition-all duration-200 ${pathname?.startsWith('/tours') ? 'w-full' : 'w-0 group-hover:w-1/2'}`}></span>
-      </a>
-
-    </nav>
-
-    <!-- RIGHT: Search + User -->
-    <div class="hidden sm:flex items-center gap-2.5 ml-auto shrink-0">
-      <!-- Search Country -->
-      <div id="search-bar" class="flex items-center gap-2 bg-white border border-gray-200 hover:border-gray-300 focus-within:border-[#0EA5E9] focus-within:shadow-[0_0_0_3px_rgba(14,165,233,0.1)] rounded-full px-4 py-2.5 transition-all duration-200 w-[160px] xl:w-[200px] cursor-pointer">
-        <svg class="w-4 h-4 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <input
-          id="search-input-query"
-          type="text"
-          placeholder="Search Country"
-          class="bg-transparent border-none outline-none text-[13px] font-medium text-gray-700 placeholder:text-gray-400 w-full"
-          style="font-family:'Inter',sans-serif;"
-        />
-      </div>
-
-      <!-- User Avatar -->
-      <a href="/login" id="login-btn" class="w-9 h-9 rounded-full border border-gray-200 hover:border-gray-300 bg-gray-50 hover:bg-gray-100 flex items-center justify-center transition-all duration-200 shrink-0">
-        <svg class="w-[18px] h-[18px] text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-        </svg>
-      </a>
-    </div>
-
-    <!-- MOBILE: Hamburger -->
-    <button id="mobile-menu-btn" class="sm:hidden ml-auto p-2 rounded-xl hover:bg-gray-100 transition-colors">
-      <svg id="menu-icon" class="w-6 h-6 text-[#0C1A2E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-      <svg id="close-icon" class="w-6 h-6 text-[#0C1A2E] hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- FILTER PILL ROW (Atlys-style)                        -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="filter-row" class="hidden md:block border-t border-gray-100 bg-white py-3">
-    <div class="max-w-[1200px] mx-auto px-5 sm:px-8">
-      <!-- Single pill card with 4 filters -->
-      <div class="flex items-center bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm w-full max-w-[800px] mx-auto" style="height:56px;">
-
-        <!-- Filter 1: Expert Type -->
-        <button id="filter-expert" class="flex-1 flex items-center gap-2.5 px-5 h-full hover:bg-gray-50 transition-colors duration-150 group border-r border-gray-200 text-left">
-          <div class="w-7 h-7 rounded-full bg-[#22C55E] flex items-center justify-center shrink-0">
-            <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-            </svg>
-          </div>
-          <div class="min-w-0">
-            <div class="text-[10px] font-semibold text-gray-400 leading-none mb-0.5">Expert type:</div>
-            <div class="flex items-center gap-1">
-              <span class="text-[13px] font-bold text-[#0C1A2E] leading-none whitespace-nowrap">All Experts</span>
-              <svg class="w-3 h-3 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white border-b border-red-100 shadow-sm transition-all duration-300">
+    <!-- Top Row: Logo + Yelp-Style Split Search Bar + User Portal Links -->
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-20 gap-4">
+        
+        <a href="/" class="flex items-center gap-2 group shrink-0">
+            <div id="logo-icon-container" class="w-9 h-9 bg-black border border-black text-white rounded-xl flex items-center justify-center group-hover:rotate-12 transition-all duration-300">
+                <svg id="logo-icon-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 transition-colors duration-300">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                    <path d="M2 12h20"/>
+                </svg>
             </div>
-          </div>
-        </button>
+            <span id="logo-text" class="font-opensans text-2xl font-extrabold tracking-tight text-navy transition-colors duration-300">VisaFormula</span>
+            <span id="logo-dot" class="w-2 h-2 bg-black rounded-full animate-pulse" />
+        </a>
 
-        <!-- Filter 2: Visa Type -->
-        <button id="filter-visa" class="flex-1 flex items-center gap-2.5 px-5 h-full hover:bg-gray-50 transition-colors duration-150 group border-r border-gray-200 text-left">
-          <div class="w-7 h-7 rounded-full bg-[#0EA5E9] flex items-center justify-center shrink-0">
-            <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
-            </svg>
-          </div>
-          <div class="min-w-0">
-            <div class="text-[10px] font-semibold text-gray-400 leading-none mb-0.5">Type:</div>
-            <div class="flex items-center gap-1">
-              <span class="text-[13px] font-bold text-[#0C1A2E] leading-none whitespace-nowrap">All Visa Types</span>
-              <svg class="w-3 h-3 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <!-- Split Yelp-style Search Bar (Desktop Only) -->
+        <div id="search-bar" class="hidden lg:flex flex-1 max-w-md xl:max-w-xl mx-4 xl:mx-8 bg-gray-50/50 rounded-xl flex-row items-center h-12 overflow-hidden border border-gray-200 focus-within:border-black focus-within:bg-white focus-within:shadow-md transition-all duration-200">
+            <!-- Search Query Portion -->
+            <div class="flex items-center px-4 flex-[1.2] h-full">
+                <Search class="w-4 h-4 text-gray-400 mr-2.5 shrink-0" />
+                <input
+                    id="search-input-query"
+                    class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+                    placeholder="Student visa, work permits, experts..."
+                    type="text"
+                />
             </div>
-          </div>
-        </button>
-
-        <!-- Filter 3: Country -->
-        <button id="filter-country" class="flex-1 flex items-center gap-2.5 px-5 h-full hover:bg-gray-50 transition-colors duration-150 group border-r border-gray-200 text-left">
-          <div class="w-7 h-7 rounded-full bg-[#F97316] flex items-center justify-center shrink-0">
-            <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </svg>
-          </div>
-          <div class="min-w-0">
-            <div class="text-[10px] font-semibold text-gray-400 leading-none mb-0.5">Country:</div>
-            <div class="flex items-center gap-1">
-              <span class="text-[13px] font-bold text-[#0C1A2E] leading-none whitespace-nowrap">Any Country</span>
-              <svg class="w-3 h-3 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            
+            <!-- Split Vertical Line -->
+            <div id="search-divider" class="w-[1.5px] h-6 bg-gray-200 shrink-0 transition-colors duration-300" />
+            
+            <!-- Location Portion -->
+            <div class="flex items-center px-4 flex-1 h-full">
+                <MapPin id="search-loc-icon" class="w-4 h-4 text-black mr-2 shrink-0 transition-colors duration-300" />
+                <input
+                    id="search-input-location"
+                    class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+                    placeholder="Hyderabad, Delhi, USA..."
+                    type="text"
+                />
             </div>
-          </div>
-        </button>
+            
+            <!-- Search Button -->
+            <button id="search-btn" class="bg-black hover:bg-slate-900 px-6 h-full flex items-center justify-center transition-all shrink-0">
+                <Search className="w-4 h-4" color="white" strokeWidth={3} />
+            </button>
+        </div>
 
-        <!-- Filter 4: Processing Time -->
-        <button id="filter-time" class="flex-1 flex items-center gap-2.5 px-5 h-full hover:bg-gray-50 transition-colors duration-150 group text-left">
-          <div class="w-7 h-7 rounded-full bg-[#EF4444] flex items-center justify-center shrink-0">
-            <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-            </svg>
-          </div>
-          <div class="min-w-0">
-            <div class="text-[10px] font-semibold text-gray-400 leading-none mb-0.5">Processing:</div>
-            <div class="flex items-center gap-1">
-              <span class="text-[13px] font-bold text-[#0C1A2E] leading-none whitespace-nowrap">Any Time</span>
-              <svg class="w-3 h-3 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <!-- Right Portal Navigation & Buttons -->
+        <div class="hidden lg:flex items-center gap-3 xl:gap-5 shrink-0">
+            <a href="/agents" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300">
+                Our Agents
+            </a>
+            <a href="/support" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300">
+                Contact
+            </a>
+            
+            <div class="w-[1.5px] h-4 bg-red-100"></div>
+
+            <div class="flex items-center gap-1.5 xl:gap-2">
+                <a href="/login" id="login-btn" class="font-opensans text-[14px] font-bold text-navy hover:text-black border border-gray-200 hover:border-black px-4 py-2.5 rounded-xl transition-all duration-300">
+                    Log In
+                </a>
+                <a href="/signup" class="font-opensans bg-black hover:bg-slate-900 text-white font-bold text-[14px] px-4 py-2.5 rounded-xl hover:shadow-lg hover:shadow-gray-200 transition-all active:scale-[0.97]">
+                    Sign Up
+                </a>
             </div>
-          </div>
+        </div>
+
+        <!-- Mobile Menu Toggler -->
+        <button id="mobile-menu-btn" class="lg:hidden ml-auto p-2 hover:bg-gray-100 rounded-xl transition-colors">
+            <Menu id="menu-icon" class="w-6 h-6 text-navy" />
+            <X id="close-icon" class="w-6 h-6 text-navy hidden" />
         </button>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!-- MOBILE DRAWER                                        -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <div id="mobile-menu-drawer" class="hidden sm:hidden bg-white border-t border-gray-100 shadow-xl">
-
-    <!-- Mobile Search -->
-    <div class="p-4 border-b border-gray-100">
-      <div class="flex items-center bg-gray-50 rounded-xl px-4 py-3 border border-gray-200 gap-2">
-        <svg class="w-4 h-4 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <input id="mobile-search-input-query" class="flex-1 bg-transparent outline-none text-sm placeholder:text-gray-400 font-medium" placeholder="Search Country..." type="text" />
-      </div>
     </div>
 
-    <!-- Mobile Nav -->
-    <div class="flex flex-col divide-y divide-gray-50">
-      <a href="/find-experts" class="flex items-center gap-3 px-5 py-4 text-[#0C1A2E] hover:bg-gray-50 transition-colors">
-        <span class="text-2xl">🎓</span>
-        <div>
-          <div class="text-[14px] font-bold">Find Expert</div>
-          <div class="text-[11px] text-gray-400">Student, Work, Visit, PR</div>
+    <!-- Bottom Row: Premium Category Navigation Bar (Desktop Only) -->
+    <div id="category-bar" class="hidden lg:block border-t border-red-50 bg-red-50/20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 xl:px-6 h-12 flex items-center justify-between gap-2">
+            
+            <!-- Left Side: Nav Links -->
+            <div class="flex items-center gap-3 xl:gap-6 h-full">
+                <!-- Find Experts Dropdown (Tourist Visa style) -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/find-experts") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Find Experts
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Menu Card -->
+                    <div class="absolute top-full left-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                {expertDropdownItems.map((item) => {
+                                    const IconComponent = item.icon;
+                                    return (
+                                        <a 
+                                            href={item.href}
+                                            class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
+                                        >
+                                            <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply Visa Link -->
+                <a href="/apply-visa"
+                    class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap ${pathname === "/apply-visa" ? "text-[#ef4444]" : "text-navy hover:text-[#ef4444]"}`}>
+                    <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse"></span>
+                    Apply Visa
+                </a>
+
+                <!-- Tourist Visa Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/tours") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Tourist Visa
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Menu Card -->
+                    <div class="absolute top-full left-0 pt-2 w-[450px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                {tourDropdownItems.map((item) => {
+                                    const IconComponent = item.icon;
+                                    return (
+                                        <a 
+                                            href={item.href}
+                                            class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
+                                        >
+                                            <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Events Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/events") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Event Visa
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Menu Card -->
+                    <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
+                            <div class="flex flex-col gap-2">
+                                {eventDropdownItems.map((item) => {
+                                    const IconComponent = item.icon;
+                                    return (
+                                        <a 
+                                            href={item.href}
+                                            class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
+                                        >
+                                            <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Visa Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/training") || pathname?.startsWith("/student") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Student Visa
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Card -->
+                    <div class="absolute top-full left-0 pt-2 w-[460px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+
+                                <!-- Find Consultants -->
+                                <a href="/find-experts?category=student" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                        <polyline points="16 11 18 13 22 9"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Find Consultants</span>
+                                </a>
+
+                                <!-- Search Top Universities -->
+                                <a href="/universities" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Search Top Universities</span>
+                                </a>
+
+                                <!-- Admissions by Country -->
+                                <a href="/admissions" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="2" y1="12" x2="22" y2="12"/>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Admissions by Country</span>
+                                </a>
+
+                                <!-- Funding Assistance -->
+                                <a href="/funding" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                        <line x1="2" y1="10" x2="22" y2="10"/>
+                                        <path d="M12 15v-2m0 0V11m0 2h2m-2 0H10"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Funding Assistance</span>
+                                </a>
+
+                                <!-- Language Coaching & Training -->
+                                <a href="/training" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                        <line x1="9" y1="9" x2="15" y2="9"/>
+                                        <line x1="9" y1="13" x2="13" y2="13"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Language Coaching & Training</span>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Our Services Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/services") || 
+                            pathname?.startsWith("/vfs-booking") || 
+                            pathname?.startsWith("/visa-documentation") || 
+                            pathname?.startsWith("/visa-form-filing") || 
+                            pathname?.startsWith("/vfs-appointment") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Our Services
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Menu Card -->
+                    <div class="absolute top-full left-0 pt-2 w-[460px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                {servicesDropdownItems.map((item) => {
+                                    const IconComponent = item.icon;
+                                    return (
+                                        <a 
+                                            href={item.href}
+                                            class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
+                                        >
+                                            <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Seeker Visas Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/jobs") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Job Seeker Visas
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Card -->
+                    <div class="absolute top-full right-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="flex flex-col gap-2">
+
+                                <!-- Work Permit Consultants -->
+                                <a href="/find-experts?category=work" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                                        <line x1="12" y1="12" x2="12" y2="12"/>
+                                        <path d="M12 12h.01"/>
+                                        <path d="M2 12h20"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Work Permit Consultants</span>
+                                </a>
+
+                                <!-- Search for Jobs -->
+                                <a href="/jobs" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                        <path d="M11 8v6M8 11h6"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Search for Jobs</span>
+                                </a>
+
+                                <!-- Digital Nomad -->
+                                <a href="/digital-nomad" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                        <line x1="8" y1="21" x2="16" y2="21"/>
+                                        <line x1="12" y1="17" x2="12" y2="21"/>
+                                        <path d="M2 8h20"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Digital Nomad</span>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legal Assistance Dropdown -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Legal Assistance
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Card -->
+                    <div class="absolute top-full right-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="flex flex-col gap-2">
+
+                                <!-- Migration Agents & Lawyers -->
+                                <a href="/emergency" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        <path d="M9 12l2 2 4-4"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Agents & Lawyers</span>
+                                </a>
+
+                                <!-- Migration Visa -->
+                                <a href="/migration-visa" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="2" y1="12" x2="22" y2="12"/>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                        <path d="M17 8l-5 4-5-4"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Visa</span>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Migration Visas Dropdown (Separate) -->
+                <div class="relative py-3.5 group">
+                    <button
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/find-experts?category=pr") || pathname?.startsWith("/find-experts?category=migration") ? "text-[#ef4444]" : "text-navy"
+                        }`}
+                    >
+                        Migration Visas
+                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                    </button>
+
+                    <!-- Dropdown Card -->
+                    <div class="absolute top-full right-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                            <div class="flex flex-col gap-2">
+
+                                <!-- Skilled Migration -->
+                                <a href="/find-experts?category=pr" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                        <polyline points="17 6 23 6 23 12"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Skilled Migration</span>
+                                </a>
+
+                                <!-- Find Migration Experts -->
+                                <a href="/find-experts?category=migration" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                        <path d="M11 8v3H8m3 0h3"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Find Migration Experts</span>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+            </div>
         </div>
-      </a>
-      <a href="/apply-visa" class="flex items-center gap-3 px-5 py-4 text-[#0C1A2E] hover:bg-gray-50 transition-colors">
-        <span class="text-2xl">✈️</span>
-        <div>
-          <div class="text-[14px] font-bold">Explore Visa</div>
-          <div class="text-[11px] text-gray-400">All visa types & guides</div>
-        </div>
-      </a>
-      <a href="/visa-documentation" class="flex items-center gap-3 px-5 py-4 text-[#0C1A2E] hover:bg-gray-50 transition-colors">
-        <span class="text-2xl">📋</span>
-        <div>
-          <div class="text-[14px] font-bold">Apply Visa</div>
-          <div class="text-[11px] text-gray-400">Documentation & form filing</div>
-        </div>
-      </a>
-      <a href="/tours" class="flex items-center gap-3 px-5 py-4 text-[#0C1A2E] hover:bg-gray-50 transition-colors">
-        <span class="text-2xl">✈️</span>
-        <div>
-          <div class="text-[14px] font-bold">Visit Visa</div>
-          <div class="text-[11px] text-gray-400">Visitor visa & tours</div>
-        </div>
-      </a>
-      <a href="/announcements" class="flex items-center gap-3 px-5 py-4 text-[#0C1A2E] hover:bg-gray-50 transition-colors">
-        <span class="text-2xl">📢</span>
-        <div><div class="text-[14px] font-bold">Announcements</div></div>
-      </a>
-      <a href="/support" class="flex items-center gap-3 px-5 py-4 text-[#0C1A2E] hover:bg-gray-50 transition-colors">
-        <span class="text-2xl">📞</span>
-        <div><div class="text-[14px] font-bold">Contact</div></div>
-      </a>
     </div>
 
-    <!-- Mobile Auth -->
-    <div class="p-4 flex flex-col gap-2.5">
-      <a href="/login" id="mobile-login-btn" class="block text-center py-3 border-2 border-[#0C1A2E] text-[#0C1A2E] font-bold text-[14px] rounded-xl hover:bg-[#0C1A2E] hover:text-white transition-all duration-200">
-        Log In
-      </a>
-      <a href="/signup" id="mobile-signup-btn" class="block text-center py-3 bg-[#0EA5E9] hover:bg-[#0284C7] text-white font-bold text-[14px] rounded-xl transition-all duration-200">
-        Sign Up Free
-      </a>
-    </div>
-  </div>
+    <!-- Mobile Drawer menu -->
+    <div id="mobile-menu-drawer" class="hidden lg:hidden bg-white border-t border-gray-100 shadow-xl max-h-[85vh] overflow-y-auto">
+        <!-- Yelp-style Mobile Search bar -->
+        <div class="p-4 border-b border-gray-100 bg-gray-50/30 space-y-2">
+            <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-gray-200 shadow-sm">
+                <Search class="w-4 h-4 text-gray-400 mr-2 shrink-0" />
+                <input id="mobile-search-input-query" class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="What are you looking for..." type="text" />
+            </div>
+            <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-gray-200 shadow-sm">
+                <MapPin class="w-4 h-4 text-gray-400 mr-2 shrink-0" />
+                <input id="mobile-search-input-location" class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-400 font-semibold" placeholder="Location (e.g. Hyderabad)" type="text" />
+            </div>
+            <button id="mobile-search-btn" class="w-full py-2.5 bg-black hover:bg-slate-900 text-white rounded-xl font-bold text-xs shadow-sm active:scale-[0.98]">
+                Search Experts
+            </button>
+        </div>
 
+        <!-- Links -->
+        <!-- Find Experts Dropdown (Mobile) -->
+        <div class="border-b border-gray-50">
+            <button 
+                id="mobile-experts-btn"
+                class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+                <span>Find Experts</span>
+                <ChevronDown id="mobile-experts-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+            </button>
+            <div id="mobile-experts-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
+                {expertDropdownItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                        <a 
+                            href={item.href}
+                            class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
+                        >
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-navy">{item.title}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </div>
+
+        <!-- Tours -->
+        <div class="border-b border-gray-50">
+            <button 
+                id="mobile-tours-btn"
+                class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+                <span>Tourist Visa</span>
+                <ChevronDown id="mobile-tours-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+            </button>
+            <div id="mobile-tours-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
+                {tourDropdownItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                        <a 
+                            href={item.href}
+                            class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
+                        >
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-navy">{item.title}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </div>
+
+        <!-- Events -->
+        <div class="border-b border-gray-50">
+            <button 
+                id="mobile-events-btn"
+                class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+                <span>Event Visa</span>
+                <ChevronDown id="mobile-events-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+            </button>
+            <div id="mobile-events-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
+                {eventDropdownItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                        <a 
+                            href={item.href}
+                            class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
+                        >
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-navy">{item.title}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </div>
+
+        <!-- Other Pages -->
+        <a href="/training"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/training" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Student Visa
+        </a>
+
+        <!-- Our Services Dropdown (Mobile) -->
+        <div class="border-b border-gray-50">
+            <button 
+                id="mobile-services-btn"
+                class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+                <span>Our Services</span>
+                <ChevronDown id="mobile-services-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+            </button>
+            <div id="mobile-services-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
+                {servicesDropdownItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                        <a 
+                            href={item.href}
+                            class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
+                        >
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-navy">{item.title}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </div>
+
+        <a href="/jobs"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/jobs" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Job Visa
+        </a>
+
+        <a href="/emergency"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/emergency" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Legal Assistance
+        </a>
+
+        <a href="/agents"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/agents" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Our Agents
+        </a>
+
+        <a href="/support"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm text-gray-700 hover:bg-gray-50`}>
+            Contact
+        </a>
+
+        <!-- Portal Actions -->
+        <div class="p-4 bg-gray-50/20 flex flex-col gap-2">
+            <a href="/login" class="block text-center py-2.5 border border-gray-200 text-gray-700 font-bold text-sm rounded-xl hover:bg-gray-100 transition-colors">
+                Log In
+            </a>
+            <a href="/signup" class="block text-center py-2.5 bg-black hover:bg-slate-900 text-white rounded-xl font-bold text-sm shadow-md">
+                Sign Up
+            </a>
+            <a href="/list-practice" class="block text-center py-2.5 bg-black hover:bg-slate-900 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg active:scale-[0.97] transition-all">
+                List Your Practice
+            </a>
+        </div>
+    </div>
 </header>
 
 <style is:global>
-  /* ─────────────────────────────────── */
-  /* Smooth nav underline on active      */
-  /* ─────────────────────────────────── */
-  .vf-nav-item.active > span:last-child {
-    width: 100% !important;
-  }
-  .vf-nav-item.active span.text-\[\#0C1A2E\] {
-    color: #0C1A2E !important;
-  }
-
-  /* ─────────────────────────────────── */
-  /* Filter dropdown open state          */
-  /* ─────────────────────────────────── */
-  #filter-expert.active,
-  #filter-visa.active,
-  #filter-country.active,
-  #filter-time.active {
-    background-color: #f9fafb;
-  }
-
-  /* ─────────────────────────────────── */
-  /* Transparent header for hero pages   */
-  /* ─────────────────────────────────── */
+  /* Header styling and dynamic transition modes */
   #main-header.header-transparent {
     background-color: transparent !important;
     border-color: transparent !important;
     box-shadow: none !important;
   }
-  #main-header.header-transparent #filter-row {
+  #main-header.header-transparent #logo-text {
+    color: white !important;
+  }
+  #main-header.header-transparent #logo-dot {
+    background-color: white !important;
+  }
+  #main-header.header-transparent #logo-icon-container {
+    background: black !important;
+    border-color: black !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05) !important;
+  }
+  #main-header.header-transparent #logo-icon-container svg {
+    color: white !important;
+  }
+  #main-header.header-transparent #search-bar {
+    background-color: #ffffff !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+  }
+  #main-header.header-transparent #search-bar:focus-within {
+    background-color: #ffffff !important;
+    border-color: black !important;
+  }
+  #main-header.header-transparent #search-bar input {
+    color: #1f2937 !important;
+  }
+  #main-header.header-transparent #search-bar input::placeholder {
+    color: #9ca3af !important;
+  }
+  #main-header.header-transparent #search-bar #search-divider {
+    background-color: #e5e7eb !important;
+  }
+  #main-header.header-transparent #search-bar #search-loc-icon {
+    color: black !important;
+  }
+  #search-btn svg {
+    color: white !important;
+    stroke: white !important;
+  }
+  #main-header.header-transparent .top-menu-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  #main-header.header-transparent .top-menu-link:hover {
+    color: white !important;
+  }
+  #main-header.header-transparent #login-btn {
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  #main-header.header-transparent #login-btn:hover {
+    border-color: white !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  #main-header.header-transparent #category-bar {
+    border-top-color: transparent !important;
     background-color: transparent !important;
-    border-color: transparent !important;
+  }
+  #main-header.header-transparent .category-menu-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  #main-header.header-transparent .category-menu-link:hover {
+    color: white !important;
+  }
+  #main-header.header-transparent #mobile-menu-btn svg {
+    color: white !important;
   }
 </style>
 
 <script>
-  // ── Mobile menu ──
-  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
-  const menuIcon = document.getElementById('menu-icon');
-  const closeIcon = document.getElementById('close-icon');
+    // Toggle Mobile Drawer Menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
 
-  mobileMenuBtn?.addEventListener('click', () => {
-    const isOpen = !mobileMenuDrawer?.classList.contains('hidden');
-    if (isOpen) {
-      mobileMenuDrawer?.classList.add('hidden');
-      menuIcon?.classList.remove('hidden');
-      closeIcon?.classList.add('hidden');
-    } else {
-      mobileMenuDrawer?.classList.remove('hidden');
-      menuIcon?.classList.add('hidden');
-      closeIcon?.classList.remove('hidden');
+    if (mobileMenuBtn && mobileMenuDrawer && menuIcon && closeIcon) {
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = !mobileMenuDrawer.classList.contains('hidden');
+            if (isOpen) {
+                mobileMenuDrawer.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            } else {
+                mobileMenuDrawer.classList.remove('hidden');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            }
+            // Update header transparency immediately when drawer toggles
+            updateHeader();
+        });
     }
-  });
 
-  // ── Search auth gate ──
-  const searchEl = document.getElementById('search-input-query') as HTMLInputElement | null;
-  const mobileSearchEl = document.getElementById('mobile-search-input-query') as HTMLInputElement | null;
+    // Toggle Mobile Experts Dropdown
+    const mobileExpertsBtn = document.getElementById('mobile-experts-btn');
+    const mobileExpertsDrawer = document.getElementById('mobile-experts-drawer');
+    const mobileExpertsArrow = document.getElementById('mobile-experts-arrow');
 
-  [searchEl, mobileSearchEl].forEach(el => {
-    if (!el) return;
-    ['focus', 'mousedown', 'keydown'].forEach(evt => {
-      el.addEventListener(evt, (e) => {
-        const user = localStorage.getItem('visaformula_user');
-        if (!user || user === 'null') {
-          e.preventDefault();
-          e.stopPropagation();
-          el.blur();
-          alert('Please login to use the search feature.');
-          window.location.href = '/login';
+    if (mobileExpertsBtn && mobileExpertsDrawer && mobileExpertsArrow) {
+        mobileExpertsBtn.addEventListener('click', () => {
+            const isHidden = mobileExpertsDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileExpertsDrawer.classList.remove('hidden');
+                mobileExpertsArrow.classList.add('rotate-180');
+            } else {
+                mobileExpertsDrawer.classList.add('hidden');
+                mobileExpertsArrow.classList.remove('rotate-180');
+            }
+        });
+    }
+
+    // Toggle Mobile Tours Dropdown
+    const mobileToursBtn = document.getElementById('mobile-tours-btn');
+    const mobileToursDrawer = document.getElementById('mobile-tours-drawer');
+    const mobileToursArrow = document.getElementById('mobile-tours-arrow');
+
+    if (mobileToursBtn && mobileToursDrawer && mobileToursArrow) {
+        mobileToursBtn.addEventListener('click', () => {
+            const isHidden = mobileToursDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileToursDrawer.classList.remove('hidden');
+                mobileToursArrow.classList.add('rotate-180');
+            } else {
+                mobileToursDrawer.classList.add('hidden');
+                mobileToursArrow.classList.remove('rotate-180');
+            }
+        });
+    }
+
+    // Toggle Mobile Events Dropdown
+    const mobileEventsBtn = document.getElementById('mobile-events-btn');
+    const mobileEventsDrawer = document.getElementById('mobile-events-drawer');
+    const mobileEventsArrow = document.getElementById('mobile-events-arrow');
+
+    if (mobileEventsBtn && mobileEventsDrawer && mobileEventsArrow) {
+        mobileEventsBtn.addEventListener('click', () => {
+            const isHidden = mobileEventsDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileEventsDrawer.classList.remove('hidden');
+                mobileEventsArrow.classList.add('rotate-180');
+            } else {
+                mobileEventsDrawer.classList.add('hidden');
+                mobileEventsArrow.classList.remove('rotate-180');
+            }
+        });
+    }
+
+    // Toggle Mobile Services Dropdown
+    const mobileServicesBtn = document.getElementById('mobile-services-btn');
+    const mobileServicesDrawer = document.getElementById('mobile-services-drawer');
+    const mobileServicesArrow = document.getElementById('mobile-services-arrow');
+
+    if (mobileServicesBtn && mobileServicesDrawer && mobileServicesArrow) {
+        mobileServicesBtn.addEventListener('click', () => {
+            const isHidden = mobileServicesDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileServicesDrawer.classList.remove('hidden');
+                mobileServicesArrow.classList.add('rotate-180');
+            } else {
+                mobileServicesDrawer.classList.add('hidden');
+                mobileServicesArrow.classList.remove('rotate-180');
+            }
+        });
+    }
+
+    // Dynamic Header Scroll Effects
+    const header = document.getElementById('main-header');
+    const isHome = window.location.pathname === '/' || window.location.pathname === '';
+    const isJobs = window.location.pathname === '/jobs' || window.location.pathname === '/jobs/';
+    const isTours = window.location.pathname === '/tours' || window.location.pathname === '/tours/';
+    const isEvents = window.location.pathname.startsWith('/events');
+    const isTransparentPage = isHome || isJobs || isTours || isEvents;
+
+    function updateHeader() {
+        const isDrawerOpen = mobileMenuDrawer && !mobileMenuDrawer.classList.contains('hidden');
+        const threshold = 50;
+        if (isTransparentPage && window.scrollY < threshold && !isDrawerOpen) {
+            header.classList.add('header-transparent');
+        } else {
+            header.classList.remove('header-transparent');
         }
-      });
+    }
+
+    if (header) {
+        if (isTransparentPage) {
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+        }
+    }
+
+    // Auth gate for search elements
+    const searchInputs = [
+        document.getElementById('search-input-query'),
+        document.getElementById('search-input-location'),
+        document.getElementById('search-btn'),
+        document.getElementById('mobile-search-input-query'),
+        document.getElementById('mobile-search-input-location'),
+        document.getElementById('mobile-search-btn')
+    ];
+
+    searchInputs.forEach(el => {
+        if (el) {
+            ['focus', 'mousedown', 'keydown'].forEach(evt => {
+                el.addEventListener(evt, (e) => {
+                    const user = localStorage.getItem("visaformula_user");
+                    if (!user || user === "null") {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (el instanceof HTMLInputElement) {
+                            el.blur();
+                        }
+                        alert("you must login for accessing the search option above");
+                        window.location.href = "/login";
+                    }
+                });
+            });
+        }
     });
-  });
 
-  // ── Dynamic Auth Buttons ──
-  const userStr = localStorage.getItem('visaformula_user');
-  if (userStr && userStr !== 'null') {
-    const loginBtn = document.getElementById('login-btn');
-    if (loginBtn) {
-      loginBtn.setAttribute('href', '/dashboard');
-      loginBtn.innerHTML = `<svg class="w-[18px] h-[18px] text-[#0EA5E9]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`;
-      (loginBtn as HTMLElement).style.borderColor = '#0EA5E9';
+    // Dynamic Auth Header Button Updates
+    const userStr = localStorage.getItem("visaformula_user");
+    if (userStr && userStr !== "null") {
+        const loginBtn = document.getElementById("login-btn");
+        const signupBtn = document.querySelector('a[href="/signup"]');
+        if (loginBtn && signupBtn) {
+            loginBtn.textContent = "Dashboard";
+            loginBtn.setAttribute("href", "/dashboard");
+            
+            signupBtn.textContent = "Log Out";
+            signupBtn.setAttribute("href", "#");
+            signupBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                localStorage.removeItem("visaformula_user");
+                window.location.href = "/";
+            });
+        }
+        
+        const mobileLoginBtn = document.querySelector('#mobile-menu-drawer a[href="/login"]');
+        const mobileSignupBtn = document.querySelector('#mobile-menu-drawer a[href="/signup"]');
+        if (mobileLoginBtn && mobileSignupBtn) {
+            mobileLoginBtn.textContent = "Dashboard";
+            mobileLoginBtn.setAttribute("href", "/dashboard");
+            
+            mobileSignupBtn.textContent = "Log Out";
+            mobileSignupBtn.setAttribute("href", "#");
+            mobileSignupBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                localStorage.removeItem("visaformula_user");
+                window.location.href = "/";
+            });
+        }
     }
-    const mobileLoginBtn = document.getElementById('mobile-login-btn');
-    if (mobileLoginBtn) {
-      mobileLoginBtn.textContent = 'My Dashboard';
-      mobileLoginBtn.setAttribute('href', '/dashboard');
-    }
-    const mobileSignupBtn = document.getElementById('mobile-signup-btn');
-    if (mobileSignupBtn) {
-      mobileSignupBtn.textContent = 'Log Out';
-      mobileSignupBtn.setAttribute('href', '#');
-      mobileSignupBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        localStorage.removeItem('visaformula_user');
-        window.location.href = '/';
-      });
-    }
-  }
-
-  // ── Transparent header on hero pages ──
-  const header = document.getElementById('main-header');
-  const transparentPaths = ['/', '/jobs', '/tours'];
-  const isTransparentPage = transparentPaths.includes(window.location.pathname) || window.location.pathname.startsWith('/events');
-
-  function updateHeader() {
-    const isDrawerOpen = mobileMenuDrawer && !mobileMenuDrawer.classList.contains('hidden');
-    if (isTransparentPage && window.scrollY < 60 && !isDrawerOpen) {
-      header?.classList.add('header-transparent');
-    } else {
-      header?.classList.remove('header-transparent');
-    }
-  }
-
-  if (header && isTransparentPage) {
-    updateHeader();
-    window.addEventListener('scroll', updateHeader, { passive: true });
-  }
 </script>
+

@@ -1,0 +1,75 @@
+---
+// src/components/Logo.astro
+interface Props {
+  variant?: 'navbar-light' | 'navbar-dark' | 'footer' | 'icon';
+  className?: string;
+}
+
+const { variant = 'navbar-light', className = '' } = Astro.props;
+---
+
+{variant === 'icon' && (
+  <svg class={`w-10 h-10 ${className}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+    <defs>
+      <linearGradient id="logo-cyan-gradient-icon" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#22D3EE" />
+        <stop offset="100%" stop-color="#0891B2" />
+      </linearGradient>
+    </defs>
+    <path d="M6 26L14 33L22 21" stroke="url(#logo-cyan-gradient-icon)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M16 34L39 12L33 36L26 29L21 31L16 34Z" fill="url(#logo-cyan-gradient-icon)" />
+    <path d="M39 12L23 25L26 29L39 12Z" fill="#0891B2" opacity="0.65" />
+  </svg>
+)}
+
+{variant === 'navbar-light' && (
+  <div class={`flex items-center gap-2.5 ${className}`}>
+    <svg class="w-9 h-9 sm:w-10 sm:h-10 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="logo-cyan-gradient-nl" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#22D3EE" />
+          <stop offset="100%" stop-color="#0891B2" />
+        </linearGradient>
+      </defs>
+      <path d="M6 26L14 33L22 21" stroke="url(#logo-cyan-gradient-nl)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M16 34L39 12L33 36L26 29L21 31L16 34Z" fill="url(#logo-cyan-gradient-nl)" />
+      <path d="M39 12L23 25L26 29L39 12Z" fill="#0891B2" opacity="0.65" />
+    </svg>
+    <span class="font-sans text-xl sm:text-2xl font-extrabold tracking-tight text-[#0F172A]">VisaFormula</span>
+  </div>
+)}
+
+{variant === 'navbar-dark' && (
+  <div class={`flex items-center gap-2.5 ${className}`}>
+    <svg class="w-9 h-9 sm:w-10 sm:h-10 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="logo-cyan-gradient-nd" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#22D3EE" />
+          <stop offset="100%" stop-color="#0891B2" />
+        </linearGradient>
+      </defs>
+      <path d="M6 26L14 33L22 21" stroke="url(#logo-cyan-gradient-nd)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M16 34L39 12L33 36L26 29L21 31L16 34Z" fill="url(#logo-cyan-gradient-nd)" />
+      <path d="M39 12L23 25L26 29L39 12Z" fill="#0891B2" opacity="0.65" />
+    </svg>
+    <span class="font-sans text-xl sm:text-2xl font-extrabold tracking-tight text-white">VisaFormula</span>
+  </div>
+)}
+
+{variant === 'footer' && (
+  <div class={`flex flex-col items-center text-center ${className}`}>
+    <svg class="w-12 h-12 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="logo-cyan-gradient-footer" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#22D3EE" />
+          <stop offset="100%" stop-color="#0891B2" />
+        </linearGradient>
+      </defs>
+      <path d="M6 26L14 33L22 21" stroke="url(#logo-cyan-gradient-footer)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M16 34L39 12L33 36L26 29L21 31L16 34Z" fill="url(#logo-cyan-gradient-footer)" />
+      <path d="M39 12L23 25L26 29L39 12Z" fill="#0891B2" opacity="0.65" />
+    </svg>
+    <span class="font-sans text-2xl font-black text-current tracking-wider">VISAFORMULA</span>
+    <span class="text-[9px] font-bold text-slate-400 tracking-widest mt-1.5 uppercase">GLOBAL VISA MARKETPLACE</span>
+  </div>
+)}

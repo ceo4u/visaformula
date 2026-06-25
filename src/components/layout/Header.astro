@@ -1,6 +1,7 @@
 ---
+// src/components/layout/Header.astro
 import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake } from 'lucide-react';
-import { Logo } from '../navbar/logo';
+import Logo from '../Logo.astro';
 
 
 const pathname = Astro.url.pathname;
@@ -50,7 +51,9 @@ const supportiveServicesItems = [
     <!-- Top Row: Logo + Yelp-Style Split Search Bar + User Portal Links -->
     <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-20 gap-4">
         
-        <Logo theme="light" />
+        <a href="/" class="flex items-center group shrink-0">
+            <Logo variant="navbar-light" />
+        </a>
 
         <!-- Split Yelp-style Search Bar (Desktop Only) -->
         <div id="search-bar" class="hidden lg:flex flex-1 max-w-md xl:max-w-xl mx-4 xl:mx-8 bg-gray-50/50 rounded-xl flex-row items-center h-12 overflow-hidden border border-gray-200 focus-within:border-black focus-within:bg-white focus-within:shadow-md transition-all duration-200">

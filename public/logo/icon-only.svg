@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="cyan-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22D3EE" />
+      <stop offset="100%" stop-color="#0891B2" />
+    </linearGradient>
+  </defs>
+  <!-- Stylized flight trail/checkmark element -->
+  <path d="M6 26L14 33L22 21" stroke="url(#cyan-gradient)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Styled sleek jet airplane symbol flying upwards-right -->
+  <path d="M16 34L39 12L33 36L26 29L21 31L16 34Z" fill="url(#cyan-gradient)" />
+  <path d="M39 12L23 25L26 29L39 12Z" fill="#0891B2" opacity="0.65" />
+</svg>

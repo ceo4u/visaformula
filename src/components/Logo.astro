@@ -9,67 +9,88 @@ const { variant = 'navbar-light', className = '' } = Astro.props;
 ---
 
 {variant === 'icon' && (
-  <svg class={`w-10 h-10 ${className}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <svg class={`h-10 w-auto ${className}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" fill="none">
     <defs>
-      <linearGradient id="logo-cyan-gradient-icon" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#22D3EE" />
-        <stop offset="100%" stop-color="#0891B2" />
+      <linearGradient id="cyan-blue-grad-icon" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#00C9FF" />
+        <stop offset="100%" stop-color="#0057B8" />
       </linearGradient>
     </defs>
-    <path d="M6 26L14 33L22 21" stroke="url(#logo-cyan-gradient-icon)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M16 34L39 12L33 36L26 29L21 31L16 34Z" fill="url(#logo-cyan-gradient-icon)" />
-    <path d="M39 12L23 25L26 29L39 12Z" fill="#0891B2" opacity="0.65" />
+    <path d="M 30 95 C 50 85, 90 60, 120 40 C 90 65, 55 85, 35 90 C 32 91, 30 93, 30 95 Z" fill="url(#cyan-blue-grad-icon)" />
+    <path d="M 25 95 C 55 90, 95 70, 130 45 C 140 38, 155 30, 170 25 C 155 35, 130 55, 105 75 C 70 95, 40 102, 25 95 Z" fill="url(#cyan-blue-grad-icon)" />
+    <path d="M 90 60 L 102 63 L 100 50 L 92 40 L 88 42 L 92 50 Z" fill="url(#cyan-blue-grad-icon)" />
+    <path d="M 105 55 L 135 75 L 128 78 L 108 62 Z" fill="url(#cyan-blue-grad-icon)" />
+    <path d="M 95 48 L 110 20 L 122 25 L 102 45 Z" fill="url(#cyan-blue-grad-icon)" />
+    <path d="M 80 52 C 95 45, 135 30, 160 22 C 150 32, 120 55, 100 65 C 90 70, 80 65, 80 52 Z" fill="url(#cyan-blue-grad-icon)" />
+    <circle cx="70" cy="85" r="3" fill="#00C9FF" />
+    <circle cx="55" cy="92" r="2.5" fill="#00C9FF" />
+    <circle cx="42" cy="96" r="2" fill="#00C9FF" />
+    <circle cx="100" cy="88" r="2" fill="#00C9FF" />
+    <circle cx="115" cy="82" r="3" fill="#0057B8" />
   </svg>
 )}
 
-{variant === 'navbar-light' && (
-  <div class={`flex items-center gap-2.5 ${className}`}>
-    <svg class="w-9 h-9 sm:w-10 sm:h-10 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-      <defs>
-        <linearGradient id="logo-cyan-gradient-nl" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#22D3EE" />
-          <stop offset="100%" stop-color="#0891B2" />
-        </linearGradient>
-      </defs>
-      <path d="M6 26L14 33L22 21" stroke="url(#logo-cyan-gradient-nl)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M16 34L39 12L33 36L26 29L21 31L16 34Z" fill="url(#logo-cyan-gradient-nl)" />
-      <path d="M39 12L23 25L26 29L39 12Z" fill="#0891B2" opacity="0.65" />
-    </svg>
-    <span class="font-sans text-xl sm:text-2xl font-extrabold tracking-tight text-[#0F172A]">VisaFormula</span>
-  </div>
-)}
-
-{variant === 'navbar-dark' && (
-  <div class={`flex items-center gap-2.5 ${className}`}>
-    <svg class="w-9 h-9 sm:w-10 sm:h-10 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-      <defs>
-        <linearGradient id="logo-cyan-gradient-nd" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#22D3EE" />
-          <stop offset="100%" stop-color="#0891B2" />
-        </linearGradient>
-      </defs>
-      <path d="M6 26L14 33L22 21" stroke="url(#logo-cyan-gradient-nd)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M16 34L39 12L33 36L26 29L21 31L16 34Z" fill="url(#logo-cyan-gradient-nd)" />
-      <path d="M39 12L23 25L26 29L39 12Z" fill="#0891B2" opacity="0.65" />
-    </svg>
-    <span class="font-sans text-xl sm:text-2xl font-extrabold tracking-tight text-white">VisaFormula</span>
-  </div>
+{(variant === 'navbar-light' || variant === 'navbar-dark') && (
+  <svg class={`h-10 w-auto ${className}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+    <defs>
+      <linearGradient id="cyan-blue-grad-nav" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#00C9FF" />
+        <stop offset="100%" stop-color="#0057B8" />
+      </linearGradient>
+    </defs>
+    <g transform="scale(0.33) translate(-10, -5)">
+      <path d="M 30 95 C 50 85, 90 60, 120 40 C 90 65, 55 85, 35 90 C 32 91, 30 93, 30 95 Z" fill="url(#cyan-blue-grad-nav)" />
+      <path d="M 25 95 C 55 90, 95 70, 130 45 C 140 38, 155 30, 170 25 C 155 35, 130 55, 105 75 C 70 95, 40 102, 25 95 Z" fill="url(#cyan-blue-grad-nav)" />
+      <path d="M 90 60 L 102 63 L 100 50 L 92 40 L 88 42 L 92 50 Z" fill="url(#cyan-blue-grad-nav)" />
+      <path d="M 105 55 L 135 75 L 128 78 L 108 62 Z" fill="url(#cyan-blue-grad-nav)" />
+      <path d="M 95 48 L 110 20 L 122 25 L 102 45 Z" fill="url(#cyan-blue-grad-nav)" />
+      <path d="M 80 52 C 95 45, 135 30, 160 22 C 150 32, 120 55, 100 65 C 90 70, 80 65, 80 52 Z" fill="url(#cyan-blue-grad-nav)" />
+      <circle cx="70" cy="85" r="3" fill="#00C9FF" />
+      <circle cx="55" cy="92" r="2.5" fill="#00C9FF" />
+      <circle cx="42" cy="96" r="2" fill="#00C9FF" />
+      <circle cx="100" cy="88" r="2" fill="#00C9FF" />
+      <circle cx="115" cy="82" r="3" fill="#0057B8" />
+    </g>
+    <text id="logo-text" x="56" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="900" fill={variant === 'navbar-dark' ? '#FFFFFF' : '#6A1B8C'} class="transition-colors duration-300">Visa</text>
+    <text x="104" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="900" fill="url(#cyan-blue-grad-nav)">Formula</text>
+  </svg>
 )}
 
 {variant === 'footer' && (
-  <div class={`flex flex-col items-center text-center ${className}`}>
-    <svg class="w-12 h-12 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-      <defs>
-        <linearGradient id="logo-cyan-gradient-footer" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#22D3EE" />
-          <stop offset="100%" stop-color="#0891B2" />
-        </linearGradient>
-      </defs>
-      <path d="M6 26L14 33L22 21" stroke="url(#logo-cyan-gradient-footer)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M16 34L39 12L33 36L26 29L21 31L16 34Z" fill="url(#logo-cyan-gradient-footer)" />
-      <path d="M39 12L23 25L26 29L39 12Z" fill="#0891B2" opacity="0.65" />
-    </svg>
-    <span class="font-sans text-2xl font-black text-current tracking-wider">VISAFORMULA</span>
-    <span class="text-[9px] font-bold text-slate-400 tracking-widest mt-1.5 uppercase">GLOBAL VISA MARKETPLACE</span>
-  </div>
+  <svg class={`h-24 w-auto ${className}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 250" fill="none">
+    <defs>
+      <linearGradient id="cyan-blue-grad-footer" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#00C9FF" />
+        <stop offset="100%" stop-color="#0057B8" />
+      </linearGradient>
+      <linearGradient id="checkmark-grad-footer" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#00D5DF" />
+        <stop offset="100%" stop-color="#0099B8" />
+      </linearGradient>
+    </defs>
+    <g id="airplane-group">
+      <path d="M 270 95 C 290 85, 330 60, 360 40 C 330 65, 295 85, 275 90 C 272 91, 270 93, 270 95 Z" fill="url(#cyan-blue-grad-footer)" />
+      <path d="M265 95 C295 90, 335 70, 370 45 C380 38, 395 30, 410 25 C395 35, 370 55, 345 75 C310 95, 280 102, 265 95 Z" fill="url(#cyan-blue-grad-footer)" />
+      <path d="M 330 60 L 342 63 L 340 50 L 332 40 L 328 42 L 332 50 Z" fill="url(#cyan-blue-grad-footer)" />
+      <path d="M 345 55 L 375 75 L 368 78 L 348 62 Z" fill="url(#cyan-blue-grad-footer)" />
+      <path d="M 335 48 L 350 20 L 362 25 L 342 45 Z" fill="url(#cyan-blue-grad-footer)" />
+      <path d="M 320 52 C 335 45, 375 30, 400 22 C 390 32, 360 55, 340 65 C 330 70, 320 65, 320 52 Z" fill="url(#cyan-blue-grad-footer)" />
+      <circle cx="310" cy="85" r="3" fill="#00C9FF" />
+      <circle cx="295" cy="92" r="2.5" fill="#00C9FF" />
+      <circle cx="282" cy="96" r="2" fill="#00C9FF" />
+      <circle cx="340" cy="88" r="2" fill="#00C9FF" />
+      <circle cx="355" cy="82" r="3" fill="#0057B8" />
+      <circle cx="368" cy="74" r="2" fill="#00C9FF" />
+    </g>
+    <text x="75" y="145" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="52" font-weight="900" fill="#6A1B8C" letter-spacing="-1">VISA</text>
+    <text x="200" y="145" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="52" font-weight="900" fill="url(#cyan-blue-grad-footer)" letter-spacing="-1">FORMULA</text>
+    <text x="250" y="180" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="16" font-weight="800" fill="#6A1B8C" letter-spacing="1.5" text-anchor="middle">GLOBAL VISA MARKETPLACE</text>
+    <circle cx="102" cy="174" r="4.5" fill="#00C9FF" />
+    <circle cx="395" cy="176" r="3" fill="#00C9FF" />
+    <circle cx="240" cy="186" r="2.5" fill="#00C9FF" />
+    <g id="bottom-checkmark" transform="translate(0, 5)">
+      <path d="M 215 195 C 225 195, 250 225, 260 230 C 270 225, 295 195, 305 195 C 295 202, 270 240, 260 240 C 250 240, 225 202, 215 195 Z" fill="url(#checkmark-grad-footer)" />
+      <circle cx="260" cy="204" r="4.5" fill="#00C9FF" />
+    </g>
+  </svg>
 )}

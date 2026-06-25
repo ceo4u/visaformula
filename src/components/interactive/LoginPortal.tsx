@@ -46,30 +46,34 @@ export function LoginPortal() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-20 bg-slate-50 font-sans">
-            <div className="w-full max-w-2xl bg-white border border-slate-200 shadow-xl rounded-3xl p-8 md:p-10">
+        <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-white font-sans">
+            <div className="w-full max-w-md">
                 <div className="text-center mb-8">
-                    <a href="/" className="inline-flex items-center gap-2.5 text-2xl font-black mb-2 hover:scale-105 transition-transform">
-                        <span className="w-10 h-10 bg-slate-900 rounded-2xl flex items-center justify-center shadow-md">
-                          <Gavel className="w-5 h-5 text-white" />
-                        </span>
-                        <span className="font-sora font-extrabold text-navy">VisaFormula</span>
+                    <a href="/" className="inline-flex items-center gap-2 group mb-4">
+                        <div className="w-9 h-9 bg-black border border-black text-white rounded-xl flex items-center justify-center transition-all duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" className="w-5 h-5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                                <path d="M2 12h20"/>
+                            </svg>
+                        </div>
+                        <span className="font-sans text-2xl font-extrabold tracking-tight text-black">VisaFormula</span>
                     </a>
-                    <h1 className="text-3xl font-sora font-extrabold tracking-tight text-navy mt-4">
-                      Welcome <span className="text-red-500">Back</span>
+                    <h1 className="font-sans text-3xl font-extrabold text-black mt-2">
+                        Welcome <span className="text-slate-500">back</span>
                     </h1>
-                    <p className="text-gray-500 mt-2 text-sm font-medium">Sign in to unlock personalized visa applications</p>
+                    <p className="text-gray-400 text-sm mt-2">Sign in to get started with VisaFormula</p>
                 </div>
 
-                <div className="max-w-md mx-auto">
+                <div className="w-full">
                     {/* Dot Step Indicator */}
                     <div className="flex justify-center gap-2 mb-6">
-                        <span className={`h-2 rounded-full transition-all duration-300 ${loginStep === 0 ? "w-8 bg-slate-900" : "w-2 bg-gray-250"}`} />
-                        <span className={`h-2 rounded-full transition-all duration-300 ${loginStep === 1 ? "w-8 bg-slate-900" : "w-2 bg-gray-255"}`} />
+                        <span className={`h-2 rounded-full transition-all duration-300 ${loginStep === 0 ? "w-8 bg-black" : "w-2 bg-gray-200"}`} />
+                        <span className={`h-2 rounded-full transition-all duration-300 ${loginStep === 1 ? "w-8 bg-black" : "w-2 bg-gray-200"}`} />
                     </div>
 
                     {error && (
-                        <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold">
+                        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold">
                             {error}
                         </div>
                     )}
@@ -77,7 +81,7 @@ export function LoginPortal() {
                     {loginStep === 0 ? (
                         <form onSubmit={handleNextStep} className="space-y-5">
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-navy uppercase tracking-wider mb-1 block">Email address</label>
+                                <label className="text-xs font-bold text-black uppercase tracking-wider mb-1 block">Email address</label>
                                 <div className="relative">
                                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                     <input
@@ -86,12 +90,12 @@ export function LoginPortal() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="john@example.com"
                                         required
-                                        className="w-full h-12 pl-12 pr-4 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-500 font-semibold transition-all text-sm text-black"
+                                        className="w-full h-12 pl-12 pr-4 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black"
                                     />
                                 </div>
                             </div>
 
-                            <button type="submit" className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-slate-900 hover:bg-black transition-all text-white flex items-center justify-center shadow-sm">
+                            <button type="submit" className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-black hover:bg-slate-900 transition-all text-white flex items-center justify-center shadow-sm">
                                 Continue
                                 <ArrowRight className="w-4 h-4" />
                             </button>
@@ -101,15 +105,15 @@ export function LoginPortal() {
                             <button 
                                 type="button" 
                                 onClick={() => { setLoginStep(0); setError(""); }}
-                                className="inline-flex items-center gap-1.5 text-xs text-red-500 font-bold hover:underline mb-2"
+                                className="inline-flex items-center gap-1.5 text-xs text-black font-bold hover:underline mb-2"
                             >
                                 <ArrowLeft className="w-3.5 h-3.5" /> Change Email
                             </button>
 
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <label className="text-xs font-bold text-navy uppercase tracking-wider mb-1 block">Password</label>
-                                    <a href="#" className="text-xs font-bold text-red-500 hover:underline">Forgot password?</a>
+                                    <label className="text-xs font-bold text-black uppercase tracking-wider mb-1 block">Password</label>
+                                    <a href="#" className="text-xs font-bold text-slate-500 hover:underline">Forgot password?</a>
                                 </div>
                                 <div className="relative">
                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -120,7 +124,7 @@ export function LoginPortal() {
                                         placeholder="••••••••"
                                         required
                                         autoFocus
-                                        className="w-full h-12 pl-12 pr-12 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-500 font-semibold transition-all text-sm text-black"
+                                        className="w-full h-12 pl-12 pr-12 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black"
                                     />
                                     <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                                         {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -128,21 +132,21 @@ export function LoginPortal() {
                                 </div>
                             </div>
 
-                            <button type="submit" disabled={loading} className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-slate-900 hover:bg-black transition-all text-white flex items-center justify-center shadow-sm">
+                            <button type="submit" disabled={loading} className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-black hover:bg-slate-900 transition-all text-white flex items-center justify-center shadow-sm">
                                 {loading ? "Signing in..." : "Sign In"}
                                 {!loading && <ArrowRight className="w-4 h-4" />}
                             </button>
                         </form>
                     )}
 
-                    <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-3">
+                    <div className="mt-8 pt-6 border-t border-slate-150 flex flex-col gap-3">
                         <div className="text-center text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">
                             Don't have an account yet?
                         </div>
                         <div className="flex gap-3">
                             <a 
                                 href="/signup" 
-                                className="flex-1 text-center py-2.5 bg-red-50 hover:bg-red-100 border border-red-100 text-red-700 rounded-xl font-bold text-xs transition-colors"
+                                className="flex-1 text-center py-2.5 bg-black hover:bg-slate-900 text-white border border-black rounded-xl font-bold text-xs transition-colors"
                             >
                                 Register as User
                             </a>
@@ -150,7 +154,7 @@ export function LoginPortal() {
                                 href="/agents?page=register" 
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex-1 text-center py-2.5 bg-purple-50 hover:bg-purple-100 border border-purple-100 text-[#7c3aed] rounded-xl font-bold text-xs transition-colors"
+                                className="flex-1 text-center py-2.5 bg-white hover:bg-slate-50 border border-gray-200 text-black rounded-xl font-bold text-xs transition-colors"
                             >
                                 Register as Agent
                             </a>

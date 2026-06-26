@@ -105,7 +105,12 @@ export function SeekerSignupPortal() {
                 }
             `}} />
             <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
-                <a href="/" className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
+                    <a href="javascript:history.back()" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all">
+                        <ArrowLeft className="w-3.5 h-3.5" />
+                        <span>Back</span>
+                    </a>
+                    <a href="/" className="flex items-center gap-2">
                     <svg className="w-40 h-auto" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
                         {/* Centered airplane swoop above the wordmark */}
                         <g transform="translate(45, -145) scale(0.68)">
@@ -126,6 +131,7 @@ export function SeekerSignupPortal() {
                         </text>
                     </svg>
                 </a>
+                </div>
                 <div className="text-base font-medium text-slate-500">
                     Already a member? <a href="/login" className="text-black font-bold hover:underline">Login</a>
                 </div>

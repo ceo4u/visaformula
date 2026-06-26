@@ -49,19 +49,13 @@ export function LoginPortal() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-white font-sans relative">
-            {/* Logo - Top Left */}
-            <a href="/" className="absolute top-5 left-6 flex items-center gap-2 group">
-                <svg className="w-36 h-auto" viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision" textRendering="geometricPrecision">
-                    <g transform="translate(-400, -120) scale(0.7)">
-                        {airplanePaths.map((p: any, idx: number) => (
-                            <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
-                        ))}
-                    </g>
-                    <text x="250" y="152" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="900" fontSize="82" letterSpacing="0.025em">
-                        <tspan fill="#111111" stroke="#111111" strokeWidth="2.5">VISA</tspan><tspan fill="#0F2B6C" stroke="#0F2B6C" strokeWidth="2.5">FORMULA</tspan>
-                    </text>
-                </svg>
+            {/* Back Button - Top Left */}
+            <a href="javascript:history.back()" className="absolute top-6 left-6 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-normal text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all z-50">
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back</span>
             </a>
+
+
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">

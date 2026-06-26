@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   CheckCircle, ArrowLeft, ArrowRight, Upload, Plus, X, 
   User, FileText, Globe, Star, Shield, ArrowUpRight, 
@@ -20,6 +20,24 @@ export function ExpertSignupPortal() {
   const [businessName, setBusinessName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [consultantType, setConsultantType] = useState("Freelancer");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const nameParam = params.get("name");
+      const phoneParam = params.get("phone");
+      const typeParam = params.get("type");
+
+      if (nameParam) setBusinessName(nameParam);
+      if (phoneParam) setContactNumber(phoneParam);
+      if (typeParam) {
+        const validTypes = ["Freelancer", "Business expert", "Institute or company", "Legal professional", "Supportive business"];
+        if (validTypes.includes(typeParam)) {
+          setConsultantType(typeParam);
+        }
+      }
+    }
+  }, []);
   const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
   const [emailVerified, setEmailVerified] = useState(false);

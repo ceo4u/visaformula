@@ -47,7 +47,7 @@ const supportiveServicesItems = [
 ];
 ---
 
-<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white border-b border-red-100 shadow-sm transition-all duration-300">
+<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white shadow-sm transition-all duration-300">
     <!-- Top Row: Logo + Yelp-Style Split Search Bar + User Portal Links -->
     <div class="max-w-7xl mx-auto grid grid-cols-[auto_1fr_auto] lg:grid-cols-[220px_1fr_auto] items-center justify-between px-4 md:px-6 h-20 gap-6">
         
@@ -144,7 +144,7 @@ const supportiveServicesItems = [
     </div>
 
     <!-- Bottom Row: Premium Category Navigation Bar (Desktop Only) -->
-    <div id="category-bar" class="hidden lg:block border-t border-red-50 bg-red-50/20 transition-all duration-300">
+    <div id="category-bar" class="hidden lg:block bg-red-50/20 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 xl:px-6 h-12 flex items-center justify-center">
             
             <div class="flex items-center gap-6 xl:gap-10 h-full">
@@ -754,7 +754,7 @@ const supportiveServicesItems = [
     const isJobs = window.location.pathname === '/jobs' || window.location.pathname === '/jobs/';
     const isTours = window.location.pathname === '/tours' || window.location.pathname === '/tours/';
     const isEvents = window.location.pathname.startsWith('/events');
-    const isTransparentPage = isHome || isJobs || isTours || isEvents;
+    const isTransparentPage = isJobs || isTours || isEvents;
 
     function updateHeader() {
         const isDrawerOpen = mobileMenuDrawer && !mobileMenuDrawer.classList.contains('hidden');

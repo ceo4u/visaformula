@@ -52,74 +52,236 @@ const successStories = [
 
 <Layout title="Home" description="Your premium global marketplace for immigration experts, top universities, overseas jobs, and more.">
   <div class="bg-white min-h-screen">
-    <!-- HERO -->
-    <section id="hero-carousel-section" class="relative w-full flex items-center justify-start px-6 sm:px-12 md:px-20 lg:px-32 overflow-hidden pt-32 lg:pt-48 pb-36" style="min-height: 720px;">
-      <!-- Slide Images -->
-      <div id="hero-background-container" class="absolute inset-0 z-0">
-        <div class="slide-bg absolute inset-0 opacity-100 transition-opacity duration-1000">
-          <img class="w-full h-full object-cover" src="/images/sea_background_one.png" alt="Direct Portal Access to Dubai & Global Visa Experts" />
+    <!-- HERO - Matrimony Style -->
+    <section class="relative w-full bg-white overflow-hidden" style="min-height:600px;">
+
+      <style is:inline>
+        .hero-cards-row   { display:flex; gap:8px; align-items:flex-end; overflow:visible; padding:0; justify-content:flex-start; }
+        .hero-cards-row-2 { display:flex; gap:8px; align-items:flex-start; margin-top:8px; overflow:visible; padding:0; justify-content:flex-start; }
+        .expert-hero-card { position:relative; border-radius:14px; overflow:hidden; flex-shrink:0; cursor:pointer;
+                            box-shadow:0 2px 16px rgba(0,0,0,0.18);
+                            filter: grayscale(35%) contrast(105%); opacity: 0.82;
+                            transition: filter 0.3s ease-out, opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out; }
+        .expert-hero-card::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
+          z-index: 1;
+          pointer-events: none;
+          transition: background .2s;
+        }
+        .expert-hero-card:hover::after {
+          background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
+        }
+        .expert-hero-card:hover { transform:translateY(-5px) scale(1.03); filter: grayscale(0%) contrast(100%); opacity: 1; box-shadow:0 10px 28px rgba(0,0,0,0.22); }
+        .expert-hero-card img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; }
+        .card-overlay-grad { position:absolute; bottom:0; left:0; right:0; padding:36px 10px 10px; z-index:2;
+                             background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0) 100%); }
+        .card-name-label { font-size:12px; font-weight:700; color:#fff; margin-bottom:4px; }
+        .cbadge { display:inline-flex; align-items:center; font-size:10px; font-weight:700; padding:2px 9px; border-radius:20px; }
+        .cbadge-purple{background:#7c3aed;color:#fff} .cbadge-teal{background:#0891b2;color:#fff}
+        .cbadge-green{background:#16a34a;color:#fff}  .cbadge-orange{background:#ea580c;color:#fff}
+        .cbadge-pink{background:#db2777;color:#fff}   .cbadge-amber{background:#d97706;color:#fff}
+        .cbadge-blue{background:#2563eb;color:#fff}   .cbadge-red{background:#dc2626;color:#fff}
+        .cbadge-lime{background:#65a30d;color:#fff}
+        .hero-form-select { width:100%;height:52px;border:1.2px solid #334155;border-radius:8px;padding:0 36px 0 16px;
+          font-size:15px;color:#1e293b;background:#fff;outline:none;font-family:'Inter',sans-serif;appearance:none;-webkit-appearance:none; }
+        .hero-form-select:focus { border-color:#000000; }
+        .hero-form-input  { width:100%;height:52px;border:1.2px solid #334155;border-radius:8px;padding:0 16px;
+          font-size:15px;color:#1e293b;background:#fff;outline:none;font-family:'Inter',sans-serif; }
+        .hero-form-input:focus { border-color:#000000; }
+        .select-wrap { position:relative; margin-bottom:16px; }
+        .select-wrap::after { content:''; position:absolute; right:16px; top:50%; transform:translateY(-50%);
+          width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+          border-top: 6px solid #475569; pointer-events:none; }
+        .select-wrap .hero-form-select { margin-bottom:0; }
+        .phone-row { display:flex;gap:12px;margin-bottom:16px; }
+        .phone-row .select-wrap { width:100px;flex-shrink:0; }
+        .phone-row .hero-form-input { flex:1;margin-bottom:0; }
+      </style>
+
+      <!-- ① FORM — absolute top-right, floats OVER the cards (z-index highest) -->
+      <div style="position:absolute; top:36px; right:250px; z-index:30; width:420px;
+                  background:#000000; border-radius:20px; box-shadow:0 12px 40px rgba(0,0,0,0.15); overflow:hidden;">
+        <div style="padding:16px 20px 14px; text-align:center;">
+          <h2 style="font-size:17px;font-weight:600;color:#fff;margin:0;font-family:'Inter',sans-serif;letter-spacing:0.3px;">Create a Visa Profile</h2>
         </div>
-        <div class="slide-bg absolute inset-0 opacity-0 transition-opacity duration-1000">
-          <img class="w-full h-full object-cover" src="/images/university_campus.png" alt="Fast-Track Student Admissions Open" />
-        </div>
-        <div class="slide-bg absolute inset-0 opacity-0 transition-opacity duration-1000">
-          <img class="w-full h-full object-cover" src="/images/sea_background_two.png" alt="Explore International Holiday Packages" />
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/60 to-transparent"></div>
-      </div>
-      
-      <!-- Content Container (Left indicator + Right heading & action) -->
-      <div class="relative z-10 flex flex-row items-stretch gap-5 md:gap-7 max-w-4xl">
-        
-        <!-- Left Side Story-Style Indicators (vertical) -->
-        <div class="flex flex-col items-center justify-between py-1 shrink-0">
-          <div class="flex flex-col gap-3">
-            <!-- Slide 1 Indicator -->
-            <div class="w-1 h-12 bg-white/25 rounded-full overflow-hidden relative cursor-pointer hero-indicator-bar" data-index="0">
-              <div class="w-full bg-white absolute top-0 left-0 transition-all duration-100 ease-linear hero-progress-fill" style="height: 0%"></div>
-            </div>
-            <!-- Slide 2 Indicator -->
-            <div class="w-1 h-12 bg-white/25 rounded-full overflow-hidden relative cursor-pointer hero-indicator-bar" data-index="1">
-              <div class="w-full bg-white absolute top-0 left-0 transition-all duration-100 ease-linear hero-progress-fill" style="height: 0%"></div>
-            </div>
-            <!-- Slide 3 Indicator -->
-            <div class="w-1 h-12 bg-white/25 rounded-full overflow-hidden relative cursor-pointer hero-indicator-bar" data-index="2">
-              <div class="w-full bg-white absolute top-0 left-0 transition-all duration-100 ease-linear hero-progress-fill" style="height: 0%"></div>
-            </div>
+        <div style="background:#fff; border-radius:0 0 20px 20px; margin:0; padding:30px 24px 24px;">
+          <h3 style="font-size:17px;font-weight:755;color:#1e293b;margin-bottom:24px;text-align:center;font-family:'Inter',sans-serif;letter-spacing:-0.2px;">Find your perfect expert</h3>
+          
+          <div class="select-wrap">
+            <select class="hero-form-select" id="hero-profile-type">
+              <option value="Freelancer" selected>Freelancer</option>
+              <option value="Business expert">Business expert</option>
+              <option value="Institute or company">Institute or company</option>
+              <option value="Legal professional">Legal professional</option>
+              <option value="Supportive business">Supportive business</option>
+            </select>
           </div>
           
-          <!-- Play / Pause Button -->
-          <button id="hero-carousel-pause-btn" class="w-6 h-6 rounded-full border border-white/25 flex items-center justify-center text-white bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-all active:scale-95 mt-4" aria-label="Pause Carousel">
-            <svg id="pause-icon" class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-            </svg>
-            <svg id="play-icon" class="w-3 h-3 hidden" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
+          <input class="hero-form-input" type="text" id="hero-name" placeholder="Enter the name" style="margin-bottom:16px;"/>
+          
+          <div class="phone-row">
+            <div class="select-wrap">
+              <select class="hero-form-select" id="hero-phone-code">
+                <option>+91</option><option>+1</option><option>+44</option><option>+61</option><option>+49</option>
+              </select>
+            </div>
+            <input class="hero-form-input" type="tel" id="hero-phone" placeholder="Enter Number"/>
+          </div>
+          
+          <button id="hero-register-btn" style="display:flex;align-items:center;justify-content:center;width:100%;height:54px;
+            background:#000000;color:#fff;border-radius:8px;font-size:15px;font-weight:700;letter-spacing:.05em;
+            text-decoration:none;transition:background .15s;font-family:'Inter',sans-serif;box-shadow:0 2px 6px rgba(0,0,0,0.15); border:none; cursor:pointer;"
+            onmouseover="this.style.background='#222222'" onmouseout="this.style.background='#000000'">
+            REGISTER &nbsp;→
           </button>
+          <p style="font-size:11px;color:#64748b;text-align:center;margin-top:14px;line-height:1.5;font-family:'Inter',sans-serif;">
+            *By clicking register free, I agree to the <a href="#" style="color:#475569;text-decoration:underline;">T&amp;C</a> and <a href="#" style="color:#475569;text-decoration:underline;">Privacy Policy</a>.
+          </p>
+        </div>
+      </div>
+
+      <script is:inline>
+        document.getElementById('hero-register-btn')?.addEventListener('click', () => {
+          const type = document.getElementById('hero-profile-type').value;
+          const name = document.getElementById('hero-name').value;
+          const code = document.getElementById('hero-phone-code').value;
+          const num = document.getElementById('hero-phone').value;
+          const phone = code + ' ' + num;
+          window.location.href = `/signup/expert?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&type=${encodeURIComponent(type)}`;
+        });
+      </script>
+
+      <!-- ② HEADING — aligned with header logo via max-w-7xl -->
+      <div style="position:relative; z-index:20; padding-top:36px;">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+          <div style="max-width:580px;">
+            <h1 class="font-sora" style="font-size:36px;font-weight:700;color:#1a1a1a;line-height:1.18;margin-bottom:10px;letter-spacing:-0.5px;">
+              The biggest and most trusted<br/>visa consultancy platform!
+            </h1>
+            <p style="font-size:14px;color:#666;margin-bottom:22px;">Now find experts based on your country &amp; visa category</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ CARDS — edge-to-edge full viewport width, slides right-to-left behind form -->
+      <div style="position:relative; z-index:10; margin-top:24px; overflow:hidden;">
+
+        <!-- Row 1 — taller cards -->
+        <div class="hero-cards-row">
+          <div class="expert-hero-card" style="width:155px;height:250px;">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=560&fit=crop&crop=face" alt="Rajiv Mehta"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Rajiv Mehta</div><span class="cbadge cbadge-blue">#UK Visa</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:170px;height:275px;">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=560&fit=crop&crop=face" alt="Priya Sharma"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Priya Sharma</div><span class="cbadge cbadge-purple">#Canada PR</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:162px;height:260px;">
+            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=560&fit=crop&crop=face" alt="Arjun Kapoor"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Arjun Kapoor</div><span class="cbadge cbadge-teal">#Australia PR</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:158px;height:255px;">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=560&fit=crop&crop=face" alt="Omar Al-Rashid"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Omar Al-Rashid</div><span class="cbadge cbadge-amber">#UAE / Dubai</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:155px;height:248px;">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=560&fit=crop&crop=face" alt="Meera Nair"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Meera Nair</div><span class="cbadge cbadge-pink">#Schengen</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:158px;height:252px;">
+            <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=560&fit=crop&crop=face" alt="David Chen"/>
+            <div class="card-overlay-grad"><div class="card-name-label">David Chen</div><span class="cbadge cbadge-green">#Germany</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:155px;height:250px;">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=560&fit=crop&crop=face" alt="Amit Verma"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Amit Verma</div><span class="cbadge cbadge-orange">#USA Work</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:160px;height:265px;">
+            <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=560&fit=crop&crop=face" alt="Sarah Jenkins"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Sarah Jenkins</div><span class="cbadge cbadge-blue">#UK Student</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:158px;height:248px;">
+            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=560&fit=crop&crop=face" alt="Kabir Shah"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Kabir Shah</div><span class="cbadge cbadge-teal">#Canada PNP</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:165px;height:270px;">
+            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=560&fit=crop&crop=face" alt="Sophia Dubois"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Sophia Dubois</div><span class="cbadge cbadge-purple">#Schengen Visa</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:155px;height:255px;">
+            <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=560&fit=crop&crop=face" alt="Ryan Reynolds"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Ryan Reynolds</div><span class="cbadge cbadge-amber">#US EB-5</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:160px;height:250px;">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=560&fit=crop&crop=face" alt="Lisa Wang"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Lisa Wang</div><span class="cbadge cbadge-green">#Australia PR</span></div>
+          </div>
         </div>
 
-        <!-- Right Side: Heading & Action Button -->
-        <div class="flex flex-col items-start justify-center text-left">
-          <h1 id="hero-title" class="text-white font-sora text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-[1.15] tracking-tight transition-all duration-500 max-w-3xl">
-            Direct Portal Access to Dubai & Global Visa Experts
-          </h1>
-          
-          <!-- Action Black Button (Yelp-style) -->
-          <a id="hero-action-btn" href="/find-experts" class="inline-flex items-center gap-2 bg-black hover:bg-slate-900 border border-white/20 hover:border-white/45 text-white font-bold text-sm px-6 py-3.5 rounded-full shadow-lg active:scale-98 transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </svg>
-            <span id="hero-btn-text">Search Experts</span>
-          </a>
+        <!-- Row 2 — slightly shorter cards -->
+        <div class="hero-cards-row-2">
+          <div class="expert-hero-card" style="width:158px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=440&fit=crop&crop=face" alt="James Mitchell"/>
+            <div class="card-overlay-grad"><div class="card-name-label">James Mitchell</div><span class="cbadge cbadge-red">#Canada PR</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:168px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=440&fit=crop&crop=face" alt="Vikram Singh"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Vikram Singh</div><span class="cbadge cbadge-orange">#USA Work</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:162px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=440&fit=crop&crop=face" alt="Angela Williams"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Angela Williams</div><span class="cbadge cbadge-lime">#Singapore</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:160px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=440&fit=crop&crop=face" alt="Anita Patel"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Anita Patel</div><span class="cbadge cbadge-purple">#Student Visa</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:158px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=400&h=440&fit=crop&crop=face" alt="Karan Mehta"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Karan Mehta</div><span class="cbadge cbadge-teal">#Work Permit</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:160px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=440&fit=crop&crop=face" alt="Riya Desai"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Riya Desai</div><span class="cbadge cbadge-red">#PR Specialist</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:155px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&h=440&fit=crop&crop=face" alt="Sunita Rao"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Sunita Rao</div><span class="cbadge cbadge-blue">#NZ / UAE</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:158px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400&h=440&fit=crop&crop=face" alt="Kenji Tanaka"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Kenji Tanaka</div><span class="cbadge cbadge-orange">#Japan Visa</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:165px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=440&fit=crop&crop=face" alt="Isabella Silva"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Isabella Silva</div><span class="cbadge cbadge-pink">#Portugal D7</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:160px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=440&fit=crop&crop=face" alt="Marcus Thorne"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Marcus Thorne</div><span class="cbadge cbadge-blue">#US H-1B</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:158px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=440&fit=crop&crop=face" alt="Emily Brown"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Emily Brown</div><span class="cbadge cbadge-purple">#UK Work</span></div>
+          </div>
+          <div class="expert-hero-card" style="width:162px;height:215px;">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=440&fit=crop&crop=face" alt="Carlos Garcia"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Carlos Garcia</div><span class="cbadge cbadge-lime">#Spain Nomad</span></div>
+          </div>
         </div>
 
       </div>
+
     </section>
 
     <!-- MAGIC SEARCH React Island Hydrated client-side immediately -->
-    <section class="max-w-5xl mx-auto px-4 -mt-14 relative z-20 mb-12">
+    <section class="max-w-5xl mx-auto px-4 mt-10 relative z-20 mb-12">
       <MagicSearch client:load />
     </section>
 
@@ -369,4 +531,3 @@ const successStories = [
     });
   </script>
 </Layout>
-

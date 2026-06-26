@@ -151,7 +151,7 @@ export function MagicSearch({ className = "" }: { className?: string }) {
 
             <button 
                 onClick={(e) => { if (checkAuthAndPrevent(e)) handleSearch(); }}
-                className="w-full bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-white py-4 rounded-xl font-bold text-base hover:shadow-lg hover:shadow-red-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full bg-black text-white py-4 rounded-xl font-bold text-base hover:bg-neutral-900 hover:shadow-lg hover:shadow-neutral-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
             >
                 <Search className="w-5 h-5" />
                 Find Experts

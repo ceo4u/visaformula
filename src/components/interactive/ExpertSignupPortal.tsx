@@ -193,9 +193,9 @@ export function ExpertSignupPortal() {
       `}} />
       
       {step < 3 && (
-        <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
+        <header className="w-full max-w-7xl mx-auto px-8 pt-2 flex items-center justify-between font-sans">
           <a href="/" className="flex items-center gap-2">
-              <svg className="w-40 h-auto" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-36 h-auto" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
                   {/* Centered airplane swoop above the wordmark */}
                   <g transform="translate(45, -145) scale(0.68)">
                       {airplanePaths.map((p: any, idx: number) => (

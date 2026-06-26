@@ -2,13 +2,21 @@
 // src/pages/signup/index.astro
 import Layout from '../../layouts/Layout.astro';
 import { ArrowRight, Shield, Star, CheckCircle, Sparkles } from 'lucide-react';
+import airplanePaths from '../../data/clean_airplane.json';
 ---
 
 <Layout 
   title="Choose Account Type - VisaFormula" 
   description="Register a free VisaFormula account. Select whether to join as a Seeker to find top visa experts, or as an Expert to consult clients and grow your global practice."
+  hideHeader={true}
+  hideFooter={true}
 >
-  <div class="min-h-screen bg-white flex flex-col items-center justify-center px-4 py-16 font-sans">
+  <div class="min-h-screen bg-white flex flex-col items-center justify-center px-4 py-16 font-sans relative">
+      
+      <!-- Back Button - Top Left -->
+      <a href="javascript:history.back()" class="absolute top-6 left-6 flex items-center justify-center w-8 h-8 rounded-full border border-slate-200 text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </a>
       
       <!-- CSS animations for high luxury floating circles -->
       <style is:inline>
@@ -26,6 +34,29 @@ import { ArrowRight, Shield, Star, CheckCircle, Sparkles } from 'lucide-react';
           .pulse-ring { animation: pulse-ring 3s ease-in-out infinite; }
       </style>
 
+      <!-- Logo (Centered, identical to Login Page) -->
+      <a href="/" class="inline-flex items-center justify-center gap-2 group mb-4">
+          <svg class="w-80 h-auto" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+              <!-- Centered airplane swoop above the wordmark -->
+              <g transform="translate(45, -145) scale(0.68)">
+                  {airplanePaths.map((p) => (
+                      <path d={p.d} fill={p.fill} transform={p.transform} />
+                  ))}
+              </g>
+              
+              <!-- Wordmark -->
+              <text x="350" y="235" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="900" font-size="82" letter-spacing="0.02em">
+                  <tspan fill="#111111" stroke="#111111" stroke-width="3">VISA</tspan>
+                  <tspan fill="#0F2B6C" stroke="#0F2B6C" stroke-width="3">FORMULA</tspan>
+              </text>
+              
+              <!-- Tagline -->
+              <text x="350" y="300" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="800" font-size="24" letter-spacing="0.25em" fill="#0F2B6C">
+                  GLOBAL VISA MARKETPLACE
+              </text>
+          </svg>
+      </a>
+
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-4 py-1.5 mb-6">
           <Sparkles class="w-3.5 h-3.5 text-black" />
@@ -33,8 +64,8 @@ import { ArrowRight, Shield, Star, CheckCircle, Sparkles } from 'lucide-react';
       </div>
 
       <!-- Heading -->
-      <h1 class="font-sora text-3xl sm:text-4xl font-extrabold text-black mb-2 text-center">
-          I want to <span class="text-slate-500">join as</span>
+      <h1 class="font-sora text-3xl sm:text-4xl font-extrabold text-[#0F2B6C] mb-2 text-center">
+          I want to join as
       </h1>
       <p class="text-gray-400 text-sm mb-12 text-center">Select your role to get started with VisaFormula</p>
 

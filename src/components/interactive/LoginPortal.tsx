@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, Gavel, ArrowRight, ArrowLeft } from "lucide-react";
 import { useAuth } from "../providers/auth-provider";
+import airplanePaths from "../../data/clean_airplane.json";
+import checkmarkPaths from "../../data/clean_checkmark.json";
 
 export function LoginPortal() {
     const { signIn } = useAuth();
@@ -46,23 +48,44 @@ export function LoginPortal() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-white font-sans">
+        <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-white font-sans relative">
+            {/* Logo - Top Left */}
+            <a href="/" className="absolute top-5 left-6 flex items-center gap-2 group">
+                <svg className="w-36 h-auto" viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision" textRendering="geometricPrecision">
+                    <g transform="translate(-400, -120) scale(0.7)">
+                        {airplanePaths.map((p: any, idx: number) => (
+                            <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
+                        ))}
+                    </g>
+                    <text x="250" y="152" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="900" fontSize="82" letterSpacing="0.025em">
+                        <tspan fill="#111111" stroke="#111111" strokeWidth="2.5">VISA</tspan><tspan fill="#0F2B6C" stroke="#0F2B6C" strokeWidth="2.5">FORMULA</tspan>
+                    </text>
+                </svg>
+            </a>
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
-                    <a href="/" className="inline-flex items-center gap-2 group mb-4">
-                        <div className="w-9 h-9 bg-black border border-black text-white rounded-xl flex items-center justify-center transition-all duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" className="w-5 h-5">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                                <path d="M2 12h20"/>
-                            </svg>
-                        </div>
-                        <span className="font-sans text-2xl font-extrabold tracking-tight text-black">VisaFormula</span>
+                    <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
+                        <svg className="w-80 h-auto" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision" textRendering="geometricPrecision">
+                            {/* Centered airplane swoop above the wordmark */}
+                            <g transform="translate(45, -145) scale(0.68)">
+                                {airplanePaths.map((p: any, idx: number) => (
+                                    <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
+                                ))}
+                            </g>
+                            
+                            {/* Wordmark (Centered in the viewport) */}
+                            <text x="350" y="235" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="900" fontSize="82" letterSpacing="0.02em">
+                                <tspan fill="#111111" stroke="#111111" strokeWidth="3">VISA</tspan>
+                                <tspan fill="#0F2B6C" stroke="#0F2B6C" strokeWidth="3">FORMULA</tspan>
+                            </text>
+                            
+                            {/* Tagline (Centered in the viewport) */}
+                            <text x="350" y="300" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="800" fontSize="24" letterSpacing="0.25em" fill="#0F2B6C">
+                                GLOBAL VISA MARKETPLACE
+                            </text>
+                        </svg>
                     </a>
-                    <h1 className="font-sans text-3xl font-extrabold text-black mt-2">
-                        Welcome <span className="text-slate-500">back</span>
-                    </h1>
-                    <p className="text-gray-400 text-sm mt-2">Sign in to get started with VisaFormula</p>
+                    <p className="text-slate-500 text-base mt-4">Sign in to get started with VisaFormula</p>
                 </div>
 
                 <div className="w-full">

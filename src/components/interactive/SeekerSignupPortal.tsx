@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, User, Upload } from "lucide-react";
+import airplanePaths from "../../data/clean_airplane.json";
+import checkmarkPaths from "../../data/clean_checkmark.json";
 
 const goals = [
     { id: "study", icon: GraduationCap, label: "Study Abroad", desc: "Find universities & student visas" },
@@ -47,10 +49,27 @@ export function SeekerSignupPortal() {
                 background: "radial-gradient(circle at 90% 10%, rgba(253, 244, 215, 0.45) 0%, transparent 40%), radial-gradient(circle at 10% 90%, rgba(224, 231, 255, 0.4) 0%, transparent 40%), #fafbfc"
             }}>
                 <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
-                    <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full border-4 border-black flex-shrink-0"></div>
-                        <span className="font-bold text-black text-xl tracking-tight">VisaFormula</span>
-                    </div>
+                    <a href="/" className="flex items-center gap-2">
+                        <svg className="w-40 h-auto" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
+                            {/* Centered airplane swoop above the wordmark */}
+                            <g transform="translate(45, -145) scale(0.68)">
+                                {airplanePaths.map((p: any, idx: number) => (
+                                    <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
+                                ))}
+                            </g>
+                            
+                            {/* Wordmark */}
+                            <text x="350" y="235" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="900" fontSize="82" letterSpacing="0.02em">
+                                <tspan fill="#111111" stroke="#111111" strokeWidth="3">VISA</tspan>
+                                <tspan fill="#0F2B6C" stroke="#0F2B6C" strokeWidth="3">FORMULA</tspan>
+                            </text>
+                            
+                            {/* Tagline */}
+                            <text x="350" y="300" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="800" fontSize="24" letterSpacing="0.25em" fill="#0F2B6C">
+                                GLOBAL VISA MARKETPLACE
+                            </text>
+                        </svg>
+                    </a>
                 </header>
 
                 <div className="flex-grow flex flex-col items-center justify-center px-4 py-12">
@@ -86,10 +105,27 @@ export function SeekerSignupPortal() {
                 }
             `}} />
             <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
-                <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full border-4 border-black flex-shrink-0"></div>
-                    <span className="font-bold text-black text-xl tracking-tight">VisaFormula</span>
-                </div>
+                <a href="/" className="flex items-center gap-2">
+                    <svg className="w-40 h-auto" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
+                        {/* Centered airplane swoop above the wordmark */}
+                        <g transform="translate(45, -145) scale(0.68)">
+                            {airplanePaths.map((p: any, idx: number) => (
+                                <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
+                            ))}
+                        </g>
+                        
+                        {/* Wordmark */}
+                        <text x="350" y="235" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="900" fontSize="82" letterSpacing="0.02em">
+                            <tspan fill="#111111" stroke="#111111" strokeWidth="3">VISA</tspan>
+                            <tspan fill="#0F2B6C" stroke="#0F2B6C" strokeWidth="3">FORMULA</tspan>
+                        </text>
+                        
+                        {/* Tagline */}
+                        <text x="350" y="300" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="800" fontSize="24" letterSpacing="0.25em" fill="#0F2B6C">
+                            GLOBAL VISA MARKETPLACE
+                        </text>
+                    </svg>
+                </a>
                 <div className="text-base font-medium text-slate-500">
                     Already a member? <a href="/login" className="text-black font-bold hover:underline">Login</a>
                 </div>

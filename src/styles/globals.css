@@ -6,16 +6,16 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 0%;
-    --primary: 0 84% 60%;
-    --primary-rgb: 239, 68, 68;
+    --primary: 222 76% 24%; /* #0F2B6C Deep Navy */
+    --primary-rgb: 15, 43, 108;
     --primary-foreground: 0 0% 100%;
-    --primary-container: 0 84% 95%;
-    --secondary: 0 84% 60%;
+    --primary-container: 222 76% 95%;
+    --secondary: 195 57% 48%; /* #359FC2 Cyan/Teal */
     --secondary-foreground: 0 0% 0%;
-    --tertiary: 0 84% 60%;
+    --tertiary: 195 57% 48%; /* #359FC2 Cyan/Teal */
     --tertiary-foreground: 0 0% 100%;
-    --tertiary-container: 0 84% 95%;
-    --accent: 0 84% 60%;
+    --tertiary-container: 195 57% 95%;
+    --accent: 195 57% 48%; /* #359FC2 Cyan/Teal */
     --accent-foreground: 0 0% 100%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 40%;
@@ -25,7 +25,7 @@
     --error-container: 0 100% 96%;
     --border: 0 0% 91%;
     --input: 0 0% 91%;
-    --ring: 199 89% 48%;
+    --ring: 195 57% 48%;
     --radius: 0.25rem;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 13%;

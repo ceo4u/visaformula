@@ -349,7 +349,7 @@ export function JobsPortal() {
 
               <h1 className="font-sora font-extrabold text-4xl sm:text-5xl md:text-6xl text-white mb-5 leading-[1.08] tracking-tight">
                 Find Your Dream<br />
-                <span className="text-black">Overseas Job.</span>
+                <span className="text-white">Overseas Job.</span>
               </h1>
 
               <p className="text-white/60 text-base md:text-lg max-w-xl mb-8 font-medium leading-relaxed">

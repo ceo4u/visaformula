@@ -1,5 +1,8 @@
 ---
 // src/components/Logo.astro
+import airplanePaths from '../data/clean_airplane.json';
+import checkmarkPaths from '../data/clean_checkmark.json';
+
 interface Props {
   variant?: 'navbar-light' | 'navbar-dark' | 'footer' | 'icon';
   className?: string;
@@ -9,88 +12,95 @@ const { variant = 'navbar-light', className = '' } = Astro.props;
 ---
 
 {variant === 'icon' && (
-  <svg class={`h-10 w-auto ${className}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" fill="none">
-    <defs>
-      <linearGradient id="cyan-blue-grad-icon" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#00C9FF" />
-        <stop offset="100%" stop-color="#0057B8" />
-      </linearGradient>
-    </defs>
-    <path d="M 30 95 C 50 85, 90 60, 120 40 C 90 65, 55 85, 35 90 C 32 91, 30 93, 30 95 Z" fill="url(#cyan-blue-grad-icon)" />
-    <path d="M 25 95 C 55 90, 95 70, 130 45 C 140 38, 155 30, 170 25 C 155 35, 130 55, 105 75 C 70 95, 40 102, 25 95 Z" fill="url(#cyan-blue-grad-icon)" />
-    <path d="M 90 60 L 102 63 L 100 50 L 92 40 L 88 42 L 92 50 Z" fill="url(#cyan-blue-grad-icon)" />
-    <path d="M 105 55 L 135 75 L 128 78 L 108 62 Z" fill="url(#cyan-blue-grad-icon)" />
-    <path d="M 95 48 L 110 20 L 122 25 L 102 45 Z" fill="url(#cyan-blue-grad-icon)" />
-    <path d="M 80 52 C 95 45, 135 30, 160 22 C 150 32, 120 55, 100 65 C 90 70, 80 65, 80 52 Z" fill="url(#cyan-blue-grad-icon)" />
-    <circle cx="70" cy="85" r="3" fill="#00C9FF" />
-    <circle cx="55" cy="92" r="2.5" fill="#00C9FF" />
-    <circle cx="42" cy="96" r="2" fill="#00C9FF" />
-    <circle cx="100" cy="88" r="2" fill="#00C9FF" />
-    <circle cx="115" cy="82" r="3" fill="#0057B8" />
+  <svg class={`h-10 w-auto ${className}`} viewBox="0 0 354 183" xmlns="http://www.w3.org/2000/svg">
+    <!-- Airplane only -->
+    <g transform="translate(-576, -259)">
+      {airplanePaths.map((p) => (
+        <path d={p.d} fill={p.fill} transform={p.transform} />
+      ))}
+    </g>
   </svg>
 )}
 
 {(variant === 'navbar-light' || variant === 'navbar-dark') && (
-  <svg class={`h-10 w-auto ${className}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
-    <defs>
-      <linearGradient id="cyan-blue-grad-nav" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#00C9FF" />
-        <stop offset="100%" stop-color="#0057B8" />
-      </linearGradient>
-    </defs>
-    <g transform="scale(0.33) translate(-10, -5)">
-      <path d="M 30 95 C 50 85, 90 60, 120 40 C 90 65, 55 85, 35 90 C 32 91, 30 93, 30 95 Z" fill="url(#cyan-blue-grad-nav)" />
-      <path d="M 25 95 C 55 90, 95 70, 130 45 C 140 38, 155 30, 170 25 C 155 35, 130 55, 105 75 C 70 95, 40 102, 25 95 Z" fill="url(#cyan-blue-grad-nav)" />
-      <path d="M 90 60 L 102 63 L 100 50 L 92 40 L 88 42 L 92 50 Z" fill="url(#cyan-blue-grad-nav)" />
-      <path d="M 105 55 L 135 75 L 128 78 L 108 62 Z" fill="url(#cyan-blue-grad-nav)" />
-      <path d="M 95 48 L 110 20 L 122 25 L 102 45 Z" fill="url(#cyan-blue-grad-nav)" />
-      <path d="M 80 52 C 95 45, 135 30, 160 22 C 150 32, 120 55, 100 65 C 90 70, 80 65, 80 52 Z" fill="url(#cyan-blue-grad-nav)" />
-      <circle cx="70" cy="85" r="3" fill="#00C9FF" />
-      <circle cx="55" cy="92" r="2.5" fill="#00C9FF" />
-      <circle cx="42" cy="96" r="2" fill="#00C9FF" />
-      <circle cx="100" cy="88" r="2" fill="#00C9FF" />
-      <circle cx="115" cy="82" r="3" fill="#0057B8" />
+  <svg class={`w-36 md:w-44 lg:w-56 h-auto ${className} logo-svg ${variant}`} viewBox="0 0 950 260" xmlns="http://www.w3.org/2000/svg">
+    <!-- Left side airplane fly swoop (scaled down by 20% and integrated naturally) shifted left -->
+    <g transform="translate(-400, -120) scale(0.7)">
+      {airplanePaths.map((p) => (
+        <path d={p.d} fill={p.fill} transform={p.transform} class="airplane-path" />
+      ))}
     </g>
-    <text id="logo-text" x="56" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="900" fill={variant === 'navbar-dark' ? '#FFFFFF' : '#6A1B8C'} class="transition-colors duration-300">Visa</text>
-    <text x="104" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="900" fill="url(#cyan-blue-grad-nav)">Formula</text>
+    
+    <!-- Right side wordmark: VisaFormula (Modern, clean, extra bold text with SVG stroke for added weight) -->
+    <text x="250" y="152" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="900" font-size="82" letter-spacing="0.025em" class="wordmark-text">
+      <tspan fill="#111111" stroke="#111111" stroke-width="2.5" class="visa-text">VISA</tspan><tspan fill="#0F2B6C" stroke="#0F2B6C" stroke-width="2.5" class="formula-text">FORMULA</tspan>
+    </text>
+
+    <style is:global>
+      /* Dynamic light/dark styling for transparent/colored navbar transitions */
+      .logo-svg.navbar-dark .visa-text,
+      .logo-svg.navbar-dark .formula-text,
+      #main-header.header-transparent .logo-svg .visa-text,
+      #main-header.header-transparent .logo-svg .formula-text {
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+      }
+      
+      .logo-svg.navbar-dark .airplane-path,
+      #main-header.header-transparent .logo-svg .airplane-path {
+        fill: #FFFFFF !important;
+      }
+      
+      .wordmark-text {
+        user-select: none;
+      }
+      
+      .airplane-path, .visa-text, .formula-text {
+        transition: fill 0.3s ease, stroke 0.3s ease;
+      }
+    </style>
   </svg>
 )}
 
 {variant === 'footer' && (
-  <svg class={`h-24 w-auto ${className}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 250" fill="none">
-    <defs>
-      <linearGradient id="cyan-blue-grad-footer" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#00C9FF" />
-        <stop offset="100%" stop-color="#0057B8" />
-      </linearGradient>
-      <linearGradient id="checkmark-grad-footer" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#00D5DF" />
-        <stop offset="100%" stop-color="#0099B8" />
-      </linearGradient>
-    </defs>
-    <g id="airplane-group">
-      <path d="M 270 95 C 290 85, 330 60, 360 40 C 330 65, 295 85, 275 90 C 272 91, 270 93, 270 95 Z" fill="url(#cyan-blue-grad-footer)" />
-      <path d="M265 95 C295 90, 335 70, 370 45 C380 38, 395 30, 410 25 C395 35, 370 55, 345 75 C310 95, 280 102, 265 95 Z" fill="url(#cyan-blue-grad-footer)" />
-      <path d="M 330 60 L 342 63 L 340 50 L 332 40 L 328 42 L 332 50 Z" fill="url(#cyan-blue-grad-footer)" />
-      <path d="M 345 55 L 375 75 L 368 78 L 348 62 Z" fill="url(#cyan-blue-grad-footer)" />
-      <path d="M 335 48 L 350 20 L 362 25 L 342 45 Z" fill="url(#cyan-blue-grad-footer)" />
-      <path d="M 320 52 C 335 45, 375 30, 400 22 C 390 32, 360 55, 340 65 C 330 70, 320 65, 320 52 Z" fill="url(#cyan-blue-grad-footer)" />
-      <circle cx="310" cy="85" r="3" fill="#00C9FF" />
-      <circle cx="295" cy="92" r="2.5" fill="#00C9FF" />
-      <circle cx="282" cy="96" r="2" fill="#00C9FF" />
-      <circle cx="340" cy="88" r="2" fill="#00C9FF" />
-      <circle cx="355" cy="82" r="3" fill="#0057B8" />
-      <circle cx="368" cy="74" r="2" fill="#00C9FF" />
+  <svg class={`h-36 w-auto ${className} logo-svg footer-logo`} viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
+    <!-- Centered airplane swoop above the wordmark -->
+    <g transform="translate(45, -145) scale(0.68)">
+      {airplanePaths.map((p) => (
+        <path d={p.d} fill={p.fill} transform={p.transform} class="airplane-path" />
+      ))}
     </g>
-    <text x="75" y="145" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="52" font-weight="900" fill="#6A1B8C" letter-spacing="-1">VISA</text>
-    <text x="200" y="145" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="52" font-weight="900" fill="url(#cyan-blue-grad-footer)" letter-spacing="-1">FORMULA</text>
-    <text x="250" y="180" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="16" font-weight="800" fill="#6A1B8C" letter-spacing="1.5" text-anchor="middle">GLOBAL VISA MARKETPLACE</text>
-    <circle cx="102" cy="174" r="4.5" fill="#00C9FF" />
-    <circle cx="395" cy="176" r="3" fill="#00C9FF" />
-    <circle cx="240" cy="186" r="2.5" fill="#00C9FF" />
-    <g id="bottom-checkmark" transform="translate(0, 5)">
-      <path d="M 215 195 C 225 195, 250 225, 260 230 C 270 225, 295 195, 305 195 C 295 202, 270 240, 260 240 C 250 240, 225 202, 215 195 Z" fill="url(#checkmark-grad-footer)" />
-      <circle cx="260" cy="204" r="4.5" fill="#00C9FF" />
-    </g>
+    
+    <!-- Centered wordmark: VisaFormula -->
+    <text x="350" y="235" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="900" font-size="82" letter-spacing="0.02em" class="wordmark-text">
+      <tspan fill="#111111" stroke="#111111" stroke-width="3" class="visa-text">VISA</tspan><tspan fill="#0F2B6C" stroke="#0F2B6C" stroke-width="3" class="formula-text">FORMULA</tspan>
+    </text>
+    
+    <!-- Tagline: Global Visa Marketplace (centered below the wordmark) -->
+    <text x="350" y="300" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="800" font-size="24" letter-spacing="0.25em" fill="#0F2B6C" class="tagline-text">
+      GLOBAL VISA MARKETPLACE
+    </text>
+
+    <style>
+      /* Dynamic white color inversion for footer logo */
+      .logo-svg.footer-logo .visa-text,
+      .logo-svg.footer-logo .formula-text {
+        fill: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+      }
+      
+      .logo-svg.footer-logo .tagline-text {
+        fill: #FFFFFF !important;
+        font-weight: 800 !important;
+      }
+      
+      .logo-svg.footer-logo .airplane-path {
+        fill: #FFFFFF !important;
+      }
+      
+      .wordmark-text {
+        user-select: none;
+      }
+    </style>
   </svg>
 )}

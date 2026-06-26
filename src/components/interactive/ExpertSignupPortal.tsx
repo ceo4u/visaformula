@@ -7,6 +7,8 @@ import {
   CreditCard, Settings, ChevronRight, Layers, Search, 
   Calendar, LogOut, CheckSquare, TrendingUp, Bookmark, Bell, Clock
 } from "lucide-react";
+import airplanePaths from "../../data/clean_airplane.json";
+import checkmarkPaths from "../../data/clean_checkmark.json";
 
 export function ExpertSignupPortal() {
   const [step, setStep] = useState(1); // 1: Initial Reg, 2: Profile Complete, 3: Dashboard View
@@ -26,6 +28,8 @@ export function ExpertSignupPortal() {
   const [otpValue, setOtpValue] = useState("");
   const [facebookLink, setFacebookLink] = useState("");
   const [linkedinLink, setLinkedinLink] = useState("");
+  const [expertCategory, setExpertCategory] = useState("Student visa expert");
+  const [expertAddress, setExpertAddress] = useState("");
 
   // --- Phase 2 States ---
   // Freelancer specific
@@ -190,10 +194,27 @@ export function ExpertSignupPortal() {
       
       {step < 3 && (
         <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
-          <div className="flex items-center gap-2.5">
-            <div className="w-5.5 h-5.5 rounded-full border-[3.5px] border-black flex-shrink-0"></div>
-            <span className="font-extrabold text-black text-xl tracking-tight">VisaFormula</span>
-          </div>
+          <a href="/" className="flex items-center gap-2">
+              <svg className="w-40 h-auto" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
+                  {/* Centered airplane swoop above the wordmark */}
+                  <g transform="translate(45, -145) scale(0.68)">
+                      {airplanePaths.map((p: any, idx: number) => (
+                          <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
+                      ))}
+                  </g>
+                  
+                  {/* Wordmark */}
+                  <text x="350" y="235" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="900" font-size="82" letter-spacing="0.02em">
+                      <tspan fill="#111111" stroke="#111111" stroke-width="3">VISA</tspan>
+                      <tspan fill="#0F2B6C" stroke="#0F2B6C" stroke-width="3">FORMULA</tspan>
+                  </text>
+                  
+                  {/* Tagline */}
+                  <text x="350" y="300" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="800" font-size="24" letter-spacing="0.25em" fill="#0F2B6C">
+                      GLOBAL VISA MARKETPLACE
+                  </text>
+              </svg>
+          </a>
           <div className="text-sm font-semibold text-slate-500">
             Already a member? <a href="/login" className="text-black font-extrabold hover:underline">Login</a>
           </div>
@@ -351,6 +372,38 @@ export function ExpertSignupPortal() {
                       value={facebookLink} 
                       onChange={(e) => setFacebookLink(e.target.value)} 
                       placeholder="Enter social link" 
+                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700 block">Expert In (Category)*</label>
+                    <div className="relative">
+                      <select 
+                        required
+                        value={expertCategory} 
+                        onChange={(e) => setExpertCategory(e.target.value)} 
+                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black cursor-pointer appearance-none shadow-sm"
+                      >
+                        <option value="Student visa expert">Student visa expert</option>
+                        <option value="Visa filing expert">Visa filing expert</option>
+                        <option value="Visit visa expert">Visit visa expert</option>
+                        <option value="Job visa expert">Job visa expert</option>
+                        <option value="PR And Migration expert">PR And Migration expert</option>
+                      </select>
+                      <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-550">
+                        <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="text-sm font-semibold text-slate-700 block">Practice / Office Address*</label>
+                    <input 
+                      required
+                      value={expertAddress} 
+                      onChange={(e) => setExpertAddress(e.target.value)} 
+                      placeholder="Enter your Office Address or Practice Location" 
                       className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
                     />
                   </div>
@@ -680,7 +733,7 @@ export function ExpertSignupPortal() {
 
                     {/* Description/Location */}
                     <p className="text-[11.5px] text-slate-500 font-semibold mt-1 leading-tight max-w-[220px]">
-                      {consultantType || "Visa Expert"} based in {officeAddress ? officeAddress.split(',')[0] : "Delhi, India"}
+                      {expertCategory || consultantType || "Visa Expert"} based in {expertAddress ? expertAddress.split(',')[0] : (officeAddress ? officeAddress.split(',')[0] : "Delhi, India")}
                     </p>
                   </div>
                 </div>
@@ -1019,6 +1072,31 @@ export function ExpertSignupPortal() {
                       <option value="Institute or company">Institute or company</option>
                       <option value="Legal professional">Legal professional</option>
                     </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-slate-800">Expert In (Category)</label>
+                    <select 
+                      value={expertCategory} 
+                      onChange={(e) => setExpertCategory(e.target.value)} 
+                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none cursor-pointer"
+                    >
+                      <option value="Student visa expert">Student visa expert</option>
+                      <option value="Visa filing expert">Visa filing expert</option>
+                      <option value="Visit visa expert">Visit visa expert</option>
+                      <option value="Job visa expert">Job visa expert</option>
+                      <option value="PR And Migration expert">PR And Migration expert</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-slate-800">Practice / Office Address</label>
+                    <input 
+                      type="text"
+                      value={expertAddress} 
+                      onChange={(e) => setExpertAddress(e.target.value)} 
+                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
+                    />
                   </div>
 
                   <div className="space-y-1.5">

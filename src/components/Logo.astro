@@ -1,7 +1,5 @@
 ---
 // src/components/Logo.astro
-import airplanePaths from '../data/clean_airplane.json';
-import checkmarkPaths from '../data/clean_checkmark.json';
 
 interface Props {
   variant?: 'navbar-light' | 'navbar-dark' | 'footer' | 'icon';
@@ -12,95 +10,47 @@ const { variant = 'navbar-light', className = '' } = Astro.props;
 ---
 
 {variant === 'icon' && (
-  <svg class={`h-10 w-auto ${className}`} viewBox="0 0 354 183" xmlns="http://www.w3.org/2000/svg">
-    <!-- Airplane only -->
-    <g transform="translate(-576, -259)">
-      {airplanePaths.map((p) => (
-        <path d={p.d} fill={p.fill} transform={p.transform} />
-      ))}
-    </g>
-  </svg>
+  <img
+    src="/logo/visaformula-navbar.svg"
+    alt="VisaFormula"
+    class={`h-10 w-auto ${className}`}
+  />
 )}
 
-{(variant === 'navbar-light' || variant === 'navbar-dark') && (
-  <svg class={`w-36 md:w-44 lg:w-56 h-auto ${className} logo-svg ${variant}`} viewBox="0 0 950 260" xmlns="http://www.w3.org/2000/svg">
-    <!-- Left side airplane fly swoop (scaled down by 20% and integrated naturally) shifted left -->
-    <g transform="translate(-400, -120) scale(0.7)">
-      {airplanePaths.map((p) => (
-        <path d={p.d} fill={p.fill} transform={p.transform} class="airplane-path" />
-      ))}
-    </g>
-    
-    <!-- Right side wordmark: VisaFormula (Modern, clean, extra bold text with SVG stroke for added weight) -->
-    <text x="250" y="152" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="900" font-size="82" letter-spacing="0.025em" class="wordmark-text">
-      <tspan fill="#111111" stroke="#111111" stroke-width="2.5" class="visa-text">VISA</tspan><tspan fill="#0F2B6C" stroke="#0F2B6C" stroke-width="2.5" class="formula-text">FORMULA</tspan>
-    </text>
+{variant === 'navbar-light' && (
+  <img
+    src="/logo/visaformula-navbar.svg"
+    alt="VisaFormula - Global Visa Marketplace"
+    class={`h-24 w-auto object-contain navbar-logo ${className}`}
+  />
+)}
 
-    <style is:global>
-      /* Dynamic light/dark styling for transparent/colored navbar transitions */
-      .logo-svg.navbar-dark .visa-text,
-      .logo-svg.navbar-dark .formula-text,
-      #main-header.header-transparent .logo-svg .visa-text,
-      #main-header.header-transparent .logo-svg .formula-text {
-        fill: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-      }
-      
-      .logo-svg.navbar-dark .airplane-path,
-      #main-header.header-transparent .logo-svg .airplane-path {
-        fill: #FFFFFF !important;
-      }
-      
-      .wordmark-text {
-        user-select: none;
-      }
-      
-      .airplane-path, .visa-text, .formula-text {
-        transition: fill 0.3s ease, stroke 0.3s ease;
-      }
-    </style>
-  </svg>
+{variant === 'navbar-dark' && (
+  <img
+    src="/logo/visaformula-navbar.svg"
+    alt="VisaFormula - Global Visa Marketplace"
+    class={`h-24 w-auto object-contain navbar-logo navbar-logo-dark ${className}`}
+  />
 )}
 
 {variant === 'footer' && (
-  <svg class={`h-36 w-auto ${className} logo-svg footer-logo`} viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
-    <!-- Centered airplane swoop above the wordmark -->
-    <g transform="translate(45, -145) scale(0.68)">
-      {airplanePaths.map((p) => (
-        <path d={p.d} fill={p.fill} transform={p.transform} class="airplane-path" />
-      ))}
-    </g>
-    
-    <!-- Centered wordmark: VisaFormula -->
-    <text x="350" y="235" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="900" font-size="82" letter-spacing="0.02em" class="wordmark-text">
-      <tspan fill="#111111" stroke="#111111" stroke-width="3" class="visa-text">VISA</tspan><tspan fill="#0F2B6C" stroke="#0F2B6C" stroke-width="3" class="formula-text">FORMULA</tspan>
-    </text>
-    
-    <!-- Tagline: Global Visa Marketplace (centered below the wordmark) -->
-    <text x="350" y="300" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="800" font-size="24" letter-spacing="0.25em" fill="#0F2B6C" class="tagline-text">
-      GLOBAL VISA MARKETPLACE
-    </text>
-
-    <style>
-      /* Dynamic white color inversion for footer logo */
-      .logo-svg.footer-logo .visa-text,
-      .logo-svg.footer-logo .formula-text {
-        fill: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-      }
-      
-      .logo-svg.footer-logo .tagline-text {
-        fill: #FFFFFF !important;
-        font-weight: 800 !important;
-      }
-      
-      .logo-svg.footer-logo .airplane-path {
-        fill: #FFFFFF !important;
-      }
-      
-      .wordmark-text {
-        user-select: none;
-      }
-    </style>
-  </svg>
+  <img
+    src="/logo/visaformula-brand.svg"
+    alt="VisaFormula - Global Visa Marketplace"
+    class={`h-32 w-auto object-contain footer-logo ${className}`}
+  />
 )}
+
+<style is:global>
+  /* Invert logo to white for dark backgrounds */
+  .navbar-logo-dark,
+  .footer-logo,
+  #main-header.header-transparent .navbar-logo {
+    filter: brightness(0) invert(1);
+  }
+  
+  /* Smooth transition for logo color changes */
+  .navbar-logo {
+    transition: filter 0.3s ease;
+  }
+</style>

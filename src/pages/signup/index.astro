@@ -37,25 +37,7 @@ import airplanePaths from '../../data/clean_airplane.json';
 
       <!-- Logo (Centered, identical to Login Page) -->
       <a href="/" class="inline-flex items-center justify-center gap-2 group mb-4">
-          <svg class="w-80 h-auto" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
-              <!-- Centered airplane swoop above the wordmark -->
-              <g transform="translate(45, -145) scale(0.68)">
-                  {airplanePaths.map((p) => (
-                      <path d={p.d} fill={p.fill} transform={p.transform} />
-                  ))}
-              </g>
-              
-              <!-- Wordmark -->
-              <text x="350" y="235" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="900" font-size="82" letter-spacing="0.02em">
-                  <tspan fill="#111111" stroke="#111111" stroke-width="3">VISA</tspan>
-                  <tspan fill="#0F2B6C" stroke="#0F2B6C" stroke-width="3">FORMULA</tspan>
-              </text>
-              
-              <!-- Tagline -->
-              <text x="350" y="300" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="800" font-size="24" letter-spacing="0.25em" fill="#0F2B6C">
-                  GLOBAL VISA MARKETPLACE
-              </text>
-          </svg>
+          <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" class="h-40 w-auto object-contain mx-auto" />
       </a>
 
       <!-- Badge -->
@@ -127,12 +109,7 @@ import airplanePaths from '../../data/clean_airplane.json';
 
       </div>
 
-      <!-- Trust Badges -->
-      <div class="flex items-center gap-6 text-[10px] font-black uppercase tracking-wider text-gray-400 mt-4">
-          <span class="flex items-center gap-1.5"><Shield class="w-4 h-4 text-black" /> Escrow protected</span>
-          <span class="flex items-center gap-1.5"><Star class="w-4 h-4 text-black fill-black" /> 4.9★ rated</span>
-          <span class="flex items-center gap-1.5"><CheckCircle class="w-4 h-4 text-black" /> KYC verified</span>
-      </div>
+
 
   </div>
 </Layout>

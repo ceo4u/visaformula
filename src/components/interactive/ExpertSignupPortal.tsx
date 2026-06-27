@@ -23,29 +23,52 @@ export function ExpertSignupPortal() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const nameParam = params.get("name");
-      const phoneParam = params.get("phone");
-      const typeParam = params.get("type");
+      const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
+      const name = localStorage.getItem("expert_businessName");
+      if (isLoggedInExpert === "true" && name) {
+        setStep(3);
+        setBusinessName(name);
+        setEmail(localStorage.getItem("expert_email") || "");
+        setContactNumber(localStorage.getItem("expert_contactNumber") || "");
+        setConsultantType(localStorage.getItem("expert_advisorType") || "Freelancer");
+        setAboutMe(localStorage.getItem("expert_aboutMe") || "");
+        setPortfolioLink(localStorage.getItem("expert_portfolioLink") || "");
+        setExpertAddress(localStorage.getItem("expert_officeAddress") || "");
+        setOfficeAddress(localStorage.getItem("expert_officeAddress") || "");
+        setGovRegNumber(localStorage.getItem("expert_govRegNumber") || "");
+        
+        try {
+          const tags = localStorage.getItem("expert_expertiseTags");
+          if (tags) setExpertiseTags(JSON.parse(tags));
+        } catch(e) {}
+        
+        setCountriesExpertise(localStorage.getItem("expert_countriesExpertise") || "");
+      } else {
+        const params = new URLSearchParams(window.location.search);
+        const nameParam = params.get("name");
+        const phoneParam = params.get("phone");
+        const typeParam = params.get("type");
 
-      if (nameParam) setBusinessName(nameParam);
-      if (phoneParam) setContactNumber(phoneParam);
-      if (typeParam) {
-        const validTypes = ["Freelancer", "Business expert", "Institute or company", "Legal professional", "Supportive business"];
-        if (validTypes.includes(typeParam)) {
-          setConsultantType(typeParam);
+        if (nameParam) setBusinessName(nameParam);
+        if (phoneParam) setContactNumber(phoneParam);
+        if (typeParam) {
+          const validTypes = ["Freelancer", "Business expert", "Institute or company", "Legal professional", "Supportive business"];
+          if (validTypes.includes(typeParam)) {
+            setConsultantType(typeParam);
+          }
         }
       }
     }
   }, []);
   const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
-  const [emailVerified, setEmailVerified] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(true);
   const [verifyingEmail, setVerifyingEmail] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [otpValue, setOtpValue] = useState("");
   const [facebookLink, setFacebookLink] = useState("");
   const [linkedinLink, setLinkedinLink] = useState("");
+  const [password, setPassword] = useState("");
   const [expertCategory, setExpertCategory] = useState("Student visa expert");
   const [expertAddress, setExpertAddress] = useState("");
 
@@ -58,17 +81,15 @@ export function ExpertSignupPortal() {
   // Corporate specific
   const [govRegNumber, setGovRegNumber] = useState("");
   const [licenseUploaded, setLicenseUploaded] = useState(false);
+  const [licenseFileName, setLicenseFileName] = useState("");
   const [officeAddress, setOfficeAddress] = useState("");
 
   // Shared Features Matrix
   const [newTag, setNewTag] = useState("");
-  const [expertiseTags, setExpertiseTags] = useState(["Study Visa", "Express Entry", "Visa Appeal"]);
-  const [countriesExpertise, setCountriesExpertise] = useState("Canada, Australia, UK");
+  const [expertiseTags, setExpertiseTags] = useState([]);
+  const [countriesExpertise, setCountriesExpertise] = useState("");
   const [pastSuccessText, setPastSuccessText] = useState("");
-  const [galleryImages, setGalleryImages] = useState<string[]>([
-    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=150&h=100&fit=crop&q=60",
-    "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=150&h=100&fit=crop&q=60"
-  ]);
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [escrowAccepted, setEscrowAccepted] = useState(true);
   const [subscribeUpdates, setSubscribeUpdates] = useState("Yes");
 
@@ -102,15 +123,9 @@ export function ExpertSignupPortal() {
   };
 
   // Mock Active Cases & Inquiries
-  const [inquiries, setInquiries] = useState([
-    { id: 1, name: "Arjun Mehta", type: "Student Visa Study permit query", country: "UK", time: "2 hrs ago", message: "Need support for high-priority admission at University of London." },
-    { id: 2, name: "Sarah Jenkins", type: "Express Entry points boost", country: "Canada", time: "5 hrs ago", message: "My CRS is 465. I want to check provincial nomination setups." }
-  ]);
+  const [inquiries, setInquiries] = useState([]);
 
-  const [activeCases, setActiveCases] = useState([
-    { id: 1, name: "Prashant Kumar", visa: "Canada Work Permit", status: "In-Progress (Biometrics Pending)", escrow: "₹18,500 Secured", progress: 65 },
-    { id: 2, name: "Sneha Reddy", visa: "US H-1B Cap Registration", status: "Reviewing LCA Documents", escrow: "₹25,000 Secured", progress: 40 }
-  ]);
+  const [activeCases, setActiveCases] = useState([]);
 
   // Form submits
   const handleProceedToPhase2 = (e: React.FormEvent) => {
@@ -138,8 +153,51 @@ export function ExpertSignupPortal() {
   const [adsList, setAdsList] = useState<Array<{title: string, desc: string}>>([]);
   const [offersList, setOffersList] = useState<Array<{title: string, discount: string}>>([]);
 
-  const handleLaunchDashboard = (e: React.FormEvent) => {
+  const handleLaunchDashboard = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8000'}/api/register/expert`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          business_name: businessName,
+          email: email,
+          password: password,
+          contact_number: contactNumber,
+          advisor_type: consultantType,
+          about_me: aboutMe,
+          portfolio_link: portfolioLink,
+          office_address: consultantType === "Freelancer" ? expertAddress : officeAddress,
+          gov_registration_number: govRegNumber,
+          license_document_url: "uploaded_license_copy.pdf",
+          expertise_tags: expertiseTags,
+          countries_expertise: countriesExpertise ? countriesExpertise.split(",").map(c => c.trim()) : []
+        })
+      });
+      if (!response.ok) {
+        const errData = await response.json();
+        alert(errData.message || "Expert registration failed.");
+        return;
+      }
+    } catch (err) {
+      console.warn("Backend server offline. Falling back to local simulation mode.", err);
+    }
+    // Proceed to dashboard anyway
+    if (typeof window !== "undefined") {
+      localStorage.setItem("expert_businessName", businessName);
+      localStorage.setItem("expert_email", email);
+      localStorage.setItem("expert_contactNumber", contactNumber);
+      localStorage.setItem("expert_advisorType", consultantType);
+      localStorage.setItem("expert_aboutMe", aboutMe);
+      localStorage.setItem("expert_portfolioLink", portfolioLink);
+      localStorage.setItem("expert_officeAddress", consultantType === "Freelancer" ? expertAddress : officeAddress);
+      localStorage.setItem("expert_govRegNumber", govRegNumber);
+      localStorage.setItem("expert_expertiseTags", JSON.stringify(expertiseTags));
+      localStorage.setItem("expert_countriesExpertise", countriesExpertise);
+      localStorage.setItem("expert_isLoggedIn", "true");
+      
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
     setStep(3);
   };
 
@@ -191,9 +249,7 @@ export function ExpertSignupPortal() {
   ];
 
   return (
-    <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white" style={{ 
-      background: "radial-gradient(circle at 90% 10%, rgba(253, 244, 215, 0.45) 0%, transparent 40%), radial-gradient(circle at 10% 90%, rgba(224, 231, 255, 0.4) 0%, transparent 40%), #fafbfc"
-    }}>
+    <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white">
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes premiumFadeIn {
           from {
@@ -211,29 +267,17 @@ export function ExpertSignupPortal() {
       `}} />
       
       {step < 3 && (
-        <header className="w-full max-w-7xl mx-auto px-8 pt-2 flex items-center justify-between font-sans">
-          <a href="/" className="flex items-center gap-2">
-              <svg className="w-36 h-auto" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
-                  {/* Centered airplane swoop above the wordmark */}
-                  <g transform="translate(45, -145) scale(0.68)">
-                      {airplanePaths.map((p: any, idx: number) => (
-                          <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
-                      ))}
-                  </g>
-                  
-                  {/* Wordmark */}
-                  <text x="350" y="235" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="900" font-size="82" letter-spacing="0.02em">
-                      <tspan fill="#111111" stroke="#111111" stroke-width="3">VISA</tspan>
-                      <tspan fill="#0F2B6C" stroke="#0F2B6C" stroke-width="3">FORMULA</tspan>
-                  </text>
-                  
-                  {/* Tagline */}
-                  <text x="350" y="300" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-weight="800" font-size="24" letter-spacing="0.25em" fill="#0F2B6C">
-                      GLOBAL VISA MARKETPLACE
-                  </text>
-              </svg>
+        <header className="relative w-full px-4 md:px-8 py-4 flex items-center justify-between font-sans min-h-[120px]">
+          <a href="/" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all shrink-0">
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back</span>
           </a>
-          <div className="text-sm font-semibold text-slate-500">
+          
+          <a href="/" className="absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 z-10">
+              <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-36 w-auto object-contain" />
+          </a>
+          
+          <div className="text-sm font-semibold text-slate-500 shrink-0">
             Already a member? <a href="/login" className="text-black font-extrabold hover:underline">Login</a>
           </div>
         </header>
@@ -242,7 +286,7 @@ export function ExpertSignupPortal() {
       {step < 3 ? (
         <div className="flex-grow flex flex-col justify-start py-6 px-6 max-w-4xl w-full mx-auto">
           <div className="text-center my-6">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-black tracking-tight mb-2">Let's get you started</h1>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-black tracking-tight mb-2">Let's get you started</h1>
             <p className="text-sm text-slate-400 font-semibold">Enter your details to initialize your portal</p>
           </div>
 
@@ -279,57 +323,15 @@ export function ExpertSignupPortal() {
               <form onSubmit={handleProceedToPhase2} className="space-y-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 block">Verify Email*</label>
-                    <div className="flex gap-3.5">
-                      <div className="relative flex-grow">
-                        <input 
-                          type="email"
-                          required
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="Enter your Email Address" 
-                          disabled={emailVerified}
-                          className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 disabled:bg-slate-50 transition-all shadow-sm"
-                        />
-                        {emailVerified && (
-                          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
-                            <span className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-[10px] font-bold">✓</span>
-                          </div>
-                        )}
-                      </div>
-                      {!emailVerified && (
-                        <button 
-                          type="button"
-                          onClick={handleSendOtp}
-                          className="bg-black hover:bg-slate-900 text-white text-sm font-semibold px-6 py-4 rounded-xl active:scale-95 transition-all shadow-sm"
-                        >
-                          Verify
-                        </button>
-                      )}
-                    </div>
-                    {emailVerified && (
-                      <span className="text-xs font-semibold text-emerald-600 flex items-center gap-1.5 mt-1">
-                        ✓ Verified successfully
-                      </span>
-                    )}
-                    {otpSent && (
-                      <div className="mt-3 flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 animate-fadeIn">
-                        <input 
-                          value={otpValue}
-                          onChange={(e) => setOtpValue(e.target.value)}
-                          placeholder="Enter OTP (123456)" 
-                          className="w-36 px-4 py-2.5 bg-white border border-slate-250 rounded-lg text-sm outline-none text-center font-medium"
-                        />
-                        <button 
-                          type="button"
-                          onClick={handleVerifyOtp}
-                          className="bg-black hover:bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition-colors"
-                        >
-                          Confirm
-                        </button>
-                        <span className="text-xs font-semibold text-black animate-pulse ml-1">OTP Sent</span>
-                      </div>
-                    )}
+                    <label className="text-sm font-semibold text-slate-700 block">Email*</label>
+                    <input 
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your Email Address" 
+                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 transition-all shadow-sm"
+                    />
                   </div>
 
                   <div className="space-y-2">
@@ -390,6 +392,18 @@ export function ExpertSignupPortal() {
                       value={facebookLink} 
                       onChange={(e) => setFacebookLink(e.target.value)} 
                       placeholder="Enter social link" 
+                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700 block">Password*</label>
+                    <input 
+                      required
+                      type="password"
+                      value={password} 
+                      onChange={(e) => setPassword(e.target.value)} 
+                      placeholder="Create a Password" 
                       className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
                     />
                   </div>
@@ -562,15 +576,29 @@ export function ExpertSignupPortal() {
                           className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
                         />
                       </div>
-                      <div className="space-y-2">
+                       <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700 block">License Copy Document Upload *</label>
-                        <button 
-                          type="button" 
-                          onClick={() => setLicenseUploaded(true)}
-                          className={`w-full py-4 border-2 border-dashed rounded-xl text-sm font-semibold transition-all shadow-sm ${licenseUploaded ? "bg-slate-100 border-black text-black" : "border-slate-250 hover:bg-slate-50 text-slate-500"}`}
-                        >
-                          {licenseUploaded ? "✓ License Document Attached" : "Upload Document File (PDF / JPG)"}
-                        </button>
+                        <div className="relative">
+                          <input 
+                            type="file"
+                            id="license-file-input"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            required
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                setLicenseUploaded(true);
+                                setLicenseFileName(file.name);
+                              }
+                            }}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                          />
+                          <div 
+                            className={`w-full py-4 border-2 border-dashed rounded-xl text-sm font-semibold text-center transition-all shadow-sm ${licenseUploaded ? "bg-slate-50 border-black text-black" : "border-slate-250 hover:bg-slate-50 text-slate-500"}`}
+                          >
+                            {licenseUploaded ? `✓ ${licenseFileName || "License Document Attached"}` : "Upload Document File (PDF / JPG)"}
+                          </div>
+                        </div>
                       </div>
                       <div className="space-y-2 md:col-span-2">
                         <label className="text-sm font-semibold text-slate-700 block">Physical Verified Office Address *</label>

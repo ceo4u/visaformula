@@ -35,7 +35,7 @@ export function SeekerSignupPortal() {
     const [email, setEmail] = useState("");
     const [otp, setOtp] = useState("");
     const [otpSent, setOtpSent] = useState(false);
-    const [emailVerified, setEmailVerified] = useState(false);
+    const [emailVerified, setEmailVerified] = useState(true);
     const [verificationError, setVerificationError] = useState("");
 
     const toggleItem = (id: string, list: string[], setList: (l: string[]) => void) => {
@@ -44,31 +44,12 @@ export function SeekerSignupPortal() {
 
     if (submitted) {
         return (
-            <div className="min-h-screen text-[#111111] font-sans flex flex-col justify-between selection:bg-black selection:text-white" style={{ 
-                fontFamily: "'Sora', sans-serif",
-                background: "radial-gradient(circle at 90% 10%, rgba(253, 244, 215, 0.45) 0%, transparent 40%), radial-gradient(circle at 10% 90%, rgba(224, 231, 255, 0.4) 0%, transparent 40%), #fafbfc"
+            <div className="min-h-screen text-[#111111] font-sans flex flex-col justify-between selection:bg-black selection:text-white bg-white" style={{ 
+                fontFamily: "'Sora', sans-serif"
             }}>
                 <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
                     <a href="/" className="flex items-center gap-2">
-                        <svg className="w-40 h-auto" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
-                            {/* Centered airplane swoop above the wordmark */}
-                            <g transform="translate(45, -145) scale(0.68)">
-                                {airplanePaths.map((p: any, idx: number) => (
-                                    <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
-                                ))}
-                            </g>
-                            
-                            {/* Wordmark */}
-                            <text x="350" y="235" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="900" fontSize="82" letterSpacing="0.02em">
-                                <tspan fill="#111111" stroke="#111111" strokeWidth="3">VISA</tspan>
-                                <tspan fill="#0F2B6C" stroke="#0F2B6C" strokeWidth="3">FORMULA</tspan>
-                            </text>
-                            
-                            {/* Tagline */}
-                            <text x="350" y="300" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="800" fontSize="24" letterSpacing="0.25em" fill="#0F2B6C">
-                                GLOBAL VISA MARKETPLACE
-                            </text>
-                        </svg>
+                        <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-24 w-auto object-contain" />
                     </a>
                 </header>
 
@@ -95,51 +76,32 @@ export function SeekerSignupPortal() {
     }
 
     return (
-        <div className="min-h-screen text-[#111111] font-sora flex flex-col justify-between selection:bg-black selection:text-white" style={{ 
-            fontFamily: "'Sora', sans-serif",
-            background: "radial-gradient(circle at 90% 10%, rgba(253, 244, 215, 0.45) 0%, transparent 40%), radial-gradient(circle at 10% 90%, rgba(224, 231, 255, 0.4) 0%, transparent 40%), #fafbfc"
+        <div className="min-h-screen text-[#111111] font-sora flex flex-col justify-between selection:bg-black selection:text-white bg-white" style={{ 
+            fontFamily: "'Sora', sans-serif"
         }}>
             <style dangerouslySetInnerHTML={{__html: `
                 .font-sora, .font-sora * {
                     font-family: 'Sora', sans-serif !important;
                 }
             `}} />
-            <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
-                <div className="flex items-center gap-4">
-                    <a href="javascript:history.back()" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all">
-                        <ArrowLeft className="w-3.5 h-3.5" />
-                        <span>Back</span>
-                    </a>
-                    <a href="/" className="flex items-center gap-2">
-                    <svg className="w-40 h-auto" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
-                        {/* Centered airplane swoop above the wordmark */}
-                        <g transform="translate(45, -145) scale(0.68)">
-                            {airplanePaths.map((p: any, idx: number) => (
-                                <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
-                            ))}
-                        </g>
-                        
-                        {/* Wordmark */}
-                        <text x="350" y="235" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="900" fontSize="82" letterSpacing="0.02em">
-                            <tspan fill="#111111" stroke="#111111" strokeWidth="3">VISA</tspan>
-                            <tspan fill="#0F2B6C" stroke="#0F2B6C" strokeWidth="3">FORMULA</tspan>
-                        </text>
-                        
-                        {/* Tagline */}
-                        <text x="350" y="300" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="800" fontSize="24" letterSpacing="0.25em" fill="#0F2B6C">
-                            GLOBAL VISA MARKETPLACE
-                        </text>
-                    </svg>
+            <header className="relative w-full px-4 md:px-8 py-6 flex items-center justify-between font-sans min-h-[120px]">
+                <a href="javascript:history.back()" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all shrink-0">
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Back</span>
                 </a>
-                </div>
-                <div className="text-base font-medium text-slate-500">
+                
+                <a href="/" className="absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 z-10">
+                    <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-36 w-auto object-contain" />
+                </a>
+                
+                <div className="text-base font-medium text-slate-500 shrink-0">
                     Already a member? <a href="/login" className="text-black font-bold hover:underline">Login</a>
                 </div>
             </header>
 
             <div className="flex-grow flex flex-col justify-start py-10 px-6 max-w-4xl w-full mx-auto">
                 <div className="text-center my-8">
-                    <h1 className="text-3xl md:text-4xl font-semibold text-black tracking-tight mb-3">Register as Seeker</h1>
+                    <h1 className="text-2xl md:text-3xl font-semibold text-black tracking-tight mb-3">Register as Seeker</h1>
                     <p className="text-base text-slate-400 font-medium">Setup immigration goals and match with verified advisors.</p>
                 </div>
 
@@ -199,74 +161,15 @@ export function SeekerSignupPortal() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-sm font-semibold text-slate-700 block">Verify Email*</label>
-                                    <div className="flex gap-3.5">
-                                        <div className="relative flex-grow">
-                                            <input 
-                                                type="email" 
-                                                required
-                                                placeholder="john@example.com" 
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                disabled={emailVerified}
-                                                className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 disabled:bg-slate-50 transition-all shadow-sm"
-                                            />
-                                            {emailVerified && (
-                                                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
-                                                    <span className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-[10px] font-bold">✓</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                        {!emailVerified && (
-                                            <button 
-                                                type="button"
-                                                onClick={() => {
-                                                    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-                                                        setVerificationError("Please enter a valid email address.");
-                                                        return;
-                                                    }
-                                                    setVerificationError("");
-                                                    setOtpSent(true);
-                                                    alert("Simulated Email: OTP verification code is '999' sent to " + email);
-                                                }}
-                                                className="bg-black hover:bg-slate-900 text-white text-sm font-semibold px-6 py-4 rounded-xl active:scale-95 transition-all shadow-sm cursor-pointer"
-                                            >
-                                                {otpSent ? "Resend" : "Send OTP"}
-                                            </button>
-                                        )}
-                                    </div>
-                                    {otpSent && !emailVerified && (
-                                        <div className="mt-3 bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3 shadow-inner">
-                                            <div className="text-xs font-bold text-slate-700">Enter Email OTP (Simulated: '999')</div>
-                                            <div className="flex gap-3">
-                                                <input 
-                                                    type="text" 
-                                                    maxLength={3}
-                                                    placeholder="•••" 
-                                                    value={otp}
-                                                    onChange={(e) => setOtp(e.target.value)}
-                                                    className="w-24 p-3 bg-white border border-slate-250 rounded-xl text-center font-mono text-sm outline-none focus:border-black tracking-widest font-semibold text-black shadow-sm" 
-                                                />
-                                                <button 
-                                                    type="button"
-                                                    onClick={() => {
-                                                        if (otp === "999") {
-                                                            setEmailVerified(true);
-                                                            setVerificationError("");
-                                                        } else {
-                                                            setVerificationError("Incorrect OTP. Try '999'.");
-                                                        }
-                                                    }}
-                                                    className="bg-black hover:bg-slate-900 text-white font-semibold px-6 py-3 rounded-xl text-xs transition-colors shadow-sm cursor-pointer"
-                                                >
-                                                    Verify OTP
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-                                    {verificationError && (
-                                        <div className="text-xs text-red-500 font-semibold mt-1">{verificationError}</div>
-                                    )}
+                                    <label className="text-sm font-semibold text-slate-700 block">Email*</label>
+                                    <input 
+                                        type="email" 
+                                        required
+                                        placeholder="john@example.com" 
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 transition-all shadow-sm"
+                                    />
                                 </div>
 
                                 <div className="space-y-2">
@@ -426,7 +329,31 @@ export function SeekerSignupPortal() {
 
                                 <button 
                                     type="button"
-                                    onClick={() => {
+                                    onClick={async () => {
+                                        try {
+                                            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8000'}/api/register/seeker`, {
+                                                method: "POST",
+                                                headers: { "Content-Type": "application/json" },
+                                                body: JSON.stringify({
+                                                    first_name: firstName,
+                                                    last_name: lastName,
+                                                    email: email,
+                                                    password: password,
+                                                    phone: phone,
+                                                    passport_country: passportCountry,
+                                                    goals: selectedGoals,
+                                                    destinations: selectedDests
+                                                })
+                                            });
+                                            if (!response.ok) {
+                                                const errData = await response.json();
+                                                alert(errData.message || "Registration failed.");
+                                                return;
+                                            }
+                                        } catch (err) {
+                                            console.warn("Backend server offline. Falling back to local simulation mode.", err);
+                                        }
+                                        // Save locally and proceed
                                         localStorage.setItem("seeker_firstName", firstName);
                                         localStorage.setItem("seeker_lastName", lastName);
                                         localStorage.setItem("seeker_phone", phone);
@@ -434,6 +361,9 @@ export function SeekerSignupPortal() {
                                         localStorage.setItem("seeker_passportCountry", passportCountry);
                                         localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
                                         localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
+                                        if (typeof window !== "undefined") {
+                                            window.scrollTo({ top: 0, behavior: "instant" });
+                                        }
                                         setSubmitted(true);
                                     }}
                                     className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"

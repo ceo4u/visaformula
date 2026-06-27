@@ -49,22 +49,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const signIn = async (email: string, password: string) => {
-        await delay(1200); // simulate auth delay
-        if (password.length < 6) throw new Error("Invalid email or password.");
-        const loggedInUser = { ...DEMO_USER, email, displayName: email.split("@")[0] };
-        setUser(loggedInUser);
-        if (typeof window !== "undefined") {
-            localStorage.setItem("visaformula_user", JSON.stringify(loggedInUser));
+        try {
+            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL}/api/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.message || "Invalid credentials.");
+            }
+            const data = await response.json();
+            setUser(data.user);
+            if (typeof window !== "undefined") {
+                localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+            }
+        } catch (error: any) {
+            throw new Error(error.message || "Network error while connecting to backend.");
         }
     };
 
     const signUp = async (email: string, password: string, name: string) => {
-        await delay(1500);
-        if (password.length < 6) throw new Error("Password must be at least 6 characters.");
-        const signedUpUser = { ...DEMO_USER, email, displayName: name };
-        setUser(signedUpUser);
-        if (typeof window !== "undefined") {
-            localStorage.setItem("visaformula_user", JSON.stringify(signedUpUser));
+        try {
+            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL}/api/register/seeker`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password, first_name: name, last_name: "" })
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.message || "Signup failed.");
+            }
+            const data = await response.json();
+            setUser(data.user);
+            if (typeof window !== "undefined") {
+                localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+            }
+        } catch (error: any) {
+            throw new Error(error.message || "Network error while connecting to backend.");
         }
     };
 
@@ -77,7 +99,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signOut = async () => {
-        await delay(500);
+        try {
+            await fetch(`${import.meta.env.PUBLIC_BACKEND_URL}/api/logout`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }
+            });
+        } catch (e) {
+            // Ignore logout network issues, local clear remains primary
+        }
         setUser(null);
         if (typeof window !== "undefined") {
             localStorage.setItem("visaformula_user", "null");

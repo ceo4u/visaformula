@@ -8,45 +8,17 @@ import {
 
 const destinations = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
 
-const initialBookings = [
-    {
-        expert: "Marcus Thorne, JD",
-        service: "Express Entry Consultation",
-        date: "Apr 20, 2026 · 10:00 AM",
-        status: "upcoming",
-        escrow: "held",
-        amount: "₹2,500",
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
-        platform: "Meet"
-    },
-    {
-        expert: "Elena Rodriguez",
-        service: "Green Card Document Review",
-        date: "Apr 15, 2026 · 2:00 PM",
-        status: "completed",
-        escrow: "released",
-        amount: "₹4,500",
-        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face",
-        platform: "Zoom"
-    },
-];
+const initialBookings = [];
 
-const initialSavedExperts = [
-    { name: "Raj Patel", role: "Express Entry Specialist", rating: 4.8, avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" },
-    { name: "Aisha Khan", role: "UK Visa Consultant", rating: 4.6, avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face" },
-];
+const initialSavedExperts = [];
 
-const initialNotifications = [
-    { text: "Your booking with Marcus Thorne is confirmed for Apr 20", time: "6:45 PM", type: "success" },
-    { text: "New IELTS batch starting May 1 near you — British Council", time: "3:15 PM", type: "info" },
-    { text: "Update: Canada Express Entry Draw #243 announced", time: "1:00 PM", type: "info" },
-];
+const initialNotifications = [];
 
 export function UserDashboard() {
     const [ieltsScore, setIeltsScore] = useState({ L: 7.5, R: 7.0, W: 6.5, S: 7.0 });
     const overallBand = ((ieltsScore.L + ieltsScore.R + ieltsScore.W + ieltsScore.S) / 4).toFixed(1);
 
-    const [firstName, setFirstName] = useState("Priya");
+    const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");

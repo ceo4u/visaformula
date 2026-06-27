@@ -59,25 +59,7 @@ export function LoginPortal() {
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
-                        <svg className="w-80 h-auto" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision" textRendering="geometricPrecision">
-                            {/* Centered airplane swoop above the wordmark */}
-                            <g transform="translate(45, -145) scale(0.68)">
-                                {airplanePaths.map((p: any, idx: number) => (
-                                    <path key={idx} d={p.d} fill={p.fill} transform={p.transform} />
-                                ))}
-                            </g>
-                            
-                            {/* Wordmark (Centered in the viewport) */}
-                            <text x="350" y="235" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="900" fontSize="82" letterSpacing="0.02em">
-                                <tspan fill="#111111" stroke="#111111" strokeWidth="3">VISA</tspan>
-                                <tspan fill="#0F2B6C" stroke="#0F2B6C" strokeWidth="3">FORMULA</tspan>
-                            </text>
-                            
-                            {/* Tagline (Centered in the viewport) */}
-                            <text x="350" y="300" textAnchor="middle" fontFamily="'Plus Jakarta Sans', 'Montserrat', sans-serif" fontWeight="800" fontSize="24" letterSpacing="0.25em" fill="#0F2B6C">
-                                GLOBAL VISA MARKETPLACE
-                            </text>
-                        </svg>
+                        <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-40 w-auto object-contain mx-auto" />
                     </a>
                     <p className="text-slate-500 text-base mt-4">Sign in to get started with VisaFormula</p>
                 </div>

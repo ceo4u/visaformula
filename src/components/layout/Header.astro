@@ -1,6 +1,6 @@
 ---
 // src/components/layout/Header.astro
-import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake } from 'lucide-react';
+import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake, Layers, LogOut } from 'lucide-react';
 import Logo from '../Logo.astro';
 
 
@@ -48,106 +48,141 @@ const supportiveServicesItems = [
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white shadow-sm transition-all duration-300">
-    <!-- Top Row: Logo + Yelp-Style Split Search Bar + User Portal Links -->
-    <div class="max-w-7xl mx-auto grid grid-cols-[auto_1fr_auto] lg:grid-cols-[220px_1fr_auto] items-center justify-between px-4 md:px-6 h-20 gap-6">
-        
-        <!-- Dedicated Logo Container to give priority and center aligning -->
-        <div class="logo-container w-[140px] md:w-[180px] lg:w-[220px] min-w-[140px] md:min-w-[180px] lg:min-w-[220px] flex items-center justify-start shrink-0">
-            <a href="/" class="flex items-center group w-full">
-                <Logo variant="navbar-light" className="w-full h-auto object-contain" />
-            </a>
-        </div>
-
-        <!-- Split Yelp-style Search Bar (Desktop Only) - Constrained to 500px-650px max width -->
-        <div id="search-bar" class="hidden lg:flex flex-1 max-w-[550px] mx-auto bg-gray-50/50 rounded-xl flex-row items-center h-12 overflow-hidden border border-gray-200 focus-within:border-black focus-within:bg-white focus-within:shadow-md transition-all duration-200">
-            <!-- Search Query Portion -->
-            <div class="flex items-center px-4 flex-[1.2] h-full">
-                <Search class="w-4 h-4 text-gray-400 mr-2.5 shrink-0" />
-                <input
-                    id="search-input-query"
-                    class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
-                    placeholder="Student visa, work permits, experts..."
-                    type="text"
-                />
+    <div class="max-w-[1440px] mx-auto pl-2 md:pl-4 pr-4 md:pr-6">
+        <div class="flex items-center gap-4">
+            
+            <!-- Logo - left corner, spans full header height -->
+            <div class="logo-container flex items-center justify-start shrink-0 py-2">
+                <a href="/" class="flex items-center group">
+                    <Logo variant="navbar-light" />
+                </a>
             </div>
-            
-            <!-- Split Vertical Line -->
-            <div id="search-divider" class="w-[1.5px] h-6 bg-gray-200 shrink-0 transition-colors duration-300" />
-            
-            <!-- Location Portion -->
-            <div class="flex items-center px-4 flex-1 h-full">
-                <MapPin id="search-loc-icon" class="w-4 h-4 text-black mr-2 shrink-0 transition-colors duration-300" />
-                <input
-                    id="search-input-location"
-                    class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
-                    placeholder="Hyderabad, Delhi, USA..."
-                    type="text"
-                />
-            </div>
-            
-            <!-- Search Button -->
-            <button id="search-btn" class="bg-black hover:bg-slate-900 px-6 h-full flex items-center justify-center transition-all shrink-0">
-                <Search className="w-4 h-4" color="white" strokeWidth={3} />
-            </button>
-        </div>
 
-        <!-- Right Portal Navigation & Buttons -->
-        <div class="hidden lg:flex items-center gap-3 xl:gap-5 shrink-0">
-            <!-- Find Experts Dropdown -->
-            <div class="relative py-3 group">
-                <button class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1">
-                    Find Experts
-                    <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
-                </button>
-                
-                <!-- Dropdown Menu Card -->
-                <div class="absolute top-full right-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
-                        <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-                            {expertDropdownItems.map((item) => {
-                                const IconComponent = item.icon;
-                                return (
-                                    <a 
-                                        href={item.href}
-                                        class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
-                                    >
-                                        <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
-                                        <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
+            <!-- Right side: stacks both rows vertically -->
+            <div class="flex-1 min-w-0 lg:pl-8">
+                <!-- Top Row: Search Bar + Portal Links -->
+                <div class="flex items-center justify-between h-16 gap-6 lg:pr-16">
+                    
+                    <!-- Split Yelp-style Search Bar (Desktop Only) -->
+                    <div id="search-bar" class="hidden lg:flex flex-1 max-w-[550px] bg-gray-50/50 rounded-xl flex-row items-center h-11 overflow-hidden border border-gray-200 focus-within:border-black focus-within:bg-white focus-within:shadow-md transition-all duration-200">
+                        <!-- Search Query Portion -->
+                        <div class="flex items-center px-4 flex-[1.2] h-full">
+                            <Search class="w-4 h-4 text-gray-400 mr-2.5 shrink-0" />
+                            <input
+                                id="search-input-query"
+                                class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+                                placeholder="Student visa, work permits, experts..."
+                                type="text"
+                            />
+                        </div>
+                        
+                        <!-- Split Vertical Line -->
+                        <div id="search-divider" class="w-[1.5px] h-6 bg-gray-200 shrink-0 transition-colors duration-300" />
+                        
+                        <!-- Location Portion -->
+                        <div class="flex items-center px-4 flex-1 h-full">
+                            <MapPin id="search-loc-icon" class="w-4 h-4 text-black mr-2 shrink-0 transition-colors duration-300" />
+                            <input
+                                id="search-input-location"
+                                class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+                                placeholder="Hyderabad, Delhi, USA..."
+                                type="text"
+                            />
+                        </div>
+                        
+                        <!-- Search Button -->
+                        <button id="search-btn" class="bg-black hover:bg-slate-900 px-6 h-full flex items-center justify-center transition-all shrink-0">
+                            <Search className="w-4 h-4" color="white" strokeWidth={3} />
+                        </button>
+                    </div>
+
+                    <!-- Vertical Divider between Search Bar and Right Portal Navigation -->
+                    <div class="hidden lg:block w-[1.5px] h-4 bg-red-100 shrink-0"></div>
+
+                    <!-- Right Portal Navigation & Buttons -->
+                    <div class="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0">
+                        <!-- Find Experts Dropdown -->
+                        <div class="relative py-3 group">
+                            <button class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1">
+                                Find Experts
+                                <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                            </button>
+                            
+                            <!-- Dropdown Menu Card -->
+                            <div class="absolute top-full right-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
+                                    <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                        {expertDropdownItems.map((item) => {
+                                            const IconComponent = item.icon;
+                                            return (
+                                                <a 
+                                                    href={item.href}
+                                                    class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
+                                                >
+                                                    <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="/support" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300">
+                            Contact
+                        </a>
+
+                        <div class="w-[1.5px] h-4 bg-red-100"></div>
+
+                        <div class="flex items-center gap-1.5 xl:gap-2" id="nav-auth-buttons-wrapper">
+                            <a href="/login" id="login-btn" class="font-opensans text-[14px] font-bold text-navy hover:text-black border border-gray-200 hover:border-black px-4 py-2.5 rounded-xl transition-all duration-300">
+                                Log In
+                            </a>
+                            <a href="/signup" class="font-opensans bg-black hover:bg-slate-900 text-white font-bold text-[14px] px-4 py-2.5 rounded-xl hover:shadow-lg hover:shadow-gray-200 transition-all active:scale-[0.97]">
+                                Sign Up
+                            </a>
+                        </div>
+
+                        <!-- Desktop Profile dropdown -->
+                        <div id="nav-profile-block" class="relative hidden py-2 group font-sans">
+                            <button id="nav-profile-trigger" class="flex items-center gap-2 p-1 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white">
+                                <div class="w-8 h-8 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs" id="nav-profile-avatar-letters">
+                                    U
+                                </div>
+                                <ChevronDown class="w-3.5 h-3.5 text-slate-500 pr-1 shrink-0" />
+                            </button>
+                            
+                            <!-- Dropdown Menu -->
+                            <div class="absolute right-0 top-full pt-2 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5">
+                                    <div class="px-3.5 py-2 border-b border-slate-100">
+                                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Signed in as</div>
+                                        <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name">User Profile</div>
+                                    </div>
+                                    <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-slate-700 hover:text-black hover:bg-slate-50 transition-all">
+                                        <Layers class="w-4 h-4 text-slate-400" />
+                                        <span>My Dashboard</span>
                                     </a>
-                                );
-                            })}
+                                    <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-red-650 hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent">
+                                        <LogOut class="w-4 h-4 text-slate-450" />
+                                        <span>Log Out</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <a href="/support" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#ef4444] transition-all duration-300">
-                Contact
-            </a>
-            
-            <div class="w-[1.5px] h-4 bg-red-100"></div>
-
-            <div class="flex items-center gap-1.5 xl:gap-2">
-                <a href="/login" id="login-btn" class="font-opensans text-[14px] font-bold text-navy hover:text-black border border-gray-200 hover:border-black px-4 py-2.5 rounded-xl transition-all duration-300">
-                    Log In
-                </a>
-                <a href="/signup" class="font-opensans bg-black hover:bg-slate-900 text-white font-bold text-[14px] px-4 py-2.5 rounded-xl hover:shadow-lg hover:shadow-gray-200 transition-all active:scale-[0.97]">
-                    Sign Up
-                </a>
-            </div>
-        </div>
 
         <!-- Mobile Menu Toggler -->
         <button id="mobile-menu-btn" class="lg:hidden ml-auto p-2 hover:bg-gray-100 rounded-xl transition-colors">
             <Menu id="menu-icon" class="w-6 h-6 text-navy" />
             <X id="close-icon" class="w-6 h-6 text-navy hidden" />
         </button>
-    </div>
+                </div><!-- end top row -->
 
-    <!-- Bottom Row: Premium Category Navigation Bar (Desktop Only) -->
-    <div id="category-bar" class="hidden lg:block bg-red-50/20 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 xl:px-6 h-12 flex items-center justify-center">
-            
-            <div class="flex items-center gap-6 xl:gap-10 h-full">
+                <!-- Bottom Row: Category Navigation (Desktop Only) -->
+                <div id="category-bar" class="hidden lg:flex items-center justify-start h-12">
+                    <div class="flex items-center gap-6 xl:gap-10 h-full">
                 <!-- Student Visa Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
@@ -397,7 +432,7 @@ const supportiveServicesItems = [
                     </button>
 
                     <!-- Dropdown Menu Card -->
-                    <div class="absolute top-full left-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                    <div class="absolute top-full right-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
                         <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
                             <div class="grid grid-cols-2 gap-x-4 gap-y-2">
                                 {supportiveServicesItems.map((item) => {
@@ -416,8 +451,11 @@ const supportiveServicesItems = [
                         </div>
                     </div>
                 </div>
-            </div>
-    </div>
+            </div><!-- end category items -->
+                </div><!-- end category-bar -->
+            </div><!-- end right-side column -->
+        </div><!-- end flex row -->
+    </div><!-- end max-w wrapper -->
 
     <!-- Mobile Drawer menu -->
     <div id="mobile-menu-drawer" class="hidden lg:hidden bg-white border-t border-gray-100 shadow-xl max-h-[85vh] overflow-y-auto">
@@ -562,7 +600,7 @@ const supportiveServicesItems = [
         </a>
 
         <!-- Portal Actions -->
-        <div class="p-4 bg-gray-50/20 flex flex-col gap-2">
+        <div id="mobile-nav-auth-buttons" class="p-4 bg-gray-50/20 flex flex-col gap-2">
             <a href="/login" class="block text-center py-2.5 border border-gray-200 text-gray-700 font-bold text-sm rounded-xl hover:bg-gray-100 transition-colors">
                 Log In
             </a>
@@ -572,6 +610,20 @@ const supportiveServicesItems = [
             <a href="/list-practice" class="block text-center py-2.5 bg-black hover:bg-slate-900 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg active:scale-[0.97] transition-all">
                 List Your Practice
             </a>
+        </div>
+
+        <!-- Mobile Profile Actions -->
+        <div id="mobile-nav-profile-block" class="hidden p-4 bg-slate-50 border-t border-slate-200/60 flex flex-col gap-2 font-sans">
+            <div class="px-2 py-1">
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Signed in as</div>
+                <div class="text-sm font-extrabold text-black truncate mt-0.5" id="mobile-nav-profile-name">User Profile</div>
+            </div>
+            <a id="mobile-nav-profile-dashboard-link" href="/dashboard" class="block text-center py-2.5 bg-black text-white font-bold text-sm rounded-xl shadow-md">
+                My Dashboard
+            </a>
+            <button id="mobile-nav-profile-logout-btn" class="block text-center py-2.5 border border-slate-250 text-red-650 font-bold text-sm rounded-xl hover:bg-red-50 transition-colors w-full cursor-pointer bg-white">
+                Log Out
+            </button>
         </div>
     </div>
 </header>
@@ -802,38 +854,104 @@ const supportiveServicesItems = [
         }
     });
 
-    // Dynamic Auth Header Button Updates
+    // Dynamic Auth Header Button & Profile Dropdown Updates
+    const seekerFirst = localStorage.getItem("seeker_firstName");
+    const expertBusiness = localStorage.getItem("expert_businessName");
     const userStr = localStorage.getItem("visaformula_user");
-    if (userStr && userStr !== "null") {
-        const loginBtn = document.getElementById("login-btn");
-        const signupBtn = document.querySelector('a[href="/signup"]');
-        if (loginBtn && signupBtn) {
-            loginBtn.textContent = "Dashboard";
-            loginBtn.setAttribute("href", "/dashboard");
-            
-            signupBtn.textContent = "Log Out";
-            signupBtn.setAttribute("href", "#");
-            signupBtn.addEventListener("click", (e) => {
-                e.preventDefault();
-                localStorage.removeItem("visaformula_user");
-                window.location.href = "/";
-            });
+
+    const isLoggedIn = seekerFirst || expertBusiness || (userStr && userStr !== "null");
+
+    if (isLoggedIn) {
+        // Hide standard Auth buttons
+        const desktopAuthButtons = document.getElementById("nav-auth-buttons-wrapper");
+        const mobileAuthButtons = document.getElementById("mobile-nav-auth-buttons");
+        if (desktopAuthButtons) desktopAuthButtons.classList.add("hidden");
+        if (mobileAuthButtons) mobileAuthButtons.classList.add("hidden");
+
+        // Prepare info
+        let displayName = "User Profile";
+        let displayLetters = "U";
+        let dashboardHref = "/dashboard";
+
+        if (expertBusiness) {
+            displayName = expertBusiness;
+            displayLetters = expertBusiness.charAt(0).toUpperCase();
+            dashboardHref = "/signup/expert";
+        } else if (seekerFirst) {
+            displayName = seekerFirst + " " + (localStorage.getItem("seeker_lastName") || "");
+            displayLetters = seekerFirst.charAt(0).toUpperCase();
+            dashboardHref = "/dashboard";
+        } else if (userStr) {
+            try {
+                const u = JSON.parse(userStr);
+                if (u && u.displayName) {
+                    displayName = u.displayName;
+                    displayLetters = u.displayName.charAt(0).toUpperCase();
+                } else if (u && u.email) {
+                    displayName = u.email;
+                    displayLetters = u.email.charAt(0).toUpperCase();
+                }
+            } catch(e) {}
         }
-        
-        const mobileLoginBtn = document.querySelector('#mobile-menu-drawer a[href="/login"]');
-        const mobileSignupBtn = document.querySelector('#mobile-menu-drawer a[href="/signup"]');
-        if (mobileLoginBtn && mobileSignupBtn) {
-            mobileLoginBtn.textContent = "Dashboard";
-            mobileLoginBtn.setAttribute("href", "/dashboard");
-            
-            mobileSignupBtn.textContent = "Log Out";
-            mobileSignupBtn.setAttribute("href", "#");
-            mobileSignupBtn.addEventListener("click", (e) => {
-                e.preventDefault();
-                localStorage.removeItem("visaformula_user");
-                window.location.href = "/";
-            });
+
+        // Show Desktop Profile Block
+        const desktopProfileBlock = document.getElementById("nav-profile-block");
+        if (desktopProfileBlock) {
+            desktopProfileBlock.classList.remove("hidden");
+            const avatarLetters = document.getElementById("nav-profile-avatar-letters");
+            const profileName = document.getElementById("nav-profile-name");
+            const dashboardLink = document.getElementById("nav-profile-dashboard-link");
+
+            if (avatarLetters) avatarLetters.textContent = displayLetters;
+            if (profileName) profileName.textContent = displayName;
+            if (dashboardLink) dashboardLink.setAttribute("href", dashboardHref);
         }
+
+        // Show Mobile Profile Block
+        const mobileProfileBlock = document.getElementById("mobile-nav-profile-block");
+        if (mobileProfileBlock) {
+            mobileProfileBlock.classList.remove("hidden");
+            mobileProfileBlock.style.display = "flex";
+            const mobileProfileName = document.getElementById("mobile-nav-profile-name");
+            const mobileDashboardLink = document.getElementById("mobile-nav-profile-dashboard-link");
+
+            if (mobileProfileName) mobileProfileName.textContent = displayName;
+            if (mobileDashboardLink) mobileDashboardLink.setAttribute("href", dashboardHref);
+        }
+
+        // Handle Logout triggers
+        const handleLogout = (e) => {
+            e.preventDefault();
+            // Clear credentials
+            localStorage.removeItem("visaformula_user");
+            localStorage.removeItem("seeker_firstName");
+            localStorage.removeItem("seeker_lastName");
+            localStorage.removeItem("seeker_email");
+            localStorage.removeItem("seeker_phone");
+            localStorage.removeItem("seeker_passportCountry");
+            localStorage.removeItem("seeker_goals");
+            localStorage.removeItem("seeker_destinations");
+            
+            localStorage.removeItem("expert_businessName");
+            localStorage.removeItem("expert_email");
+            localStorage.removeItem("expert_contactNumber");
+            localStorage.removeItem("expert_advisorType");
+            localStorage.removeItem("expert_aboutMe");
+            localStorage.removeItem("expert_portfolioLink");
+            localStorage.removeItem("expert_officeAddress");
+            localStorage.removeItem("expert_govRegNumber");
+            localStorage.removeItem("expert_expertiseTags");
+            localStorage.removeItem("expert_countriesExpertise");
+            localStorage.removeItem("expert_isLoggedIn");
+            
+            window.location.href = "/";
+        };
+
+        const desktopLogoutBtn = document.getElementById("nav-profile-logout-btn");
+        const mobileLogoutBtn = document.getElementById("mobile-nav-profile-logout-btn");
+
+        if (desktopLogoutBtn) desktopLogoutBtn.addEventListener("click", handleLogout);
+        if (mobileLogoutBtn) mobileLogoutBtn.addEventListener("click", handleLogout);
     }
 </script>
 

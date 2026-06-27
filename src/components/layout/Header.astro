@@ -59,7 +59,7 @@ const supportiveServicesItems = [
             </div>
 
             <!-- Right side: stacks both rows vertically -->
-            <div class="flex-1 min-w-0 lg:pl-2">
+            <div class="flex-1 min-w-0 lg:pl-8">
                 <!-- Top Row: Search Bar + Portal Links -->
                 <div class="flex items-center justify-between h-16 gap-6 lg:pr-16">
                     
@@ -103,8 +103,8 @@ const supportiveServicesItems = [
                     <div class="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0">
                         <!-- Find Experts Dropdown -->
                         <div class="relative py-3 group">
-                            <button class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#14b8a6] transition-all duration-300 flex items-center gap-1">
-                                Find Experts
+                            <button class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1">
+                                Self Apply Guide
                                 <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
                             </button>
                             
@@ -129,7 +129,7 @@ const supportiveServicesItems = [
                             </div>
                         </div>
 
-                        <a href="/support" class="font-opensans top-menu-link text-[15px] font-bold text-navy hover:text-[#14b8a6] transition-all duration-300">
+                        <a href="/support" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
                             Contact
                         </a>
 
@@ -183,12 +183,12 @@ const supportiveServicesItems = [
 
                 <!-- Bottom Row: Category Navigation (Desktop Only) -->
                 <div id="category-bar" class="hidden lg:flex items-center justify-start h-12">
-                    <div class="flex items-center gap-4 xl:gap-6 h-full">
+                    <div class="flex items-center gap-6 xl:gap-10 h-full">
                 <!-- Student Visa Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#14b8a6] ${
-                            pathname?.startsWith("/training") || pathname?.startsWith("/student") ? "text-[#14b8a6]" : "text-navy"
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/training") || pathname?.startsWith("/student") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
                         Student Visa
@@ -257,8 +257,8 @@ const supportiveServicesItems = [
                 <!-- Job Seeker Visas Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#14b8a6] ${
-                            pathname?.startsWith("/jobs") ? "text-[#14b8a6]" : "text-navy"
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/jobs") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
                         Job Visas
@@ -311,8 +311,8 @@ const supportiveServicesItems = [
                 <!-- Tourist Visa Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#14b8a6] ${
-                            pathname?.startsWith("/tours") ? "text-[#14b8a6]" : "text-navy"
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/tours") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
                         Visit Visas
@@ -343,8 +343,8 @@ const supportiveServicesItems = [
                 <!-- Migration Visas Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#14b8a6] ${
-                            pathname?.startsWith("/find-experts?category=pr") || pathname?.startsWith("/find-experts?category=migration") ? "text-[#14b8a6]" : "text-navy"
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/find-experts?category=pr") || pathname?.startsWith("/find-experts?category=migration") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
                         Migration Visas
@@ -383,8 +383,8 @@ const supportiveServicesItems = [
                 <!-- Legal Assistance Dropdown (Renamed to Immigration Assistance) -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#14b8a6] ${
-                            pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#14b8a6]" : "text-navy"
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
                         Immigration Assistance
@@ -424,8 +424,8 @@ const supportiveServicesItems = [
                 <!-- Supportive services Dropdown (Renamed to supporting businesses) -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#14b8a6] ${
-                            pathname?.startsWith("/find-experts") ? "text-[#14b8a6]" : "text-navy"
+                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                            pathname?.startsWith("/find-experts") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
                         supporting businesses
@@ -482,7 +482,7 @@ const supportiveServicesItems = [
                 id="mobile-experts-btn"
                 class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
             >
-                <span>Find Experts</span>
+                <span>Self Apply Guide</span>
                 <ChevronDown id="mobile-experts-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
             </button>
             <div id="mobile-experts-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
@@ -508,13 +508,13 @@ const supportiveServicesItems = [
 
         <!-- Student Visa -->
         <a href="/training"
-            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/training" ? "text-[#14b8a6] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/training" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
             Student Visa
         </a>
 
         <!-- Job Visa -->
         <a href="/jobs"
-            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/jobs" ? "text-[#14b8a6] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/jobs" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
             Job Visas
         </a>
 
@@ -550,13 +550,13 @@ const supportiveServicesItems = [
 
         <!-- Migration Visas -->
         <a href="/find-experts?category=pr"
-            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname?.includes("category=pr") ? "text-[#14b8a6] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname?.includes("category=pr") ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
             Migration Visas
         </a>
 
         <!-- Immigration Assistance (Renamed from Legal Assistance) -->
         <a href="/emergency"
-            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/emergency" ? "text-[#14b8a6] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/emergency" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
             Immigration Assistance
         </a>
 
@@ -591,7 +591,7 @@ const supportiveServicesItems = [
         </div>
 
         <a href="/agents"
-            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/agents" ? "text-[#14b8a6] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/agents" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
             Our Agents
         </a>
 

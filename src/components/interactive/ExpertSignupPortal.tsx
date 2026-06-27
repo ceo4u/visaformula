@@ -194,6 +194,7 @@ export function ExpertSignupPortal() {
       localStorage.setItem("expert_govRegNumber", govRegNumber);
       localStorage.setItem("expert_expertiseTags", JSON.stringify(expertiseTags));
       localStorage.setItem("expert_countriesExpertise", countriesExpertise);
+      localStorage.setItem("expert_profilePhoto", profilePhoto || "");
       localStorage.setItem("expert_isLoggedIn", "true");
       
       window.scrollTo({ top: 0, behavior: "instant" });

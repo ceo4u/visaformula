@@ -147,8 +147,9 @@ const supportiveServicesItems = [
                         <!-- Desktop Profile dropdown -->
                         <div id="nav-profile-block" class="relative hidden py-2 group font-sans">
                             <button id="nav-profile-trigger" class="flex items-center gap-2 p-1 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white">
-                                <div class="w-8 h-8 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs" id="nav-profile-avatar-letters">
-                                    U
+                                <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-black text-white" id="nav-profile-avatar-container">
+                                    <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
+                                    <span class="font-bold text-xs" id="nav-profile-avatar-letters">U</span>
                                 </div>
                                 <ChevronDown class="w-3.5 h-3.5 text-slate-500 pr-1 shrink-0" />
                             </button>
@@ -872,15 +873,18 @@ const supportiveServicesItems = [
         let displayName = "User Profile";
         let displayLetters = "U";
         let dashboardHref = "/dashboard";
+        let displayPhoto = "";
 
         if (expertBusiness) {
             displayName = expertBusiness;
             displayLetters = expertBusiness.charAt(0).toUpperCase();
             dashboardHref = "/signup/expert";
+            displayPhoto = localStorage.getItem("expert_profilePhoto") || "";
         } else if (seekerFirst) {
             displayName = seekerFirst + " " + (localStorage.getItem("seeker_lastName") || "");
             displayLetters = seekerFirst.charAt(0).toUpperCase();
             dashboardHref = "/dashboard";
+            displayPhoto = localStorage.getItem("seeker_profilePhoto") || "";
         } else if (userStr) {
             try {
                 const u = JSON.parse(userStr);
@@ -891,6 +895,9 @@ const supportiveServicesItems = [
                     displayName = u.email;
                     displayLetters = u.email.charAt(0).toUpperCase();
                 }
+                if (u && u.photoURL) {
+                    displayPhoto = u.photoURL;
+                }
             } catch(e) {}
         }
 
@@ -899,12 +906,22 @@ const supportiveServicesItems = [
         if (desktopProfileBlock) {
             desktopProfileBlock.classList.remove("hidden");
             const avatarLetters = document.getElementById("nav-profile-avatar-letters");
+            const avatarImg = document.getElementById("nav-profile-avatar-img") as HTMLImageElement;
             const profileName = document.getElementById("nav-profile-name");
             const dashboardLink = document.getElementById("nav-profile-dashboard-link");
 
-            if (avatarLetters) avatarLetters.textContent = displayLetters;
             if (profileName) profileName.textContent = displayName;
             if (dashboardLink) dashboardLink.setAttribute("href", dashboardHref);
+            
+            if (displayPhoto && avatarImg) {
+                avatarImg.src = displayPhoto;
+                avatarImg.classList.remove("hidden");
+                if (avatarLetters) avatarLetters.classList.add("hidden");
+            } else {
+                if (avatarLetters) avatarLetters.textContent = displayLetters;
+                if (avatarLetters) avatarLetters.classList.remove("hidden");
+                if (avatarImg) avatarImg.classList.add("hidden");
+            }
         }
 
         // Show Mobile Profile Block
@@ -931,6 +948,7 @@ const supportiveServicesItems = [
             localStorage.removeItem("seeker_passportCountry");
             localStorage.removeItem("seeker_goals");
             localStorage.removeItem("seeker_destinations");
+            localStorage.removeItem("seeker_profilePhoto");
             
             localStorage.removeItem("expert_businessName");
             localStorage.removeItem("expert_email");
@@ -942,6 +960,7 @@ const supportiveServicesItems = [
             localStorage.removeItem("expert_govRegNumber");
             localStorage.removeItem("expert_expertiseTags");
             localStorage.removeItem("expert_countriesExpertise");
+            localStorage.removeItem("expert_profilePhoto");
             localStorage.removeItem("expert_isLoggedIn");
             
             window.location.href = "/";

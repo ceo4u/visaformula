@@ -98,20 +98,48 @@ const successStories = [
         .select-wrap::after { content:''; position:absolute; right:16px; top:50%; transform:translateY(-50%);
           width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
           border-top: 6px solid #475569; pointer-events:none; }
-        .select-wrap .hero-form-select { margin-bottom:0; }
-        .phone-row { display:flex;gap:12px;margin-bottom:16px; }
-        .phone-row .select-wrap { width:100px;flex-shrink:0; }
-        .phone-row .hero-form-input { flex:1;margin-bottom:0; }
+        /* Form responsive alignment matching matrimony layout */
+        .hero-registration-form-container {
+          position: relative;
+          margin: 24px auto;
+          width: calc(100% - 32px);
+          max-width: 420px;
+          z-index: 30;
+          background: #000000;
+          border-radius: 20px;
+          box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+          overflow: hidden;
+        }
+        @media (min-width: 1024px) {
+          .hero-registration-form-container {
+            position: absolute;
+            top: 36px;
+            right: 12%;
+            margin: 0;
+            width: 420px;
+          }
+        }
+        
+        /* Heading responsive styling */
+        .hero-text-wrap {
+          text-align: center;
+          margin: 0 auto;
+        }
+        @media (min-width: 1024px) {
+          .hero-text-wrap {
+            text-align: left;
+            margin: 0;
+          }
+        }
       </style>
 
-      <!-- ① FORM — absolute top-right, floats OVER the cards (z-index highest) -->
-      <div style="position:absolute; top:36px; right:250px; z-index:30; width:420px;
-                  background:#000000; border-radius:20px; box-shadow:0 12px 40px rgba(0,0,0,0.15); overflow:hidden;">
+      <!-- ① FORM — floats clean on desktop, sits stacked below heading on mobile -->
+      <div class="hero-registration-form-container">
         <div style="padding:16px 20px 14px; text-align:center;">
-          <h2 style="font-size:17px;font-weight:600;color:#fff;margin:0;font-family:'Inter',sans-serif;letter-spacing:0.3px;">Create a Visa Profile</h2>
+          <h2 style="font-size:17px;font-weight:600;color:#fff;margin:0;font-family:'Inter',sans-serif;letter-spacing:0.3px;">Register as an Expert</h2>
         </div>
         <div style="background:#fff; border-radius:0 0 20px 20px; margin:0; padding:30px 24px 24px;">
-          <h3 style="font-size:17px;font-weight:755;color:#1e293b;margin-bottom:24px;text-align:center;font-family:'Inter',sans-serif;letter-spacing:-0.2px;">Find your perfect expert</h3>
+          <h3 style="font-size:17px;font-weight:755;color:#1e293b;margin-bottom:24px;text-align:center;font-family:'Inter',sans-serif;letter-spacing:-0.2px;">Grow your global practice</h3>
           
           <div class="select-wrap">
             <select class="hero-form-select" id="hero-profile-type">
@@ -123,22 +151,15 @@ const successStories = [
             </select>
           </div>
           
-          <input class="hero-form-input" type="text" id="hero-name" placeholder="Enter the name" style="margin-bottom:16px;"/>
+          <input class="hero-form-input" type="text" id="hero-name" placeholder="Enter Business Name / Name" style="margin-bottom:16px;"/>
           
-          <div class="phone-row">
-            <div class="select-wrap">
-              <select class="hero-form-select" id="hero-phone-code">
-                <option>+91</option><option>+1</option><option>+44</option><option>+61</option><option>+49</option>
-              </select>
-            </div>
-            <input class="hero-form-input" type="tel" id="hero-phone" placeholder="Enter Number"/>
-          </div>
+          <input class="hero-form-input" type="tel" id="hero-phone" placeholder="Enter Number (e.g. +91 98765 43210)" style="margin-bottom:16px;"/>
           
           <button id="hero-register-btn" style="display:flex;align-items:center;justify-content:center;width:100%;height:54px;
             background:#000000;color:#fff;border-radius:8px;font-size:15px;font-weight:700;letter-spacing:.05em;
             text-decoration:none;transition:background .15s;font-family:'Inter',sans-serif;box-shadow:0 2px 6px rgba(0,0,0,0.15); border:none; cursor:pointer;"
             onmouseover="this.style.background='#222222'" onmouseout="this.style.background='#000000'">
-            REGISTER &nbsp;→
+            REGISTER AS EXPERT &nbsp;→
           </button>
           <p style="font-size:11px;color:#64748b;text-align:center;margin-top:14px;line-height:1.5;font-family:'Inter',sans-serif;">
             *By clicking register free, I agree to the <a href="#" style="color:#475569;text-decoration:underline;">T&amp;C</a> and <a href="#" style="color:#475569;text-decoration:underline;">Privacy Policy</a>.
@@ -150,9 +171,7 @@ const successStories = [
         document.getElementById('hero-register-btn')?.addEventListener('click', () => {
           const type = document.getElementById('hero-profile-type').value;
           const name = document.getElementById('hero-name').value;
-          const code = document.getElementById('hero-phone-code').value;
-          const num = document.getElementById('hero-phone').value;
-          const phone = code + ' ' + num;
+          const phone = document.getElementById('hero-phone').value;
           window.location.href = `/signup/expert?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&type=${encodeURIComponent(type)}`;
         });
       </script>
@@ -160,7 +179,7 @@ const successStories = [
       <!-- ② HEADING — aligned with header logo via max-w-7xl -->
       <div style="position:relative; z-index:20; padding-top:36px;">
         <div class="max-w-7xl mx-auto px-4 md:px-6">
-          <div style="max-width:580px;">
+          <div class="hero-text-wrap" style="max-width:580px;">
             <h1 class="font-sora" style="font-size:36px;font-weight:700;color:#1a1a1a;line-height:1.18;margin-bottom:10px;letter-spacing:-0.5px;">
               The biggest and most trusted<br/>visa consultancy platform!
             </h1>

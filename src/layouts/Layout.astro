@@ -67,7 +67,7 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
   <!-- Google Fonts Preconnect & Fetch -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Poppins:wght@300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Poppins:wght@300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet" />
   
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -79,11 +79,10 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
 </head>
 <body class="font-montserrat antialiased bg-white selection:bg-primary/20 selection:text-primary min-h-screen flex flex-col overflow-x-hidden">
   {!hideHeader && <Header />}
-  <main class={`flex-grow ${isTransparentHeaderPage || hideHeader ? "" : "pt-20 lg:pt-32"}`}>
+  <main class={`flex-grow ${hideHeader ? "" : "pt-20 lg:pt-32"}`}>
     <slot />
   </main>
   {!hideFooter && <Footer />}
-  {!hideHeader && <MobileNav />}
 
   {!hideHeader && <TalkToUs client:idle />}
 </body>

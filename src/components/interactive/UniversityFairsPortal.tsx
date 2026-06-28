@@ -90,10 +90,7 @@ export function UniversityFairsPortal() {
     const filteredMega = getFilteredMegaFairs();
 
     const handleBooking = (tourName: string) => {
-        triggerToast(`✈️ Preparing registration for ${tourName}...`);
-        setTimeout(() => {
-            window.location.href = `/apply-visa?type=tour&name=${encodeURIComponent(tourName)}`;
-        }, 1200);
+        window.location.reload();
     };
 
     return (

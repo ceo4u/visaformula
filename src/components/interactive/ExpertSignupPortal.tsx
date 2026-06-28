@@ -43,6 +43,7 @@ export function ExpertSignupPortal() {
         } catch(e) {}
         
         setCountriesExpertise(localStorage.getItem("expert_countriesExpertise") || "");
+        setProfilePhoto(localStorage.getItem("expert_profilePhoto") || "");
       } else {
         const params = new URLSearchParams(window.location.search);
         const nameParam = params.get("name");
@@ -86,7 +87,7 @@ export function ExpertSignupPortal() {
 
   // Shared Features Matrix
   const [newTag, setNewTag] = useState("");
-  const [expertiseTags, setExpertiseTags] = useState([]);
+  const [expertiseTags, setExpertiseTags] = useState<string[]>([]);
   const [countriesExpertise, setCountriesExpertise] = useState("");
   const [pastSuccessText, setPastSuccessText] = useState("");
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
@@ -123,25 +124,48 @@ export function ExpertSignupPortal() {
   };
 
   // Mock Active Cases & Inquiries
-  const [inquiries, setInquiries] = useState([]);
+  const [inquiries, setInquiries] = useState<any[]>([]);
 
-  const [activeCases, setActiveCases] = useState([]);
+  const [activeCases, setActiveCases] = useState<any[]>([]);
 
-  // Form submits
   const handleProceedToPhase2 = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!businessName || !contactNumber) {
-      alert("Please fill in Business Name and Contact Number.");
+    if (!businessName || !contactNumber || !email || !password) {
+      alert("Please fill in all required fields.");
       return;
     }
+
+    // 1. Email validation: must have @ and end with a valid domain extension
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address (must contain '@' and end with a valid domain like '.com').");
+      return;
+    }
+
+    // 2. Contact Number validation: must be at least 10 digits
+    const cleanPhone = contactNumber.replace(/\D/g, "");
+    if (cleanPhone.length < 10) {
+      alert("Please enter a valid contact number (must contain at least 10 digits).");
+      return;
+    }
+
+    // 3. Password validation: at least 8 characters, containing at least one number and one symbol
+    const hasNumber = /\d/.test(password);
+    const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    }
+    if (!hasNumber || !hasSymbol) {
+      alert("Password must contain at least one number and one special character / symbol.");
+      return;
+    }
+
     setStep(2);
   };
 
   const [profilePhoto, setProfilePhoto] = useState<string>("");
-  const [uploadedFiles, setUploadedFiles] = useState<string[]>([
-    "VisaExpert_License_2026.pdf",
-    "Customer_Success_Case_CA.jpg"
-  ]);
+  const [uploadedFiles, setUploadedFiles] = useState<{ name: string; url: string }[]>([]);
   const [showAdModal, setShowAdModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [adTitle, setAdTitle] = useState("");
@@ -238,8 +262,28 @@ export function ExpertSignupPortal() {
     }
   };
 
-  const handleFileUpload = (fileName: string) => {
-    setUploadedFiles([...uploadedFiles, fileName]);
+  const handleFileUpload = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (event.target?.result) {
+        setUploadedFiles(prev => [...prev, { name: file.name, url: event.target.result as string }]);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSaveProfile = () => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("expert_businessName", businessName);
+      localStorage.setItem("expert_contactNumber", contactNumber);
+      localStorage.setItem("expert_advisorType", consultantType);
+      localStorage.setItem("expert_aboutMe", aboutMe);
+      localStorage.setItem("expert_portfolioLink", portfolioLink);
+      localStorage.setItem("expert_officeAddress", consultantType === "Freelancer" ? expertAddress : officeAddress);
+      localStorage.setItem("expert_govRegNumber", govRegNumber);
+      localStorage.setItem("expert_profilePhoto", profilePhoto || "");
+      alert("Profile details and photo saved successfully!");
+    }
   };
 
   const avatarPresets = [
@@ -250,8 +294,11 @@ export function ExpertSignupPortal() {
   ];
 
   return (
-    <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white">
+    <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>
       <style dangerouslySetInnerHTML={{__html: `
+        .font-roboto, .font-roboto * {
+            font-family: 'Roboto', sans-serif !important;
+        }
         @keyframes premiumFadeIn {
           from {
             opacity: 0;
@@ -287,8 +334,8 @@ export function ExpertSignupPortal() {
       {step < 3 ? (
         <div className="flex-grow flex flex-col justify-start py-6 px-6 max-w-4xl w-full mx-auto">
           <div className="text-center my-6">
-            <h1 className="text-2xl md:text-3xl font-extrabold text-black tracking-tight mb-2">Let's get you started</h1>
-            <p className="text-sm text-slate-400 font-semibold">Enter your details to initialize your portal</p>
+            <h1 className="text-2xl md:text-3xl font-semibold text-black tracking-tight mb-2">Register as Expert</h1>
+            <p className="text-base text-slate-400 font-medium">Enter your details to initialize your portal</p>
           </div>
 
           <div className="flex items-center justify-center gap-8 my-8 font-sans">
@@ -687,17 +734,13 @@ export function ExpertSignupPortal() {
       ) : (
         <div className="flex-grow flex bg-[#f3f7fa] min-h-screen text-[#111111] antialiased animate-premium-fade">
           
-          <aside className="w-64 bg-white border-r border-slate-200/65 flex flex-col justify-between py-8 px-5 flex-shrink-0">
+          <aside className="w-64 bg-black border-r border-slate-900 flex flex-col justify-between py-8 px-5 flex-shrink-0 text-white">
             <div className="flex flex-col items-stretch gap-8">
               {/* Logo / Branding */}
               <div className="flex flex-col gap-3 px-3">
-                <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-black transition-colors">
+                <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white transition-colors">
                   <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
                 </a>
-                <div className="flex items-center gap-2.5 mt-1">
-                  <div className="w-5.5 h-5.5 rounded-full border-[3.5px] border-black flex-shrink-0"></div>
-                  <span className="font-extrabold text-black text-lg tracking-tight">VisaFormula</span>
-                </div>
               </div>
               
               <nav className="flex flex-col gap-2">
@@ -717,8 +760,8 @@ export function ExpertSignupPortal() {
                       onClick={() => setActiveTab(tab.id)}
                       className={`flex items-center gap-3 px-5 py-3.5 rounded-full font-bold text-xs tracking-wide transition-all relative ${
                         isActive 
-                          ? "bg-[#1C1C1E] text-white shadow-sm active:scale-[0.98]" 
-                          : "text-slate-700 hover:text-black hover:bg-slate-50"
+                          ? "bg-white text-black shadow-lg active:scale-[0.98]" 
+                          : "text-slate-400 hover:text-white hover:bg-white/10"
                       }`}
                     >
                       <IconComponent className="w-4 h-4 flex-shrink-0" />
@@ -726,7 +769,7 @@ export function ExpertSignupPortal() {
                       
                       {tab.count !== undefined && tab.count > 0 && (
                         <span className={`absolute right-4 px-2 py-0.5 rounded-full text-[9px] font-black transition-all ${
-                          isActive ? "bg-white text-black" : "bg-slate-100 text-slate-700"
+                          isActive ? "bg-black text-white" : "bg-slate-800 text-slate-350"
                         }`}>
                           {tab.count}
                         </span>
@@ -740,7 +783,7 @@ export function ExpertSignupPortal() {
             <div className="px-2">
               <button 
                 onClick={() => setStep(1)} 
-                className="flex items-center gap-3 px-5 py-3.5 text-slate-700 hover:text-red-600 hover:bg-red-50/50 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer"
+                className="flex items-center gap-3 px-5 py-3.5 text-slate-400 hover:text-red-400 hover:bg-white/5 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer border-none bg-transparent"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Log Out</span>
@@ -754,9 +797,6 @@ export function ExpertSignupPortal() {
               <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-4xl">
                 {/* Profile Badge (Premium Style matching screenshot) */}
                 <div className="bg-white border border-slate-200/80 rounded-[28px] shadow-sm flex items-center overflow-hidden max-w-md w-full relative">
-                  {/* Top right gradient banner background */}
-                  <div className="absolute top-0 right-0 left-[35%] h-[45px] bg-gradient-to-br from-[#818CF8]/35 via-[#C084FC]/20 to-transparent rounded-bl-[40px] pointer-events-none" />
-                  
                   {/* Left side: Avatar */}
                   <div className="p-4 pr-2 flex-shrink-0 z-10">
                     <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-[24px] bg-slate-100 overflow-hidden border border-slate-150 flex items-center justify-center font-black text-xl text-slate-400 shadow-inner">
@@ -773,9 +813,6 @@ export function ExpertSignupPortal() {
                     {/* Name and PRO Badge */}
                     <div className="flex items-center gap-2 flex-wrap">
                       <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{businessName || "Apex Immigration"}</h2>
-                      <span className="inline-flex items-center gap-0.5 bg-[#4A72FF] text-white px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider">
-                        PRO <Sparkles className="w-2.5 h-2.5 fill-current text-white" />
-                      </span>
                     </div>
 
                     {/* Description/Location */}
@@ -918,7 +955,7 @@ export function ExpertSignupPortal() {
                       <div className="flex justify-between items-center">
                         <div>
                           <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block">Revenue</span>
-                          <span className="text-lg font-bold text-black mt-1 block">₹43,500 Secured</span>
+                          <span className="text-lg font-bold text-black mt-1 block">₹{(activeCases.length * 15000).toLocaleString()} Secured</span>
                         </div>
                         <div className="flex items-center gap-1 text-[10px] font-bold text-slate-450">
                           <TrendingUp className="w-4 h-4 text-emerald-500" />
@@ -958,11 +995,11 @@ export function ExpertSignupPortal() {
 
                     <div className="space-y-4">
                       {[
-                        { label: "Overdue Payouts", count: "0 cases", amount: "₹0", width: "5%", bg: "bg-purple-600" },
-                        { label: "Under Milestone Review", count: `${activeCases.length} cases`, amount: "₹43,500", width: "65%", bg: "bg-red-500" },
-                        { label: "Secure Escrow Held", count: `${activeCases.length} cases`, amount: "₹43,500", width: "65%", bg: "bg-sky-500" },
-                        { label: "Total Completed Payouts", count: "0 cases", amount: "₹0", width: "5%", bg: "bg-emerald-500" },
-                        { label: "Drafts / Pending", count: "0 cases", amount: "₹0", width: "5%", bg: "bg-orange-500" }
+                        { label: "Overdue Payouts", count: "0 cases", amount: "₹0", width: "0%", bg: "bg-purple-600" },
+                        { label: "Under Milestone Review", count: `${activeCases.length} cases`, amount: `₹${(activeCases.length * 15000).toLocaleString()}`, width: activeCases.length > 0 ? "65%" : "0%", bg: "bg-red-500" },
+                        { label: "Secure Escrow Held", count: `${activeCases.length} cases`, amount: `₹${(activeCases.length * 15000).toLocaleString()}`, width: activeCases.length > 0 ? "65%" : "0%", bg: "bg-sky-500" },
+                        { label: "Total Completed Payouts", count: "0 cases", amount: "₹0", width: "0%", bg: "bg-emerald-500" },
+                        { label: "Drafts / Pending", count: "0 cases", amount: "₹0", width: "0%", bg: "bg-orange-500" }
                       ].map((item, idx) => (
                         <div key={idx} className="space-y-2">
                           <div className="flex justify-between text-xs font-bold text-black">
@@ -1085,6 +1122,42 @@ export function ExpertSignupPortal() {
                 <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 uppercase tracking-wide">
                   Live Consultant Profile Information
                 </h3>
+
+                {/* Profile Photo Upload block */}
+                <div className="flex flex-col sm:flex-row items-center gap-6 bg-slate-50 p-6 rounded-3xl border border-slate-150 shadow-inner">
+                  <div className="relative w-24 h-24 rounded-full bg-slate-200 border border-slate-300 overflow-hidden flex items-center justify-center flex-shrink-0 group">
+                    {profilePhoto ? (
+                      <img src={profilePhoto} alt="profile avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-2xl font-black text-slate-400">XP</span>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start gap-2.5">
+                    <span className="text-xs font-bold text-black uppercase tracking-wider">Profile Avatar Image</span>
+                    <p className="text-[11px] text-slate-500 font-medium">PNG, JPG formats accepted. Automatically syncs with header badge.</p>
+                    <label className="bg-black hover:bg-slate-900 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl cursor-pointer active:scale-95 transition-all shadow-sm">
+                      Upload Avatar Photo
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                              if (event.target?.result) {
+                                setProfilePhoto(event.target.result as string);
+                                localStorage.setItem("expert_profilePhoto", event.target.result as string);
+                              }
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-1.5">
@@ -1223,6 +1296,15 @@ export function ExpertSignupPortal() {
                     </div>
                   )}
                 </div>
+
+                <div className="pt-4 flex justify-end">
+                  <button 
+                    onClick={handleSaveProfile}
+                    className="bg-black hover:bg-slate-900 text-white font-bold text-xs px-6 py-3.5 rounded-xl uppercase tracking-wider transition-all active:scale-[0.98] shadow-md cursor-pointer"
+                  >
+                    Save Profile Changes
+                  </button>
+                </div>
               </div>
             ) : activeTab === "inquiries" ? (
               <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm animate-premium-fade">
@@ -1327,11 +1409,10 @@ export function ExpertSignupPortal() {
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed font-medium">Basic directory listing, standard case commission applies. Receive applicant inquiries up to 5 per week.</p>
                     <button 
-                      disabled={membershipTier === "Standard Directory"}
-                      onClick={() => setMembershipTier("Standard Directory")}
-                      className="w-full bg-slate-100 text-slate-500 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
+                      disabled={true}
+                      className="w-full bg-slate-100 text-slate-400 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider cursor-not-allowed"
                     >
-                      {membershipTier === "Standard Directory" ? "Active Membership" : "Downgrade to Standard"}
+                      Coming Soon
                     </button>
                   </div>
 
@@ -1343,11 +1424,10 @@ export function ExpertSignupPortal() {
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed font-medium">Featured directory listing boost, direct messaging to all applicants, zero commission on escrow bookings, priority support.</p>
                     <button 
-                      disabled={membershipTier === "Elite Accelerator"}
-                      onClick={() => setMembershipTier("Elite Accelerator")}
-                      className="w-full bg-black hover:bg-slate-900 text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider active:scale-95 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                      disabled={true}
+                      className="w-full bg-black/60 text-white/80 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider cursor-not-allowed"
                     >
-                      {membershipTier === "Elite Accelerator" ? "Active Elite Membership" : "Upgrade Tier"}
+                      Coming Soon
                     </button>
                   </div>
                 </div>

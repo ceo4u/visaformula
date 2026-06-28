@@ -1,24 +1,24 @@
 import { useState, useEffect } from "react";
 import {
     Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
-    ArrowRight, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
+    ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, Layers, MessageSquare, Settings, HelpCircle, Briefcase,
     Video, User, LogOut, CheckSquare, Sparkles
 } from "lucide-react";
 
 const destinations = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
 
-const initialBookings = [];
+const initialBookings: any[] = [];
 
-const initialSavedExperts = [];
+const initialSavedExperts: any[] = [];
 
-const initialNotifications = [];
+const initialNotifications: any[] = [];
 
 export function UserDashboard() {
     const [ieltsScore, setIeltsScore] = useState({ L: 7.5, R: 7.0, W: 6.5, S: 7.0 });
     const overallBand = ((ieltsScore.L + ieltsScore.R + ieltsScore.W + ieltsScore.S) / 4).toFixed(1);
 
-    const [firstName, setFirstName] = useState("");
+    const [firstName, setFirstName] = useState("Seeker");
     const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
@@ -80,30 +80,28 @@ export function UserDashboard() {
     const uploadedCount = documents.filter(d => d.status === "uploaded").length;
 
     return (
-        <div className="flex bg-[#f3f7fa] min-h-screen antialiased text-black">
+        <div className="flex bg-[#f3f7fa] min-h-screen antialiased text-black font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>
+            <style dangerouslySetInnerHTML={{__html: `
+                .font-roboto, .font-roboto * {
+                    font-family: 'Roboto', sans-serif !important;
+                }
+            `}} />
 
             {/* Redesigned Premium Sidebar Navigation */}
-            <aside className="w-64 bg-white border-r border-slate-200/65 flex flex-col justify-between py-8 px-5 flex-shrink-0">
+            <aside className="w-64 bg-black border-r border-slate-900 flex flex-col justify-between py-8 px-5 flex-shrink-0 text-white">
                 <div className="flex flex-col items-stretch gap-8">
                     {/* Logo / Branding */}
                     <div className="flex flex-col gap-3 px-3">
-                        <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-black transition-colors">
+                        <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white transition-colors">
                             <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
                         </a>
-                        <div className="flex items-center gap-2.5 mt-1">
-                            <div className="w-5.5 h-5.5 rounded-full border-[3.5px] border-black flex-shrink-0"></div>
-                            <span className="font-extrabold text-black text-lg tracking-tight">VisaFormula</span>
-                        </div>
                     </div>
                     
                     <nav className="flex flex-col gap-2">
                         {[
                             { id: "dashboard", label: "Dashboard", icon: Layers },
                             { id: "consultations", label: "Consultations", icon: Calendar },
-                            { id: "cases", label: "Active Cases", icon: Briefcase },
-                            { id: "training", label: "IELTS Coaching", icon: BookOpen },
-                            { id: "upgrade", label: "Upgrade Tier", icon: Shield },
-                            { id: "inquiries", label: "Inquiries", icon: MessageSquare }
+                            { id: "cases", label: "Active Cases", icon: Briefcase }
                         ].map(tab => {
                             const isActive = activeTab === tab.id;
                             const IconComponent = tab.icon;
@@ -113,8 +111,8 @@ export function UserDashboard() {
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`flex items-center gap-3 px-5 py-3.5 rounded-full font-bold text-xs tracking-wide transition-all relative ${
                                         isActive 
-                                            ? "bg-[#1C1C1E] text-white shadow-sm active:scale-[0.98]" 
-                                            : "text-slate-700 hover:text-black hover:bg-slate-50"
+                                            ? "bg-white text-black shadow-lg active:scale-[0.98]" 
+                                            : "text-slate-400 hover:text-white hover:bg-white/10"
                                     }`}
                                 >
                                     <IconComponent className="w-4 h-4 flex-shrink-0" />
@@ -128,7 +126,7 @@ export function UserDashboard() {
                 <div className="px-2">
                     <button 
                         onClick={() => window.location.href = '/login'} 
-                        className="flex items-center gap-3 px-5 py-3.5 text-slate-700 hover:text-red-600 hover:bg-red-50/50 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer"
+                        className="flex items-center gap-3 px-5 py-3.5 text-slate-400 hover:text-red-400 hover:bg-white/5 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer border-none bg-transparent"
                     >
                         <LogOut className="w-4 h-4" />
                         <span>Log Out</span>
@@ -143,13 +141,10 @@ export function UserDashboard() {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-4xl">
                         {/* Seeker Profile Card */}
                         <div className="bg-white border border-slate-200/80 rounded-[28px] shadow-sm flex items-center overflow-hidden max-w-md w-full relative">
-                            {/* Top right gradient banner background */}
-                            <div className="absolute top-0 right-0 left-[35%] h-[45px] bg-gradient-to-br from-[#818CF8]/35 via-[#C084FC]/20 to-transparent rounded-bl-[40px] pointer-events-none" />
-                            
                             {/* Left side: Avatar */}
                             <div className="p-4 pr-2 flex-shrink-0 z-10">
                                 <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-[24px] bg-slate-100 overflow-hidden border border-slate-150 flex items-center justify-center font-black text-xl text-slate-400 shadow-inner">
-                                    {firstName.substring(0, 2).toUpperCase()}
+                                    {(firstName || "Seeker").substring(0, 2).toUpperCase()}
                                 </div>
                             </div>
 
@@ -158,9 +153,6 @@ export function UserDashboard() {
                                 {/* Name and Badge */}
                                 <div className="flex items-center gap-2 flex-wrap">
                                     <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{firstName} {lastName || "Sharma"}</h2>
-                                    <span className="inline-flex items-center gap-0.5 bg-[#4A72FF] text-white px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider">
-                                        MEMBER <Sparkles className="w-2.5 h-2.5 fill-current text-white" />
-                                    </span>
                                 </div>
 
                                 {/* Description/Location */}
@@ -185,6 +177,7 @@ export function UserDashboard() {
                 </header>
 
                 {/* Dashboard Responsive Grid */}
+                {activeTab === "dashboard" ? (
                 <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
                     
                     {/* Column 1: Document Vault (My Tasks mockup layout) */}
@@ -322,9 +315,9 @@ export function UserDashboard() {
 
                             <div className="space-y-4">
                                 {[
-                                    { label: "Held in Escrow", count: "1 Booking", amount: "₹2,500", width: "40%", bg: "bg-purple-600" },
-                                    { label: "Released Payments", count: "1 Complete", amount: "₹4,500", width: "70%", bg: "bg-emerald-600" },
-                                    { label: "Total Spent", count: "2 Transactions", amount: "₹7,000", width: "85%", bg: "bg-sky-600" },
+                                    { label: "Held in Escrow", count: "0 Bookings", amount: "₹0", width: "0%", bg: "bg-purple-600" },
+                                    { label: "Released Payments", count: "0 Complete", amount: "₹0", width: "0%", bg: "bg-emerald-600" },
+                                    { label: "Total Spent", count: "0 Transactions", amount: "₹0", width: "0%", bg: "bg-sky-600" },
                                 ].map((item, idx) => (
                                     <div key={idx} className="space-y-2">
                                         <div className="flex justify-between text-xs font-bold text-black">
@@ -422,6 +415,66 @@ export function UserDashboard() {
                     </div>
 
                 </div>
+                ) : activeTab === "consultations" ? (
+                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
+                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+                            <div>
+                                <h3 className="text-lg font-bold text-black">Scheduled Consultations</h3>
+                                <p className="text-xs text-slate-400 mt-1">Manage and attend your virtual counseling sessions</p>
+                            </div>
+                            <Calendar className="w-5 h-5 text-black" />
+                        </div>
+                        
+                        <div className="text-center py-12 space-y-4">
+                            <div className="w-16 h-16 bg-slate-50 border border-slate-150 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                                <Clock className="w-7 h-7 text-slate-400" />
+                            </div>
+                            <div className="space-y-1">
+                                <h4 className="font-bold text-sm text-black">No Upcoming Sessions</h4>
+                                <p className="text-xs text-slate-400 max-w-xs mx-auto">Get expert guidance on universities, SOP reviews, and visa filings today.</p>
+                            </div>
+                            <a href="/find-experts" className="inline-block pt-2">
+                                <button className="bg-black hover:bg-slate-900 text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-xl transition-all shadow-sm active:scale-95">
+                                    Find & Book Advisors
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                ) : activeTab === "cases" ? (
+                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
+                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+                            <div>
+                                <h3 className="text-lg font-bold text-black">Active Case Tracker</h3>
+                                <p className="text-xs text-slate-400 mt-1">Monitor the state of your application milestones and escrow payments</p>
+                            </div>
+                            <Shield className="w-5 h-5 text-black" />
+                        </div>
+                        
+                        <div className="space-y-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-150">
+                            <h4 className="text-xs font-bold text-black uppercase tracking-wider">Milestone Escrow Vault</h4>
+                            <div className="space-y-4">
+                                {[
+                                    { label: "Held in Escrow", count: "0 Bookings", amount: "₹0", width: "0%", bg: "bg-purple-600" },
+                                    { label: "Released Payments", count: "0 Complete", amount: "₹0", width: "0%", bg: "bg-emerald-600" },
+                                    { label: "Total Spent", count: "0 Transactions", amount: "₹0", width: "0%", bg: "bg-sky-600" },
+                                ].map((item, idx) => (
+                                    <div key={idx} className="space-y-2">
+                                        <div className="flex justify-between text-xs font-bold text-black">
+                                            <span>{item.label}</span>
+                                            <div className="flex gap-4">
+                                                <span className="text-slate-450">{item.count}</span>
+                                                <span className="font-bold">{item.amount}</span>
+                                            </div>
+                                        </div>
+                                        <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                            <div className={`h-full ${item.bg} rounded-full`} style={{ width: item.width }} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ) : null}
 
             </main>
         </div>

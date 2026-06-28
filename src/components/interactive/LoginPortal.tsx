@@ -48,23 +48,26 @@ export function LoginPortal() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-white font-sans relative">
+        <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-gray-50/50 font-opensans relative">
             {/* Back Button - Top Left */}
-            <a href="javascript:history.back()" className="absolute top-6 left-6 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-normal text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all z-50">
+            <a href="javascript:history.back()" className="absolute top-6 left-6 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all z-50 font-opensans">
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back</span>
             </a>
 
-
             <div className="w-full max-w-md">
-                <div className="text-center mb-8">
-                    <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
-                        <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-40 w-auto object-contain mx-auto" />
-                    </a>
-                    <p className="text-slate-500 text-base mt-4">Sign in to get started with VisaFormula</p>
-                </div>
+                {/* Login Container Box with border (Logo moved inside) */}
+                <div className="w-full bg-white border-2 border-black rounded-3xl p-6 md:p-8 shadow-xl shadow-gray-150/40">
+                    <div className="text-center mb-4">
+                        <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
+                            <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-28 w-auto object-contain mx-auto" />
+                        </a>
+                    </div>
 
-                <div className="w-full">
+                    <p className="text-slate-700 text-base font-bold text-center mb-6 font-opensans">
+                        Sign in to get started with VisaFormula
+                    </p>
+
                     {/* Dot Step Indicator */}
                     <div className="flex justify-center gap-2 mb-6">
                         <span className={`h-2 rounded-full transition-all duration-300 ${loginStep === 0 ? "w-8 bg-black" : "w-2 bg-gray-200"}`} />
@@ -72,48 +75,30 @@ export function LoginPortal() {
                     </div>
 
                     {error && (
-                        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold">
+                        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-opensans">
                             {error}
                         </div>
                     )}
 
-                    {loginStep === 0 ? (
-                        <form onSubmit={handleNextStep} className="space-y-5">
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-black uppercase tracking-wider mb-1 block">Email address</label>
-                                <div className="relative">
-                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                    <input
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="john@example.com"
-                                        required
-                                        className="w-full h-12 pl-12 pr-4 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black"
-                                    />
-                                </div>
+                    <form onSubmit={handleEmailLogin} className="space-y-5">
+                        <div className="space-y-2">
+                            <label className="text-xs font-bold text-black uppercase tracking-wider mb-1 block font-opensans">Email address</label>
+                            <div className="relative">
+                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="john@example.com"
+                                    required
+                                    className="w-full h-12 pl-12 pr-4 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black font-opensans"
+                                />
                             </div>
+                        </div>
 
-                            <button type="submit" className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-black hover:bg-slate-900 transition-all text-white flex items-center justify-center shadow-sm">
-                                Continue
-                                <ArrowRight className="w-4 h-4" />
-                            </button>
-                        </form>
-                    ) : (
-                        <form onSubmit={handleEmailLogin} className="space-y-5">
-                            <button 
-                                type="button" 
-                                onClick={() => { setLoginStep(0); setError(""); }}
-                                className="inline-flex items-center gap-1.5 text-xs text-black font-bold hover:underline mb-2"
-                            >
-                                <ArrowLeft className="w-3.5 h-3.5" /> Change Email
-                            </button>
-
+                        <div className="space-y-4">
                             <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <label className="text-xs font-bold text-black uppercase tracking-wider mb-1 block">Password</label>
-                                    <a href="#" className="text-xs font-bold text-slate-500 hover:underline">Forgot password?</a>
-                                </div>
+                                <label className="text-xs font-bold text-black uppercase tracking-wider mb-1 block font-opensans">Password</label>
                                 <div className="relative">
                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                     <input
@@ -122,8 +107,7 @@ export function LoginPortal() {
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="••••••••"
                                         required
-                                        autoFocus
-                                        className="w-full h-12 pl-12 pr-12 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black"
+                                        className="w-full h-12 pl-12 pr-12 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black font-opensans"
                                     />
                                     <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                                         {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -131,31 +115,45 @@ export function LoginPortal() {
                                 </div>
                             </div>
 
-                            <button type="submit" disabled={loading} className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-black hover:bg-slate-900 transition-all text-white flex items-center justify-center shadow-sm">
-                                {loading ? "Signing in..." : "Sign In"}
-                                {!loading && <ArrowRight className="w-4 h-4" />}
-                            </button>
-                        </form>
-                    )}
+                            {/* Remember Me & Forgot Password Row */}
+                            <div className="flex items-center justify-between font-opensans">
+                                <label className="flex items-center gap-2 cursor-pointer group">
+                                    <input
+                                        type="checkbox"
+                                        className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer accent-black"
+                                    />
+                                    <span className="text-xs font-semibold text-slate-500 group-hover:text-black transition-colors select-none">
+                                        Remember me
+                                    </span>
+                                </label>
+                                <a href="#" className="text-xs font-bold text-black hover:underline font-opensans">
+                                    Forgot password?
+                                </a>
+                            </div>
+                        </div>
 
-                    <div className="mt-8 pt-6 border-t border-slate-150 flex flex-col gap-3">
-                        <div className="text-center text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">
+                        <button type="submit" disabled={loading} className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-black hover:bg-slate-900 transition-all text-white flex items-center justify-center shadow-sm font-opensans">
+                            {loading ? "Signing in..." : "Sign In"}
+                            {!loading && <ArrowRight className="w-4 h-4" />}
+                        </button>
+                    </form>
+
+                    <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col gap-3">
+                        <div className="text-center text-[11px] text-slate-500 font-bold uppercase tracking-wider mb-1 font-opensans">
                             Don't have an account yet?
                         </div>
                         <div className="flex gap-3">
                             <a 
                                 href="/signup" 
-                                className="flex-1 text-center py-2.5 bg-black hover:bg-slate-900 text-white border border-black rounded-xl font-bold text-xs transition-colors"
+                                className="flex-1 text-center py-2.5 bg-black hover:bg-slate-900 text-white border border-black rounded-xl font-bold text-xs transition-colors font-opensans"
                             >
-                                Register as User
+                                Register as Seeker
                             </a>
                             <a 
-                                href="/agents?page=register" 
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex-1 text-center py-2.5 bg-white hover:bg-slate-50 border border-gray-200 text-black rounded-xl font-bold text-xs transition-colors"
+                                href="/signup/expert" 
+                                className="flex-1 text-center py-2.5 bg-white hover:bg-slate-50 border border-gray-200 text-black rounded-xl font-bold text-xs transition-colors font-opensans"
                             >
-                                Register as Agent
+                                Register as Expert
                             </a>
                         </div>
                     </div>

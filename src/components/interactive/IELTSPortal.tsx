@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { BookOpen, Star, MapPin, Clock, Users, Filter, ArrowRight, Target, Sparkles } from "lucide-react";
 
 // Toast Helper
@@ -50,10 +50,7 @@ export function IELTSPortal() {
     };
 
     const handleBooking = (instName: string) => {
-        triggerToast(`📚 Opening batch registration for ${instName}...`);
-        setTimeout(() => {
-            window.location.href = `/apply-visa?type=ielts&name=${encodeURIComponent(instName)}`;
-        }, 1200);
+        window.location.reload();
     };
 
     return (

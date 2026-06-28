@@ -330,18 +330,18 @@ export function JobsPortal() {
         /* MAIN LISTING VIEW */
         <div>
           {/* HERO */}
-          <div className="relative overflow-hidden" style={{ minHeight: "720px" }}>
+          <div className="relative overflow-hidden" >
             <div className="absolute inset-0 z-0">
               <img
                 src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1800&h=900&fit=crop&q=90"
                 alt="City skyline"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/75 via-[#0c1a2e]/60 to-[#0c1a2e]/90 animate-fade-in"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/75 via-[#0c1a2e]/60 to-[#0c1a2e]/90"></div>
               <div className="absolute inset-0 bg-gradient-to-r from-[#b91c1c]/30 to-transparent"></div>
             </div>
 
-            <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 lg:pt-48 pb-36">
+            <div className="relative z-10 max-w-6xl mx-auto px-6 py-16">
               <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-5 py-2 text-xs font-bold text-white/80 mb-6 backdrop-blur-sm">
                 <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
                 4,200+ Active Listings · Work Visa Included · 40+ Countries
@@ -804,4 +804,5 @@ export function JobsPortal() {
     </div>
   );
 }
+
 

@@ -1,0 +1,15 @@
+---
+// src/pages/404.astro
+---
+<script is:inline>
+    // Redirect user back to the previous page (referrer) or home page
+    const referrer = document.referrer;
+    if (referrer && referrer.includes(window.location.hostname)) {
+        window.location.replace(referrer);
+    } else {
+        window.location.replace("/");
+    }
+</script>
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; color: #64748b; background-color: #ffffff;">
+    <p>Redirecting...</p>
+</div>

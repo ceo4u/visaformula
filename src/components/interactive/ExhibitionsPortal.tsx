@@ -80,10 +80,7 @@ export function ExhibitionsPortal() {
     const filtered = getFilteredExhibitions();
 
     const handleBooking = (tourName: string) => {
-        triggerToast(`✈️ Preparing application for ${tourName}...`);
-        setTimeout(() => {
-            window.location.href = `/apply-visa?type=tour&name=${encodeURIComponent(tourName)}`;
-        }, 1200);
+        window.location.reload();
     };
 
     return (

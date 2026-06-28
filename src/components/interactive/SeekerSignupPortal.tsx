@@ -47,11 +47,7 @@ export function SeekerSignupPortal() {
             <div className="min-h-screen text-[#111111] font-sans flex flex-col justify-between selection:bg-black selection:text-white bg-white" style={{ 
                 fontFamily: "'Sora', sans-serif"
             }}>
-                <header className="w-full max-w-7xl mx-auto px-8 py-6 flex items-center justify-between font-sans">
-                    <a href="/" className="flex items-center gap-2">
-                        <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-24 w-auto object-contain" />
-                    </a>
-                </header>
+
 
                 <div className="flex-grow flex flex-col items-center justify-center px-4 py-12">
                     <div className="bg-white rounded-3xl border border-slate-150 shadow-2xl p-10 max-w-md w-full text-center">

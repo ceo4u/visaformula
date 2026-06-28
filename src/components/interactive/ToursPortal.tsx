@@ -198,10 +198,7 @@ export function ToursPortal() {
     };
 
     const handleBooking = (tourName: string) => {
-        triggerToast(`✈️ Preparing application for ${tourName}...`);
-        setTimeout(() => {
-            window.location.href = `/apply-visa?type=tour&name=${encodeURIComponent(tourName)}`;
-        }, 1200);
+        window.location.reload();
     };
 
     // Filter Logic
@@ -265,13 +262,9 @@ export function ToursPortal() {
 
             {/* Dynamic Hero Section */}
             {activeTab === "holiday" && (
-                <section className="relative pt-32 pb-28 lg:pt-48 lg:pb-36 px-4 overflow-hidden border-b border-slate-200 flex flex-col items-center justify-center" style={{ minHeight: "640px" }}>
+                <section className="relative py-16 px-4 overflow-hidden border-b border-slate-200 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
-                        <img
-                            src="/holiday-bg.jpg"
-                            alt="Luxury beach holiday scenery"
-                            className="w-full h-full object-cover"
-                        />
+                        <img src="/holiday-bg.jpg" alt="Luxury beach holiday" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
@@ -318,15 +311,10 @@ export function ToursPortal() {
             )}
 
             {activeTab === "sports" && (
-                <section className="relative pt-32 pb-28 lg:pt-48 lg:pb-36 px-4 overflow-hidden border-b border-red-100 flex flex-col items-center justify-center" style={{ minHeight: "640px" }}>
+                <section className="relative py-16 px-4 overflow-hidden border-b border-emerald-100 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
-                        <img
-                            src="/luxury_stadium.png"
-                            alt="Luxury stadium arena"
-                            className="w-full h-full object-cover"
-                        />
+                        <img src="/luxury_stadium.png" alt="Luxury stadium" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/40 to-transparent" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
                         <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-500/20 mb-4 inline-block">⚽ Sport Tours</span>
@@ -379,15 +367,10 @@ export function ToursPortal() {
             )}
 
             {activeTab === "cruises" && (
-                <section className="relative pt-32 pb-28 lg:pt-48 lg:pb-36 px-4 overflow-hidden border-b border-red-100 flex flex-col items-center justify-center" style={{ minHeight: "640px" }}>
+                <section className="relative py-16 px-4 overflow-hidden border-b border-indigo-100 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
-                        <img
-                            src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1800&h=900&fit=crop&q=90"
-                            alt="Luxury cruise yacht at sea"
-                            className="w-full h-full object-cover"
-                        />
+                        <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1800&h=900&fit=crop&q=90" alt="Luxury cruise" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-950/40 to-transparent" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
                         <span className="bg-indigo-500/10 text-indigo-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-indigo-500/20 mb-4 inline-block">🚢 Cruises</span>
@@ -438,15 +421,10 @@ export function ToursPortal() {
             )}
 
             {activeTab === "events" && (
-                <section className="relative pt-32 pb-28 lg:pt-48 lg:pb-36 px-4 overflow-hidden border-b border-red-100 flex flex-col items-center justify-center" style={{ minHeight: "640px" }}>
+                <section className="relative py-16 px-4 overflow-hidden border-b border-orange-100 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
-                        <img
-                            src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1800&h=900&fit=crop&q=90"
-                            alt="Luxury music concert stage show"
-                            className="w-full h-full object-cover"
-                        />
+                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1800&h=900&fit=crop&q=90" alt="Music concert" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-amber-950/35 to-transparent" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
                         <span className="bg-orange-500/10 text-orange-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-orange-500/20 mb-4 inline-block">🎭 Entertainment Events</span>
@@ -910,4 +888,5 @@ export function ToursPortal() {
         </div>
     );
 }
+
 

@@ -59,12 +59,12 @@ const supportiveServicesItems = [
             </div>
 
             <!-- Right side: stacks both rows vertically -->
-            <div class="flex-1 min-w-0 lg:pl-8">
+            <div class="flex-1 min-w-0 lg:pl-2">
                 <!-- Top Row: Search Bar + Portal Links -->
                 <div class="flex items-center justify-between h-16 gap-6 lg:pr-16">
                     
                     <!-- Split Yelp-style Search Bar (Desktop Only) -->
-                    <div id="search-bar" class="hidden lg:flex flex-1 max-w-[550px] bg-gray-50/50 rounded-xl flex-row items-center h-11 overflow-hidden border border-gray-200 focus-within:border-black focus-within:bg-white focus-within:shadow-md transition-all duration-200">
+                    <div id="search-bar" class="hidden lg:flex flex-1 max-w-[1020px] bg-gray-50/50 rounded-xl flex-row items-center h-11 overflow-hidden border border-gray-200 focus-within:border-black focus-within:bg-white focus-within:shadow-md transition-all duration-200">
                         <!-- Search Query Portion -->
                         <div class="flex items-center px-4 flex-[1.2] h-full">
                             <Search class="w-4 h-4 text-gray-400 mr-2.5 shrink-0" />
@@ -96,23 +96,24 @@ const supportiveServicesItems = [
                         </button>
                     </div>
 
-                    <!-- Vertical Divider between Search Bar and Right Portal Navigation -->
-                    <div class="hidden lg:block w-[1.5px] h-4 bg-red-100 shrink-0"></div>
+                    <!-- Left-aligned Portal Links (next to search bar) -->
+                    <div class="hidden lg:flex items-center gap-8 shrink-0 pl-8 font-opensans">
+                        <a href="/training" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
+                            Self Apply Guide
+                        </a>
 
-                    <!-- Right Portal Navigation & Buttons -->
-                    <div class="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0">
-                        <!-- Find Experts Dropdown -->
+                        <!-- Supporting Businesses Dropdown on Top Line -->
                         <div class="relative py-3 group">
-                            <button class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1">
-                                Self Apply Guide
+                            <button class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                                Supporting Businesses
                                 <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
                             </button>
-                            
-                            <!-- Dropdown Menu Card -->
-                            <div class="absolute top-full right-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+
+                            <!-- Dropdown Card -->
+                            <div class="absolute top-full left-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
                                 <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
                                     <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-                                        {expertDropdownItems.map((item) => {
+                                        {supportiveServicesItems.map((item) => {
                                             const IconComponent = item.icon;
                                             return (
                                                 <a 
@@ -128,12 +129,15 @@ const supportiveServicesItems = [
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <a href="/support" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
+                    <!-- Right Portal Auth Buttons & Profile Block (aligned right) -->
+                    <div class="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0">
+                        <a href="/support" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 animate-fade-in mr-3">
                             Contact
                         </a>
 
-                        <div class="w-[1.5px] h-4 bg-red-100"></div>
+                        <div class="w-[1.5px] h-4 bg-red-500 mr-3"></div>
 
                         <div class="flex items-center gap-1.5 xl:gap-2" id="nav-auth-buttons-wrapper">
                             <a href="/login" id="login-btn" class="font-opensans text-[14px] font-bold text-navy hover:text-black border border-gray-200 hover:border-black px-4 py-2.5 rounded-xl transition-all duration-300">
@@ -145,27 +149,27 @@ const supportiveServicesItems = [
                         </div>
 
                         <!-- Desktop Profile dropdown -->
-                        <div id="nav-profile-block" class="relative hidden py-2 group font-sans">
-                            <button id="nav-profile-trigger" class="flex items-center gap-2 p-1 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white">
-                                <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-black text-white" id="nav-profile-avatar-container">
+                        <div id="nav-profile-block" class="relative hidden py-2 group font-opensans">
+                            <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white font-opensans">
+                                <div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-black text-white shadow-sm" id="nav-profile-avatar-container">
                                     <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                                    <span class="font-bold text-xs" id="nav-profile-avatar-letters">U</span>
+                                    <span class="font-bold text-sm" id="nav-profile-avatar-letters">U</span>
                                 </div>
-                                <ChevronDown class="w-3.5 h-3.5 text-slate-500 pr-1 shrink-0" />
+                                <ChevronDown class="w-4 h-4 text-slate-500 pr-1.5 shrink-0" />
                             </button>
                             
                             <!-- Dropdown Menu -->
                             <div class="absolute right-0 top-full pt-2 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
-                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5">
+                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5 font-opensans">
                                     <div class="px-3.5 py-2 border-b border-slate-100">
-                                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Signed in as</div>
-                                        <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name">User Profile</div>
+                                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-opensans">Signed in as</div>
+                                        <div class="text-sm font-bold text-black truncate mt-0.5 font-opensans" id="nav-profile-name">User Profile</div>
                                     </div>
-                                    <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-slate-700 hover:text-black hover:bg-slate-50 transition-all">
+                                    <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-black hover:bg-slate-50 transition-all font-opensans">
                                         <Layers class="w-4 h-4 text-slate-400" />
                                         <span>My Dashboard</span>
                                     </a>
-                                    <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-red-650 hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent">
+                                    <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-red-650 hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent font-opensans">
                                         <LogOut class="w-4 h-4 text-slate-450" />
                                         <span>Log Out</span>
                                     </button>
@@ -187,7 +191,7 @@ const supportiveServicesItems = [
                 <!-- Student Visa Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/training") || pathname?.startsWith("/student") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -257,7 +261,7 @@ const supportiveServicesItems = [
                 <!-- Job Seeker Visas Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/jobs") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -311,7 +315,7 @@ const supportiveServicesItems = [
                 <!-- Tourist Visa Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/tours") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -343,7 +347,7 @@ const supportiveServicesItems = [
                 <!-- Migration Visas Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/find-experts?category=pr") || pathname?.startsWith("/find-experts?category=migration") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -380,10 +384,10 @@ const supportiveServicesItems = [
                     </div>
                 </div>
 
-                <!-- Legal Assistance Dropdown (Renamed to Immigration Assistance) -->
+                <!-- Immigration Assistance Dropdown (restored to 5th position) -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -421,36 +425,14 @@ const supportiveServicesItems = [
                     </div>
                 </div>
 
-                <!-- Supportive services Dropdown (Renamed to supporting businesses) -->
-                <div class="relative py-3.5 group">
-                    <button
-                        class={`font-opensans category-menu-link text-[13.5px] xl:text-[14px] font-bold tracking-tight transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
-                            pathname?.startsWith("/find-experts") ? "text-[#ef4444]" : "text-navy"
-                        }`}
+                <!-- Migration tools and calculators link (placed at the very end of 2nd line) -->
+                <div class="relative py-3.5">
+                    <a
+                        href="/find-experts?category=pr"
+                        class="font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap text-navy hover:text-[#ef4444]"
                     >
-                        supporting businesses
-                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
-                    </button>
-
-                    <!-- Dropdown Menu Card -->
-                    <div class="absolute top-full right-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
-                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
-                            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-                                {supportiveServicesItems.map((item) => {
-                                    const IconComponent = item.icon;
-                                    return (
-                                        <a 
-                                            href={item.href}
-                                            class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
-                                        >
-                                            <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
-                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
-                                        </a>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </div>
+                        Migration tools and calculators
+                    </a>
                 </div>
             </div><!-- end category items -->
                 </div><!-- end category-bar -->
@@ -801,59 +783,10 @@ const supportiveServicesItems = [
         });
     }
 
-    // Dynamic Header Scroll Effects
-    const header = document.getElementById('main-header');
-    const isHome = window.location.pathname === '/' || window.location.pathname === '';
-    const isJobs = window.location.pathname === '/jobs' || window.location.pathname === '/jobs/';
-    const isTours = window.location.pathname === '/tours' || window.location.pathname === '/tours/';
-    const isEvents = window.location.pathname.startsWith('/events');
-    const isTransparentPage = isJobs || isTours || isEvents;
-
-    function updateHeader() {
-        const isDrawerOpen = mobileMenuDrawer && !mobileMenuDrawer.classList.contains('hidden');
-        const threshold = 50;
-        if (isTransparentPage && window.scrollY < threshold && !isDrawerOpen) {
-            header.classList.add('header-transparent');
-        } else {
-            header.classList.remove('header-transparent');
-        }
-    }
-
-    if (header) {
-        if (isTransparentPage) {
-            updateHeader();
-            window.addEventListener('scroll', updateHeader);
-        }
-    }
+    // Header always stays white/solid - no transparent mode
+    // (transparent mode removed so logo is always visible)
 
     // Auth gate for search elements
-    const searchInputs = [
-        document.getElementById('search-input-query'),
-        document.getElementById('search-input-location'),
-        document.getElementById('search-btn'),
-        document.getElementById('mobile-search-input-query'),
-        document.getElementById('mobile-search-input-location'),
-        document.getElementById('mobile-search-btn')
-    ];
-
-    searchInputs.forEach(el => {
-        if (el) {
-            ['focus', 'mousedown', 'keydown'].forEach(evt => {
-                el.addEventListener(evt, (e) => {
-                    const user = localStorage.getItem("visaformula_user");
-                    if (!user || user === "null") {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (el instanceof HTMLInputElement) {
-                            el.blur();
-                        }
-                        alert("you must login for accessing the search option above");
-                        window.location.href = "/login";
-                    }
-                });
-            });
-        }
-    });
 
     // Dynamic Auth Header Button & Profile Dropdown Updates
     const seekerFirst = localStorage.getItem("seeker_firstName");

@@ -29,7 +29,7 @@ export function JobCard({ job }: { job: any }) {
                     <span className="text-xs text-gray-400 flex items-center gap-1">
                         <Clock className="w-3 h-3" /> {job.posted}
                     </span>
-                    <button className="bg-red-500 text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-red-600 transition-all shadow-sm hover:shadow-md">
+                    <button className="bg-black text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-slate-900 transition-all shadow-sm hover:shadow-md">
                         Apply Now
                     </button>
                 </div>

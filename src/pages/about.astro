@@ -1,4 +1,4 @@
-﻿---
+---
 // src/pages/about.astro
 import Layout from '../layouts/Layout.astro';
 import { Shield, Globe, Users, Award, Clock, Lock, Briefcase, Star, HelpCircle, ArrowRight } from 'lucide-react';
@@ -36,17 +36,10 @@ const values = [
     <div class="bg-[#fff5f5] min-h-screen pb-24">
         
         <!-- HERO SECTION -->
-        <section class="relative text-white py-32 px-4 overflow-hidden border-b border-purple-950">
-            <!-- Full-bleed background -->
+        <section class="relative text-white py-16 px-4 overflow-hidden border-b border-purple-950" style="">
             <div class="absolute inset-0 z-0">
-                <img
-                    src="/images/boardroom_team.png"
-                    alt="Team of experts collaborating on immigration cases"
-                    class="w-full h-full object-cover"
-                />
-                <!-- Deep navy/purple premium gradient overlay -->
+                <img src="/images/boardroom_team.png" alt="Team collaborating" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/85 to-[#070b12]/95"></div>
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(167,139,250,0.15),transparent_60%)]"></div>
             </div>
 
             <!-- Content -->
@@ -156,4 +149,5 @@ const values = [
         
     </div>
 </Layout>
+
 

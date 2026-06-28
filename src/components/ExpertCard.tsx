@@ -50,7 +50,7 @@ export function ExpertCard({ expert }: { expert: any }) {
                     <div className="text-left">
                         <div className="font-extrabold text-lg text-[#1a1a2e]">{expert.price}</div>
                     </div>
-                    <button className="bg-red-500 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-red-600 transition-all text-sm shadow-sm hover:shadow-md">
+                    <button className="bg-black text-white px-5 py-2.5 rounded-xl font-bold hover:bg-slate-900 transition-all text-sm shadow-sm hover:shadow-md">
                         View Profile
                     </button>
                 </div>

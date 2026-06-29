@@ -1,0 +1,12 @@
+---
+// src/pages/tools.astro
+import Layout from '../layouts/Layout.astro';
+import { MigrationToolsPortal } from '../components/interactive/MigrationToolsPortal';
+---
+
+<Layout 
+  title="Migration Tools & Points Calculators" 
+  description="Calculate your Canada Express Entry CRS score, Australia skilled immigration points, UK Skilled worker points, document checklists, and fees."
+>
+  <MigrationToolsPortal client:only="react" />
+</Layout>

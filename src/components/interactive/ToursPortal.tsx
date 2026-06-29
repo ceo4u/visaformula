@@ -262,7 +262,7 @@ export function ToursPortal() {
 
             {/* Dynamic Hero Section */}
             {activeTab === "holiday" && (
-                <section className="relative py-16 px-4 overflow-hidden border-b border-slate-200 flex flex-col items-center justify-center" >
+                <section className="relative py-24 px-4 overflow-hidden border-b border-slate-200 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
                         <img src="/holiday-bg.jpg" alt="Luxury beach holiday" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
@@ -311,7 +311,7 @@ export function ToursPortal() {
             )}
 
             {activeTab === "sports" && (
-                <section className="relative py-16 px-4 overflow-hidden border-b border-emerald-100 flex flex-col items-center justify-center" >
+                <section className="relative py-24 px-4 overflow-hidden border-b border-emerald-100 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
                         <img src="/luxury_stadium.png" alt="Luxury stadium" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
@@ -367,7 +367,7 @@ export function ToursPortal() {
             )}
 
             {activeTab === "cruises" && (
-                <section className="relative py-16 px-4 overflow-hidden border-b border-indigo-100 flex flex-col items-center justify-center" >
+                <section className="relative py-24 px-4 overflow-hidden border-b border-indigo-100 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
                         <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1800&h=900&fit=crop&q=90" alt="Luxury cruise" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
@@ -421,7 +421,7 @@ export function ToursPortal() {
             )}
 
             {activeTab === "events" && (
-                <section className="relative py-16 px-4 overflow-hidden border-b border-orange-100 flex flex-col items-center justify-center" >
+                <section className="relative py-24 px-4 overflow-hidden border-b border-orange-100 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
                         <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1800&h=900&fit=crop&q=90" alt="Music concert" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />

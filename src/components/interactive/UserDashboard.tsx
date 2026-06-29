@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
     Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
     ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
-    Search, Plus, Layers, MessageSquare, Settings, HelpCircle, Briefcase,
+    Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
     Video, User, LogOut, CheckSquare, Sparkles
 } from "lucide-react";
 
@@ -88,18 +88,18 @@ export function UserDashboard() {
             `}} />
 
             {/* Redesigned Premium Sidebar Navigation */}
-            <aside className="w-64 bg-black border-r border-slate-900 flex flex-col justify-between py-8 px-5 flex-shrink-0 text-white">
+            <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between py-8 px-5 flex-shrink-0 text-black">
                 <div className="flex flex-col items-stretch gap-8">
                     {/* Logo / Branding */}
                     <div className="flex flex-col gap-3 px-3">
-                        <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white transition-colors">
+                        <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
                             <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
                         </a>
                     </div>
                     
                     <nav className="flex flex-col gap-2">
                         {[
-                            { id: "dashboard", label: "Dashboard", icon: Layers },
+                            { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
                             { id: "consultations", label: "Consultations", icon: Calendar },
                             { id: "cases", label: "Active Cases", icon: Briefcase }
                         ].map(tab => {
@@ -111,8 +111,8 @@ export function UserDashboard() {
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`flex items-center gap-3 px-5 py-3.5 rounded-full font-bold text-xs tracking-wide transition-all relative ${
                                         isActive 
-                                            ? "bg-white text-black shadow-lg active:scale-[0.98]" 
-                                            : "text-slate-400 hover:text-white hover:bg-white/10"
+                                            ? "bg-black text-white shadow-md active:scale-[0.98]" 
+                                            : "text-slate-600 hover:text-black hover:bg-slate-100"
                                     }`}
                                 >
                                     <IconComponent className="w-4 h-4 flex-shrink-0" />
@@ -126,7 +126,7 @@ export function UserDashboard() {
                 <div className="px-2">
                     <button 
                         onClick={() => window.location.href = '/login'} 
-                        className="flex items-center gap-3 px-5 py-3.5 text-slate-400 hover:text-red-400 hover:bg-white/5 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer border-none bg-transparent"
+                        className="flex items-center gap-3 px-5 py-3.5 text-slate-650 hover:text-red-600 hover:bg-slate-55 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer border-none bg-transparent"
                     >
                         <LogOut className="w-4 h-4" />
                         <span>Log Out</span>
@@ -139,11 +139,11 @@ export function UserDashboard() {
                 {/* Redesigned Premium Header Bar */}
                 <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-4xl">
-                        {/* Seeker Profile Card */}
-                        <div className="bg-white border border-slate-200/80 rounded-[28px] shadow-sm flex items-center overflow-hidden max-w-md w-full relative">
+                        {/* Seeker Profile Card (Premium Gradient Theme) */}
+                        <div className="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 border border-slate-200/80 rounded-[28px] shadow-sm flex items-center overflow-hidden max-w-md w-full relative">
                             {/* Left side: Avatar */}
                             <div className="p-4 pr-2 flex-shrink-0 z-10">
-                                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-[24px] bg-slate-100 overflow-hidden border border-slate-150 flex items-center justify-center font-black text-xl text-slate-400 shadow-inner">
+                                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[20px] bg-gradient-to-br from-black via-slate-800 to-slate-950 text-white border-2 border-white shadow-md flex items-center justify-center font-black text-xl tracking-tight">
                                     {(firstName || "Seeker").substring(0, 2).toUpperCase()}
                                 </div>
                             </div>
@@ -153,11 +153,12 @@ export function UserDashboard() {
                                 {/* Name and Badge */}
                                 <div className="flex items-center gap-2 flex-wrap">
                                     <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{firstName} {lastName || "Sharma"}</h2>
+                                    <span className="bg-emerald-500/10 text-emerald-700 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-emerald-500/20">Verified</span>
                                 </div>
 
                                 {/* Description/Location */}
-                                <p className="text-[11.5px] text-slate-500 font-semibold mt-1 leading-tight max-w-[220px]">
-                                    Passport holder from {passportCountry || "India"}
+                                <p className="text-[11px] text-slate-500 font-semibold mt-1 leading-tight max-w-[220px] flex items-center gap-1.5">
+                                    <span>🛂</span> Passport holder from <span className="text-black font-extrabold">{passportCountry || "India"}</span>
                                 </p>
                             </div>
                         </div>

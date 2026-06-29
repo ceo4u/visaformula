@@ -1,6 +1,6 @@
 ---
 // src/components/layout/Header.astro
-import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake, Layers, LogOut } from 'lucide-react';
+import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake, Layers, LogOut, LayoutDashboard } from 'lucide-react';
 import Logo from '../Logo.astro';
 
 
@@ -159,14 +159,14 @@ const supportiveServicesItems = [
                             </button>
                             
                             <!-- Dropdown Menu -->
-                            <div class="absolute right-0 top-full pt-2 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                            <div class="absolute right-0 top-[90%] pt-4 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
                                 <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5 font-opensans">
                                     <div class="px-3.5 py-2 border-b border-slate-100">
                                         <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-opensans">Signed in as</div>
                                         <div class="text-sm font-bold text-black truncate mt-0.5 font-opensans" id="nav-profile-name">User Profile</div>
                                     </div>
                                     <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-black hover:bg-slate-50 transition-all font-opensans">
-                                        <Layers class="w-4 h-4 text-slate-400" />
+                                        <LayoutDashboard class="w-4 h-4 text-slate-400" />
                                         <span>My Dashboard</span>
                                     </a>
                                     <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-red-650 hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent font-opensans">
@@ -428,7 +428,7 @@ const supportiveServicesItems = [
                 <!-- Migration tools and calculators link (placed at the very end of 2nd line) -->
                 <div class="relative py-3.5">
                     <a
-                        href="/find-experts?category=pr"
+                        href="/tools"
                         class="font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap text-navy hover:text-[#ef4444]"
                     >
                         Migration tools and calculators

@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import pg from 'pg';
+import { getPool, runMigrations } from '../../../backend/db';
 
 export const prerender = false;
 
@@ -8,26 +8,8 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { first_name, last_name, email, password, phone, passport_country, goals, destinations } = body;
 
-    const pool = new pg.Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false }
-    });
-
-    // Self-migrating table creation
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS seekers (
-        id SERIAL PRIMARY KEY,
-        first_name VARCHAR(100),
-        last_name VARCHAR(100),
-        email VARCHAR(255) UNIQUE,
-        password_hash VARCHAR(255),
-        phone VARCHAR(50),
-        passport_country VARCHAR(100),
-        goals TEXT,
-        destinations TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
+    await runMigrations();
+    const pool = getPool();
 
     // Insert seeker record
     await pool.query(`
@@ -45,8 +27,6 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify(goals || []), 
       JSON.stringify(destinations || [])
     ]);
-
-    await pool.end();
 
     return new Response(JSON.stringify({ status: 'success', message: 'Seeker registered successfully!' }), {
       status: 200,

@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import pg from 'pg';
+import { getPool, runMigrations } from '../../../backend/db';
 
 export const prerender = false;
 
@@ -12,30 +12,8 @@ export const POST: APIRoute = async ({ request }) => {
       license_document_url, expertise_tags, countries_expertise 
     } = body;
 
-    const pool = new pg.Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false }
-    });
-
-    // Self-migrating table creation
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS experts (
-        id SERIAL PRIMARY KEY,
-        business_name VARCHAR(150),
-        email VARCHAR(255) UNIQUE,
-        password_hash VARCHAR(255),
-        contact_number VARCHAR(50),
-        advisor_type VARCHAR(100),
-        about_me TEXT,
-        portfolio_link VARCHAR(255),
-        office_address TEXT,
-        gov_registration_number VARCHAR(150),
-        license_document_url VARCHAR(255),
-        expertise_tags TEXT,
-        countries_expertise TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
+    await runMigrations();
+    const pool = getPool();
 
     // Insert expert record
     await pool.query(`
@@ -64,8 +42,6 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify(expertise_tags || []),
       countries_expertise || ''
     ]);
-
-    await pool.end();
 
     return new Response(JSON.stringify({ status: 'success', message: 'Expert registered successfully!' }), {
       status: 200,

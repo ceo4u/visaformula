@@ -1,0 +1,12 @@
+---
+// src/pages/universities.astro
+import Layout from '../layouts/Layout.astro';
+import { UniversitiesPortal } from '../components/interactive/UniversitiesPortal';
+---
+
+<Layout 
+  title="Global Universities & Student Visas" 
+  description="Search top universities in Canada, Australia, UK, Germany, and Singapore. View tuition fees and PGWP visa pathways."
+>
+  <UniversitiesPortal client:only="react" />
+</Layout>

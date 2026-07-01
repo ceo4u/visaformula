@@ -717,41 +717,6 @@ export function JobsPortal() {
             </div>
           </div>
 
-          {/* VERIFIED RECRUITERS */}
-          <div className="bg-white border-y border-red-100 text-left">
-            <div className="max-w-6xl mx-auto px-6 py-12">
-              <span className="text-[11px] font-extrabold text-[#ef4444] uppercase tracking-wider block mb-1">Verified Recruiters</span>
-              <h2 className="font-sora font-extrabold text-[#0c1a2e] text-xl mb-6">Top Overseas Recruitment Agencies</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {[
-                  { name: "Priya Staffing Solutions", countries: "Canada · UK · Australia", rating: "4.9", reviews: 128, placed: "240 placed", avatar: "https://randomuser.me/api/portraits/women/68.jpg" },
-                  { name: "Gulf Hiring Group",        countries: "UAE · Saudi Arabia · Qatar", rating: "4.8", reviews: 96,  placed: "580 placed", avatar: "https://randomuser.me/api/portraits/men/32.jpg"   },
-                  { name: "EuroGlobal Placements",    countries: "Germany · France · Netherlands", rating: "4.8", reviews: 74,  placed: "310 placed", avatar: "https://randomuser.me/api/portraits/men/45.jpg"   },
-                ].map(rc => (
-                  <div
-                    key={rc.name}
-                    onClick={() => showToast(`Opening agency: ${rc.name}`)}
-                    className="bg-[#fff5f5] border border-red-100 rounded-2xl p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <img src={rc.avatar} alt={rc.name} className="w-11 h-11 rounded-xl object-cover border border-red-100 shadow-sm" />
-                      <div>
-                        <h4 className="font-sora font-bold text-xs text-[#0c1a2e] leading-snug">{rc.name}</h4>
-                        <div className="text-[10px] text-[#475569] font-semibold mt-0.5">{rc.countries}</div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4 text-[11px] text-gray-400 font-bold mb-4">
-                      <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />{rc.rating} · {rc.reviews} reviews</span>
-                      <span>💼 {rc.placed}</span>
-                    </div>
-                    <button className="w-full bg-white border border-gray-200 text-black font-bold text-[11px] py-2 rounded-xl hover:bg-gray-50 transition-all outline-none">
-                      View Agency →
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
 
           {/* PROCESS */}
           <div className="max-w-6xl mx-auto px-6 py-12 text-center">

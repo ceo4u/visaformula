@@ -102,7 +102,7 @@ export function ExhibitionsPortal() {
                 </div>
 
                 <div className="max-w-4xl mx-auto text-center relative z-10 text-white">
-                    <span className="bg-white/10 text-white text-[10px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
+                    <span className="bg-white/10 text-white text-[10px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
                         🏛️ Exhibition Packages
                     </span>
                     <h1 className="font-sora text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-white leading-tight">
@@ -116,7 +116,7 @@ export function ExhibitionsPortal() {
                     <div className="bg-white rounded-2xl border border-slate-100 shadow-xl p-4 max-w-3xl mx-auto text-left">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Exhibition Type</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Exhibition Type</label>
                                 <select value={exhType} onChange={e => setExhType(e.target.value)} className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
                                     <option>All Types</option>
                                     <option>🏭 Trade Show</option>
@@ -127,7 +127,7 @@ export function ExhibitionsPortal() {
                                 </select>
                             </div>
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Country</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Country</label>
                                 <select value={exhCountry} onChange={e => setExhCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
                                     <option>Anywhere</option>
                                     <option>🇩🇪 Germany</option>
@@ -137,7 +137,7 @@ export function ExhibitionsPortal() {
                                 </select>
                             </div>
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Month</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Month</label>
                                 <select value={exhMonth} onChange={e => setExhMonth(e.target.value)} className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
                                     <option>Any Month</option>
                                     <option>May 2026</option>
@@ -158,19 +158,19 @@ export function ExhibitionsPortal() {
                 <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                     <div className="border-r border-slate-100 last:border-0">
                         <div className="font-sora font-extrabold text-navy text-2xl">240+</div>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase mt-0.5">Exhibitions Listed</div>
+                        <div className="text-[10px] font-bold text-gray-400 mt-0.5">Exhibitions Listed</div>
                     </div>
                     <div className="border-r border-slate-100 last:border-0">
                         <div className="font-sora font-extrabold text-navy text-2xl">45+</div>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase mt-0.5">Countries Covered</div>
+                        <div className="text-[10px] font-bold text-gray-400 mt-0.5">Countries Covered</div>
                     </div>
                     <div className="border-r border-slate-100 last:border-0">
                         <div className="font-sora font-extrabold text-slate-900 text-2xl">Business Visa</div>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase mt-0.5">Included in Package</div>
+                        <div className="text-[10px] font-bold text-gray-400 mt-0.5">Included in Package</div>
                     </div>
                     <div>
                         <div className="font-sora font-extrabold text-emerald-500 text-2xl">48 Hours</div>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase mt-0.5">Avg Visa Processing</div>
+                        <div className="text-[10px] font-bold text-gray-400 mt-0.5">Avg Visa Processing</div>
                     </div>
                 </div>
             </div>
@@ -200,7 +200,7 @@ export function ExhibitionsPortal() {
                 </div>
 
                 <div className="mb-6">
-                    <span className="text-[10px] font-bold text-slate-800 uppercase tracking-widest block mb-1">Featured Exhibitions</span>
+                    <span className="text-[10px] font-bold text-slate-800 tracking-widest block mb-1">Featured Exhibitions</span>
                     <h2 className="font-sora font-bold text-navy text-xl">Upcoming Global Exhibitions</h2>
                     <p className="text-xs text-gray-400 mt-0.5">All packages include business visa assistance + delegation pass registration + premium hotel stay + airport transfers.</p>
                 </div>
@@ -220,17 +220,17 @@ export function ExhibitionsPortal() {
                                         
                                         {/* Badges on top of image */}
                                         <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-                                            <span className="bg-white/10 backdrop-blur-md text-white font-extrabold border border-white/20 rounded-lg px-2.5 py-1 text-[9px] tracking-wider uppercase">
+                                            <span className="bg-white/10 backdrop-blur-md text-white font-extrabold border border-white/20 rounded-lg px-2.5 py-1 text-[9px] tracking-wider">
                                                 {countryCode}
                                             </span>
-                                            <span className="bg-white/10 backdrop-blur-md text-white font-extrabold border border-white/20 rounded-lg px-2.5 py-1 text-[9px] tracking-wider uppercase">
+                                            <span className="bg-white/10 backdrop-blur-md text-white font-extrabold border border-white/20 rounded-lg px-2.5 py-1 text-[9px] tracking-wider">
                                                 {ex.categoryLabel}
                                             </span>
                                         </div>
 
                                         {/* Overlaid Title */}
                                         <div className="absolute bottom-4 left-5 right-5 z-10">
-                                            <span className="text-rose-400 font-extrabold tracking-widest text-[9px] uppercase block mb-1">GLOBAL EXHIBITION</span>
+                                            <span className="text-rose-400 font-medium tracking-normal text-[9px] block mb-1">GLOBAL EXHIBITION</span>
                                             <h3 className="font-sora font-extrabold text-white text-base leading-snug">{ex.name}</h3>
                                         </div>
                                     </div>
@@ -266,7 +266,7 @@ export function ExhibitionsPortal() {
                                 {/* Card Footer / Bottom Row */}
                                 <div className="p-5 pt-3 border-t border-slate-800/60 flex items-center justify-between mt-auto">
                                     <div>
-                                        <div className="text-[8px] text-slate-500 font-extrabold tracking-widest uppercase">STARTING FROM</div>
+                                        <div className="text-[8px] text-slate-500 font-medium tracking-normal">STARTING FROM</div>
                                         <div className="flex items-baseline gap-1.5">
                                             <span className="font-sora font-extrabold text-white text-base">₹{ex.price.toLocaleString()}</span>
                                             <span className="text-[9px] text-slate-500 font-medium">/ delegate</span>

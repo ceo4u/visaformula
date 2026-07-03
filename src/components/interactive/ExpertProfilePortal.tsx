@@ -82,7 +82,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                     <div className="relative w-32 h-32 md:w-40 md:h-40 shrink-0 mx-auto md:mx-0">
                         <img src={expert.image} alt={expert.name} className="w-full h-full object-cover rounded-3xl border-4 border-white shadow-lg" />
                         {expert.isAvailableToday && (
-                            <span className="absolute bottom-2 right-2 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse">
+                            <span className="absolute bottom-2 right-2 bg-emerald-500 text-white text-[10px] font-black tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse">
                                 Active Now
                             </span>
                         )}
@@ -94,7 +94,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                             <h1 className="text-2xl md:text-3xl font-extrabold font-sora text-navy leading-tight flex items-center justify-center md:justify-start gap-2">
                                 {expert.name} <CheckCircle className="w-5 h-5 text-red-500 fill-red-50 shrink-0" />
                             </h1>
-                            <span className="inline-block bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-red-100 mx-auto md:mx-0 w-max">
+                            <span className="inline-block bg-red-50 text-red-600 text-[10px] font-black tracking-wider px-2.5 py-1 rounded-full border border-red-100 mx-auto md:mx-0 w-max">
                                 {expert.role}
                             </span>
                         </div>
@@ -122,12 +122,12 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
 
                     {/* Quick Cost Block */}
                     <div className="w-full md:w-auto shrink-0 bg-slate-50 border border-slate-100 rounded-2xl p-5 text-center md:text-left">
-                        <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Session Rate Starts At</div>
+                        <div className="text-[10px] font-black tracking-widest text-gray-400 mb-1">Session Rate Starts At</div>
                         <div className="text-3xl font-extrabold text-navy mb-0.5">₹{expert.price.toLocaleString()}</div>
-                        <div className="text-[10px] text-gray-500 mb-4 font-semibold uppercase tracking-wider">per consultation</div>
+                        <div className="text-[10px] text-gray-500 mb-4 font-semibold tracking-wider">per consultation</div>
                         <button 
                             onClick={() => document.getElementById("booking-section")?.scrollIntoView({ behavior: "smooth" })}
-                            className="w-full bg-slate-900 text-white font-bold text-xs uppercase tracking-wider py-3 px-6 rounded-xl hover:bg-black transition-all active:scale-[0.98] shadow-sm"
+                            className="w-full bg-slate-900 text-white font-bold text-xs tracking-wider py-3 px-6 rounded-xl hover:bg-black transition-all active:scale-[0.98] shadow-sm"
                         >
                             Book Consultation
                         </button>
@@ -150,11 +150,11 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                             </p>
                             <div className="grid grid-cols-2 gap-4 mt-6">
                                 <div className="border border-slate-100 p-4 rounded-xl">
-                                    <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Qualifications</div>
+                                    <div className="text-[10px] font-bold text-gray-400 tracking-wider">Qualifications</div>
                                     <div className="text-xs font-bold text-navy mt-1">Certified Immigration Consultant, Legal Degree</div>
                                 </div>
                                 <div className="border border-slate-100 p-4 rounded-xl">
-                                    <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Languages</div>
+                                    <div className="text-[10px] font-bold text-gray-400 tracking-wider">Languages</div>
                                     <div className="text-xs font-bold text-navy mt-1">English, Hindi, Telugu</div>
                                 </div>
                             </div>
@@ -199,7 +199,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 {successStories.map(story => (
                                     <div key={story.title} className="border border-slate-100 rounded-xl p-4 bg-slate-50/30 hover:shadow-md transition-shadow">
-                                        <div className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1.5">{story.result}</div>
+                                        <div className="text-[10px] font-black text-emerald-600 tracking-widest mb-1.5">{story.result}</div>
                                         <div className="font-bold text-xs text-navy mb-1 leading-snug">{story.title}</div>
                                         <p className="text-[10px] text-gray-400 leading-relaxed">{story.desc}</p>
                                     </div>
@@ -248,11 +248,11 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                                 </div>
 
                                 <div className="space-y-3">
-                                    <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Select Date & Time</h4>
+                                    <h4 className="text-[10px] font-black text-gray-400 tracking-widest">Select Date & Time</h4>
                                     <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-1">
                                         {weekDays.map(day => (
                                             <div key={day} className="col-span-2 space-y-1">
-                                                <div className="text-[9px] font-extrabold text-[#1A3347] uppercase tracking-wider mt-2 mb-1 pl-1">{day} (Available Slots)</div>
+                                                <div className="text-[9px] font-extrabold text-[#1A3347] tracking-wider mt-2 mb-1 pl-1">{day} (Available Slots)</div>
                                                 <div className="grid grid-cols-2 gap-1.5">
                                                     {timeSlots.map(time => {
                                                         const key = `${day}-${time}`;
@@ -307,7 +307,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
 
                                 <button 
                                     onClick={handleProceedBooking}
-                                    className="w-full bg-red-500 text-white font-bold text-xs uppercase tracking-widest py-3.5 rounded-xl hover:bg-red-600 transition-all active:scale-[0.98] mt-4 shadow-md flex items-center justify-center gap-1.5"
+                                    className="w-full bg-red-500 text-white font-bold text-xs tracking-widest py-3.5 rounded-xl hover:bg-red-600 transition-all active:scale-[0.98] mt-4 shadow-md flex items-center justify-center gap-1.5"
                                 >
                                     Proceed to Booking
                                 </button>

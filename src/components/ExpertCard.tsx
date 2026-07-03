@@ -12,7 +12,7 @@ export function ExpertCard({ expert }: { expert: any }) {
                         <div className="flex justify-between items-start gap-2">
                             <h3 className="text-base font-bold text-[#1a1a2e] leading-tight truncate group-hover:text-red-500 transition-colors">{expert.name}</h3>
                             {expert.badges?.includes("Open now") && (
-                                <span className="text-[9px] uppercase font-bold tracking-wider text-green-700 bg-green-100 px-2 py-0.5 rounded-full shrink-0 flex items-center gap-1">
+                                <span className="text-[9px] font-bold tracking-wider text-green-700 bg-green-100 px-2 py-0.5 rounded-full shrink-0 flex items-center gap-1">
                                     <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Open
                                 </span>
                             )}

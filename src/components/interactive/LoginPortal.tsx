@@ -82,7 +82,7 @@ export function LoginPortal() {
 
                     <form onSubmit={handleEmailLogin} className="space-y-5">
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-black uppercase tracking-wider mb-1 block font-opensans">Email address</label>
+                            <label className="text-xs font-bold text-black tracking-wider mb-1 block font-opensans">Email address</label>
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
@@ -98,7 +98,7 @@ export function LoginPortal() {
 
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-black uppercase tracking-wider mb-1 block font-opensans">Password</label>
+                                <label className="text-xs font-bold text-black tracking-wider mb-1 block font-opensans">Password</label>
                                 <div className="relative">
                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                     <input
@@ -139,7 +139,7 @@ export function LoginPortal() {
                     </form>
 
                     <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col gap-3">
-                        <div className="text-center text-[11px] text-slate-500 font-bold uppercase tracking-wider mb-1 font-opensans">
+                        <div className="text-center text-[11px] text-slate-500 font-bold tracking-wider mb-1 font-opensans">
                             Don't have an account yet?
                         </div>
                         <div className="flex gap-3">

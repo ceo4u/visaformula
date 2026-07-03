@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Shield, CheckCircle, Lock, ArrowRight, AlertTriangle, CreditCard, User, Clock } from "lucide-react";
 
 const steps = [
@@ -16,8 +16,8 @@ const protections = [
 ];
 
 const mockBookings = [
-    { id: "B001", expert: "Marcus Thorne, JD", service: "H-1B Consultation", amount: "₹12,500", status: "held", date: "Apr 20, 2026" },
-    { id: "B002", expert: "Elena Rodriguez", service: "Green Card Review", amount: "₹8,000", status: "held", date: "Apr 18, 2026" },
+    { id: "B001", expert: "Marcus Thorne, JD", service: "H-1B Consultation", amount: "?12,500", status: "held", date: "Apr 20, 2026" },
+    { id: "B002", expert: "Elena Rodriguez", service: "Green Card Review", amount: "?8,000", status: "held", date: "Apr 18, 2026" },
 ];
 
 export function EscrowPortal() {
@@ -104,13 +104,13 @@ export function EscrowPortal() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-navy text-sm">{b.expert}</h3>
-                                    <p className="text-xs text-gray-500">{b.service} · {b.date}</p>
+                                    <p className="text-xs text-gray-500">{b.service} � {b.date}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3">
-                                <span className="bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1 rounded-full border border-amber-200">🔒 {b.amount} Held</span>
-                                <button onClick={() => triggerToast(`✅ Delivery confirmed for ${b.expert}. Funds released!`)} className="bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-emerald-600 transition-all">Confirm Delivery</button>
-                                <button onClick={() => triggerToast(`⚠️ Dispute raised for booking ${b.id}. Our team is reviewing.`)} className="bg-white border border-yellow-200 text-amber-600 px-4 py-2 rounded-xl text-sm font-bold hover:bg-yellow-50 transition-all">Dispute</button>
+                                <span className="bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1 rounded-full border border-amber-200">?? {b.amount} Held</span>
+                                <button onClick={() => triggerToast(`? Delivery confirmed for ${b.expert}. Funds released!`)} className="bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-emerald-600 transition-all">Confirm Delivery</button>
+                                <button onClick={() => triggerToast(`?? Dispute raised for booking ${b.id}. Our team is reviewing.`)} className="bg-white border border-yellow-200 text-amber-600 px-4 py-2 rounded-xl text-sm font-bold hover:bg-yellow-50 transition-all">Dispute</button>
                             </div>
                         </div>
                     ))}

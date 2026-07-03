@@ -70,7 +70,7 @@ export function IELTSPortal() {
                 </div>
 
                 <div className="max-w-4xl mx-auto text-center relative z-10 text-white">
-                    <span className="bg-white/10 text-purple-300 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
+                    <span className="bg-white/10 text-purple-300 text-[10px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
                         📚 Exam Preparation
                     </span>
                     <h1 className="font-sora text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-white leading-tight">
@@ -92,7 +92,7 @@ export function IELTSPortal() {
                         {scoreTargets.map(s => (
                             <div key={s.band} className={`rounded-2xl border p-4 text-center ${s.color}`}>
                                 <div className="font-sora font-extrabold text-2xl leading-none text-navy">{s.band}</div>
-                                <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mt-2">{s.desc}</div>
+                                <div className="text-[10px] font-bold tracking-wider text-gray-500 mt-2">{s.desc}</div>
                             </div>
                         ))}
                     </div>
@@ -132,7 +132,7 @@ export function IELTSPortal() {
                                 <div className="p-6">
                                     <h3 className="font-sora font-extrabold text-navy text-base group-hover:text-purple-600 transition-colors leading-snug">{inst.name}</h3>
                                     
-                                    <div className="flex items-center gap-4 text-[10px] text-gray-400 font-bold mt-2 mb-4 uppercase">
+                                    <div className="flex items-center gap-4 text-[10px] text-gray-400 font-bold mt-2 mb-4">
                                         <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-purple-500" /> {inst.city}</span>
                                         <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> {inst.rating}</span>
                                         <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" /> {inst.students} students</span>
@@ -151,7 +151,7 @@ export function IELTSPortal() {
 
                             <div className="px-6 pb-6 pt-4 border-t border-yellow-50 flex items-center justify-between">
                                 <div className="flex flex-col">
-                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider leading-none">Course Fee</span>
+                                    <span className="text-[9px] text-gray-400 font-bold tracking-wider leading-none">Course Fee</span>
                                     <span className="font-sora font-extrabold text-navy text-lg mt-0.5">₹{inst.fee}</span>
                                 </div>
                                 <button 

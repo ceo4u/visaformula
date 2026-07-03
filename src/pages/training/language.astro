@@ -1,4 +1,4 @@
-﻿---
+---
 // src/pages/training/language.astro
 import Layout from '../../layouts/Layout.astro';
 import { Languages, Star, MapPin, ArrowRight, Clock } from 'lucide-react';
@@ -6,48 +6,48 @@ import { Languages, Star, MapPin, ArrowRight, Clock } from 'lucide-react';
 const languages = [
     {
         name: "French", 
-        flag: "🇫🇷", 
+        flag: "????", 
         required: "Canada (Quebec & Express Entry), France, Belgium, Switzerland", 
         desc: "French language competency yields up to 50 additional points in Canada's Express Entry system (TEF/TCF exams).",
         courses: [
-            { institute: "Alliance Française", city: "Delhi", rating: 4.9, fee: "₹22,000", duration: "3 months" },
-            { institute: "French Academy India", city: "Mumbai", rating: 4.7, fee: "₹18,000", duration: "2.5 months" },
+            { institute: "Alliance Fran�aise", city: "Delhi", rating: 4.9, fee: "?22,000", duration: "3 months" },
+            { institute: "French Academy India", city: "Mumbai", rating: 4.7, fee: "?18,000", duration: "2.5 months" },
         ]
     },
     {
         name: "German", 
-        flag: "🇩🇪", 
+        flag: "????", 
         required: "Germany, Austria, Switzerland", 
         desc: "Essential for securing free-education admissions at public German universities and obtaining EU Blue Cards.",
         courses: [
-            { institute: "Goethe-Institut", city: "Bangalore", rating: 4.8, fee: "₹25,000", duration: "4 months" },
-            { institute: "German Language Hub", city: "Pune", rating: 4.6, fee: "₹15,000", duration: "3 months" },
+            { institute: "Goethe-Institut", city: "Bangalore", rating: 4.8, fee: "?25,000", duration: "4 months" },
+            { institute: "German Language Hub", city: "Pune", rating: 4.6, fee: "?15,000", duration: "3 months" },
         ]
     },
     {
         name: "Spanish", 
-        flag: "🇪🇸", 
+        flag: "????", 
         required: "Spain, Latin America, USA", 
         desc: "Great for digital nomad visas in Spain, tourism management, and business expansions across Spanish-speaking nations.",
         courses: [
-            { institute: "Instituto Cervantes", city: "Delhi", rating: 4.7, fee: "₹20,000", duration: "3 months" },
-            { institute: "Spanish School India", city: "Mumbai", rating: 4.5, fee: "₹14,000", duration: "2 months" },
+            { institute: "Instituto Cervantes", city: "Delhi", rating: 4.7, fee: "?20,000", duration: "3 months" },
+            { institute: "Spanish School India", city: "Mumbai", rating: 4.5, fee: "?14,000", duration: "2 months" },
         ]
     },
     {
         name: "Arabic", 
-        flag: "🇸🇦", 
+        flag: "????", 
         required: "UAE, Saudi Arabia, Qatar, Oman", 
         desc: "Highly valued for professional corporate careers, translation jobs, and immigration relocation in Middle Eastern hubs.",
         courses: [
-            { institute: "Arabic Language Center", city: "Hyderabad", rating: 4.6, fee: "₹12,000", duration: "3 months" },
+            { institute: "Arabic Language Center", city: "Hyderabad", rating: 4.6, fee: "?12,000", duration: "3 months" },
         ]
     },
 ];
 ---
 
 <Layout 
-    title="Language Training — French, German, Spanish & Arabic" 
+    title="Language Training � French, German, Spanish & Arabic" 
     description="Enroll in verified language prep courses required for immigration points, study permits, and overseas employment."
 >
     <div class="bg-[#fff5f5] min-h-screen pb-24">
@@ -68,8 +68,8 @@ const languages = [
 
             <!-- Content -->
             <div class="max-w-4xl mx-auto text-center relative z-10">
-                <span class="bg-white/10 text-purple-300 text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
-                    🌐 Global Communication
+                <span class="bg-white/10 text-purple-300 text-[10px] font-bold tracking-widest px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
+                    ?? Global Communication
                 </span>
                 <h1 class="font-sora text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight text-white">
                     Learn the Destination<br /><span class="bg-gradient-to-r from-[#c084fc] to-[#a78bfa] bg-clip-text text-transparent">Language Early</span>
@@ -102,11 +102,11 @@ const languages = [
                         <!-- Description column -->
                         <div class="bg-white border border-yellow-100 p-6 rounded-3xl flex flex-col justify-between shadow-sm">
                             <div>
-                                <span class="text-[9px] font-black text-purple-600 uppercase tracking-widest block mb-2">Immigration Value</span>
+                                <span class="text-[9px] font-black text-purple-600 tracking-widest block mb-2">Immigration Value</span>
                                 <h3 class="font-sora font-bold text-navy text-sm mb-3">Why learn {lang.name}?</h3>
                                 <p class="text-xs text-gray-500 leading-relaxed font-medium">{lang.desc}</p>
                             </div>
-                            <div class="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase mt-6 pt-4 border-t border-yellow-50">
+                            <div class="flex items-center gap-2 text-[10px] text-gray-400 font-bold mt-6 pt-4 border-t border-yellow-50">
                                 <Languages class="w-4 h-4 text-amber-400" /> Language competency
                             </div>
                         </div>
@@ -117,16 +117,16 @@ const languages = [
                                 <div class="bg-white rounded-3xl border border-yellow-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all group flex flex-col justify-between cursor-pointer" onClick={`window.location.href='/apply-visa?type=language&name=${encodeURIComponent(c.institute)}'`}>
                                     <div>
                                         <h3 class="font-sora font-extrabold text-navy text-sm group-hover:text-purple-600 transition-colors leading-snug">{c.institute}</h3>
-                                        <div class="flex items-center gap-3 text-[10px] text-gray-400 font-bold mt-2 uppercase">
+                                        <div class="flex items-center gap-3 text-[10px] text-gray-400 font-bold mt-2">
                                             <span class="flex items-center gap-0.5"><MapPin class="w-3.5 h-3.5 text-purple-500" /> {c.city}</span>
-                                            <span>·</span>
+                                            <span>�</span>
                                             <span class="flex items-center gap-0.5"><Star class="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> {c.rating}</span>
                                         </div>
                                     </div>
 
                                     <div class="mt-8 pt-4 border-t border-yellow-50 flex items-center justify-between">
                                         <div class="flex flex-col">
-                                            <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider leading-none">Course Fee</span>
+                                            <span class="text-[9px] text-gray-400 font-bold tracking-wider leading-none">Course Fee</span>
                                             <span class="font-sora font-extrabold text-navy text-base mt-1">{c.fee}</span>
                                         </div>
                                         <div class="flex items-center gap-3">

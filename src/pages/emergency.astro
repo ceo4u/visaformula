@@ -121,7 +121,7 @@ const steps = [
                             </p>
                             {step.action && (
                                 <a href="tel:18004827272" class="mt-4">
-                                    <button class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 text-[10px] font-black uppercase px-4 py-2 rounded-full transition-colors">
+                                    <button class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 text-[10px] font-black px-4 py-2 rounded-full transition-colors">
                                         {step.action}
                                     </button>
                                 </a>
@@ -140,7 +140,7 @@ const steps = [
         <!-- AVAILABLE EMERGENCY EXPERTS -->
         <section class="max-w-4xl mx-auto px-4 mt-16">
             <div class="mb-8">
-                <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Live Queue</span>
+                <span class="text-[10px] font-black text-slate-600 tracking-widest block mb-1">Live Queue</span>
                 <h2 class="font-sora font-bold text-navy text-2xl">Verified Legal Specialists On-Duty</h2>
                 <p class="text-xs text-gray-400 mt-1">Consult with verified immigration attorneys who are live on the platform right now.</p>
             </div>
@@ -154,7 +154,7 @@ const steps = [
                                     <img src={expert.image} alt={expert.name} class="w-full h-full object-cover" />
                                 </div>
                                 {expert.available && (
-                                    <span class="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse z-10">Live</span>
+                                    <span class="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse z-10">Live</span>
                                 )}
                             </div>
                             <div class="flex-grow min-w-0">
@@ -179,7 +179,7 @@ const steps = [
                                         <span>·</span>
                                         <span class="font-bold text-navy">{expert.price} / session</span>
                                     </div>
-                                    <button class={`w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.97] ${expert.available
+                                    <button class={`w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs tracking-wider transition-all active:scale-[0.97] ${expert.available
                                             ? "bg-[#0c1a2e] text-white hover:bg-slate-900 hover:shadow-md"
                                             : "bg-gray-100 text-gray-400 cursor-not-allowed"
                                         }`}>

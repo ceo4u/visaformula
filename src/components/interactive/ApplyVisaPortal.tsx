@@ -184,7 +184,7 @@ export function ApplyVisaPortal() {
       {/* Top Progress Header */}
       {step > 0 && selected && (
         <div className="bg-white border-b border-slate-200 py-4 px-6 flex flex-col items-center">
-          <div className="text-[10px] font-black uppercase tracking-widest text-slate-900 bg-slate-100 px-3 py-1 rounded-full mb-1">
+          <div className="text-[10px] font-black tracking-widest text-slate-900 bg-slate-100 px-3 py-1 rounded-full mb-1">
             {getProgressPercentage()}% COMPLETED
           </div>
           <div className="w-64 h-2 bg-gray-100 rounded-full overflow-hidden border border-slate-200 relative">
@@ -195,7 +195,7 @@ export function ApplyVisaPortal() {
           </div>
           
           {/* Dynamic promotion banner */}
-          <div className="mt-3 bg-emerald-50 text-emerald-800 text-[10px] font-extrabold uppercase px-4 py-1.5 rounded-full border border-emerald-100/60 flex items-center gap-1.5 shadow-sm tracking-wider">
+          <div className="mt-3 bg-emerald-50 text-emerald-800 text-[10px] font-extrabold px-4 py-1.5 rounded-full border border-emerald-100/60 flex items-center gap-1.5 shadow-sm tracking-wider">
             <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" /> Add 1 more traveler to unlock a flat 5% off!
           </div>
         </div>
@@ -292,20 +292,20 @@ export function ApplyVisaPortal() {
                         {c.flag}
                       </div>
                       {c.express && (
-                        <span className="bg-gradient-to-r from-slate-800 to-slate-900 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-slate-700 flex items-center gap-1 shadow-md animate-pulse">
+                        <span className="bg-gradient-to-r from-slate-800 to-slate-900 text-white text-[10px] font-black px-2.5 py-1 rounded-full border border-slate-700 flex items-center gap-1 shadow-md animate-pulse">
                           <Zap className="w-3 h-3 fill-white" /> Express
                         </span>
                       )}
                     </div>
 
                     <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col justify-end">
-                      <span className="text-emerald-400 text-[11px] font-black uppercase tracking-widest mb-1">{c.type}</span>
+                      <span className="text-emerald-400 text-[11px] font-black tracking-widest mb-1">{c.type}</span>
                       <h3 className="font-sora text-lg font-extrabold text-white leading-tight mb-1 group-hover:text-slate-200 transition-colors">{c.name}</h3>
                       <p className="text-gray-300 text-xs font-semibold mb-2">🕒 Validity: {c.days}</p>
                       <div className="h-px bg-white/10 my-2" />
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="text-[10px] text-gray-400 block font-bold uppercase tracking-wider">Total Fee</span>
+                          <span className="text-[10px] text-gray-400 block font-bold tracking-wider">Total Fee</span>
                           <span className="text-base font-black text-white">{c.fee}</span>
                         </div>
                         <span className="bg-white/10 group-hover:bg-black group-hover:text-white text-white p-2 rounded-xl transition-all duration-300 backdrop-blur-md border border-white/10">
@@ -367,14 +367,14 @@ export function ApplyVisaPortal() {
 
               {/* Active Traveler Form Card */}
               <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 space-y-4">
-                <h3 className="font-sora text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <h3 className="font-sora text-xs font-black text-slate-900 tracking-wider flex items-center gap-2">
                   <span className="w-2 h-2 bg-black rounded-full" />
                   Editing Details for Traveler #{activeTravelerIdx + 1}
                 </h3>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">First Name *</label>
+                    <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">First Name *</label>
                     <input 
                       value={travelers[activeTravelerIdx].firstName} 
                       onChange={e => updateTravelerField(activeTravelerIdx, "firstName", e.target.value)} 
@@ -383,7 +383,7 @@ export function ApplyVisaPortal() {
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Last Name *</label>
+                    <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Last Name *</label>
                     <input 
                       value={travelers[activeTravelerIdx].lastName} 
                       onChange={e => updateTravelerField(activeTravelerIdx, "lastName", e.target.value)} 
@@ -394,7 +394,7 @@ export function ApplyVisaPortal() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Passport Number *</label>
+                  <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Passport Number *</label>
                   <input 
                     value={travelers[activeTravelerIdx].passport} 
                     onChange={e => updateTravelerField(activeTravelerIdx, "passport", e.target.value)} 
@@ -405,7 +405,7 @@ export function ApplyVisaPortal() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Date of Birth *</label>
+                    <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Date of Birth *</label>
                     <input 
                       type="date" 
                       value={travelers[activeTravelerIdx].dob} 
@@ -414,7 +414,7 @@ export function ApplyVisaPortal() {
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Passport Expiry *</label>
+                    <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Passport Expiry *</label>
                     <input 
                       type="date" 
                       value={travelers[activeTravelerIdx].expiry} 
@@ -425,7 +425,7 @@ export function ApplyVisaPortal() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Email address *</label>
+                  <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Email address *</label>
                   <input 
                     type="email"
                     value={travelers[activeTravelerIdx].email} 
@@ -436,7 +436,7 @@ export function ApplyVisaPortal() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Mobile Number *</label>
+                  <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Mobile Number *</label>
                   <input 
                     type="tel"
                     value={travelers[activeTravelerIdx].phone} 
@@ -448,8 +448,8 @@ export function ApplyVisaPortal() {
               </div>
 
               <div className="flex gap-4 pt-4">
-                <button onClick={() => setStep(0)} className="px-6 py-4 border-2 border-slate-200 rounded-2xl text-xs font-black text-gray-600 hover:bg-slate-100 transition-all flex items-center gap-1.5 uppercase tracking-wider">← Back</button>
-                <button onClick={handleNextFromTravelers} className="flex-1 bg-black hover:bg-slate-900 text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider">Continue to Documents <ArrowRight className="w-4 h-4" /></button>
+                <button onClick={() => setStep(0)} className="px-6 py-4 border-2 border-slate-200 rounded-2xl text-xs font-black text-gray-600 hover:bg-slate-100 transition-all flex items-center gap-1.5 tracking-wider">← Back</button>
+                <button onClick={handleNextFromTravelers} className="flex-1 bg-black hover:bg-slate-900 text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs tracking-wider">Continue to Documents <ArrowRight className="w-4 h-4" /></button>
               </div>
             </div>
           )}
@@ -496,7 +496,7 @@ export function ApplyVisaPortal() {
                       <Camera className={`w-8 h-8 mx-auto mb-2 ${tr.photoUploaded ? "text-emerald-500" : "text-slate-800"}`} />
                       <h4 className="font-bold text-slate-900 text-xs mb-0.5">Passport Size Photo</h4>
                       <p className="text-[10px] text-gray-400 mb-2">White background, high quality JPG</p>
-                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black tracking-wider ${
                         tr.photoUploaded ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-800"
                       }`}>
                         {tr.photoUploaded ? "✅ Uploaded" : "↑ Upload"}
@@ -519,7 +519,7 @@ export function ApplyVisaPortal() {
                       <FileText className={`w-8 h-8 mx-auto mb-2 ${tr.passportUploaded ? "text-emerald-500" : "text-slate-800"}`} />
                       <h4 className="font-bold text-slate-900 text-xs mb-0.5">Passport Front Scan</h4>
                       <p className="text-[10px] text-gray-400 mb-2">Bio-data page, clear text PDF/JPG</p>
-                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black tracking-wider ${
                         tr.passportUploaded ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-800"
                       }`}>
                         {tr.passportUploaded ? "✅ Uploaded" : "↑ Upload"}
@@ -531,8 +531,8 @@ export function ApplyVisaPortal() {
               ))}
 
               <div className="flex gap-4">
-                <button onClick={() => setStep(1)} className="px-6 py-4 border-2 border-slate-200 rounded-2xl text-xs font-black text-gray-600 hover:bg-slate-100 transition-all flex items-center gap-1.5 uppercase tracking-wider">← Back</button>
-                <button onClick={() => setStep(3)} className="flex-1 bg-black hover:bg-slate-900 text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider">Proceed to Essentials <ArrowRight className="w-4 h-4" /></button>
+                <button onClick={() => setStep(1)} className="px-6 py-4 border-2 border-slate-200 rounded-2xl text-xs font-black text-gray-600 hover:bg-slate-100 transition-all flex items-center gap-1.5 tracking-wider">← Back</button>
+                <button onClick={() => setStep(3)} className="flex-1 bg-black hover:bg-slate-900 text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs tracking-wider">Proceed to Essentials <ArrowRight className="w-4 h-4" /></button>
               </div>
             </div>
           )}
@@ -563,7 +563,7 @@ export function ApplyVisaPortal() {
                     <div className="flex-1 min-w-0">
                       <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
                         Express Visa Processing
-                        <span className="text-[9px] bg-slate-900 text-white font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Popular</span>
+                        <span className="text-[9px] bg-slate-900 text-white font-bold px-2 py-0.5 rounded-full tracking-wider">Popular</span>
                       </div>
                       <p className="text-xs text-gray-500 mt-0.5">Embassy response in 6-12 hours. Guaranteed fast track.</p>
                     </div>
@@ -589,7 +589,7 @@ export function ApplyVisaPortal() {
                   <div className="flex-1 min-w-0">
                     <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
                       Premium Visa Insurance
-                      <span className="text-[9px] bg-emerald-500 text-white font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Highly Recommended</span>
+                      <span className="text-[9px] bg-emerald-500 text-white font-bold px-2 py-0.5 rounded-full tracking-wider">Highly Recommended</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-0.5">100% refund of all visa fees in case of rejection or visa delay.</p>
                   </div>
@@ -602,8 +602,8 @@ export function ApplyVisaPortal() {
               </div>
 
               <div className="flex gap-4 pt-4">
-                <button onClick={() => setStep(2)} className="px-6 py-4 border-2 border-slate-200 rounded-2xl text-xs font-black text-gray-600 hover:bg-slate-100 transition-all flex items-center gap-1.5 uppercase tracking-wider">← Back</button>
-                <button onClick={() => setStep(4)} className="flex-1 bg-black hover:bg-slate-900 text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider">Go to Checkout <ArrowRight className="w-4 h-4" /></button>
+                <button onClick={() => setStep(2)} className="px-6 py-4 border-2 border-slate-200 rounded-2xl text-xs font-black text-gray-600 hover:bg-slate-100 transition-all flex items-center gap-1.5 tracking-wider">← Back</button>
+                <button onClick={() => setStep(4)} className="flex-1 bg-black hover:bg-slate-900 text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs tracking-wider">Go to Checkout <ArrowRight className="w-4 h-4" /></button>
               </div>
             </div>
           )}
@@ -618,12 +618,12 @@ export function ApplyVisaPortal() {
 
               <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                  <span className="text-gray-500 text-xs font-bold uppercase tracking-wider">Destination</span>
+                  <span className="text-gray-500 text-xs font-bold tracking-wider">Destination</span>
                   <span className="font-bold text-slate-900 text-sm">{selected.flag} {selected.name}</span>
                 </div>
 
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                  <span className="text-gray-500 text-xs font-bold uppercase tracking-wider">Applicants ({travelers.length})</span>
+                  <span className="text-gray-500 text-xs font-bold tracking-wider">Applicants ({travelers.length})</span>
                   <div className="text-right">
                     {travelers.map((tr, idx) => (
                       <div key={tr.id} className="text-xs font-bold text-slate-900">
@@ -671,33 +671,33 @@ export function ApplyVisaPortal() {
                 {/* PCI Secure Form */}
                 <div className="bg-slate-50/60 rounded-2xl p-4 border border-slate-200 space-y-3">
                   <div>
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Cardholder Name</label>
+                    <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Cardholder Name</label>
                     <input placeholder="As written on card" className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black" />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Card Number</label>
+                    <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Card Number</label>
                     <input placeholder="4111 2222 3333 4444" className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black" />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Expiry</label>
+                      <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Expiry</label>
                       <input placeholder="MM / YY" className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black" />
                     </div>
                     <div>
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">CVV</label>
+                      <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">CVV</label>
                       <input placeholder="•••" className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black" />
                     </div>
                   </div>
                 </div>
 
                 <div className="flex gap-4 pt-3">
-                  <button onClick={() => setStep(3)} className="px-6 py-4 border-2 border-slate-200 rounded-2xl text-xs font-black text-gray-600 hover:bg-slate-100 transition-all flex items-center gap-1.5 uppercase tracking-wider">← Back</button>
-                  <button onClick={handlePayment} className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider animate-shimmer">
+                  <button onClick={() => setStep(3)} className="px-6 py-4 border-2 border-slate-200 rounded-2xl text-xs font-black text-gray-600 hover:bg-slate-100 transition-all flex items-center gap-1.5 tracking-wider">← Back</button>
+                  <button onClick={handlePayment} className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs tracking-wider animate-shimmer">
                     <CreditCard className="w-4 h-4" /> Pay & Apply · ₹{getTotal().toLocaleString()}
                   </button>
                 </div>
                 
-                <p className="text-center text-[10px] text-gray-550 mt-2 flex items-center justify-center gap-1.5 font-bold uppercase tracking-wider">
+                <p className="text-center text-[10px] text-gray-550 mt-2 flex items-center justify-center gap-1.5 font-bold tracking-wider">
                   <Shield className="w-3.5 h-3.5 text-slate-800" />
                   256-bit SSL Encrypted · PCI DSS Compliant · 100% Refundable Rejection Insurance
                 </p>

@@ -46,7 +46,7 @@ const initialUniversities: University[] = [
     featured: true,
     urgent: true,
     logo: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=200&h=200&fit=crop&q=90",
-    heroImg: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=400&fit=crop&q=90",
+    heroImg: "/images/univ_toronto_night.png",
     tags: ["Top 30 Global", "Co-op Placements", "Scholarships available"],
     desc: "Ranked #1 in Canada, U of T offers world-class postgraduate studies with direct eligibility for Canada's post-graduation work permit (PGWP).",
     rank: "#21 Global",
@@ -68,7 +68,7 @@ const initialUniversities: University[] = [
     featured: false,
     urgent: false,
     logo: "https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?w=200&h=200&fit=crop&q=90",
-    heroImg: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop&q=90",
+    heroImg: "/images/univ_melb_night.png",
     tags: ["Group of Eight", "Group Discounts", "Internships Included"],
     desc: "Australia's leading research university offering extensive career networks and automatic postgraduate visa pathways for international students.",
     rank: "#34 Global",
@@ -90,7 +90,7 @@ const initialUniversities: University[] = [
     featured: true,
     urgent: false,
     logo: "https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?w=200&h=200&fit=crop&q=90",
-    heroImg: "https://images.unsplash.com/photo-1548625361-155de6c7f54d?w=800&h=400&fit=crop&q=90",
+    heroImg: "/images/univ_ucl_night.png",
     tags: ["Russell Group", "No GRE required", "Post-Study Visa"],
     desc: "UCL is a premier global university offering excellent pathways for graduate visa sponsorship and professional employment in the UK.",
     rank: "#9 Global",
@@ -143,7 +143,7 @@ const initialUniversities: University[] = [
 ];
 
 const countryCards = [
-  { name: "Canada",       code: "ca", jobs: "150 universities", img: "https://images.unsplash.com/photo-1530025809667-1f4bcff8e60f?w=500&h=300&fit=crop&q=90" },
+  { name: "Canada",       code: "ca", jobs: "150 universities", img: "/images/dest_canada_cold.png" },
   { name: "Singapore",   code: "sg", jobs: "45 universities",  img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=300&fit=crop&q=90" },
   { name: "UK",           code: "gb", jobs: "120 universities", img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&h=300&fit=crop&q=90" },
   { name: "Australia",    code: "au", jobs: "85 universities",  img: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&h=300&fit=crop&q=90" },
@@ -174,7 +174,7 @@ export function UniversitiesPortal() {
   const toggleSave = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setSaved(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
-    showToast(saved.includes(id) ? "🤍 Removed from saved" : "💙 Saved to bookmarks!");
+    showToast(saved.includes(id) ? "Removed from saved" : "Saved to bookmarks!");
   };
 
   const applyFilters = () => {
@@ -188,22 +188,22 @@ export function UniversitiesPortal() {
     if (pgwpOnly) f = f.filter(u => u.pgwp);
     if (scholarshipOnly) f = f.filter(u => u.scholarships);
     setUniversities(f);
-    showToast(`✅ ${f.length} universities found`);
+    showToast(`${f.length} universities found`);
   };
 
   const clearFilters = () => {
     setSearchQuery(""); setSelectedCountry("All Countries");
     setSelectedCategory("All Categories"); setActiveChip("All Universities");
     setPgwpOnly(false); setScholarshipOnly(false);
-    setUniversities(initialUniversities); showToast("🔄 Filters cleared");
+    setUniversities(initialUniversities); showToast("Filters cleared");
   };
 
   const filterByChip = (chip: string) => {
     setActiveChip(chip);
     if (chip === "All Universities") { setUniversities(initialUniversities); return; }
     const map: Record<string, string> = {
-      "💻 IT & Tech": "IT & Tech", "💼 Business": "Business",
-      "📐 Engineering": "Engineering", "🎨 Arts": "Arts"
+      "IT & Tech": "IT & Tech", "Business": "Business",
+      "Engineering": "Engineering", "Arts": "Arts"
     };
     const streamName = map[chip];
     setUniversities(streamName ? initialUniversities.filter(u => u.category === streamName) : initialUniversities);
@@ -211,7 +211,7 @@ export function UniversitiesPortal() {
 
   const filterByCountry = (displayName: string) => {
     setUniversities(initialUniversities.filter(u => u.country === displayName));
-    showToast(`🌍 Universities in ${displayName}`);
+    showToast(`Universities in ${displayName}`);
   };
 
   return (
@@ -267,7 +267,7 @@ export function UniversitiesPortal() {
                 { label: "Intake season", value: "Fall / Winter", sub: "Enrollment timeline" },
               ].map(item => (
                 <div key={item.label} className="bg-indigo-50/20 border border-slate-100 rounded-2xl p-3.5 text-center">
-                  <div className="text-[10px] text-slate-400 font-sora font-extrabold uppercase tracking-wider mb-1">{item.label}</div>
+                  <div className="text-[10px] text-slate-400 font-sora font-medium tracking-normal mb-1">{item.label}</div>
                   <div className="font-sora font-extrabold text-sm text-[#0c1a2e]">{item.value}</div>
                   {item.sub && <div className="text-[10px] text-gray-400 font-sora font-semibold">{item.sub}</div>}
                 </div>
@@ -277,13 +277,13 @@ export function UniversitiesPortal() {
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-5">
               {activeUniv.tags.map(t => (
-                <span key={t} className="bg-indigo-50 text-indigo-700 border border-indigo-100 px-3 py-1 rounded-lg text-[10px] font-sora font-extrabold uppercase tracking-wider">{t}</span>
+                <span key={t} className="bg-indigo-50 text-indigo-700 border border-indigo-100 px-3 py-1 rounded-lg text-[10px] font-sora font-medium tracking-normal">{t}</span>
               ))}
             </div>
 
             {/* Description */}
             <div className="border-t border-slate-100 py-5">
-              <h3 className="text-xs font-sora font-extrabold text-navy uppercase tracking-wider mb-2">University Profile & Academic Intake</h3>
+              <h3 className="text-xs font-sora font-extrabold text-navy tracking-wider mb-2">University Profile & Academic Intake</h3>
               <p className="text-sm font-sora text-[#475569] leading-relaxed">
                 {activeUniv.desc} VisaFormula offers comprehensive counseling, documentation, and student visa filing services directly associated with international colleges.
               </p>
@@ -334,7 +334,7 @@ export function UniversitiesPortal() {
               <div className="bg-white border border-slate-200/50 rounded-3xl p-5 shadow-2xl max-w-4xl">
                 <div className="grid grid-cols-1 md:grid-cols-7 gap-3 items-center">
                   <div className="md:col-span-3">
-                    <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-1.5">University / Course</label>
+                    <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5">University / Course</label>
                     <div className="relative">
                       <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
                       <input
@@ -342,33 +342,33 @@ export function UniversitiesPortal() {
                         placeholder="Search e.g. Toronto, MBA, Computer Science..."
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-navy outline-none focus:border-black transition-all"
+                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all"
                       />
                     </div>
                   </div>
                   <div className="md:col-span-2">
-                    <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-1.5">Country</label>
+                    <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5">Country</label>
                     <div className="relative">
                       <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
                       <select
                         value={selectedCountry}
                         onChange={e => setSelectedCountry(e.target.value)}
-                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-navy outline-none focus:border-black transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all appearance-none cursor-pointer"
                       >
-                        {countriesList.map(c => <option key={c}>{c}</option>)}
+                        {countriesList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
                       </select>
                     </div>
                   </div>
                   <div className="md:col-span-2">
-                    <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-1.5">Category</label>
+                    <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5">Category</label>
                     <div className="relative">
                       <GraduationCap className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
                       <select
                         value={selectedCategory}
                         onChange={e => setSelectedCategory(e.target.value)}
-                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-navy outline-none focus:border-black transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all appearance-none cursor-pointer"
                       >
-                        {streamsList.map(c => <option key={c}>{c}</option>)}
+                        {streamsList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
                       </select>
                     </div>
                   </div>
@@ -392,11 +392,11 @@ export function UniversitiesPortal() {
 
               {/* Chips */}
               <div className="flex gap-2 flex-wrap mt-5">
-                {["All Universities", "💻 IT & Tech", "💼 Business", "📐 Engineering", "🎨 Arts"].map(chip => (
+                {["All Universities", "IT & Tech", "Business", "Engineering", "Arts"].map(chip => (
                   <button
                     key={chip}
                     onClick={() => filterByChip(chip)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold border shrink-0 transition-all outline-none ${
+                    className={`px-4 py-1.5 rounded-full text-xs font-medium border shrink-0 transition-all outline-none ${
                       activeChip === chip
                         ? "bg-black text-white border-black shadow-sm"
                         : "bg-white/15 border-white/25 text-white/80 hover:bg-white/25 backdrop-blur-sm"
@@ -424,7 +424,7 @@ export function UniversitiesPortal() {
                     <div key={s.label} className="flex items-center gap-2">
                       <Icon className="w-4 h-4 text-black" />
                       <span className="font-sora font-extrabold text-black text-base">{s.value}</span>
-                      <span className="text-[11px] font-bold text-[#475569] uppercase">{s.label}</span>
+                      <span className="text-[11px] font-bold text-[#475569]">{s.label}</span>
                     </div>
                   );
                 })}
@@ -436,7 +436,7 @@ export function UniversitiesPortal() {
           <div className="max-w-6xl mx-auto px-6 pt-12 pb-2 text-left">
             <div className="flex items-end justify-between mb-6">
               <div>
-                <span className="text-[11px] font-extrabold text-[#ef4444] uppercase tracking-wider block mb-1">Browse by Destination</span>
+                <span className="text-[11px] font-extrabold text-[#ef4444] tracking-wider block mb-1">Browse by Destination</span>
                 <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Study?</h2>
               </div>
               <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">View All →</button>
@@ -479,7 +479,7 @@ export function UniversitiesPortal() {
 
                 {/* Country checkboxes */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Country</span>
+                  <span className="text-xs font-light text-[#359FC2] tracking-normal block">Country</span>
                   {[
                     { flag: "🇨🇦", label: "Canada",          count: "150" },
                     { flag: "🇸🇬", label: "Singapore",        count: "45"   },
@@ -487,7 +487,7 @@ export function UniversitiesPortal() {
                     { flag: "🇦🇺", label: "Australia",       count: "85"   },
                     { flag: "🇩🇪", label: "Germany",         count: "60"   },
                   ].map(item => (
-                    <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-semibold group">
+                    <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-medium group">
                       <input type="checkbox" className="rounded border-slate-200 w-4 h-4 accent-black" />
                       <span className="flex-1 group-hover:text-navy transition-colors">{item.flag} {item.label}</span>
                       <span className="text-[10px] text-slate-400 font-bold">{item.count}</span>
@@ -499,7 +499,7 @@ export function UniversitiesPortal() {
 
                 {/* Stream Category checkboxes */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Field / Stream</span>
+                  <span className="text-xs font-light text-[#359FC2] tracking-normal block">Field / Stream</span>
                   {[
                     { icon: Code2,        label: "IT & Tech",    count: "78" },
                     { icon: Stethoscope,  label: "Healthcare",   count: "35" },
@@ -509,7 +509,7 @@ export function UniversitiesPortal() {
                   ].map(item => {
                     const CategoryIcon = item.icon;
                     return (
-                      <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-semibold group">
+                      <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-medium group">
                         <input type="checkbox" className="rounded border-slate-200 w-4 h-4 accent-black" />
                         <CategoryIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-black transition-colors" />
                         <span className="flex-1 group-hover:text-navy transition-colors">{item.label}</span>
@@ -523,18 +523,18 @@ export function UniversitiesPortal() {
 
                 {/* Perks toggles */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Student Visa Perks</span>
+                  <span className="text-xs font-light text-[#359FC2] tracking-normal block">Student Visa Perks</span>
                   <label className="flex items-center gap-2 cursor-pointer" onClick={() => setPgwpOnly(!pgwpOnly)}>
                     <div className={`w-9 h-5 rounded-full transition-all relative ${pgwpOnly ? "bg-black" : "bg-gray-200"}`}>
                       <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${pgwpOnly ? "left-4" : "left-0.5"}`} />
                     </div>
-                    <span className="text-xs text-[#475569] font-semibold">🎓 PGWP Eligible</span>
+                    <span className="text-xs text-[#475569] font-semibold">PGWP Eligible</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer" onClick={() => setScholarshipOnly(!scholarshipOnly)}>
                     <div className={`w-9 h-5 rounded-full transition-all relative ${scholarshipOnly ? "bg-black" : "bg-gray-200"}`}>
                       <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${scholarshipOnly ? "left-4" : "left-0.5"}`} />
                     </div>
-                    <span className="text-xs text-[#475569] font-semibold">💵 Scholarships Available</span>
+                    <span className="text-xs text-[#475569] font-semibold">Scholarships Available</span>
                   </label>
                 </div>
 
@@ -566,10 +566,6 @@ export function UniversitiesPortal() {
                   <div className="flex gap-4 items-start w-full">
                     <img src={univ.logo} alt={univ.name} className="w-16 h-16 rounded-2xl object-cover border border-slate-100 shrink-0 shadow-sm" />
                     <div className="flex-grow min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <span className="bg-indigo-500/10 text-indigo-700 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-indigo-500/20">{univ.rank}</span>
-                        <span className="text-[9px] text-[#ef4444] font-black uppercase tracking-wider">{univ.category}</span>
-                      </div>
                       <h3 className="font-sora font-extrabold text-lg text-[#0c1a2e] mb-1.5 leading-snug group-hover:text-black transition-colors">{univ.name}</h3>
                       <div className="flex flex-wrap items-center gap-3 text-xs text-[#475569] font-semibold">
                         <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#ef4444]" />{univ.location}</span>
@@ -579,8 +575,8 @@ export function UniversitiesPortal() {
                     </div>
                   </div>
                   <div className="flex sm:flex-col items-end justify-between sm:justify-start gap-4 w-full sm:w-auto shrink-0 border-t sm:border-t-0 border-slate-100 pt-3.5 sm:pt-0">
-                    <div className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">{univ.posted}</div>
-                    <button className="bg-black hover:bg-neutral-900 text-white font-bold text-[11px] uppercase tracking-wider px-4 py-2 rounded-xl flex items-center gap-1 transition-all outline-none shrink-0 shadow-sm">
+                    <div className="text-[10px] text-slate-400 font-medium tracking-normal">{univ.posted}</div>
+                    <button className="bg-black hover:bg-neutral-900 text-white font-bold text-[11px] tracking-wider px-4 py-2 rounded-xl flex items-center gap-1 transition-all outline-none shrink-0 shadow-sm">
                       Details <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>

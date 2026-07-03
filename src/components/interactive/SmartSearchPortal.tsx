@@ -6,7 +6,7 @@ const countries = ["India", "Pakistan", "Bangladesh", "Nepal", "Sri Lanka", "Nig
 const residingCountries = ["India", "USA", "Canada", "UK", "Australia", "UAE", "Germany"];
 const destinationCountries = ["USA", "Canada", "UK", "Australia", "Germany", "New Zealand", "Ireland", "Singapore"];
 const visaTypes = ["F-1 Student", "H-1B", "Study Permit", "Work Permit", "Tourist", "Green Card", "PR"];
-const purposes = ["Study", "Work", "Tourist", "Express Entry", "Visa Appeal", "PR", "Work Permit Auth"];
+const purposes = ["Study", "Work", "Tourist", "Visa Appeal", "PR"];
 const serviceTypes = ["New Application", "Appeal", "Extension", "Status Change", "Work Auth", "PR"];
 
 const allExperts = [
@@ -86,7 +86,7 @@ export function SmartSearchPortal() {
                 <div className="bg-white rounded-2xl shadow-lg border border-red-100 p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                         <div>
-                            <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Passport</label>
+                            <label className="text-[11px] font-bold text-gray-500 tracking-wider mb-1 block">Passport</label>
                             <div className="relative">
                                 <Globe className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                                 <select value={passport} onChange={(e) => setPassport(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-red-500 cursor-pointer">
@@ -97,7 +97,7 @@ export function SmartSearchPortal() {
                             </div>
                         </div>
                         <div>
-                            <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Residing In</label>
+                            <label className="text-[11px] font-bold text-gray-500 tracking-wider mb-1 block">Residing In</label>
                             <div className="relative">
                                 <MapPin className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                                 <select value={residing} onChange={(e) => { setResiding(e.target.value); if (e.target.value === "India") setCurrentVisa(""); }}
@@ -110,7 +110,7 @@ export function SmartSearchPortal() {
                         </div>
                         {showVisaField && (
                             <div className="animate-fade-up">
-                                <label className="text-[11px] font-bold text-red-500 uppercase tracking-wider mb-1 block">Current Visa</label>
+                                <label className="text-[11px] font-bold text-red-500 tracking-wider mb-1 block">Current Visa</label>
                                 <div className="relative">
                                     <Briefcase className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-red-500" />
                                     <select value={currentVisa} onChange={(e) => setCurrentVisa(e.target.value)}
@@ -123,7 +123,7 @@ export function SmartSearchPortal() {
                             </div>
                         )}
                         <div>
-                            <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Destination</label>
+                            <label className="text-[11px] font-bold text-gray-500 tracking-wider mb-1 block">Destination</label>
                             <div className="relative">
                                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                                 <select value={destination} onChange={(e) => setDestination(e.target.value)}
@@ -138,7 +138,7 @@ export function SmartSearchPortal() {
 
                     {/* Multi-city */}
                     <div className="mb-4">
-                        <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Your City (multiple)</label>
+                        <label className="text-[11px] font-bold text-gray-500 tracking-wider mb-1 block">Your City (multiple)</label>
                         <div className="flex flex-wrap gap-1.5 p-2 bg-red-50/50 border border-red-100 rounded-xl min-h-[44px] items-center">
                             {cities.map(c => (
                                 <span key={c} className="inline-flex items-center gap-1 bg-red-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full animate-fade-up">

@@ -1,30 +1,95 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Globe, MapPin, Briefcase, ChevronDown } from "lucide-react";
 
 const countries = ["India", "Pakistan", "Bangladesh", "Nepal", "Sri Lanka", "Nigeria", "Philippines", "Brazil", "UAE", "China", "Other"];
 const residingCountries = ["India", "USA", "Canada", "UK", "Australia", "UAE", "Germany", "Other"];
 const destinationCountries = ["USA", "Canada", "UK", "Australia", "Germany", "New Zealand", "Ireland", "Singapore"];
-const visaTypes = ["F-1 Student", "H-1B", "Study Permit", "Work Permit", "Tourist", "Green Card", "PR", "Other"];
-const purposes = ["Study", "Work", "Tourist", "Express Entry", "Visa Appeal", "PR", "Work Permit Auth"];
+const visaTypes = ["Student Visa", "Work Visa", "Visit / Tourist Visa", "PR / Residency Visa", "Business Visa", "Spouse / Dependent Visa", "Visa Appeal", "Transit Visa", "Other"];
+const purposes = ["Study", "Work", "Tourist", "Visa Appeal", "PR"];
+
+function CustomSelect({
+    label,
+    value,
+    onChange,
+    options,
+    placeholder,
+    icon: Icon,
+    onOpenCheck
+}: {
+    label: string;
+    value: string;
+    onChange: (val: string) => void;
+    options: string[];
+    placeholder: string;
+    icon: any;
+    onOpenCheck: (e: any) => boolean;
+}) {
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        const clickOutside = () => setIsOpen(false);
+        window.addEventListener("click", clickOutside);
+        return () => window.removeEventListener("click", clickOutside);
+    }, [isOpen]);
+
+    return (
+        <div className="relative" onClick={(e) => e.stopPropagation()}>
+            <label className="text-[11px] font-bold text-gray-500 tracking-wider mb-1.5 block">{label}</label>
+            <div className="relative">
+                <Icon className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+                <button
+                    type="button"
+                    onClick={(e) => {
+                        if (onOpenCheck(e)) {
+                            setIsOpen(!isOpen);
+                        }
+                    }}
+                    className="w-full pl-10 pr-10 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium text-left outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer flex items-center justify-between h-[48px]"
+                >
+                    <span className={value ? "text-navy font-semibold" : "text-gray-450"}>{value || placeholder}</span>
+                    <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                </button>
+                {isOpen && (
+                    <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1.5 py-1.5 z-50 max-h-56 overflow-y-auto font-sora">
+                        {options.map(o => (
+                            <button
+                                key={o}
+                                type="button"
+                                onClick={() => { onChange(o); setIsOpen(false); }}
+                                className="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-black hover:text-white transition-colors"
+                            >
+                                {o}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
 
 export function MagicSearch({ className = "" }: { className?: string }) {
     const [passport, setPassport] = useState("");
     const [residing, setResiding] = useState("");
-    const [currentVisa, setCurrentVisa] = useState("");
+    const [lookingForVisa, setLookingForVisa] = useState("");
     const [destination, setDestination] = useState("");
     const [selectedPurposes, setSelectedPurposes] = useState<string[]>([]);
-    const showVisaField = residing !== "" && residing !== "India";
+    const [validationError, setValidationError] = useState(false);
 
     const checkAuthAndPrevent = (e: React.MouseEvent | React.FocusEvent) => {
         if (typeof window !== "undefined") {
-            const user = localStorage.getItem("visaformula_user");
-            if (!user || user === "null") {
+            const seekerFirst = localStorage.getItem("seeker_firstName");
+            const expertBusiness = localStorage.getItem("expert_businessName");
+            const userStr = localStorage.getItem("visaformula_user");
+            const isLoggedIn = seekerFirst || expertBusiness || (userStr && userStr !== "null");
+
+            if (!isLoggedIn) {
                 e.preventDefault();
                 e.stopPropagation();
                 if (e.target && 'blur' in e.target) {
                     (e.target as any).blur();
                 }
-                alert("you must login for accessing the search option above");
                 window.location.href = "/login";
                 return false;
             }
@@ -37,106 +102,90 @@ export function MagicSearch({ className = "" }: { className?: string }) {
     };
 
     const handleSearch = () => {
+        if (!passport || !residing || !lookingForVisa || !destination) {
+            setValidationError(true);
+            return;
+        }
+        setValidationError(false);
         const params = new URLSearchParams();
+        
+        if (lookingForVisa) {
+            const visa = lookingForVisa.toLowerCase();
+            if (visa.includes("student")) {
+                params.set("category", "student");
+            } else if (visa.includes("work")) {
+                params.set("category", "work");
+            } else if (visa.includes("pr") || visa.includes("residency")) {
+                params.set("category", "pr");
+            }
+        }
+
+        if (destination) {
+            params.set("country", destination);
+        }
+
         if (passport) params.set("passport", passport);
         if (residing) params.set("residing", residing);
-        if (currentVisa) params.set("visa", currentVisa);
-        if (destination) params.set("dest", destination);
-        if (selectedPurposes.length) params.set("purpose", selectedPurposes.join(","));
-        window.location.href = `/smart-search?${params.toString()}`;
+        window.location.href = `/find-experts?${params.toString()}`;
     };
 
     return (
         <div className={`bg-white rounded-2xl shadow-card border border-red-100 p-6 ${className}`}>
             <h3 className="font-sora font-bold text-lg text-navy mb-5">Find the right expert for your visa journey</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 {/* Passport */}
-                <div className="relative">
-                    <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Passport / Citizenship</label>
-                    <div className="relative">
-                        <Globe className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <select 
-                            value={passport} 
-                            onChange={(e) => setPassport(e.target.value)} 
-                            onMouseDown={checkAuthAndPrevent}
-                            onFocus={checkAuthAndPrevent}
-                            className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer"
-                        >
-                            <option value="">Select country</option>
-                            {countries.map(c => <option key={c} value={c}>{c}</option>)}
-                        </select>
-                        <ChevronDown className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                    </div>
-                </div>
+                <CustomSelect
+                    label="Passport / Citizenship"
+                    value={passport}
+                    onChange={setPassport}
+                    options={countries}
+                    placeholder="Select country"
+                    icon={Globe}
+                    onOpenCheck={checkAuthAndPrevent}
+                />
 
                 {/* Residing */}
-                <div className="relative">
-                    <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Currently Residing In</label>
-                    <div className="relative">
-                        <MapPin className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <select 
-                            value={residing} 
-                            onChange={(e) => { setResiding(e.target.value); if (e.target.value === "India") setCurrentVisa(""); }}
-                            onMouseDown={checkAuthAndPrevent}
-                            onFocus={checkAuthAndPrevent}
-                            className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer"
-                        >
-                            <option value="">Select country</option>
-                            {residingCountries.map(c => <option key={c} value={c}>{c}</option>)}
-                        </select>
-                        <ChevronDown className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                    </div>
-                </div>
+                <CustomSelect
+                    label="Currently Residing In"
+                    value={residing}
+                    onChange={setResiding}
+                    options={residingCountries}
+                    placeholder="Select country"
+                    icon={MapPin}
+                    onOpenCheck={checkAuthAndPrevent}
+                />
 
-                {/* Current Visa (conditional) */}
-                {showVisaField && (
-                    <div className="relative animate-fade-up">
-                        <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Current Visa Type</label>
-                        <div className="relative">
-                            <Briefcase className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                            <select 
-                                value={currentVisa} 
-                                onChange={(e) => setCurrentVisa(e.target.value)}
-                                onMouseDown={checkAuthAndPrevent}
-                                onFocus={checkAuthAndPrevent}
-                                className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-200 rounded-xl text-sm font-medium appearance-none outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all cursor-pointer"
-                            >
-                                <option value="">Select visa type</option>
-                                <option value="Other">Other</option>
-                                {visaTypes.map(v => <option key={v} value={v}>{v}</option>)}
-                            </select>
-                            <ChevronDown className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                        </div>
-                    </div>
-                )}
+                {/* Looking For (Visa Types) */}
+                <CustomSelect
+                    label="Looking for"
+                    value={lookingForVisa}
+                    onChange={setLookingForVisa}
+                    options={visaTypes}
+                    placeholder="Select visa type"
+                    icon={Briefcase}
+                    onOpenCheck={checkAuthAndPrevent}
+                />
 
-                {/* Destination */}
-                <div className="relative">
-                    <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">I Want To Go To</label>
-                    <div className="relative">
-                        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <select 
-                            value={destination} 
-                            onChange={(e) => setDestination(e.target.value)}
-                            onMouseDown={checkAuthAndPrevent}
-                            onFocus={checkAuthAndPrevent}
-                            className="w-full pl-10 pr-4 py-3 bg-red-50/50 border border-red-100 rounded-xl text-sm font-medium appearance-none outline-none focus:border-[#ef4444] focus:ring-2 focus:ring-red-100 transition-all cursor-pointer"
-                        >
-                            <option value="">Select destination</option>
-                            {destinationCountries.map(c => <option key={c} value={c}>{c}</option>)}
-                        </select>
-                        <ChevronDown className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                    </div>
-                </div>
+                {/* Destination (Countries) */}
+                <CustomSelect
+                    label="Destination"
+                    value={destination}
+                    onChange={setDestination}
+                    options={destinationCountries}
+                    placeholder="Select destination"
+                    icon={Globe}
+                    onOpenCheck={checkAuthAndPrevent}
+                />
             </div>
 
             {/* Purpose Chips */}
             <div className="mb-5">
-                <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Purpose</label>
+                <label className="text-[11px] font-bold text-gray-500 tracking-wider mb-2 block">Purpose</label>
                 <div className="flex flex-wrap gap-2">
                     {purposes.map(p => (
-                        <button 
-                            key={p} 
+                        <button
+                            key={p}
                             onClick={(e) => { if (checkAuthAndPrevent(e)) togglePurpose(p); }}
                             className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${selectedPurposes.includes(p)
                                     ? "bg-red-500 text-white shadow-sm"
@@ -149,7 +198,13 @@ export function MagicSearch({ className = "" }: { className?: string }) {
                 </div>
             </div>
 
-            <button 
+            {validationError && (
+                <p className="text-red-500 text-[11px] font-bold text-center mb-3.5 animate-pulse font-sora">
+                    ⚠️ Please select all options (Passport, Residing, Looking for & Destination) before searching.
+                </p>
+            )}
+
+            <button
                 onClick={(e) => { if (checkAuthAndPrevent(e)) handleSearch(); }}
                 className="w-full bg-black text-white py-4 rounded-xl font-bold text-base hover:bg-neutral-900 hover:shadow-lg hover:shadow-neutral-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
             >
@@ -159,4 +214,3 @@ export function MagicSearch({ className = "" }: { className?: string }) {
         </div>
     );
 }
-

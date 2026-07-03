@@ -120,7 +120,7 @@ export function VFSAppointmentPortal() {
       <div className="max-w-6xl mx-auto px-6 mt-16 space-y-16">
         {/* Process Guide */}
         <div>
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-2">VFS Process</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">VFS Process</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">What happens at VFS Global?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
@@ -139,7 +139,7 @@ export function VFSAppointmentPortal() {
 
         {/* VFS Centre Selection */}
         <div>
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-2">Centre Selection</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Centre Selection</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-6">Select Your Nearest VFS Centre</h2>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -167,7 +167,7 @@ export function VFSAppointmentPortal() {
 
         {/* Booking Form and Slots */}
         <div id="vfs-booking-form" className="pt-8">
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-2">Slot Booking</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Slot Booking</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">Schedule Your Biometric Slot</h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -200,7 +200,7 @@ export function VFSAppointmentPortal() {
                     {/* Inputs */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Full Name</label>
+                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Full Name</label>
                         <input
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
@@ -210,7 +210,7 @@ export function VFSAppointmentPortal() {
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Passport Number</label>
+                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Passport Number</label>
                         <input
                           value={passportNo}
                           onChange={(e) => setPassportNo(e.target.value)}
@@ -223,7 +223,7 @@ export function VFSAppointmentPortal() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Email Address</label>
+                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Email Address</label>
                         <input
                           type="email"
                           value={email}
@@ -234,7 +234,7 @@ export function VFSAppointmentPortal() {
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Phone Number</label>
+                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Phone Number</label>
                         <input
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
@@ -247,7 +247,7 @@ export function VFSAppointmentPortal() {
 
                     {/* Date Picker */}
                     <div>
-                      <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Preferred Date</label>
+                      <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Preferred Date</label>
                       <div className="relative">
                         <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94B0C4] pointer-events-none" />
                         <input
@@ -262,7 +262,7 @@ export function VFSAppointmentPortal() {
 
                     {/* Slot Picker */}
                     <div>
-                      <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-2">Available Time Slots</label>
+                      <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-2">Available Time Slots</label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {slotsData.map((slot) => {
                           const isFull = slot.status === "full";
@@ -294,7 +294,7 @@ export function VFSAppointmentPortal() {
                     >
                       Book Appointment <ArrowRight className="w-4 h-4" />
                     </button>
-                    <div className="text-center text-[10px] text-gray-450 font-bold uppercase tracking-wider mt-2">
+                    <div className="text-center text-[10px] text-gray-450 font-bold tracking-wider mt-2">
                       🔒 Escrow protected · Instant Slot Alerts
                     </div>
                   </form>

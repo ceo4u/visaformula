@@ -25,6 +25,14 @@ export function FindExpertsPortal() {
     const [searchText, setSearchText] = useState("");
     const [showMobileFilters, setShowMobileFilters] = useState(false);
     const [selectedCountry, setSelectedCountry] = useState("All");
+    const [sortOpen, setSortOpen] = useState(false);
+
+    useEffect(() => {
+        if (!sortOpen) return;
+        const handleOutside = () => setSortOpen(false);
+        window.addEventListener("click", handleOutside);
+        return () => window.removeEventListener("click", handleOutside);
+    }, [sortOpen]);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -84,7 +92,7 @@ export function FindExpertsPortal() {
         <div className="space-y-6">
             {/* Category */}
             <div>
-                <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2.5">Category</h3>
+                <h3 className="text-xs font-black text-gray-400 tracking-widest mb-2.5">Category</h3>
                 <div className="flex flex-wrap gap-2">
                     {categoryFilters.map(c => (
                         <button key={c} onClick={() => setCategory(c)}
@@ -96,7 +104,7 @@ export function FindExpertsPortal() {
             </div>
             {/* City */}
             <div>
-                <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2.5">City</h3>
+                <h3 className="text-xs font-black text-gray-400 tracking-widest mb-2.5">City</h3>
                 <div className="flex flex-wrap gap-2">
                     {cityFilters.map(c => (
                         <button key={c} onClick={() => setCity(c)}
@@ -108,7 +116,7 @@ export function FindExpertsPortal() {
             </div>
             {/* Rating */}
             <div>
-                <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2.5">Rating</h3>
+                <h3 className="text-xs font-black text-gray-400 tracking-widest mb-2.5">Rating</h3>
                 <div className="flex flex-wrap gap-2">
                     {ratingFilters.map(r => (
                         <button key={r} onClick={() => setRating(r)}
@@ -120,7 +128,7 @@ export function FindExpertsPortal() {
             </div>
             {/* Availability */}
             <div>
-                <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2.5">Availability</h3>
+                <h3 className="text-xs font-black text-gray-400 tracking-widest mb-2.5">Availability</h3>
                 <div className="flex flex-wrap gap-2">
                     {availFilters.map(a => (
                         <button key={a} onClick={() => setAvail(a)}
@@ -131,7 +139,7 @@ export function FindExpertsPortal() {
                 </div>
             </div>
             <button onClick={() => { setCategory("All"); setCity("All Cities"); setRating("Any"); setAvail("Anytime"); setSelectedCountry("All"); }}
-                className="w-full text-xs font-black uppercase tracking-wider text-slate-900 hover:underline mt-2">Clear All Filters</button>
+                className="w-full text-xs font-black tracking-wider text-slate-900 hover:underline mt-2">Clear All Filters</button>
         </div>
     );
 
@@ -147,7 +155,7 @@ export function FindExpertsPortal() {
                 </aside>
 
                 {/* Mobile Filter Button */}
-                <button onClick={() => setShowMobileFilters(true)} className="lg:hidden flex items-center gap-2 bg-white border border-slate-200 rounded-2xl px-4 py-3.5 font-bold text-xs uppercase tracking-wider text-navy shadow-md">
+                <button onClick={() => setShowMobileFilters(true)} className="lg:hidden flex items-center gap-2 bg-white border border-slate-200 rounded-2xl px-4 py-3.5 font-bold text-xs tracking-wider text-navy shadow-md">
                     <Filter className="w-4 h-4 text-slate-900" /> Filters
                     {(category !== "All" || city !== "All Cities" || rating !== "Any" || avail !== "Anytime") && (
                         <span className="bg-slate-900 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-1">●</span>
@@ -164,7 +172,7 @@ export function FindExpertsPortal() {
                                 <button onClick={() => setShowMobileFilters(false)}><X className="w-5 h-5 text-gray-400" /></button>
                             </div>
                             <FilterSidebar />
-                            <button onClick={() => setShowMobileFilters(false)} className="w-full mt-6 bg-slate-900 text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider">Apply Filters</button>
+                            <button onClick={() => setShowMobileFilters(false)} className="w-full mt-6 bg-slate-900 text-white py-3.5 rounded-xl font-bold text-xs tracking-wider">Apply Filters</button>
                         </div>
                     </div>
                 )}
@@ -178,14 +186,47 @@ export function FindExpertsPortal() {
                             <input value={searchText} onChange={e => setSearchText(e.target.value)} placeholder="Search by name, tag, or specialty..." className="bg-transparent outline-none text-xs w-full font-medium" />
                         </div>
                         <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
-                            <div className="relative">
-                                <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="appearance-none bg-slate-50 border border-slate-100 rounded-xl py-2.5 pl-4 pr-10 text-xs font-bold text-navy outline-none cursor-pointer">
-                                    <option value="recommended">Recommended</option>
-                                    <option value="rating">Highest Rated</option>
-                                    <option value="price-low">Price: Low → High</option>
-                                    <option value="price-high">Price: High → Low</option>
-                                </select>
-                                <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                            <div className="relative" onClick={e => e.stopPropagation()}>
+                                <button
+                                    onClick={() => setSortOpen(!sortOpen)}
+                                    className="appearance-none bg-slate-50 border border-slate-100 rounded-xl py-2.5 pl-4 pr-10 text-xs font-bold text-navy outline-none cursor-pointer flex items-center justify-between min-w-[140px] text-left"
+                                >
+                                    <span>
+                                        {sortBy === "recommended" && "Recommended"}
+                                        {sortBy === "rating" && "Highest Rated"}
+                                        {sortBy === "price-low" && "Price: Low → High"}
+                                        {sortBy === "price-high" && "Price: High → Low"}
+                                    </span>
+                                    <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                </button>
+                                {sortOpen && (
+                                    <div className="absolute top-full right-0 bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 min-w-[150px] font-sora">
+                                        <button
+                                            onClick={() => { setSortBy("recommended"); setSortOpen(false); }}
+                                            className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                        >
+                                            Recommended
+                                        </button>
+                                        <button
+                                            onClick={() => { setSortBy("rating"); setSortOpen(false); }}
+                                            className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                        >
+                                            Highest Rated
+                                        </button>
+                                        <button
+                                            onClick={() => { setSortBy("price-low"); setSortOpen(false); }}
+                                            className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                        >
+                                            Price: Low → High
+                                        </button>
+                                        <button
+                                            onClick={() => { setSortBy("price-high"); setSortOpen(false); }}
+                                            className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                        >
+                                            Price: High → Low
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                             <div className="flex bg-slate-100/80 rounded-xl p-1 shrink-0">
                                 <button onClick={() => setViewMode("list")} className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-white shadow-md text-navy" : "text-gray-400"}`}>
@@ -199,7 +240,7 @@ export function FindExpertsPortal() {
                     </div>
 
                     <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-                        <p className="text-xs font-black uppercase tracking-wider text-gray-400">{sorted.length} expert{sorted.length !== 1 ? "s" : ""} found</p>
+                        <p className="text-xs font-black tracking-wider text-gray-400">{sorted.length} expert{sorted.length !== 1 ? "s" : ""} found</p>
                         {selectedCountry !== "All" && (
                             <div className="flex items-center gap-2">
                                 <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-sm">
@@ -218,7 +259,7 @@ export function FindExpertsPortal() {
                                         <div className="relative w-20 h-20 shrink-0 mx-auto md:mx-0">
                                             <img src={e.image} alt={e.name} className="w-full h-full object-cover rounded-2xl border border-slate-100" />
                                             {e.isAvailableToday && (
-                                                <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse">
+                                                <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse">
                                                     Open
                                                 </span>
                                             )}
@@ -233,7 +274,7 @@ export function FindExpertsPortal() {
                                                 </div>
                                                 <div className="text-center sm:text-right shrink-0">
                                                     <div className="font-sora font-extrabold text-navy text-lg">₹{e.price.toLocaleString()}</div>
-                                                    <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">per session</div>
+                                                    <div className="text-[9px] font-bold text-gray-400 tracking-widest">per session</div>
                                                 </div>
                                             </div>
                                             <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 text-xs font-semibold text-gray-500 mb-4">

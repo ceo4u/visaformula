@@ -79,7 +79,7 @@ export function TalkToUs() {
                 <button onClick={() => setOpen(false)} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><X className="w-4 h-4" /></button>
               </div>
               <div className="p-3 overflow-y-auto flex-1">
-                <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 px-1">How can we help?</div>
+                <div className="text-xs font-bold text-gray-400 tracking-wider mb-2 px-1">How can we help?</div>
                 {options.map((opt, i) => {
                   const IconComponent = opt.icon;
                   return (

@@ -249,39 +249,73 @@ export function MigrationToolsPortal() {
             </div>
 
             {/* Main Tabs Navigation */}
-            <div className="flex flex-wrap items-center justify-center gap-3 border-b border-gray-200 pb-6 mb-12 font-opensans">
-                {[
-                    { id: "eligibility", label: "1. Eligibility Checkers", icon: Globe, iconColor: "text-blue-500", bgClass: "bg-blue-50", desc: "Start Here" },
-                    { id: "points", label: "2. Points Calculators", icon: Calculator, iconColor: "text-violet-500", bgClass: "bg-violet-50", desc: "CRS & SkillSelect" },
-                    { id: "cost", label: "3. Cost & Fee Estimator", icon: DollarSign, iconColor: "text-emerald-500", bgClass: "bg-emerald-50", desc: "Government Fees" },
-                    { id: "docs", label: "4. Document Checklists", icon: FileText, iconColor: "text-amber-500", bgClass: "bg-amber-50", desc: "Requirements" },
-                    { id: "occupation", label: "5. Occupation Search", icon: Search, iconColor: "text-sky-500", bgClass: "bg-sky-50", desc: "NOC & ANZSCO" }
-                ].map(tab => {
-                    const Icon = tab.icon;
-                    return (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveTool(tab.id)}
-                            className={`px-5 py-3 rounded-2xl text-left transition-all duration-200 flex items-center gap-3 border ${
-                                activeTool === tab.id 
-                                    ? "bg-black text-white border-black shadow-md font-bold" 
-                                    : "bg-gray-50 border-gray-200 hover:bg-gray-100 text-slate-700"
-                            }`}
-                        >
-                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                                activeTool === tab.id ? "bg-white/10 text-white" : `${tab.bgClass} ${tab.iconColor}`
-                            }`}>
-                                <Icon className="w-4 h-4" />
-                            </div>
-                            <div>
-                                <div className="text-xs font-bold">{tab.label}</div>
-                                <div className={`text-[10px] uppercase font-bold tracking-wider mt-0.5 ${activeTool === tab.id ? "text-slate-350" : "text-slate-450"}`}>
-                                    {tab.desc}
+            <div className="flex flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6 mb-12 font-opensans">
+                {/* Row 1: 1, 2, 3 */}
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                    {[
+                        { id: "eligibility", label: "1. Eligibility Checkers", icon: Globe, iconColor: "text-blue-500", bgClass: "bg-blue-50", desc: "Start Here" },
+                        { id: "points", label: "2. Points Calculators", icon: Calculator, iconColor: "text-violet-500", bgClass: "bg-violet-50", desc: "CRS & SkillSelect" },
+                        { id: "cost", label: "3. Cost & Fee Estimator", icon: DollarSign, iconColor: "text-emerald-500", bgClass: "bg-emerald-50", desc: "Government Fees" }
+                    ].map(tab => {
+                        const Icon = tab.icon;
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTool(tab.id)}
+                                className={`px-5 py-3 rounded-2xl text-left transition-all duration-200 flex items-center gap-3 border ${
+                                    activeTool === tab.id 
+                                        ? "bg-black text-white border-black shadow-md font-bold" 
+                                        : "bg-gray-50 border-gray-200 hover:bg-gray-100 text-slate-700"
+                                }`}
+                            >
+                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                                    activeTool === tab.id ? "bg-white/10 text-white" : `${tab.bgClass} ${tab.iconColor}`
+                                }`}>
+                                    <Icon className="w-4 h-4" />
                                 </div>
-                            </div>
-                        </button>
-                    );
-                })}
+                                <div>
+                                    <div className="text-xs font-bold">{tab.label}</div>
+                                    <div className={`text-[10px] font-bold tracking-wider mt-0.5 ${activeTool === tab.id ? "text-slate-350" : "text-slate-400"}`}>
+                                        {tab.desc}
+                                    </div>
+                                </div>
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Row 2: 4, 5 */}
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                    {[
+                        { id: "docs", label: "4. Document Checklists", icon: FileText, iconColor: "text-amber-500", bgClass: "bg-amber-50", desc: "Requirements" },
+                        { id: "occupation", label: "5. Occupation Search", icon: Search, iconColor: "text-sky-500", bgClass: "bg-sky-50", desc: "NOC & ANZSCO" }
+                    ].map(tab => {
+                        const Icon = tab.icon;
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTool(tab.id)}
+                                className={`px-5 py-3 rounded-2xl text-left transition-all duration-200 flex items-center gap-3 border ${
+                                    activeTool === tab.id 
+                                        ? "bg-black text-white border-black shadow-md font-bold" 
+                                        : "bg-gray-50 border-gray-200 hover:bg-gray-100 text-slate-700"
+                                }`}
+                            >
+                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                                    activeTool === tab.id ? "bg-white/10 text-white" : `${tab.bgClass} ${tab.iconColor}`
+                                }`}>
+                                    <Icon className="w-4 h-4" />
+                                </div>
+                                <div>
+                                    <div className="text-xs font-bold">{tab.label}</div>
+                                    <div className={`text-[10px] font-bold tracking-wider mt-0.5 ${activeTool === tab.id ? "text-slate-350" : "text-slate-400"}`}>
+                                        {tab.desc}
+                                    </div>
+                                </div>
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
 
             {/* Tab content areas */}
@@ -298,7 +332,7 @@ export function MigrationToolsPortal() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Target Country</label>
+                                    <label className="text-xs font-bold text-gray-500 tracking-widest block mb-2">Target Country</label>
                                     <select value={eligCountry} onChange={e => setEligCountry(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                         <option value="Canada">Canada</option>
                                         <option value="Australia">Australia</option>
@@ -307,11 +341,11 @@ export function MigrationToolsPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Age</label>
+                                    <label className="text-xs font-bold text-gray-500 tracking-widest block mb-2">Age</label>
                                     <input type="number" value={eligAge} onChange={e => setEligAge(Number(e.target.value))} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none" />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Highest Education</label>
+                                    <label className="text-xs font-bold text-gray-500 tracking-widest block mb-2">Highest Education</label>
                                     <select value={eligEdu} onChange={e => setEligEdu(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                         <option value="PhD">PhD</option>
                                         <option value="Master's">Master's Degree</option>
@@ -321,7 +355,7 @@ export function MigrationToolsPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">English Level (IELTS / PTE Equivalent)</label>
+                                    <label className="text-xs font-bold text-gray-500 tracking-widest block mb-2">English Level (IELTS / PTE Equivalent)</label>
                                     <select value={eligLang} onChange={e => setEligLang(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                         <option value="CLB 10">Superior (CLB 10+ / IELTS 8.5)</option>
                                         <option value="CLB 9">Advanced (CLB 9 / IELTS 8.0)</option>
@@ -330,7 +364,7 @@ export function MigrationToolsPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Work Experience (Years)</label>
+                                    <label className="text-xs font-bold text-gray-500 tracking-widest block mb-2">Work Experience (Years)</label>
                                     <input type="number" value={eligExp} onChange={e => setEligExp(Number(e.target.value))} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none" />
                                 </div>
                                 <div className="flex items-center pt-8">
@@ -344,7 +378,7 @@ export function MigrationToolsPortal() {
 
                         <div className="lg:col-span-5 bg-gray-50 border-2 border-black rounded-3xl p-6 flex flex-col justify-between">
                             <div>
-                                <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Live Result</h4>
+                                <h4 className="text-sm font-bold tracking-wider text-slate-500 mb-3">Live Result</h4>
                                 <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold mb-5 ${
                                     eligRes.eligible ? "bg-emerald-50 text-emerald-700 border border-emerald-250" : "bg-red-50 text-red-700 border border-red-200"
                                 }`}>
@@ -394,7 +428,7 @@ export function MigrationToolsPortal() {
                                 <div className="lg:col-span-7 space-y-5">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Age Bracket</label>
+                                            <label className="text-xs font-bold text-slate-500 tracking-wider block mb-1">Age Bracket</label>
                                             <select value={crsAge} onChange={e => setCrsAge(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                                 <option value="Under 18">Under 18</option>
                                                 <option value="18">18 years</option>
@@ -407,7 +441,7 @@ export function MigrationToolsPortal() {
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Education Level</label>
+                                            <label className="text-xs font-bold text-slate-500 tracking-wider block mb-1">Education Level</label>
                                             <select value={crsEdu} onChange={e => setCrsEdu(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                                 <option value="PhD">PhD (Doctorate)</option>
                                                 <option value="Master's">Master's Degree</option>
@@ -418,7 +452,7 @@ export function MigrationToolsPortal() {
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Work Experience</label>
+                                            <label className="text-xs font-bold text-slate-500 tracking-wider block mb-1">Work Experience</label>
                                             <select value={crsExp} onChange={e => setCrsExp(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                                 <option value="None">None</option>
                                                 <option value="1 year">1 year</option>
@@ -436,7 +470,7 @@ export function MigrationToolsPortal() {
 
                                     {/* IELTS values */}
                                     <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-                                        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Language Scores (IELTS Equivalent)</h4>
+                                        <h4 className="text-xs font-bold tracking-wider text-slate-500 mb-3">Language Scores (IELTS Equivalent)</h4>
                                         <div className="grid grid-cols-4 gap-3">
                                             {["Listening", "Reading", "Writing", "Speaking"].map((item, index) => {
                                                 const val = [crsIeltsL, crsIeltsR, crsIeltsW, crsIeltsS][index];
@@ -454,7 +488,7 @@ export function MigrationToolsPortal() {
 
                                 <div className="lg:col-span-5 bg-gray-50 border-2 border-black rounded-3xl p-6 flex flex-col justify-between text-center">
                                     <div>
-                                        <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Estimated CRS Score</h4>
+                                        <h4 className="text-xs font-bold tracking-widest text-slate-400 mb-4">Estimated CRS Score</h4>
                                         <div className="w-32 h-32 rounded-full border-4 border-black flex flex-col items-center justify-center mx-auto mb-5 bg-white shadow-sm">
                                             <span className="text-3xl font-black">{crsScore}</span>
                                             <span className="text-[10px] text-gray-400 font-semibold mt-0.5">out of 1200</span>
@@ -476,7 +510,7 @@ export function MigrationToolsPortal() {
                                 <div className="lg:col-span-7 space-y-5">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Age Group</label>
+                                            <label className="text-xs font-bold text-slate-500 tracking-wider block mb-1">Age Group</label>
                                             <select value={ausAge} onChange={e => setAusAge(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                                 <option value="18-24">18-24 years (25 pts)</option>
                                                 <option value="25-32">25-32 years (30 pts)</option>
@@ -485,7 +519,7 @@ export function MigrationToolsPortal() {
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">English Competency</label>
+                                            <label className="text-xs font-bold text-slate-500 tracking-wider block mb-1">English Competency</label>
                                             <select value={ausLang} onChange={e => setAusLang(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                                 <option value="Superior (IELTS 8+)">Superior (IELTS 8+ / PTE 79+) (20 pts)</option>
                                                 <option value="Proficient (IELTS 7)">Proficient (IELTS 7 / PTE 65+) (10 pts)</option>
@@ -493,7 +527,7 @@ export function MigrationToolsPortal() {
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Skilled Employment (Overseas)</label>
+                                            <label className="text-xs font-bold text-slate-500 tracking-wider block mb-1">Skilled Employment (Overseas)</label>
                                             <select value={ausExp} onChange={e => setAusExp(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                                 <option value="None">Less than 3 years (0 pts)</option>
                                                 <option value="3-4 years">3-4 years (5 pts)</option>
@@ -502,7 +536,7 @@ export function MigrationToolsPortal() {
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Partner & Spousal status</label>
+                                            <label className="text-xs font-bold text-slate-500 tracking-wider block mb-1">Partner & Spousal status</label>
                                             <select value={ausPartner} onChange={e => setAusPartner(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                                 <option value="Single">Single / Australian citizen spouse (10 pts)</option>
                                                 <option value="Skilled Spouse">Spouse with skills & English (10 pts)</option>
@@ -515,7 +549,7 @@ export function MigrationToolsPortal() {
 
                                 <div className="lg:col-span-5 bg-gray-50 border-2 border-black rounded-3xl p-6 flex flex-col justify-between text-center">
                                     <div>
-                                        <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Estimated Points</h4>
+                                        <h4 className="text-xs font-bold tracking-widest text-slate-400 mb-4">Estimated Points</h4>
                                         <div className="w-32 h-32 rounded-full border-4 border-black flex flex-col items-center justify-center mx-auto mb-5 bg-white shadow-sm">
                                             <span className="text-3xl font-black">{ausPoints}</span>
                                             <span className="text-[10px] text-gray-400 font-semibold mt-0.5">points calculated</span>
@@ -562,7 +596,7 @@ export function MigrationToolsPortal() {
 
                                 <div className="lg:col-span-5 bg-gray-50 border-2 border-black rounded-3xl p-6 flex flex-col justify-between text-center">
                                     <div>
-                                        <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Total UK Points</h4>
+                                        <h4 className="text-xs font-bold tracking-widest text-slate-400 mb-4">Total UK Points</h4>
                                         <div className="w-32 h-32 rounded-full border-4 border-black flex flex-col items-center justify-center mx-auto mb-5 bg-white shadow-sm">
                                             <span className="text-3xl font-black">{ukPoints}</span>
                                             <span className="text-[10px] text-gray-400 font-semibold mt-0.5">out of 70 req</span>
@@ -591,7 +625,7 @@ export function MigrationToolsPortal() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Country Selection</label>
+                                    <label className="text-xs font-bold text-gray-500 tracking-widest block mb-2">Country Selection</label>
                                     <select value={costCountry} onChange={e => setCostCountry(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                         <option value="Canada">Canada</option>
                                         <option value="Australia">Australia</option>
@@ -599,7 +633,7 @@ export function MigrationToolsPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Visa Class</label>
+                                    <label className="text-xs font-bold text-gray-500 tracking-widest block mb-2">Visa Class</label>
                                     <select value={costVisaType} onChange={e => setCostVisaType(e.target.value)} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none">
                                         <option value="PR">Skilled PR (Permanent Resident)</option>
                                         <option value="Student">Student Visa</option>
@@ -607,7 +641,7 @@ export function MigrationToolsPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Accompanying Dependents (Spouse / Children)</label>
+                                    <label className="text-xs font-bold text-gray-500 tracking-widest block mb-2">Accompanying Dependents (Spouse / Children)</label>
                                     <input type="number" min="0" max="6" value={costDependents} onChange={e => setCostDependents(Number(e.target.value))} className="w-full h-11 border-2 border-black rounded-xl px-3 font-semibold bg-white outline-none" />
                                 </div>
                             </div>
@@ -631,7 +665,7 @@ export function MigrationToolsPortal() {
 
                         <div className="lg:col-span-5 bg-gray-50 border-2 border-black rounded-3xl p-6 flex flex-col justify-between text-center">
                             <div>
-                                <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Total Estimated Cost</h4>
+                                <h4 className="text-xs font-bold tracking-widest text-slate-400 mb-4">Total Estimated Cost</h4>
                                 <div className="w-32 h-32 rounded-full border-4 border-black flex flex-col items-center justify-center mx-auto mb-5 bg-white shadow-sm">
                                     <span className="text-3xl font-black">${feeRes.total}</span>
                                     <span className="text-[10px] text-gray-400 font-semibold mt-0.5">USD equivalent</span>
@@ -689,7 +723,7 @@ export function MigrationToolsPortal() {
 
                         <div className="lg:col-span-5 bg-gray-50 border-2 border-black rounded-3xl p-6 flex flex-col justify-between">
                             <div>
-                                <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">Verification Check</h4>
+                                <h4 className="text-sm font-bold tracking-wider text-slate-500 mb-4">Verification Check</h4>
                                 <div className="space-y-4">
                                     <div className="flex items-start gap-3">
                                         <ShieldCheck className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
@@ -739,7 +773,7 @@ export function MigrationToolsPortal() {
                         <div className="overflow-x-auto pt-3">
                             <table className="w-full text-left border-collapse">
                                 <thead>
-                                    <tr className="border-b-2 border-black text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
+                                    <tr className="border-b-2 border-black text-[11px] font-extrabold text-slate-400 tracking-wider">
                                         <th className="py-3 px-2">Job Title</th>
                                         <th className="py-3 px-2">NOC (Canada)</th>
                                         <th className="py-3 px-2">ANZSCO (Australia)</th>

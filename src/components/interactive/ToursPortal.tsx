@@ -128,9 +128,10 @@ const holidayTours = [
 
 // 2. Sport Tours
 const sportTours = [
+    { id: "s5", name: "Greece Cricket Tours", sport: "cricket", country: "greece", month: "Upcoming Autumn Batch", price: 125000, originalPrice: 160000, rating: 4.9, reviews: 45, days: 7, nights: 6, image: "/cricket_stadium.png", includes: ["Match tickets", "Schengen Visa", "Athens & Corfu", "Itinerary"], tags: ["Sports Tourism", "Athens & Corfu", "Managed by Rising At Sports"], description: "Managed exclusively by Rising At Sports. Athens & Corfu | Upcoming Autumn Batch. Vibe: Sports tourism, professional, exciting.", partnerLogo: "/images/rising_sports_logo.jpg" },
     { id: "s1", name: "FIFA World Cup 2026 — USA Package", sport: "football", country: "usa", month: "June 2025", price: 185000, originalPrice: 220000, rating: 4.9, reviews: 142, days: 11, nights: 10, image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800&h=500&fit=crop", includes: ["Match tickets", "Hotel", "Visa included", "Transfers"], tags: ["Match tickets", "Hotel", "Visa included"], description: "Watch FIFA World Cup live! Includes match tickets, luxurious hotel stay, and complete USA tourist visa processing." },
     { id: "s2", name: "F1 Abu Dhabi Grand Prix Package", sport: "f1", country: "uae", month: "Dec 2025", price: 95000, originalPrice: 120000, rating: 4.8, reviews: 87, days: 5, nights: 4, image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&h=500&fit=crop", includes: ["Race tickets", "Paddock access", "5-star hotel"], tags: ["Race tickets", "Paddock access", "5-star hotel"], description: "Experience the thrilling F1 season finale in Abu Dhabi. Complete VIP paddock access and luxury stay with UAE visa." },
-    { id: "s3", name: "ICC Champions Trophy — South Africa", sport: "cricket", country: "australia", month: "July 2025", price: 72000, originalPrice: 90000, rating: 4.9, reviews: 204, days: 8, nights: 7, image: "/cricket_stadium.png", includes: ["3 match tickets", "Visa", "Transfers"], tags: ["3 match tickets", "Visa", "Transfers"], description: "Cheer for India live in South Africa. Includes prime tickets for high-profile matches, sightseeing, and tourist visa." },
+    { id: "s3", name: "ICC Champions Trophy — South Africa", sport: "cricket", country: "australia", month: "July 2025", price: 72000, originalPrice: 90000, rating: 4.9, reviews: 204, days: 8, nights: 7, image: "/luxury_stadium.png", includes: ["3 match tickets", "Visa", "Transfers"], tags: ["3 match tickets", "Visa", "Transfers"], description: "Cheer for India live in South Africa. Includes prime tickets for high-profile matches, sightseeing, and tourist visa." },
     { id: "s4", name: "Paris 2026 Olympics Package", sport: "olympics", country: "uk", month: "July 2025", price: 210000, originalPrice: 250000, rating: 4.9, reviews: 56, days: 9, nights: 8, image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=500&fit=crop", includes: ["Event tickets", "Visa included", "Luxury hotel"], tags: ["Event tickets", "Visa included", "Luxury hotel"], description: "Spectate the greatest sports event on earth in Paris. Includes opening ceremony access and fast-track Schengen visa." }
 ];
 
@@ -268,7 +269,7 @@ export function ToursPortal() {
                         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
-                        <span className="bg-slate-100/10 text-slate-350 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-white/20 mb-4 inline-block">✈️ Holiday Packages</span>
+                        <span className="bg-slate-100/10 text-slate-350 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full border border-white/20 mb-4 inline-block">✈️ Holiday Packages</span>
                         <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
                             Dream Holidays. <span className="text-slate-300">Visas Sorted.</span>
                         </h1>
@@ -280,7 +281,7 @@ export function ToursPortal() {
                         <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-xl p-4 max-w-2xl mx-auto text-left">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Destination</label>
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Destination</label>
                                     <select value={holidayDest} onChange={e => setHolidayDest(e.target.value)} className="w-full bg-slate-50 border border-slate-250 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option value="All">All Destinations</option>
                                         <option value="Bali">Bali, Indonesia</option>
@@ -292,7 +293,7 @@ export function ToursPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Vacation Type</label>
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Vacation Type</label>
                                     <select value={holidayTag} onChange={e => setHolidayTag(e.target.value)} className="w-full bg-slate-50 border border-slate-250 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option value="All">All Types</option>
                                         <option value="Beach">Beach Getaway</option>
@@ -311,26 +312,26 @@ export function ToursPortal() {
             )}
 
             {activeTab === "sports" && (
-                <section className="relative py-24 px-4 overflow-hidden border-b border-emerald-100 flex flex-col items-center justify-center" >
+                <section className="relative py-24 px-4 overflow-hidden border-b border-slate-200 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
                         <img src="/luxury_stadium.png" alt="Luxury stadium" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
-                        <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-500/20 mb-4 inline-block">⚽ Sport Tours</span>
+                        <span className="bg-white/10 text-white text-[10px] font-bold tracking-wider px-3 py-1 rounded-full border border-white/30 mb-4 inline-block">⚽ Sport Tours</span>
                         <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
-                            Live the Game. <span className="text-emerald-400">Visas Sorted.</span>
+                            Live the Game. <span className="text-white">Visas Sorted.</span>
                         </h1>
                         <p className="text-white/70 text-sm md:text-base max-w-xl mx-auto mb-8 font-medium">
                             Watch FIFA, Formula 1, Cricket World Cup, Olympics and more — with match tickets, hotel, and visa fully sorted.
                         </p>
 
                         {/* Sports Search Bar */}
-                        <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-emerald-100/50 shadow-xl p-4 max-w-3xl mx-auto text-left">
+                        <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-xl p-4 max-w-3xl mx-auto text-left">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Sport Type</label>
-                                    <select value={sportType} onChange={e => setSportType(e.target.value)} className="w-full bg-emerald-50/20 border border-emerald-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Sport Type</label>
+                                    <select value={sportType} onChange={e => setSportType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>All Sports</option>
                                         <option>⚽ Football / FIFA</option>
                                         <option>🏎️ Formula 1</option>
@@ -339,8 +340,8 @@ export function ToursPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Country</label>
-                                    <select value={sportCountry} onChange={e => setSportCountry(e.target.value)} className="w-full bg-emerald-50/20 border border-emerald-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Country</label>
+                                    <select value={sportCountry} onChange={e => setSportCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>Anywhere</option>
                                         <option>🇬🇧 UK</option>
                                         <option>🇦🇪 UAE</option>
@@ -349,8 +350,8 @@ export function ToursPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Month</label>
-                                    <select value={sportMonth} onChange={e => setSportMonth(e.target.value)} className="w-full bg-emerald-50/20 border border-emerald-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Month</label>
+                                    <select value={sportMonth} onChange={e => setSportMonth(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>Any Month</option>
                                         <option>June 2025</option>
                                         <option>July 2025</option>
@@ -367,26 +368,26 @@ export function ToursPortal() {
             )}
 
             {activeTab === "cruises" && (
-                <section className="relative py-24 px-4 overflow-hidden border-b border-indigo-100 flex flex-col items-center justify-center" >
+                <section className="relative py-24 px-4 overflow-hidden border-b border-slate-100 flex flex-col items-center justify-center" >
                     <div className="absolute inset-0 z-0">
                         <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1800&h=900&fit=crop&q=90" alt="Luxury cruise" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
-                        <span className="bg-indigo-500/10 text-indigo-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-indigo-500/20 mb-4 inline-block">🚢 Cruises</span>
+                        <span className="bg-white/10 text-white text-[10px] font-bold tracking-wider px-3 py-1 rounded-full border border-white/20 mb-4 inline-block">🚢 Cruises</span>
                         <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
-                            Sail the World. <span className="text-indigo-400">Ports & Visas Sorted.</span>
+                            Sail the World. <span className="text-slate-300">Ports & Visas Sorted.</span>
                         </h1>
                         <p className="text-white/70 text-sm md:text-base max-w-xl mx-auto mb-8 font-medium">
                             Ocean cruises, river voyages, and luxury liners — multiple-country voyages with all port visas fully handled.
                         </p>
 
                         {/* Cruise Search Bar */}
-                        <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-indigo-100/50 shadow-xl p-4 max-w-3xl mx-auto text-left">
+                        <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/60 shadow-xl p-4 max-w-3xl mx-auto text-left">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Cruise Type</label>
-                                    <select value={cruiseType} onChange={e => setCruiseType(e.target.value)} className="w-full bg-indigo-50/20 border border-indigo-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Cruise Type</label>
+                                    <select value={cruiseType} onChange={e => setCruiseType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>All Types</option>
                                         <option>🌊 Ocean Cruise</option>
                                         <option>🏞️ River Cruise</option>
@@ -394,8 +395,8 @@ export function ToursPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Departure Port</label>
-                                    <select value={cruiseDepart} onChange={e => setCruiseDepart(e.target.value)} className="w-full bg-indigo-50/20 border border-indigo-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Departure Port</label>
+                                    <select value={cruiseDepart} onChange={e => setCruiseDepart(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>Any Port</option>
                                         <option>Mumbai, India</option>
                                         <option>Dubai, UAE</option>
@@ -403,8 +404,8 @@ export function ToursPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Duration</label>
-                                    <select value={cruiseDur} onChange={e => setCruiseDur(e.target.value)} className="w-full bg-indigo-50/20 border border-indigo-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Duration</label>
+                                    <select value={cruiseDur} onChange={e => setCruiseDur(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>Any Duration</option>
                                         <option>3–5 Nights</option>
                                         <option>6–9 Nights</option>
@@ -427,7 +428,7 @@ export function ToursPortal() {
                         <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
                     </div>
                     <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
-                        <span className="bg-orange-500/10 text-orange-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-orange-500/20 mb-4 inline-block">🎭 Entertainment Events</span>
+                        <span className="bg-orange-500/10 text-orange-400 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full border border-orange-500/20 mb-4 inline-block">🎭 Entertainment Events</span>
                         <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
                             See the Show. <span className="text-orange-400">Visas Sorted.</span>
                         </h1>
@@ -439,7 +440,7 @@ export function ToursPortal() {
                         <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-orange-100/50 shadow-xl p-4 max-w-4xl mx-auto text-left">
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-3">
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Event Type</label>
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Event Type</label>
                                     <select value={eventType} onChange={e => setEventType(e.target.value)} className="w-full bg-orange-50/20 border border-orange-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>All Events</option>
                                         <option>🎵 Concerts</option>
@@ -448,7 +449,7 @@ export function ToursPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Country</label>
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Country</label>
                                     <select value={eventCountry} onChange={e => setEventCountry(e.target.value)} className="w-full bg-orange-50/20 border border-orange-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>Anywhere</option>
                                         <option>🇬🇧 UK</option>
@@ -457,7 +458,7 @@ export function ToursPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Month</label>
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Month</label>
                                     <select value={eventMonth} onChange={e => setEventMonth(e.target.value)} className="w-full bg-orange-50/20 border border-orange-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>Any Month</option>
                                         <option>Jun 2025</option>
@@ -465,7 +466,7 @@ export function ToursPortal() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Budget</label>
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Budget</label>
                                     <select value={eventBudget} onChange={e => setEventBudget(e.target.value)} className="w-full bg-orange-50/20 border border-orange-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
                                         <option>Any Budget</option>
                                         <option>Under ₹30K</option>
@@ -504,13 +505,13 @@ export function ToursPortal() {
                             onClick={() => { setActiveTab("sports"); setSortBy("popular"); }}
                             className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
                                 activeTab === "sports" 
-                                    ? "bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-sm" 
+                                    ? "bg-black text-white border border-black shadow-sm" 
                                     : "text-gray-500 hover:text-navy hover:bg-gray-50"
                             }`}
                         >
                             <Trophy className="w-4 h-4 shrink-0" />
                             Sport Tours
-                            <span className="bg-emerald-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-extrabold animate-pulse">NEW</span>
+                            <span className="bg-black text-white text-[9px] px-1.5 py-0.5 rounded-full font-extrabold animate-pulse">NEW</span>
                         </button>
 
                         {/* Tab: Cruises */}
@@ -518,7 +519,7 @@ export function ToursPortal() {
                             onClick={() => { setActiveTab("cruises"); setSortBy("popular"); }}
                             className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
                                 activeTab === "cruises" 
-                                    ? "bg-indigo-50 text-indigo-600 border border-indigo-100 shadow-sm" 
+                                    ? "bg-black text-white border border-black shadow-sm" 
                                     : "text-gray-500 hover:text-navy hover:bg-gray-50"
                             }`}
                         >
@@ -555,7 +556,7 @@ export function ToursPortal() {
 
                 {activeTab === "sports" && (
                     <div className="mb-6">
-                        <div className="text-[10px] font-extrabold text-emerald-600 uppercase tracking-widest mb-2">Browse by Sport</div>
+                        <div className="text-xs font-semibold text-[#359FC2] tracking-normal mb-2">Browse by Sport</div>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                             {[
                                 { key: "all", label: "All Sports", emoji: "🏆" },
@@ -568,8 +569,8 @@ export function ToursPortal() {
                                     onClick={() => { setActiveSportFilter(item.key); triggerToast(`Showing ${item.label} packages`); }}
                                     className={`p-3 rounded-xl border text-center cursor-pointer transition-all duration-300 ${
                                         activeSportFilter === item.key 
-                                            ? "border-emerald-500 bg-emerald-50/40 shadow-sm" 
-                                            : "border-red-100 bg-white hover:border-emerald-300"
+                                            ? "border-black bg-black/5 shadow-sm" 
+                                            : "border-slate-200 bg-white hover:border-slate-400"
                                     }`}
                                 >
                                     <div className="text-2xl mb-1">{item.emoji}</div>
@@ -593,7 +594,7 @@ export function ToursPortal() {
                                 onClick={() => setActiveCruiseFilter(item.key)}
                                 className={`px-4 py-2 rounded-full text-xs font-bold border transition-all duration-300 ${
                                     activeCruiseFilter === item.key 
-                                        ? "bg-indigo-600 text-white border-transparent shadow-md" 
+                                        ? "bg-black text-white border-transparent shadow-md" 
                                         : "bg-white text-gray-500 border-slate-200 hover:bg-slate-50"
                                 }`}
                             >
@@ -630,11 +631,11 @@ export function ToursPortal() {
             {/* Results Grid / List */}
             <div className="max-w-6xl mx-auto px-4 pb-24">
                 <div className="flex justify-between items-center mb-6">
-                    <p className="text-xs font-extrabold text-gray-400 uppercase tracking-widest">
+                    <p className="text-xs font-extrabold text-gray-400 tracking-widest">
                         {sortedTours.length} package{sortedTours.length !== 1 ? "s" : ""} available
                     </p>
                     <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Sort By</span>
+                        <span className="text-[10px] font-bold text-gray-400 tracking-widest">Sort By</span>
                         <select 
                             value={sortBy} 
                             onChange={e => setSortBy(e.target.value)} 
@@ -671,7 +672,7 @@ export function ToursPortal() {
                                     {/* top-right: badge */}
                                     {tour.badge && (
                                         <div
-                                            className="absolute top-3 right-3 text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-lg"
+                                            className="absolute top-3 right-3 text-white text-[9px] font-black px-2.5 py-1 rounded-full tracking-widest shadow-lg"
                                             style={{ background: tour.badgeColor }}
                                         >
                                             {tour.badge}
@@ -719,7 +720,7 @@ export function ToursPortal() {
                                     {/* ── PRICE STRIP ── */}
                                     <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                                         <div>
-                                            <p className="text-[9px] font-extrabold uppercase tracking-widest text-slate-500 mb-0.5">STARTING FROM</p>
+                                            <p className="text-[9px] font-medium tracking-normal text-slate-500 mb-0.5">STARTING FROM</p>
                                             <div className="flex items-baseline gap-1.5">
                                                 {tour.originalPrice && (
                                                     <span className="text-[11px] text-slate-400 line-through">₹{tour.originalPrice.toLocaleString()}</span>
@@ -743,39 +744,78 @@ export function ToursPortal() {
 
                 {/* 2. Sport Tours Layout */}
                 {activeTab === "sports" && (
-                    <div className="flex flex-col gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {sortedTours.map(tour => (
-                            <div key={tour.id} onClick={() => handleBooking(tour.name)} className="group bg-white rounded-3xl border border-slate-200 p-4 shadow-sm hover:shadow-lg hover:border-slate-950 transition-all duration-300 flex flex-col sm:flex-row gap-4 items-start cursor-pointer">
-                                <img src={tour.image} className="w-full sm:w-28 sm:h-28 rounded-2xl object-cover shrink-0" alt="" />
-                                <div className="flex-1 min-w-0 w-full">
-                                    <div className="flex justify-between items-start gap-4">
+                            <div
+                                key={tour.id}
+                                onClick={() => handleBooking(tour.name)}
+                                className="group relative rounded-[28px] bg-black border border-slate-800 overflow-hidden shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer flex flex-col justify-end min-h-[440px] text-white font-sora"
+                            >
+                                {/* Background Image with Fade Overlay */}
+                                <div className="absolute inset-0 z-0">
+                                    <img
+                                        src={tour.image}
+                                        alt={tour.name}
+                                        className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/85 to-transparent" />
+                                </div>
+
+                                {/* Content Container */}
+                                <div className="relative z-10 p-6 flex flex-col justify-end h-full">
+                                    {/* Top Row: Badge & Logo */}
+                                    <div className="flex items-center justify-between gap-4 mb-4">
+                                        <span className="bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff]/30 text-[9px] font-black tracking-widest px-3 py-1 rounded-full">
+                                            {tour.sport?.toUpperCase() || "SPORTS"} TOURISM
+                                        </span>
+                                        {tour.partnerLogo ? (
+                                            <img
+                                                src={tour.partnerLogo}
+                                                alt="Partner Logo"
+                                                className="w-9 h-9 rounded-full border border-white/20 bg-white object-contain shadow-md"
+                                            />
+                                        ) : (
+                                            <div className="w-9 h-9 rounded-full border border-white/20 bg-slate-900 flex items-center justify-center text-[10px] font-black text-white">
+                                                SP
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Tour Title */}
+                                    <h3 className="text-base font-black tracking-tight mb-1 text-white leading-tight group-hover:text-[#00f0ff] transition-colors line-clamp-2">
+                                        {tour.name}
+                                    </h3>
+
+                                    {/* Partner/Description Subtitle */}
+                                    <p className="text-slate-300 text-[10px] font-semibold mb-4 truncate">
+                                        {tour.description ? tour.description.split('.')[0] : `Managed by Sports Tours`}
+                                    </p>
+
+                                    {/* Micro details glass tags */}
+                                    <div className="flex flex-wrap gap-1.5 mb-6">
+                                        <span className="bg-white/10 backdrop-blur-sm text-[9px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 text-white/90">
+                                            🏛️ {tour.country?.toUpperCase()}
+                                        </span>
+                                        <span className="bg-white/10 backdrop-blur-sm text-[9px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 text-white/90">
+                                            📅 {tour.month}
+                                        </span>
+                                        <span className="bg-white/10 backdrop-blur-sm text-[9px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 text-white/90">
+                                            ⭐ {tour.rating} ({tour.reviews})
+                                        </span>
+                                    </div>
+
+                                    {/* Bottom strip: Price & CTA */}
+                                    <div className="flex items-center justify-between pt-4 border-t border-white/10">
                                         <div>
-                                            <h3 className="font-sora font-bold text-slate-950 text-sm group-hover:text-black transition-colors">{tour.name}</h3>
-                                            <div className="text-[11px] text-gray-400 mt-1 leading-relaxed">
-                                                {tour.country?.toUpperCase()} · {tour.month} · {tour.nights} nights stay · Visa included
+                                            <p className="text-[8px] font-medium tracking-normal text-slate-400 mb-0.5">STARTING FROM</p>
+                                            <div className="flex items-baseline gap-1">
+                                                <span className="font-sora font-black text-white text-lg">₹{tour.price.toLocaleString()}</span>
+                                                <span className="text-[9px] text-slate-400 font-semibold">/ person</span>
                                             </div>
                                         </div>
-                                        <div className="text-right shrink-0">
-                                            <div className="font-sora font-black text-slate-950 text-base">₹{tour.price.toLocaleString()}</div>
-                                            <div className="text-[9px] text-gray-400">all included</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap gap-1.5 mt-3">
-                                        {tour.includes?.map((inc: any) => (
-                                            <span key={inc} className="bg-slate-50 text-slate-700 text-[9.5px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
-                                                {inc}
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <div className="flex justify-between items-center mt-4 pt-3 border-t border-slate-100">
-                                        <div className="flex items-center gap-3 text-[11px] text-slate-500">
-                                            <span className="flex items-center gap-0.5"><Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" /> {tour.rating}</span>
-                                            <span>·</span>
-                                            <span>{tour.reviews} reviews</span>
-                                        </div>
-                                        <button 
+                                        <button
                                             onClick={(e) => { e.stopPropagation(); handleBooking(tour.name); }}
-                                            className="bg-black hover:bg-slate-900 text-white px-5 py-1.5 rounded-xl text-xs font-bold hover:shadow-md transition-all active:scale-[0.97]"
+                                            className="bg-white hover:bg-neutral-100 text-black text-[10px] font-black tracking-wider px-5 py-2.5 rounded-xl shadow-xl transition-all hover:scale-[1.03] active:scale-[0.97]"
                                         >
                                             Book Ticket →
                                         </button>
@@ -800,7 +840,7 @@ export function ToursPortal() {
                                         </div>
                                     </div>
                                     <div className="p-4">
-                                        <h3 className="font-sora font-bold text-navy text-sm mb-1 group-hover:text-indigo-600 transition-colors leading-snug">{tour.name}</h3>
+                                        <h3 className="font-sora font-bold text-navy text-sm mb-1 group-hover:text-black transition-colors leading-snug">{tour.name}</h3>
                                         <div className="text-[10px] text-gray-400 font-bold mb-3">{tour.countries}</div>
                                         <p className="text-[11.5px] text-gray-500 leading-relaxed mb-4">{tour.description}</p>
                                         <div className="flex items-center justify-between pt-3 border-t border-red-50">
@@ -821,7 +861,7 @@ export function ToursPortal() {
                         </div>
 
                         {/* Multi-Port Visa Banner */}
-                        <div className="bg-indigo-50/50 border border-indigo-100 rounded-3xl p-5 flex gap-4 items-start shadow-sm">
+                        <div className="bg-slate-50 border border-slate-150 rounded-3xl p-5 flex gap-4 items-start shadow-sm">
                             <div className="text-3xl shrink-0">🛂</div>
                             <div>
                                 <h4 className="font-sora font-bold text-navy text-xs sm:text-sm mb-1">Multi-Port Visa — We Handle It All</h4>
@@ -840,7 +880,7 @@ export function ToursPortal() {
                             <div key={tour.id} onClick={() => handleBooking(tour.name)} className="group bg-white rounded-3xl border border-slate-250 overflow-hidden shadow-sm hover:shadow-md hover:border-slate-950 transition-all duration-300 flex flex-row gap-0 cursor-pointer">
                                 <div className="w-16 sm:w-20 bg-gradient-to-br from-slate-700 to-slate-900 flex flex-col items-center justify-center text-white shrink-0 p-2">
                                     <div className="font-sora font-extrabold text-2xl sm:text-3xl leading-none">{tour.date}</div>
-                                    <div className="text-[9px] font-bold text-white/80 uppercase tracking-widest mt-0.5">{tour.monthName}</div>
+                                    <div className="text-[9px] font-bold text-white/80 tracking-widest mt-0.5">{tour.monthName}</div>
                                 </div>
                                 <div className="flex-1 p-4 min-w-0">
                                     <div className="flex flex-col sm:flex-row justify-between items-start gap-4">

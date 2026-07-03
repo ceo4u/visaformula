@@ -171,7 +171,7 @@ export function VisaDocumentationPortal() {
       <div className="max-w-6xl mx-auto px-6 mt-16 space-y-16">
         {/* Features Grid */}
         <div>
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-2">Our Service Features</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Our Service Features</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">What is included in Documentation?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
@@ -193,7 +193,7 @@ export function VisaDocumentationPortal() {
 
         {/* Interactive Document Checklist */}
         <div>
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-2">Interactive Tool</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Interactive Tool</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-2">What Documents Do You Need?</h2>
           <p className="text-sm text-gray-500 mb-6">Select your destination and visa type to preview the required documentation. Click items to toggle status.</p>
 
@@ -268,7 +268,7 @@ export function VisaDocumentationPortal() {
 
         {/* Order Section */}
         <div id="doc-order" className="pt-8">
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-2">Order Service</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Order Service</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">Start Your Documentation Service</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -292,7 +292,7 @@ export function VisaDocumentationPortal() {
                   <form onSubmit={handleOrder} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Full Name</label>
+                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Full Name</label>
                         <input
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
@@ -302,7 +302,7 @@ export function VisaDocumentationPortal() {
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Email</label>
+                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Email</label>
                         <input
                           type="email"
                           value={email}
@@ -316,7 +316,7 @@ export function VisaDocumentationPortal() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <div>
-                        <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">WhatsApp Number</label>
+                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">WhatsApp Number</label>
                         <input
                           value={whatsapp}
                           onChange={(e) => setWhatsapp(e.target.value)}
@@ -326,7 +326,7 @@ export function VisaDocumentationPortal() {
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Destination</label>
+                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Destination</label>
                         <select
                           value={dest}
                           onChange={(e) => setDest(e.target.value)}
@@ -341,7 +341,7 @@ export function VisaDocumentationPortal() {
                         </select>
                       </div>
                       <div>
-                        <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Visa Type</label>
+                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Visa Type</label>
                         <select
                           value={visaType}
                           onChange={(e) => setVisaType(e.target.value)}
@@ -356,7 +356,7 @@ export function VisaDocumentationPortal() {
                     </div>
 
                     <div>
-                      <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-2">Upload Files You Have (Optional)</label>
+                      <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-2">Upload Files You Have (Optional)</label>
                       <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer">
                         <Upload className="w-8 h-8 text-gray-300 mx-auto mb-2" />
                         <p className="text-xs font-semibold text-[#0c1a2e] mb-0.5">Drop files here or click to browse</p>
@@ -370,7 +370,7 @@ export function VisaDocumentationPortal() {
                     >
                       Place Order <ArrowRight className="w-4 h-4" />
                     </button>
-                    <div className="text-center text-[10px] text-gray-450 font-bold uppercase tracking-wider mt-2">
+                    <div className="text-center text-[10px] text-gray-450 font-bold tracking-wider mt-2">
                       🔒 Escrow protected · Expert assigned within 2 hours
                     </div>
                   </form>

@@ -8,6 +8,29 @@ import {
 
 const initialJobs = [
   {
+    id: "const-1",
+    title: "Construction Crew Recruitment",
+    company: "Maldives Agency Channel",
+    location: "Greece 🇬🇷",
+    country: "Greece",
+    countryCode: "gr",
+    category: "Engineering",
+    salary: "EUR €2,200–€2,800",
+    salaryNote: "per month",
+    posted: "Urgent",
+    type: "Contract (30 slots)",
+    sponsorship: true,
+    relocation: true,
+    featured: true,
+    urgent: true,
+    logo: "/images/construction_worker.jpg",
+    heroImg: "/images/job_construction_greece.png",
+    tags: ["Verified Contract", "Accommodations Provided", "Maldives Channel"],
+    desc: "Urgent hiring of 30 construction crew workers for multiple major sites in Athens & Corfu, Greece. Verified employment contracts with accommodation fully provided.",
+    icon: HardHat,
+    iconColor: "from-amber-500 to-orange-600",
+  },
+  {
     id: "1",
     title: "Senior Full Stack Engineer",
     company: "Tech Innovations Inc.",
@@ -24,7 +47,7 @@ const initialJobs = [
     featured: true,
     urgent: true,
     logo: "https://images.unsplash.com/photo-1549924231-f129b911e442?w=120&h=120&fit=crop",
-    heroImg: "https://images.unsplash.com/photo-1517935706615-2717063c2225?w=800&h=400&fit=crop&q=90",
+    heroImg: "/images/job_tech_engineer.png",
     tags: ["React", "Node.js", "AWS", "LMIA"],
     desc: "Looking for an experienced Full Stack Engineer. LMIA sponsorship available for the right candidate.",
     icon: Code2,
@@ -47,35 +70,13 @@ const initialJobs = [
     featured: false,
     urgent: false,
     logo: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=120&h=120&fit=crop",
-    heroImg: "https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=800&h=400&fit=crop&q=90",
+    heroImg: "/images/job_nurse_dubai.png",
     tags: ["ICU", "DHA License", "Tax-Free", "Relocation"],
     desc: "Hiring ICU nurses for luxury hospital in Dubai. UAE employment visa provided. Tax-free salary with premium accommodation.",
     icon: Stethoscope,
     iconColor: "from-rose-500 to-pink-600",
   },
-  {
-    id: "3",
-    title: "Civil Engineer — Infrastructure",
-    company: "BuildAus Group",
-    location: "Melbourne, Australia",
-    country: "Australia",
-    countryCode: "au",
-    category: "Engineering",
-    salary: "AUD $90K–$110K",
-    salaryNote: "per year",
-    posted: "1d ago",
-    type: "Full-Time",
-    sponsorship: true,
-    relocation: true,
-    featured: false,
-    urgent: false,
-    logo: "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=120&h=120&fit=crop",
-    heroImg: "https://images.unsplash.com/photo-1524820197278-540916411e20?w=800&h=400&fit=crop&q=90",
-    tags: ["AutoCAD", "482 Visa", "Relocation Bonus"],
-    desc: "Infrastructure projects across Melbourne. Employer-sponsored TSS visa + relocation assistance + signing bonus.",
-    icon: HardHat,
-    iconColor: "from-amber-500 to-orange-600",
-  },
+
   {
     id: "4",
     title: "Executive Chef — Fine Dining",
@@ -93,7 +94,7 @@ const initialJobs = [
     featured: true,
     urgent: false,
     logo: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=120&h=120&fit=crop",
-    heroImg: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=400&fit=crop&q=90",
+    heroImg: "/images/job_chef_london.png",
     tags: ["Fine Dining", "Skilled Worker Visa", "Tier 2"],
     desc: "Prestigious fine-dining establishment seeks experienced executive chef. Full UK Skilled Worker visa sponsorship.",
     icon: ChefHat,
@@ -116,7 +117,7 @@ const initialJobs = [
     featured: false,
     urgent: true,
     logo: "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=120&h=120&fit=crop",
-    heroImg: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&h=400&fit=crop&q=90",
+    heroImg: "/images/job_data_scientist_berlin.png",
     tags: ["Python", "ML/AI", "EU Blue Card", "Relocation"],
     desc: "Join our AI research division in Berlin. EU Blue Card sponsorship, flexible hours, and relocation package included.",
     icon: Code2,
@@ -139,7 +140,7 @@ const initialJobs = [
     featured: false,
     urgent: false,
     logo: "https://images.unsplash.com/photo-1562774053-701939374585?w=120&h=120&fit=crop",
-    heroImg: "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=800&h=400&fit=crop&q=90",
+    heroImg: "/images/job_university_lecturer_auckland.png",
     tags: ["MBA", "PhD", "Work Visa NZ", "Relocation"],
     desc: "Auckland University seeks Business faculty. Employer-sponsored work visa, family visa included, accommodation support.",
     icon: GraduationCap,
@@ -148,7 +149,7 @@ const initialJobs = [
 ];
 
 const countryCards = [
-  { name: "Canada",       code: "ca", jobs: "1,240 jobs", img: "https://images.unsplash.com/photo-1530025809667-1f4bcff8e60f?w=500&h=300&fit=crop&q=90" },
+  { name: "Canada",       code: "ca", jobs: "1,240 jobs", img: "/images/dest_canada_cold.png" },
   { name: "Dubai, UAE",   code: "ae", jobs: "980 jobs",   img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=300&fit=crop&q=90" },
   { name: "UK",           code: "gb", jobs: "720 jobs",   img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&h=300&fit=crop&q=90" },
   { name: "Australia",    code: "au", jobs: "640 jobs",   img: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&h=300&fit=crop&q=90" },
@@ -179,7 +180,7 @@ export function JobsPortal() {
   const toggleSave = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setSaved(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
-    showToast(saved.includes(id) ? "🤍 Removed from saved" : "💙 Saved to bookmarks!");
+    showToast(saved.includes(id) ? "Removed from saved" : "Saved to bookmarks!");
   };
 
   const applyFilters = () => {
@@ -193,23 +194,23 @@ export function JobsPortal() {
     if (sponsorOnly) f = f.filter(j => j.sponsorship);
     if (relocationOnly) f = f.filter(j => j.relocation);
     setJobs(f);
-    showToast(`✅ ${f.length} jobs found`);
+    showToast(`${f.length} jobs found`);
   };
 
   const clearFilters = () => {
     setSearchQuery(""); setSelectedCountry("All Countries");
     setSelectedCategory("All Categories"); setActiveChip("All Jobs");
     setSponsorOnly(false); setRelocationOnly(false);
-    setJobs(initialJobs); showToast("🔄 Filters cleared");
+    setJobs(initialJobs); showToast("Filters cleared");
   };
 
   const filterByChip = (chip: string) => {
     setActiveChip(chip);
     if (chip === "All Jobs") { setJobs(initialJobs); return; }
     const map: Record<string,string> = {
-      "💻 IT & Tech": "IT & Tech", "🏥 Healthcare": "Healthcare",
-      "🏗️ Engineering": "Engineering", "🍽️ Hospitality": "Hospitality",
-      "🎓 Education": "Education",
+      "IT & Tech": "IT & Tech", "Healthcare": "Healthcare",
+      "Engineering": "Engineering", "Hospitality": "Hospitality",
+      "Education": "Education",
     };
     const cat = map[chip];
     setJobs(cat ? initialJobs.filter(j => j.category === cat) : initialJobs.filter(j => j.posted.includes("h")));
@@ -219,7 +220,7 @@ export function JobsPortal() {
     const countryMap: Record<string,string> = { "Dubai, UAE": "UAE" };
     const mapped = countryMap[displayName] || displayName;
     setJobs(initialJobs.filter(j => j.country === mapped));
-    showToast(`🌍 Jobs in ${displayName}`);
+    showToast(`Jobs in ${displayName}`);
   };
 
   return (
@@ -275,7 +276,7 @@ export function JobsPortal() {
                 { label: "Relocation", value: activeJob.relocation ? "Included" : "Not offered", sub: "" },
               ].map(item => (
                 <div key={item.label} className="bg-red-50/30 border border-red-100 rounded-2xl p-3.5 text-center">
-                  <div className="text-[10px] text-[#94b0c4] font-extrabold uppercase tracking-wider mb-1">{item.label}</div>
+                  <div className="text-[10px] text-[#94b0c4] font-medium tracking-normal mb-1">{item.label}</div>
                   <div className="font-sora font-extrabold text-sm text-[#0c1a2e]">{item.value}</div>
                   {item.sub && <div className="text-[10px] text-gray-400 font-semibold">{item.sub}</div>}
                 </div>
@@ -285,15 +286,15 @@ export function JobsPortal() {
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-5">
               {activeJob.tags.map((t: string) => (
-                <span key={t} className="bg-red-50 text-red-600 border border-red-100 px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider">{t}</span>
+                <span key={t} className="bg-red-50 text-red-600 border border-red-100 px-3 py-1 rounded-lg text-[10px] font-medium tracking-normal">{t}</span>
               ))}
-              {activeJob.sponsorship && <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5" />Visa Sponsored</span>}
-              {activeJob.relocation && <span className="bg-violet-50 text-violet-700 border border-violet-200 px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1"><Plane className="w-3.5 h-3.5" />Relocation</span>}
+              {activeJob.sponsorship && <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-lg text-[10px] font-medium tracking-normal flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5" />Visa Sponsored</span>}
+              {activeJob.relocation && <span className="bg-violet-50 text-violet-700 border border-violet-200 px-3 py-1 rounded-lg text-[10px] font-medium tracking-normal flex items-center gap-1"><Plane className="w-3.5 h-3.5" />Relocation</span>}
             </div>
 
             {/* Description */}
             <div className="border-t border-red-100 py-5">
-              <h3 className="text-xs font-extrabold text-navy uppercase tracking-wider mb-2">Job Description</h3>
+              <h3 className="text-xs font-extrabold text-navy tracking-wider mb-2">Job Description</h3>
               <p className="text-sm text-[#475569] leading-relaxed">
                 {activeJob.desc} We are hiring premium international candidates for this role. Direct visa filing, relocation credits, and official employer sponsorships will be arranged by our expert immigration panel.
               </p>
@@ -360,7 +361,7 @@ export function JobsPortal() {
               <div className="bg-white rounded-2xl p-4 shadow-2xl max-w-4xl border border-red-100 text-left">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
                   <div className="md:col-span-5">
-                    <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94b0c4] block mb-1.5">Job Title / Skill / Company</label>
+                    <label className="text-[10px] font-medium tracking-normal text-[#94b0c4] block mb-1.5">Job Title / Skill / Company</label>
                     <div className="relative">
                       <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
                       <input
@@ -373,28 +374,28 @@ export function JobsPortal() {
                     </div>
                   </div>
                   <div className="md:col-span-3">
-                    <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94b0c4] block mb-1.5">Country</label>
+                    <label className="text-[10px] font-medium tracking-normal text-[#94b0c4] block mb-1.5">Country</label>
                     <div className="relative">
                       <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
                       <select
                         value={selectedCountry}
                         onChange={e => setSelectedCountry(e.target.value)}
-                        className="w-full bg-[#fff5f5] border border-red-100 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-navy outline-none focus:border-[#ef4444] transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#fff5f5] border border-red-100 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-[#ef4444] transition-all appearance-none cursor-pointer"
                       >
-                        {countriesList.map(c => <option key={c}>{c}</option>)}
+                        {countriesList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
                       </select>
                     </div>
                   </div>
                   <div className="md:col-span-3">
-                    <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94b0c4] block mb-1.5">Category</label>
+                    <label className="text-[10px] font-medium tracking-normal text-[#94b0c4] block mb-1.5">Category</label>
                     <div className="relative">
                       <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
                       <select
                         value={selectedCategory}
                         onChange={e => setSelectedCategory(e.target.value)}
-                        className="w-full bg-[#fff5f5] border border-red-100 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-navy outline-none focus:border-[#ef4444] transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#fff5f5] border border-red-100 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-[#ef4444] transition-all appearance-none cursor-pointer"
                       >
-                        {categoriesList.map(c => <option key={c}>{c}</option>)}
+                        {categoriesList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
                       </select>
                     </div>
                   </div>
@@ -426,7 +427,7 @@ export function JobsPortal() {
 
               {/* Chips */}
               <div className="flex gap-2 flex-wrap mt-5">
-                {["All Jobs","💻 IT & Tech","🏥 Healthcare","🏗️ Engineering","🍽️ Hospitality","🎓 Education","🆕 New Today"].map(chip => (
+                {["All Jobs","IT & Tech","Healthcare","Engineering","Hospitality","Education","New Today"].map(chip => (
                   <button
                     key={chip}
                     onClick={() => filterByChip(chip)}
@@ -464,7 +465,7 @@ export function JobsPortal() {
                     <div key={s.label} className="flex items-center gap-2">
                       <Icon className="w-4 h-4 text-black" />
                       <span className="font-sora font-extrabold text-black text-base">{s.value}</span>
-                      <span className="text-[11px] font-bold text-[#475569] uppercase">{s.label}</span>
+                      <span className="text-[11px] font-bold text-[#475569]">{s.label}</span>
                     </div>
                   );
                 })}
@@ -480,7 +481,7 @@ export function JobsPortal() {
           <div className="max-w-6xl mx-auto px-6 pt-12 pb-2 text-left">
             <div className="flex items-end justify-between mb-6">
               <div>
-                <span className="text-[11px] font-extrabold text-[#ef4444] uppercase tracking-wider block mb-1">Browse by Destination</span>
+                <span className="text-[11px] font-extrabold text-[#ef4444] tracking-wider block mb-1">Browse by Destination</span>
                 <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Work?</h2>
               </div>
               <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">View All →</button>
@@ -523,7 +524,7 @@ export function JobsPortal() {
 
                 {/* Country checkboxes */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-extrabold text-[#94b0c4] uppercase tracking-wider block">Country</span>
+                  <span className="text-xs font-light text-[#359FC2] tracking-normal block">Country</span>
                   {[
                     { flag: "🇨🇦", label: "Canada",          count: "1,240" },
                     { flag: "🇦🇪", label: "UAE / Dubai",     count: "980"   },
@@ -531,7 +532,7 @@ export function JobsPortal() {
                     { flag: "🇦🇺", label: "Australia",       count: "640"   },
                     { flag: "🇩🇪", label: "Germany",         count: "380"   },
                   ].map(item => (
-                    <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-semibold group">
+                    <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-medium group">
                       <input type="checkbox" className="rounded text-[#ef4444] border-red-200 w-4 h-4 accent-[#ef4444]" />
                       <span className="flex-1 group-hover:text-navy transition-colors">{item.flag} {item.label}</span>
                       <span className="text-[10px] text-[#94b0c4] font-bold">{item.count}</span>
@@ -543,7 +544,7 @@ export function JobsPortal() {
 
                 {/* Job Category checkboxes */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-extrabold text-[#94b0c4] uppercase tracking-wider block">Job Category</span>
+                  <span className="text-xs font-light text-[#359FC2] tracking-normal block">Job Category</span>
                   {[
                     { icon: Code2,        label: "IT & Tech",    count: "920" },
                     { icon: Stethoscope,  label: "Healthcare",   count: "680" },
@@ -553,7 +554,7 @@ export function JobsPortal() {
                   ].map(item => {
                     const CategoryIcon = item.icon;
                     return (
-                      <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-semibold group">
+                      <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-medium group">
                         <input type="checkbox" className="rounded text-[#ef4444] border-red-200 w-4 h-4 accent-[#ef4444]" />
                         <CategoryIcon className="w-3.5 h-3.5 text-[#94b0c4] group-hover:text-[#ef4444] transition-colors" />
                         <span className="flex-1 group-hover:text-navy transition-colors">{item.label}</span>
@@ -567,18 +568,18 @@ export function JobsPortal() {
 
                 {/* Perks toggles */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-extrabold text-[#94b0c4] uppercase tracking-wider block">Special Perks</span>
+                  <span className="text-xs font-light text-[#359FC2] tracking-normal block">Special Perks</span>
                   <label className="flex items-center gap-2 cursor-pointer" onClick={() => setSponsorOnly(!sponsorOnly)}>
                     <div className={`w-9 h-5 rounded-full transition-all relative ${sponsorOnly ? "bg-black" : "bg-gray-200"}`}>
                       <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${sponsorOnly ? "left-4" : "left-0.5"}`} />
                     </div>
-                    <span className="text-xs text-[#475569] font-semibold">✅ Visa Sponsored</span>
+                    <span className="text-xs text-[#475569] font-semibold">Visa Sponsored</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer" onClick={() => setRelocationOnly(!relocationOnly)}>
                     <div className={`w-9 h-5 rounded-full transition-all relative ${relocationOnly ? "bg-black" : "bg-gray-200"}`}>
                       <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${relocationOnly ? "left-4" : "left-0.5"}`} />
                     </div>
-                    <span className="text-xs text-[#475569] font-semibold">✈️ Relocation Package</span>
+                    <span className="text-xs text-[#475569] font-semibold">Relocation Package</span>
                   </label>
                 </div>
 
@@ -625,17 +626,15 @@ export function JobsPortal() {
                   <div
                     key={job.id}
                     onClick={() => { setActiveJob(job); window.scrollTo(0, 0); }}
-                    className={`group bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer ${
-                      job.featured ? "border-l-4 border-l-[#ef4444] border-red-100" : "border-red-100"
-                    }`}
+                    className={`group bg-white border border-slate-300 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:border-slate-500 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer ${job.featured ? "ring-1 ring-[#ef4444]/20" : ""}`}
                   >
-                    <div className="relative h-28 overflow-hidden">
+                    <div className="relative h-44 overflow-hidden">
                       <img src={job.heroImg} alt={job.location} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a2e]/60 via-[#0c1a2e]/10 to-transparent"></div>
 
                       <div className="absolute top-2.5 right-2.5 flex gap-1.5">
-                        {job.featured && <span className="bg-[#0c1a2e] text-white text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-md shadow">⭐ Featured</span>}
-                        {job.urgent && <span className="bg-red-50 text-red-700 border border-red-200 text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-md">🔴 Urgent</span>}
+                        {job.featured && <span className="bg-[#0c1a2e] text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md shadow">⭐ Featured</span>}
+                        {job.urgent && <span className="bg-red-50 text-red-700 border border-red-200 text-[9px] font-extrabold px-2.5 py-1 rounded-md">🔴 Urgent</span>}
                       </div>
 
                       <button
@@ -657,9 +656,13 @@ export function JobsPortal() {
 
                     <div className="p-5">
                       <div className="flex gap-4 items-start mb-3 pr-4">
-                        <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${job.iconColor} flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform`}>
-                          <JobIcon className="w-5 h-5 text-white" />
-                        </div>
+                        {job.logo ? (
+                          <img src={job.logo} className="w-12 h-12 rounded-xl object-contain p-1 border border-slate-100 shrink-0 shadow-sm bg-white" alt="logo" />
+                        ) : (
+                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${job.iconColor} flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform`}>
+                            <JobIcon className="w-5 h-5 text-white" />
+                          </div>
+                        )}
 
                         <div className="flex-1 min-w-0">
                           <h3 className="font-sora font-extrabold text-base text-[#0c1a2e] leading-snug group-hover:text-[#ef4444] transition-colors mb-1">
@@ -679,15 +682,14 @@ export function JobsPortal() {
                         </div>
                       </div>
 
-                      <div className="flex gap-1.5 flex-wrap mb-3">
-                        {job.tags.map(t => (
-                          <span key={t} className="bg-red-50 text-red-600 border border-red-100 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider">{t}</span>
+                      <div className="flex gap-1.5 flex-wrap mb-3.5">
+                        {job.tags.slice(0, 2).map(t => (
+                          <span key={t} className="bg-slate-50 text-slate-600 border border-slate-100 px-2.5 py-1 rounded-lg text-[9.5px] font-bold tracking-wider">{t}</span>
                         ))}
-                        {job.sponsorship && <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase flex items-center gap-1"><CheckCircle className="w-2.5 h-2.5" />Visa Sponsored</span>}
-                        {job.relocation  && <span className="bg-violet-50 text-violet-700 border border-violet-100 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase flex items-center gap-1"><Plane className="w-2.5 h-2.5" />Relocation</span>}
+                        {job.sponsorship && <span className="bg-emerald-50/60 text-emerald-700 border border-emerald-100/60 px-2.5 py-1 rounded-lg text-[9.5px] font-bold flex items-center gap-1"><CheckCircle className="w-3 h-3 text-emerald-500" />Visa Sponsored</span>}
+                        {job.relocation  && <span className="bg-indigo-50/60 text-indigo-700 border border-indigo-100/60 px-2.5 py-1 rounded-lg text-[9.5px] font-bold flex items-center gap-1"><Plane className="w-3 h-3 text-indigo-500" />Relocation</span>}
                       </div>
 
-                      <p className="text-xs text-[#475569] leading-relaxed mb-4 font-medium line-clamp-2">{job.desc}</p>
 
                       <div className="flex items-center justify-between pt-4 border-t border-red-50">
                         <div className="flex items-center gap-4 text-[11px] text-[#94b0c4] font-bold">
@@ -712,54 +714,6 @@ export function JobsPortal() {
                   className="bg-white border border-gray-200 text-black font-bold text-xs px-7 py-3 rounded-xl hover:bg-gray-50 hover:shadow-sm active:scale-[0.98] transition-all shadow-sm outline-none"
                 >
                   Load More Jobs →
-                </button>
-              </div>
-            </div>
-          </div>
-
-
-          {/* PROCESS */}
-          <div className="max-w-6xl mx-auto px-6 py-12 text-center">
-            <span className="text-[11px] font-extrabold text-black uppercase tracking-wider block mb-1">Our Process</span>
-            <h2 className="font-sora font-extrabold text-[#0c1a2e] text-xl mb-8">From Job Application to Landing Abroad</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
-              {[
-                { step: "01", title: "Search & Apply",      desc: "Browse 4,200+ jobs across 40+ countries with your ideal filters.",                    icon: Search,       color: "from-neutral-800 to-black"   },
-                { step: "02", title: "Get Offer Letter",    desc: "Receive official employer letter — the key document for your work visa.",              icon: CheckCircle,  color: "from-neutral-700 to-neutral-900" },
-                { step: "03", title: "Apply for Work Visa", desc: "VisaFormula immigration expert handles LMIA, DHA, TSS 482, and EU Blue Card.",             icon: Shield,       color: "from-neutral-800 to-black"},
-                { step: "04", title: "Fly & Start Working", desc: "Settlement support: SIM card, accommodation, and onboarding assistance.",             icon: Plane,        color: "from-neutral-700 to-neutral-900" },
-              ].map(hs => {
-                const ProcessIcon = hs.icon;
-                return (
-                  <div key={hs.step} className="bg-white border border-gray-150 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${hs.color} flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:scale-110 transition-transform`}>
-                      <ProcessIcon className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="text-[10px] font-extrabold text-gray-300 tracking-widest mb-2">{hs.step}</div>
-                    <h4 className="font-sora font-bold text-xs text-[#0c1a2e] mb-1.5 leading-snug">{hs.title}</h4>
-                    <p className="text-[10px] text-gray-400 font-semibold leading-relaxed">{hs.desc}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* CTA BOTTOM */}
-          <div className="max-w-5xl mx-auto px-6 pb-16 text-center animate-fade-in">
-            <div className="bg-gradient-to-r from-[#111111] via-[#1a1a1a] to-black rounded-3xl p-10 text-center shadow-2xl shadow-neutral-200">
-              <Globe className="w-10 h-10 text-white/60 mx-auto mb-4" />
-              <h2 className="font-sora font-extrabold text-white text-3xl mb-3">Ready to Work Abroad?</h2>
-              <p className="text-white/70 text-sm max-w-md mx-auto mb-8 leading-relaxed">
-                Our immigration experts are ready to guide you from application to landing. Premium visa support, guaranteed.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/find-experts?category=work" className="block">
-                  <button className="bg-white text-black font-bold px-8 py-3.5 rounded-2xl text-sm shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 outline-none">
-                    <Shield className="w-4 h-4" /> Talk to a Visa Expert
-                  </button>
-                </a>
-                <button onClick={() => window.scrollTo(0, 0)} className="bg-white/15 border border-white/25 text-white font-bold px-8 py-3.5 rounded-2xl text-sm hover:bg-white/25 transition-all flex items-center gap-2 outline-none">
-                  Browse All Jobs <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>

@@ -153,7 +153,7 @@ export function UserDashboard() {
                                 {/* Name and Badge */}
                                 <div className="flex items-center gap-2 flex-wrap">
                                     <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{firstName} {lastName || "Sharma"}</h2>
-                                    <span className="bg-emerald-500/10 text-emerald-700 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-emerald-500/20">Verified</span>
+                                    <span className="bg-emerald-500/10 text-emerald-700 text-[9px] font-black tracking-widest px-2 py-0.5 rounded-full border border-emerald-500/20">Verified</span>
                                 </div>
 
                                 {/* Description/Location */}
@@ -186,7 +186,7 @@ export function UserDashboard() {
                         <div className="flex items-center justify-between">
                           <div className="flex flex-col">
                               <h3 className="font-bold text-lg text-black">My Documents</h3>
-                              <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Document Vault</span>
+                              <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5">Document Vault</span>
                           </div>
                           <button className="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all">
                               <Plus className="w-4 h-4 text-black" />
@@ -220,8 +220,8 @@ export function UserDashboard() {
                                             <CheckSquare className={`w-4.5 h-4.5 ${doc.status === "uploaded" ? "text-black fill-black" : "text-slate-400"}`} />
                                         </div>
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[10px] text-slate-500 font-bold uppercase">Status</span>
-                                            <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full border ${doc.bg}`}>
+                                            <span className="text-[10px] text-slate-500 font-bold">Status</span>
+                                            <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${doc.bg}`}>
                                                 {doc.status}
                                             </span>
                                         </div>
@@ -240,7 +240,7 @@ export function UserDashboard() {
                             {/* Goals / Destination Pie Chart layout */}
                             <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-xs font-bold text-slate-450 uppercase tracking-widest block">Goals Overview</span>
+                                    <span className="text-xs font-bold text-slate-450 tracking-widest block">Goals Overview</span>
                                     <button className="text-slate-400 hover:text-black">
                                         <ArrowRight className="w-4 h-4" />
                                     </button>
@@ -252,7 +252,7 @@ export function UserDashboard() {
                                     <div className="absolute inset-0 border-[10px] border-t-black border-r-orange-500 border-b-sky-500 border-l-slate-100 rounded-full animate-spin-slow"></div>
                                     <div className="text-center z-10">
                                         <span className="text-2xl font-bold text-black">{uploadedCount}</span>
-                                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">Uploaded</span>
+                                        <span className="text-[9px] text-slate-400 font-bold tracking-wider block mt-0.5">Uploaded</span>
                                     </div>
                                 </div>
 
@@ -267,7 +267,7 @@ export function UserDashboard() {
                             <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
                                 <div className="flex justify-between items-center">
                                     <div>
-                                        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block">IELTS Scores</span>
+                                        <span className="text-xs font-bold text-slate-400 tracking-widest block">IELTS Scores</span>
                                         <span className="text-lg font-bold text-black mt-1 block">Band {overallBand}</span>
                                     </div>
                                     <div className="flex items-center gap-1 text-[10px] font-bold text-slate-450">
@@ -296,7 +296,7 @@ export function UserDashboard() {
                                 </div>
 
                                 <a href="/training" className="block pt-2 border-t border-slate-100">
-                                    <button className="w-full bg-black text-white py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-slate-900 transition-all">
+                                    <button className="w-full bg-black text-white py-2 rounded-xl text-[10px] font-bold tracking-wider hover:bg-slate-900 transition-all">
                                         Find IELTS Coaching
                                     </button>
                                 </a>
@@ -309,7 +309,7 @@ export function UserDashboard() {
                             <div className="flex items-center justify-between">
                                 <div className="flex flex-col">
                                     <h3 className="font-bold text-lg text-black">Milestone Escrow Vault</h3>
-                                    <span className="text-[11px] text-slate-450 font-bold uppercase tracking-wider">Secured Payments</span>
+                                    <span className="text-[11px] text-slate-450 font-bold tracking-wider">Secured Payments</span>
                                 </div>
                                 <Shield className="w-5 h-5 text-black" />
                             </div>
@@ -344,7 +344,7 @@ export function UserDashboard() {
                         {/* Consultation Meetings */}
                         <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
                             <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-slate-450 uppercase tracking-widest block">My Consultations</span>
+                                <span className="text-xs font-bold text-slate-450 tracking-widest block">My Consultations</span>
                                 <Calendar className="w-4 h-4 text-black" />
                             </div>
 
@@ -353,7 +353,7 @@ export function UserDashboard() {
                                     <div key={idx} className="bg-slate-50 border border-slate-200/40 rounded-2xl p-4.5 space-y-3 hover:shadow-xs transition-all">
                                         <div className="flex justify-between items-center text-xs font-bold">
                                             <span className="text-slate-450">{b.date.split("·")[0]}</span>
-                                            <span className="bg-black text-white px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider">{b.platform}</span>
+                                            <span className="bg-black text-white px-2 py-0.5 rounded-md text-[9px] tracking-wider">{b.platform}</span>
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <img src={b.avatar} alt={b.expert} className="w-8 h-8 rounded-full object-cover" />
@@ -374,7 +374,7 @@ export function UserDashboard() {
                         {/* Saved Experts list (styled like Open Tickets / Chats list) */}
                         <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
                             <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-slate-450 uppercase tracking-widest block">Saved Experts</span>
+                                <span className="text-xs font-bold text-slate-450 tracking-widest block">Saved Experts</span>
                                 <Bookmark className="w-4 h-4 text-black" />
                             </div>
 
@@ -387,7 +387,7 @@ export function UserDashboard() {
                                             <span className="text-[10px] text-slate-400 font-bold block mt-1 truncate">{e.role}</span>
                                         </div>
                                         <a href="/find-experts">
-                                            <button className="bg-black hover:bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-xl active:scale-95 transition-all">
+                                            <button className="bg-black hover:bg-slate-900 text-white text-[10px] font-bold tracking-wider px-3.5 py-1.5 rounded-xl active:scale-95 transition-all">
                                                 Book
                                             </button>
                                         </a>
@@ -399,7 +399,7 @@ export function UserDashboard() {
                         {/* Updates / Notifications */}
                         <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
                             <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-slate-450 uppercase tracking-widest block">Updates & alerts</span>
+                                <span className="text-xs font-bold text-slate-450 tracking-widest block">Updates & alerts</span>
                                 <Bell className="w-4 h-4 text-black" />
                             </div>
 
@@ -407,7 +407,7 @@ export function UserDashboard() {
                                 {initialNotifications.map((n, idx) => (
                                     <div key={idx} className="border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
                                         <p className="text-xs text-black font-semibold leading-relaxed">{n.text}</p>
-                                        <span className="text-[9px] text-slate-400 font-bold uppercase mt-1 block">{n.time}</span>
+                                        <span className="text-[9px] text-slate-400 font-bold mt-1 block">{n.time}</span>
                                     </div>
                                 ))}
                             </div>
@@ -435,7 +435,7 @@ export function UserDashboard() {
                                 <p className="text-xs text-slate-400 max-w-xs mx-auto">Get expert guidance on universities, SOP reviews, and visa filings today.</p>
                             </div>
                             <a href="/find-experts" className="inline-block pt-2">
-                                <button className="bg-black hover:bg-slate-900 text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-xl transition-all shadow-sm active:scale-95">
+                                <button className="bg-black hover:bg-slate-900 text-white text-xs font-bold tracking-wider px-6 py-3 rounded-xl transition-all shadow-sm active:scale-95">
                                     Find & Book Advisors
                                 </button>
                             </a>
@@ -452,7 +452,7 @@ export function UserDashboard() {
                         </div>
                         
                         <div className="space-y-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-150">
-                            <h4 className="text-xs font-bold text-black uppercase tracking-wider">Milestone Escrow Vault</h4>
+                            <h4 className="text-xs font-bold text-black tracking-wider">Milestone Escrow Vault</h4>
                             <div className="space-y-4">
                                 {[
                                     { label: "Held in Escrow", count: "0 Bookings", amount: "₹0", width: "0%", bg: "bg-purple-600" },

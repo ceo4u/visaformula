@@ -121,12 +121,12 @@ export function ConsultantDashboard() {
                             <h1 className="font-sora text-2xl md:text-3xl font-extrabold flex items-center gap-2">
                                 {profile.name} <CheckCircle className="w-5 h-5 text-red-400 fill-white/10 shrink-0" />
                             </h1>
-                            <p className="text-white/60 text-xs font-bold uppercase tracking-wider mt-0.5">{profile.role} · Based in {profile.city}</p>
+                            <p className="text-white/60 text-xs font-bold tracking-wider mt-0.5">{profile.role} · Based in {profile.city}</p>
                         </div>
                     </div>
                     <button 
                         onClick={() => setIsEditingProfile(true)}
-                        className="bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 border border-white/10"
+                        className="bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider transition-all flex items-center gap-2 border border-white/10"
                     >
                         <Settings className="w-4 h-4" /> Edit Profile Details
                     </button>
@@ -145,7 +145,7 @@ export function ConsultantDashboard() {
                                 <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">{s.change}</span>
                             </div>
                             <div className="font-sora text-2xl font-extrabold text-navy">{s.value}</div>
-                            <div className="text-[10px] text-gray-400 mt-0.5 font-bold uppercase tracking-wider">{s.label}</div>
+                            <div className="text-[10px] text-gray-400 mt-0.5 font-bold tracking-wider">{s.label}</div>
                         </div>
                     ))}
                 </div>
@@ -159,7 +159,7 @@ export function ConsultantDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {columns.map(col => (
                         <div key={col.id} className={`bg-slate-50/50 rounded-3xl border-t-4 ${col.color} border border-slate-100 p-4 min-h-[220px]`}>
-                            <h3 className="font-bold text-[#0c1a2e] mb-3 flex items-center justify-between uppercase tracking-wider text-[10px]">
+                            <h3 className="font-bold text-[#0c1a2e] mb-3 flex items-center justify-between tracking-wider text-[10px]">
                                 {col.title}
                                 <span className="w-5 h-5 bg-white border border-slate-200 rounded-full text-xs flex items-center justify-center font-bold text-gray-500 shadow-sm">{col.cards.length}</span>
                             </h3>
@@ -169,12 +169,12 @@ export function ConsultantDashboard() {
                                         <div className="flex items-start justify-between">
                                             <div>
                                                 <h4 className="font-bold text-[#0c1a2e] text-xs">{card.name}</h4>
-                                                <span className="text-[9px] bg-red-50 text-red-700 px-2 py-0.5 rounded-full font-bold mt-1.5 inline-block uppercase tracking-wider">{card.visa}</span>
+                                                <span className="text-[9px] bg-red-50 text-red-700 px-2 py-0.5 rounded-full font-bold mt-1.5 inline-block tracking-wider">{card.visa}</span>
                                             </div>
                                             <GripVertical className="w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                                         </div>
-                                        {card.days > 0 && <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider mt-2.5 flex items-center gap-1"><Clock className="w-3 h-3 text-red-500" /> {card.days}d in stage</p>}
-                                        {card.urgent && <p className="text-[9px] text-red-600 font-black uppercase tracking-widest mt-1.5 animate-pulse">🚨 Urgent Case</p>}
+                                        {card.days > 0 && <p className="text-[9px] text-gray-400 font-bold tracking-wider mt-2.5 flex items-center gap-1"><Clock className="w-3 h-3 text-red-500" /> {card.days}d in stage</p>}
+                                        {card.urgent && <p className="text-[9px] text-red-600 font-black tracking-widest mt-1.5 animate-pulse">🚨 Urgent Case</p>}
                                     </div>
                                 ))}
                             </div>
@@ -198,11 +198,11 @@ export function ConsultantDashboard() {
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <span className="font-black text-xs text-navy">{s.price}</span>
-                                        <button className="text-[10px] text-red-500 font-black uppercase tracking-wider hover:underline">Edit</button>
+                                        <button className="text-[10px] text-red-500 font-black tracking-wider hover:underline">Edit</button>
                                     </div>
                                 </div>
                             ))}
-                            <button className="w-full py-3 border-2 border-dashed border-red-200 text-red-500 font-black text-xs uppercase tracking-wider rounded-2xl hover:bg-red-50/20 transition-colors">+ Add New Custom Package</button>
+                            <button className="w-full py-3 border-2 border-dashed border-red-200 text-red-500 font-black text-xs tracking-wider rounded-2xl hover:bg-red-50/20 transition-colors">+ Add New Custom Package</button>
                         </div>
                     </div>
 
@@ -249,49 +249,49 @@ export function ConsultantDashboard() {
 
                         <form onSubmit={handleSaveProfile} className="space-y-5 flex-1">
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Full Name</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Full Name</label>
                                 <input value={formName} onChange={e => setFormName(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Professional Title / Role</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Professional Title / Role</label>
                                 <input value={formRole} onChange={e => setFormRole(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">City / Location</label>
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">City / Location</label>
                                     <input value={formCity} onChange={e => setFormCity(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Years of Experience</label>
+                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Years of Experience</label>
                                     <input type="number" value={formExperience} onChange={e => setFormExperience(Number(e.target.value))} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Profile Cover / Avatar URL</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Profile Cover / Avatar URL</label>
                                 <input value={formImage} onChange={e => setFormImage(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-red-500 text-black" />
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Specializations (comma separated)</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Specializations (comma separated)</label>
                                 <input value={formSpecs} onChange={e => setFormSpecs(e.target.value)} placeholder="H-1B, L-1, PR" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Target Countries Covered (comma separated)</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Target Countries Covered (comma separated)</label>
                                 <input value={formCountries} onChange={e => setFormCountries(e.target.value)} placeholder="USA, Canada" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">About Us / Biography</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">About Us / Biography</label>
                                 <textarea value={formBio} onChange={e => setFormBio(e.target.value)} required rows={4} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black resize-none" placeholder="Write detailed biography info about your legal background..." />
                             </div>
 
                             <div className="flex gap-3 pt-4 border-t border-slate-100">
-                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-200 text-gray-600 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-slate-50 transition-colors">Cancel</button>
-                                <button type="submit" className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md">
+                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-200 text-gray-600 rounded-xl font-bold text-xs tracking-wider hover:bg-slate-50 transition-colors">Cancel</button>
+                                <button type="submit" className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md">
                                     <Save className="w-4 h-4" /> Save Changes
                                 </button>
                             </div>

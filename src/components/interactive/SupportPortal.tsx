@@ -109,7 +109,7 @@ export function SupportPortal() {
                         <div className="w-12 h-12 rounded-full bg-teal-500/10 flex items-center justify-center mb-4 mx-auto">
                             <Phone className="w-5 h-5 text-teal-300" />
                         </div>
-                        <span className="text-[10px] font-black text-teal-300 uppercase tracking-widest block mb-1">Call Us</span>
+                        <span className="text-[10px] font-black text-teal-300 tracking-widest block mb-1">Call Us</span>
                         <a href="tel:+917661989366" className="text-lg font-extrabold hover:text-teal-200 transition-colors hover:underline">
                             +91 766 1989 366
                         </a>
@@ -120,7 +120,7 @@ export function SupportPortal() {
                         <div className="w-12 h-12 rounded-full bg-teal-500/10 flex items-center justify-center mb-4 mx-auto">
                             <Mail className="w-5 h-5 text-teal-300" />
                         </div>
-                        <span className="text-[10px] font-black text-teal-300 uppercase tracking-widest block mb-1">Email Us</span>
+                        <span className="text-[10px] font-black text-teal-300 tracking-widest block mb-1">Email Us</span>
                         <a href="mailto:support@visaformula.com" className="text-lg font-extrabold hover:text-teal-200 transition-colors hover:underline">
                             support@visaformula.com
                         </a>
@@ -137,7 +137,7 @@ export function SupportPortal() {
                     
                     <div className="space-y-8 relative z-10">
                         <div>
-                            <span className="text-[9px] font-black uppercase tracking-widest text-teal-300 block mb-2">
+                            <span className="text-[9px] font-black tracking-widest text-teal-300 block mb-2">
                                 Headquarters
                             </span>
                             <h2 className="text-2xl font-extrabold tracking-tight mb-4 text-white">
@@ -151,7 +151,7 @@ export function SupportPortal() {
                                 <MapPin className="w-4.5 h-4.5 text-teal-300" />
                             </div>
                             <div className="space-y-1">
-                                <h4 className="font-extrabold text-xs text-teal-300 tracking-wider uppercase">Head Office</h4>
+                                <h4 className="font-extrabold text-xs text-teal-300 tracking-wider">Head Office</h4>
                                 <p className="text-sm text-sky-100 font-bold leading-relaxed">
                                     11-5-334/1/B Red Hills<br />Hyderabad, Telangana – 500004
                                 </p>
@@ -164,7 +164,7 @@ export function SupportPortal() {
                                 <Globe className="w-4.5 h-4.5 text-teal-300" />
                             </div>
                             <div className="space-y-1">
-                                <h4 className="font-extrabold text-xs text-teal-300 tracking-wider uppercase">Other Branches</h4>
+                                <h4 className="font-extrabold text-xs text-teal-300 tracking-wider">Other Branches</h4>
                                 <p className="text-xs text-sky-200 font-semibold leading-relaxed">
                                     Raheja Mindspace IT Park Madhapur, Jubilee Hills, Bengaluru, Chennai, Kochi, and Mumbai.
                                 </p>
@@ -173,7 +173,7 @@ export function SupportPortal() {
                     </div>
 
                     <div className="border-t border-white/10 mt-8 pt-6">
-                        <div className="flex text-[9px] font-bold uppercase tracking-widest text-teal-300 justify-center">
+                        <div className="flex text-[9px] font-bold tracking-widest text-teal-300 justify-center">
                              <span>India</span>
                         </div>
                     </div>
@@ -188,7 +188,7 @@ export function SupportPortal() {
 
                     <form onSubmit={handleFormSubmit} className="space-y-4">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-[#0e4b75] uppercase tracking-wider">Full Name *</label>
+                            <label className="text-[10px] font-bold text-[#0e4b75] tracking-wider">Full Name *</label>
                             <input 
                                 type="text" 
                                 required
@@ -201,7 +201,7 @@ export function SupportPortal() {
 
                         <div className="grid sm:grid-cols-2 gap-4">
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-bold text-[#0e4b75] uppercase tracking-wider">Email Address *</label>
+                                <label className="text-[10px] font-bold text-[#0e4b75] tracking-wider">Email Address *</label>
                                 <input 
                                     type="email" 
                                     required
@@ -212,7 +212,7 @@ export function SupportPortal() {
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-bold text-[#0e4b75] uppercase tracking-wider">Phone Number *</label>
+                                <label className="text-[10px] font-bold text-[#0e4b75] tracking-wider">Phone Number *</label>
                                 <input 
                                     type="tel" 
                                     required
@@ -225,7 +225,7 @@ export function SupportPortal() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-[#0e4b75] uppercase tracking-wider">Type of Visa looking for *</label>
+                            <label className="text-[10px] font-bold text-[#0e4b75] tracking-wider">Type of Visa looking for *</label>
                             <div className="relative">
                                 <select 
                                     required
@@ -244,7 +244,7 @@ export function SupportPortal() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-[#0e4b75] uppercase tracking-wider">Message / Requirements</label>
+                            <label className="text-[10px] font-bold text-[#0e4b75] tracking-wider">Message / Requirements</label>
                             <textarea 
                                 rows={4} 
                                 value={message}
@@ -266,7 +266,7 @@ export function SupportPortal() {
             {/* Optional FAQ Section */}
             <div className="max-w-6xl mx-auto px-4 border-t border-gray-200/50 pt-16">
                 <div className="text-center max-w-2xl mx-auto mb-10">
-                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">FAQs</span>
+                    <span className="text-[10px] font-black text-slate-500 tracking-widest block mb-1">FAQs</span>
                     <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl">Frequently Asked Questions</h2>
                 </div>
                 

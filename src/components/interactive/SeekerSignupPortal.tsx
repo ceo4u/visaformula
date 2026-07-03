@@ -309,7 +309,7 @@ export function SeekerSignupPortal() {
                             {selectedDests.length > 0 && (
                                 <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 text-xs font-semibold text-slate-700 shadow-inner text-center">
                                     <strong>Great choice!</strong> We'll match you with experts specializing in{" "}
-                                    <span className="text-black uppercase font-bold">{selectedDests.slice(0, 3).join(", ")}</span>
+                                    <span className="text-black font-bold">{selectedDests.slice(0, 3).join(", ")}</span>
                                     {selectedDests.length > 3 ? ` and ${selectedDests.length - 3} more` : ""}.
                                 </div>
                             )}

@@ -68,7 +68,7 @@ function VerifyCard({ initials, gradient, name, type, location, exp, badge, earn
       <p className="text-xs text-[#475569] leading-relaxed mb-4">{desc}</p>
 
       <div className="bg-[#EEF6FD] border border-[#D4E8F5] rounded-xl p-3 mb-4">
-        <div className="text-[10px] font-extrabold text-[#94B0C4] uppercase tracking-wider mb-2">Submitted Documents</div>
+        <div className="text-[10px] font-extrabold text-[#94B0C4] tracking-wider mb-2">Submitted Documents</div>
         {documents.map(d => (
           <div key={d.label} className="flex items-center gap-2 py-1.5 border-b border-[#D4E8F5] last:border-0">
             <span className="text-base">{d.icon}</span>
@@ -89,7 +89,7 @@ function VerifyCard({ initials, gradient, name, type, location, exp, badge, earn
       </div>
 
       <div className="mb-4">
-        <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1">Agent Note (optional)</label>
+        <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1">Agent Note (optional)</label>
         <textarea className="w-full bg-[#fff5f5] border border-[#D4E8F5] rounded-xl px-3 py-2 text-xs text-[#0C1A2E] outline-none focus:border-[#0c1a2e] resize-none h-14 placeholder:text-gray-300" placeholder="Add a note if rejecting or flagging..." />
       </div>
 
@@ -280,7 +280,7 @@ export function AgentsPortal() {
       <div className="max-w-6xl mx-auto px-6 py-14 space-y-16">
         {/* WHAT AGENTS DO */}
         <div>
-          <span className="text-[11px] font-extrabold text-[#0c1a2e] uppercase tracking-widest block mb-2">Your Role</span>
+          <span className="text-[11px] font-extrabold text-[#0c1a2e] tracking-widest block mb-2">Your Role</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl mb-2">What Does a VisaFormula Agent Do?</h2>
           <p className="text-sm text-[#475569] mb-8">Agents are the quality backbone of VisaFormula — they verify everything before it goes live.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -296,11 +296,11 @@ export function AgentsPortal() {
 
         {/* COMMISSION TABLE */}
         <div>
-          <span className="text-[11px] font-extrabold text-[#0c1a2e] uppercase tracking-widest block mb-2">Earnings</span>
+          <span className="text-[11px] font-extrabold text-[#0c1a2e] tracking-widest block mb-2">Earnings</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl mb-2">How Much Do You Earn?</h2>
           <p className="text-sm text-[#475569] mb-6">Fixed commission per verified item — paid every week to your bank account or UPI.</p>
           <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-            <div className="grid grid-cols-12 bg-[#0c1a2e] px-5 py-3 text-[11px] font-bold text-white uppercase tracking-wider">
+            <div className="grid grid-cols-12 bg-[#0c1a2e] px-5 py-3 text-[11px] font-bold text-white tracking-wider">
               <div className="col-span-5">What You Verify</div>
               <div className="col-span-2">Commission</div>
               <div className="col-span-3">Avg per Day</div>
@@ -325,7 +325,7 @@ export function AgentsPortal() {
 
         {/* HOW TO JOIN */}
         <div>
-          <span className="text-[11px] font-extrabold text-[#0c1a2e] uppercase tracking-widest block mb-2">Join Process</span>
+          <span className="text-[11px] font-extrabold text-[#0c1a2e] tracking-widest block mb-2">Join Process</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl mb-2">How to Become an Agent</h2>
           <p className="text-sm text-[#475569] mb-8">Simple 4-step process — approved within 48 hours.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -413,26 +413,26 @@ export function AgentsPortal() {
               <div>
                 <h3 className="font-sora font-bold text-lg text-[#0c1a2e] mb-5">Step 1 — Personal Information</h3>
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">First Name</label>
+                  <div><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">First Name</label>
                     <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="Riya" /></div>
-                  <div><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Last Name</label>
+                  <div><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Last Name</label>
                     <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="Mehta" /></div>
                 </div>
-                <div className="mb-4"><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Email Address</label>
+                <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Email Address</label>
                   <input type="email" className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="riya@email.com" /></div>
-                <div className="mb-4"><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Mobile Number</label>
+                <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Mobile Number</label>
                   <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="+91 98765 43210" /></div>
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">City</label>
+                  <div><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">City</label>
                     <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="Pune" /></div>
-                  <div><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">State</label>
+                  <div><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">State</label>
                     <select className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all appearance-none cursor-pointer">
                       <option>Select state</option>
                       {["Maharashtra","Delhi","Karnataka","Tamil Nadu","Gujarat","Rajasthan","Uttar Pradesh","West Bengal","Telangana"].map(s => <option key={s}>{s}</option>)}
                     </select></div>
                 </div>
                 <div className="mb-4">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-2">Languages Known</label>
+                  <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-2">Languages Known</label>
                   <div className="flex flex-wrap gap-2">
                     {allLangs.map(l => (
                       <button key={l} type="button" onClick={() => setLangs(prev => prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l])}
@@ -442,7 +442,7 @@ export function AgentsPortal() {
                     ))}
                   </div>
                 </div>
-                <div className="mb-4"><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Why do you want to become a VisaFormula Agent?</label>
+                <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Why do you want to become a VisaFormula Agent?</label>
                   <textarea className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all resize-none h-24 placeholder:text-gray-300" placeholder="Tell us a bit about yourself and why you'd be a great agent…" /></div>
               </div>
             )}
@@ -450,12 +450,12 @@ export function AgentsPortal() {
             {regStep === 2 && (
               <div>
                 <h3 className="font-sora font-bold text-lg text-[#0c1a2e] mb-5">Step 2 — Availability & Skills</h3>
-                <div className="mb-4"><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Available Hours Per Day</label>
+                <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Available Hours Per Day</label>
                   <select className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] appearance-none cursor-pointer">
                     {["1–2 hours","2–4 hours","4–6 hours","Full-time (6+ hours)"].map(o => <option key={o}>{o}</option>)}
                   </select></div>
                 <div className="mb-4">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-2">Verification Categories (select all you can handle)</label>
+                  <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-2">Verification Categories (select all you can handle)</label>
                   <div className="space-y-2">
                     {["Expert Profiles (Consultant / Lawyer)","Tour & Holiday Packages","Overseas Job Listings","Exhibition & Event Listings","IELTS / Training Institutes"].map(cat => (
                       <label key={cat} className="flex items-center gap-3 bg-[#fff5f5] border border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-[#0c1a2e] transition-all">
@@ -465,7 +465,7 @@ export function AgentsPortal() {
                     ))}
                   </div>
                 </div>
-                <div className="mb-4"><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Previous Experience (if any)</label>
+                <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Previous Experience (if any)</label>
                   <textarea className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] resize-none h-20 placeholder:text-gray-300" placeholder="e.g., worked as a data entry operator, content moderator, etc." /></div>
               </div>
             )}
@@ -480,7 +480,7 @@ export function AgentsPortal() {
                     { label: "Selfie with ID (KYC)", note: "Hold your ID next to your face clearly — JPG, PNG (max 5MB)" },
                   ].map(doc => (
                     <div key={doc.label}>
-                      <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-2">{doc.label}</label>
+                      <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-2">{doc.label}</label>
                       <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center bg-slate-50/30 hover:bg-slate-50 transition-colors cursor-pointer">
                         <div className="text-3xl mb-2">📎</div>
                         <p className="text-sm font-semibold text-[#0c1a2e] mb-1">Drop file here or click to browse</p>
@@ -499,15 +499,15 @@ export function AgentsPortal() {
             {regStep === 4 && (
               <div>
                 <h3 className="font-sora font-bold text-lg text-[#0c1a2e] mb-5">Step 4 — Bank / UPI Details</h3>
-                <div className="mb-4"><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">UPI ID</label>
+                <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">UPI ID</label>
                   <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="yourname@upi" /></div>
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Bank Account Number</label>
+                  <div><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Bank Account Number</label>
                     <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="XXXX XXXX XXXX" /></div>
-                  <div><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">IFSC Code</label>
+                  <div><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">IFSC Code</label>
                     <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="e.g. SBIN0001234" /></div>
                 </div>
-                <div className="mb-4"><label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Account Holder Name</label>
+                <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Account Holder Name</label>
                   <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="Riya Mehta" /></div>
                 <div className="bg-[#f0f9ff] border border-[#bae6fd] rounded-2xl p-4">
                   <h4 className="text-xs font-bold text-[#b91c1c] mb-2">💸 Payout Schedule</h4>
@@ -576,7 +576,7 @@ export function AgentsPortal() {
           </div>
 
           <nav className="flex-1 py-3 overflow-y-auto">
-            <div className="px-4 py-2 text-[9px] font-extrabold text-[#94B0C4] uppercase tracking-widest">Main</div>
+            <div className="px-4 py-2 text-[9px] font-extrabold text-[#94B0C4] tracking-widest">Main</div>
             {sidebarLinks.slice(0,5).map(link => (
               <button key={link.section} onClick={() => setSection(link.section)}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all text-left border-l-2 ${section === link.section ? "bg-slate-50 text-[#0c1a2e] border-[#0c1a2e]" : "text-[#475569] border-transparent hover:bg-slate-50 hover:text-[#0c1a2e]"}`}>
@@ -586,7 +586,7 @@ export function AgentsPortal() {
               </button>
             ))}
 
-            <div className="px-4 py-2 mt-2 text-[9px] font-extrabold text-[#94B0C4] uppercase tracking-widest">Earnings</div>
+            <div className="px-4 py-2 mt-2 text-[9px] font-extrabold text-[#94B0C4] tracking-widest">Earnings</div>
             {sidebarLinks.slice(5,7).map(link => (
               <button key={link.section} onClick={() => setSection(link.section)}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all text-left border-l-2 ${section === link.section ? "bg-slate-50 text-[#0c1a2e] border-[#0c1a2e]" : "text-[#475569] border-transparent hover:bg-slate-50 hover:text-[#0c1a2e]"}`}>
@@ -595,7 +595,7 @@ export function AgentsPortal() {
               </button>
             ))}
 
-            <div className="px-4 py-2 mt-2 text-[9px] font-extrabold text-[#94B0C4] uppercase tracking-widest">Account</div>
+            <div className="px-4 py-2 mt-2 text-[9px] font-extrabold text-[#94B0C4] tracking-widest">Account</div>
             {sidebarLinks.slice(7).map(link => (
               <button key={link.section} onClick={() => setSection(link.section)}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all text-left border-l-2 ${section === link.section ? "bg-slate-50 text-[#0c1a2e] border-[#0c1a2e]" : "text-[#475569] border-transparent hover:bg-slate-50 hover:text-[#0c1a2e]"}`}>
@@ -629,7 +629,7 @@ export function AgentsPortal() {
                 ].map(card => (
                   <div key={card.label} className={`bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 ${card.color}`}>
                     <div className="absolute top-4 right-4 text-xl opacity-70">{card.icon}</div>
-                    <div className="text-[10px] font-extrabold text-[#94B0C4] uppercase tracking-wider mb-1">{card.label}</div>
+                    <div className="text-[10px] font-extrabold text-[#94B0C4] tracking-wider mb-1">{card.label}</div>
                     <div className="font-sora font-extrabold text-2xl text-[#0c1a2e] mb-0.5">{card.value}</div>
                     <div className="text-xs text-[#475569]">{card.sub}</div>
                   </div>
@@ -810,13 +810,13 @@ export function AgentsPortal() {
               <div className="grid grid-cols-3 gap-4 mb-6">
                 {[{label:"This Week",value:"₹3,200"},{label:"This Month",value:"₹18,400"},{label:"All Time",value:"₹1,24,700"}].map(s => (
                   <div key={s.label} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm text-center">
-                    <div className="text-xs font-bold text-[#94B0C4] uppercase tracking-wider mb-1">{s.label}</div>
+                    <div className="text-xs font-bold text-[#94B0C4] tracking-wider mb-1">{s.label}</div>
                     <div className="font-sora font-extrabold text-2xl text-emerald-600">{s.value}</div>
                   </div>
                 ))}
               </div>
               <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                <div className="grid grid-cols-12 bg-slate-50 px-5 py-3 text-[10px] font-extrabold text-[#94B0C4] uppercase tracking-wider border-b border-slate-200">
+                <div className="grid grid-cols-12 bg-slate-50 px-5 py-3 text-[10px] font-extrabold text-[#94B0C4] tracking-wider border-b border-slate-200">
                   <div className="col-span-5">Action</div><div className="col-span-3">Date</div><div className="col-span-2">Earned</div><div className="col-span-2">Status</div>
                 </div>
                 {[
@@ -908,7 +908,7 @@ export function AgentsPortal() {
                 </div>
                 {[{label:"Email",value:"riya.mehta@email.com"},{label:"Phone",value:"+91 98765 43210"},{label:"UPI",value:"riya@ybl"},{label:"Languages",value:"English, Hindi, Marathi"}].map(row => (
                   <div key={row.label} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-0">
-                    <span className="text-xs font-extrabold text-[#94B0C4] uppercase tracking-wider">{row.label}</span>
+                    <span className="text-xs font-extrabold text-[#94B0C4] tracking-wider">{row.label}</span>
                     <span className="text-sm font-semibold text-[#0c1a2e]">{row.value}</span>
                   </div>
                 ))}

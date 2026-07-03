@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Phone } from "lucide-react";
 
 const emergencyTypes = [
@@ -17,7 +17,7 @@ export function CrisisSelector() {
     return (
         <div className="bg-white rounded-3xl border border-yellow-100 shadow-sm p-8">
             <div className="mb-6">
-                <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest block mb-1">Status Restoration</span>
+                <span className="text-[10px] font-black text-amber-600 tracking-widest block mb-1">Status Restoration</span>
                 <h2 className="font-sora font-bold text-navy text-xl">What is your current immigration situation?</h2>
                 <p className="text-xs text-gray-400 mt-1">Select the option below so our emergency coordinators can matching-assign you to the right attorney immediately.</p>
             </div>
@@ -52,7 +52,7 @@ export function CrisisSelector() {
                         placeholder="Your WhatsApp number (for urgent legal callback within 15 mins)"
                         className="w-full p-4 bg-slate-50/50 border border-yellow-100 rounded-2xl text-xs outline-none focus:border-amber-400 font-medium text-gray-700"
                     />
-                    <button className="w-full bg-gradient-to-r from-amber-500 to-rose-600 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-wider hover:shadow-lg transition-all active:scale-[0.97] flex items-center justify-center gap-2">
+                    <button className="w-full bg-gradient-to-r from-amber-500 to-rose-600 text-white py-4 rounded-2xl font-bold text-xs tracking-wider hover:shadow-lg transition-all active:scale-[0.97] flex items-center justify-center gap-2">
                         <Phone className="w-4 h-4" /> Connect with Attorney Now
                     </button>
                     <p className="text-[10px] text-gray-400 text-center">Your privacy is legally protected. Case details are encrypted under Client-Attorney privilege guidelines.</p>

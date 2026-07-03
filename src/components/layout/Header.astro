@@ -1,6 +1,6 @@
 ---
 // src/components/layout/Header.astro
-import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake, Layers, LogOut, LayoutDashboard } from 'lucide-react';
+import { Search, MapPin, Menu, X, Globe, ChevronDown, Umbrella, Trophy, Ship, Music, GraduationCap, FileText, Calendar, Briefcase, Compass, Scale, Map, Plane, PenLine, HeartHandshake, Layers, LogOut, LayoutDashboard, DollarSign } from 'lucide-react';
 import Logo from '../Logo.astro';
 
 
@@ -43,7 +43,8 @@ const expertDropdownItems = [
 const supportiveServicesItems = [
     { title: "Travel Insurance", desc: "Mandatory international medical & trip cover.", href: "/services/travel-insurance", icon: HeartHandshake, iconColor: "text-rose-500", bg: "bg-rose-50" },
     { title: "Ticket Booking", desc: "Flight itinerary reservations for visa files.", href: "/services/airfares", icon: Plane, iconColor: "text-purple-500", bg: "bg-purple-50" },
-    { title: "Language Training", desc: "IELTS coaching & language training classes.", href: "/training", icon: GraduationCap, iconColor: "text-indigo-500", bg: "bg-indigo-50" }
+    { title: "Language Training", desc: "IELTS coaching & language training classes.", href: "/training", icon: GraduationCap, iconColor: "text-indigo-500", bg: "bg-indigo-50" },
+    { title: "Financial Assistance", desc: "Education loan & forex guidance.", href: "/services/financial-assistance", icon: DollarSign, iconColor: "text-emerald-500", bg: "bg-emerald-50" }
 ];
 ---
 
@@ -98,7 +99,7 @@ const supportiveServicesItems = [
 
                     <!-- Left-aligned Portal Links (next to search bar) -->
                     <div class="hidden lg:flex items-center gap-8 shrink-0 pl-8 font-opensans">
-                        <a href="/training" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
+                        <a href="/self-apply" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
                             Self Apply
                         </a>
 
@@ -162,7 +163,7 @@ const supportiveServicesItems = [
                             <div class="absolute right-0 top-[90%] pt-4 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
                                 <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5 font-opensans">
                                     <div class="px-3.5 py-2 border-b border-slate-100">
-                                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-opensans">Signed in as</div>
+                                        <div class="text-[10px] text-slate-400 font-bold tracking-wider font-opensans">Signed in as</div>
                                         <div class="text-sm font-bold text-black truncate mt-0.5 font-opensans" id="nav-profile-name">User Profile</div>
                                     </div>
                                     <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-black hover:bg-slate-50 transition-all font-opensans">
@@ -187,11 +188,11 @@ const supportiveServicesItems = [
 
                 <!-- Bottom Row: Category Navigation (Desktop Only) -->
                 <div id="category-bar" class="hidden lg:flex items-center justify-start h-12">
-                    <div class="flex items-center gap-6 xl:gap-10 h-full">
+                    <div class="flex items-center gap-3.5 xl:gap-8 h-full">
                 <!-- Student Visa Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[13px] xl:text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/training") || pathname?.startsWith("/student") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -261,7 +262,7 @@ const supportiveServicesItems = [
                 <!-- Job Seeker Visas Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[13px] xl:text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/jobs") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -315,7 +316,7 @@ const supportiveServicesItems = [
                 <!-- Tourist Visa Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[13px] xl:text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/tours") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -347,7 +348,7 @@ const supportiveServicesItems = [
                 <!-- Migration Visas Dropdown -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[13px] xl:text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/find-experts?category=pr") || pathname?.startsWith("/find-experts?category=migration") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -360,13 +361,31 @@ const supportiveServicesItems = [
                         <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
                             <div class="flex flex-col gap-2">
 
-                                <!-- Skilled Migration -->
+                                 <!-- Skilled Migration -->
                                 <a href="/find-experts?category=pr" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
                                     <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                                         <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
                                         <polyline points="17 6 23 6 23 12"/>
                                     </svg>
                                     <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Skilled Migration</span>
+                                </a>
+
+                                <!-- Residency Visa -->
+                                <a href="/find-experts?category=residency" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Residency Visa</span>
+                                </a>
+
+                                <!-- Visa Appeal Experts -->
+                                <a href="/find-experts?category=appeal" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        <path d="M12 8v4M12 16h.01"/>
+                                    </svg>
+                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Visa Appeal Experts</span>
                                 </a>
 
                                 <!-- Find Migration Experts -->
@@ -387,7 +406,7 @@ const supportiveServicesItems = [
                 <!-- Immigration Assistance Dropdown (restored to 5th position) -->
                 <div class="relative py-3.5 group">
                     <button
-                        class={`font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                        class={`font-opensans category-menu-link text-[13px] xl:text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
                             pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#ef4444]" : "text-navy"
                         }`}
                     >
@@ -429,7 +448,7 @@ const supportiveServicesItems = [
                 <div class="relative py-3.5">
                     <a
                         href="/tools"
-                        class="font-opensans category-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap text-navy hover:text-[#ef4444]"
+                        class="font-opensans category-menu-link text-[13px] xl:text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap text-navy hover:text-[#ef4444]"
                     >
                         Migration tools and calculators
                     </a>
@@ -598,7 +617,7 @@ const supportiveServicesItems = [
         <!-- Mobile Profile Actions -->
         <div id="mobile-nav-profile-block" class="hidden p-4 bg-slate-50 border-t border-slate-200/60 flex flex-col gap-2 font-sans">
             <div class="px-2 py-1">
-                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Signed in as</div>
+                <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
                 <div class="text-sm font-extrabold text-black truncate mt-0.5" id="mobile-nav-profile-name">User Profile</div>
             </div>
             <a id="mobile-nav-profile-dashboard-link" href="/dashboard" class="block text-center py-2.5 bg-black text-white font-bold text-sm rounded-xl shadow-md">
@@ -612,6 +631,28 @@ const supportiveServicesItems = [
 </header>
 
 <style is:global>
+  /* Override header links active and hover colors to match paper plane color #359FC2 */
+  .group:hover button.category-menu-link,
+  .group:hover .category-menu-link,
+  .group:hover svg,
+  .group\/item:hover span,
+  .group\/item:hover svg,
+  .group-hover\:text-\[\#ef4444\]:hover,
+  .group:hover .group-hover\:text-\[\#ef4444\],
+  .group\/item:hover .group-hover\/item\:text-red-550,
+  .group\/item:hover .group-hover\/item\:text-red-500 {
+    color: #359FC2 !important;
+  }
+  
+  /* Mobile and category menu active overrides */
+  .text-\[\#ef4444\],
+  .text-red-650 {
+    color: #359FC2 !important;
+  }
+  .bg-red-50\/50 {
+    background-color: rgb(53 159 194 / 0.08) !important;
+  }
+
   /* Header styling and dynamic transition modes */
   #main-header.header-transparent {
     background-color: transparent !important;

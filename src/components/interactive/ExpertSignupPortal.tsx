@@ -5,7 +5,7 @@ import {
   MessageSquare, Briefcase, Mail, Phone, ExternalLink, 
   Percent, Award, Image as ImageIcon, Sparkles, Building, 
   CreditCard, Settings, ChevronRight, LayoutDashboard, Search, 
-  Calendar, LogOut, CheckSquare, TrendingUp, Bookmark, Bell, Clock
+  Calendar, LogOut, CheckSquare, TrendingUp, Bookmark, Bell, Clock, ChevronDown
 } from "lucide-react";
 import airplanePaths from "../../data/clean_airplane.json";
 import checkmarkPaths from "../../data/clean_checkmark.json";
@@ -72,6 +72,22 @@ export function ExpertSignupPortal() {
   const [password, setPassword] = useState("");
   const [expertCategory, setExpertCategory] = useState("Student visa expert");
   const [expertAddress, setExpertAddress] = useState("");
+  const [signupCategoryOpen, setSignupCategoryOpen] = useState(false);
+  const [editConsultantOpen, setEditConsultantOpen] = useState(false);
+  const [editCategoryOpen, setEditCategoryOpen] = useState(false);
+  const [signupConsultantOpen, setSignupConsultantOpen] = useState(false);
+
+  useEffect(() => {
+    if (!signupCategoryOpen && !editConsultantOpen && !editCategoryOpen && !signupConsultantOpen) return;
+    const handleOutsideClick = () => {
+      setSignupCategoryOpen(false);
+      setEditConsultantOpen(false);
+      setEditCategoryOpen(false);
+      setSignupConsultantOpen(false);
+    };
+    window.addEventListener("click", handleOutsideClick);
+    return () => window.removeEventListener("click", handleOutsideClick);
+  }, [signupCategoryOpen, editConsultantOpen, editCategoryOpen, signupConsultantOpen]);
 
   // --- Phase 2 States ---
   // Freelancer specific
@@ -294,10 +310,10 @@ export function ExpertSignupPortal() {
   ];
 
   return (
-    <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>
+    <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-sora" style={{ fontFamily: "'Sora', sans-serif" }}>
       <style dangerouslySetInnerHTML={{__html: `
-        .font-roboto, .font-roboto * {
-            font-family: 'Roboto', sans-serif !important;
+        .font-sora, .font-sora * {
+            font-family: 'Sora', sans-serif !important;
         }
         @keyframes premiumFadeIn {
           from {
@@ -382,23 +398,31 @@ export function ExpertSignupPortal() {
                     />
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                     <label className="text-sm font-semibold text-slate-700 block">Type of Consultant*</label>
                     <div className="relative">
-                      <select 
-                        value={consultantType} 
-                        onChange={(e) => setConsultantType(e.target.value)} 
-                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black cursor-pointer appearance-none shadow-sm"
+                      <button
+                        type="button"
+                        onClick={() => setSignupConsultantOpen(!signupConsultantOpen)}
+                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none text-left focus:border-black focus:ring-1 focus:ring-black text-black cursor-pointer flex items-center justify-between shadow-sm"
                       >
-                        <option value="Freelancer">Freelancer</option>
-                        <option value="Business Expert">Business expert</option>
-                        <option value="Institute or company">Institute or company</option>
-                        <option value="Legal professional">Legal professional</option>
-                        <option value="Supportive business">Supportive business</option>
-                      </select>
-                      <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-550">
-                        <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
-                      </div>
+                        <span>{consultantType}</span>
+                        <svg className={`w-5 h-5 text-black transition-transform duration-200 ${signupConsultantOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                      </button>
+                      {signupConsultantOpen && (
+                        <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
+                          {["Freelancer", "Business Expert", "Institute or company", "Legal professional", "Supportive business"].map(type => (
+                            <button
+                              key={type}
+                              type="button"
+                              onClick={() => { setConsultantType(type); setSignupConsultantOpen(false); }}
+                              className="w-full text-left px-5 py-3 text-sm font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
+                            >
+                              {type}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -455,25 +479,32 @@ export function ExpertSignupPortal() {
                       className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
                     />
                   </div>
-
-                  <div className="space-y-2">
+                  
+                  <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
                     <label className="text-sm font-semibold text-slate-700 block">Expert In (Category)*</label>
                     <div className="relative">
-                      <select 
-                        required
-                        value={expertCategory} 
-                        onChange={(e) => setExpertCategory(e.target.value)} 
-                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black cursor-pointer appearance-none shadow-sm"
+                      <button
+                        type="button"
+                        onClick={() => setSignupCategoryOpen(!signupCategoryOpen)}
+                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none text-left focus:border-black focus:ring-1 focus:ring-black text-black cursor-pointer flex items-center justify-between shadow-sm"
                       >
-                        <option value="Student visa expert">Student visa expert</option>
-                        <option value="Visa filing expert">Visa filing expert</option>
-                        <option value="Visit visa expert">Visit visa expert</option>
-                        <option value="Job visa expert">Job visa expert</option>
-                        <option value="PR And Migration expert">PR And Migration expert</option>
-                      </select>
-                      <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-550">
-                        <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
-                      </div>
+                        <span>{expertCategory}</span>
+                        <svg className={`w-5 h-5 text-black transition-transform duration-200 ${signupCategoryOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                      </button>
+                      {signupCategoryOpen && (
+                        <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
+                          {["Student visa expert", "Visa filing expert", "Visit visa expert", "Job visa expert", "PR And Migration expert"].map(cat => (
+                            <button
+                              key={cat}
+                              type="button"
+                              onClick={() => { setExpertCategory(cat); setSignupCategoryOpen(false); }}
+                              className="w-full text-left px-5 py-3 text-sm font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
+                            >
+                              {cat}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -503,11 +534,11 @@ export function ExpertSignupPortal() {
             {step === 2 && (
               <form onSubmit={handleLaunchDashboard} className="space-y-10">
                 <div className="bg-slate-50 rounded-xl p-5 border border-slate-150 flex items-center justify-between text-sm shadow-sm">
-                  <span className="text-slate-750 font-semibold text-slate-700">Selected Consultant Category: <strong className="text-black font-bold uppercase">{consultantType}</strong></span>
+                  <span className="text-slate-700 font-semibold">Selected Consultant Category: <strong className="text-black font-bold">{consultantType}</strong></span>
                   {consultantType === "Freelancer" ? (
-                    <span className="text-[10px] bg-slate-100 text-slate-700 px-3 py-1 rounded-lg border border-slate-250 uppercase font-semibold">Verification Documents: Optional</span>
+                    <span className="text-[10px] bg-slate-100 text-slate-700 px-3 py-1 rounded-lg border border-slate-250 font-semibold">Verification Documents: Optional</span>
                   ) : (
-                    <span className="text-[10px] bg-red-50 text-red-700 px-3 py-1 rounded-lg border border-red-200 uppercase font-semibold">Verification Documents: Required</span>
+                    <span className="text-[10px] bg-red-50 text-red-700 px-3 py-1 rounded-lg border border-red-200 font-semibold">Verification Documents: Required</span>
                   )}
                 </div>
 
@@ -704,7 +735,7 @@ export function ExpertSignupPortal() {
                     <button 
                       type="button" 
                       onClick={() => setEscrowAccepted(!escrowAccepted)}
-                      className={`px-5 py-2.5 rounded-xl text-sm font-semibold uppercase tracking-wider transition-all cursor-pointer ${escrowAccepted ? "bg-black text-white" : "bg-slate-200 text-slate-700"}`}
+                      className={`px-5 py-2.5 rounded-xl text-sm font-semibold tracking-wider transition-all cursor-pointer ${escrowAccepted ? "bg-black text-white" : "bg-slate-200 text-slate-700"}`}
                     >
                       {escrowAccepted ? "Yes" : "No"}
                     </button>
@@ -813,7 +844,7 @@ export function ExpertSignupPortal() {
                     {/* Name and PRO Badge */}
                     <div className="flex items-center gap-2 flex-wrap">
                       <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{businessName || "Apex Immigration"}</h2>
-                      <span className="bg-emerald-500/10 text-emerald-700 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-emerald-500/20">Verified</span>
+                      <span className="bg-emerald-500/10 text-emerald-700 text-[9px] font-black tracking-widest px-2 py-0.5 rounded-full border border-emerald-500/20">Verified</span>
                     </div>
 
                     {/* Description/Location */}
@@ -838,13 +869,13 @@ export function ExpertSignupPortal() {
               <div className="flex items-center gap-3">
                 <button 
                   onClick={() => setShowAdModal(true)}
-                  className="bg-white hover:bg-slate-50 text-black border border-slate-250 px-5 py-3.5 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all flex items-center gap-2 active:scale-95 shadow-sm cursor-pointer"
+                  className="bg-white hover:bg-slate-50 text-black border border-slate-250 px-5 py-3.5 rounded-xl text-xs font-medium tracking-normal transition-all flex items-center gap-2 active:scale-95 shadow-sm cursor-pointer"
                 >
                   Post an Ad <ArrowUpRight className="w-4 h-4 text-slate-500" />
                 </button>
                 <button 
                   onClick={() => setShowOfferModal(true)}
-                  className="bg-black hover:bg-slate-900 text-white px-5 py-3.5 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all flex items-center gap-2 active:scale-95 shadow-sm cursor-pointer"
+                  className="bg-black hover:bg-slate-900 text-white px-5 py-3.5 rounded-xl text-xs font-medium tracking-normal transition-all flex items-center gap-2 active:scale-95 shadow-sm cursor-pointer"
                 >
                   Special Offer <Sparkles className="w-4 h-4 text-yellow-400" />
                 </button>
@@ -859,7 +890,7 @@ export function ExpertSignupPortal() {
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                       <h3 className="font-bold text-lg text-black">My Inquiries</h3>
-                      <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Applicant Requests</span>
+                      <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5">Applicant Requests</span>
                     </div>
                     <button onClick={() => setShowAdModal(true)} className="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all">
                       <Plus className="w-4 h-4 text-black" />
@@ -891,7 +922,7 @@ export function ExpertSignupPortal() {
                             <div className="flex items-start justify-between">
                               <div>
                                 <span className="text-xs font-semibold text-black block">{inq.name}</span>
-                                <span className="text-[9px] bg-white/80 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-bold mt-1 inline-block uppercase tracking-wider">
+                                <span className="text-[9px] bg-white/80 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-bold mt-1 inline-block tracking-wider">
                                   {inq.type} ({inq.country})
                                 </span>
                               </div>
@@ -908,7 +939,7 @@ export function ExpertSignupPortal() {
                               </button>
                               <button 
                                 onClick={() => handleAcceptInquiry(inq.id)}
-                                className="bg-black hover:bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-lg transition-all"
+                                className="bg-black hover:bg-slate-900 text-white text-[9px] font-bold tracking-wider px-3.5 py-1.5 rounded-lg transition-all"
                               >
                                 Accept
                               </button>
@@ -929,7 +960,7 @@ export function ExpertSignupPortal() {
                     {/* Projects / Cases Overview Doughnut Chart Layout */}
                     <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
                       <div className="flex justify-between items-center">
-                        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block">Cases Overview</span>
+                        <span className="text-xs font-bold text-slate-400 tracking-widest block">Cases Overview</span>
                         <button className="text-slate-400 hover:text-black">
                           <ArrowRight className="w-4 h-4" />
                         </button>
@@ -940,7 +971,7 @@ export function ExpertSignupPortal() {
                         <div className="absolute inset-0 border-[10px] border-t-black border-r-orange-500 border-b-sky-500 border-l-slate-100 rounded-full animate-spin-slow"></div>
                         <div className="text-center z-10">
                           <span className="text-2xl font-bold text-black">{activeCases.length}</span>
-                          <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">Active</span>
+                          <span className="text-[9px] text-slate-400 font-bold tracking-wider block mt-0.5">Active</span>
                         </div>
                       </div>
 
@@ -955,7 +986,7 @@ export function ExpertSignupPortal() {
                     <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
                       <div className="flex justify-between items-center">
                         <div>
-                          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block">Revenue</span>
+                          <span className="text-xs font-bold text-slate-400 tracking-widest block">Revenue</span>
                           <span className="text-lg font-bold text-black mt-1 block">₹{(activeCases.length * 15000).toLocaleString()} Secured</span>
                         </div>
                         <div className="flex items-center gap-1 text-[10px] font-bold text-slate-450">
@@ -989,7 +1020,7 @@ export function ExpertSignupPortal() {
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col">
                         <h3 className="font-bold text-lg text-black">Milestone Escrow Vault</h3>
-                        <span className="text-[11px] text-slate-450 font-bold uppercase tracking-wider">Secured Payouts</span>
+                        <span className="text-[11px] text-slate-450 font-bold tracking-wider">Secured Payouts</span>
                       </div>
                       <Shield className="w-5 h-5 text-black" />
                     </div>
@@ -1026,7 +1057,7 @@ export function ExpertSignupPortal() {
                   {/* Active Cases Milestone list (styled like My Meetings in mockup) */}
                   <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-450 uppercase tracking-widest block">Active Cases</span>
+                      <span className="text-xs font-bold text-slate-450 tracking-widest block">Active Cases</span>
                       <Calendar className="w-4 h-4 text-black" />
                     </div>
 
@@ -1040,7 +1071,7 @@ export function ExpertSignupPortal() {
                           <div key={c.id} className="bg-slate-50 border border-slate-200/40 rounded-2xl p-4.5 space-y-3 hover:shadow-xs transition-all relative">
                             <div className="flex justify-between items-center text-xs font-bold">
                               <span className="text-slate-450 font-bold">{c.escrow}</span>
-                              <span className="bg-black text-white px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider">Meet</span>
+                              <span className="bg-black text-white px-2 py-0.5 rounded-md text-[9px] tracking-wider">Meet</span>
                             </div>
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full bg-slate-250 flex items-center justify-center font-bold text-xs text-black">
@@ -1056,7 +1087,7 @@ export function ExpertSignupPortal() {
                             <div className="mt-2 pt-2 border-t border-slate-100/50">
                               <div className="flex items-center justify-between text-[9px] font-bold text-slate-500 mb-1">
                                 <span>Progress: {c.progress}%</span>
-                                <span className="text-black font-bold uppercase">{c.status.includes("Completed") ? "Completed" : "In-Progress"}</span>
+                                <span className="text-black font-bold">{c.status.includes("Completed") ? "Completed" : "In-Progress"}</span>
                               </div>
                               <input 
                                 type="range" 
@@ -1079,7 +1110,7 @@ export function ExpertSignupPortal() {
                   {/* Open Tickets layout (shows partners ads & promotional offers list) */}
                   <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-450 uppercase tracking-widest block">Active Ads & Offers</span>
+                      <span className="text-xs font-bold text-slate-450 tracking-widest block">Active Ads & Offers</span>
                       <Plus className="w-4 h-4 text-black cursor-pointer" onClick={() => setShowAdModal(true)} />
                     </div>
 
@@ -1120,7 +1151,7 @@ export function ExpertSignupPortal() {
               </div>
             ) : activeTab === "profile" ? (
               <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-8 animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 uppercase tracking-wide">
+                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 tracking-wide">
                   Live Consultant Profile Information
                 </h3>
 
@@ -1134,9 +1165,9 @@ export function ExpertSignupPortal() {
                     )}
                   </div>
                   <div className="flex flex-col items-start gap-2.5">
-                    <span className="text-xs font-bold text-black uppercase tracking-wider">Profile Avatar Image</span>
+                    <span className="text-xs font-bold text-black tracking-wider">Profile Avatar Image</span>
                     <p className="text-[11px] text-slate-500 font-medium">PNG, JPG formats accepted. Automatically syncs with header badge.</p>
-                    <label className="bg-black hover:bg-slate-900 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl cursor-pointer active:scale-95 transition-all shadow-sm">
+                    <label className="bg-black hover:bg-slate-900 text-white text-xs font-bold tracking-wider px-5 py-2.5 rounded-xl cursor-pointer active:scale-95 transition-all shadow-sm">
                       Upload Avatar Photo
                       <input 
                         type="file" 
@@ -1181,33 +1212,60 @@ export function ExpertSignupPortal() {
                     />
                   </div>
 
-                  <div className="space-y-1.5">
+                  <div className="space-y-1.5" onClick={(e) => e.stopPropagation()}>
                     <label className="text-xs font-bold text-slate-800">Practice Consultant Category</label>
-                    <select 
-                      value={consultantType} 
-                      onChange={(e) => setConsultantType(e.target.value)} 
-                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none cursor-pointer"
-                    >
-                      <option value="Freelancer">Freelancer</option>
-                      <option value="Business Expert">Business expert</option>
-                      <option value="Institute or company">Institute or company</option>
-                      <option value="Legal professional">Legal professional</option>
-                    </select>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setEditConsultantOpen(!editConsultantOpen)}
+                        className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black text-left outline-none cursor-pointer flex items-center justify-between h-[46px]"
+                      >
+                        <span>{consultantType}</span>
+                        <ChevronDown className="w-4 h-4 text-slate-500" />
+                      </button>
+                      {editConsultantOpen && (
+                        <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
+                          {["Freelancer", "Business Expert", "Institute or company", "Legal professional"].map(type => (
+                            <button
+                              key={type}
+                              type="button"
+                              onClick={() => { setConsultantType(type); setEditConsultantOpen(false); }}
+                              className="w-full text-left px-4 py-2 text-xs font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
+                            >
+                              {type}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="space-y-1.5">
+                  <div className="space-y-1.5" onClick={(e) => e.stopPropagation()}>
                     <label className="text-xs font-bold text-slate-800">Expert In (Category)</label>
-                    <select 
-                      value={expertCategory} 
-                      onChange={(e) => setExpertCategory(e.target.value)} 
-                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none cursor-pointer"
-                    >
-                      <option value="Student visa expert">Student visa expert</option>
-                      <option value="Visa filing expert">Visa filing expert</option>
-                      <option value="Visit visa expert">Visit visa expert</option>
-                      <option value="Job visa expert">Job visa expert</option>
-                      <option value="PR And Migration expert">PR And Migration expert</option>
-                    </select>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setEditCategoryOpen(!editCategoryOpen)}
+                        className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black text-left outline-none cursor-pointer flex items-center justify-between h-[46px]"
+                      >
+                        <span>{expertCategory}</span>
+                        <ChevronDown className="w-4 h-4 text-slate-500" />
+                      </button>
+                      {editCategoryOpen && (
+                        <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
+                          {["Student visa expert", "Visa filing expert", "Visit visa expert", "Job visa expert", "PR And Migration expert"].map(cat => (
+                            <button
+                              key={cat}
+                              type="button"
+                              onClick={() => { setExpertCategory(cat); setEditCategoryOpen(false); }}
+                              className="w-full text-left px-4 py-2 text-xs font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
+                            >
+                              {cat}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="space-y-1.5">
@@ -1252,7 +1310,7 @@ export function ExpertSignupPortal() {
                 </div>
 
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-150 space-y-4">
-                  <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block">Additional Details & Verified Documents</span>
+                  <span className="text-xs font-bold text-slate-600 tracking-wider block">Additional Details & Verified Documents</span>
                   {consultantType === "Freelancer" ? (
                     <div className="grid grid-cols-1 gap-4">
                       <div className="space-y-1.5">
@@ -1301,7 +1359,7 @@ export function ExpertSignupPortal() {
                 <div className="pt-4 flex justify-end">
                   <button 
                     onClick={handleSaveProfile}
-                    className="bg-black hover:bg-slate-900 text-white font-bold text-xs px-6 py-3.5 rounded-xl uppercase tracking-wider transition-all active:scale-[0.98] shadow-md cursor-pointer"
+                    className="bg-black hover:bg-slate-900 text-white font-bold text-xs px-6 py-3.5 rounded-xl tracking-wider transition-all active:scale-[0.98] shadow-md cursor-pointer"
                   >
                     Save Profile Changes
                   </button>
@@ -1309,7 +1367,7 @@ export function ExpertSignupPortal() {
               </div>
             ) : activeTab === "inquiries" ? (
               <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 mb-4 uppercase tracking-wide">
+                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 mb-4 tracking-wide">
                   Incoming Applicant Inquiries
                 </h3>
 
@@ -1324,7 +1382,7 @@ export function ExpertSignupPortal() {
                         <div className="flex items-start justify-between">
                           <div>
                             <h4 className="font-bold text-black text-sm">{inq.name}</h4>
-                            <span className="text-[10px] bg-slate-100 text-black px-2.5 py-0.5 rounded-md font-bold mt-1.5 inline-block uppercase tracking-wider">
+                            <span className="text-[10px] bg-slate-100 text-black px-2.5 py-0.5 rounded-md font-bold mt-1.5 inline-block tracking-wider">
                               {inq.type} ({inq.country})
                             </span>
                           </div>
@@ -1341,7 +1399,7 @@ export function ExpertSignupPortal() {
                           </button>
                           <button 
                             onClick={() => handleAcceptInquiry(inq.id)}
-                            className="bg-black hover:bg-slate-900 text-white text-xs font-bold uppercase tracking-wider px-5 py-2 rounded-xl active:scale-95 transition-all shadow-sm"
+                            className="bg-black hover:bg-slate-900 text-white text-xs font-bold tracking-wider px-5 py-2 rounded-xl active:scale-95 transition-all shadow-sm"
                           >
                             Accept Inquiry
                           </button>
@@ -1353,7 +1411,7 @@ export function ExpertSignupPortal() {
               </div>
             ) : activeTab === "cases" ? (
               <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 mb-4 uppercase tracking-wide">
+                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 mb-4 tracking-wide">
                   Active Client Milestones List
                 </h3>
 
@@ -1367,12 +1425,12 @@ export function ExpertSignupPortal() {
                       <div key={c.id} className="border border-slate-150 rounded-2xl p-5 hover:shadow-md transition-all bg-white relative">
                         <div className="flex items-center justify-between mb-3.5">
                           <h4 className="font-bold text-black text-sm">{c.name}</h4>
-                          <span className="text-[10px] font-bold uppercase bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-md">
+                          <span className="text-[10px] font-bold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-md">
                             {c.escrow}
                           </span>
                         </div>
                         <p className="text-xs font-bold text-black">{c.visa}</p>
-                        <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-wider">{c.status}</p>
+                        <p className="text-[10px] text-slate-400 font-bold mt-1 tracking-wider">{c.status}</p>
 
                         <div className="mt-5">
                           <div className="flex items-center justify-between text-[10px] font-bold mb-1.5">
@@ -1398,35 +1456,35 @@ export function ExpertSignupPortal() {
               </div>
             ) : activeTab === "upgrade" ? (
               <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 mb-6 uppercase tracking-wide">
+                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 mb-6 tracking-wide">
                   Membership Tier Plans Comparison
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                   <div className="border border-slate-150 rounded-2xl p-6 shadow-sm space-y-4">
                     <div>
-                      <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Current Tier</span>
+                      <span className="text-[10px] font-bold text-slate-400 tracking-wider">Current Tier</span>
                       <h4 className="text-lg font-bold text-black mt-1">Standard Directory</h4>
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed font-medium">Basic directory listing, standard case commission applies. Receive applicant inquiries up to 5 per week.</p>
                     <button 
                       disabled={true}
-                      className="w-full bg-slate-100 text-slate-400 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider cursor-not-allowed"
+                      className="w-full bg-slate-100 text-slate-400 py-2.5 rounded-lg text-xs font-bold tracking-wider cursor-not-allowed"
                     >
                       Coming Soon
                     </button>
                   </div>
 
                   <div className="border-2 border-black rounded-2xl p-6 shadow-sm space-y-4 relative overflow-hidden bg-slate-50/20">
-                    <span className="absolute top-2.5 right-2.5 text-[9px] font-bold uppercase bg-black text-white px-2 py-0.5 rounded-md">Highly Rated</span>
+                    <span className="absolute top-2.5 right-2.5 text-[9px] font-bold bg-black text-white px-2 py-0.5 rounded-md">Highly Rated</span>
                     <div>
-                      <span className="text-[10px] font-bold uppercase text-slate-550 tracking-wider">Premium Partner</span>
+                      <span className="text-[10px] font-bold text-slate-550 tracking-wider">Premium Partner</span>
                       <h4 className="text-lg font-bold text-[#111111] mt-1">Elite Accelerator</h4>
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed font-medium">Featured directory listing boost, direct messaging to all applicants, zero commission on escrow bookings, priority support.</p>
                     <button 
                       disabled={true}
-                      className="w-full bg-black/60 text-white/80 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider cursor-not-allowed"
+                      className="w-full bg-black/60 text-white/80 py-2.5 rounded-lg text-xs font-bold tracking-wider cursor-not-allowed"
                     >
                       Coming Soon
                     </button>
@@ -1435,7 +1493,7 @@ export function ExpertSignupPortal() {
               </div>
             ) : activeTab === "photos" ? (
               <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-6 animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 uppercase tracking-wide">
+                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 tracking-wide">
                   Upload Photos & Gallery Documents
                 </h3>
 
@@ -1476,7 +1534,7 @@ export function ExpertSignupPortal() {
                 </div>
 
                 <div className="space-y-3 pt-4">
-                  <span className="text-xs font-bold text-black block uppercase tracking-wider">Uploaded Gallery Files List ({uploadedFiles.length})</span>
+                  <span className="text-xs font-bold text-black block tracking-wider">Uploaded Gallery Files List ({uploadedFiles.length})</span>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {uploadedFiles.map((file, idx) => (
                       <div key={idx} className="bg-slate-50 border border-slate-150 p-4.5 rounded-xl flex items-center justify-between text-xs font-bold text-black shadow-sm">
@@ -1493,7 +1551,7 @@ export function ExpertSignupPortal() {
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn px-4">
               <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
                 <div className="flex justify-between items-center border-b pb-2">
-                  <h3 className="font-bold text-sm text-black uppercase tracking-wider">Post a New Ad</h3>
+                  <h3 className="font-bold text-sm text-black tracking-wider">Post a New Ad</h3>
                   <button onClick={() => setShowAdModal(false)} className="text-slate-450 hover:text-black font-bold">×</button>
                 </div>
                 <form onSubmit={handleAddAd} className="space-y-4">
@@ -1521,7 +1579,7 @@ export function ExpertSignupPortal() {
                   </div>
                   <div className="flex justify-end gap-2.5 pt-2">
                     <button type="button" onClick={() => setShowAdModal(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-500">Cancel</button>
-                    <button type="submit" className="px-5 py-2 bg-black text-white rounded-lg text-xs font-bold uppercase tracking-wider">Publish Ad</button>
+                    <button type="submit" className="px-5 py-2 bg-black text-white rounded-lg text-xs font-bold tracking-wider">Publish Ad</button>
                   </div>
                 </form>
               </div>
@@ -1532,7 +1590,7 @@ export function ExpertSignupPortal() {
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn px-4">
               <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
                 <div className="flex justify-between items-center border-b pb-2">
-                  <h3 className="font-bold text-sm text-black uppercase tracking-wider">Create a Promotional Offer</h3>
+                  <h3 className="font-bold text-sm text-black tracking-wider">Create a Promotional Offer</h3>
                   <button onClick={() => setShowOfferModal(false)} className="text-slate-450 hover:text-black font-bold">×</button>
                 </div>
                 <form onSubmit={handleAddOffer} className="space-y-4">
@@ -1560,7 +1618,7 @@ export function ExpertSignupPortal() {
                   </div>
                   <div className="flex justify-end gap-2.5 pt-2">
                     <button type="button" onClick={() => setShowOfferModal(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-500">Cancel</button>
-                    <button type="submit" className="px-5 py-2 bg-black text-white rounded-lg text-xs font-bold uppercase tracking-wider">Launch Offer</button>
+                    <button type="submit" className="px-5 py-2 bg-black text-white rounded-lg text-xs font-bold tracking-wider">Launch Offer</button>
                   </div>
                 </form>
               </div>

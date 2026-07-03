@@ -169,7 +169,7 @@ export function VFSBookingPortal() {
 
         {/* ── UPCOMING APPOINTMENTS ─────────────────────── */}
         <div className="mb-8">
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-1">Upcoming & Pending</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-1">Upcoming & Pending</span>
           <h2 className="font-sora font-extrabold text-xl text-[#0C1E2E] mb-5">Your Booked Appointments</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -222,7 +222,7 @@ export function VFSBookingPortal() {
 
         {/* ── BOOKING FORM ──────────────────────────────── */}
         <div id="book-section" className="bg-gradient-to-br from-[#fff5f5] to-white border border-red-100 rounded-3xl p-7 md:p-9 mb-8 shadow-sm">
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-1">Agent Booking Panel</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-1">Agent Booking Panel</span>
           <h2 className="font-sora font-extrabold text-xl text-[#0C1A2E] mb-1">Book New VFS Appointment</h2>
           <p className="text-sm text-[#475569] mb-7">For your client — biometrics, passport submission, visa interview, or document collection.</p>
 
@@ -237,7 +237,7 @@ export function VFSBookingPortal() {
           {/* Row 1: Client name + Passport */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Client Full Name *</label>
+              <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Client Full Name *</label>
               <input
                 value={clientName} onChange={e => setClientName(e.target.value)}
                 className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0C1A2E] outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all placeholder:text-[#C4D9E8]"
@@ -245,7 +245,7 @@ export function VFSBookingPortal() {
               />
             </div>
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Passport Number</label>
+              <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Passport Number</label>
               <input
                 value={passportNo} onChange={e => setPassportNo(e.target.value)}
                 className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0C1A2E] outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all placeholder:text-[#C4D9E8]"
@@ -257,7 +257,7 @@ export function VFSBookingPortal() {
           {/* Row 2: Country + Service */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Visa Country / Destination</label>
+              <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Visa Country / Destination</label>
               <div className="relative">
                 <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94B0C4] pointer-events-none" />
                 <select value={country} onChange={e => setCountry(e.target.value)}
@@ -267,7 +267,7 @@ export function VFSBookingPortal() {
               </div>
             </div>
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Service Type</label>
+              <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Service Type</label>
               <div className="relative">
                 <FileText className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94B0C4] pointer-events-none" />
                 <select value={serviceType} onChange={e => setServiceType(e.target.value)}
@@ -281,7 +281,7 @@ export function VFSBookingPortal() {
           {/* Row 3: Centre + Date */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">VFS Centre (City)</label>
+              <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">VFS Centre (City)</label>
               <div className="relative">
                 <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94B0C4] pointer-events-none" />
                 <select value={centre} onChange={e => setCentre(e.target.value)}
@@ -291,7 +291,7 @@ export function VFSBookingPortal() {
               </div>
             </div>
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Preferred Date *</label>
+              <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Preferred Date *</label>
               <div className="relative">
                 <CalendarCheck className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94B0C4] pointer-events-none" />
                 <input type="date" value={prefDate} onChange={e => setPrefDate(e.target.value)}
@@ -303,7 +303,7 @@ export function VFSBookingPortal() {
           {/* Row 4: Time + Note */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Preferred Time Slot</label>
+              <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Preferred Time Slot</label>
               <div className="relative">
                 <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94B0C4] pointer-events-none" />
                 <select value={timeSlot} onChange={e => setTimeSlot(e.target.value)}
@@ -313,7 +313,7 @@ export function VFSBookingPortal() {
               </div>
             </div>
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#94B0C4] block mb-1.5">Agent Note (optional)</label>
+              <label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Agent Note (optional)</label>
               <input value={agentNote} onChange={e => setAgentNote(e.target.value)}
                 className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0C1A2E] outline-none focus:border-red-500 transition-all placeholder:text-[#C4D9E8]"
                 placeholder="Any special request for client?" />
@@ -343,12 +343,12 @@ export function VFSBookingPortal() {
 
         {/* ── BOOKING HISTORY TABLE ─────────────────────── */}
         <div className="mb-8">
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-1">Booking History</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-1">Booking History</span>
           <h2 className="font-sora font-extrabold text-xl text-[#0C1A2E] mb-5">Recent Appointments Booked by You</h2>
 
           <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
             {/* Table header */}
-            <div className="hidden md:grid grid-cols-12 bg-slate-50 border-b border-slate-100 px-5 py-3 text-[10px] font-extrabold text-[#94B0C4] uppercase tracking-wider">
+            <div className="hidden md:grid grid-cols-12 bg-slate-50 border-b border-slate-100 px-5 py-3 text-[10px] font-extrabold text-[#94B0C4] tracking-wider">
               <div className="col-span-2">Client</div>
               <div className="col-span-3">Country / Visa</div>
               <div className="col-span-2">VFS Centre</div>
@@ -379,7 +379,7 @@ export function VFSBookingPortal() {
 
         {/* ── VFS PROCESS GUIDE ─────────────────────────── */}
         <div className="bg-white border border-slate-100 rounded-3xl p-7 mb-8 shadow-sm">
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-1">VFS Process Guide</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-1">VFS Process Guide</span>
           <h2 className="font-sora font-extrabold text-xl text-[#0C1A2E] mb-7">Step-by-Step for VisaFormula Agents</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">

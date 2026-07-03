@@ -115,7 +115,7 @@ export function VisaFormFilingPortal() {
 
         {/* Stepper Form Section */}
         <div id="form-order" className="pt-8">
-          <span className="text-[11px] font-extrabold text-red-500 uppercase tracking-widest block mb-2">Form Order Filing</span>
+          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Form Order Filing</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-2">Tell Us About Your Application</h2>
           <p className="text-sm text-gray-500 mb-8">Follow our simple 4-step secure panel to get started.</p>
 
@@ -191,7 +191,7 @@ export function VisaFormFilingPortal() {
                         <h3 className="font-sora font-bold text-base text-[#0c1a2e] mb-4">Step 1 — Personal Information</h3>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">First Name</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">First Name</label>
                             <input
                               value={firstName}
                               onChange={(e) => setFirstName(e.target.value)}
@@ -201,7 +201,7 @@ export function VisaFormFilingPortal() {
                             />
                           </div>
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Last Name</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Last Name</label>
                             <input
                               value={lastName}
                               onChange={(e) => setLastName(e.target.value)}
@@ -213,7 +213,7 @@ export function VisaFormFilingPortal() {
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Date of Birth</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Date of Birth</label>
                             <input
                               type="date"
                               value={dob}
@@ -223,7 +223,7 @@ export function VisaFormFilingPortal() {
                             />
                           </div>
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Passport Number</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Passport Number</label>
                             <input
                               value={passportNo}
                               onChange={(e) => setPassportNo(e.target.value)}
@@ -235,7 +235,7 @@ export function VisaFormFilingPortal() {
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Email</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Email</label>
                             <input
                               type="email"
                               value={email}
@@ -246,7 +246,7 @@ export function VisaFormFilingPortal() {
                             />
                           </div>
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">WhatsApp Number</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">WhatsApp Number</label>
                             <input
                               value={whatsapp}
                               onChange={(e) => setWhatsapp(e.target.value)}
@@ -274,7 +274,7 @@ export function VisaFormFilingPortal() {
                         <h3 className="font-sora font-bold text-base text-[#0c1a2e] mb-4">Step 2 — Visa & Travel Details</h3>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Destination</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Destination</label>
                             <select
                               value={dest}
                               onChange={(e) => setDest(e.target.value)}
@@ -288,7 +288,7 @@ export function VisaFormFilingPortal() {
                             </select>
                           </div>
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Visa Type</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Visa Type</label>
                             <select
                               value={visaType}
                               onChange={(e) => setVisaType(e.target.value)}
@@ -302,7 +302,7 @@ export function VisaFormFilingPortal() {
                           </div>
                         </div>
                         <div>
-                          <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Purpose of Visit</label>
+                          <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Purpose of Visit</label>
                           <textarea
                             value={purpose}
                             onChange={(e) => setPurpose(e.target.value)}
@@ -337,14 +337,14 @@ export function VisaFormFilingPortal() {
                         <p className="text-xs text-gray-400 mb-4">Please upload scanned copies of your passport bio page and passport-size photo.</p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Passport bio page</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Passport bio page</label>
                             <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer">
                               <Upload className="w-6 h-6 text-gray-300 mx-auto mb-1" />
                               <span className="text-[11px] font-bold text-black block">Upload Passport Scan</span>
                             </div>
                           </div>
                           <div>
-                            <label className="text-[10px] font-extrabold uppercase tracking-wider text-gray-400 block mb-1.5">Passport Photo</label>
+                            <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Passport Photo</label>
                             <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer">
                               <Upload className="w-6 h-6 text-gray-300 mx-auto mb-1" />
                               <span className="text-[11px] font-bold text-black block">Upload Photo</span>

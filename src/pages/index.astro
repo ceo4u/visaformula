@@ -15,9 +15,9 @@ const experts = [
 ];
 
 const universities = [
-  { name: "University of Toronto", location: "Toronto, Canada", ranking: "21", rating: 4.8, reviews: 342, programs: "Engineering, CS, Business", tuition: "CAD 45k/yr", image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&h=400&fit=crop" },
-  { name: "University of Melbourne", location: "Melbourne, Australia", ranking: "14", rating: 4.7, reviews: 256, programs: "Medicine, Arts, Law", tuition: "AUD 50k/yr", image: "https://images.unsplash.com/photo-1562774053-701939374585?w=600&h=400&fit=crop" },
-  { name: "UCL", location: "London, UK", ranking: "9", rating: 4.6, reviews: 412, programs: "Architecture, Economics", tuition: "GBP 30k/yr", image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&h=400&fit=crop" },
+  { name: "University of Toronto", location: "Toronto, Canada", ranking: "21", rating: 4.8, reviews: 342, programs: "Engineering, CS, Business", tuition: "CAD 45k/yr", image: "/images/univ_toronto_night.png" },
+  { name: "University of Melbourne", location: "Melbourne, Australia", ranking: "14", rating: 4.7, reviews: 256, programs: "Medicine, Arts, Law", tuition: "AUD 50k/yr", image: "/images/univ_melb_night.png" },
+  { name: "UCL", location: "London, UK", ranking: "9", rating: 4.6, reviews: 412, programs: "Architecture, Economics", tuition: "GBP 30k/yr", image: "/images/univ_ucl_night.png" },
 ];
 
 const jobs = [
@@ -177,13 +177,13 @@ const successStories = [
       </script>
 
       <!-- ② HEADING — aligned with header logo via max-w-7xl -->
-      <div style="position:relative; z-index:20; padding-top:36px;">
+      <div style="position:relative; z-index:20; padding-top:12px;">
         <div class="max-w-7xl mx-auto px-4 md:px-6">
           <div class="hero-text-wrap" style="max-width:580px;">
-            <h1 class="font-sora" style="font-size:36px;font-weight:700;color:#1a1a1a;line-height:1.18;margin-bottom:10px;letter-spacing:-0.5px;">
-              The biggest and most trusted<br/>visa consultancy platform!
+            <h1 class="font-sora" style="font-size:34px;font-weight:700;color:#0f172a;line-height:1.16;margin-bottom:12px;letter-spacing:-0.5px;">
+              The home to world's top <span style="background: linear-gradient(to right, #359fc2, #39b7c1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight:700;">trusted</span><br/>visa consultants.
             </h1>
-            <p style="font-size:14px;color:#666;margin-bottom:22px;">Now find experts based on your country &amp; visa category</p>
+            <p style="font-size:15px;color:#475569;margin-bottom:24px;font-weight:500;line-height:1.5;">Now find experienced, reliable experts based on your country &amp; visa category.</p>
           </div>
         </div>
       </div>
@@ -193,13 +193,13 @@ const successStories = [
 
         <!-- Row 1 — taller cards -->
         <div class="hero-cards-row">
-          <div class="expert-hero-card" style="width:155px;height:250px;">
-            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=560&fit=crop&crop=face" alt="Rajiv Mehta"/>
-            <div class="card-overlay-grad"><div class="card-name-label">Rajiv Mehta</div><span class="cbadge cbadge-blue">#UK Visa</span></div>
+          <div class="expert-hero-card" id="cricket-tours-card" style="width:155px;height:250px;">
+            <img src="/images/cricket_ad.jpg" alt="Cricket Tours"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Cricket Tours</div><span class="cbadge cbadge-red">#Indian Visa</span></div>
           </div>
-          <div class="expert-hero-card" style="width:170px;height:275px;">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=560&fit=crop&crop=face" alt="Priya Sharma"/>
-            <div class="card-overlay-grad"><div class="card-name-label">Priya Sharma</div><span class="cbadge cbadge-purple">#Canada PR</span></div>
+          <div class="expert-hero-card" id="construction-workers-card" style="width:170px;height:275px;">
+            <img src="/images/construction_worker.jpg" alt="Construction Workers"/>
+            <div class="card-overlay-grad"><div class="card-name-label">Construction Workers</div><span class="cbadge cbadge-amber">#Greece Job</span></div>
           </div>
           <div class="expert-hero-card" style="width:162px;height:260px;">
             <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=560&fit=crop&crop=face" alt="Arjun Kapoor"/>
@@ -443,6 +443,117 @@ const successStories = [
     </section>
   </div>
 
+  <!-- Cricket Tour Modal/Popup -->
+  <div id="cricket-tour-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-md" id="cricket-modal-overlay"></div>
+    
+    <div class="relative w-full max-w-md bg-black border border-slate-800 rounded-3xl overflow-hidden shadow-2xl animate-premiumFadeIn text-white font-sora">
+      <!-- Background Image with Fade Overlay -->
+      <div class="absolute inset-0 z-0">
+        <img src="/cricket_stadium.png" alt="Cricket Stadium" class="w-full h-full object-cover opacity-60" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/85 to-transparent"></div>
+      </div>
+      
+      <!-- Content Container -->
+      <div class="relative z-10 p-7 flex flex-col justify-end min-h-[440px]">
+        <!-- Close Button -->
+        <button id="close-cricket-modal" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <!-- Partner Logo & Top Badge Row -->
+        <div class="flex items-center justify-between gap-4 mb-4 mt-8">
+          <span class="bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff]/30 text-[9px] font-black tracking-widest px-3 py-1 rounded-full">
+            SPORTS TOURISM
+          </span>
+          <img src="/images/rising_sports_logo.jpg" alt="Rising At Sports" class="w-10 h-10 rounded-full border border-white/20 bg-white object-contain shadow-md" />
+        </div>
+
+        <!-- Main Content -->
+        <h2 class="text-2xl font-black tracking-tight mb-1 text-white leading-tight">
+          Greece Cricket Tours
+        </h2>
+        
+        <p class="text-slate-300 text-xs font-semibold mb-5">
+          Managed exclusively by <span class="text-white font-bold">Rising At Sports</span>
+        </p>
+
+        <!-- Micro Details Tag -->
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="bg-white/10 backdrop-blur-sm text-[10px] font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-white/90">
+            🏛️ Athens & Corfu
+          </span>
+          <span class="bg-white/10 backdrop-blur-sm text-[10px] font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-white/90">
+            📅 Upcoming Autumn Batch
+          </span>
+        </div>
+
+        <!-- CTA Button -->
+        <a href="/tours?category=sports" class="w-full bg-white hover:bg-neutral-100 text-black py-3.5 rounded-xl font-bold text-center text-xs tracking-wider shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+          <span>View Tour Itinerary</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Construction Job Modal/Popup -->
+  <div id="construction-job-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-md" id="construction-modal-overlay"></div>
+    
+    <div class="relative w-full max-w-md bg-black border border-slate-800 rounded-3xl overflow-hidden shadow-2xl animate-premiumFadeIn text-white font-sora">
+      <!-- Background Image with Fade Overlay -->
+      <div class="absolute inset-0 z-0">
+        <img src="/images/job_construction_greece.png" alt="Construction Site Greece" class="w-full h-full object-cover opacity-60" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent"></div>
+      </div>
+      
+      <!-- Content Container -->
+      <div class="relative z-10 p-7 flex flex-col justify-end min-h-[440px]">
+        <!-- Close Button -->
+        <button id="close-construction-modal" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <!-- Partner Logo & Top Badge Row -->
+        <div class="flex items-center justify-between gap-4 mb-4 mt-8">
+          <span class="bg-[#f59e0b]/10 text-[#f59e0b] border border-[#f59e0b]/30 text-[9px] font-black tracking-widest px-3 py-1 rounded-full">
+            URGENT HIRING • 30 SLOTS
+          </span>
+          <img src="/images/construction_worker.jpg" alt="Construction Logo" class="w-10 h-10 rounded-full border border-white/20 bg-white object-contain shadow-md" />
+        </div>
+
+        <!-- Main Content -->
+        <h2 class="text-2xl font-black tracking-tight mb-2 text-white leading-tight">
+          Construction Crew Recruitment
+        </h2>
+        
+        <p class="text-slate-300 text-xs font-semibold mb-1">
+          Destination: <span class="text-white font-bold">Greece 🇬🇷</span>
+        </p>
+        <p class="text-slate-450 text-[10px] font-semibold mb-5">
+          Special Routing: Maldives Agency Channel
+        </p>
+
+        <!-- Micro Details Tag -->
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="bg-white/10 backdrop-blur-sm text-[10px] font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-white/90">
+            💼 Verified Contract
+          </span>
+          <span class="bg-white/10 backdrop-blur-sm text-[10px] font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-white/90">
+            🛠️ Accommodations Provided
+          </span>
+        </div>
+
+        <!-- CTA Button -->
+        <a href="/jobs" class="w-full bg-white hover:bg-neutral-100 text-black py-3.5 rounded-xl font-bold text-center text-xs tracking-wider shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+          <span>Apply for Screening</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <script is:inline>
     const slides = [
       {
@@ -548,5 +659,49 @@ const successStories = [
         }
       });
     });
+
+    const cricketCard = document.getElementById('cricket-tours-card');
+    const cricketModal = document.getElementById('cricket-tour-modal');
+    const cricketOverlay = document.getElementById('cricket-modal-overlay');
+    const closeCricketBtn = document.getElementById('close-cricket-modal');
+
+    if (cricketCard && cricketModal && cricketOverlay && closeCricketBtn) {
+      cricketCard.addEventListener('click', () => {
+        cricketModal.classList.remove('hidden');
+        cricketModal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      });
+
+      const closeModal = () => {
+        cricketModal.classList.add('hidden');
+        cricketModal.classList.remove('flex');
+        document.body.style.overflow = '';
+      };
+
+      cricketOverlay.addEventListener('click', closeModal);
+      closeCricketBtn.addEventListener('click', closeModal);
+    }
+
+    const constCard = document.getElementById('construction-workers-card');
+    const constModal = document.getElementById('construction-job-modal');
+    const constOverlay = document.getElementById('construction-modal-overlay');
+    const closeConstBtn = document.getElementById('close-construction-modal');
+
+    if (constCard && constModal && constOverlay && closeConstBtn) {
+      constCard.addEventListener('click', () => {
+        constModal.classList.remove('hidden');
+        constModal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      });
+
+      const closeModal = () => {
+        constModal.classList.add('hidden');
+        constModal.classList.remove('flex');
+        document.body.style.overflow = '';
+      };
+
+      constOverlay.addEventListener('click', closeModal);
+      closeConstBtn.addEventListener('click', closeModal);
+    }
   </script>
 </Layout>

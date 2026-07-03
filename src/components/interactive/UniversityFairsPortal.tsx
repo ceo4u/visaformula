@@ -112,7 +112,7 @@ export function UniversityFairsPortal() {
                 </div>
 
                 <div className="max-w-4xl mx-auto text-center relative z-10 text-white">
-                    <span className="bg-white/10 text-slate-300 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
+                    <span className="bg-white/10 text-slate-300 text-[10px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
                         🎓 Universities Fairs
                     </span>
                     <h1 className="font-sora text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-white leading-tight">
@@ -126,7 +126,7 @@ export function UniversityFairsPortal() {
                     <div className="bg-white rounded-2xl border border-slate-200 shadow-xl p-4 max-w-3xl mx-auto text-left">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Fair Location</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Fair Location</label>
                                 <select value={fairLoc} onChange={e => setFairLoc(e.target.value)} className="w-full bg-slate-50 border border-slate-250 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 outline-none">
                                     <option>Anywhere</option>
                                     <option>📍 Mumbai</option>
@@ -136,7 +136,7 @@ export function UniversityFairsPortal() {
                                 </select>
                             </div>
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Study Destination</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Study Destination</label>
                                 <select value={fairDest} onChange={e => setFairDest(e.target.value)} className="w-full bg-slate-50 border border-slate-250 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 outline-none">
                                     <option>All Countries</option>
                                     <option>🇨🇦 Canada</option>
@@ -146,7 +146,7 @@ export function UniversityFairsPortal() {
                                 </select>
                             </div>
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">Month</label>
+                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Month</label>
                                 <select value={fairMonth} onChange={e => setFairMonth(e.target.value)} className="w-full bg-slate-50 border border-slate-250 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 outline-none">
                                     <option>Any Month</option>
                                     <option>May 2026</option>
@@ -167,19 +167,19 @@ export function UniversityFairsPortal() {
                 <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                     <div className="border-r border-slate-200 last:border-0">
                         <div className="font-sora font-extrabold text-slate-900 text-2xl">120+</div>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase mt-0.5">Fairs Every Year</div>
+                        <div className="text-[10px] font-bold text-gray-400 mt-0.5">Fairs Every Year</div>
                     </div>
                     <div className="border-r border-slate-200 last:border-0">
                         <div className="font-sora font-extrabold text-slate-900 text-2xl">500+</div>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase mt-0.5">Universities Attend</div>
+                        <div className="text-[10px] font-bold text-gray-400 mt-0.5">Universities Attend</div>
                     </div>
                     <div className="border-r border-slate-200 last:border-0">
                         <div className="font-sora font-extrabold text-slate-900 text-2xl">Free Entry</div>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase mt-0.5">To Most Fairs</div>
+                        <div className="text-[10px] font-bold text-gray-400 mt-0.5">To Most Fairs</div>
                     </div>
                     <div>
                         <div className="font-sora font-extrabold text-slate-900 text-2xl">Spot Check</div>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase mt-0.5">Student Visa Assistance</div>
+                        <div className="text-[10px] font-bold text-gray-400 mt-0.5">Student Visa Assistance</div>
                     </div>
                 </div>
             </div>
@@ -209,7 +209,7 @@ export function UniversityFairsPortal() {
                 </div>
 
                 <div className="mb-6">
-                    <span className="text-[10px] font-bold text-slate-900 uppercase tracking-widest block mb-1">Upcoming Fairs</span>
+                    <span className="text-[10px] font-bold text-slate-900 tracking-widest block mb-1">Upcoming Fairs</span>
                     <h2 className="font-sora font-bold text-slate-900 text-xl">University Fairs Near You</h2>
                     <p className="text-xs text-gray-400 mt-0.5">Register for free. Meet verified international admissions officers directly.</p>
                 </div>
@@ -229,7 +229,7 @@ export function UniversityFairsPortal() {
                                     {/* Date overlay badge */}
                                     <div className="absolute top-4 left-4 bg-black/90 backdrop-blur-md border border-white/20 text-white rounded-2xl w-14 h-14 flex flex-col items-center justify-center shrink-0 shadow-lg">
                                         <span className="font-sora font-extrabold text-lg leading-none">{fair.date}</span>
-                                        <span className="text-[9px] font-bold uppercase tracking-widest mt-1">{fair.monthName}</span>
+                                        <span className="text-[9px] font-bold tracking-widest mt-1">{fair.monthName}</span>
                                     </div>
                                 </div>
 
@@ -260,7 +260,7 @@ export function UniversityFairsPortal() {
 
                             {/* Bottom: Action row */}
                             <div className="flex justify-between items-center p-6 pt-4 border-t border-slate-100 mt-auto">
-                                <span className="text-[10px] text-slate-700 font-extrabold uppercase tracking-wider">Free Registration</span>
+                                <span className="text-[10px] text-slate-700 font-medium tracking-normal">Free Registration</span>
                                 <button 
                                     onClick={(e) => { e.stopPropagation(); handleBooking(fair.name); }}
                                     className="bg-black hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:shadow-md transition-all active:scale-[0.97]"

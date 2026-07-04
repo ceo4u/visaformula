@@ -383,8 +383,7 @@ import Layout from '../layouts/Layout.astro';
       margin-bottom: 4px;
     }
 
-    .form-group input,
-    .form-group select {
+    .form-group input {
       width: 100%;
       padding: 10px 14px;
       border: 1.5px solid var(--gray-200);
@@ -398,34 +397,78 @@ import Layout from '../layouts/Layout.astro';
 
     /* Force selection styles to override browser default blue selection */
     .form-group input::selection,
-    .form-group input *::selection,
-    .form-group select::selection,
-    .form-group select option::selection {
+    .form-group input *::selection {
       background-color: var(--black) !important;
       color: var(--white) !important;
     }
 
-    .form-group select option {
-      background-color: var(--white);
-      color: var(--black);
-    }
-
-    .form-group select option:hover,
-    .form-group select option:focus,
-    .form-group select option:active,
-    .form-group select option:checked {
-      background: var(--black) linear-gradient(0deg, var(--black) 0%, var(--black) 100%) !important;
-      color: var(--white) !important;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus {
+    .form-group input:focus {
       border-color: var(--black);
       box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
     }
 
     .form-group input::placeholder {
       color: var(--gray-400);
+    }
+
+    /* Custom Dropdown styling */
+    .custom-select-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-select-trigger {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--black);
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all var(--transition);
+      user-select: none;
+    }
+
+    .custom-select-trigger:hover,
+    .custom-select-container.open .custom-select-trigger {
+      border-color: var(--black);
+    }
+
+    .custom-select-options {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 100%;
+      background: var(--white);
+      border: 1.5px solid var(--black);
+      border-radius: 8px;
+      box-shadow: var(--shadow-hover);
+      z-index: 150;
+      display: none;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .custom-select-container.open .custom-select-options {
+      display: block;
+    }
+
+    .custom-option {
+      padding: 10px 14px;
+      font-size: 14px;
+      color: var(--black);
+      cursor: pointer;
+      transition: all var(--transition);
+      user-select: none;
+    }
+
+    .custom-option:hover {
+      background-color: var(--black) !important;
+      color: var(--white) !important;
     }
 
     .form-row {
@@ -899,16 +942,23 @@ import Layout from '../layouts/Layout.astro';
         <div class="form-row">
           <div class="form-group">
             <label>Date of Birth</label>
-            <input type="date" id="dob" value="" />
+            <input type="text" id="dob" placeholder="YYYY-MM-DD" value="" />
           </div>
           <div class="form-group">
             <label>Nationality</label>
-            <select id="nationality">
-              <option value="Indian">🇮🇳 Indian</option>
-              <option value="American">🇺🇸 American</option>
-              <option value="British">🇬🇧 British</option>
-              <option value="Canadian">🇨🇦 Canadian</option>
-            </select>
+            <div class="custom-select-container">
+              <div class="custom-select-trigger" id="nationalityTrigger" onclick="toggleCustomSelect()">
+                <span>🇮🇳 Indian</span>
+                <span class="arrow">▼</span>
+              </div>
+              <div class="custom-select-options" id="nationalityOptions">
+                <div class="custom-option" data-value="Indian" onclick="selectCustomOption('Indian', '🇮🇳 Indian')">🇮🇳 Indian</div>
+                <div class="custom-option" data-value="American" onclick="selectCustomOption('American', '🇺🇸 American')">🇺🇸 American</div>
+                <div class="custom-option" data-value="British" onclick="selectCustomOption('British', '🇬🇧 British')">🇬🇧 British</div>
+                <div class="custom-option" data-value="Canadian" onclick="selectCustomOption('Canadian', '🇨🇦 Canadian')">🇨🇦 Canadian</div>
+              </div>
+            </div>
+            <input type="hidden" id="nationality" value="Indian" />
           </div>
         </div>
         <div class="form-row">
@@ -918,7 +968,7 @@ import Layout from '../layouts/Layout.astro';
           </div>
           <div class="form-group">
             <label>Passport Expiry</label>
-            <input type="date" id="passportExpiry" value="" />
+            <input type="text" id="passportExpiry" placeholder="YYYY-MM-DD" value="" />
           </div>
         </div>
         <div class="form-row">
@@ -1033,11 +1083,18 @@ import Layout from '../layouts/Layout.astro';
 
         <div class="form-group">
           <label>Payment Method</label>
-          <select style="width:100%;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:8px;">
-            <option>💳 Card (UPI / Credit / Debit)</option>
-            <option>🏦 Net Banking</option>
-            <option>📱 UPI (Google Pay / PhonePe)</option>
-          </select>
+          <div class="custom-select-container">
+            <div class="custom-select-trigger" id="paymentTrigger" onclick="togglePaymentSelect()">
+              <span>💳 Card (UPI / Credit / Debit)</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="custom-select-options" id="paymentOptions">
+              <div class="custom-option" data-value="card" onclick="selectPaymentOption('card', '💳 Card (UPI / Credit / Debit)')">💳 Card (UPI / Credit / Debit)</div>
+              <div class="custom-option" data-value="netbanking" onclick="selectPaymentOption('netbanking', '🏦 Net Banking')">🏦 Net Banking</div>
+              <div class="custom-option" data-value="upi" onclick="selectPaymentOption('upi', '📱 UPI (Google Pay / PhonePe)')">📱 UPI (Google Pay / PhonePe)</div>
+            </div>
+          </div>
+          <input type="hidden" id="paymentMethod" value="card" />
         </div>
 
         <div class="form-group">
@@ -1174,6 +1231,48 @@ import Layout from '../layouts/Layout.astro';
       el.classList.add('selected');
       toast(`📋 ${el.textContent.trim()} selected`);
     }
+
+    // ==========================================
+    // CUSTOM SELECT HANDLERS
+    // ==========================================
+    function toggleCustomSelect() {
+      const container = document.querySelector('#nationalityTrigger').closest('.custom-select-container');
+      container.classList.toggle('open');
+      
+      // Close other dropdowns
+      const paymentContainer = document.querySelector('#paymentTrigger').closest('.custom-select-container');
+      paymentContainer.classList.remove('open');
+    }
+
+    function selectCustomOption(val, text) {
+      document.getElementById('nationality').value = val;
+      document.querySelector('#nationalityTrigger span').textContent = text;
+      document.querySelector('#nationalityTrigger').closest('.custom-select-container').classList.remove('open');
+      toast(`📍 Nationality: ${val} selected`);
+    }
+
+    function togglePaymentSelect() {
+      const container = document.querySelector('#paymentTrigger').closest('.custom-select-container');
+      container.classList.toggle('open');
+      
+      // Close other dropdowns
+      const nationalityContainer = document.querySelector('#nationalityTrigger').closest('.custom-select-container');
+      nationalityContainer.classList.remove('open');
+    }
+
+    function selectPaymentOption(val, text) {
+      document.getElementById('paymentMethod').value = val;
+      document.querySelector('#paymentTrigger span').textContent = text;
+      document.querySelector('#paymentTrigger').closest('.custom-select-container').classList.remove('open');
+      toast(`💳 Payment: ${text.split(' ')[1]} selected`);
+    }
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select-container')) {
+        document.querySelectorAll('.custom-select-container').forEach(c => c.classList.remove('open'));
+      }
+    });
 
     // ==========================================
     // PASSPORT UPLOAD & OCR PARSING

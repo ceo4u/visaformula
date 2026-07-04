@@ -179,29 +179,17 @@ const supportiveServicesItems = [
                         </div>
                     </div>
 
-        <!-- Mobile Menu Toggler and Log In Button Row -->
-        <div class="lg:hidden ml-auto flex items-center gap-3 shrink-0 py-2">
-            <a href="/login" class="font-opensans border border-gray-300 hover:border-black text-navy hover:text-black font-extrabold text-[12px] uppercase tracking-wider px-3.5 py-1.5 rounded-lg transition-all duration-300">
-                LOG IN
+        <!-- Mobile Menu Toggler + Login -->
+        <div class="lg:hidden ml-auto flex items-center gap-2">
+            <!-- Mobile Log In button (visible in top bar) -->
+            <a href="/login" id="mobile-login-topbar-btn" class="text-[13px] font-bold text-black border border-gray-300 hover:border-black px-3 py-1.5 rounded-xl transition-all duration-200">
+                Log In
             </a>
-            <div class="relative py-2 group">
-                <button class="font-opensans text-[13px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-0.5 focus:outline-none">
-                    Help
-                    <ChevronDown class="w-3.5 h-3.5 text-gray-400" />
-                </button>
-                <div class="absolute right-0 top-full pt-1 w-[160px] opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-right z-50">
-                    <div class="bg-white rounded-lg border border-slate-100 shadow-lg p-2 flex flex-col gap-1.5 text-left">
-                        <a href="/support" class="text-xs font-semibold text-slate-700 hover:text-black px-2.5 py-1.5 rounded hover:bg-slate-50 transition-all">Support Desk</a>
-                        <a href="/emergency" class="text-xs font-semibold text-slate-700 hover:text-black px-2.5 py-1.5 rounded hover:bg-slate-50 transition-all">Assistance</a>
-                    </div>
-                </div>
-            </div>
-            <button id="mobile-menu-btn" class="p-1 hover:bg-gray-100 rounded-xl transition-colors">
+            <button id="mobile-menu-btn" class="p-2 hover:bg-gray-100 rounded-xl transition-colors">
                 <Menu id="menu-icon" class="w-6 h-6 text-navy" />
                 <X id="close-icon" class="w-6 h-6 text-navy hidden" />
             </button>
-        </div>
-                </div><!-- end top row -->
+        </div><!-- end top row -->
 
                 <!-- Bottom Row: Category Navigation (Desktop Only) -->
                 <div id="category-bar" class="hidden lg:flex items-center justify-start h-12">

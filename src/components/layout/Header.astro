@@ -476,14 +476,19 @@ const supportiveServicesItems = [
             </button>
         </div>
 
-        <!-- Links -->
+        <!-- Self Apply Link (Mobile) -->
+        <a href="/self-apply"
+            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/self-apply" ? "text-[#ef4444] bg-red-50/50" : "text-gray-700 hover:bg-gray-50"}`}>
+            Self Apply
+        </a>
+
         <!-- Find Experts Dropdown (Mobile) -->
         <div class="border-b border-gray-50">
             <button 
                 id="mobile-experts-btn"
                 class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
             >
-                <span>Self Apply</span>
+                <span>Find Experts</span>
                 <ChevronDown id="mobile-experts-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
             </button>
             <div id="mobile-experts-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">

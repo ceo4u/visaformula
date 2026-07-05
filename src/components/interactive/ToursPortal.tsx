@@ -487,119 +487,211 @@ export function ToursPortal() {
             )}
 
             {activeTab === "cruises" && (
-                <section className="relative py-24 px-4 overflow-hidden border-b border-slate-100 flex flex-col items-center justify-center" >
-                    <div className="absolute inset-0 z-0">
-                        <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1800&h=900&fit=crop&q=90" alt="Luxury cruise" className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
-                    </div>
-                    <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
-                        <span className="bg-white/10 text-white text-[10px] font-bold tracking-wider px-3 py-1 rounded-full border border-white/20 mb-4 inline-block">🚢 Cruises</span>
-                        <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
-                            Sail the World. <span className="text-slate-300">Ports & Visas Sorted.</span>
-                        </h1>
-                        <p className="text-white/70 text-sm md:text-base max-w-xl mx-auto mb-8 font-medium">
-                            Ocean cruises, river voyages, and luxury liners — multiple-country voyages with all port visas fully handled.
-                        </p>
+                <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
+                    {/* Cruise Twilight Banner Container */}
+                    <div 
+                        className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[540px] md:min-h-[600px] shadow-2xl border border-white/10"
+                        style={{ background: '#0C1A2E' }}
+                    >
+                        {/* Background Image with Crisp Contrast & Clean Shading */}
+                        <div className="absolute inset-0 z-0">
+                            <img 
+                                src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1600&auto=format&fit=crop&q=95" 
+                                alt="Luxury Cruise Liner" 
+                                className="w-full h-full object-cover brightness-[0.7] contrast-[1.1]"
+                            />
+                            {/* A soft transparent overlay for text readability without extra shading */}
+                            <div 
+                                className="absolute inset-0 bg-black/35"
+                            />
+                        </div>
 
-                        {/* Cruise Search Bar */}
-                        <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/60 shadow-xl p-4 max-w-3xl mx-auto text-left">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                        {/* Banner Content */}
+                        <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+                            
+                            {/* Main Serif Header */}
+                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
+                                Sail the World. Ports & Visas Sorted.
+                            </h1>
+
+                            {/* Bright Green Accent Highlight */}
+                            <p className="text-[#00FF66] font-serif text-2xl md:text-3xl font-bold mb-8 tracking-wide drop-shadow-md">
+                                in exactly 10 minutes
+                            </p>
+
+                            {/* 3-Column Metadata Row */}
+                            <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Cruise Type</label>
-                                    <select value={cruiseType} onChange={e => setCruiseType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>All Types</option>
-                                        <option>🌊 Ocean Cruise</option>
-                                        <option>🏞️ River Cruise</option>
-                                        <option>💎 Luxury Liner</option>
-                                    </select>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">VALID</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">ALL OCEANS</span>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Departure Port</label>
-                                    <select value={cruiseDepart} onChange={e => setCruiseDepart(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>Any Port</option>
-                                        <option>Mumbai, India</option>
-                                        <option>Dubai, UAE</option>
-                                        <option>Singapore</option>
-                                    </select>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">PURPOSE</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">CRUISES</span>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Duration</label>
-                                    <select value={cruiseDur} onChange={e => setCruiseDur(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>Any Duration</option>
-                                        <option>3–5 Nights</option>
-                                        <option>6–9 Nights</option>
-                                        <option>10–14 Nights</option>
-                                    </select>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">VISAS</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">100% HANDLED</span>
                                 </div>
                             </div>
-                            <button onClick={() => triggerToast("🚢 Searching cruises...")} className="w-full bg-black hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all">
-                                <Search className="w-4 h-4" /> Search Cruises
+
+                            {/* Pill CTA Button */}
+                            <button 
+                                onClick={() => {
+                                    const el = document.getElementById("cruise-filter-bar");
+                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                className="bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm px-8 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-xl tracking-wider active:scale-[0.98] select-none"
+                            >
+                                Start New Application
                             </button>
                         </div>
                     </div>
-                </section>
+
+                    {/* Neat Search/Filter Sticky Bar Below Banner */}
+                    <div id="cruise-filter-bar" className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-md p-4 max-w-4xl mx-auto flex flex-col md:flex-row gap-4 items-center">
+                        <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Cruise Type</label>
+                                <select value={cruiseType} onChange={e => setCruiseType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>All Types</option>
+                                    <option>🌊 Ocean Cruise</option>
+                                    <option>🏞️ River Cruise</option>
+                                    <option>💎 Luxury Liner</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Departure Port</label>
+                                <select value={cruiseDepart} onChange={e => setCruiseDepart(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>Any Port</option>
+                                    <option>Mumbai, India</option>
+                                    <option>Dubai, UAE</option>
+                                    <option>Singapore</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Duration</label>
+                                <select value={cruiseDur} onChange={e => setCruiseDur(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>Any Duration</option>
+                                    <option>3–5 Nights</option>
+                                    <option>6–9 Nights</option>
+                                    <option>10–14 Nights</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button onClick={() => triggerToast("🚢 Searching cruises...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
+                            <Search className="w-4 h-4" /> Search Cruises
+                        </button>
+                    </div>
+                </div>
             )}
 
             {activeTab === "events" && (
-                <section className="relative py-24 px-4 overflow-hidden border-b border-orange-100 flex flex-col items-center justify-center" >
-                    <div className="absolute inset-0 z-0">
-                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1800&h=900&fit=crop&q=90" alt="Music concert" className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
-                    </div>
-                    <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
-                        <span className="bg-orange-500/10 text-orange-400 text-[10px] font-bold tracking-wider px-3 py-1 rounded-full border border-orange-500/20 mb-4 inline-block">🎭 Entertainment Events</span>
-                        <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
-                            See the Show. <span className="text-orange-400">Visas Sorted.</span>
-                        </h1>
-                        <p className="text-white/70 text-sm md:text-base max-w-xl mx-auto mb-8 font-medium">
-                            Concerts, music festivals, award shows, comedy nights, theatre — worldwide events with complete visa assistance.
-                        </p>
+                <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
+                    {/* Events Twilight Banner Container */}
+                    <div 
+                        className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[540px] md:min-h-[600px] shadow-2xl border border-white/10"
+                        style={{ background: '#0C1A2E' }}
+                    >
+                        {/* Background Image with Crisp Contrast & Clean Shading */}
+                        <div className="absolute inset-0 z-0">
+                            <img 
+                                src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1600&auto=format&fit=crop&q=95" 
+                                alt="Music Concert" 
+                                className="w-full h-full object-cover brightness-[0.7] contrast-[1.1]"
+                            />
+                            {/* A soft transparent overlay for text readability without extra shading */}
+                            <div 
+                                className="absolute inset-0 bg-black/35"
+                            />
+                        </div>
 
-                        {/* Events Search Bar */}
-                        <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-orange-100/50 shadow-xl p-4 max-w-4xl mx-auto text-left">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-3">
+                        {/* Banner Content */}
+                        <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+                            
+                            {/* Main Serif Header */}
+                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
+                                See the Show. Visas Sorted.
+                            </h1>
+
+                            {/* Bright Green Accent Highlight */}
+                            <p className="text-[#00FF66] font-serif text-2xl md:text-3xl font-bold mb-8 tracking-wide drop-shadow-md">
+                                in exactly 10 minutes
+                            </p>
+
+                            {/* 3-Column Metadata Row */}
+                            <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Event Type</label>
-                                    <select value={eventType} onChange={e => setEventType(e.target.value)} className="w-full bg-orange-50/20 border border-orange-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>All Events</option>
-                                        <option>🎵 Concerts</option>
-                                        <option>🎪 Festivals</option>
-                                        <option>🎭 Theatre</option>
-                                    </select>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">VALID</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">WORLDWIDE EVENTS</span>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Country</label>
-                                    <select value={eventCountry} onChange={e => setEventCountry(e.target.value)} className="w-full bg-orange-50/20 border border-orange-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>Anywhere</option>
-                                        <option>🇬🇧 UK</option>
-                                        <option>🇺🇸 USA</option>
-                                        <option>🇦🇪 UAE</option>
-                                    </select>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">PURPOSE</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">ENTERTAINMENT</span>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Month</label>
-                                    <select value={eventMonth} onChange={e => setEventMonth(e.target.value)} className="w-full bg-orange-50/20 border border-orange-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>Any Month</option>
-                                        <option>Jun 2025</option>
-                                        <option>Jul 2025</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Budget</label>
-                                    <select value={eventBudget} onChange={e => setEventBudget(e.target.value)} className="w-full bg-orange-50/20 border border-orange-100 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>Any Budget</option>
-                                        <option>Under ₹30K</option>
-                                        <option>₹30K–₹75K</option>
-                                        <option>₹75K–₹1.5L</option>
-                                    </select>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">TICKETS</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">GUARANTEED</span>
                                 </div>
                             </div>
-                            <button onClick={() => triggerToast("🎭 Searching events...")} className="w-full bg-black hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all">
-                                <Search className="w-4 h-4" /> Search Events
+
+                            {/* Pill CTA Button */}
+                            <button 
+                                onClick={() => {
+                                    const el = document.getElementById("event-filter-bar");
+                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                className="bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm px-8 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-xl tracking-wider active:scale-[0.98] select-none"
+                            >
+                                Start New Application
                             </button>
                         </div>
                     </div>
-                </section>
+
+                    {/* Neat Search/Filter Sticky Bar Below Banner */}
+                    <div id="event-filter-bar" className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-md p-4 max-w-4xl mx-auto flex flex-col md:flex-row gap-4 items-center">
+                        <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Event Type</label>
+                                <select value={eventType} onChange={e => setEventType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>All Events</option>
+                                    <option>🎵 Concerts</option>
+                                    <option>🎪 Festivals</option>
+                                    <option>🎭 Theatre</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Country</label>
+                                <select value={eventCountry} onChange={e => setEventCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>Anywhere</option>
+                                    <option>🇬🇧 UK</option>
+                                    <option>🇺🇸 USA</option>
+                                    <option>🇦🇪 UAE</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Month</label>
+                                <select value={eventMonth} onChange={e => setEventMonth(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>Any Month</option>
+                                    <option>Jun 2025</option>
+                                    <option>Jul 2025</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Budget</label>
+                                <select value={eventBudget} onChange={e => setEventBudget(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>Any Budget</option>
+                                    <option>Under ₹30K</option>
+                                    <option>₹30K–₹75K</option>
+                                    <option>₹75K–₹1.5L</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button onClick={() => triggerToast("🎭 Searching events...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
+                            <Search className="w-4 h-4" /> Search Events
+                        </button>
+                    </div>
+                </div>
             )}
 
             {/* Category Navigation Bar */}

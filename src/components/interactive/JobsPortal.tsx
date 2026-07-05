@@ -339,8 +339,8 @@ export function JobsPortal() {
               {/* Background Image with Crisp Contrast & Clean Shading */}
               <div className="absolute inset-0 z-0">
                   <img 
-                      src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&auto=format&fit=crop&q=95" 
-                      alt="Modern Global Corporate Skyscrapers Sunset" 
+                      src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&auto=format&fit=crop&q=95" 
+                      alt="City skyline" 
                       className="w-full h-full object-cover brightness-[0.7] contrast-[1.1]"
                   />
                   {/* A soft transparent overlay for text readability without extra shading */}

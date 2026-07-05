@@ -293,19 +293,19 @@ export function ToursPortal() {
                 <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
                     {/* Petronas Twilight Banner Container */}
                     <div 
-                        className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[460px] md:min-h-[500px] shadow-2xl border border-white/10"
+                        className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[540px] md:min-h-[600px] shadow-2xl border border-white/10"
                         style={{ background: '#0C1A2E' }}
                     >
                         {/* Background Image with Crisp Contrast & Clean Shading */}
                         <div className="absolute inset-0 z-0">
                             <img 
-                                src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=1600&auto=format&fit=crop&q=95" 
-                                alt="Twilight Kuala Lumpur" 
-                                className="w-full h-full object-cover brightness-[0.7] contrast-[1.1]"
+                                src="/images/tours_hero_evening.png" 
+                                alt="Luxury Evening Nature Houseboat" 
+                                className="w-full h-full object-cover brightness-[0.8] contrast-[1.05]"
                             />
-                            {/* A soft purple-sunset tinted overlay without heavy black/dark overlays to match user's image exactly */}
+                            {/* Transparent overlay for text legibility without extra shading or color blocking */}
                             <div 
-                                className="absolute inset-0 bg-gradient-to-b from-[#1C0F24]/40 via-[#0C1A2E]/50 to-[#0C1A2E]/80"
+                                className="absolute inset-0 bg-black/35"
                             />
                         </div>
 
@@ -388,7 +388,7 @@ export function ToursPortal() {
                 <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
                     {/* Sport Tours Twilight Banner Container */}
                     <div 
-                        className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[460px] md:min-h-[500px] shadow-2xl border border-white/10"
+                        className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[540px] md:min-h-[600px] shadow-2xl border border-white/10"
                         style={{ background: '#0C1A2E' }}
                     >
                         {/* Background Image with Crisp Contrast & Clean Shading */}
@@ -396,11 +396,11 @@ export function ToursPortal() {
                             <img 
                                 src="/luxury_stadium.png" 
                                 alt="Luxury Stadium" 
-                                className="w-full h-full object-cover brightness-[0.6] contrast-[1.1]"
+                                className="w-full h-full object-cover brightness-[0.8] contrast-[1.05]"
                             />
-                            {/* A soft purple-sunset tinted overlay without heavy black/dark overlays to match user's image exactly */}
+                            {/* Transparent overlay for text legibility without extra shading or color blocking */}
                             <div 
-                                className="absolute inset-0 bg-gradient-to-b from-[#1C0F24]/40 via-[#0C1A2E]/50 to-[#0C1A2E]/80"
+                                className="absolute inset-0 bg-black/35"
                             />
                         </div>
 

@@ -285,7 +285,7 @@ export function ToursPortal() {
     });
 
     return (
-        <div className="bg-[#fff5f5] min-h-screen">
+        <div className="bg-white min-h-screen">
             <Toast message={toastMsg} visible={isToastVisible} onClose={() => setIsToastVisible(false)} />
 
             {/* Dynamic Hero Section */}

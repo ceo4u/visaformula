@@ -698,7 +698,7 @@ export function JobsPortal() {
                         )}
 
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-sora font-extrabold text-base text-[#0c1a2e] leading-snug group-hover:text-[#ef4444] transition-colors mb-1">
+                          <h3 className="font-sora font-semibold text-base text-[#0c1a2e] leading-snug group-hover:text-[#ef4444] transition-colors mb-1">
                             {job.title}
                           </h3>
                           <div className="flex items-center gap-1.5 text-xs text-[#475569] font-semibold">
@@ -710,7 +710,7 @@ export function JobsPortal() {
                         </div>
 
                         <div className="text-right shrink-0">
-                          <div className="font-sora font-extrabold text-sm text-[#0c1a2e]">{job.salary}</div>
+                          <div className="font-sora font-semibold text-sm text-[#0c1a2e]">{job.salary}</div>
                           <div className="text-[10px] text-[#94b0c4] font-semibold">{job.salaryNote}</div>
                         </div>
                       </div>

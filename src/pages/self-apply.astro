@@ -309,15 +309,19 @@ import Layout from '../layouts/Layout.astro';
     }
 
     .country-card:hover {
-      border-color: var(--black);
+      border-color: #359FC2;
       transform: translateY(-2px);
-      box-shadow: var(--shadow-hover);
+      box-shadow: 0 8px 24px rgba(53,159,194,0.15);
     }
 
     .country-card.selected {
-      border-color: var(--black);
-      background: var(--gray-50);
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+      border-color: #359FC2;
+      background: rgba(53,159,194,0.06);
+      box-shadow: 0 0 0 3px rgba(53,159,194,0.15);
+    }
+
+    .country-card.selected .name {
+      color: #359FC2;
     }
 
     .country-card .flag {
@@ -369,14 +373,14 @@ import Layout from '../layouts/Layout.astro';
     }
 
     .visa-pill:hover {
-      border-color: var(--black);
-      color: var(--black);
+      border-color: #359FC2;
+      color: #359FC2;
     }
 
     .visa-pill.selected {
-      background: var(--black);
+      background: #359FC2;
       color: var(--white);
-      border-color: var(--black);
+      border-color: #359FC2;
     }
 
     /* Form */

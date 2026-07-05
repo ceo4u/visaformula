@@ -386,59 +386,106 @@ export function ToursPortal() {
             )}
 
             {activeTab === "sports" && (
-                <section className="relative py-24 px-4 overflow-hidden border-b border-slate-200 flex flex-col items-center justify-center" >
-                    <div className="absolute inset-0 z-0">
-                        <img src="/luxury_stadium.png" alt="Luxury stadium" className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#0c1a2e]/90 via-[#0c1a2e]/75 to-[#0c1a2e]/95" />
-                    </div>
-                    <div className="relative z-10 max-w-4xl mx-auto text-center w-full">
-                        <span className="bg-white/10 text-white text-[10px] font-bold tracking-wider px-3 py-1 rounded-full border border-white/30 mb-4 inline-block">⚽ Sport Tours</span>
-                        <h1 className="font-sora text-4xl md:text-5xl font-extrabold text-white mb-3">
-                            Live the Game. <span className="text-white">Visas Sorted.</span>
-                        </h1>
-                        <p className="text-white/70 text-sm md:text-base max-w-xl mx-auto mb-8 font-medium">
-                            Watch FIFA, Formula 1, Cricket World Cup, Olympics and more — with match tickets, hotel, and visa fully sorted.
-                        </p>
+                <div className="max-w-6xl mx-auto px-4 pt-8 pb-10">
+                    {/* Sport Tours Twilight Banner Container */}
+                    <div 
+                        className="relative w-full rounded-[36px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[420px] shadow-2xl border border-white/5"
+                        style={{ background: '#0C1A2E' }}
+                    >
+                        {/* Background Image with Dark Purple/Violet Gradient Overlay */}
+                        <div className="absolute inset-0 z-0">
+                            <img 
+                                src="/luxury_stadium.png" 
+                                alt="Luxury Stadium" 
+                                className="w-full h-full object-cover brightness-[0.5] contrast-[1.05]"
+                            />
+                            {/* Linear gradient overlay mimicking the exact purple/dark-red sunset glow */}
+                            <div 
+                                className="absolute inset-0 bg-gradient-to-b from-[#2E1A33]/75 via-[#0C1A2E]/85 to-[#0C1A2E]/95" 
+                                style={{ mixBlendMode: 'multiply' }}
+                            />
+                        </div>
 
-                        {/* Sports Search Bar */}
-                        <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 shadow-xl p-4 max-w-3xl mx-auto text-left">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                        {/* Banner Content */}
+                        <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+                            
+                            {/* Main Serif Header */}
+                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-lg">
+                                Live the Game. Visas Sorted.
+                            </h1>
+
+                            {/* Bright Green Accent Highlight */}
+                            <p className="text-[#00FF66] font-serif text-2xl md:text-3xl font-bold mb-8 tracking-wide drop-shadow-md">
+                                in exactly 10 minutes
+                            </p>
+
+                            {/* 3-Column Metadata Row */}
+                            <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Sport Type</label>
-                                    <select value={sportType} onChange={e => setSportType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>All Sports</option>
-                                        <option>⚽ Football / FIFA</option>
-                                        <option>🏎️ Formula 1</option>
-                                        <option>🏏 Cricket</option>
-                                        <option>🏊 Olympics</option>
-                                    </select>
+                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">VALID</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">WORLDWIDE EVENTS</span>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Country</label>
-                                    <select value={sportCountry} onChange={e => setSportCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>Anywhere</option>
-                                        <option>🇬🇧 UK</option>
-                                        <option>🇦🇪 UAE</option>
-                                        <option>🇺🇸 USA</option>
-                                        <option>🇦🇺 Australia</option>
-                                    </select>
+                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">PURPOSE</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">SPORTS</span>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Month</label>
-                                    <select value={sportMonth} onChange={e => setSportMonth(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-navy outline-none">
-                                        <option>Any Month</option>
-                                        <option>June 2025</option>
-                                        <option>July 2025</option>
-                                        <option>Dec 2025</option>
-                                    </select>
+                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">TICKETS</span>
+                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">100% GUARANTEED</span>
                                 </div>
                             </div>
-                            <button onClick={() => triggerToast("⚽ Searching sport tours...")} className="w-full bg-black hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all">
-                                <Search className="w-4 h-4" /> Search Sport Tours
+
+                            {/* Pill CTA Button */}
+                            <button 
+                                onClick={() => {
+                                    const el = document.getElementById("sports-filter-bar");
+                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                className="bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm px-8 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-xl tracking-wider active:scale-[0.98] select-none"
+                            >
+                                Start New Application
                             </button>
                         </div>
                     </div>
-                </section>
+
+                    {/* Neat Search/Filter Sticky Bar Below Banner */}
+                    <div id="sports-filter-bar" className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-md p-4 max-w-4xl mx-auto flex flex-col md:flex-row gap-4 items-center">
+                        <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Sport Type</label>
+                                <select value={sportType} onChange={e => setSportType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>All Sports</option>
+                                    <option>⚽ Football / FIFA</option>
+                                    <option>🏎️ Formula 1</option>
+                                    <option>🏏 Cricket</option>
+                                    <option>🏊 Olympics</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Country</label>
+                                <select value={sportCountry} onChange={e => setSportCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>Anywhere</option>
+                                    <option>🇬🇧 UK</option>
+                                    <option>🇦🇪 UAE</option>
+                                    <option>🇺🇸 USA</option>
+                                    <option>🇦🇺 Australia</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Month</label>
+                                <select value={sportMonth} onChange={e => setSportMonth(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
+                                    <option>Any Month</option>
+                                    <option>June 2025</option>
+                                    <option>July 2025</option>
+                                    <option>Dec 2025</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button onClick={() => triggerToast("⚽ Searching sport tours...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
+                            <Search className="w-4 h-4" /> Search Sport Tours
+                        </button>
+                    </div>
+                </div>
             )}
 
             {activeTab === "cruises" && (

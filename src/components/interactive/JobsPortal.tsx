@@ -482,7 +482,6 @@ export function JobsPortal() {
             ))}
           </div>
         </div>
-          </div>
 
           {/* STATS BAR */}
           <div className="bg-white border-b border-red-100">

@@ -601,12 +601,12 @@ export function UniversitiesPortal() {
                 <div
                   key={univ.id}
                   onClick={() => setActiveUniv(univ)}
-                  className="bg-white border border-slate-200/80 rounded-2xl p-5 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-5 items-start justify-between relative group"
+                  className="bg-white border border-slate-200/80 rounded-2xl p-5 hover:shadow-xl hover:border-[#359FC2]/50 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start justify-between relative group"
                 >
                   <div className="flex gap-4 items-start w-full">
                     <img src={univ.logo} alt={univ.name} className="w-16 h-16 rounded-2xl object-cover border border-slate-100 shrink-0 shadow-sm" />
                     <div className="flex-grow min-w-0">
-                      <h3 className="font-sora font-extrabold text-lg text-[#0c1a2e] mb-1.5 leading-snug group-hover:text-black transition-colors">{univ.name}</h3>
+                      <h3 className="font-sora font-semibold text-lg text-[#0c1a2e] mb-1.5 leading-snug group-hover:text-[#359FC2] transition-colors">{univ.name}</h3>
                       <div className="flex flex-wrap items-center gap-3 text-xs text-[#475569] font-semibold">
                         <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#ef4444]" />{univ.location}</span>
                         <span>•</span>

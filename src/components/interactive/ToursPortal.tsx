@@ -290,23 +290,22 @@ export function ToursPortal() {
 
             {/* Dynamic Hero Section */}
             {activeTab === "holiday" && (
-                <div className="max-w-6xl mx-auto px-4 pt-8 pb-10">
+                <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
                     {/* Petronas Twilight Banner Container */}
                     <div 
-                        className="relative w-full rounded-[36px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[420px] shadow-2xl border border-white/5"
+                        className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[460px] md:min-h-[500px] shadow-2xl border border-white/10"
                         style={{ background: '#0C1A2E' }}
                     >
-                        {/* Background Image with Dark Purple/Violet Gradient Overlay */}
+                        {/* Background Image with Crisp Contrast & Clean Shading */}
                         <div className="absolute inset-0 z-0">
                             <img 
-                                src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=1600&auto=format&fit=crop&q=80" 
+                                src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=1600&auto=format&fit=crop&q=95" 
                                 alt="Twilight Kuala Lumpur" 
-                                className="w-full h-full object-cover brightness-[0.6] contrast-[1.05]"
+                                className="w-full h-full object-cover brightness-[0.7] contrast-[1.1]"
                             />
-                            {/* Linear gradient overlay mimicking the exact purple/dark-red sunset glow */}
+                            {/* A soft purple-sunset tinted overlay without heavy black/dark overlays to match user's image exactly */}
                             <div 
-                                className="absolute inset-0 bg-gradient-to-b from-[#2E1A33]/75 via-[#0C1A2E]/85 to-[#0C1A2E]/95" 
-                                style={{ mixBlendMode: 'multiply' }}
+                                className="absolute inset-0 bg-gradient-to-b from-[#1C0F24]/40 via-[#0C1A2E]/50 to-[#0C1A2E]/80"
                             />
                         </div>
 
@@ -314,7 +313,7 @@ export function ToursPortal() {
                         <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
                             
                             {/* Main Serif Header */}
-                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-lg">
+                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
                                 Dream Holidays. Visas Sorted.
                             </h1>
 
@@ -326,15 +325,15 @@ export function ToursPortal() {
                             {/* 3-Column Metadata Row */}
                             <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
                                 <div>
-                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">VALID</span>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">VALID</span>
                                     <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">120+ COUNTRIES</span>
                                 </div>
                                 <div>
-                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">PURPOSE</span>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">PURPOSE</span>
                                     <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">TOURISM</span>
                                 </div>
                                 <div>
-                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">STAYS</span>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">STAYS</span>
                                     <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">4-5★ HOTELS</span>
                                 </div>
                             </div>
@@ -386,23 +385,22 @@ export function ToursPortal() {
             )}
 
             {activeTab === "sports" && (
-                <div className="max-w-6xl mx-auto px-4 pt-8 pb-10">
+                <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
                     {/* Sport Tours Twilight Banner Container */}
                     <div 
-                        className="relative w-full rounded-[36px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[420px] shadow-2xl border border-white/5"
+                        className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[460px] md:min-h-[500px] shadow-2xl border border-white/10"
                         style={{ background: '#0C1A2E' }}
                     >
-                        {/* Background Image with Dark Purple/Violet Gradient Overlay */}
+                        {/* Background Image with Crisp Contrast & Clean Shading */}
                         <div className="absolute inset-0 z-0">
                             <img 
                                 src="/luxury_stadium.png" 
                                 alt="Luxury Stadium" 
-                                className="w-full h-full object-cover brightness-[0.5] contrast-[1.05]"
+                                className="w-full h-full object-cover brightness-[0.6] contrast-[1.1]"
                             />
-                            {/* Linear gradient overlay mimicking the exact purple/dark-red sunset glow */}
+                            {/* A soft purple-sunset tinted overlay without heavy black/dark overlays to match user's image exactly */}
                             <div 
-                                className="absolute inset-0 bg-gradient-to-b from-[#2E1A33]/75 via-[#0C1A2E]/85 to-[#0C1A2E]/95" 
-                                style={{ mixBlendMode: 'multiply' }}
+                                className="absolute inset-0 bg-gradient-to-b from-[#1C0F24]/40 via-[#0C1A2E]/50 to-[#0C1A2E]/80"
                             />
                         </div>
 
@@ -410,7 +408,7 @@ export function ToursPortal() {
                         <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
                             
                             {/* Main Serif Header */}
-                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-lg">
+                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
                                 Live the Game. Visas Sorted.
                             </h1>
 
@@ -422,15 +420,15 @@ export function ToursPortal() {
                             {/* 3-Column Metadata Row */}
                             <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
                                 <div>
-                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">VALID</span>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">VALID</span>
                                     <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">WORLDWIDE EVENTS</span>
                                 </div>
                                 <div>
-                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">PURPOSE</span>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">PURPOSE</span>
                                     <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">SPORTS</span>
                                 </div>
                                 <div>
-                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">TICKETS</span>
+                                    <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">TICKETS</span>
                                     <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">100% GUARANTEED</span>
                                 </div>
                             </div>

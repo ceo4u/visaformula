@@ -6,18 +6,11 @@ import {
 } from "lucide-react";
 
 const countries = [
-  { name: "UAE / Dubai", code: "ae", flag: "🇦🇪", type: "e-Visa", days: "30 days", fee: "₹2,499", express: true, popular: true, image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format&fit=crop&q=80" },
-  { name: "Thailand", code: "th", flag: "🇹🇭", type: "e-Visa", days: "30 days", fee: "₹1,499", express: true, popular: true, image: "https://images.unsplash.com/photo-1528181304800-259b08848526?w=600&auto=format&fit=crop&q=80" },
-  { name: "United Kingdom", code: "gb", flag: "🇬🇧", type: "e-Visa", days: "6 months", fee: "₹9,999", express: false, popular: true, image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&auto=format&fit=crop&q=80" },
-  { name: "Singapore", code: "sg", flag: "🇸🇬", type: "e-Visa", days: "30 days", fee: "₹3,999", express: true, popular: true, image: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&auto=format&fit=crop&q=80" },
-  { name: "Saudi Arabia", code: "sa", flag: "🇸🇦", type: "e-Visa", days: "365 days", fee: "₹4,999", express: true, popular: false, image: "https://images.unsplash.com/photo-1682685797886-79020b7462a4?w=600&auto=format&fit=crop&q=80" },
-  { name: "Japan", code: "jp", flag: "🇯🇵", type: "Sticker", days: "30 days", fee: "₹5,999", express: false, popular: true, image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&auto=format&fit=crop&q=80" },
-  { name: "USA", code: "us", flag: "🇺🇸", type: "B-2 Visa", days: "10 years", fee: "₹12,999", express: false, popular: true, image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&auto=format&fit=crop&q=80" },
-  { name: "Australia", code: "au", flag: "🇦🇺", type: "e-Visa", days: "12 months", fee: "₹7,499", express: true, popular: true, image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600&auto=format&fit=crop&q=80" },
-  { name: "Canada", code: "ca", flag: "🇨🇦", type: "eTA", days: "5 years", fee: "₹6,999", express: false, popular: true, image: "https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?w=600&auto=format&fit=crop&q=80" },
-  { name: "Germany", code: "de", flag: "🇩🇪", type: "Schengen", days: "90 days", fee: "₹8,499", express: false, popular: false, image: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&auto=format&fit=crop&q=80" },
-  { name: "France", code: "fr", flag: "🇫🇷", type: "Schengen", days: "90 days", fee: "₹8,499", express: false, popular: false, image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&auto=format&fit=crop&q=80" },
-  { name: "New Zealand", code: "nz", flag: "🇳🇿", type: "e-Visa", days: "9 months", fee: "₹5,499", express: true, popular: false, image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&auto=format&fit=crop&q=80" },
+  { name: "Thailand", code: "th", flag: "🇹🇭", type: "E-Visa", days: "90 Days", fee: "₹400", express: true, popular: true, image: "https://images.unsplash.com/photo-1528181304800-259b08848526?w=600&auto=format&fit=crop&q=80" },
+  { name: "United Arab Emirates", code: "ae", flag: "🇦🇪", type: "E-Visa", days: "60 Days", fee: "₹7,999", express: true, popular: true, image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format&fit=crop&q=80" },
+  { name: "Malaysia", code: "my", flag: "🇲🇾", type: "E-Visa", days: "30 Days", fee: "₹300", express: true, popular: true, image: "https://images.unsplash.com/photo-1595914261354-f25b8474213f?w=600&auto=format&fit=crop&q=80" },
+  { name: "Sri Lanka", code: "lk", flag: "🇱🇰", type: "E-Visa", days: "180 Days", fee: "₹300", express: true, popular: true, image: "https://images.unsplash.com/photo-1588598130619-469a7258529f?w=600&auto=format&fit=crop&q=80" },
+  { name: "Vietnam", code: "vn", flag: "🇻🇳", type: "E-Visa", days: "90 Days", fee: "₹4,050", express: true, popular: true, image: "https://images.unsplash.com/photo-1528127269322-539801943592?w=600&auto=format&fit=crop&q=80" }
 ];
 
 const leftSteps = [
@@ -272,45 +265,57 @@ export function ApplyVisaPortal() {
               </div>
 
               {/* Cards Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filtered.map(c => (
                   <button
                     key={c.code}
                     onClick={() => { setSelected(c); setStep(1); }}
-                    className={`group relative h-80 rounded-3xl overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 border-2 ${selected?.code === c.code ? "border-black ring-4 ring-slate-200" : "border-white/10 shadow-md bg-white"}`}
+                    className={`group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${selected?.code === c.code ? "border-slate-900 ring-4 ring-slate-100" : "border-transparent shadow-xl"}`}
+                    style={{ background: '#0C1A2E' }}
                   >
-                    <div className="absolute inset-0 bg-slate-950">
+                    {/* Background Image Container */}
+                    <div className="absolute inset-0 z-0">
                       <img 
                         src={c.image} 
                         alt={c.name}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 brightness-[0.8] group-hover:brightness-[0.7]"
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-black/20" />
-                    <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-                      <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full border border-white/35 flex items-center justify-center text-xl shadow-lg">
-                        {c.flag}
-                      </div>
-                      {c.express && (
-                        <span className="bg-gradient-to-r from-slate-800 to-slate-900 text-white text-[10px] font-black px-2.5 py-1 rounded-full border border-slate-700 flex items-center gap-1 shadow-md animate-pulse">
-                          <Zap className="w-3 h-3 fill-white" /> Express
-                        </span>
-                      )}
+                      {/* Dark overlay & blur behind text to match the smooth blur transition in the image */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent" />
                     </div>
 
-                    <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col justify-end">
-                      <span className="text-emerald-400 text-[11px] font-black tracking-widest mb-1">{c.type}</span>
-                      <h3 className="font-sora text-lg font-extrabold text-white leading-tight mb-1 group-hover:text-slate-200 transition-colors">{c.name}</h3>
-                      <p className="text-gray-300 text-xs font-semibold mb-2">🕒 Validity: {c.days}</p>
-                      <div className="h-px bg-white/10 my-2" />
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <span className="text-[10px] text-gray-400 block font-bold tracking-wider">Total Fee</span>
-                          <span className="text-base font-black text-white">{c.fee}</span>
+                    {/* Content Container */}
+                    <div className="absolute inset-0 z-10 flex flex-col justify-end p-6">
+                      
+                      {/* Flag Badge Container - Circular center-aligned above text */}
+                      <div className="flex justify-center mb-4">
+                        <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-2xl shadow-xl transform transition-transform duration-300 group-hover:scale-110">
+                          {c.flag}
                         </div>
-                        <span className="bg-white/10 group-hover:bg-black group-hover:text-white text-white p-2 rounded-xl transition-all duration-300 backdrop-blur-md border border-white/10">
-                          <ArrowRight className="w-4 h-4" />
-                        </span>
+                      </div>
+
+                      {/* Country Title - Serif, uppercase, letter-spaced */}
+                      <h3 className="font-serif text-2xl font-normal text-white text-center tracking-wider uppercase mb-5 leading-snug drop-shadow-md">
+                        {c.name}
+                      </h3>
+
+                      {/* Divider Line */}
+                      <div className="w-full h-[0.5px] bg-white/20 mb-5" />
+
+                      {/* Info Table Grid */}
+                      <div className="grid grid-cols-3 gap-2 text-center">
+                        <div>
+                          <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">TYPE</span>
+                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">{c.type}</span>
+                        </div>
+                        <div>
+                          <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">VALID</span>
+                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">{c.days}</span>
+                        </div>
+                        <div>
+                          <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">FEES</span>
+                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">{c.fee}</span>
+                        </div>
                       </div>
                     </div>
                   </button>

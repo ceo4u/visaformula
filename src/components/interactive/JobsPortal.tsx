@@ -514,7 +514,7 @@ export function JobsPortal() {
           <div className="max-w-6xl mx-auto px-6 pt-12 pb-2 text-left">
             <div className="flex items-end justify-between mb-6">
               <div>
-                <span className="text-[11px] font-extrabold text-[#ef4444] tracking-wider block mb-1">Browse by Destination</span>
+                <span className="text-[11px] font-semibold text-[#ef4444] tracking-wider block mb-1">Browse by Destination</span>
                 <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Work?</h2>
               </div>
               <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">View All →</button>

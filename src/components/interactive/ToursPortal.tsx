@@ -842,7 +842,7 @@ export function ToursPortal() {
             {/* Results Grid / List */}
             <div className="max-w-6xl mx-auto px-4 pb-24">
                 <div className="flex justify-between items-center mb-6">
-                    <p className="text-xs font-extrabold text-gray-400 tracking-widest">
+                    <p className="text-xs font-medium text-slate-400 tracking-widest">
                         {sortedTours.length} package{sortedTours.length !== 1 ? "s" : ""} available
                     </p>
                     <div className="flex items-center gap-2">

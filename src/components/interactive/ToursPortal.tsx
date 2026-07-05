@@ -164,10 +164,10 @@ const sportTours = [
 
 // 3. Cruises
 const cruiseTours = [
-    { id: "c1", name: "Mediterranean Splendour — 10 Nights", type: "ocean", depart: "Singapore", duration: "10–14 Nights", price: 145000, originalPrice: 185000, rating: 4.9, reviews: 114, route: "Barcelona → Rome → Athens → Istanbul", countries: "🇪🇸🇮🇹🇬🇷🇹🇷 4 countries · Schengen + Turkey visa", image: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&h=500&fit=crop", description: "Breathtaking ocean voyage covering Spain, Italy, Greece, and Turkey. All port visas and Schengen handled smoothly." },
-    { id: "c2", name: "Arabian Sea Explorer — 7 Nights", type: "ocean", depart: "Mumbai, India", duration: "6–9 Nights", price: 58000, originalPrice: 75000, rating: 4.7, reviews: 92, route: "Mumbai → Goa → Dubai → Abu Dhabi", countries: "🇮🇳🇦🇪 Mumbai to Dubai · UAE visa included", image: "https://images.unsplash.com/photo-1599640842225-85d111c60e6b?w=800&h=500&fit=crop", description: "Set sail from Mumbai to the modern skylines of UAE. Multi-port visa verification and entry permits fully sorted." },
-    { id: "c3", name: "Danube River Voyage — 8 Nights", type: "river", depart: "Singapore", duration: "6–9 Nights", price: 120000, originalPrice: 150000, rating: 4.8, reviews: 108, route: "Vienna → Budapest → Prague", countries: "🇦🇹🇭🇺🇨🇿 3 countries · Single Schengen visa", image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=500&fit=crop", description: "Enchanting river cruise along Europe's historic waterways. Covers Austria, Hungary, and Czech Republic." },
-    { id: "c4", name: "Norwegian Fjords Luxury — 7 Nights", type: "luxury", depart: "Mumbai, India", duration: "6–9 Nights", price: 225000, originalPrice: 280000, rating: 5.0, reviews: 43, route: "Bergen → Flåm → Geiranger", countries: "🇳🇴 Norway · Schengen · All-inclusive", image: "https://images.unsplash.com/photo-1556413955-6375e4497fde?w=800&h=500&fit=crop", description: "Immerse in Norway's jaw-dropping cliffs and deep fjords. Complete five-star cruise suite with Schengen visa." }
+    { id: "c1", name: "Mediterranean Splendour — 10 Nights", type: "ocean", depart: "Singapore", duration: "10–14 Nights", price: 145000, originalPrice: 185000, rating: 4.9, reviews: 114, route: "Barcelona → Rome → Athens → Istanbul", countries: "🇪🇸🇮🇹🇬🇷🇹🇷 4 countries · Schengen + Turkey visa", image: "/images/cruise_med.png", description: "Breathtaking ocean voyage covering Spain, Italy, Greece, and Turkey. All port visas and Schengen handled smoothly." },
+    { id: "c2", name: "Arabian Sea Explorer — 7 Nights", type: "ocean", depart: "Mumbai, India", duration: "6–9 Nights", price: 58000, originalPrice: 75000, rating: 4.7, reviews: 92, route: "Mumbai → Goa → Dubai → Abu Dhabi", countries: "🇮🇳🇦🇪 Mumbai to Dubai · UAE visa included", image: "/images/cruise_arabian.png", description: "Set sail from Mumbai to the modern skylines of UAE. Multi-port visa verification and entry permits fully sorted." },
+    { id: "c3", name: "Danube River Voyage — 8 Nights", type: "river", depart: "Singapore", duration: "6–9 Nights", price: 120000, originalPrice: 150000, rating: 4.8, reviews: 108, route: "Vienna → Budapest → Prague", countries: "🇦🇹🇭🇺🇨🇿 3 countries · Single Schengen visa", image: "/images/cruise_danube.png", description: "Enchanting river cruise along Europe's historic waterways. Covers Austria, Hungary, and Czech Republic." },
+    { id: "c4", name: "Norwegian Fjords Luxury — 7 Nights", type: "luxury", depart: "Mumbai, India", duration: "6–9 Nights", price: 225000, originalPrice: 280000, rating: 5.0, reviews: 43, route: "Bergen → Flåm → Geiranger", countries: "🇳🇴 Norway · Schengen · All-inclusive", image: "/images/cruise_norway.png", description: "Immerse in Norway's jaw-dropping cliffs and deep fjords. Complete five-star cruise suite with Schengen visa." }
 ];
 
 // 4. Entertainment Events
@@ -899,7 +899,7 @@ export function ToursPortal() {
                                     <div className="flex justify-center mb-4">
                                         <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center overflow-hidden shadow-xl transform transition-transform duration-300 group-hover:scale-110">
                                             <img 
-                                                src={`https://flagcdn.com/w80/${(tour.countryCode || "us").toLowerCase()}.png`} 
+                                                src={`https://flagcdn.com/w320/${(tour.countryCode || "us").toLowerCase()}.png`} 
                                                 alt="" 
                                                 className="w-full h-full object-cover scale-[1.3] transform" 
                                             />
@@ -972,7 +972,7 @@ export function ToursPortal() {
                                         <div className="flex justify-center mb-4">
                                             <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center overflow-hidden shadow-xl transform transition-transform duration-300 group-hover:scale-110">
                                                 <img 
-                                                    src={`https://flagcdn.com/w80/${code}.png`} 
+                                                    src={`https://flagcdn.com/w320/${code}.png`} 
                                                     alt="" 
                                                     className="w-full h-full object-cover scale-[1.3] transform" 
                                                 />
@@ -1047,7 +1047,7 @@ export function ToursPortal() {
                                             <div className="flex justify-center mb-4">
                                                 <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center overflow-hidden shadow-xl transform transition-transform duration-300 group-hover:scale-110">
                                                     <img 
-                                                        src={`https://flagcdn.com/w80/${code}.png`} 
+                                                        src={`https://flagcdn.com/w320/${code}.png`} 
                                                         alt="" 
                                                         className="w-full h-full object-cover scale-[1.3] transform" 
                                                     />
@@ -1135,7 +1135,7 @@ export function ToursPortal() {
                                         <div className="flex justify-center mb-4">
                                             <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center overflow-hidden shadow-xl transform transition-transform duration-300 group-hover:scale-110">
                                                 <img 
-                                                    src={`https://flagcdn.com/w80/${code}.png`} 
+                                                    src={`https://flagcdn.com/w320/${code}.png`} 
                                                     alt="" 
                                                     className="w-full h-full object-cover scale-[1.3] transform" 
                                                 />

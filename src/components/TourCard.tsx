@@ -47,7 +47,7 @@ export function TourCard({ tour }: { tour: any }) {
                     <div className="flex justify-center mb-4">
                         <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center overflow-hidden shadow-xl transform transition-transform duration-300 group-hover:scale-110">
                             <img 
-                                src={`https://flagcdn.com/w80/${getCodeByName(tour.name)}.png`} 
+                                src={`https://flagcdn.com/w320/${getCodeByName(tour.name)}.png`} 
                                 alt="" 
                                 className="w-full h-full object-cover scale-[1.3] transform" 
                             />

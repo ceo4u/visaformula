@@ -215,7 +215,7 @@ export function UniversitiesPortal() {
   };
 
   return (
-    <div className="bg-[#fcfdfd] min-h-screen text-[#1a3347] font-sans relative pb-16">
+    <div className="bg-white min-h-screen text-[#1a3347] font-sans relative pb-16">
       {/* TOAST */}
       <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#0c1a2e] text-white px-6 py-3 rounded-full text-xs font-bold z-[999] shadow-xl transition-all duration-300 ${toastOn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}>
         {toastMsg}
@@ -304,110 +304,150 @@ export function UniversitiesPortal() {
       ) : (
         /* MAIN LISTING VIEW */
         <div>
-          {/* HERO */}
-          <div className="relative overflow-hidden min-h-[480px] flex items-center" >
-            <div className="absolute inset-0 z-0">
-              <img
-                src="/univ_grad_girls.png"
-                alt="University graduates"
-                className="w-full h-full object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-black/45"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-transparent"></div>
+        <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
+          {/* Main Twilight Universities Banner Container */}
+          <div 
+              className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[540px] md:min-h-[600px] shadow-2xl border border-white/10"
+              style={{ background: '#0C1A2E' }}
+          >
+              {/* Background Image with Crisp Contrast & Clean Shading */}
+              <div className="absolute inset-0 z-0">
+                  <img 
+                      src="/univ_grad_girls.png" 
+                      alt="University Graduates" 
+                      className="w-full h-full object-cover brightness-[0.7] contrast-[1.1] object-center"
+                  />
+                  {/* A soft transparent overlay for text readability without extra shading */}
+                  <div 
+                      className="absolute inset-0 bg-black/35"
+                  />
+              </div>
+
+              {/* Banner Content */}
+              <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+                  
+                  {/* Active status pill */}
+                  <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-5 py-2 text-xs font-bold text-white/80 mb-6 backdrop-blur-sm">
+                    <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                    150+ Verified Global Universities · PGWP Work Permits Included
+                  </div>
+
+                  {/* Main Serif Header */}
+                  <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
+                      Find Your Dream Overseas University.
+                  </h1>
+
+                  {/* Bright Green Accent Highlight */}
+                  <p className="text-[#00FF66] font-serif text-2xl md:text-3xl font-bold mb-8 tracking-wide drop-shadow-md">
+                      in exactly 10 minutes
+                  </p>
+
+                  {/* 3-Column Metadata Row */}
+                  <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
+                      <div>
+                          <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">UNIVERSITIES</span>
+                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">150+ VERIFIED</span>
+                      </div>
+                      <div>
+                          <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">STUDENT VISA</span>
+                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">100% SUCCESS</span>
+                      </div>
+                      <div>
+                          <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">COUNTRIES</span>
+                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">20+ SPACES</span>
+                      </div>
+                  </div>
+
+                  {/* Pill CTA Button */}
+                  <button 
+                      onClick={() => {
+                          const el = document.getElementById("univ-search-bar");
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm px-8 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-xl tracking-wider active:scale-[0.98] select-none"
+                  >
+                      Browse Vetted Universities
+                  </button>
+              </div>
+          </div>
+
+          {/* Search bar below the banner */}
+          <div id="univ-search-bar" className="mt-8 bg-white border border-slate-200/50 rounded-3xl p-5 shadow-xl max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-7 gap-3 items-center">
+              <div className="md:col-span-3">
+                <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5 text-left">University / Course</label>
+                <div className="relative">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Search e.g. Toronto, MBA, Computer Science..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all"
+                  />
+                </div>
+              </div>
+              <div className="md:col-span-2">
+                <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5 text-left">Country</label>
+                <div className="relative">
+                  <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
+                  <select
+                    value={selectedCountry}
+                    onChange={e => setSelectedCountry(e.target.value)}
+                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all appearance-none cursor-pointer"
+                  >
+                    {countriesList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div className="md:col-span-2">
+                <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5 text-left">Category</label>
+                <div className="relative">
+                  <GraduationCap className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
+                  <select
+                    value={selectedCategory}
+                    onChange={e => setSelectedCategory(e.target.value)}
+                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all appearance-none cursor-pointer"
+                  >
+                    {streamsList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
+                  </select>
+                </div>
+              </div>
             </div>
 
-            <div className="relative z-10 max-w-6xl mx-auto px-6 py-16 text-left w-full">
-              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-5 py-2 text-xs font-bold text-white/80 mb-6 backdrop-blur-sm">
-                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-                150+ Verified Global Universities · PGWP Work Permits Included
-              </div>
-
-              <h1 className="font-sora font-extrabold text-4xl sm:text-5xl md:text-6xl text-white mb-5 leading-[1.08] tracking-tight">
-                Find Your Dream<br />Overseas University.
-              </h1>
-
-              <p className="text-white/80 text-sm sm:text-base max-w-2xl mb-8 font-medium leading-relaxed">
-                Studies in Canada, UK, Australia, Germany & 20+ countries — every listing includes student visa checklists, part-time jobs allowed, and post-study work permit guidance.
-              </p>
-
-              {/* Search Bar */}
-              <div className="bg-white border border-slate-200/50 rounded-3xl p-5 shadow-2xl max-w-4xl">
-                <div className="grid grid-cols-1 md:grid-cols-7 gap-3 items-center">
-                  <div className="md:col-span-3">
-                    <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5">University / Course</label>
-                    <div className="relative">
-                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                      <input
-                        type="text"
-                        placeholder="Search e.g. Toronto, MBA, Computer Science..."
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all"
-                      />
-                    </div>
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5">Country</label>
-                    <div className="relative">
-                      <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                      <select
-                        value={selectedCountry}
-                        onChange={e => setSelectedCountry(e.target.value)}
-                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all appearance-none cursor-pointer"
-                      >
-                        {countriesList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5">Category</label>
-                    <div className="relative">
-                      <GraduationCap className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                      <select
-                        value={selectedCategory}
-                        onChange={e => setSelectedCategory(e.target.value)}
-                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all appearance-none cursor-pointer"
-                      >
-                        {streamsList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
-                      </select>
-                    </div>
-                  </div>
+            <div className="flex gap-6 mt-3 pt-3 border-t border-slate-100">
+              <label className="flex items-center gap-2 cursor-pointer" onClick={() => setPgwpOnly(!pgwpOnly)}>
+                <div className={`w-9 h-5 rounded-full transition-all relative ${pgwpOnly ? "bg-black" : "bg-gray-200"}`}>
+                  <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${pgwpOnly ? "left-4" : "left-0.5"}`} />
                 </div>
-
-                <div className="flex gap-6 mt-3 pt-3 border-t border-slate-100">
-                  <label className="flex items-center gap-2 cursor-pointer" onClick={() => setPgwpOnly(!pgwpOnly)}>
-                    <div className={`w-9 h-5 rounded-full transition-all relative ${pgwpOnly ? "bg-black" : "bg-gray-200"}`}>
-                      <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${pgwpOnly ? "left-4" : "left-0.5"}`} />
-                    </div>
-                    <span className="text-xs font-semibold text-[#475569]">PGWP Eligible Only</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer" onClick={() => setScholarshipOnly(!scholarshipOnly)}>
-                    <div className={`w-9 h-5 rounded-full transition-all relative ${scholarshipOnly ? "bg-black" : "bg-gray-200"}`}>
-                      <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${scholarshipOnly ? "left-4" : "left-0.5"}`} />
-                    </div>
-                    <span className="text-xs font-semibold text-[#475569]">Scholarships Available</span>
-                  </label>
+                <span className="text-xs font-semibold text-[#475569]">PGWP Eligible Only</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer" onClick={() => setScholarshipOnly(!scholarshipOnly)}>
+                <div className={`w-9 h-5 rounded-full transition-all relative ${scholarshipOnly ? "bg-black" : "bg-gray-200"}`}>
+                  <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${scholarshipOnly ? "left-4" : "left-0.5"}`} />
                 </div>
-              </div>
-
-              {/* Chips */}
-              <div className="flex gap-2 flex-wrap mt-5">
-                {["All Universities", "IT & Tech", "Business", "Engineering", "Arts"].map(chip => (
-                  <button
-                    key={chip}
-                    onClick={() => filterByChip(chip)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-medium border shrink-0 transition-all outline-none ${
-                      activeChip === chip
-                        ? "bg-black text-white border-black shadow-sm"
-                        : "bg-white/15 border-white/25 text-white/80 hover:bg-white/25 backdrop-blur-sm"
-                    }`}
-                  >
-                    {chip}
-                  </button>
-                ))}
-              </div>
+                <span className="text-xs font-semibold text-[#475569]">Scholarships Available</span>
+              </label>
             </div>
           </div>
+
+          {/* Chips */}
+          <div className="flex gap-2 flex-wrap mt-5 justify-center">
+            {["All Universities", "IT & Tech", "Business", "Engineering", "Arts"].map(chip => (
+              <button
+                key={chip}
+                onClick={() => filterByChip(chip)}
+                className={`px-4 py-1.5 rounded-full text-xs font-bold border shrink-0 transition-all outline-none ${
+                  activeChip === chip
+                    ? "bg-black text-white border-black shadow-sm"
+                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
+        </div>
 
           {/* STATS BAR */}
           <div className="bg-white border-b border-slate-100">

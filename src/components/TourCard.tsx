@@ -1,18 +1,18 @@
 import { Star } from "lucide-react";
 
-const getFlagByName = (name: string) => {
+const getCodeByName = (name: string) => {
     const n = name.toLowerCase();
-    if (n.includes("bali")) return "🇮🇩";
-    if (n.includes("dubai")) return "🇦🇪";
-    if (n.includes("europe")) return "🇪🇺";
-    if (n.includes("vietnam")) return "🇻🇳";
-    if (n.includes("malaysia")) return "🇲🇾";
-    if (n.includes("thailand")) return "🇹🇭";
-    if (n.includes("sri lanka")) return "🇱🇰";
-    if (n.includes("singapore")) return "🇸🇬";
-    if (n.includes("greece")) return "🇬🇷";
-    if (n.includes("maldives")) return "🇲🇻";
-    return "🌎";
+    if (n.includes("bali")) return "id";
+    if (n.includes("dubai")) return "ae";
+    if (n.includes("europe")) return "fr";
+    if (n.includes("vietnam")) return "vn";
+    if (n.includes("malaysia")) return "my";
+    if (n.includes("thailand")) return "th";
+    if (n.includes("sri lanka")) return "lk";
+    if (n.includes("singapore")) return "sg";
+    if (n.includes("greece")) return "gr";
+    if (n.includes("maldives")) return "mv";
+    return "us";
 };
 
 export function TourCard({ tour }: { tour: any }) {
@@ -45,8 +45,12 @@ export function TourCard({ tour }: { tour: any }) {
                     
                     {/* Flag Badge Container - Circular center-aligned above text */}
                     <div className="flex justify-center mb-4">
-                        <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-2xl shadow-xl transform transition-transform duration-300 group-hover:scale-110">
-                            {getFlagByName(tour.name)}
+                        <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center overflow-hidden shadow-xl transform transition-transform duration-300 group-hover:scale-110">
+                            <img 
+                                src={`https://flagcdn.com/w80/${getCodeByName(tour.name)}.png`} 
+                                alt="" 
+                                className="w-full h-full object-cover scale-[1.3] transform" 
+                            />
                         </div>
                     </div>
 

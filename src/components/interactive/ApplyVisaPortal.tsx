@@ -289,8 +289,12 @@ export function ApplyVisaPortal() {
                       
                       {/* Flag Badge Container - Circular center-aligned above text */}
                       <div className="flex justify-center mb-4">
-                        <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-2xl shadow-xl transform transition-transform duration-300 group-hover:scale-110">
-                          {c.flag}
+                        <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center overflow-hidden shadow-xl transform transition-transform duration-300 group-hover:scale-110">
+                          <img 
+                            src={`https://flagcdn.com/w80/${c.code.toLowerCase()}.png`} 
+                            alt="" 
+                            className="w-full h-full object-cover scale-[1.3] transform" 
+                          />
                         </div>
                       </div>
 

@@ -1,40 +1,82 @@
 import { Star } from "lucide-react";
 
+const getFlagByName = (name: string) => {
+    const n = name.toLowerCase();
+    if (n.includes("bali")) return "🇮🇩";
+    if (n.includes("dubai")) return "🇦🇪";
+    if (n.includes("europe")) return "🇪🇺";
+    if (n.includes("vietnam")) return "🇻🇳";
+    if (n.includes("malaysia")) return "🇲🇾";
+    if (n.includes("thailand")) return "🇹🇭";
+    if (n.includes("sri lanka")) return "🇱🇰";
+    if (n.includes("singapore")) return "🇸🇬";
+    if (n.includes("greece")) return "🇬🇷";
+    if (n.includes("maldives")) return "🇲🇻";
+    return "🌎";
+};
+
 export function TourCard({ tour }: { tour: any }) {
     return (
-        <a href="/tour/1" className="block h-full cursor-pointer">
-            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:border-red-200 transition-all duration-300 flex flex-col h-full group">
-                <div className="h-44 w-full relative overflow-hidden">
-                    <img src={tour.image} alt={tour.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-lg text-xs font-bold">
-                        {tour.duration}
-                    </div>
+        <a href="/tours" className="block w-full cursor-pointer">
+            <div 
+                className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
+                style={{ background: '#0C1A2E' }}
+            >
+                {/* Background Image Container */}
+                <div className="absolute inset-0 z-0">
+                    <img 
+                        src={tour.image} 
+                        alt={tour.name}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                    {/* Dark gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent" />
                 </div>
-                <div className="p-5 flex flex-col flex-1 gap-2">
-                    <h3 className="font-bold text-[#1a1a2e] text-lg leading-tight group-hover:text-[#ef4444] transition-colors">{tour.name}</h3>
-                    <div className="flex items-center gap-1.5 text-sm">
-                        <Star className="w-4 h-4 text-yellow-400" fill="currentColor" strokeWidth={0} />
-                        <span className="font-bold">{tour.rating}</span>
-                        <span className="text-gray-400">({tour.reviews})</span>
+
+                {/* Top badge if present */}
+                {tour.badges && tour.badges[0] && (
+                    <div className="absolute top-4 right-4 bg-gradient-to-r from-red-500 to-rose-600 text-white text-[9px] font-black px-2.5 py-1 rounded-full tracking-widest shadow-md uppercase">
+                        {tour.badges[0]}
                     </div>
-                    <p className="text-xs text-gray-500 line-clamp-2">{tour.covered}</p>
-                    <div className="flex flex-wrap gap-1.5 mb-2">
-                        {tour.badges?.map((b: string) => (
-                            <span key={b} className="text-[10px] bg-red-50 text-[#ef4444] px-2 py-0.5 rounded-full border border-red-100 font-semibold">{b}</span>
-                        ))}
-                    </div>
-                    <div className="mt-auto flex justify-between items-end pt-3 border-t border-gray-100">
-                        <div>
-                            <div className="text-[10px] text-gray-400 font-semibold tracking-wider mb-0.5">From</div>
-                            <div className="font-extrabold text-slate-900 text-xl leading-none">{tour.price}</div>
+                )}
+
+                {/* Content Container */}
+                <div className="absolute inset-0 z-10 flex flex-col justify-end p-6">
+                    
+                    {/* Flag Badge Container - Circular center-aligned above text */}
+                    <div className="flex justify-center mb-4">
+                        <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-2xl shadow-xl transform transition-transform duration-300 group-hover:scale-110">
+                            {getFlagByName(tour.name)}
                         </div>
-                        <button className="bg-white border-2 border-slate-900 text-slate-900 px-4 py-2 rounded-xl text-sm font-bold hover:bg-slate-900 hover:text-white transition-all">
-                            View Details
-                        </button>
+                    </div>
+
+                    {/* Tour Title - Serif, uppercase, letter-spaced */}
+                    <h3 className="font-serif text-xl font-normal text-white text-center tracking-wider uppercase mb-5 leading-snug drop-shadow-md">
+                        {tour.name}
+                    </h3>
+
+                    {/* Divider Line */}
+                    <div className="w-full h-[0.5px] bg-white/20 mb-5" />
+
+                    {/* Info Table Grid */}
+                    <div className="grid grid-cols-3 gap-2 text-center">
+                        <div>
+                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">DURATION</span>
+                            <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">{tour.duration}</span>
+                        </div>
+                        <div>
+                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">RATING</span>
+                            <span className="text-[11px] text-white font-extrabold tracking-wide uppercase flex items-center justify-center gap-0.5">{tour.rating} ★</span>
+                        </div>
+                        <div>
+                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">PRICE</span>
+                            <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">{tour.price}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </a>
     );
 }
+
 

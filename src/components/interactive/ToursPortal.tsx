@@ -4,6 +4,33 @@ import {
     Ship, Music, Umbrella, Search, ArrowRight 
 } from "lucide-react";
 
+// Flag helper
+const getFlagByCode = (code: string) => {
+    const flags: Record<string, string> = {
+        ID: "🇮🇩",
+        AE: "🇦🇪",
+        EU: "🇪🇺",
+        TH: "🇹🇭",
+        SG: "🇸🇬",
+        MV: "🇲🇻",
+        MY: "🇲🇾",
+        VN: "🇻🇳",
+        CH: "🇨🇭",
+        GR: "🇬🇷",
+        US: "🇺🇸",
+        ZA: "🇿🇦",
+        FR: "🇫🇷",
+        ES: "🇪🇸",
+        IT: "🇮🇹",
+        TR: "🇹🇷",
+        HU: "🇭🇺",
+        CZ: "🇨🇿",
+        NO: "🇳🇴",
+        GB: "🇬🇧"
+    };
+    return flags[code ? code.toUpperCase() : ""] || "🌎";
+};
+
 // Toast helper
 function Toast({ message, visible, onClose }: { message: string, visible: boolean, onClose: () => void }) {
     useEffect(() => {
@@ -651,90 +678,68 @@ export function ToursPortal() {
 
                 {/* 1. Holiday Packages — Dark Cinematic Card */}
                 {activeTab === "holiday" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {sortedTours.map(tour => (
                             <div
                                 key={tour.id}
-                                className="group relative rounded-[22px] bg-white border border-slate-200 hover:border-rose-500/40 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                                className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
+                                style={{ background: '#0C1A2E' }}
                                 onClick={() => handleBooking(tour.name)}
                             >
-                                {/* ── FULL IMAGE ── */}
-                                <div className="relative h-[220px] overflow-hidden">
+                                {/* Background Image Container */}
+                                <div className="absolute inset-0 z-0">
                                     <img
                                         src={tour.image}
                                         alt={tour.name}
-                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                                         loading="lazy"
                                     />
-                                    {/* dark gradient */}
-                                    <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.85) 100%)" }} />
-
-                                    {/* top-right: badge */}
-                                    {tour.badge && (
-                                        <div
-                                            className="absolute top-3 right-3 text-white text-[9px] font-black px-2.5 py-1 rounded-full tracking-widest shadow-lg"
-                                            style={{ background: tour.badgeColor }}
-                                        >
-                                            {tour.badge}
-                                        </div>
-                                    )}
-
-                                    {/* bottom overlay on image: name */}
-                                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                                        <h3 className="font-sora font-extrabold text-white text-[17px] leading-tight">
-                                            {tour.name}
-                                        </h3>
-                                    </div>
+                                    {/* Dark gradient overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent" />
                                 </div>
 
-                                {/* ── WHITE CARD BODY ── */}
-                                <div className="px-4 pt-4 pb-3 bg-white">
-                                    {/* Tagline and Duration Metadata */}
-                                    <div className="mb-4">
-                                        <p className="text-slate-700 text-[11px] font-bold flex items-center gap-1">
-                                            <MapPin className="w-3.5 h-3.5 shrink-0 text-[#f43f5e]" />
-                                            {tour.tagline}
-                                        </p>
-                                        <div className="text-slate-500 text-[10px] font-semibold pl-4.5 mt-1 flex items-center flex-wrap gap-1.5">
-                                            <span>{tour.days}D/{tour.nights}N</span>
-                                            <span>&bull;</span>
-                                            <span>{tour.group}</span>
-                                            <span>&bull;</span>
-                                            <div className="flex items-center gap-0.5">
-                                                <Star className="w-2.5 h-2.5 text-amber-500 fill-amber-500" />
-                                                <span className="font-bold text-slate-800">{tour.rating}</span>
-                                                <span>({tour.reviews.toLocaleString()})</span>
-                                            </div>
+                                {/* Top-right badge */}
+                                {tour.badge && (
+                                    <div
+                                        className="absolute top-4 right-4 text-white text-[9px] font-black px-2.5 py-1 rounded-full tracking-widest shadow-md uppercase"
+                                        style={{ background: tour.badgeColor || '#ef4444' }}
+                                    >
+                                        {tour.badge}
+                                    </div>
+                                )}
+
+                                {/* Content Container */}
+                                <div className="absolute inset-0 z-10 flex flex-col justify-end p-6">
+                                    
+                                    {/* Flag Badge Container - Circular center-aligned above text */}
+                                    <div className="flex justify-center mb-4">
+                                        <div className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-2xl shadow-xl transform transition-transform duration-300 group-hover:scale-110">
+                                            {getFlagByCode(tour.countryCode)}
                                         </div>
                                     </div>
 
-                                    {/* Inclusions chips */}
-                                    <div className="flex flex-wrap gap-1.5 mb-4">
-                                        {tour.includes?.slice(0,2).map((inc: any) => (
-                                            <span key={inc} className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-50 text-black border border-slate-200">
-                                                <CheckCircle className="w-2.5 h-2.5 shrink-0 text-rose-500" /> {inc}
-                                            </span>
-                                        ))}
-                                    </div>
+                                    {/* Tour Title - Serif, uppercase, letter-spaced */}
+                                    <h3 className="font-serif text-xl font-normal text-white text-center tracking-wider uppercase mb-5 leading-snug drop-shadow-md">
+                                        {tour.name}
+                                    </h3>
 
-                                    {/* ── PRICE STRIP ── */}
-                                    <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                                    {/* Divider Line */}
+                                    <div className="w-full h-[0.5px] bg-white/20 mb-5" />
+
+                                    {/* Info Table Grid */}
+                                    <div className="grid grid-cols-3 gap-2 text-center">
                                         <div>
-                                            <p className="text-[9px] font-medium tracking-normal text-slate-500 mb-0.5">STARTING FROM</p>
-                                            <div className="flex items-baseline gap-1.5">
-                                                {tour.originalPrice && (
-                                                    <span className="text-[11px] text-slate-400 line-through">₹{tour.originalPrice.toLocaleString()}</span>
-                                                )}
-                                                <span className="font-sora font-black text-black text-xl">₹{tour.price.toLocaleString()}</span>
-                                                <span className="text-[10px] text-slate-600 font-semibold">/ person</span>
-                                            </div>
+                                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">DURATION</span>
+                                            <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">{tour.days}D/{tour.nights}N</span>
                                         </div>
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); handleBooking(tour.name); }}
-                                            className="border-2 border-black hover:bg-black text-black hover:text-white text-xs font-bold px-6 py-2.5 rounded-full transition-all shadow-sm hover:scale-[1.03] active:scale-[0.97]"
-                                        >
-                                            Book Now
-                                        </button>
+                                        <div>
+                                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">RATING</span>
+                                            <span className="text-[11px] text-white font-extrabold tracking-wide uppercase flex items-center justify-center gap-0.5">{tour.rating} ★</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">PRICE</span>
+                                            <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">₹{tour.price.toLocaleString()}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

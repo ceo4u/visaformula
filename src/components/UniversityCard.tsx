@@ -12,7 +12,7 @@ export function UniversityCard({ uni }: { uni: any }) {
                 </div>
                 <div className="p-5 flex flex-col flex-1 gap-2.5">
                     <div>
-                        <h3 className="font-semibold text-[#1a1a2e] text-lg leading-tight group-hover:text-[#6366f1] transition-colors">{uni.name}</h3>
+                        <h3 className="font-medium text-[#1a1a2e] text-lg leading-tight group-hover:text-[#6366f1] transition-colors">{uni.name}</h3>
                         <p className="text-xs text-gray-500 mt-1">{uni.location}</p>
                     </div>
                     <div className="flex items-center gap-1.5 text-sm">

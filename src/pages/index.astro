@@ -141,14 +141,46 @@ const successStories = [
         <div style="background:#fff; border-radius:0 0 20px 20px; margin:0; padding:30px 24px 24px;">
           <h3 style="font-size:17px;font-weight:755;color:#1e293b;margin-bottom:24px;text-align:center;font-family:'Inter',sans-serif;letter-spacing:-0.2px;">Grow your global practice</h3>
           
-          <div class="select-wrap">
-            <select class="hero-form-select" id="hero-profile-type">
-              <option value="Freelancer" selected>Freelancer</option>
-              <option value="Business expert">Business expert</option>
-              <option value="Institute or company">Institute or company</option>
-              <option value="Legal professional">Legal professional</option>
-              <option value="Supportive business">Supportive business</option>
-            </select>
+          <div class="select-wrap" style="position:relative; margin-bottom:16px;">
+            <!-- Custom dropdown trigger -->
+            <div id="hero-select-trigger" onclick="toggleHeroSelect()" style="
+              width:100%; height:52px; border:1.2px solid #334155; border-radius:8px;
+              padding:0 36px 0 16px; font-size:15px; color:#1e293b; background:#fff;
+              font-family:'Inter',sans-serif; cursor:pointer; display:flex;
+              align-items:center; justify-content:space-between; user-select:none;
+              box-sizing:border-box; transition: border-color 0.15s;
+            ">
+              <span id="hero-select-label">Freelancer</span>
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="none" style="flex-shrink:0; transition: transform 0.2s;" id="hero-select-arrow"><path d="M1 1L6 7L11 1" stroke="#475569" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <!-- Dropdown options -->
+            <div id="hero-select-options" style="
+              display:none; position:absolute; top:calc(100% + 4px); left:0; right:0;
+              background:#fff; border:1.5px solid #000; border-radius:8px; z-index:999;
+              box-shadow:0 8px 24px rgba(0,0,0,0.12); overflow:hidden;
+            ">
+              <div class="hero-opt" onclick="selectHeroOption('Freelancer')">Freelancer</div>
+              <div class="hero-opt" onclick="selectHeroOption('Business expert')">Business expert</div>
+              <div class="hero-opt" onclick="selectHeroOption('Institute or company')">Institute or company</div>
+              <div class="hero-opt" onclick="selectHeroOption('Legal professional')">Legal professional</div>
+              <div class="hero-opt" onclick="selectHeroOption('Supportive business')">Supportive business</div>
+            </div>
+            <!-- Hidden input to store value -->
+            <input type="hidden" id="hero-profile-type" value="Freelancer" />
+            <style>
+              .hero-opt {
+                padding: 13px 16px;
+                font-size: 15px;
+                color: #1e293b;
+                font-family: 'Inter', sans-serif;
+                cursor: pointer;
+                transition: background 0.12s, color 0.12s;
+              }
+              .hero-opt:hover {
+                background: #000 !important;
+                color: #fff !important;
+              }
+            </style>
           </div>
           
           <input class="hero-form-input" type="text" id="hero-name" placeholder="Enter Business Name / Name" style="margin-bottom:16px;"/>
@@ -168,6 +200,37 @@ const successStories = [
       </div>
 
       <script is:inline>
+        // Custom hero select dropdown
+        function toggleHeroSelect() {
+          const opts = document.getElementById('hero-select-options');
+          const arrow = document.getElementById('hero-select-arrow');
+          const trigger = document.getElementById('hero-select-trigger');
+          const isOpen = opts.style.display === 'block';
+          opts.style.display = isOpen ? 'none' : 'block';
+          arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+          trigger.style.borderColor = isOpen ? '#334155' : '#000';
+        }
+
+        function selectHeroOption(val) {
+          document.getElementById('hero-profile-type').value = val;
+          document.getElementById('hero-select-label').textContent = val;
+          document.getElementById('hero-select-options').style.display = 'none';
+          document.getElementById('hero-select-arrow').style.transform = 'rotate(0deg)';
+          document.getElementById('hero-select-trigger').style.borderColor = '#334155';
+        }
+
+        // Close on outside click
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('#hero-select-trigger') && !e.target.closest('#hero-select-options')) {
+            const opts = document.getElementById('hero-select-options');
+            if (opts) {
+              opts.style.display = 'none';
+              document.getElementById('hero-select-arrow').style.transform = 'rotate(0deg)';
+              document.getElementById('hero-select-trigger').style.borderColor = '#334155';
+            }
+          }
+        });
+
         document.getElementById('hero-register-btn')?.addEventListener('click', () => {
           const type = document.getElementById('hero-profile-type').value;
           const name = document.getElementById('hero-name').value;

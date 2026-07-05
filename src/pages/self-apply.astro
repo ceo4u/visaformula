@@ -41,6 +41,15 @@ import Layout from '../layouts/Layout.astro';
       font-family: 'Sora', sans-serif;
     }
 
+    @keyframes shake {
+      0%   { transform: translateX(0); }
+      20%  { transform: translateX(-8px); }
+      40%  { transform: translateX(8px); }
+      60%  { transform: translateX(-6px); }
+      80%  { transform: translateX(6px); }
+      100% { transform: translateX(0); }
+    }
+
     /* Back Home Button style */
     .back-home-btn {
       position: absolute;
@@ -864,7 +873,7 @@ import Layout from '../layouts/Layout.astro';
         <p style="color:var(--gray-500);margin-bottom:16px;">Choose the country and visa type you want to apply for.</p>
 
         <div class="country-grid" id="countryGrid">
-          <div class="country-card selected" data-country="canada" onclick="selectCountry(this)">
+          <div class="country-card" data-country="canada" onclick="selectCountry(this)">
             <div class="flag">🇨🇦</div>
             <div class="name">Canada</div>
             <div class="visa-types">Student · Work · Visitor · PR</div>
@@ -900,7 +909,7 @@ import Layout from '../layouts/Layout.astro';
 
         <h2 style="font-size:16px;font-weight:700;margin:16px 0 8px;">📋 Select Visa Type</h2>
         <div class="visa-pills" id="visaPills">
-          <span class="visa-pill selected" data-visa="student" onclick="selectVisa(this)">🎓 Student Visa</span>
+          <span class="visa-pill" data-visa="student" onclick="selectVisa(this)">🎓 Student Visa</span>
           <span class="visa-pill" data-visa="work" onclick="selectVisa(this)">💼 Work Permit</span>
           <span class="visa-pill" data-visa="visitor" onclick="selectVisa(this)">✈️ Visitor / Tourist</span>
           <span class="visa-pill" data-visa="pr" onclick="selectVisa(this)">🏡 PR / Express Entry</span>
@@ -908,7 +917,7 @@ import Layout from '../layouts/Layout.astro';
 
         <div class="btn-group">
           <div></div>
-          <button class="btn btn-primary" onclick="goToStep(2)">Continue →</button>
+          <button class="btn btn-primary" id="step1ContinueBtn" onclick="step1Continue()" disabled style="opacity:0.4;cursor:not-allowed;">Continue →</button>
         </div>
       </div>
 
@@ -1217,10 +1226,47 @@ import Layout from '../layouts/Layout.astro';
     // ==========================================
     // SELECT COUNTRY
     // ==========================================
+    let selectedCountry = null;
+    let selectedVisa = null;
+
+    function updateStep1Btn() {
+      const btn = document.getElementById('step1ContinueBtn');
+      if (selectedCountry && selectedVisa) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.4';
+        btn.style.cursor = 'not-allowed';
+      }
+    }
+
+    function step1Continue() {
+      if (!selectedCountry) {
+        toast('⚠️ Please select a destination country first!');
+        // shake the country grid
+        const grid = document.getElementById('countryGrid');
+        grid.style.animation = 'shake 0.4s ease';
+        setTimeout(() => grid.style.animation = '', 500);
+        return;
+      }
+      if (!selectedVisa) {
+        toast('⚠️ Please select a visa type!');
+        const pills = document.getElementById('visaPills');
+        pills.style.animation = 'shake 0.4s ease';
+        setTimeout(() => pills.style.animation = '', 500);
+        return;
+      }
+      goToStep(2);
+    }
+
     function selectCountry(el) {
       document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
+      selectedCountry = el.dataset.country;
       toast(`📍 ${el.querySelector('.name').textContent} selected`);
+      updateStep1Btn();
     }
 
     // ==========================================
@@ -1229,7 +1275,9 @@ import Layout from '../layouts/Layout.astro';
     function selectVisa(el) {
       document.querySelectorAll('.visa-pill').forEach(p => p.classList.remove('selected'));
       el.classList.add('selected');
+      selectedVisa = el.dataset.visa;
       toast(`📋 ${el.textContent.trim()} selected`);
+      updateStep1Btn();
     }
 
     // ==========================================

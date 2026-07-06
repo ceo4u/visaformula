@@ -84,9 +84,9 @@ export function SeekerSignupPortal() {
                 }
             `}} />
             <header className="relative w-full px-4 md:px-8 py-6 flex items-center justify-between font-sans min-h-[120px]">
-                <a href="javascript:history.back()" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all shrink-0">
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Back</span>
+                <a href="/" className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-xs font-bold text-black hover:bg-slate-50 shadow-sm transition-all shrink-0">
+                    <span className="text-sm font-semibold">&larr;</span>
+                    <span>Back to Home</span>
                 </a>
                 
                 <a href="/" className="absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 z-10">

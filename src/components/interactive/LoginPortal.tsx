@@ -50,9 +50,9 @@ export function LoginPortal() {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-gray-50/50 font-opensans relative">
             {/* Back Button - Top Left */}
-            <a href="javascript:history.back()" className="absolute top-6 left-6 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all z-50 font-opensans">
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back</span>
+            <a href="/" className="absolute top-6 left-6 flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-xs font-bold text-black hover:bg-slate-50 shadow-sm transition-all z-50 font-opensans shrink-0">
+                <span className="text-sm font-semibold">&larr;</span>
+                <span>Back to Home</span>
             </a>
 
             <div className="w-full max-w-md">

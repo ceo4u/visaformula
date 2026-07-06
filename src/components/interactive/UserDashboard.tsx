@@ -60,6 +60,8 @@ export function UserDashboard() {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [passportCountry, setPassportCountry] = useState("India");
+    const [countryOfCitizenship, setCountryOfCitizenship] = useState("India");
+    const [residentOf, setResidentOf] = useState("India");
     const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
     const [selectedDests, setSelectedDests] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -94,7 +96,16 @@ export function UserDashboard() {
         if (savedEmail) setEmail(savedEmail);
 
         const savedCountry = localStorage.getItem("seeker_passportCountry");
-        if (savedCountry) setPassportCountry(savedCountry);
+        if (savedCountry) {
+            setPassportCountry(savedCountry);
+            setCountryOfCitizenship(savedCountry);
+        }
+
+        const savedCitizenship = localStorage.getItem("seeker_country_of_citizenship");
+        if (savedCitizenship) setCountryOfCitizenship(savedCitizenship);
+
+        const savedResidence = localStorage.getItem("seeker_resident_of");
+        if (savedResidence) setResidentOf(savedResidence);
 
         try {
             const savedGoals = localStorage.getItem("seeker_goals");
@@ -206,9 +217,12 @@ export function UserDashboard() {
                                 </div>
 
                                 {/* Description/Location */}
-                                <p className="text-[11px] text-slate-500 font-semibold mt-1 leading-tight max-w-[220px] flex items-center gap-1.5">
-                                    <span>🛂</span> Passport holder from <span className="text-black font-extrabold">{passportCountry || "India"}</span>
-                                </p>
+                                <div className="text-[10px] text-slate-500 font-semibold mt-1.5 space-y-0.5">
+                                    <p>🛂 Passport: <span className="text-black font-bold">{countryOfCitizenship}</span></p>
+                                    <p>📍 Residence: <span className="text-black font-bold">{residentOf}</span></p>
+                                    {email && <p>📧 Email: <span className="text-slate-700">{email}</span></p>}
+                                    {phone && <p>📞 Phone: <span className="text-slate-700">{phone}</span></p>}
+                                </div>
                             </div>
                         </div>
 

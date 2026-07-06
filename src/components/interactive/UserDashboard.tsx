@@ -8,48 +8,14 @@ import {
 
 const destinations = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
 
-const initialBookings: any[] = [
-  { date: "15 July 2026 · 10:30 AM", platform: "Google Meet", expert: "Marcus Thorne, JD", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop", service: "H-1B Filing consultation" }
-];
-
-const initialSavedExperts = [
-  { agent_id: "fav-1", name: "Marcus Thorne, JD", role: "Immigration Attorney", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop", specialization_tags: ["US Visa", "H-1B"], rating_score: 4.5 },
-  { agent_id: "fav-2", name: "Elena Rodriguez", role: "Immigration Consultant", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop", specialization_tags: ["Green Card", "Family"], rating_score: 5.0 }
-];
-
-const initialNotifications = [
-  { text: "Your Schengen visa application SOP review request was accepted by Marcus.", time: "1 hour ago" },
-  { text: "Milestone payment for DS-160 verified stage has been successfully locked in Escrow.", time: "1 day ago" }
-];
-
-const initialScannedDocuments = [
-  { document_id: "doc-s1", file_name: "passport_front_back_scan.pdf", document_type_label: "Passport", s3_secure_url: "https://s3.amazonaws.com/visaformula/passport_front_back_scan.pdf", size: "2.4 MB" },
-  { document_id: "doc-s2", file_name: "bank_statement_june_2026.pdf", document_type_label: "Bank Statement", s3_secure_url: "https://s3.amazonaws.com/visaformula/bank_statement_june_2026.pdf", size: "4.1 MB" },
-  { document_id: "doc-s3", file_name: "degree_cert_verified_wes.pdf", document_type_label: "Academic Degree", s3_secure_url: "https://s3.amazonaws.com/visaformula/degree_cert_verified_wes.pdf", size: "1.8 MB" }
-];
-
-const initialPreviousVisas = [
-  { history_id: "prev-1", destination_country: "United Kingdom", visa_type: "Student Visa (Tier 4)", application_year: 2023, final_outcome: "Approved" },
-  { history_id: "prev-2", destination_country: "Canada", visa_type: "Visitor Tourist Visa", application_year: 2024, final_outcome: "Rejected" }
-];
-
-const initialDisputes = [
-  { dispute_id: "disp-1", case_title: "Delayed SOP review document submission", expert_name: "Elena Rodriguez", disputed_amount: "₹15,000", status: "Under Mediation", ticket_log: "DISP-4091" }
-];
-
-const initialEscrowPayments = [
-  { escrow_id: "escrow-1", expert_name: "Marcus Thorne, JD", secured_amount: "₹45,000", holding_status: "Held", current_active_milestone: "DS-160 Form Review & Verify" },
-  { escrow_id: "escrow-2", expert_name: "Elena Rodriguez", secured_amount: "₹25,000", holding_status: "Released", current_active_milestone: "SOP Custom Editing Draft" }
-];
-
-const initialVisasProcessing = [
-  { case_id: "proc-1", target_country: "USA", visa_category: "F-1 Student Visa", current_workflow_stage: "Document Verification", live_status_flag: "In Progress" },
-  { case_id: "proc-2", target_country: "Germany", visa_category: "Job Seeker Visa", current_workflow_stage: "VFS Interview Slot Booking", live_status_flag: "Action Required" }
-];
-
-const initialReviewsGiven = [
-  { review_id: "rev-1", expert_id: "fav-1", expert_name: "Marcus Thorne, JD", rating_given: 5, text_feedback: "Exceptional speed. He solved my H-1B transfer queries instantly.", submission_timestamp: "2026-06-25 14:30" }
-];
+const initialBookings: any[] = [];
+const initialSavedExperts: any[] = [];
+const initialNotifications: any[] = [];
+const initialScannedDocuments: any[] = [];
+const initialPreviousVisas: any[] = [];
+const initialDisputes: any[] = [];
+const initialEscrowPayments: any[] = [];
+const initialVisasProcessing: any[] = [];
 
 export function UserDashboard() {
     const [ieltsScore, setIeltsScore] = useState({ L: 7.5, R: 7.0, W: 6.5, S: 7.0 });
@@ -72,7 +38,6 @@ export function UserDashboard() {
     const [activeDisputes, setActiveDisputes] = useState(initialDisputes);
     const [escrowPaymentsState, setEscrowPaymentsState] = useState(initialEscrowPayments);
     const [visasProcessingState, setVisasProcessingState] = useState(initialVisasProcessing);
-    const [reviewsGiven, setReviewsGiven] = useState(initialReviewsGiven);
 
     const [documents, setDocuments] = useState([
         { id: 1, label: "Passport scan", status: "uploaded", icon: "✅", bg: "bg-emerald-50/40 text-emerald-800 border-emerald-100" },
@@ -160,8 +125,7 @@ export function UserDashboard() {
                             { id: "scanned-documents", label: "Scanned Documents", icon: FileText },
                             { id: "escrow-milestones", label: "Escrow Payments", icon: Lock },
                             { id: "visa-history", label: "Visa History", icon: BookOpen },
-                            { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark },
-                            { id: "my-reviews", label: "My Reviews Given", icon: Star }
+                            { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark }
                         ].map(tab => {
                             const isActive = activeTab === tab.id;
                             const IconComponent = tab.icon;
@@ -724,33 +688,6 @@ export function UserDashboard() {
                                             </button>
                                         </a>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                ) : activeTab === "my-reviews" ? (
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
-                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                            <div>
-                                <h3 className="text-lg font-bold text-black">Reviews & Ratings Given</h3>
-                                <p className="text-xs text-slate-400 mt-1">Feedback logs and satisfaction ratings submitted for visa consultation audits</p>
-                            </div>
-                            <Star className="w-5 h-5 text-black" />
-                        </div>
-
-                        <div className="space-y-4">
-                            {reviewsGiven.map(rev => (
-                                <div key={rev.review_id} className="bg-slate-50 border border-slate-150 p-5 rounded-2xl space-y-3">
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-xs font-bold text-black">To: {rev.expert_name}</span>
-                                        <div className="flex items-center gap-0.5 text-xs text-yellow-500 font-bold">
-                                            {Array.from({ length: rev.rating_given }).map((_, i) => (
-                                                <span key={i}>★</span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <p className="text-xs text-slate-600 font-medium italic bg-white p-3.5 rounded-xl border border-slate-200/80 leading-relaxed">&ldquo;{rev.text_feedback}&rdquo;</p>
-                                    <div className="text-[10px] text-slate-400 font-bold tracking-normal text-right">Submitted at: {rev.submission_timestamp}</div>
                                 </div>
                             ))}
                         </div>

@@ -70,6 +70,8 @@ export function ExpertSignupPortal() {
   const [facebookLink, setFacebookLink] = useState("");
   const [linkedinLink, setLinkedinLink] = useState("");
   const [password, setPassword] = useState("");
+  const [countryCode, setCountryCode] = useState("+91");
+  const [validationError, setValidationError] = useState("");
   const [expertCategory, setExpertCategory] = useState("Student visa expert");
   const [expertAddress, setExpertAddress] = useState("");
   const [signupCategoryOpen, setSignupCategoryOpen] = useState(false);
@@ -146,34 +148,35 @@ export function ExpertSignupPortal() {
 
   const handleProceedToPhase2 = (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError("");
     if (!businessName || !contactNumber || !email || !password) {
-      alert("Please fill in all required fields.");
+      setValidationError("Please fill in all required fields.");
       return;
     }
 
-    // 1. Email validation: must have @ and end with a valid domain extension
+    // 1. Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address (must contain '@' and end with a valid domain like '.com').");
+      setValidationError("Please enter a valid email address (must contain '@' and end with a valid domain like '.com').");
       return;
     }
 
-    // 2. Contact Number validation: must be at least 10 digits
+    // 2. Contact Number validation
     const cleanPhone = contactNumber.replace(/\D/g, "");
     if (cleanPhone.length < 10) {
-      alert("Please enter a valid contact number (must contain at least 10 digits).");
+      setValidationError("Please enter a valid contact number (must contain at least 10 digits).");
       return;
     }
 
-    // 3. Password validation: at least 8 characters, containing at least one number and one symbol
+    // 3. Password validation
     const hasNumber = /\d/.test(password);
     const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     if (password.length < 8) {
-      alert("Password must be at least 8 characters long.");
+      setValidationError("Password must be at least 8 characters long.");
       return;
     }
     if (!hasNumber || !hasSymbol) {
-      alert("Password must contain at least one number and one special character / symbol.");
+      setValidationError("Password must contain at least one number and one special character / symbol (e.g. !, @, #, etc).");
       return;
     }
 
@@ -203,7 +206,7 @@ export function ExpertSignupPortal() {
           business_name: businessName,
           email: email,
           password: password,
-          contact_number: contactNumber,
+          contact_number: `${countryCode} ${contactNumber}`,
           advisor_type: consultantType,
           about_me: aboutMe,
           portfolio_link: portfolioLink,
@@ -216,7 +219,8 @@ export function ExpertSignupPortal() {
       });
       if (!response.ok) {
         const errData = await response.json();
-        alert(errData.message || "Expert registration failed.");
+        setValidationError(errData.message || "Expert registration failed.");
+        setStep(1);
         return;
       }
     } catch (err) {
@@ -226,7 +230,7 @@ export function ExpertSignupPortal() {
     if (typeof window !== "undefined") {
       localStorage.setItem("expert_businessName", businessName);
       localStorage.setItem("expert_email", email);
-      localStorage.setItem("expert_contactNumber", contactNumber);
+      localStorage.setItem("expert_contactNumber", `${countryCode} ${contactNumber}`);
       localStorage.setItem("expert_advisorType", consultantType);
       localStorage.setItem("expert_aboutMe", aboutMe);
       localStorage.setItem("expert_portfolioLink", portfolioLink);
@@ -439,13 +443,30 @@ export function ExpertSignupPortal() {
 
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-slate-700 block">Contact Number*</label>
-                    <input 
-                      required
-                      value={contactNumber} 
-                      onChange={(e) => setContactNumber(e.target.value)} 
-                      placeholder="Enter your Contact Number" 
-                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
-                    />
+                    <div className="flex gap-3">
+                      <select 
+                        value={countryCode} 
+                        onChange={(e) => setCountryCode(e.target.value)}
+                        className="px-4 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black shadow-sm shrink-0 cursor-pointer"
+                      >
+                        <option value="+91">+91 (IN)</option>
+                        <option value="+1">+1 (US/CA)</option>
+                        <option value="+44">+44 (UK)</option>
+                        <option value="+61">+61 (AU)</option>
+                        <option value="+971">+971 (AE)</option>
+                        <option value="+49">+49 (DE)</option>
+                        <option value="+33">+33 (FR)</option>
+                        <option value="+65">+65 (SG)</option>
+                        <option value="+64">+64 (NZ)</option>
+                      </select>
+                      <input 
+                        required
+                        value={contactNumber} 
+                        onChange={(e) => setContactNumber(e.target.value)} 
+                        placeholder="99999 99999" 
+                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-2">
@@ -478,6 +499,7 @@ export function ExpertSignupPortal() {
                       placeholder="Create a Password" 
                       className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
                     />
+                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
                   </div>
                   
                   <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
@@ -519,6 +541,12 @@ export function ExpertSignupPortal() {
                     />
                   </div>
                 </div>
+
+                {validationError && (
+                  <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-sans text-center transition-all animate-premium-fade max-w-lg mx-auto mt-6">
+                    {validationError}
+                  </div>
+                )}
 
                 <div className="pt-8 flex justify-center">
                   <button 

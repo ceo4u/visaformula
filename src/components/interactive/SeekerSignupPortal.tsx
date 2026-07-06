@@ -40,6 +40,8 @@ export function SeekerSignupPortal() {
     const [otpSent, setOtpSent] = useState(false);
     const [emailVerified, setEmailVerified] = useState(true);
     const [verificationError, setVerificationError] = useState("");
+    const [countryCode, setCountryCode] = useState("+91");
+    const [validationError, setValidationError] = useState("");
 
     const toggleItem = (id: string, list: string[], setList: (l: string[]) => void) => {
         setList(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
@@ -128,6 +130,34 @@ export function SeekerSignupPortal() {
                     {step === 1 && (
                         <form onSubmit={(e) => {
                             e.preventDefault();
+                            setValidationError("");
+                            
+                            // Email check
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+                            if (!emailRegex.test(email)) {
+                                setValidationError("Please enter a valid email address (must contain '@' and end with a valid domain like '.com').");
+                                return;
+                            }
+
+                            // Password check: 8 chars, 1 number, 1 symbol
+                            const hasNumber = /\d/.test(password);
+                            const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+                            if (password.length < 8) {
+                                setValidationError("Password must be at least 8 characters long.");
+                                return;
+                            }
+                            if (!hasNumber || !hasSymbol) {
+                                setValidationError("Password must contain at least one number and one special character / symbol (e.g. !, @, #, etc).");
+                                return;
+                            }
+
+                            // Contact validation: at least 10 digits
+                            const cleanPhone = phone.replace(/\D/g, "");
+                            if (cleanPhone.length < 10) {
+                                setValidationError("Please enter a valid phone number containing at least 10 digits.");
+                                return;
+                            }
+
                             if (!emailVerified) {
                                 setVerificationError("You must verify your email address to continue.");
                                 return;
@@ -181,6 +211,7 @@ export function SeekerSignupPortal() {
                                         placeholder="Min. 8 characters" 
                                         className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
                                     />
+                                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
                                 </div>
                                 <div className="space-y-2">
                                      <label className="text-sm font-semibold text-slate-700 block">Country of Citizenship (Passport)*</label>
@@ -235,26 +266,49 @@ export function SeekerSignupPortal() {
                                      </div>
                                  </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-semibold text-slate-700 block">Phone Number*</label>
-                                    <input 
-                                        type="tel" 
-                                        required
-                                        placeholder="+91 99999 99999" 
-                                        value={phone}
-                                        onChange={(e) => setPhone(e.target.value)}
-                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm" 
-                                    />
-                                </div>
-                            </div>
+                                     <label className="text-sm font-semibold text-slate-700 block">Phone Number*</label>
+                                     <div className="flex gap-3">
+                                         <select 
+                                             value={countryCode} 
+                                             onChange={(e) => setCountryCode(e.target.value)}
+                                             className="px-4 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black shadow-sm shrink-0 cursor-pointer"
+                                         >
+                                             <option value="+91">+91 (IN)</option>
+                                             <option value="+1">+1 (US/CA)</option>
+                                             <option value="+44">+44 (UK)</option>
+                                             <option value="+61">+61 (AU)</option>
+                                             <option value="+971">+971 (AE)</option>
+                                             <option value="+49">+49 (DE)</option>
+                                             <option value="+33">+33 (FR)</option>
+                                             <option value="+65">+65 (SG)</option>
+                                             <option value="+64">+64 (NZ)</option>
+                                         </select>
+                                         <input 
+                                             type="tel" 
+                                             required
+                                             placeholder="99999 99999" 
+                                             value={phone}
+                                             onChange={(e) => setPhone(e.target.value)}
+                                             className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm" 
+                                         />
+                                     </div>
+                                 </div>
+                             </div>
 
-                            <div className="pt-8 flex justify-center">
-                                <button 
-                                    type="submit"
-                                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
-                                >
-                                    Continue
-                                </button>
-                            </div>
+                             {validationError && (
+                                 <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-sans text-center transition-all animate-premium-fade max-w-lg mx-auto mt-6">
+                                     {validationError}
+                                 </div>
+                             )}
+
+                             <div className="pt-8 flex justify-center">
+                                 <button 
+                                     type="submit"
+                                     className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+                                 >
+                                     Continue
+                                 </button>
+                             </div>
                         </form>
                     )}
 
@@ -367,7 +421,7 @@ export function SeekerSignupPortal() {
                                                     last_name: lastName,
                                                     email: email,
                                                     password: password,
-                                                    phone: phone,
+                                                    phone: `${countryCode} ${phone}`,
                                                     country_of_citizenship: countryOfCitizenship,
                                                     resident_of: residentOf,
                                                     passport_country: countryOfCitizenship, // legacy fallback
@@ -377,7 +431,8 @@ export function SeekerSignupPortal() {
                                             });
                                             if (!response.ok) {
                                                 const errData = await response.json();
-                                                alert(errData.message || "Registration failed.");
+                                                setValidationError(errData.message || "Registration failed.");
+                                                setStep(1);
                                                 return;
                                             }
                                         } catch (err) {
@@ -386,7 +441,7 @@ export function SeekerSignupPortal() {
                                         // Save locally and proceed
                                         localStorage.setItem("seeker_firstName", firstName);
                                         localStorage.setItem("seeker_lastName", lastName);
-                                        localStorage.setItem("seeker_phone", phone);
+                                        localStorage.setItem("seeker_phone", `${countryCode} ${phone}`);
                                         localStorage.setItem("seeker_email", email);
                                         localStorage.setItem("seeker_country_of_citizenship", countryOfCitizenship);
                                         localStorage.setItem("seeker_resident_of", residentOf);

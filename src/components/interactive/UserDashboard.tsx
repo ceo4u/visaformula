@@ -570,9 +570,7 @@ export function UserDashboard() {
                                         </button>
                                     </div>
                                 ))}
-                            </div>
-                        )}}
-                        </div>
+                        )}
                     </div>
                 ) : activeTab === "escrow-milestones" ? (
                     <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-8 max-w-4xl animate-premium-fade">

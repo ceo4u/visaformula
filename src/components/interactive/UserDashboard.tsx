@@ -401,7 +401,62 @@ export function UserDashboard() {
                     {/* Column 3: Meetings & Support (My Meetings & Tickets layout) */}
                     <div className="xl:col-span-1 flex flex-col gap-8">
                         
-                        {/* Account Information Card (Displays clean and proper registration details) */}
+                        {/* Consultation Meetings */}
+                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs font-bold text-slate-450 tracking-widest block">My Consultations</span>
+                                <Calendar className="w-4 h-4 text-black" />
+                            </div>
+
+                            <div className="space-y-3">
+                                {initialBookings.map((b, idx) => (
+                                    <div key={idx} className="bg-slate-50 border border-slate-200/40 rounded-2xl p-4.5 space-y-3 hover:shadow-xs transition-all">
+                                        <div className="flex justify-between items-center text-xs font-bold">
+                                            <span className="text-slate-450">{b.date.split("·")[0]}</span>
+                                            <span className="bg-black text-white px-2 py-0.5 rounded-md text-[9px] tracking-wider">{b.platform}</span>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <img src={b.avatar} alt={b.expert} className="w-8 h-8 rounded-full object-cover" />
+                                            <div className="truncate">
+                                                <span className="text-xs font-semibold text-black block truncate">{b.expert}</span>
+                                                <span className="text-[10px] text-slate-400 block truncate font-semibold mt-0.5">{b.service}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <a href="/find-experts" className="block text-center text-xs font-bold text-slate-700 hover:text-black pt-2">
+                                See All Consultations &gt;
+                            </a>
+                        </div>
+
+                        {/* Saved Experts list (styled like Open Tickets / Chats list) */}
+                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs font-bold text-slate-450 tracking-widest block">Saved Experts</span>
+                                <Bookmark className="w-4 h-4 text-black" />
+                            </div>
+
+                            <div className="space-y-4">
+                                {initialSavedExperts.map((e, idx) => (
+                                    <div key={idx} className="flex items-center gap-3">
+                                        <img src={e.avatar} alt={e.name} className="w-10 h-10 rounded-full object-cover border border-slate-100" />
+                                        <div className="flex-1 truncate">
+                                            <div className="text-xs font-semibold text-black leading-none">{e.name}</div>
+                                            <span className="text-[10px] text-slate-400 font-bold block mt-1 truncate">{e.role}</span>
+                                        </div>
+                                        <a href="/find-experts">
+                                            <button className="bg-black hover:bg-slate-900 text-white text-[10px] font-bold tracking-wider px-3.5 py-1.5 rounded-xl active:scale-95 transition-all">
+                                                Book
+                                            </button>
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Account Information Card (Displays clean and proper registration details replacing updates & alerts) */}
                         <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
                             <div>
                                 <h3 className="font-bold text-lg text-black">Account Information</h3>
@@ -433,23 +488,6 @@ export function UserDashboard() {
                                     <span>Phone Number</span>
                                     <span className="text-slate-900 font-bold">{phone || "—"}</span>
                                 </div>
-                            </div>
-                        </div>
-
-                        {/* Updates / Notifications */}
-                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
-                            <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-slate-450 tracking-widest block">Updates & alerts</span>
-                                <Bell className="w-4 h-4 text-black" />
-                            </div>
-
-                            <div className="space-y-3">
-                                {initialNotifications.map((n, idx) => (
-                                    <div key={idx} className="border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
-                                        <p className="text-xs text-black font-semibold leading-relaxed">{n.text}</p>
-                                        <span className="text-[9px] text-slate-400 font-bold mt-1 block">{n.time}</span>
-                                    </div>
-                                ))}
                             </div>
                         </div>
 

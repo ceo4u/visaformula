@@ -215,13 +215,12 @@ export function ExpertSignupPortal() {
           gov_registration_number: govRegNumber,
           license_document_url: "uploaded_license_copy.pdf",
           expertise_tags: expertiseTags,
-          countries_expertise: countriesExpertise ? countriesExpertise.split(",").map(c => c.trim()) : []
+          countries_expertise: countriesExpertise.trim() ? countriesExpertise.split(",").map(c => c.trim()).filter(Boolean) : []
         })
       });
       if (!response.ok) {
         const errData = await response.json();
         setValidationError(errData.message || "Expert registration failed.");
-        setStep(1);
         return;
       }
     } catch (err) {
@@ -789,6 +788,12 @@ export function ExpertSignupPortal() {
                     </button>
                   </div>
                 </div>
+
+                {validationError && (
+                  <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-sans text-center transition-all animate-premium-fade max-w-lg mx-auto mt-6">
+                    {validationError}
+                  </div>
+                )}
 
                 <div className="pt-8 border-t border-slate-100 flex items-center justify-between gap-4">
                   <button 

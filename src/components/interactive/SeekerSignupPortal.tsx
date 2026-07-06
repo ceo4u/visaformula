@@ -420,6 +420,12 @@ export function SeekerSignupPortal() {
                                 </div>
                             )}
 
+                            {validationError && (
+                                <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-sans text-center transition-all animate-premium-fade max-w-lg mx-auto mt-6">
+                                    {validationError}
+                                </div>
+                            )}
+
                             <div className="pt-8 border-t border-slate-100 flex items-center justify-between gap-4">
                                 <button 
                                     type="button"

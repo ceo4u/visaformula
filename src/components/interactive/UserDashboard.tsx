@@ -401,6 +401,41 @@ export function UserDashboard() {
                     {/* Column 3: Meetings & Support (My Meetings & Tickets layout) */}
                     <div className="xl:col-span-1 flex flex-col gap-8">
                         
+                        {/* Account Information Card (Displays clean and proper registration details) */}
+                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
+                            <div>
+                                <h3 className="font-bold text-lg text-black">Account Information</h3>
+                                <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5 block">Registration Details</span>
+                            </div>
+                            
+                            <div className="text-xs space-y-3.5 pt-4 text-slate-500 font-semibold border-t border-slate-100">
+                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
+                                    <span>First Name</span>
+                                    <span className="text-black font-extrabold">{firstName || "—"}</span>
+                                </div>
+                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
+                                    <span>Last Name</span>
+                                    <span className="text-black font-extrabold">{lastName || "Sharma"}</span>
+                                </div>
+                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
+                                    <span>Passport Country</span>
+                                    <span className="text-black font-extrabold">{countryOfCitizenship || "—"}</span>
+                                </div>
+                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
+                                    <span>Current Residence</span>
+                                    <span className="text-black font-extrabold">{residentOf || "—"}</span>
+                                </div>
+                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
+                                    <span>Email Address</span>
+                                    <span className="text-slate-900 font-bold truncate max-w-[150px]">{email || "—"}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span>Phone Number</span>
+                                    <span className="text-slate-900 font-bold">{phone || "—"}</span>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Consultation Meetings */}
                         <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
                             <div className="flex items-center justify-between">
@@ -453,41 +488,6 @@ export function UserDashboard() {
                                         </a>
                                     </div>
                                 ))}
-                            </div>
-                        </div>
-
-                        {/* Account Information Card (Displays clean and proper registration details replacing updates & alerts) */}
-                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
-                            <div>
-                                <h3 className="font-bold text-lg text-black">Account Information</h3>
-                                <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5 block">Registration Details</span>
-                            </div>
-                            
-                            <div className="text-xs space-y-3.5 pt-4 text-slate-500 font-semibold border-t border-slate-100">
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>First Name</span>
-                                    <span className="text-black font-extrabold">{firstName || "—"}</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>Last Name</span>
-                                    <span className="text-black font-extrabold">{lastName || "Sharma"}</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>Passport Country</span>
-                                    <span className="text-black font-extrabold">{countryOfCitizenship || "—"}</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>Current Residence</span>
-                                    <span className="text-black font-extrabold">{residentOf || "—"}</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>Email Address</span>
-                                    <span className="text-slate-900 font-bold truncate max-w-[150px]">{email || "—"}</span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span>Phone Number</span>
-                                    <span className="text-slate-900 font-bold">{phone || "—"}</span>
-                                </div>
                             </div>
                         </div>
 

@@ -816,8 +816,12 @@ export function ExpertSignupPortal() {
           </div>
         </div>
       ) : (
-        <div className="flex-grow flex bg-[#f3f7fa] min-h-screen text-[#111111] antialiased animate-premium-fade">
-          
+        <div className="flex-grow flex bg-[#f3f7fa] min-h-screen text-[#111111] antialiased animate-premium-fade font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>
+          <style dangerouslySetInnerHTML={{__html: `
+            .font-roboto, .font-roboto * {
+                font-family: 'Roboto', sans-serif !important;
+            }
+          `}} />
           <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between py-8 px-5 flex-shrink-0 text-black">
             <div className="flex flex-col items-stretch gap-8">
               {/* Logo / Branding */}

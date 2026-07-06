@@ -30,6 +30,8 @@ export function SeekerSignupPortal() {
     const [password, setPassword] = useState("");
     const [countryOfCitizenship, setCountryOfCitizenship] = useState("");
     const [residentOf, setResidentOf] = useState("");
+    const [citizenshipOpen, setCitizenshipOpen] = useState(false);
+    const [residenceOpen, setResidenceOpen] = useState(false);
     const [phone, setPhone] = useState("");
 
     // Email Verification States
@@ -178,64 +180,57 @@ export function SeekerSignupPortal() {
                                         onChange={(e) => setPassword(e.target.value)} 
                                         placeholder="Min. 8 characters" 
                                         className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
-                                    />
                                 </div>
                                 <div className="space-y-2">
                                      <label className="text-sm font-semibold text-slate-700 block">Country of Citizenship (Passport)*</label>
                                      <div className="relative">
-                                         <select 
-                                             required
-                                             value={countryOfCitizenship} 
-                                             onChange={(e) => setCountryOfCitizenship(e.target.value)} 
-                                             className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm appearance-none cursor-pointer"
+                                         <button
+                                             type="button"
+                                             onClick={() => { setCitizenshipOpen(!citizenshipOpen); setResidenceOpen(false); }}
+                                             className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm text-left flex justify-between items-center cursor-pointer"
                                          >
-                                             <option value="">Select passport country</option>
-                                             <option>India</option>
-                                             <option>Nigeria</option>
-                                             <option>Philippines</option>
-                                             <option>Brazil</option>
-                                             <option>Pakistan</option>
-                                             <option>Bangladesh</option>
-                                             <option>United States</option>
-                                             <option>United Kingdom</option>
-                                             <option>Canada</option>
-                                             <option>Australia</option>
-                                             <option>Other</option>
-                                         </select>
-                                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                         </div>
+                                             <span>{countryOfCitizenship || "Select passport country"}</span>
+                                             <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                         </button>
+                                         {citizenshipOpen && (
+                                             <div className="absolute z-50 w-full mt-1 bg-white border border-slate-250 rounded-xl shadow-xl max-h-60 overflow-y-auto">
+                                                 {["India", "Nigeria", "Philippines", "Brazil", "Pakistan", "Bangladesh", "United States", "United Kingdom", "Canada", "Australia", "Other"].map(opt => (
+                                                     <div
+                                                         key={opt}
+                                                         onClick={() => { setCountryOfCitizenship(opt); setCitizenshipOpen(false); }}
+                                                         className="px-5 py-3 text-base text-black hover:bg-black hover:text-white cursor-pointer transition-colors"
+                                                     >
+                                                         {opt}
+                                                     </div>
+                                                 ))}
+                                             </div>
+                                         )}
                                      </div>
                                  </div>
                                  <div className="space-y-2">
                                      <label className="text-sm font-semibold text-slate-700 block">Current Country of Residence*</label>
                                      <div className="relative">
-                                         <select 
-                                             required
-                                             value={residentOf} 
-                                             onChange={(e) => setResidentOf(e.target.value)} 
-                                             className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm appearance-none cursor-pointer"
+                                         <button
+                                             type="button"
+                                             onClick={() => { setResidenceOpen(!residenceOpen); setCitizenshipOpen(false); }}
+                                             className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm text-left flex justify-between items-center cursor-pointer"
                                          >
-                                             <option value="">Select current residence</option>
-                                             <option>India</option>
-                                             <option>Nigeria</option>
-                                             <option>Philippines</option>
-                                             <option>Brazil</option>
-                                             <option>Pakistan</option>
-                                             <option>Bangladesh</option>
-                                             <option>United States</option>
-                                             <option>United Kingdom</option>
-                                             <option>Canada</option>
-                                             <option>Australia</option>
-                                             <option>Singapore</option>
-                                             <option>United Arab Emirates</option>
-                                             <option>Germany</option>
-                                             <option>France</option>
-                                             <option>Other</option>
-                                         </select>
-                                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                         </div>
+                                             <span>{residentOf || "Select current residence"}</span>
+                                             <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                         </button>
+                                         {residenceOpen && (
+                                             <div className="absolute z-50 w-full mt-1 bg-white border border-slate-250 rounded-xl shadow-xl max-h-60 overflow-y-auto">
+                                                 {["India", "Nigeria", "Philippines", "Brazil", "Pakistan", "Bangladesh", "United States", "United Kingdom", "Canada", "Australia", "Singapore", "United Arab Emirates", "Germany", "France", "Other"].map(opt => (
+                                                     <div
+                                                         key={opt}
+                                                         onClick={() => { setResidentOf(opt); setResidenceOpen(false); }}
+                                                         className="px-5 py-3 text-base text-black hover:bg-black hover:text-white cursor-pointer transition-colors"
+                                                     >
+                                                         {opt}
+                                                     </div>
+                                                 ))}
+                                             </div>
+                                         )}
                                      </div>
                                  </div>
                                 <div className="space-y-2">

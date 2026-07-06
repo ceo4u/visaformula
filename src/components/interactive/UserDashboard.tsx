@@ -503,7 +503,7 @@ export function UserDashboard() {
                         <div className="space-y-6">
                             {/* Module 13: Visas Under Processing */}
                             <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-150 space-y-4">
-                                <h4 className="text-xs font-bold text-black tracking-wider uppercase">Module 13: Visas Under Processing</h4>
+                                <h4 className="text-xs font-bold text-black tracking-wider uppercase">Visas Under Processing</h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {visasProcessingState.map(vp => (
                                         <div key={vp.case_id} className="bg-white border border-slate-250 p-4 rounded-xl shadow-xs">
@@ -529,7 +529,7 @@ export function UserDashboard() {
                     <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
                         <div className="flex justify-between items-center border-b border-slate-100 pb-4">
                             <div>
-                                <h3 className="text-lg font-bold text-black">Module 9: My Scanned Documents</h3>
+                                <h3 className="text-lg font-bold text-black">My Scanned Documents</h3>
                                 <p className="text-xs text-slate-400 mt-1">Cloud asset path references secured in AWS S3 storage buckets</p>
                             </div>
                             <FileText className="w-5 h-5 text-black" />
@@ -569,7 +569,7 @@ export function UserDashboard() {
 
                         {/* Module 12: Escrow Payments */}
                         <div className="space-y-4">
-                            <h4 className="text-xs font-bold text-black tracking-wider uppercase">Module 12: Escrow Payments & Milestone Tracker</h4>
+                            <h4 className="text-xs font-bold text-black tracking-wider uppercase">Escrow Payments & Milestone Tracker</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {escrowPaymentsState.map(esc => (
                                     <div key={esc.escrow_id} className="bg-slate-50/50 border border-slate-200 p-5 rounded-2xl space-y-3">
@@ -594,7 +594,7 @@ export function UserDashboard() {
 
                         {/* Module 11: Active Disputes */}
                         <div className="space-y-4 pt-4 border-t border-slate-100">
-                            <h4 className="text-xs font-bold text-black tracking-wider uppercase">Module 11: Active Disputes hold mitigation</h4>
+                            <h4 className="text-xs font-bold text-black tracking-wider uppercase">Active Disputes hold mitigation</h4>
                             {activeDisputes.length === 0 ? (
                                 <div className="p-4 bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs font-semibold rounded-xl">
                                     No active dispute cases filed. Your escrow releases are currently running smoothly.
@@ -633,7 +633,7 @@ export function UserDashboard() {
 
                         {/* Module 10: Previous Applied Visas */}
                         <div className="space-y-4">
-                            <h4 className="text-xs font-bold text-black tracking-wider uppercase">Module 10: Previous Applied Visas</h4>
+                            <h4 className="text-xs font-bold text-black tracking-wider uppercase">Previous Applied Visas</h4>
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left text-xs text-black border-collapse">
                                     <thead>
@@ -666,7 +666,7 @@ export function UserDashboard() {
                     <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
                         <div className="flex justify-between items-center border-b border-slate-100 pb-4">
                             <div>
-                                <h3 className="text-lg font-bold text-black">Module 8: Favourite Agents</h3>
+                                <h3 className="text-lg font-bold text-black">Favourite Agents</h3>
                                 <p className="text-xs text-slate-400 mt-1">Bookmarked immigration consultants, agents, and legal advisors</p>
                             </div>
                             <Bookmark className="w-5 h-5 text-black" />
@@ -703,7 +703,7 @@ export function UserDashboard() {
                     <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
                         <div className="flex justify-between items-center border-b border-slate-100 pb-4">
                             <div>
-                                <h3 className="text-lg font-bold text-black">Module 15: Reviews & Ratings Given</h3>
+                                <h3 className="text-lg font-bold text-black">Reviews & Ratings Given</h3>
                                 <p className="text-xs text-slate-400 mt-1">Feedback logs and satisfaction ratings submitted for visa consultation audits</p>
                             </div>
                             <Star className="w-5 h-5 text-black" />

@@ -72,6 +72,7 @@ export function ExpertSignupPortal() {
   const [password, setPassword] = useState("");
   const [countryCode, setCountryCode] = useState("+91");
   const [validationError, setValidationError] = useState("");
+  const [countryCodeOpen, setCountryCodeOpen] = useState(false);
   const [expertCategory, setExpertCategory] = useState("Student visa expert");
   const [expertAddress, setExpertAddress] = useState("");
   const [signupCategoryOpen, setSignupCategoryOpen] = useState(false);
@@ -444,21 +445,40 @@ export function ExpertSignupPortal() {
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-slate-700 block">Contact Number*</label>
                     <div className="flex gap-3">
-                      <select 
-                        value={countryCode} 
-                        onChange={(e) => setCountryCode(e.target.value)}
-                        className="px-4 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black shadow-sm shrink-0 cursor-pointer"
-                      >
-                        <option value="+91">+91 (IN)</option>
-                        <option value="+1">+1 (US/CA)</option>
-                        <option value="+44">+44 (UK)</option>
-                        <option value="+61">+61 (AU)</option>
-                        <option value="+971">+971 (AE)</option>
-                        <option value="+49">+49 (DE)</option>
-                        <option value="+33">+33 (FR)</option>
-                        <option value="+65">+65 (SG)</option>
-                        <option value="+64">+64 (NZ)</option>
-                      </select>
+                      <div className="relative" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          type="button"
+                          onClick={() => setCountryCodeOpen(!countryCodeOpen)}
+                          className="px-4 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black shadow-sm shrink-0 cursor-pointer flex items-center justify-between gap-1.5 h-[58px] font-semibold"
+                        >
+                          <span>{countryCode}</span>
+                          <svg className={`w-4 h-4 text-slate-500 transition-transform ${countryCodeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        {countryCodeOpen && (
+                          <div className="absolute left-0 mt-1.5 w-40 bg-white border border-slate-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-[60] font-sans">
+                            {[
+                              { val: "+91", label: "+91 (IN)" },
+                              { val: "+1", label: "+1 (US/CA)" },
+                              { val: "+44", label: "+44 (UK)" },
+                              { val: "+61", label: "+61 (AU)" },
+                              { val: "+971", label: "+971 (AE)" },
+                              { val: "+49", label: "+49 (DE)" },
+                              { val: "+33", label: "+33 (FR)" },
+                              { val: "+65", label: "+65 (SG)" },
+                              { val: "+64", label: "+64 (NZ)" }
+                            ].map(opt => (
+                              <button
+                                key={opt.val}
+                                type="button"
+                                onClick={() => { setCountryCode(opt.val); setCountryCodeOpen(false); }}
+                                className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-black hover:text-white transition-colors"
+                              >
+                                {opt.label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                       <input 
                         required
                         value={contactNumber} 

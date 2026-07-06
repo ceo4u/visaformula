@@ -180,6 +180,7 @@ export function SeekerSignupPortal() {
                                         onChange={(e) => setPassword(e.target.value)} 
                                         placeholder="Min. 8 characters" 
                                         className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                    />
                                 </div>
                                 <div className="space-y-2">
                                      <label className="text-sm font-semibold text-slate-700 block">Country of Citizenship (Passport)*</label>

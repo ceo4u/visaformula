@@ -544,7 +544,9 @@ export function UserDashboard() {
                                 <h3 className="text-lg font-bold text-black">My Scanned Documents</h3>
                                 <p className="text-xs text-slate-400 mt-1">Cloud asset path references secured in AWS S3 storage buckets</p>
                             </div>
-                            <FileText className="w-5 h-5 text-black" />                        {scannedDocs.length === 0 ? (
+                            <FileText className="w-5 h-5 text-black" />
+                        </div>
+                        {scannedDocs.length === 0 ? (
                             <div className="text-center py-10 text-xs text-slate-400 font-medium bg-slate-50 border border-dashed border-slate-200 rounded-2xl">
                                 No scanned documents uploaded yet. Connect your S3 bucket or start uploading below.
                             </div>
@@ -570,6 +572,7 @@ export function UserDashboard() {
                                         </button>
                                     </div>
                                 ))}
+                            </div>
                         )}
                     </div>
                 ) : activeTab === "escrow-milestones" ? (

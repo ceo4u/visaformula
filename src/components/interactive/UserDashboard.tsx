@@ -217,12 +217,9 @@ export function UserDashboard() {
                                 </div>
 
                                 {/* Description/Location */}
-                                <div className="text-[10px] text-slate-500 font-semibold mt-1.5 space-y-0.5">
-                                    <p>🛂 Passport: <span className="text-black font-bold">{countryOfCitizenship}</span></p>
-                                    <p>📍 Residence: <span className="text-black font-bold">{residentOf}</span></p>
-                                    {email && <p>📧 Email: <span className="text-slate-700">{email}</span></p>}
-                                    {phone && <p>📞 Phone: <span className="text-slate-700">{phone}</span></p>}
-                                </div>
+                                <p className="text-[11px] text-slate-500 font-semibold mt-1 leading-tight max-w-[220px] flex items-center gap-1.5">
+                                    <span>🛂</span> Passport holder from <span className="text-black font-extrabold">{countryOfCitizenship || "India"}</span>
+                                </p>
                             </div>
                         </div>
 
@@ -244,53 +241,83 @@ export function UserDashboard() {
                 {activeTab === "dashboard" ? (
                 <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
                     
-                    {/* Column 1: Document Vault (My Tasks mockup layout) */}
-                    <div className="xl:col-span-1 bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
-                        <div className="flex items-center justify-between">
-                          <div className="flex flex-col">
-                              <h3 className="font-bold text-lg text-black">My Documents</h3>
-                              <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5">Document Vault</span>
-                          </div>
-                          <button className="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all">
-                              <Plus className="w-4 h-4 text-black" />
-                          </button>
-                        </div>
+                    {/* Column 1: Document Vault + User Profile details (Clean grid layout below) */}
+                    <div className="xl:col-span-1 flex flex-col gap-8">
+                        {/* My Documents Card */}
+                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
+                            <div className="flex items-center justify-between">
+                              <div className="flex flex-col">
+                                  <h3 className="font-bold text-lg text-black">My Documents</h3>
+                                  <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5">Document Vault</span>
+                              </div>
+                              <button className="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all">
+                                  <Plus className="w-4 h-4 text-black" />
+                              </button>
+                            </div>
 
-                        <div className="flex gap-2">
-                            <button className="bg-black text-white text-xs font-bold px-4 py-2 rounded-full">All</button>
-                            <button className="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold px-4 py-2 rounded-full transition-all">Required</button>
-                        </div>
+                            <div className="flex gap-2">
+                                <button className="bg-black text-white text-xs font-bold px-4 py-2 rounded-full">All</button>
+                                <button className="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold px-4 py-2 rounded-full transition-all">Required</button>
+                            </div>
 
-                        <div className="bg-slate-50 border border-slate-200/60 p-3 rounded-2xl flex items-center justify-between text-xs font-bold text-black">
-                            <div className="flex items-center gap-2">
-                                <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px]">{documents.length}</div>
-                                <span>Total Files needed</span>
+                            <div className="bg-slate-50 border border-slate-200/60 p-3 rounded-2xl flex items-center justify-between text-xs font-bold text-black">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px]">{documents.length}</div>
+                                    <span>Total Files needed</span>
+                                </div>
+                            </div>
+
+                            {/* Document items styled like mockup cards */}
+                            <div className="flex flex-col gap-4">
+                                {documents.map((doc, idx) => {
+                                    const bgColors = ["bg-[#ffeae6]/40", "bg-[#e8f5e9]/40", "bg-[#e1f5fe]/40", "bg-[#f3e5f5]/40", "bg-[#fff8e1]/40"];
+                                    return (
+                                        <div 
+                                            key={doc.id} 
+                                            onClick={() => toggleDocStatus(doc.id)}
+                                            className={`p-4 border border-slate-150 rounded-2xl transition-all hover:scale-[1.01] active:scale-95 cursor-pointer ${bgColors[idx % bgColors.length]} flex flex-col justify-between gap-3`}
+                                        >
+                                            <div className="flex items-start justify-between">
+                                                <span className="text-xs font-semibold text-black block max-w-[80%]">{doc.label}</span>
+                                                <CheckSquare className={`w-4.5 h-4.5 ${doc.status === "uploaded" ? "text-black fill-black" : "text-slate-400"}`} />
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-[10px] text-slate-500 font-bold">Status</span>
+                                                <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${doc.bg}`}>
+                                                    {doc.status}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
 
-                        {/* Document items styled like mockup cards */}
-                        <div className="flex flex-col gap-4">
-                            {documents.map((doc, idx) => {
-                                const bgColors = ["bg-[#ffeae6]/40", "bg-[#e8f5e9]/40", "bg-[#e1f5fe]/40", "bg-[#f3e5f5]/40", "bg-[#fff8e1]/40"];
-                                return (
-                                    <div 
-                                        key={doc.id} 
-                                        onClick={() => toggleDocStatus(doc.id)}
-                                        className={`p-4 border border-slate-150 rounded-2xl transition-all hover:scale-[1.01] active:scale-95 cursor-pointer ${bgColors[idx % bgColors.length]} flex flex-col justify-between gap-3`}
-                                    >
-                                        <div className="flex items-start justify-between">
-                                            <span className="text-xs font-semibold text-black block max-w-[80%]">{doc.label}</span>
-                                            <CheckSquare className={`w-4.5 h-4.5 ${doc.status === "uploaded" ? "text-black fill-black" : "text-slate-400"}`} />
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-[10px] text-slate-500 font-bold">Status</span>
-                                            <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${doc.bg}`}>
-                                                {doc.status}
-                                            </span>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                        {/* Account Details Card (Placed cleanly below Document Vault square/rectangular boxes) */}
+                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
+                            <div>
+                                <h3 className="font-bold text-lg text-black">Account Profile</h3>
+                                <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5 block">Registration Information</span>
+                            </div>
+                            
+                            <div className="text-xs space-y-3.5 pt-4 text-slate-500 font-semibold border-t border-slate-100">
+                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
+                                    <span>Citizenship</span>
+                                    <span className="text-black font-extrabold">{countryOfCitizenship}</span>
+                                </div>
+                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
+                                    <span>Residence</span>
+                                    <span className="text-black font-extrabold">{residentOf}</span>
+                                </div>
+                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
+                                    <span>Email</span>
+                                    <span className="text-slate-900 font-bold">{email}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span>Phone</span>
+                                    <span className="text-slate-900 font-bold">{phone}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

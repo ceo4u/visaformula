@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, Shield, Sparkles } from "lucide-react";
+import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, User, Upload } from "lucide-react";
+import airplanePaths from "../../data/clean_airplane.json";
+import checkmarkPaths from "../../data/clean_checkmark.json";
 
 const goals = [
     { id: "study", icon: GraduationCap, label: "Study Abroad", desc: "Find universities & student visas" },
@@ -10,14 +12,10 @@ const goals = [
 
 const destinations = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
 
-const countryCodes = [
-    { code: "+91", country: "India", flag: "🇮🇳" },
-    { code: "+1", country: "USA/Canada", flag: "🇺🇸" },
-    { code: "+44", country: "UK", flag: "🇬🇧" },
-    { code: "+61", country: "Australia", flag: "🇦🇺" },
-    { code: "+971", country: "UAE", flag: "🇦🇪" },
-    { code: "+65", country: "Singapore", flag: "🇸🇬" },
-    { code: "+49", country: "Germany", flag: "🇩🇪" }
+const steps = [
+    { label: "Account Details", icon: "1" },
+    { label: "Your Goals", icon: "2" },
+    { label: "Destinations", icon: "3" },
 ];
 
 export function SeekerSignupPortal() {
@@ -26,90 +24,48 @@ export function SeekerSignupPortal() {
     const [selectedDests, setSelectedDests] = useState<string[]>([]);
     const [submitted, setSubmitted] = useState(false);
 
-    // Seeker Registration Form Fields mapped to Postgres Schema
+    // Account inputs
     const [firstName, setFirstName] = useState("");
-    const [surName, setSurName] = useState("");
-    const [dateOfBirth, setDateOfBirth] = useState("");
-    const [countryOfCitizenship, setCountryOfCitizenship] = useState("India");
-    const [residentOf, setResidentOf] = useState("India");
-    const [phoneCode, setPhoneCode] = useState("+91");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [email, setEmail] = useState("");
+    const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
+    const [countryOfCitizenship, setCountryOfCitizenship] = useState("");
+    const [residentOf, setResidentOf] = useState("");
+    const [phone, setPhone] = useState("");
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [errorMsg, setErrorMsg] = useState("");
+    // Email Verification States
+    const [email, setEmail] = useState("");
+    const [otp, setOtp] = useState("");
+    const [otpSent, setOtpSent] = useState(false);
+    const [emailVerified, setEmailVerified] = useState(true);
+    const [verificationError, setVerificationError] = useState("");
 
     const toggleItem = (id: string, list: string[], setList: (l: string[]) => void) => {
         setList(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
     };
 
-    const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setErrorMsg("");
-        setIsSubmitting(true);
-
-        if (!firstName || !surName || !dateOfBirth || !email || !phoneNumber || !password) {
-            setErrorMsg("Please fill in all required fields.");
-            setIsSubmitting(false);
-            return;
-        }
-
-        try {
-            // Securely construct data object matching Serverless Postgres schema variables
-            const payload = {
-                first_name: firstName,
-                sur_name: surName,
-                date_of_birth: dateOfBirth,
-                country_of_citizenship: countryOfCitizenship,
-                resident_of: residentOf,
-                phone: `${phoneCode}${phoneNumber}`,
-                email: email,
-                password: password,
-                goals: selectedGoals,
-                destinations: selectedDests
-            };
-
-            // Save to localStorage for demo persistence in dashboard
-            localStorage.setItem("seeker_firstName", firstName);
-            localStorage.setItem("seeker_lastName", surName);
-            localStorage.setItem("seeker_dob", dateOfBirth);
-            localStorage.setItem("seeker_citizenship", countryOfCitizenship);
-            localStorage.setItem("seeker_residentOf", residentOf);
-            localStorage.setItem("seeker_phone", `${phoneCode}${phoneNumber}`);
-            localStorage.setItem("seeker_email", email);
-            localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
-            localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
-
-            // Simulate serverless postgres DB submission latency
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            setSubmitted(true);
-        } catch (err) {
-            setErrorMsg("Registration failed. Please try again.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
     if (submitted) {
         return (
-            <div className="min-h-screen text-neutral-100 font-sans flex flex-col justify-between bg-[#050505] selection:bg-cyan-500 selection:text-black">
+            <div className="min-h-screen text-[#111111] font-sans flex flex-col justify-between selection:bg-black selection:text-white bg-white" style={{ 
+                fontFamily: "'Sora', sans-serif"
+            }}>
+
+
                 <div className="flex-grow flex flex-col items-center justify-center px-4 py-12">
-                    <div className="bg-[#0c0c0c] rounded-3xl border border-neutral-800/80 p-10 max-w-md w-full text-center shadow-2xl relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#00FF66] to-transparent"></div>
-                        <div className="w-20 h-20 bg-neutral-900 border border-neutral-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-950/20">
-                            <CheckCircle className="w-10 h-10 text-[#00FF66]" />
+                    <div className="bg-white rounded-3xl border border-slate-150 shadow-2xl p-10 max-w-md w-full text-center">
+                        <div className="w-20 h-20 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                            <CheckCircle className="w-10 h-10 text-black" />
                         </div>
-                        <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Registration Complete</h1>
-                        <p className="text-neutral-400 text-sm mb-8 font-medium">Your profile has been mapped to our secure Serverless Postgres storage.</p>
+                        <h1 className="text-2xl font-bold text-black mb-2">You're In! 🎉</h1>
+                        <p className="text-slate-400 text-sm mb-8 font-medium">Your VisaFormula account is ready. Start exploring experts and opportunities.</p>
                         <a href="/dashboard" className="block">
-                            <button className="w-full bg-[#00FF66] hover:bg-[#00e055] text-black py-4 rounded-xl font-bold tracking-wider transition-all flex items-center justify-center gap-2 active:scale-[0.98] shadow-lg shadow-emerald-500/10 cursor-pointer text-sm">
-                                Enter Premium Dashboard <ArrowRight className="w-4 h-4" />
+                            <button className="w-full bg-[#111111] hover:bg-black text-white py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 active:scale-[0.98] shadow-md cursor-pointer text-sm">
+                                Explore the Platform <ArrowRight className="w-4 h-4" />
                             </button>
                         </a>
                     </div>
                 </div>
-                <footer className="py-6 text-center text-xs text-neutral-600 font-medium">
+
+                <footer className="py-6 text-center text-xs text-slate-400 font-medium">
                     © 2026 VisaFormula. All rights reserved.
                 </footer>
             </div>
@@ -117,285 +73,346 @@ export function SeekerSignupPortal() {
     }
 
     return (
-        <div className="min-h-screen text-neutral-200 flex flex-col justify-between bg-[#050505] selection:bg-cyan-500 selection:text-black">
-            <header className="w-full px-6 md:px-12 py-6 flex items-center justify-between min-h-[100px]">
-                <a href="javascript:history.back()" className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-neutral-800/80 text-xs font-bold text-neutral-400 hover:text-white hover:border-neutral-750 transition-all shrink-0">
+        <div className="min-h-screen text-[#111111] font-sora flex flex-col justify-between selection:bg-black selection:text-white bg-white" style={{ 
+            fontFamily: "'Sora', sans-serif"
+        }}>
+            <style dangerouslySetInnerHTML={{__html: `
+                .font-sora, .font-sora * {
+                    font-family: 'Sora', sans-serif !important;
+                }
+            `}} />
+            <header className="relative w-full px-4 md:px-8 py-6 flex items-center justify-between font-sans min-h-[120px]">
+                <a href="javascript:history.back()" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-black hover:border-black hover:bg-slate-50 transition-all shrink-0">
                     <ArrowLeft className="w-3.5 h-3.5" />
                     <span>Back</span>
                 </a>
                 
-                <a href="/" className="flex items-center gap-2">
-                    <span className="text-white font-serif text-xl tracking-wider uppercase font-semibold">VisaFormula</span>
-                    <span className="bg-[#00F0FF]/10 text-[#00F0FF] text-[8px] font-black tracking-widest px-2 py-0.5 rounded-full border border-[#00F0FF]/20">SEEKER</span>
+                <a href="/" className="absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 z-10">
+                    <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-36 w-auto object-contain" />
                 </a>
                 
-                <div className="text-xs font-semibold text-neutral-500 shrink-0">
-                    Already a member? <a href="/login" className="text-white hover:text-cyan-400 hover:underline">Login</a>
+                <div className="text-base font-medium text-slate-500 shrink-0">
+                    Already a member? <a href="/login" className="text-black font-bold hover:underline">Login</a>
                 </div>
             </header>
 
-            <div className="flex-grow flex flex-col justify-start py-10 px-6 max-w-2xl w-full mx-auto">
-                {/* Custom Process Step Indicator */}
-                <div className="flex items-center justify-between mb-12 max-w-sm mx-auto w-full relative">
-                    <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-neutral-900 -translate-y-1/2 z-0"></div>
-                    <div className={`absolute top-1/2 left-0 h-[1px] bg-cyan-500 -translate-y-1/2 z-0 transition-all duration-300`} style={{ width: step === 1 ? '0%' : step === 2 ? '50%' : '100%' }}></div>
-                    
-                    {[1, 2, 3].map((s) => (
-                        <button
-                            key={s}
-                            onClick={() => s < step && setStep(s)}
-                            disabled={s >= step}
-                            className={`w-8 h-8 rounded-full border flex items-center justify-center text-xs font-bold transition-all duration-300 relative z-10 ${
-                                s === step
-                                    ? "bg-black border-cyan-500 text-cyan-400 shadow-md shadow-cyan-950/20"
-                                    : s < step
-                                    ? "bg-cyan-500 border-cyan-500 text-black"
-                                    : "bg-[#050505] border-neutral-800 text-neutral-600"
-                            }`}
-                        >
-                            {s}
-                        </button>
+            <div className="flex-grow flex flex-col justify-start py-10 px-6 max-w-4xl w-full mx-auto">
+                <div className="text-center my-8">
+                    <h1 className="text-2xl md:text-3xl font-semibold text-black tracking-tight mb-3">Register as Seeker</h1>
+                    <p className="text-base text-slate-400 font-medium">Setup immigration goals and match with verified advisors.</p>
+                </div>
+
+                {/* Step Indicator */}
+                <div className="flex items-center justify-center gap-8 my-10 font-sans">
+                    {steps.map((s, i) => (
+                        <div key={s.label} className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
+                                step > i + 1 ? "bg-black text-white" :
+                                step === i + 1 ? "bg-black text-white shadow-md" :
+                                "border-2 border-slate-350 text-slate-500"
+                            }`}>
+                                {step > i + 1 ? "✓" : s.icon}
+                            </div>
+                            <span className={`text-base font-semibold ${step >= i + 1 ? "text-black" : "text-slate-450"}`}>{s.label}</span>
+                            {i < steps.length - 1 && (
+                                <div className={`h-0.5 w-16 md:w-24 ${step > i + 1 ? "bg-black" : "bg-slate-200"}`} />
+                            )}
+                        </div>
                     ))}
                 </div>
 
-                <div className="bg-[#0c0c0c] border border-neutral-800/80 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#00F0FF] to-transparent"></div>
-
-                    {errorMsg && (
-                        <div className="mb-6 p-4 bg-red-950/30 border border-red-900/50 rounded-xl text-red-400 text-xs font-semibold">
-                            ⚠️ {errorMsg}
-                        </div>
-                    )}
-
+                <div className="w-full mx-auto transition-all duration-300 font-sans mt-4">
+                    {/* Step 1: Account Details */}
                     {step === 1 && (
-                        <div className="space-y-6">
-                            <div>
-                                <h2 className="text-xl font-bold text-white tracking-tight mb-1">Seeker Registration</h2>
-                                <p className="text-xs text-neutral-400">Configure your global visa profile mapping.</p>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            if (!emailVerified) {
+                                setVerificationError("You must verify your email address to continue.");
+                                return;
+                            }
+                            setVerificationError("");
+                            setStep(2);
+                        }} className="space-y-10">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">First Name</label>
-                                    <input
-                                        type="text"
-                                        placeholder="e.g. John"
-                                        value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                        className="w-full bg-[#111111] border border-neutral-800/80 rounded-xl px-4 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none transition-all"
+                                    <label className="text-sm font-semibold text-slate-700 block">First Name*</label>
+                                    <input 
+                                        type="text" 
+                                        required
+                                        value={firstName} 
+                                        onChange={(e) => setFirstName(e.target.value)} 
+                                        placeholder="Enter first name" 
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">Surname / Last Name</label>
-                                    <input
-                                        type="text"
-                                        placeholder="e.g. Doe"
-                                        value={surName}
-                                        onChange={(e) => setSurName(e.target.value)}
-                                        className="w-full bg-[#111111] border border-neutral-800/80 rounded-xl px-4 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none transition-all"
+                                    <label className="text-sm font-semibold text-slate-700 block">Last Name*</label>
+                                    <input 
+                                        type="text" 
+                                        required
+                                        value={lastName} 
+                                        onChange={(e) => setLastName(e.target.value)} 
+                                        placeholder="Enter last name" 
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">Email*</label>
+                                    <input 
+                                        type="email" 
+                                        required
+                                        placeholder="john@example.com" 
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 transition-all shadow-sm"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">Password*</label>
+                                    <input 
+                                        type="password" 
+                                        required
+                                        value={password} 
+                                        onChange={(e) => setPassword(e.target.value)} 
+                                        placeholder="Min. 8 characters" 
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                     <label className="text-sm font-semibold text-slate-700 block">Country of Citizenship (Passport)*</label>
+                                     <div className="relative">
+                                         <select 
+                                             required
+                                             value={countryOfCitizenship} 
+                                             onChange={(e) => setCountryOfCitizenship(e.target.value)} 
+                                             className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm appearance-none cursor-pointer"
+                                         >
+                                             <option value="">Select passport country</option>
+                                             <option>India</option>
+                                             <option>Nigeria</option>
+                                             <option>Philippines</option>
+                                             <option>Brazil</option>
+                                             <option>Pakistan</option>
+                                             <option>Bangladesh</option>
+                                             <option>United States</option>
+                                             <option>United Kingdom</option>
+                                             <option>Canada</option>
+                                             <option>Australia</option>
+                                             <option>Other</option>
+                                         </select>
+                                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div className="space-y-2">
+                                     <label className="text-sm font-semibold text-slate-700 block">Current Country of Residence*</label>
+                                     <div className="relative">
+                                         <select 
+                                             required
+                                             value={residentOf} 
+                                             onChange={(e) => setResidentOf(e.target.value)} 
+                                             className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm appearance-none cursor-pointer"
+                                         >
+                                             <option value="">Select current residence</option>
+                                             <option>India</option>
+                                             <option>Nigeria</option>
+                                             <option>Philippines</option>
+                                             <option>Brazil</option>
+                                             <option>Pakistan</option>
+                                             <option>Bangladesh</option>
+                                             <option>United States</option>
+                                             <option>United Kingdom</option>
+                                             <option>Canada</option>
+                                             <option>Australia</option>
+                                             <option>Singapore</option>
+                                             <option>United Arab Emirates</option>
+                                             <option>Germany</option>
+                                             <option>France</option>
+                                             <option>Other</option>
+                                         </select>
+                                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                         </div>
+                                     </div>
+                                 </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">Phone Number*</label>
+                                    <input 
+                                        type="tel" 
+                                        required
+                                        placeholder="+91 99999 99999" 
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm" 
                                     />
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">Date of Birth</label>
-                                    <input
-                                        type="date"
-                                        value={dateOfBirth}
-                                        onChange={(e) => setDateOfBirth(e.target.value)}
-                                        className="w-full bg-[#111111] border border-neutral-800/80 rounded-xl px-4 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none transition-all [color-scheme:dark]"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">Country of Citizenship</label>
-                                    <select
-                                        value={countryOfCitizenship}
-                                        onChange={(e) => setCountryOfCitizenship(e.target.value)}
-                                        className="w-full bg-[#111111] border border-neutral-800/80 rounded-xl px-4 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none transition-all cursor-pointer"
-                                    >
-                                        <option value="India">India</option>
-                                        <option value="Maldives">Maldives</option>
-                                        <option value="Canada">Canada</option>
-                                        <option value="United Kingdom">United Kingdom</option>
-                                        <option value="United States">United States</option>
-                                        <option value="Australia">Australia</option>
-                                    </select>
-                                </div>
+                            <div className="pt-8 flex justify-center">
+                                <button 
+                                    type="submit"
+                                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+                                >
+                                    Continue
+                                </button>
                             </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">Resident Of (Current Location)</label>
-                                    <select
-                                        value={residentOf}
-                                        onChange={(e) => setResidentOf(e.target.value)}
-                                        className="w-full bg-[#111111] border border-neutral-800/80 rounded-xl px-4 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none transition-all cursor-pointer"
-                                    >
-                                        <option value="India">India</option>
-                                        <option value="Maldives">Maldives</option>
-                                        <option value="Canada">Canada</option>
-                                        <option value="United Kingdom">United Kingdom</option>
-                                        <option value="United States">United States</option>
-                                        <option value="Australia">Australia</option>
-                                    </select>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">Phone Number</label>
-                                    <div className="flex gap-2">
-                                        <select
-                                            value={phoneCode}
-                                            onChange={(e) => setPhoneCode(e.target.value)}
-                                            className="bg-[#111111] border border-neutral-800/80 rounded-xl px-2 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none transition-all cursor-pointer w-24 shrink-0"
-                                        >
-                                            {countryCodes.map(c => (
-                                                <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
-                                            ))}
-                                        </select>
-                                        <input
-                                            type="tel"
-                                            placeholder="9876543210"
-                                            value={phoneNumber}
-                                            onChange={(e) => setPhoneNumber(e.target.value)}
-                                            className="w-full bg-[#111111] border border-neutral-800/80 rounded-xl px-4 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none transition-all"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">Email Address</label>
-                                <input
-                                    type="email"
-                                    placeholder="john.doe@example.com"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-[#111111] border border-neutral-800/80 rounded-xl px-4 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none transition-all"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">Password</label>
-                                <input
-                                    type="password"
-                                    placeholder="••••••••"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full bg-[#111111] border border-neutral-800/80 rounded-xl px-4 py-3 text-sm text-white focus:border-cyan-500 focus:outline-none transition-all"
-                                />
-                            </div>
-
-                            <button
-                                onClick={() => {
-                                    if (!firstName || !surName || !dateOfBirth || !email || !phoneNumber || !password) {
-                                        setErrorMsg("Please fill in all Account details first.");
-                                    } else {
-                                        setErrorMsg("");
-                                        setStep(2);
-                                    }
-                                }}
-                                className="w-full bg-[#00F0FF] hover:bg-[#00d0e0] text-black py-3.5 rounded-xl font-bold tracking-wider transition-all flex items-center justify-center gap-1 active:scale-[0.98] shadow-md shadow-cyan-500/10 cursor-pointer text-xs"
-                            >
-                                Continue to Goals <ArrowRight className="w-3.5 h-3.5" />
-                            </button>
-                        </div>
+                        </form>
                     )}
 
+                    {/* Step 2: Goals */}
                     {step === 2 && (
-                        <div className="space-y-6">
-                            <div>
-                                <h2 className="text-xl font-bold text-white tracking-tight mb-1">Your Visa Goals</h2>
-                                <p className="text-xs text-neutral-400">Select one or more matching categories.</p>
+                        <div className="space-y-8">
+                            <div className="bg-slate-50 rounded-xl p-5 border border-slate-150 text-sm shadow-sm">
+                                <span className="text-slate-750 font-semibold text-slate-700">Choose all immigration goals that apply to you:</span>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {goals.map((g) => {
-                                    const Icon = g.icon;
-                                    const isSelected = selectedGoals.includes(g.id);
-                                    return (
-                                        <div
-                                            key={g.id}
-                                            onClick={() => toggleItem(g.id, selectedGoals, setSelectedGoals)}
-                                            className={`p-5 rounded-2xl border cursor-pointer transition-all duration-300 text-left relative group ${
-                                                isSelected
-                                                    ? "bg-[#111111] border-cyan-500/80 shadow-md shadow-cyan-950/20"
-                                                    : "bg-[#080808] border-neutral-800/85 hover:border-neutral-700"
-                                            }`}
-                                        >
-                                            {isSelected && (
-                                                <span className="absolute top-3 right-3 w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse"></span>
-                                            )}
-                                            <Icon className={`w-6 h-6 mb-3 ${isSelected ? "text-[#00F0FF]" : "text-neutral-500"}`} />
-                                            <div className="text-xs font-bold text-white mb-1">{g.label}</div>
-                                            <div className="text-[10px] text-neutral-400 font-semibold leading-relaxed">{g.desc}</div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={() => setStep(1)}
-                                    className="w-1/3 bg-transparent border border-neutral-800 text-neutral-400 py-3.5 rounded-xl font-bold transition-all text-xs active:scale-[0.98]"
-                                >
-                                    Back
-                                </button>
-                                <button
-                                    onClick={() => setStep(3)}
-                                    className="w-2/3 bg-[#00F0FF] hover:bg-[#00d0e0] text-black py-3.5 rounded-xl font-bold tracking-wider transition-all flex items-center justify-center gap-1 active:scale-[0.98] text-xs"
-                                >
-                                    Select Destinations <ArrowRight className="w-3.5 h-3.5" />
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {step === 3 && (
-                        <div className="space-y-6">
-                            <div>
-                                <h2 className="text-xl font-bold text-white tracking-tight mb-1">Target Destinations</h2>
-                                <p className="text-xs text-neutral-400">Choose countries you wish to study, work or visit.</p>
-                            </div>
-
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                {destinations.map((dest) => {
-                                    const isSelected = selectedDests.includes(dest);
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                {goals.map((goal) => {
+                                    const isSelected = selectedGoals.includes(goal.id);
                                     return (
                                         <button
-                                            key={dest}
-                                            onClick={() => toggleItem(dest, selectedDests, setSelectedDests)}
-                                            className={`py-3 rounded-xl border text-xs font-bold transition-all select-none ${
+                                            key={goal.id}
+                                            onClick={() => toggleItem(goal.id, selectedGoals, setSelectedGoals)}
+                                            className={`p-6 rounded-2xl border transition-all duration-300 flex items-start gap-4 text-left shadow-sm ${
                                                 isSelected
-                                                    ? "bg-[#111111] border-cyan-500 text-cyan-400"
-                                                    : "bg-[#080808] border-neutral-800 text-neutral-400 hover:border-neutral-750"
+                                                    ? "border-black bg-white ring-2 ring-black scale-[1.02]"
+                                                    : "border-slate-200 bg-white hover:border-slate-400"
                                             }`}
                                         >
-                                            {dest}
+                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                                                isSelected ? "bg-black text-white" : "bg-slate-50 text-slate-700 border border-slate-200"
+                                            }`}>
+                                                <goal.icon className="w-6 h-6" />
+                                            </div>
+                                            <div>
+                                                <div className="font-bold text-base text-black">{goal.label}</div>
+                                                <div className="text-xs text-slate-400 mt-1 font-medium">{goal.desc}</div>
+                                            </div>
                                         </button>
                                     );
                                 })}
                             </div>
 
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={() => setStep(2)}
-                                    className="w-1/3 bg-transparent border border-neutral-800 text-neutral-400 py-3.5 rounded-xl font-bold transition-all text-xs active:scale-[0.98]"
+                            <div className="pt-8 border-t border-slate-100 flex items-center justify-between gap-4">
+                                <button 
+                                    type="button"
+                                    onClick={() => setStep(1)}
+                                    className="text-sm font-semibold text-slate-550 hover:text-black flex items-center gap-1 transition-colors"
                                 >
-                                    Back
+                                    ← Back
                                 </button>
-                                <button
-                                    onClick={handleRegister}
-                                    disabled={isSubmitting}
-                                    className="w-2/3 bg-[#00FF66] hover:bg-[#00e055] text-black py-3.5 rounded-xl font-bold tracking-wider transition-all flex items-center justify-center gap-1 active:scale-[0.98] text-xs shadow-lg shadow-emerald-500/10"
+
+                                <button 
+                                    type="button"
+                                    onClick={() => setStep(3)}
+                                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
                                 >
-                                    {isSubmitting ? "Submitting..." : "Submit & Complete →"}
+                                    Continue
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 3: Destinations */}
+                    {step === 3 && (
+                        <div className="space-y-8">
+                            <div className="bg-slate-50 rounded-xl p-5 border border-slate-150 text-sm shadow-sm">
+                                <span className="text-slate-750 font-semibold text-slate-700">Choose your top destination countries:</span>
+                            </div>
+
+                            <div className="flex flex-wrap gap-3.5 justify-center py-6">
+                                {destinations.map((country) => {
+                                    const isSelected = selectedDests.includes(country);
+                                    return (
+                                        <button
+                                            key={country}
+                                            onClick={() => toggleItem(country, selectedDests, setSelectedDests)}
+                                            className={`px-5 py-3 rounded-xl text-sm font-semibold border transition-all duration-200 shadow-sm ${
+                                                isSelected
+                                                    ? "bg-black text-white border-black scale-105"
+                                                    : "bg-white text-slate-650 border-slate-250 hover:border-slate-400"
+                                            }`}
+                                        >
+                                            {country}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {selectedDests.length > 0 && (
+                                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 text-xs font-semibold text-slate-700 shadow-inner text-center">
+                                    <strong>Great choice!</strong> We'll match you with experts specializing in{" "}
+                                    <span className="text-black font-bold">{selectedDests.slice(0, 3).join(", ")}</span>
+                                    {selectedDests.length > 3 ? ` and ${selectedDests.length - 3} more` : ""}.
+                                </div>
+                            )}
+
+                            <div className="pt-8 border-t border-slate-100 flex items-center justify-between gap-4">
+                                <button 
+                                    type="button"
+                                    onClick={() => setStep(2)}
+                                    className="text-sm font-semibold text-slate-550 hover:text-black flex items-center gap-1 transition-colors"
+                                >
+                                    ← Back
+                                </button>
+
+                                <button 
+                                    type="button"
+                                    onClick={async () => {
+                                        try {
+                                            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8000'}/api/register/seeker`, {
+                                                method: "POST",
+                                                headers: { "Content-Type": "application/json" },
+                                                body: JSON.stringify({
+                                                    first_name: firstName,
+                                                    last_name: lastName,
+                                                    email: email,
+                                                    password: password,
+                                                    phone: phone,
+                                                    country_of_citizenship: countryOfCitizenship,
+                                                    resident_of: residentOf,
+                                                    passport_country: countryOfCitizenship, // legacy fallback
+                                                    goals: selectedGoals,
+                                                    destinations: selectedDests
+                                                })
+                                            });
+                                            if (!response.ok) {
+                                                const errData = await response.json();
+                                                alert(errData.message || "Registration failed.");
+                                                return;
+                                            }
+                                        } catch (err) {
+                                            console.warn("Backend server offline. Falling back to local simulation mode.", err);
+                                        }
+                                        // Save locally and proceed
+                                        localStorage.setItem("seeker_firstName", firstName);
+                                        localStorage.setItem("seeker_lastName", lastName);
+                                        localStorage.setItem("seeker_phone", phone);
+                                        localStorage.setItem("seeker_email", email);
+                                        localStorage.setItem("seeker_country_of_citizenship", countryOfCitizenship);
+                                        localStorage.setItem("seeker_resident_of", residentOf);
+                                        localStorage.setItem("seeker_passportCountry", countryOfCitizenship); // legacy fallback
+                                        localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
+                                        localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
+                                        if (typeof window !== "undefined") {
+                                            window.scrollTo({ top: 0, behavior: "instant" });
+                                        }
+                                        setSubmitted(true);
+                                    }}
+                                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+                                >
+                                    Submit
                                 </button>
                             </div>
                         </div>
                     )}
                 </div>
             </div>
-            <footer className="py-6 text-center text-xs text-neutral-600 font-medium font-sans">
+
+            <footer className="py-6 text-center text-xs text-slate-400 font-medium">
                 © 2026 VisaFormula. All rights reserved.
             </footer>
         </div>

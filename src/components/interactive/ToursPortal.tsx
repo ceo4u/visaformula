@@ -299,8 +299,8 @@ export function ToursPortal() {
                         {/* Background Image with Crisp Contrast & Clean Shading */}
                         <div className="absolute inset-0 z-0">
                             <img 
-                                src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1600&fit=crop&q=85" 
-                                alt="Luxury Maldives Overwater Resort" 
+                                src="https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=1600&fit=crop&q=85" 
+                                alt="Luxury Maldives Sunset Resort" 
                                 className="w-full h-full object-cover brightness-[0.8] contrast-[1.05]"
                             />
                             {/* Transparent overlay for text legibility without extra shading or color blocking */}

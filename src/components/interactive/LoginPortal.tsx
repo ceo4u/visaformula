@@ -37,6 +37,16 @@ export function LoginPortal() {
         setLoading(true);
         try {
             await signIn(email, password);
+            const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+            if (userStr) {
+                try {
+                    const userObj = JSON.parse(userStr);
+                    if (userObj.type === "expert") {
+                        window.location.href = "/signup/expert";
+                        return;
+                    }
+                } catch (e) {}
+            }
             window.location.href = "/dashboard";
         } catch (err: any) {
             setError(err?.message?.includes("invalid")

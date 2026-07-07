@@ -439,7 +439,7 @@ export function SeekerSignupPortal() {
                                     type="button"
                                     onClick={async () => {
                                         try {
-                                            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8000'}/api/register/seeker`, {
+                                            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/seeker`, {
                                                 method: "POST",
                                                 headers: { "Content-Type": "application/json" },
                                                 body: JSON.stringify({

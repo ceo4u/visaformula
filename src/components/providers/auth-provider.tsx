@@ -60,6 +60,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 setUser(data.user);
                 if (typeof window !== "undefined") {
                     localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                    
+                    // Unpack rawUser details to local storage so dashboards can read them
+                    if (data.user && data.user.rawUser) {
+                        const raw = data.user.rawUser;
+                        if (data.user.type === "seeker") {
+                            localStorage.setItem("seeker_firstName", raw.first_name || "Seeker");
+                            localStorage.setItem("seeker_lastName", raw.last_name || "");
+                            localStorage.setItem("seeker_phone", raw.phone || "");
+                            localStorage.setItem("seeker_email", raw.email);
+                            localStorage.setItem("seeker_country_of_citizenship", raw.passport_country || "");
+                            localStorage.setItem("seeker_resident_of", raw.passport_country || "");
+                            localStorage.setItem("seeker_passportCountry", raw.passport_country || "");
+                            localStorage.setItem("seeker_goals", typeof raw.goals === "string" ? raw.goals : JSON.stringify(raw.goals || []));
+                            localStorage.setItem("seeker_destinations", typeof raw.destinations === "string" ? raw.destinations : JSON.stringify(raw.destinations || []));
+                        } else if (data.user.type === "expert") {
+                            localStorage.setItem("expert_businessName", raw.business_name || "Expert");
+                            localStorage.setItem("expert_email", raw.email);
+                            localStorage.setItem("expert_contactNumber", raw.contact_number || "");
+                            localStorage.setItem("expert_advisorType", raw.advisor_type || "Freelancer");
+                            localStorage.setItem("expert_aboutMe", raw.about_me || "");
+                            localStorage.setItem("expert_portfolioLink", raw.portfolio_link || "");
+                            localStorage.setItem("expert_officeAddress", raw.office_address || "");
+                            localStorage.setItem("expert_govRegNumber", raw.gov_registration_number || "");
+                            localStorage.setItem("expert_expertiseTags", typeof raw.expertise_tags === "string" ? raw.expertise_tags : JSON.stringify(raw.expertise_tags || []));
+                            localStorage.setItem("expert_countriesExpertise", typeof raw.countries_expertise === "string" ? raw.countries_expertise : JSON.stringify(raw.countries_expertise || []));
+                            localStorage.setItem("expert_profilePhoto", raw.profile_photo || "");
+                            localStorage.setItem("expert_isLoggedIn", "true");
+                        }
+                    }
                 }
                 return;
             } else {

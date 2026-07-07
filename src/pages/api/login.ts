@@ -42,7 +42,8 @@ export const POST: APIRoute = async ({ request }) => {
         uid: `${type}_${user.id}`,
         email: user.email,
         displayName: displayName || 'User',
-        type
+        type,
+        rawUser: user
       }
     }), { status: 200, headers });
 

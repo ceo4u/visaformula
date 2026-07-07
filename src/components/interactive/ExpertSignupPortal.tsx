@@ -200,7 +200,7 @@ export function ExpertSignupPortal() {
   const handleLaunchDashboard = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8000'}/api/register/expert`, {
+      const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/expert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

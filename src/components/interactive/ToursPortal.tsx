@@ -1,8 +1,59 @@
 import { useState, useEffect } from "react";
 import { 
     Star, MapPin, Calendar, Users, CheckCircle, Sparkles, Trophy, 
-    Ship, Music, Umbrella, Search, ArrowRight 
+    Ship, Music, Umbrella, Search, ArrowRight, ChevronDown
 } from "lucide-react";
+
+function CustomSelect({ 
+    label, 
+    value, 
+    onChange, 
+    options 
+}: { 
+    label: string, 
+    value: string, 
+    onChange: (val: string) => void, 
+    options: { value: string, label: string }[] 
+}) {
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        const close = () => setIsOpen(false);
+        window.addEventListener("click", close);
+        return () => window.removeEventListener("click", close);
+    }, [isOpen]);
+
+    const activeOption = options.find(o => o.value === value) || options[0];
+
+    return (
+        <div className="relative w-full text-left" onClick={e => e.stopPropagation()}>
+            <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1.5 block uppercase select-none">{label}</label>
+            <button
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-[#0c1a2e] outline-none text-left flex items-center justify-between shadow-xs cursor-pointer hover:border-slate-300 transition-colors h-[38px] select-none"
+            >
+                <span className="truncate">{activeOption ? activeOption.label : value}</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-500 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {isOpen && (
+                <div className="absolute left-0 mt-1.5 w-full bg-white border border-slate-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-50 font-sans py-1">
+                    {options.map(opt => (
+                        <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => { onChange(opt.value); setIsOpen(false); }}
+                            className="w-full text-left px-3.5 py-2.5 text-xs font-semibold text-slate-700 hover:bg-black hover:text-white transition-colors block cursor-pointer"
+                        >
+                            {opt.label}
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
 
 // Flag helper
 const getFlagByCode = (code: string) => {
@@ -354,28 +405,32 @@ export function ToursPortal() {
                     {/* Neat Search/Filter Sticky Bar Below Banner */}
                     <div id="search-filter-bar" className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-md p-4 max-w-4xl mx-auto flex flex-col md:flex-row gap-4 items-center">
                         <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Destination</label>
-                                <select value={holidayDest} onChange={e => setHolidayDest(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option value="All">All Destinations</option>
-                                    <option value="Bali">Bali, Indonesia</option>
-                                    <option value="Dubai">Dubai, UAE</option>
-                                    <option value="Europe">Europe Tour</option>
-                                    <option value="Thailand">Thailand</option>
-                                    <option value="Singapore">Singapore</option>
-                                    <option value="Maldives">Maldives</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Vacation Type</label>
-                                <select value={holidayTag} onChange={e => setHolidayTag(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option value="All">All Types</option>
-                                    <option value="Beach">Beach Getaway</option>
-                                    <option value="Luxury">Luxury Stay</option>
-                                    <option value="Budget">Budget Friendly</option>
-                                    <option value="Family">Family Holiday</option>
-                                </select>
-                            </div>
+                            <CustomSelect 
+                                label="Destination" 
+                                value={holidayDest} 
+                                onChange={setHolidayDest} 
+                                options={[
+                                    { value: "All", label: "All Destinations" },
+                                    { value: "Bali", label: "Bali, Indonesia" },
+                                    { value: "Dubai", label: "Dubai, UAE" },
+                                    { value: "Europe", label: "Europe Tour" },
+                                    { value: "Thailand", label: "Thailand" },
+                                    { value: "Singapore", label: "Singapore" },
+                                    { value: "Maldives", label: "Maldives" }
+                                ]} 
+                            />
+                            <CustomSelect 
+                                label="Vacation Type" 
+                                value={holidayTag} 
+                                onChange={setHolidayTag} 
+                                options={[
+                                    { value: "All", label: "All Types" },
+                                    { value: "Beach", label: "Beach Getaway" },
+                                    { value: "Luxury", label: "Luxury Stay" },
+                                    { value: "Budget", label: "Budget Friendly" },
+                                    { value: "Family", label: "Family Holiday" }
+                                ]} 
+                            />
                         </div>
                         <button onClick={() => triggerToast("✈️ Searching holiday packages...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
                             <Search className="w-4 h-4" /> Search Holidays
@@ -449,35 +504,41 @@ export function ToursPortal() {
                     {/* Neat Search/Filter Sticky Bar Below Banner */}
                     <div id="sports-filter-bar" className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-md p-4 max-w-4xl mx-auto flex flex-col md:flex-row gap-4 items-center">
                         <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Sport Type</label>
-                                <select value={sportType} onChange={e => setSportType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>All Sports</option>
-                                    <option>⚽ Football / FIFA</option>
-                                    <option>🏎️ Formula 1</option>
-                                    <option>🏏 Cricket</option>
-                                    <option>🏊 Olympics</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Country</label>
-                                <select value={sportCountry} onChange={e => setSportCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>Anywhere</option>
-                                    <option>🇬🇧 UK</option>
-                                    <option>🇦🇪 UAE</option>
-                                    <option>🇺🇸 USA</option>
-                                    <option>🇦🇺 Australia</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Month</label>
-                                <select value={sportMonth} onChange={e => setSportMonth(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>Any Month</option>
-                                    <option>June 2025</option>
-                                    <option>July 2025</option>
-                                    <option>Dec 2025</option>
-                                </select>
-                            </div>
+                            <CustomSelect 
+                                label="Sport Type" 
+                                value={sportType} 
+                                onChange={setSportType} 
+                                options={[
+                                    { value: "All Sports", label: "All Sports" },
+                                    { value: "⚽ Football / FIFA", label: "⚽ Football / FIFA" },
+                                    { value: "🏎️ Formula 1", label: "🏎️ Formula 1" },
+                                    { value: "🏏 Cricket", label: "🏏 Cricket" },
+                                    { value: "🏊 Olympics", label: "🏊 Olympics" }
+                                ]} 
+                            />
+                            <CustomSelect 
+                                label="Country" 
+                                value={sportCountry} 
+                                onChange={setSportCountry} 
+                                options={[
+                                    { value: "Anywhere", label: "Anywhere" },
+                                    { value: "🇬🇧 UK", label: "🇬🇧 UK" },
+                                    { value: "🇦🇪 UAE", label: "🇦🇪 UAE" },
+                                    { value: "🇺🇸 USA", label: "🇺🇸 USA" },
+                                    { value: "🇦🇺 Australia", label: "🇦🇺 Australia" }
+                                ]} 
+                            />
+                            <CustomSelect 
+                                label="Month" 
+                                value={sportMonth} 
+                                onChange={setSportMonth} 
+                                options={[
+                                    { value: "Any Month", label: "Any Month" },
+                                    { value: "June 2025", label: "June 2025" },
+                                    { value: "July 2025", label: "July 2025" },
+                                    { value: "Dec 2025", label: "Dec 2025" }
+                                ]} 
+                            />
                         </div>
                         <button onClick={() => triggerToast("⚽ Searching sport tours...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
                             <Search className="w-4 h-4" /> Search Sport Tours
@@ -551,33 +612,39 @@ export function ToursPortal() {
                     {/* Neat Search/Filter Sticky Bar Below Banner */}
                     <div id="cruise-filter-bar" className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-md p-4 max-w-4xl mx-auto flex flex-col md:flex-row gap-4 items-center">
                         <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Cruise Type</label>
-                                <select value={cruiseType} onChange={e => setCruiseType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>All Types</option>
-                                    <option>🌊 Ocean Cruise</option>
-                                    <option>🏞️ River Cruise</option>
-                                    <option>💎 Luxury Liner</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Departure Port</label>
-                                <select value={cruiseDepart} onChange={e => setCruiseDepart(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>Any Port</option>
-                                    <option>Mumbai, India</option>
-                                    <option>Dubai, UAE</option>
-                                    <option>Singapore</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Duration</label>
-                                <select value={cruiseDur} onChange={e => setCruiseDur(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>Any Duration</option>
-                                    <option>3–5 Nights</option>
-                                    <option>6–9 Nights</option>
-                                    <option>10–14 Nights</option>
-                                </select>
-                            </div>
+                            <CustomSelect 
+                                label="Cruise Type" 
+                                value={cruiseType} 
+                                onChange={setCruiseType} 
+                                options={[
+                                    { value: "All Types", label: "All Types" },
+                                    { value: "🌊 Ocean Cruise", label: "🌊 Ocean Cruise" },
+                                    { value: "🏞️ River Cruise", label: "🏞️ River Cruise" },
+                                    { value: "💎 Luxury Liner", label: "💎 Luxury Liner" }
+                                ]} 
+                            />
+                            <CustomSelect 
+                                label="Departure Port" 
+                                value={cruiseDepart} 
+                                onChange={setCruiseDepart} 
+                                options={[
+                                    { value: "Any Port", label: "Any Port" },
+                                    { value: "Mumbai, India", label: "Mumbai, India" },
+                                    { value: "Dubai, UAE", label: "Dubai, UAE" },
+                                    { value: "Singapore", label: "Singapore" }
+                                ]} 
+                            />
+                            <CustomSelect 
+                                label="Duration" 
+                                value={cruiseDur} 
+                                onChange={setCruiseDur} 
+                                options={[
+                                    { value: "Any Duration", label: "Any Duration" },
+                                    { value: "3–5 Nights", label: "3–5 Nights" },
+                                    { value: "6–9 Nights", label: "6–9 Nights" },
+                                    { value: "10–14 Nights", label: "10–14 Nights" }
+                                ]} 
+                            />
                         </div>
                         <button onClick={() => triggerToast("🚢 Searching cruises...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
                             <Search className="w-4 h-4" /> Search Cruises
@@ -651,41 +718,49 @@ export function ToursPortal() {
                     {/* Neat Search/Filter Sticky Bar Below Banner */}
                     <div id="event-filter-bar" className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-md p-4 max-w-4xl mx-auto flex flex-col md:flex-row gap-4 items-center">
                         <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Event Type</label>
-                                <select value={eventType} onChange={e => setEventType(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>All Events</option>
-                                    <option>🎵 Concerts</option>
-                                    <option>🎪 Festivals</option>
-                                    <option>🎭 Theatre</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Country</label>
-                                <select value={eventCountry} onChange={e => setEventCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>Anywhere</option>
-                                    <option>🇬🇧 UK</option>
-                                    <option>🇺🇸 USA</option>
-                                    <option>🇦🇪 UAE</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Month</label>
-                                <select value={eventMonth} onChange={e => setEventMonth(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>Any Month</option>
-                                    <option>Jun 2025</option>
-                                    <option>Jul 2025</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="text-[9px] font-bold text-gray-400 tracking-widest mb-1 block uppercase">Budget</label>
-                                <select value={eventBudget} onChange={e => setEventBudget(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-navy outline-none">
-                                    <option>Any Budget</option>
-                                    <option>Under ₹30K</option>
-                                    <option>₹30K–₹75K</option>
-                                    <option>₹75K–₹1.5L</option>
-                                </select>
-                            </div>
+                            <CustomSelect 
+                                label="Event Type" 
+                                value={eventType} 
+                                onChange={setEventType} 
+                                options={[
+                                    { value: "All Events", label: "All Events" },
+                                    { value: "🎵 Concerts", label: "🎵 Concerts" },
+                                    { value: "🎪 Festivals", label: "🎪 Festivals" },
+                                    { value: "🎭 Theatre", label: "🎭 Theatre" }
+                                ]} 
+                            />
+                            <CustomSelect 
+                                label="Country" 
+                                value={eventCountry} 
+                                onChange={setEventCountry} 
+                                options={[
+                                    { value: "Anywhere", label: "Anywhere" },
+                                    { value: "🇬🇧 UK", label: "🇬🇧 UK" },
+                                    { value: "🇺🇸 USA", label: "🇺🇸 USA" },
+                                    { value: "🇦🇪 UAE", label: "🇦🇪 UAE" }
+                                ]} 
+                            />
+                            <CustomSelect 
+                                label="Month" 
+                                value={eventMonth} 
+                                onChange={setEventMonth} 
+                                options={[
+                                    { value: "Any Month", label: "Any Month" },
+                                    { value: "Jun 2025", label: "Jun 2025" },
+                                    { value: "Jul 2025", label: "Jul 2025" }
+                                ]} 
+                            />
+                            <CustomSelect 
+                                label="Budget" 
+                                value={eventBudget} 
+                                onChange={setEventBudget} 
+                                options={[
+                                    { value: "Any Budget", label: "Any Budget" },
+                                    { value: "Under ₹30K", label: "Under ₹30K" },
+                                    { value: "₹30K–₹75K", label: "₹30K–₹75K" },
+                                    { value: "₹75K–₹1.5L", label: "₹75K–₹1.5L" }
+                                ]} 
+                            />
                         </div>
                         <button onClick={() => triggerToast("🎭 Searching events...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
                             <Search className="w-4 h-4" /> Search Events

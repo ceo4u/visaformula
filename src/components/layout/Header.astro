@@ -64,38 +64,7 @@ const supportiveServicesItems = [
                 <!-- Top Row: Search Bar + Portal Links -->
                 <div class="flex items-center justify-between h-16 gap-6 lg:pr-16">
                     
-                    <!-- Split Yelp-style Search Bar (Desktop Only) -->
-                    <div id="search-bar" class="hidden lg:flex flex-1 max-w-[1020px] bg-gray-50/50 rounded-xl flex-row items-center h-11 overflow-hidden border border-gray-200 focus-within:border-black focus-within:bg-white focus-within:shadow-md transition-all duration-200">
-                        <!-- Search Query Portion -->
-                        <div class="flex items-center px-4 flex-[1.2] h-full">
-                            <Search class="w-4 h-4 text-gray-400 mr-2.5 shrink-0" />
-                            <input
-                                id="search-input-query"
-                                class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
-                                placeholder="Student visa, work permits, experts..."
-                                type="text"
-                            />
-                        </div>
-                        
-                        <!-- Split Vertical Line -->
-                        <div id="search-divider" class="w-[1.5px] h-6 bg-gray-200 shrink-0 transition-colors duration-300" />
-                        
-                        <!-- Location Portion -->
-                        <div class="flex items-center px-4 flex-1 h-full">
-                            <MapPin id="search-loc-icon" class="w-4 h-4 text-black mr-2 shrink-0 transition-colors duration-300" />
-                            <input
-                                id="search-input-location"
-                                class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
-                                placeholder="Hyderabad, Delhi, USA..."
-                                type="text"
-                            />
-                        </div>
-                        
-                        <!-- Search Button -->
-                        <button id="search-btn" class="bg-black hover:bg-slate-900 px-6 h-full flex items-center justify-center transition-all shrink-0">
-                            <Search className="w-4 h-4" color="white" strokeWidth={3} />
-                        </button>
-                    </div>
+
 
                     <!-- Left-aligned Portal Links (next to search bar) -->
                     <div class="hidden lg:flex items-center gap-8 shrink-0 pl-8 font-opensans">

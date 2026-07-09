@@ -6,7 +6,7 @@ import { ExpertCard } from '../components/ExpertCard';
 import { UniversityCard } from '../components/UniversityCard';
 import { JobCard } from '../components/JobCard';
 import { TourCard } from '../components/TourCard';
-import { Globe, Users, Shield, Lock, Award, ArrowRight, Heart, AlertTriangle, GraduationCap, Briefcase, Plane, Home, BookOpen, MapPin, Wallet, CheckCircle } from 'lucide-react';
+import { Globe, Users, Shield, Lock, Award, ArrowRight, Heart, AlertTriangle, GraduationCap, Briefcase, Plane, Home, BookOpen, MapPin, Wallet, CheckCircle, Search } from 'lucide-react';
 
 const experts = [
   { name: "Marcus Thorne, JD", role: "Immigration Attorney", rating: 4.5, reviews: 142, location: "New York, NY", price: "from $150", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face", badges: ["Open now", "Verified"], tags: ["US Visa", "H-1B", "L-1"] },
@@ -143,6 +143,39 @@ const successStories = [
               The home to world's top <span style="background: linear-gradient(to right, #359fc2, #39b7c1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight:700; text-decoration: underline; text-decoration-color: rgba(53,159,194,0.35); text-underline-offset: 5px; text-decoration-thickness: 1.5px;">trusted</span><br/>visa consultants.
             </h1>
             <p style="font-size:15px;color:#475569;margin-bottom:24px;font-weight:500;line-height:1.5;">Now find experienced, reliable experts based on your country &amp; visa category.</p>
+          </div>
+
+          <!-- Yelp-style search option above cards -->
+          <div id="hero-search-bar" class="flex flex-row items-center h-12 bg-white rounded-2xl border border-gray-300 shadow-md max-w-2xl overflow-hidden focus-within:border-black focus-within:shadow-lg transition-all duration-200" style="margin-top: 12px; margin-bottom: 24px;">
+            <!-- Search Query Portion -->
+            <div class="flex items-center px-4 flex-[1.2] h-full">
+              <Search class="w-4 h-4 text-gray-400 mr-2.5 shrink-0" />
+              <input
+                id="hero-search-query"
+                class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+                placeholder="Student visa, work permits, experts..."
+                type="text"
+              />
+            </div>
+            
+            <!-- Split Vertical Line -->
+            <div class="w-[1.5px] h-6 bg-gray-200 shrink-0" />
+            
+            <!-- Location Portion -->
+            <div class="flex items-center px-4 flex-1 h-full">
+              <MapPin class="w-4 h-4 text-black mr-2 shrink-0" />
+              <input
+                id="hero-search-location"
+                class="w-full border-none focus:ring-0 text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+                placeholder="Hyderabad, Delhi, USA..."
+                type="text"
+              />
+            </div>
+            
+            <!-- Search Button -->
+            <button id="hero-search-submit-btn" class="bg-black hover:bg-slate-900 px-6 h-full flex items-center justify-center transition-all shrink-0 border-none cursor-pointer">
+              <Search className="w-4 h-4 text-white" style="color: white !important;" />
+            </button>
           </div>
         </div>
       </div>
@@ -667,6 +700,29 @@ const successStories = [
 
       constOverlay.addEventListener('click', closeModal);
       closeConstBtn.addEventListener('click', closeModal);
+    }
+
+    // Hero Search logic
+    const heroSearchSubmitBtn = document.getElementById('hero-search-submit-btn');
+    const heroSearchQuery = document.getElementById('hero-search-query');
+    const heroSearchLocation = document.getElementById('hero-search-location');
+
+    if (heroSearchSubmitBtn && heroSearchQuery && heroSearchLocation) {
+      const runSearch = () => {
+        const query = (heroSearchQuery as HTMLInputElement).value || '';
+        const loc = (heroSearchLocation as HTMLInputElement).value || '';
+        window.location.href = `/find-experts?query=${encodeURIComponent(query)}&location=${encodeURIComponent(loc)}`;
+      };
+      
+      heroSearchSubmitBtn.addEventListener('click', runSearch);
+      
+      const handleKeyPress = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+          runSearch();
+        }
+      };
+      heroSearchQuery.addEventListener('keydown', handleKeyPress as any);
+      heroSearchLocation.addEventListener('keydown', handleKeyPress as any);
     }
   </script>
 </Layout>

@@ -49,26 +49,22 @@ const supportiveServicesItems = [
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white shadow-sm transition-all duration-300">
-    <div class="max-w-[1440px] mx-auto pl-2 md:pl-4 pr-4 md:pr-6">
-        <div class="flex items-center gap-4">
-            
-            <!-- Logo - left corner, spans full header height -->
-            <div class="logo-container flex items-center justify-start shrink-0 py-2">
-                <a href="/" class="flex items-center group">
-                    <Logo variant="navbar-light" />
-                </a>
-            </div>
+    <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex flex-col justify-center">
+        
+        <!-- Logo - left corner on desktop, normal layout flow on mobile -->
+        <div class="logo-container lg:absolute lg:left-8 lg:top-2 flex items-center justify-start shrink-0 py-2">
+            <a href="/" class="flex items-center group">
+                <Logo variant="navbar-light" />
+            </a>
+        </div>
 
-            <!-- Right side: stacks both rows vertically -->
-            <div class="flex-1 min-w-0 lg:pl-2">
-                <!-- Top Row: Search Bar + Portal Links -->
-                <div class="flex items-center justify-between h-16 w-full relative">
-                    
-                    <!-- Left Spacer matching Logo space to balance centered menu -->
-                    <div class="hidden lg:block w-[180px] shrink-0"></div>
-
-                    <!-- Centered Portal Links (5 options) -->
-                    <div class="hidden lg:flex items-center justify-center gap-6 xl:gap-8 font-opensans flex-1">
+        <!-- Stacks both rows vertically and centers content -->
+        <div class="w-full min-w-0 lg:pl-0 flex flex-col justify-center">
+            <!-- Top Row: Search Bar + Portal Links -->
+            <div class="flex items-center justify-between lg:justify-center h-16 w-full relative">
+                
+                <!-- Centered Portal Links (5 options) -->
+                <div class="hidden lg:flex items-center justify-center gap-6 xl:gap-8 font-opensans flex-1">
                         <a href="/self-apply" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
                             Self Apply
                         </a>
@@ -452,10 +448,9 @@ const supportiveServicesItems = [
                     </a>
                 </div>
             </div><!-- end category items -->
-                </div><!-- end category-bar -->
-            </div><!-- end right-side column -->
-        </div><!-- end flex row -->
-    </div><!-- end max-w wrapper -->
+        </div><!-- end category-bar -->
+    </div><!-- end stacks both rows column -->
+</div><!-- end max-w wrapper -->
 
     <!-- Mobile Drawer menu -->
     <div id="mobile-menu-drawer" class="hidden lg:hidden bg-white border-t border-gray-100 shadow-xl max-h-[85vh] overflow-y-auto">

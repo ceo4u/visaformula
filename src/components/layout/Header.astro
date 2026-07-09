@@ -62,12 +62,13 @@ const supportiveServicesItems = [
             <!-- Right side: stacks both rows vertically -->
             <div class="flex-1 min-w-0 lg:pl-2">
                 <!-- Top Row: Search Bar + Portal Links -->
-                <div class="flex items-center justify-between h-16 gap-6 lg:pr-16">
+                <div class="flex items-center justify-between h-16 w-full relative">
                     
+                    <!-- Left Spacer matching Logo space to balance centered menu -->
+                    <div class="hidden lg:block w-[180px] shrink-0"></div>
 
-
-                    <!-- Left-aligned Portal Links (next to search bar) -->
-                    <div class="hidden lg:flex items-center gap-8 shrink-0 pl-8 font-opensans">
+                    <!-- Centered Portal Links (5 options) -->
+                    <div class="hidden lg:flex items-center justify-center gap-6 xl:gap-8 font-opensans flex-1">
                         <a href="/self-apply" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
                             Self Apply
                         </a>
@@ -138,10 +139,7 @@ const supportiveServicesItems = [
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Right Portal Auth Buttons & Profile Block (aligned right) -->
-                    <div class="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0">
                         <!-- Our Services Dropdown (Desktop) -->
                         <div class="relative py-3 group font-opensans animate-fade-in mr-3">
                             <button class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1 focus:outline-none">
@@ -173,7 +171,10 @@ const supportiveServicesItems = [
                         <a href="/support" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 animate-fade-in mr-3">
                             Contact
                         </a>
+                    </div>
 
+                    <!-- Right Portal Auth Buttons & Profile Block (aligned right) -->
+                    <div class="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0 w-[180px] justify-end">
                         <div class="w-[1.5px] h-4 bg-red-500 mr-3"></div>
 
                         <div class="flex items-center gap-1.5 xl:gap-2" id="nav-auth-buttons-wrapper">
@@ -223,8 +224,8 @@ const supportiveServicesItems = [
                 </div><!-- end top row -->
 
                 <!-- Bottom Row: Category Navigation (Desktop Only) -->
-                <div id="category-bar" class="hidden lg:flex items-center justify-start h-12">
-                    <div class="flex items-center gap-3.5 xl:gap-8 h-full">
+                <div id="category-bar" class="hidden lg:flex items-center justify-center h-12">
+                    <div class="flex items-center justify-center gap-6 xl:gap-10 h-full">
                 <!-- Student Visa Dropdown -->
                 <div class="relative py-3.5 group">
                     <button

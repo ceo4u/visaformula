@@ -103,9 +103,33 @@ const supportiveServicesItems = [
 
                     <!-- Right Portal Auth Buttons & Profile Block (aligned right) -->
                     <div class="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0">
-                        <a href="/services" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 animate-fade-in mr-3">
-                            Our Services
-                        </a>
+                        <!-- Our Services Dropdown (Desktop) -->
+                        <div class="relative py-3 group font-opensans animate-fade-in mr-3">
+                            <button class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                                Our Services
+                                <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                            </button>
+                            
+                            <!-- Dropdown Menu Card -->
+                            <div class="absolute top-[85%] right-0 pt-3 w-[460px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                                    <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                        {servicesDropdownItems.map((item) => {
+                                            const IconComponent = item.icon;
+                                            return (
+                                                <a 
+                                                    href={item.href}
+                                                    class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
+                                                >
+                                                    <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <a href="/support" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 animate-fade-in mr-3">
                             Contact
@@ -574,10 +598,35 @@ const supportiveServicesItems = [
             Our Agents
         </a>
 
-        <a href="/services"
-            class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm text-gray-700 hover:bg-gray-50`}>
-            Our Services
-        </a>
+        <!-- Our Services Dropdown (Mobile) -->
+        <div class="border-b border-gray-50">
+            <button 
+                id="mobile-services-dropdown-btn"
+                class="w-full flex items-center justify-between px-4 py-3.5 font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+                <span>Our Services</span>
+                <ChevronDown id="mobile-services-dropdown-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+            </button>
+            <div id="mobile-services-dropdown-drawer" class="hidden bg-red-50/30 px-3 py-1 flex flex-col gap-1">
+                {servicesDropdownItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                        <a 
+                            href={item.href}
+                            class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-red-50 transition-all duration-200"
+                        >
+                            <div class={`w-8 h-8 rounded-lg ${item.bg} ${item.iconColor} flex items-center justify-center shrink-0`}>
+                                <IconComponent class={`w-4 h-4 ${item.iconColor}`} className="w-4 h-4" color="currentColor" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-navy">{item.title}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">{item.desc}</div>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+        </div>
 
         <a href="/support"
             class={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm text-gray-700 hover:bg-gray-50`}>
@@ -803,6 +852,24 @@ const supportiveServicesItems = [
             } else {
                 mobileServicesDrawer.classList.add('hidden');
                 mobileServicesArrow.classList.remove('rotate-180');
+            }
+        });
+    }
+
+    // Toggle Mobile Our Services Dropdown
+    const mobileServicesDropdownBtn = document.getElementById('mobile-services-dropdown-btn');
+    const mobileServicesDropdownDrawer = document.getElementById('mobile-services-dropdown-drawer');
+    const mobileServicesDropdownArrow = document.getElementById('mobile-services-dropdown-arrow');
+
+    if (mobileServicesDropdownBtn && mobileServicesDropdownDrawer && mobileServicesDropdownArrow) {
+        mobileServicesDropdownBtn.addEventListener('click', () => {
+            const isHidden = mobileServicesDropdownDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileServicesDropdownDrawer.classList.remove('hidden');
+                mobileServicesDropdownArrow.classList.add('rotate-180');
+            } else {
+                mobileServicesDropdownDrawer.classList.add('hidden');
+                mobileServicesDropdownArrow.classList.remove('rotate-180');
             }
         });
     }

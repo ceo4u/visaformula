@@ -116,6 +116,14 @@ const successStories = [
         }
         
         /* Heading responsive styling */
+        .hero-heading-container {
+          padding-top: 48px;
+        }
+        @media (min-width: 1024px) {
+          .hero-heading-container {
+            padding-top: 12px;
+          }
+        }
         .hero-text-wrap {
           text-align: center;
           margin: 0 auto;
@@ -129,7 +137,7 @@ const successStories = [
       </style>
 
       <!-- ① HEADING — aligned with header logo via max-w-7xl -->
-      <div style="position:relative; z-index:20; padding-top:12px;">
+      <div class="hero-heading-container" style="position:relative; z-index:20;">
         <div class="max-w-7xl mx-auto px-4 md:px-6">
           <div class="hero-text-wrap" style="max-width:580px;">
             <h1 class="font-sora" style="font-size:34px;font-weight:700;color:#0f172a;line-height:1.16;margin-bottom:12px;letter-spacing:-0.5px;">

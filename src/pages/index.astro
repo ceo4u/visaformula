@@ -109,9 +109,9 @@ const successStories = [
           .hero-search-container {
             position: absolute;
             top: 48px;
-            right: 12%;
+            right: 10%;
             margin: 0;
-            width: 480px;
+            width: 540px;
           }
         }
         
@@ -150,35 +150,35 @@ const successStories = [
 
       <!-- ② HERO SEARCH BAR — absolute position on desktop right side, relative stacked below heading on mobile -->
       <div class="hero-search-container">
-        <div id="hero-search-bar" class="flex flex-row items-center h-12 bg-white rounded-2xl border border-gray-300 shadow-md w-full overflow-hidden focus-within:border-black focus-within:shadow-lg transition-all duration-200">
+        <div id="hero-search-bar" class="flex flex-row items-center h-12 lg:h-14 bg-white rounded-2xl lg:rounded-3xl border border-gray-300 shadow-md w-full overflow-hidden focus-within:border-black focus-within:shadow-lg transition-all duration-200">
           <!-- Search Query Portion -->
-          <div class="flex items-center px-3.5 flex-[1.2] h-full">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-gray-400 mr-2 shrink-0"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <div class="flex items-center px-3.5 lg:px-5 flex-[1.2] h-full">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 lg:w-5 lg:h-5 text-gray-400 mr-2 shrink-0"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <input
               id="hero-search-query"
-              class="w-full border-none focus:ring-0 text-xs text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+              class="w-full border-none focus:ring-0 text-xs lg:text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
               placeholder="Student visa, work permits..."
               type="text"
             />
           </div>
           
           <!-- Split Vertical Line -->
-          <div class="w-[1.5px] h-6 bg-gray-200 shrink-0" />
+          <div class="w-[1.5px] h-6 lg:h-7 bg-gray-200 shrink-0" />
           
           <!-- Location Portion -->
-          <div class="flex items-center px-3.5 flex-1 h-full">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-black mr-2 shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          <div class="flex items-center px-3.5 lg:px-5 flex-1 h-full">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 lg:w-5 lg:h-5 text-black mr-2 shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
             <input
               id="hero-search-location"
-              class="w-full border-none focus:ring-0 text-xs text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
+              class="w-full border-none focus:ring-0 text-xs lg:text-sm text-gray-800 bg-transparent placeholder:text-gray-400 font-semibold h-full outline-none transition-colors duration-300"
               placeholder="Delhi, USA..."
               type="text"
             />
           </div>
           
           <!-- Search Button -->
-          <button id="hero-search-submit-btn" class="bg-black hover:bg-slate-900 px-5 h-full flex items-center justify-center transition-all shrink-0 border-none cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-white"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <button id="hero-search-submit-btn" class="bg-black hover:bg-slate-900 px-5 lg:px-8 h-full flex items-center justify-center transition-all shrink-0 border-none cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 lg:w-5 lg:h-5 text-white"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </button>
         </div>
       </div>

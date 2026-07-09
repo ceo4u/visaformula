@@ -99,6 +99,45 @@ const supportiveServicesItems = [
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Immigration Assistance Dropdown (Restored to Top line) -->
+                        <div class="relative py-3 group">
+                            <button
+                                class={`font-opensans top-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                                    pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#ef4444]" : "text-navy"
+                                }`}
+                            >
+                                Immigration Assistance
+                                <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                            </button>
+
+                            <!-- Dropdown Card -->
+                            <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                                    <div class="flex flex-col gap-2">
+                                        <!-- Migration Agents & Lawyers -->
+                                        <a href="/emergency" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                            <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                                <path d="M9 12l2 2 4-4"/>
+                                            </svg>
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Agents & Lawyers</span>
+                                        </a>
+
+                                        <!-- Migration Visa -->
+                                        <a href="/migration-visa" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                            <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                                <path d="M17 8l-5 4-5-4"/>
+                                            </svg>
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Visa</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Right Portal Auth Buttons & Profile Block (aligned right) -->
@@ -400,46 +439,7 @@ const supportiveServicesItems = [
                     </div>
                 </div>
 
-                <!-- Immigration Assistance Dropdown (restored to 5th position) -->
-                <div class="relative py-3.5 group">
-                    <button
-                        class={`font-opensans category-menu-link text-[13px] xl:text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
-                            pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#ef4444]" : "text-navy"
-                        }`}
-                    >
-                        Immigration Assistance
-                        <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
-                    </button>
 
-                    <!-- Dropdown Card -->
-                    <div class="absolute top-full right-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
-                        <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
-                            <div class="flex flex-col gap-2">
-
-                                <!-- Migration Agents & Lawyers -->
-                                <a href="/emergency" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
-                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                        <path d="M9 12l2 2 4-4"/>
-                                    </svg>
-                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Agents & Lawyers</span>
-                                </a>
-
-                                <!-- Migration Visa -->
-                                <a href="/migration-visa" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
-                                    <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <line x1="2" y1="12" x2="22" y2="12"/>
-                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                                        <path d="M17 8l-5 4-5-4"/>
-                                    </svg>
-                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Visa</span>
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Migration tools and calculators link (placed at the very end of 2nd line) -->
                 <div class="relative py-3.5">

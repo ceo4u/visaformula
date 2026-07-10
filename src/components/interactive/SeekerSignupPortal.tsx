@@ -160,15 +160,6 @@ export function SeekerSignupPortal() {
                                 return;
                             }
 
-                            if (verificationStep) {
-                                verifyEmailCode();
-                                return;
-                            }
-
-                            if (!emailVerified) {
-                                setVerificationError("You must verify your email address to continue.");
-                                return;
-                            }
                             setValidationError("");
                             setStep(2);
                         }} className="space-y-4">

@@ -17,6 +17,8 @@ export function ExpertSignupPortal() {
   const [activeTab, setActiveTab] = useState("dashboard"); // dashboard, profile, inquiries, cases, upgrade, photos
 
   // --- Phase 1 States ---
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [consultantType, setConsultantType] = useState("Freelancer");
@@ -27,6 +29,8 @@ export function ExpertSignupPortal() {
       const name = localStorage.getItem("expert_businessName");
       if (isLoggedInExpert === "true" && name) {
         setStep(3);
+        setFirstName(localStorage.getItem("expert_firstName") || "");
+        setLastName(localStorage.getItem("expert_lastName") || "");
         setBusinessName(name);
         setEmail(localStorage.getItem("expert_email") || "");
         setContactNumber(localStorage.getItem("expert_contactNumber") || "");
@@ -150,7 +154,7 @@ export function ExpertSignupPortal() {
   const handleProceedToPhase2 = (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError("");
-    if (!businessName || !contactNumber || !email || !password) {
+    if (!firstName || !lastName || !businessName || !contactNumber || !email || !password) {
       setValidationError("Please fill in all required fields.");
       return;
     }
@@ -204,6 +208,8 @@ export function ExpertSignupPortal() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
           business_name: businessName,
           email: email,
           password: password,
@@ -228,6 +234,8 @@ export function ExpertSignupPortal() {
     }
     // Proceed to dashboard anyway
     if (typeof window !== "undefined") {
+      localStorage.setItem("expert_firstName", firstName);
+      localStorage.setItem("expert_lastName", lastName);
       localStorage.setItem("expert_businessName", businessName);
       localStorage.setItem("expert_email", email);
       localStorage.setItem("expert_contactNumber", `${countryCode} ${contactNumber}`);
@@ -388,39 +396,59 @@ export function ExpertSignupPortal() {
 
           <div className="w-full mx-auto transition-all duration-300 font-sans mt-4">
             {step === 1 && (
-              <form onSubmit={handleProceedToPhase2} className="space-y-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 block">Email*</label>
+              <form onSubmit={handleProceedToPhase2} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-1">
+                    <input 
+                      required
+                      value={firstName} 
+                      onChange={(e) => setFirstName(e.target.value)} 
+                      placeholder="First name" 
+                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <input 
+                      required
+                      value={lastName} 
+                      onChange={(e) => setLastName(e.target.value)} 
+                      placeholder="Last name" 
+                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
+                    />
+                  </div>
+
+                  <div className="col-span-2">
                     <input 
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your Email Address" 
-                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 transition-all shadow-sm"
+                      placeholder="Email address" 
+                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                     />
                   </div>
 
-                  <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
-                    <label className="text-sm font-semibold text-slate-700 block">Type of Consultant*</label>
+                  <div className="col-span-2 md:col-span-1" onClick={(e) => e.stopPropagation()}>
                     <div className="relative">
                       <button
                         type="button"
                         onClick={() => setSignupConsultantOpen(!signupConsultantOpen)}
-                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none text-left focus:border-black focus:ring-1 focus:ring-black text-black cursor-pointer flex items-center justify-between shadow-sm"
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none text-left focus:border-gray-500 text-slate-800 cursor-pointer flex items-center justify-between shadow-sm"
                       >
-                        <span>{consultantType}</span>
-                        <svg className={`w-5 h-5 text-black transition-transform duration-200 ${signupConsultantOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                        <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>{consultantType}</span>
+                        <svg className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${signupConsultantOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
                       </button>
                       {signupConsultantOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
+                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-xl mt-1 py-1 z-50 font-sans">
                           {["Freelancer", "Business Expert", "Institute or company", "Legal professional", "Supportive business"].map(type => (
                             <button
                               key={type}
                               type="button"
                               onClick={() => { setConsultantType(type); setSignupConsultantOpen(false); }}
-                              className="w-full text-left px-5 py-3 text-sm font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
+                              className="w-full text-left px-4 py-2 text-sm font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
                             >
                               {type}
                             </button>
@@ -430,31 +458,30 @@ export function ExpertSignupPortal() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 block">Business Name*</label>
+                  <div className="col-span-2 md:col-span-1">
                     <input 
                       required
                       value={businessName} 
                       onChange={(e) => setBusinessName(e.target.value)} 
-                      placeholder="Enter your Business Name" 
-                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                      placeholder="Business Name" 
+                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 block">Contact Number*</label>
+                  <div className="col-span-2">
                     <div className="flex gap-3">
                       <div className="relative" onClick={(e) => e.stopPropagation()}>
                         <button
                           type="button"
                           onClick={() => setCountryCodeOpen(!countryCodeOpen)}
-                          className="px-4 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black shadow-sm shrink-0 cursor-pointer flex items-center justify-between gap-1.5 h-[58px] font-semibold"
+                          className="px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 shadow-sm shrink-0 cursor-pointer flex items-center justify-between gap-1.5 h-[46px] font-semibold"
                         >
-                          <span>{countryCode}</span>
-                          <svg className={`w-4 h-4 text-slate-500 transition-transform ${countryCodeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                          <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>{countryCode}</span>
+                          <svg className={`w-3.5 h-3.5 text-slate-500 transition-transform ${countryCodeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
                         </button>
                         {countryCodeOpen && (
-                          <div className="absolute left-0 mt-1.5 w-40 bg-white border border-slate-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-[60] font-sans">
+                          <div className="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-xl max-h-60 overflow-y-auto z-[60] font-sans">
                             {[
                               { val: "+91", label: "+91 (IN)" },
                               { val: "+1", label: "+1 (US/CA)" },
@@ -470,7 +497,7 @@ export function ExpertSignupPortal() {
                                 key={opt.val}
                                 type="button"
                                 onClick={() => { setCountryCode(opt.val); setCountryCodeOpen(false); }}
-                                className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                className="w-full text-left px-4 py-2 text-xs font-bold text-slate-700 hover:bg-black hover:text-white transition-colors"
                               >
                                 {opt.label}
                               </button>
@@ -482,66 +509,66 @@ export function ExpertSignupPortal() {
                         required
                         value={contactNumber} 
                         onChange={(e) => setContactNumber(e.target.value)} 
-                        placeholder="99999 99999" 
-                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                        placeholder="Contact Number (e.g. 99999 99999)" 
+                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 block">Website (Optional)</label>
+                  <div className="col-span-2 md:col-span-1">
                     <input 
                       value={website} 
                       onChange={(e) => setWebsite(e.target.value)} 
-                      placeholder="Enter website link" 
-                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                      placeholder="Website (Optional)" 
+                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 block">Facebook / Social (Optional)</label>
+                  <div className="col-span-2 md:col-span-1">
                     <input 
                       value={facebookLink} 
                       onChange={(e) => setFacebookLink(e.target.value)} 
-                      placeholder="Enter social link" 
-                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                      placeholder="Facebook / Social Link (Optional)" 
+                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 block">Password*</label>
+                  <div className="col-span-2">
                     <input 
                       required
                       type="password"
                       value={password} 
                       onChange={(e) => setPassword(e.target.value)} 
-                      placeholder="Create a Password" 
-                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                      placeholder="Password" 
+                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                     />
-                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
+                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1.5">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
                   </div>
-                  
-                  <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
-                    <label className="text-sm font-semibold text-slate-700 block">Expert In (Category)*</label>
+
+                  <div className="col-span-2" onClick={(e) => e.stopPropagation()}>
                     <div className="relative">
                       <button
                         type="button"
                         onClick={() => setSignupCategoryOpen(!signupCategoryOpen)}
-                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none text-left focus:border-black focus:ring-1 focus:ring-black text-black cursor-pointer flex items-center justify-between shadow-sm"
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none text-left focus:border-gray-500 text-slate-800 cursor-pointer flex items-center justify-between shadow-sm"
                       >
-                        <span>{expertCategory}</span>
-                        <svg className={`w-5 h-5 text-black transition-transform duration-200 ${signupCategoryOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                        <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>Category: {expertCategory}</span>
+                        <svg className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${signupCategoryOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
                       </button>
                       {signupCategoryOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
-                          {["Student visa expert", "Visa filing expert", "Visit visa expert", "Job visa expert", "PR And Migration expert"].map(cat => (
+                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-xl mt-1 py-1 z-50 font-sans max-h-60 overflow-y-auto">
+                          {["Student Visa", "Job Visas", "Visit Visas", "Migration Visas", "Immigration Assistance"].map(category => (
                             <button
-                              key={cat}
+                              key={category}
                               type="button"
-                              onClick={() => { setExpertCategory(cat); setSignupCategoryOpen(false); }}
-                              className="w-full text-left px-5 py-3 text-sm font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
+                              onClick={() => { setExpertCategory(category); setSignupCategoryOpen(false); }}
+                              className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-black hover:text-white transition-colors"
                             >
-                              {cat}
+                              {category}
                             </button>
                           ))}
                         </div>
@@ -549,8 +576,7 @@ export function ExpertSignupPortal() {
                     </div>
                   </div>
 
-                  <div className="space-y-2 md:col-span-2">
-                    <label className="text-sm font-semibold text-slate-700 block">Practice / Office Address*</label>
+                  <div className="col-span-2">
                     <input 
                       required
                       value={expertAddress} 

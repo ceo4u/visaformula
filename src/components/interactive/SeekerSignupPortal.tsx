@@ -159,63 +159,67 @@ export function SeekerSignupPortal() {
                                 return;
                             }
 
+                            if (verificationStep) {
+                                verifyEmailCode();
+                                return;
+                            }
+
                             if (!emailVerified) {
                                 setVerificationError("You must verify your email address to continue.");
                                 return;
                             }
-                            setVerificationError("");
+                            setValidationError("");
                             setStep(2);
-                        }} className="space-y-10">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-semibold text-slate-700 block">First Name*</label>
+                        }} className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="col-span-1">
                                     <input 
                                         type="text" 
                                         required
                                         value={firstName} 
                                         onChange={(e) => setFirstName(e.target.value)} 
-                                        placeholder="Enter first name" 
-                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                        placeholder="First name" 
+                                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-semibold text-slate-700 block">Last Name*</label>
+                                <div className="col-span-1">
                                     <input 
                                         type="text" 
                                         required
                                         value={lastName} 
                                         onChange={(e) => setLastName(e.target.value)} 
-                                        placeholder="Enter last name" 
-                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                        placeholder="Last name" 
+                                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                                     />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-sm font-semibold text-slate-700 block">Email*</label>
+                                <div className="col-span-2">
                                     <input 
                                         type="email" 
                                         required
-                                        placeholder="john@example.com" 
+                                        placeholder="Email address" 
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 transition-all shadow-sm"
+                                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                                     />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-sm font-semibold text-slate-700 block">Password*</label>
+                                <div className="col-span-2">
                                     <input 
                                         type="password" 
                                         required
                                         value={password} 
                                         onChange={(e) => setPassword(e.target.value)} 
-                                        placeholder="Min. 8 characters" 
-                                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                        placeholder="Password" 
+                                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                                     />
-                                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
+                                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1.5">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
                                 </div>
-                                <div className="space-y-2">
-                                     <label className="text-sm font-semibold text-slate-700 block">Country of Citizenship (Passport)*</label>
+                                <div className="col-span-2">
                                      <div className="relative">
                                          <button
                                              type="button"

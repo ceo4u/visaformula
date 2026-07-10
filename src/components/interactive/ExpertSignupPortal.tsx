@@ -684,52 +684,51 @@ export function ExpertSignupPortal() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {consultantType === "Freelancer" ? (
                     <>
-                      <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700 block">Social Media Accounts / Portfolio Links</label>
+                      <div className="col-span-1">
                         <input 
                           value={smmAccounts}
                           onChange={(e) => setSmmAccounts(e.target.value)}
-                          placeholder="e.g. Behance, LinkedIn" 
-                          className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                          placeholder="Social Media Accounts / Portfolio Links (e.g. LinkedIn)" 
+                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700 block">Personal Portfolio / Website</label>
+                      <div className="col-span-1">
                         <input 
                           value={portfolioLink}
                           onChange={(e) => setPortfolioLink(e.target.value)}
-                          placeholder="e.g. https://portfolio.com" 
-                          className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                          placeholder="Personal Portfolio / Website (e.g. https://portfolio.com)" 
+                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         />
                       </div>
-                      <div className="space-y-2 md:col-span-2">
-                        <label className="text-sm font-semibold text-slate-700 block">About Section / Brief Bio</label>
+                      <div className="col-span-2">
                         <textarea 
                           value={aboutMe}
                           onChange={(e) => setAboutMe(e.target.value)}
                           rows={4}
-                          placeholder="Briefly describe your freelance services and achievements..." 
-                          className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black resize-none placeholder:text-slate-400 shadow-sm"
+                          placeholder="About Section / Brief Bio (Briefly describe your freelance services and achievements...)" 
+                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 resize-none placeholder:text-slate-500 shadow-sm"
                         />
                       </div>
                     </>
                   ) : (
                     <>
-                      <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700 block">Government Registration Number / License *</label>
+                      <div className="col-span-1">
                         <input 
                           required
                           value={govRegNumber}
                           onChange={(e) => setGovRegNumber(e.target.value)}
-                          placeholder="Enter Registration No" 
-                          className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                          placeholder="Government Registration Number / License *" 
+                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         />
                       </div>
-                       <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700 block">License Copy Document Upload *</label>
+                       <div className="col-span-1">
                         <div className="relative">
                           <input 
                             type="file"
@@ -746,42 +745,42 @@ export function ExpertSignupPortal() {
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                           />
                           <div 
-                            className={`w-full py-4 border-2 border-dashed rounded-xl text-sm font-semibold text-center transition-all shadow-sm ${licenseUploaded ? "bg-slate-50 border-black text-black" : "border-slate-250 hover:bg-slate-50 text-slate-500"}`}
+                            className={`w-full py-2.5 border border-dashed rounded-md text-sm font-semibold text-center transition-all shadow-sm ${licenseUploaded ? "bg-slate-50 border-black text-black" : "border-slate-300 hover:bg-slate-50 text-slate-500"}`}
                           >
-                            {licenseUploaded ? `✓ ${licenseFileName || "License Document Attached"}` : "Upload Document File (PDF / JPG)"}
+                            {licenseUploaded ? `✓ ${licenseFileName || "License Copy Attached"}` : "Upload License Copy (PDF / JPG) *"}
                           </div>
                         </div>
                       </div>
-                      <div className="space-y-2 md:col-span-2">
-                        <label className="text-sm font-semibold text-slate-700 block">Physical Verified Office Address *</label>
+                      <div className="col-span-2">
                         <input 
                           required
                           value={officeAddress}
                           onChange={(e) => setOfficeAddress(e.target.value)}
-                          placeholder="Enter complete office location" 
-                          className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                          placeholder="Physical Verified Office Address *" 
+                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         />
                       </div>
                     </>
                   )}
                 </div>
 
-                <div className="border-t border-slate-150 pt-8 space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-slate-700 block">Areas of Expertise (Tags)</label>
-                      <div className="flex gap-2.5">
+                <div className="border-t border-slate-150 pt-6 space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="col-span-1">
+                      <div className="flex gap-2">
                         <input 
                           value={newTag} 
                           onChange={(e) => setNewTag(e.target.value)} 
-                          placeholder="e.g. Work Visa" 
-                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black shadow-sm"
+                          placeholder="Add Area of Expertise (e.g. Work Visa)" 
+                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                          className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-[14px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         />
-                        <button type="button" onClick={addTag} className="bg-[#111111] hover:bg-black text-white text-xs px-5 py-3 rounded-xl font-semibold active:scale-95 transition-all shadow-sm">Add</button>
+                        <button type="button" onClick={addTag} className="bg-black hover:bg-slate-900 text-white text-xs px-4 py-2.5 rounded-md font-semibold active:scale-95 transition-all shadow-sm shrink-0">Add</button>
                       </div>
-                      <div className="flex flex-wrap gap-2 pt-2">
+                      <div className="flex flex-wrap gap-1.5 pt-2">
                         {expertiseTags.map(tag => (
-                          <span key={tag} className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-full px-3.5 py-1 text-xs font-semibold text-slate-700 shadow-xs">
+                          <span key={tag} className="inline-flex items-center gap-1.5 bg-slate-100 border border-slate-200 rounded-full px-3 py-0.5 text-xs font-semibold text-slate-650 shadow-xs">
                             {tag}
                             <button type="button" onClick={() => removeTag(tag)} className="text-slate-400 hover:text-black font-bold">×</button>
                           </span>
@@ -789,13 +788,13 @@ export function ExpertSignupPortal() {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-slate-700 block">Countries of Expertise</label>
+                    <div className="col-span-1">
                       <input 
                         value={countriesExpertise}
                         onChange={(e) => setCountriesExpertise(e.target.value)}
-                        placeholder="e.g. Canada, UK, Australia" 
-                        className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                        placeholder="Countries of Expertise (e.g. Canada, UK)" 
+                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                       />
                     </div>
                   </div>

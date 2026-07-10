@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, User, Upload } from "lucide-react";
+import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, User, Upload, Eye, EyeOff } from "lucide-react";
 import airplanePaths from "../../data/clean_airplane.json";
 import checkmarkPaths from "../../data/clean_checkmark.json";
 
@@ -28,6 +28,7 @@ export function SeekerSignupPortal() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [countryOfCitizenship, setCountryOfCitizenship] = useState("");
     const [residentOf, setResidentOf] = useState("");
     const [citizenshipOpen, setCitizenshipOpen] = useState(false);
@@ -208,15 +209,24 @@ export function SeekerSignupPortal() {
                                 </div>
 
                                 <div className="col-span-2">
-                                    <input 
-                                        type="password" 
-                                        required
-                                        value={password} 
-                                        onChange={(e) => setPassword(e.target.value)} 
-                                        placeholder="Password" 
-                                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                                    />
+                                    <div className="relative">
+                                        <input 
+                                            type={showPassword ? "text" : "password"} 
+                                            required
+                                            value={password} 
+                                            onChange={(e) => setPassword(e.target.value)} 
+                                            placeholder="Password" 
+                                            style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
+                                        />
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setShowPassword(!showPassword)} 
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
+                                        >
+                                            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                        </button>
+                                    </div>
                                     <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1.5">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
                                 </div>
                                 <div className="col-span-2">

@@ -99,28 +99,28 @@ const successStories = [
           width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
           border-top: 6px solid #475569; pointer-events:none; }
         .hero-search-container {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          top: 160px;
+          position: relative;
+          margin: 24px auto 0;
           width: calc(100% - 32px);
           max-width: 460px;
           z-index: 30;
         }
         @media (min-width: 1024px) {
           .hero-search-container {
+            position: absolute;
             left: auto;
             transform: none;
             right: 6%;
             top: 80px;
             width: 680px;
             max-width: 100%;
+            margin: 0;
           }
         }
         
         /* Heading responsive styling */
         .hero-heading-container {
-          padding-top: 44px;
+          padding-top: 16px;
         }
         @media (min-width: 1024px) {
           .hero-heading-container {

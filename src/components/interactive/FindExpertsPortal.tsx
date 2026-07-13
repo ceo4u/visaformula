@@ -48,6 +48,24 @@ export function FindExpertsPortal() {
             if (countryQuery) {
                 setSelectedCountry(countryQuery);
             }
+            
+            // Handle general search text query
+            const textQuery = params.get("query");
+            if (textQuery) {
+                setSearchText(textQuery);
+            }
+
+            // Handle location query
+            const locQuery = params.get("location");
+            if (locQuery) {
+                const matchCity = cityFilters.find(c => c.toLowerCase() === locQuery.toLowerCase());
+                if (matchCity) {
+                    setCity(matchCity);
+                } else {
+                    const formattedCity = locQuery.charAt(0).toUpperCase() + locQuery.slice(1).toLowerCase();
+                    setCity(formattedCity);
+                }
+            }
         }
     }, []);
 

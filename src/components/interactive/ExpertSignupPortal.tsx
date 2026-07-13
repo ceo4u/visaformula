@@ -343,17 +343,25 @@ export function ExpertSignupPortal() {
       `}} />
       
       {step < 3 && (
-        <header className="relative w-full px-4 md:px-8 py-4 flex items-center justify-between font-sans min-h-[120px]">
-          <a href="/" className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-xs font-bold text-black hover:bg-slate-50 shadow-sm transition-all shrink-0">
+        <header className="w-full px-4 md:px-8 py-4 flex flex-col md:flex-row items-center justify-between font-sans gap-4 border-b border-slate-100 bg-white md:min-h-[120px] relative">
+          <div className="order-1 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-10">
+            <a href="/">
+              <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-16 md:h-28 w-auto object-contain" />
+            </a>
+          </div>
+
+          <div className="order-2 w-full md:w-auto flex justify-between md:justify-start items-center gap-4">
+            <a href="/" className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-xs font-bold text-black hover:bg-slate-50 shadow-sm transition-all shrink-0">
               <span className="text-sm font-semibold">&larr;</span>
               <span>Back to Home</span>
-          </a>
-          
-          <a href="/" className="absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 z-10">
-              <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-36 w-auto object-contain" />
-          </a>
-          
-          <div className="text-sm font-semibold text-slate-500 shrink-0">
+            </a>
+            
+            <div className="text-xs font-semibold text-slate-500 shrink-0 md:hidden">
+              Already a member? <a href="/login" className="text-black font-extrabold hover:underline">Login</a>
+            </div>
+          </div>
+
+          <div className="hidden md:block text-sm font-semibold text-slate-500 shrink-0 order-3">
             Already a member? <a href="/login" className="text-black font-extrabold hover:underline">Login</a>
           </div>
         </header>

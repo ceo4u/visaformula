@@ -111,15 +111,15 @@ export function VisaDocumentationPortal() {
       )}
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-red-50/50 via-red-50/20 to-white pt-20 pb-20 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-sky-50/50 via-sky-50/20 to-white pt-20 pb-20 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 bg-red-50 border border-red-100 rounded-full px-4 py-1.5 text-xs font-bold text-red-600 mb-6">
+            <div className="inline-flex items-center gap-2 bg-sky-50 border border-sky-100 rounded-full px-4 py-1.5 text-xs font-bold text-[#359FC2] mb-6">
               <Sparkles className="w-3.5 h-3.5" /> 📂 Visa Documentation Filing
             </div>
             <h1 className="font-sora font-extrabold text-4xl sm:text-5xl md:text-6xl text-[#0c1a2e] leading-[1.1] mb-5 tracking-tight">
               We Prepare Your<br />
-              <span className="bg-gradient-to-r from-red-500 to-[#b91c1c] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#359FC2] to-[#1e82a3] bg-clip-text text-transparent">
                 Visa Documents.
               </span>
             </h1>
@@ -161,7 +161,7 @@ export function VisaDocumentationPortal() {
             { value: "99.4%", label: "Accuracy Rate" },
           ].map((stat, i) => (
             <div key={stat.label} className={i > 0 ? "pl-4" : ""}>
-              <div className="font-sora font-extrabold text-2xl md:text-3xl text-red-500">{stat.value}</div>
+              <div className="font-sora font-extrabold text-2xl md:text-3xl text-[#359FC2]">{stat.value}</div>
               <div className="text-xs text-gray-400 font-semibold mt-0.5">{stat.label}</div>
             </div>
           ))}
@@ -171,7 +171,7 @@ export function VisaDocumentationPortal() {
       <div className="max-w-6xl mx-auto px-6 mt-16 space-y-16">
         {/* Features Grid */}
         <div>
-          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Our Service Features</span>
+          <span className="text-[11px] font-extrabold text-[#359FC2] tracking-widest block mb-2">Our Service Features</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">What is included in Documentation?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
@@ -205,7 +205,7 @@ export function VisaDocumentationPortal() {
                 className={`px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap transition-all ${
                   activeTab === tab
                     ? "bg-black text-white border-transparent"
-                    : "bg-white text-gray-500 border-slate-200 hover:border-red-500"
+                    : "bg-white text-gray-500 border-slate-200 hover:border-[#359FC2]"
                 }`}
               >
                 {checklists[tab].title}
@@ -222,7 +222,7 @@ export function VisaDocumentationPortal() {
                   className={`flex items-center gap-4 p-4 border rounded-2xl cursor-pointer hover:shadow-sm transition-all ${
                     doc.status === "ready"
                       ? "border-emerald-150 bg-emerald-50/20"
-                      : "border-red-100 bg-red-50/10"
+                      : "border-slate-200 bg-slate-50/20"
                   }`}
                 >
                   <div className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center text-lg shrink-0">
@@ -238,7 +238,7 @@ export function VisaDocumentationPortal() {
                         <Check className="w-3.5 h-3.5" /> Ready
                       </span>
                     ) : (
-                      <span className="text-red-600 flex items-center gap-1">
+                      <span className="text-amber-600 flex items-center gap-1">
                         <AlertTriangle className="w-3.5 h-3.5" /> Missing
                       </span>
                     )}
@@ -255,7 +255,7 @@ export function VisaDocumentationPortal() {
               </div>
               <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden mb-4">
                 <div
-                  className="bg-red-500 h-2 rounded-full transition-all duration-500"
+                  className="bg-[#359FC2] h-2 rounded-full transition-all duration-500"
                   style={{ width: `${progressPct}%` }}
                 />
               </div>
@@ -268,7 +268,7 @@ export function VisaDocumentationPortal() {
 
         {/* Order Section */}
         <div id="doc-order" className="pt-8">
-          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Order Service</span>
+          <span className="text-[11px] font-extrabold text-[#359FC2] tracking-widest block mb-2">Order Service</span>
           <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">Start Your Documentation Service</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -296,7 +296,7 @@ export function VisaDocumentationPortal() {
                         <input
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-red-500"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2]"
                           placeholder="Rahul Kumar"
                           required
                         />
@@ -307,7 +307,7 @@ export function VisaDocumentationPortal() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-red-500"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2]"
                           placeholder="rahul@email.com"
                           required
                         />
@@ -320,7 +320,7 @@ export function VisaDocumentationPortal() {
                         <input
                           value={whatsapp}
                           onChange={(e) => setWhatsapp(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-red-500"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2]"
                           placeholder="+91 98765 43210"
                           required
                         />
@@ -330,7 +330,7 @@ export function VisaDocumentationPortal() {
                         <select
                           value={dest}
                           onChange={(e) => setDest(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-red-500 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394B0C4%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_16px_center]"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2] cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394B0C4%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_16px_center]"
                         >
                           <option>Canada</option>
                           <option>United Kingdom</option>
@@ -345,7 +345,7 @@ export function VisaDocumentationPortal() {
                         <select
                           value={visaType}
                           onChange={(e) => setVisaType(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-red-500 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394B0C4%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_16px_center]"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2] cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394B0C4%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_16px_center]"
                         >
                           <option>Student Visa</option>
                           <option>Tourist / Visitor</option>
@@ -366,7 +366,7 @@ export function VisaDocumentationPortal() {
 
                     <button
                       type="submit"
-                      className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-2xl text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                      className="w-full bg-[#359FC2] hover:bg-[#288eb0] text-white font-bold py-4 rounded-2xl text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
                     >
                       Place Order <ArrowRight className="w-4 h-4" />
                     </button>
@@ -388,7 +388,7 @@ export function VisaDocumentationPortal() {
                     { step: "3", title: "Final package delivered", time: "Submission-ready PDF" },
                   ].map((s) => (
                     <div key={s.step} className="flex gap-3 items-start">
-                      <div className="w-7 h-7 bg-red-50 text-red-600 border border-red-100 rounded-full flex items-center justify-center font-bold text-xs shrink-0">
+                      <div className="w-7 h-7 bg-sky-50 text-[#359FC2] border border-sky-100 rounded-full flex items-center justify-center font-bold text-xs shrink-0">
                         {s.step}
                       </div>
                       <div>

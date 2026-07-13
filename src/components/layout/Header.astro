@@ -49,17 +49,17 @@ const supportiveServicesItems = [
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white shadow-sm transition-all duration-300">
-    <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex flex-col justify-center h-24 lg:h-auto">
+    <div class="max-w-[1440px] mx-auto px-4 xl:px-8 relative flex flex-col justify-center h-24 xl:h-auto">
         
         <!-- Logo - left corner on desktop, normal layout flow on mobile -->
-        <div class="logo-container lg:absolute lg:left-16 lg:top-1/2 lg:-translate-y-1/2 flex items-center justify-start shrink-0 py-2">
+        <div class="logo-container xl:absolute xl:left-16 xl:top-1/2 xl:-translate-y-1/2 flex items-center justify-start shrink-0 py-2">
             <a href="/" class="flex items-center group">
                 <Logo variant="navbar-light" />
             </a>
         </div>
 
         <!-- Mobile Menu Toggler -->
-        <button id="mobile-menu-btn" class="lg:hidden absolute right-4 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 rounded-xl transition-colors z-50 flex items-center justify-center">
+        <button id="mobile-menu-btn" class="xl:hidden absolute right-4 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 rounded-xl transition-colors z-50 flex items-center justify-center">
             <span id="menu-icon" class="block">
                 <Menu class="w-6 h-6 text-navy" />
             </span>
@@ -69,12 +69,12 @@ const supportiveServicesItems = [
         </button>
 
         <!-- Stacks both rows vertically and centers content -->
-        <div class="w-full min-w-0 lg:pl-0 flex flex-col justify-center">
+        <div class="w-full min-w-0 xl:pl-0 flex flex-col justify-center">
             <!-- Top Row: Search Bar + Portal Links -->
-            <div class="hidden lg:flex items-center justify-center h-16 w-full relative">
+            <div class="hidden xl:flex items-center justify-center h-16 w-full relative">
                 
                 <!-- Centered Portal Links (5 options) -->
-                <div class="hidden lg:flex items-center justify-center gap-6 xl:gap-8 font-opensans">
+                <div class="hidden xl:flex items-center justify-center gap-6 xl:gap-8 font-opensans">
                         <a href="/self-apply" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 mr-4">
                             Self Apply
                         </a>
@@ -180,7 +180,7 @@ const supportiveServicesItems = [
                     </div>
 
                     <!-- Right Portal Auth Buttons & Profile Block (aligned right) -->
-                    <div class="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0 lg:absolute lg:right-16 lg:top-1/2 lg:-translate-y-1/2 z-50">
+                    <div class="hidden xl:flex items-center gap-4 xl:gap-6 shrink-0 xl:absolute xl:right-16 xl:top-1/2 xl:-translate-y-1/2 z-50">
                         <div class="w-[1.5px] h-4 bg-red-500 mr-1 ml-10"></div>
 
                         <div class="flex items-center gap-1.5 xl:gap-2" id="nav-auth-buttons-wrapper">
@@ -224,7 +224,7 @@ const supportiveServicesItems = [
                 </div><!-- end top row -->
 
                 <!-- Bottom Row: Category Navigation (Desktop Only) -->
-                <div id="category-bar" class="hidden lg:flex items-center justify-center h-12">
+                <div id="category-bar" class="hidden xl:flex items-center justify-center h-12">
                     <div class="flex items-center justify-center gap-6 xl:gap-10 h-full">
                 <!-- Student Visa Dropdown -->
                 <div class="relative py-3.5 group">
@@ -457,7 +457,7 @@ const supportiveServicesItems = [
 </div><!-- end max-w wrapper -->
 
     <!-- Mobile Drawer menu -->
-    <div id="mobile-menu-drawer" class="hidden lg:hidden bg-white border-t border-gray-100 shadow-xl max-h-[85vh] overflow-y-auto">
+    <div id="mobile-menu-drawer" class="hidden xl:hidden bg-white border-t border-gray-100 shadow-xl max-h-[85vh] overflow-y-auto">
         <!-- Yelp-style Mobile Search bar -->
         <div class="p-4 border-b border-gray-100 bg-gray-50/30 space-y-2">
             <div class="flex items-center bg-white rounded-xl px-3 py-2 border border-gray-200 shadow-sm">

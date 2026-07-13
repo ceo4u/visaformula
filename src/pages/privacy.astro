@@ -1,0 +1,138 @@
+---
+// src/pages/privacy.astro
+import Layout from '../layouts/Layout.astro';
+import { Lock, ShieldAlert, Eye, Database, FileShield } from 'lucide-react';
+---
+
+<Layout 
+  title="Privacy Policy" 
+  description="Privacy Policy and Data Protection Rules for VisaFormula - Global Immigration Marketplace."
+>
+  <div class="bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+      
+      <!-- Premium Hero Section -->
+      <div class="text-center mb-16 animate-fade-in">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-xs font-bold text-emerald-600 mb-4">
+          <Lock class="w-3.5 h-3.5" />
+          <span>Security &amp; Privacy</span>
+        </div>
+        <h1 class="font-sora text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4 leading-tight">
+          Privacy Policy
+        </h1>
+        <p class="font-sans text-sm sm:text-base text-slate-500 max-w-xl mx-auto font-medium">
+          Learn how we handle your personal details, documents, and data interactions between seekers and consultants.
+        </p>
+      </div>
+
+      <!-- Legal Document Layout -->
+      <div class="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden p-6 sm:p-10 md:p-12 space-y-10">
+        
+        <!-- Security Trust Callout -->
+        <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-5 sm:p-6 flex gap-4 items-start">
+          <FileShield class="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" />
+          <div>
+            <h4 class="font-sora text-sm font-bold text-emerald-900 mb-1">Our Commitment to Data Safety</h4>
+            <p class="font-sans text-xs sm:text-sm text-emerald-800 font-medium leading-relaxed">
+              VisaFormula respects your privacy. We implement end-to-end industry-standard practices to protect your identification files, visa records, and consultation logs.
+            </p>
+          </div>
+        </div>
+
+        <!-- Section 1: Information Collection -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+            Information We Collect
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              We collect information that you directly provide when signing up as a Seeker or Expert (such as your name, email address, phone number, passport country, goals, and credentials).
+            </p>
+            <p>
+              Additionally, when seekers upload documents for visa applications or request verification audits of third-party services, we process these files solely to execute the requested service.
+            </p>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- Section 2: Shared Data and Liability -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+            Data Shared Between Seekers and Consultants
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              When a seeker books a service or enters into a milestone agreement with a consultant, relevant profile and contact details are shared to facilitate the consultation. 
+            </p>
+            <p>
+              Please note that <strong>VisaFormula has no liability or control over how third-party consultants handle or store your shared data</strong>. Once information or files are passed to a consultant, their respective privacy policies and agreement rules apply.
+            </p>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- Section 3: Third Party Links and Offers -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+            Third-Party Services and Links
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              Our website may feature promotional links, special packages, or advertising campaigns from verified or unverified third parties. 
+            </p>
+            <p>
+              VisaFormula does not govern the cookies, tracking mechanisms, or data collection policies of third-party sites. It is the seeker's responsibility to review their privacy protocols before sharing personal data.
+            </p>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- Section 4: Document Verification Audit -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">4</span>
+            Data Handling for Audits &amp; Verification
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              If a visa seeker requests a chargeable verification audit of a third-party service or consultant offer, any data compiled during this audit is handled with strict confidentiality.
+            </p>
+            <p>
+              The resulting verification report will only be disclosed to the requesting seeker and will not be shared with external bodies unless legally required.
+            </p>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- Section 5: Legal Disclosures -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">5</span>
+            Updates and Legal Compliance
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              We may update our Privacy Policy periodically to adapt to changing legal frameworks or new platform features. By continuing to use the site, you consent to the collection practices defined here.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Action Back Link -->
+      <div class="text-center mt-12">
+        <a href="/" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-500 hover:text-black transition-colors">
+          <span>&larr;</span> Back to Home
+        </a>
+      </div>
+
+    </div>
+  </div>
+</Layout>

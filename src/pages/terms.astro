@@ -1,0 +1,141 @@
+---
+// src/pages/terms.astro
+import Layout from '../layouts/Layout.astro';
+import { Shield, Scale, AlertCircle, FileText, CheckCircle } from 'lucide-react';
+---
+
+<Layout 
+  title="Terms & Conditions" 
+  description="Terms of Service and Marketplace Rules for VisaFormula - Global Immigration Marketplace."
+>
+  <div class="bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+      
+      <!-- Premium Hero Section -->
+      <div class="text-center mb-16 animate-fade-in">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 border border-sky-100 text-xs font-bold text-[#359FC2] mb-4">
+          <Shield class="w-3.5 h-3.5" />
+          <span>Legal Center</span>
+        </div>
+        <h1 class="font-sora text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4 leading-tight">
+          Terms &amp; Conditions
+        </h1>
+        <p class="font-sans text-sm sm:text-base text-slate-500 max-w-xl mx-auto font-medium">
+          Please read these terms carefully. By using our platform, you agree to these commitments and liability limitations.
+        </p>
+      </div>
+
+      <!-- Legal Document Layout -->
+      <div class="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden p-6 sm:p-10 md:p-12 space-y-10">
+        
+        <!-- Important Alert Callout -->
+        <div class="bg-amber-50/60 border border-amber-200 rounded-2xl p-5 sm:p-6 flex gap-4 items-start">
+          <AlertCircle class="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+          <div>
+            <h4 class="font-sora text-sm font-bold text-amber-900 mb-1">Important Disclaimer</h4>
+            <p class="font-sans text-xs sm:text-sm text-amber-800 font-medium leading-relaxed">
+              VisaFormula acts as a directory and software marketplace connecting visa seekers with immigration consultants. We are not a legal firm, we do not guarantee visa approvals, and we do not represent either seekers or consultants in legal agreements.
+            </p>
+          </div>
+        </div>
+
+        <!-- Section 1: Consultant Commitments -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-[#359FC2]/10 text-[#359FC2] flex items-center justify-center text-xs font-bold shrink-0">1</span>
+            Consultant Services &amp; Commitments
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              For all services, representations, and commitments made by a consultant or legal advisor on this platform, <strong>it is the sole responsibility of the consultant to fulfill them</strong>.
+            </p>
+            <p>
+              VisaFormula does not supervise, direct, control, or monitor the consulting services provided. We are not responsible or liable for fees charged by consultants, nor are we a party to any financial agreements, payment terms, or milestone agreements entered between the visa seeker and the consultant.
+            </p>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- Section 2: Third-Party Offers -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-[#359FC2]/10 text-[#359FC2] flex items-center justify-center text-xs font-bold shrink-0">2</span>
+            Discretion of Special Offers &amp; Packages
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              Any special offers, package deals, marketing discounts, or promotions offered by third parties (including visa consultants or companies) featured on this website are offered <strong>strictly at that party's sole discretion and authority</strong>.
+            </p>
+            <p>
+              The provider reserves the right to modify, restrict eligibility for, or withdraw any offer at any time. VisaFormula does not guarantee the validity or availability of third-party promotions.
+            </p>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- Section 3: Seeker Verification Responsibility -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-[#359FC2]/10 text-[#359FC2] flex items-center justify-center text-xs font-bold shrink-0">3</span>
+            Seeker's Duty of Due Diligence
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              <strong>It is the sole responsibility of the visa seeker to review, check, and verify</strong> the credentials, licenses, success rates, offers, and services of any visa consultant prior to booking sessions or transferring funds.
+            </p>
+            <p>
+              Visa seekers are strongly advised to perform their own due diligence, including checking government registration numbers, licensing bodies (such as RCIC, MARA, OISC, or state bar associations), and client feedback history.
+            </p>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- Section 4: Chargeable Verification Service -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-[#359FC2]/10 text-[#359FC2] flex items-center justify-center text-xs font-bold shrink-0">4</span>
+            VisaFormula Verification Requests
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              VisaFormula will only verify a service, credential, or promotion offered by a third party <strong>when and if explicitly requested by a visa seeker</strong>.
+            </p>
+            <p>
+              Please note that this is a <strong>separate chargeable service</strong>. When ordered, VisaFormula will conduct a verification audit of the consultant's credentials, active registrations, or business standing and issue a report to the requesting seeker.
+            </p>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- Section 5: Refunds & Payment Terms -->
+        <div class="space-y-4">
+          <h2 class="font-sora text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg bg-[#359FC2]/10 text-[#359FC2] flex items-center justify-center text-xs font-bold shrink-0">5</span>
+            Refund Policies &amp; Payments
+          </h2>
+          <div class="pl-0 sm:pl-10 space-y-3 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            <p>
+              <strong>VisaFormula is not responsible or liable for the refund policies, payment terms, or transaction terms</strong> set by any user, legal professional, or agency using the website.
+            </p>
+            <p>
+              All refunds, fee resolutions, or disputes concerning consultant billing must be settled directly between the visa seeker and the consultant in accordance with their service contracts or agreements.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Action Back Link -->
+      <div class="text-center mt-12">
+        <a href="/" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-500 hover:text-black transition-colors">
+          <span>&larr;</span> Back to Home
+        </a>
+      </div>
+
+    </div>
+  </div>
+</Layout>

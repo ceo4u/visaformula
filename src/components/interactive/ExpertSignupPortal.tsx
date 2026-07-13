@@ -374,29 +374,29 @@ export function ExpertSignupPortal() {
             <p className="text-base text-slate-400 font-medium">Enter your details to initialize your portal</p>
           </div>
 
-          <div className="flex items-center justify-center gap-8 my-8 font-sans">
-            <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black ${
+          <div className="flex items-center justify-center gap-2 md:gap-8 my-8 font-sans max-w-full overflow-x-auto px-2">
+            <div className="flex items-center gap-2 md:gap-3 shrink-0">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
                 step > 1 ? "bg-emerald-500 text-white" : "bg-[#1C1C1E] text-white shadow-sm"
               }`}>
                 {step > 1 ? "✓" : "1"}
               </div>
-              <span className={`text-sm font-bold ${step === 1 ? "text-black" : "text-slate-400"}`}>
+              <span className={`text-xs md:text-sm font-bold whitespace-nowrap ${step === 1 ? "text-black" : "text-slate-400"}`}>
                 General Details
               </span>
             </div>
             
-            <div className={`h-0.5 w-16 md:w-24 transition-all ${step > 1 ? "bg-emerald-500" : "bg-slate-200"}`}></div>
+            <div className={`h-0.5 w-8 md:w-24 shrink-0 transition-all ${step > 1 ? "bg-emerald-500" : "bg-slate-200"}`}></div>
 
-            <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+            <div className="flex items-center gap-2 md:gap-3 shrink-0">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all shrink-0 ${
                 step === 2 
                   ? "bg-[#1C1C1E] text-white shadow-sm" 
                   : "border border-slate-200 bg-white text-slate-400"
               }`}>
                 2
               </div>
-              <span className={`text-sm font-bold ${step === 2 ? "text-black" : "text-slate-400"}`}>
+              <span className={`text-xs md:text-sm font-bold whitespace-nowrap ${step === 2 ? "text-black" : "text-slate-400"}`}>
                 Credentials & Service
               </span>
             </div>

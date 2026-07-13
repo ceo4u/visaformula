@@ -117,19 +117,21 @@ export function SeekerSignupPortal() {
                 </div>
 
                 {/* Step Indicator */}
-                <div className="flex items-center justify-center gap-8 my-10 font-sans">
+                <div className="flex items-center justify-center gap-2 md:gap-6 my-10 font-sans max-w-full overflow-x-auto px-2">
                     {steps.map((s, i) => (
-                        <div key={s.label} className="flex items-center gap-3">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
-                                step > i + 1 ? "bg-black text-white" :
-                                step === i + 1 ? "bg-black text-white shadow-md" :
-                                "border-2 border-slate-350 text-slate-500"
-                            }`}>
-                                {step > i + 1 ? "✓" : s.icon}
+                        <div key={s.label} className="flex items-center gap-2 md:gap-4 shrink-0">
+                            <div className="flex items-center gap-2 md:gap-3 shrink-0">
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-semibold transition-all shrink-0 ${
+                                    step > i + 1 ? "bg-black text-white" :
+                                    step === i + 1 ? "bg-black text-white shadow-md" :
+                                    "border-2 border-slate-350 text-slate-500"
+                                }`}>
+                                    {step > i + 1 ? "✓" : s.icon}
+                                </div>
+                                <span className={`text-[11px] md:text-sm font-semibold whitespace-nowrap ${step >= i + 1 ? "text-black" : "text-slate-450"}`}>{s.label}</span>
                             </div>
-                            <span className={`text-base font-semibold ${step >= i + 1 ? "text-black" : "text-slate-450"}`}>{s.label}</span>
                             {i < steps.length - 1 && (
-                                <div className={`h-0.5 w-16 md:w-24 ${step > i + 1 ? "bg-black" : "bg-slate-200"}`} />
+                                <div className={`h-0.5 w-6 md:w-16 shrink-0 transition-all ${step > i + 1 ? "bg-black" : "bg-slate-200"}`} />
                             )}
                         </div>
                     ))}

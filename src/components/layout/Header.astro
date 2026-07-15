@@ -4,45 +4,45 @@ import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, 
 const pathname = Astro.url.pathname;
 ---
 
-<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white shadow-sm transition-all duration-300">
-    <div class="max-w-[1440px] mx-auto px-4 xl:px-8 relative flex items-center justify-between h-16 xl:h-20">
+<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-100 transition-all duration-300">
+    <div class="max-w-[1440px] mx-auto px-4 xl:px-8 relative flex items-center justify-between h-16">
         
         <!-- Logo - Left corner -->
         <div class="flex items-center shrink-0 py-2">
             <a href="/" class="flex items-center gap-3 group focus:outline-none">
-                <img src="/logo/icon-only.svg" class="w-10 h-10 object-contain shrink-0" alt="VisaFormula" />
+                <img src="/logo/icon-only.svg" class="w-9 h-9 object-contain shrink-0" alt="VisaFormula" />
                 <div class="flex flex-col">
-                    <span class="text-[20px] font-black tracking-tight text-[#0f2b6c] font-plus-jakarta leading-none">VisaFormula</span>
+                    <span class="text-[19px] font-black tracking-tight text-[#0c1a2e] font-plus-jakarta leading-none">VisaFormula</span>
                     <span class="text-[9px] font-bold text-[#5c6e8c] tracking-tight mt-1 leading-none font-plus-jakarta">The Global Immigration & Mobility Platform</span>
                 </div>
             </a>
         </div>
 
         <!-- Desktop Navigation Links (Centered) -->
-        <nav class="hidden xl:flex items-center gap-6 xl:gap-8 font-opensans">
+        <nav class="hidden xl:flex items-center gap-7 font-plus-jakarta">
             <!-- 1. Find an Expert -->
             <div class="relative py-3 group">
-                <button class="font-opensans text-[14px] xl:text-[15px] font-semibold text-navy hover:text-[#359FC2] transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Find an Expert
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 transition-transform duration-300 group-hover:rotate-180" />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-transform duration-200 group-hover:rotate-180" />
                 </button>
-                <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/find-experts?category=student" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <GraduationCap class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Student Visa Experts</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Student Visa Experts</span>
                         </a>
                         <a href="/find-experts?category=work" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <Briefcase class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Work & Job Visa Experts</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Work & Job Visa Experts</span>
                         </a>
                         <a href="/find-experts?category=pr" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <Compass class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">PR Agencies</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">PR Agencies</span>
                         </a>
                         <a href="/emergency" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <Scale class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Migration Agents & Lawyers</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Migration Agents & Lawyers</span>
                         </a>
                     </div>
                 </div>
@@ -50,35 +50,35 @@ const pathname = Astro.url.pathname;
 
             <!-- 2. Visa Services -->
             <div class="relative py-3 group">
-                <button class="font-opensans text-[14px] xl:text-[15px] font-semibold text-navy hover:text-[#359FC2] transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Visa Services
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 transition-transform duration-300 group-hover:rotate-180" />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-transform duration-200 group-hover:rotate-180" />
                 </button>
-                <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/visa-documentation" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <FileText class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Visa Documentation Filing</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Visa Documentation Filing</span>
                         </a>
                         <a href="/visa-form-filing" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <FileText class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Visa Form Filing</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Visa Form Filing</span>
                         </a>
                         <a href="/vfs-appointment" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <Calendar class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">VFS Appointment Support</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">VFS Appointment Support</span>
                         </a>
                         <a href="/services/form-fillers" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <PenLine class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Visa Form Fillers</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Visa Form Fillers</span>
                         </a>
                         <a href="/services/travel-insurance" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <HeartHandshake class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Travel Insurance</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Travel Insurance</span>
                         </a>
                         <a href="/services/airfares" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <Plane class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Airfares Booking</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Airfares Booking</span>
                         </a>
                     </div>
                 </div>
@@ -86,23 +86,23 @@ const pathname = Astro.url.pathname;
 
             <!-- 3. Resources -->
             <div class="relative py-3 group">
-                <button class="font-opensans text-[14px] xl:text-[15px] font-semibold text-navy hover:text-[#359FC2] transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Resources
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 transition-transform duration-300 group-hover:rotate-180" />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-transform duration-200 group-hover:rotate-180" />
                 </button>
-                <div class="absolute top-full left-0 pt-2 w-[240px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                <div class="absolute top-full left-0 pt-2 w-[240px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <FileText class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Visa Guides</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Visa Guides</span>
                         </a>
                         <a href="/success-stories" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <FileText class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Success Stories</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Success Stories</span>
                         </a>
                         <a href="/support" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <HeartHandshake class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Support / Helpdesk</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Support / Helpdesk</span>
                         </a>
                     </div>
                 </div>
@@ -110,23 +110,23 @@ const pathname = Astro.url.pathname;
 
             <!-- 4. Tools -->
             <div class="relative py-3 group">
-                <button class="font-opensans text-[14px] xl:text-[15px] font-semibold text-navy hover:text-[#359FC2] transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Tools
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 transition-transform duration-300 group-hover:rotate-180" />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-transform duration-200 group-hover:rotate-180" />
                 </button>
-                <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <FileText class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Migration Tools Portal</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Migration Tools Portal</span>
                         </a>
                         <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <Compass class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">CRS Points Calculator</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">CRS Points Calculator</span>
                         </a>
                         <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <Scale class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Eligibility Checker</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Eligibility Checker</span>
                         </a>
                     </div>
                 </div>
@@ -134,19 +134,19 @@ const pathname = Astro.url.pathname;
 
             <!-- 5. For Professionals -->
             <div class="relative py-3 group">
-                <button class="font-opensans text-[14px] xl:text-[15px] font-semibold text-navy hover:text-[#359FC2] transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     For Professionals
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 transition-transform duration-300 group-hover:rotate-180" />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-transform duration-200 group-hover:rotate-180" />
                 </button>
-                <div class="absolute top-full right-0 pt-2 w-[240px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                <div class="absolute top-full right-0 pt-2 w-[240px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-right z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/register-provider" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <Briefcase class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Register as Consultant</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Register as Consultant</span>
                         </a>
                         <a href="/signup/expert" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150">
                             <LayoutDashboard class="w-4 h-4 text-slate-500" />
-                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#359FC2]">Consultant Dashboard</span>
+                            <span class="text-[14px] font-semibold text-slate-700 hover:text-[#2563eb]">Consultant Dashboard</span>
                         </a>
                     </div>
                 </div>
@@ -154,15 +154,15 @@ const pathname = Astro.url.pathname;
         </nav>
 
         <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
-        <div class="hidden xl:flex items-center gap-5 shrink-0 z-50">
+        <div class="hidden xl:flex items-center gap-5 shrink-0 z-50 font-plus-jakarta">
             <!-- Globe selector -->
             <div class="relative py-3 group">
-                <button class="flex items-center gap-1.5 text-[14px] font-bold text-navy hover:text-[#359FC2] transition-colors focus:outline-none">
+                <button class="flex items-center gap-1.5 text-[14px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none">
                     <Globe class="w-4.5 h-4.5 text-slate-500" />
                     <span>EN</span>
-                    <ChevronDown class="w-3 h-3 text-slate-400 transition-transform duration-300 group-hover:rotate-180" />
+                    <ChevronDown class="w-3 h-3 text-slate-400 transition-transform duration-200 group-hover:rotate-180" />
                 </button>
-                <div class="absolute top-full right-0 pt-2 w-[120px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                <div class="absolute top-full right-0 pt-2 w-[120px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-right z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2 flex flex-col gap-1">
                         <button class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50">English</button>
                     </div>
@@ -174,17 +174,17 @@ const pathname = Astro.url.pathname;
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="font-opensans text-[14px] font-semibold text-blue-600 border border-blue-600 hover:bg-blue-50/50 hover:border-blue-700 px-4 py-2.5 rounded-xl transition-all duration-300">
+                <a href="/login" id="login-btn" class="text-[#2563eb] border border-[#2563eb] hover:bg-blue-50/30 px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200">
                     Log in
                 </a>
-                <a href="/signup" class="font-opensans bg-blue-600 hover:bg-blue-700 text-white font-semibold text-[14px] px-4 py-2.5 rounded-xl hover:shadow-lg transition-all duration-300 active:scale-[0.97]">
+                <a href="/signup" class="bg-[#2563eb] hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200">
                     Sign Up
                 </a>
             </div>
 
             <!-- Desktop Profile Dropdown (visible when logged in) -->
-            <div id="nav-profile-block" class="relative hidden py-2 group font-opensans">
-                <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white font-opensans">
+            <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta">
+                <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white">
                     <div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-black text-white shadow-sm" id="nav-profile-avatar-container">
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                         <span class="font-bold text-sm" id="nav-profile-avatar-letters">U</span>
@@ -193,17 +193,17 @@ const pathname = Astro.url.pathname;
                 </button>
                 
                 <!-- Dropdown Menu -->
-                <div class="absolute right-0 top-[90%] pt-4 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5 font-opensans">
+                <div class="absolute right-0 top-[90%] pt-4 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-right z-50">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5">
                         <div class="px-3.5 py-2 border-b border-slate-100">
-                            <div class="text-[10px] text-slate-400 font-bold tracking-wider font-opensans">Signed in as</div>
-                            <div class="text-sm font-bold text-black truncate mt-0.5 font-opensans" id="nav-profile-name">User Profile</div>
+                            <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
+                            <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name">User Profile</div>
                         </div>
-                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-black hover:bg-slate-50 transition-all font-opensans">
+                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-black hover:bg-slate-50 transition-all">
                             <LayoutDashboard class="w-4 h-4 text-slate-400" />
                             <span>My Dashboard</span>
                         </a>
-                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-red-650 hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent font-opensans">
+                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-red-650 hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent">
                             <LogOut class="w-4 h-4 text-slate-450" />
                             <span>Log Out</span>
                         </button>
@@ -332,11 +332,11 @@ const pathname = Astro.url.pathname;
 </header>
 
 <style is:global>
-  /* Header hover active states color override to Cyan */
+  /* Header hover active states color override to brand blue */
   .group:hover button,
   .group:hover span,
   .group:hover svg {
-    color: #359FC2 !important;
+    color: #2563eb !important;
   }
 </style>
 

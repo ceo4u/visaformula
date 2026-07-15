@@ -70,12 +70,15 @@ const supportiveServicesItems = [
 
         <!-- Stacks both rows vertically and centers content -->
         <div class="w-full min-w-0 xl:pl-0 flex flex-col justify-center">
-            <!-- Top Row: Logo (Absolute left) + Actions (Right aligned) -->
-            <div class="hidden xl:flex items-center justify-end h-16 w-full pr-16 gap-6 xl:gap-8 relative">
+            <!-- Top Row: Logo (Absolute left) + Actions (Centered links + Right auth) -->
+            <div class="hidden xl:flex items-center justify-between h-16 w-full px-16 relative">
                 
-                <!-- Navigation Links -->
-                <div class="flex items-center gap-5 xl:gap-7 font-opensans">
-                    <a href="/self-apply" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 mr-8 xl:mr-16">
+                <!-- Left spacer matching logo width -->
+                <div class="w-[200px] shrink-0"></div>
+
+                <!-- Centered Navigation Links -->
+                <div class="flex-grow flex items-center justify-center gap-6 xl:gap-8 font-opensans">
+                    <a href="/self-apply" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
                         Self Apply
                     </a>
 
@@ -179,12 +182,12 @@ const supportiveServicesItems = [
                     </a>
                 </div>
 
-                <!-- Red Vertical Divider -->
-                <div class="w-[1.5px] h-4 bg-red-500 shrink-0"></div>
+                <!-- Right Auth & Profile Block (with centered red divider) -->
+                <div class="w-[260px] shrink-0 flex items-center justify-end gap-4 z-50">
+                    <!-- Red Vertical Divider -->
+                    <div class="w-[1.5px] h-4 bg-red-500 shrink-0 mr-2"></div>
 
-                <!-- Right Portal Auth Buttons & Profile Block -->
-                <div class="flex items-center gap-4 shrink-0 z-50">
-                    <div class="flex items-center gap-1.5 xl:gap-2" id="nav-auth-buttons-wrapper">
+                    <div class="flex items-center gap-2" id="nav-auth-buttons-wrapper">
                         <a href="/login" id="login-btn" class="font-opensans text-[14px] font-bold text-[#2563eb] border border-[#2563eb] hover:bg-blue-50 px-5 py-2.5 rounded-xl transition-all duration-300">
                             Log In
                         </a>

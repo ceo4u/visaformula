@@ -70,7 +70,7 @@ export function LoginPortal() {
                 <div className="w-full bg-white border-2 border-black rounded-3xl p-6 md:p-8 shadow-xl shadow-gray-150/40">
                     <div className="text-center mb-4">
                         <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
-                            <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-28 w-auto object-contain mx-auto" />
+                            <img src="/logo.png" alt="VisaFormula" className="h-28 w-auto object-contain mx-auto" />
                         </a>
                     </div>
 

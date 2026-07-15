@@ -90,7 +90,7 @@ export function SeekerSignupPortal() {
             <header className="w-full px-4 md:px-8 py-4 flex flex-col md:flex-row items-center justify-between font-sans gap-4 border-b border-slate-100 bg-white md:min-h-[120px] relative">
                 <div className="order-1 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-10">
                     <a href="/">
-                        <img src="/logo/visaformula-navbar.svg" alt="VisaFormula" className="h-16 md:h-28 w-auto object-contain" />
+                        <img src="/logo.png" alt="VisaFormula" className="h-16 md:h-28 w-auto object-contain mx-auto" />
                     </a>
                 </div>
 

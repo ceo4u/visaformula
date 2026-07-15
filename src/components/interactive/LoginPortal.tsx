@@ -74,7 +74,7 @@ export function LoginPortal() {
                         </a>
                     </div>
 
-                    <p className="text-slate-700 text-base font-bold text-center mb-6 font-opensans">
+                    <p className="text-black text-base font-bold text-center mb-6 font-opensans">
                         Sign in to get started with VisaFormula
                     </p>
 

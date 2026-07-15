@@ -177,7 +177,7 @@ export function HeroSection() {
   }
 
   return (
-    <section className="w-full bg-white pb-0 overflow-hidden">
+    <section className="w-full bg-white pb-16 md:pb-24 overflow-visible">
       {/* Top hero area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 md:pt-10 pb-6">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
@@ -356,7 +356,17 @@ export function HeroSection() {
               {visaTypes.map((type, i) => (
                 <div key={i} className="flex items-center lg:flex-1 justify-center">
                   <button
-                    onClick={() => handleTabClick(i, type.label)}
+                    onClick={() => {
+                      if (type.label === 'Visitor Visa') {
+                        window.location.href = '/tours';
+                      } else if (type.label === 'Student Visa') {
+                        window.location.href = '/universities';
+                      } else if (type.label === 'Work Visa') {
+                        window.location.href = '/jobs';
+                      } else {
+                        handleTabClick(i, type.label);
+                      }
+                    }}
                     className={`flex flex-col items-center gap-1.5 px-2 py-2 rounded-lg w-full transition-all cursor-pointer ${
                       activeTab === i ? 'bg-blue-50/50' : 'hover:bg-gray-50/50'
                     }`}

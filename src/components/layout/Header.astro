@@ -44,7 +44,12 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
-            <!-- 2. Visa Services -->
+            <!-- 2. Smart Apply (Direct link, no dropdown, between Find Expert and Visa Services) -->
+            <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-colors whitespace-nowrap">
+                Smart Apply
+            </a>
+
+            <!-- 3. Visa Services -->
             <div class="relative py-3 group">
                 <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Visa Services
@@ -80,7 +85,7 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
-            <!-- 3. Resources -->
+            <!-- 4. Resources -->
             <div class="relative py-3 group">
                 <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Resources
@@ -104,7 +109,7 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
-            <!-- 4. Tools -->
+            <!-- 5. Tools -->
             <div class="relative py-3 group">
                 <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Tools
@@ -123,26 +128,6 @@ const pathname = Astro.url.pathname;
                         <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Eligibility Checker</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. For Professionals -->
-            <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
-                    For Professionals
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
-                </button>
-                <div class="absolute top-full right-0 pt-2 w-[240px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-right z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
-                        <a href="/register-provider" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
-                            <Briefcase class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
-                            <span class="text-[14px] font-semibold">Register as Consultant</span>
-                        </a>
-                        <a href="/signup/expert" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
-                            <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
-                            <span class="text-[14px] font-semibold">Consultant Dashboard</span>
                         </a>
                     </div>
                 </div>
@@ -237,6 +222,13 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
+            <!-- Mobile Smart Apply Link -->
+            <div class="border-b border-gray-50 py-2.5">
+                <a href="/self-apply" class="block py-1 text-sm font-semibold text-navy hover:text-[#2563eb] transition-colors">
+                    Smart Apply
+                </a>
+            </div>
+
             <!-- Mobile Visa Services Accordion -->
             <div class="border-b border-gray-50 py-1.5">
                 <button id="mobile-visa-services-btn" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg">
@@ -279,18 +271,6 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
-            <!-- Mobile For Professionals Accordion -->
-            <div class="border-b border-gray-50 py-1.5">
-                <button id="mobile-for-professionals-btn" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg">
-                    <span>For Professionals</span>
-                    <ChevronDown id="mobile-for-professionals-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
-                </button>
-                <div id="mobile-for-professionals-drawer" class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
-                    <a href="/register-provider" class="block py-1.5 text-xs text-slate-600 font-medium">Register as Consultant</a>
-                    <a href="/signup/expert" class="block py-1.5 text-xs text-slate-600 font-medium">Consultant Dashboard</a>
-                </div>
-            </div>
-
             <!-- Globe Lang Selector (Mobile) -->
             <div class="border-b border-gray-50 py-2.5 flex items-center justify-between">
                 <div class="flex items-center gap-2 text-sm font-semibold text-navy">
@@ -326,3 +306,185 @@ const pathname = Astro.url.pathname;
         </div>
     </div>
 </header>
+
+<style is:global>
+  /* Header hover active states color override to brand blue */
+  .group:hover button,
+  .group:hover span,
+  .group:hover svg {
+    color: #2563eb !important;
+  }
+</style>
+
+<script>
+    // Toggle Mobile Drawer Menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    if (mobileMenuBtn && mobileMenuDrawer && menuIcon && closeIcon) {
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = !mobileMenuDrawer.classList.contains('hidden');
+            if (isOpen) {
+                mobileMenuDrawer.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                menuIcon.classList.add('block');
+                closeIcon.classList.add('hidden');
+                closeIcon.classList.remove('block');
+            } else {
+                mobileMenuDrawer.classList.remove('hidden');
+                menuIcon.classList.add('hidden');
+                menuIcon.classList.remove('block');
+                closeIcon.classList.remove('hidden');
+                closeIcon.classList.add('block');
+            }
+        });
+    }
+
+    // Toggle Mobile Accordions
+    const accordions = [
+        { btn: 'mobile-find-expert-btn', drawer: 'mobile-find-expert-drawer', arrow: 'mobile-find-expert-arrow' },
+        { btn: 'mobile-visa-services-btn', drawer: 'mobile-visa-services-drawer', arrow: 'mobile-visa-services-arrow' },
+        { btn: 'mobile-resources-btn', drawer: 'mobile-resources-drawer', arrow: 'mobile-resources-arrow' },
+        { btn: 'mobile-tools-btn', drawer: 'mobile-tools-drawer', arrow: 'mobile-tools-arrow' },
+    ];
+
+    accordions.forEach(({ btn, drawer, arrow }) => {
+        const btnEl = document.getElementById(btn);
+        const drawerEl = document.getElementById(drawer);
+        const arrowEl = document.getElementById(arrow);
+        if (btnEl && drawerEl && arrowEl) {
+            btnEl.addEventListener('click', () => {
+                const isHidden = drawerEl.classList.contains('hidden');
+                if (isHidden) {
+                    drawerEl.classList.remove('hidden');
+                    arrowEl.classList.add('rotate-180');
+                } else {
+                    drawerEl.classList.add('hidden');
+                    arrowEl.classList.remove('rotate-180');
+                }
+            });
+        }
+    });
+
+    // Dynamic Auth Header Button & Profile Dropdown Updates
+    const seekerFirst = localStorage.getItem("seeker_firstName");
+    const expertBusiness = localStorage.getItem("expert_businessName");
+    const userStr = localStorage.getItem("visaformula_user");
+
+    const isLoggedIn = seekerFirst || expertBusiness || (userStr && userStr !== "null");
+
+    if (isLoggedIn) {
+        // Hide standard Auth buttons
+        const desktopAuthButtons = document.getElementById("nav-auth-buttons-wrapper");
+        const mobileAuthButtons = document.getElementById("mobile-nav-auth-buttons");
+        const loggedInDivider = document.getElementById("nav-logged-in-divider");
+        
+        if (desktopAuthButtons) desktopAuthButtons.classList.add("hidden");
+        if (mobileAuthButtons) mobileAuthButtons.classList.add("hidden");
+        if (loggedInDivider) loggedInDivider.classList.remove("hidden");
+
+        // Prepare info
+        let displayName = "User Profile";
+        let displayLetters = "U";
+        let dashboardHref = "/dashboard";
+        let displayPhoto = "";
+
+        if (expertBusiness) {
+            displayName = expertBusiness;
+            displayLetters = expertBusiness.charAt(0).toUpperCase();
+            dashboardHref = "/signup/expert";
+            displayPhoto = localStorage.getItem("expert_profilePhoto") || "";
+        } else if (seekerFirst) {
+            displayName = seekerFirst + " " + (localStorage.getItem("seeker_lastName") || "");
+            displayLetters = seekerFirst.charAt(0).toUpperCase();
+            dashboardHref = "/dashboard";
+            displayPhoto = localStorage.getItem("seeker_profilePhoto") || "";
+        } else if (userStr) {
+            try {
+                const u = JSON.parse(userStr);
+                if (u && u.displayName) {
+                    displayName = u.displayName;
+                    displayLetters = u.displayName.charAt(0).toUpperCase();
+                } else if (u && u.email) {
+                    displayName = u.email;
+                    displayLetters = u.email.charAt(0).toUpperCase();
+                }
+                if (u && u.photoURL) {
+                    displayPhoto = u.photoURL;
+                }
+            } catch(e) {}
+        }
+
+        // Show Desktop Profile Block
+        const desktopProfileBlock = document.getElementById("nav-profile-block");
+        if (desktopProfileBlock) {
+            desktopProfileBlock.classList.remove("hidden");
+            const avatarLetters = document.getElementById("nav-profile-avatar-letters");
+            const avatarImg = document.getElementById("nav-profile-avatar-img") as HTMLImageElement;
+            const profileName = document.getElementById("nav-profile-name");
+            const dashboardLink = document.getElementById("nav-profile-dashboard-link");
+
+            if (profileName) profileName.textContent = displayName;
+            if (dashboardLink) dashboardLink.setAttribute("href", dashboardHref);
+            
+            if (displayPhoto && avatarImg) {
+                avatarImg.src = displayPhoto;
+                avatarImg.classList.remove("hidden");
+                if (avatarLetters) avatarLetters.classList.add("hidden");
+            } else {
+                if (avatarLetters) avatarLetters.textContent = displayLetters;
+                if (avatarLetters) avatarLetters.classList.remove("hidden");
+                if (avatarImg) avatarImg.classList.add("hidden");
+            }
+        }
+
+        // Show Mobile Profile Block
+        const mobileProfileBlock = document.getElementById("mobile-nav-profile-block");
+        if (mobileProfileBlock) {
+            mobileProfileBlock.classList.remove("hidden");
+            mobileProfileBlock.style.display = "flex";
+            const mobileProfileName = document.getElementById("mobile-nav-profile-name");
+            const mobileDashboardLink = document.getElementById("mobile-nav-profile-dashboard-link");
+
+            if (mobileProfileName) mobileProfileName.textContent = displayName;
+            if (mobileDashboardLink) mobileDashboardLink.setAttribute("href", dashboardHref);
+        }
+
+        // Handle Logout triggers
+        const handleLogout = (e) => {
+            e.preventDefault();
+            localStorage.removeItem("visaformula_user");
+            localStorage.removeItem("seeker_firstName");
+            localStorage.removeItem("seeker_lastName");
+            localStorage.removeItem("seeker_email");
+            localStorage.removeItem("seeker_phone");
+            localStorage.removeItem("seeker_passportCountry");
+            localStorage.removeItem("seeker_goals");
+            localStorage.removeItem("seeker_destinations");
+            localStorage.removeItem("seeker_profilePhoto");
+            
+            localStorage.removeItem("expert_businessName");
+            localStorage.removeItem("expert_email");
+            localStorage.removeItem("expert_contactNumber");
+            localStorage.removeItem("expert_advisorType");
+            localStorage.removeItem("expert_aboutMe");
+            localStorage.removeItem("expert_portfolioLink");
+            localStorage.removeItem("expert_officeAddress");
+            localStorage.removeItem("expert_govRegNumber");
+            localStorage.removeItem("expert_expertiseTags");
+            localStorage.removeItem("expert_countriesExpertise");
+            localStorage.removeItem("expert_profilePhoto");
+            localStorage.removeItem("expert_isLoggedIn");
+            
+            window.location.href = "/";
+        };
+
+        const desktopLogoutBtn = document.getElementById("nav-profile-logout-btn");
+        const mobileLogoutBtn = document.getElementById("mobile-nav-profile-logout-btn");
+
+        if (desktopLogoutBtn) desktopLogoutBtn.addEventListener("click", handleLogout);
+        if (mobileLogoutBtn) mobileLogoutBtn.addEventListener("click", handleLogout);
+    }
+</script>

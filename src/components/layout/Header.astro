@@ -68,159 +68,164 @@ const supportiveServicesItems = [
             </span>
         </button>
 
-        <!-- Stacks both rows vertically and centers content -->
-        <div class="w-full min-w-0 xl:pl-0 flex flex-col justify-center">
-            <!-- Top Row: Logo (Absolute left) + Actions (Centered links + Right auth) -->
+            <!-- Top Row: Logo (Left) + Actions (Right aligned in a single flow) -->
             <div class="hidden xl:flex items-center justify-between h-16 w-full px-16 relative">
                 
-                <!-- Left spacer matching right auth width for perfect centering -->
-                <div class="w-[260px] shrink-0"></div>
-
-                <!-- Centered Navigation Links -->
-                <div class="flex-grow flex items-center justify-center gap-6 xl:gap-8 font-opensans">
-                    <a href="/self-apply" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
-                        Self Apply
-                    </a>
-
-                    <!-- Supporting Businesses Dropdown on Top Line -->
-                    <div class="relative py-3 group">
-                        <button class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1 focus:outline-none">
-                            Supporting Businesses
-                            <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
-                        </button>
-
-                        <!-- Dropdown Card -->
-                        <div class="absolute top-full left-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                            <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
-                                <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-                                    {supportiveServicesItems.map((item) => {
-                                        const IconComponent = item.icon;
-                                        return (
-                                            <a 
-                                                href={item.href}
-                                                class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
-                                            >
-                                                <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
-                                                <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
-                                            </a>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Immigration Assistance Dropdown (Restored to Top line) -->
-                    <div class="relative py-3 group">
-                        <button
-                            class={`font-opensans top-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
-                                pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#ef4444]" : "text-navy"
-                            }`}
-                        >
-                            Immigration Assistance
-                            <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
-                        </button>
-
-                        <!-- Dropdown Card -->
-                        <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
-                            <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
-                                <div class="flex flex-col gap-2">
-                                    <!-- Migration Agents & Lawyers -->
-                                    <a href="/emergency" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
-                                        <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                            <path d="M9 12l2 2 4-4"/>
-                                        </svg>
-                                        <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Agents & Lawyers</span>
-                                    </a>
-
-                                    <!-- Migration Visa -->
-                                    <a href="/migration-visa" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
-                                        <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <line x1="2" y1="12" x2="22" y2="12"/>
-                                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                                            <path d="M17 8l-5 4-5-4"/>
-                                        </svg>
-                                        <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Visa</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Our Services Dropdown (Desktop) -->
-                    <div class="relative py-3 group font-opensans animate-fade-in">
-                        <button class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1 focus:outline-none">
-                            Our Services
-                            <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
-                        </button>
-                        
-                        <!-- Dropdown Menu Card -->
-                        <div class="absolute top-[85%] right-0 pt-3 w-[460px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
-                            <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
-                                <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-                                    {servicesDropdownItems.map((item) => {
-                                        const IconComponent = item.icon;
-                                        return (
-                                            <a 
-                                                href={item.href}
-                                                class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
-                                            >
-                                                <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
-                                                <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
-                                            </a>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <a href="/support" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 animate-fade-in">
-                        Contact
+                <!-- Logo container in flow -->
+                <div class="flex items-center justify-start shrink-0 py-2">
+                    <a href="/" class="flex items-center group">
+                        <Logo variant="navbar-light" />
                     </a>
                 </div>
 
-                <!-- Right Auth & Profile Block (with centered red divider) -->
-                <div class="w-[260px] shrink-0 flex items-center justify-end gap-4 z-50">
-                    <!-- Red Vertical Divider -->
-                    <div class="w-[1.5px] h-4 bg-red-500 shrink-0 mr-2"></div>
-
-                    <div class="flex items-center gap-2" id="nav-auth-buttons-wrapper">
-                        <a href="/login" id="login-btn" class="font-opensans text-[14px] font-bold text-navy hover:text-black border border-gray-200 hover:border-black px-4 py-2.5 rounded-xl transition-all duration-300">
-                            Log In
+                <!-- Right Side Actions (Links, Divider, and Auth grouped together) -->
+                <div class="flex items-center gap-6 xl:gap-8 ml-auto">
+                    <!-- Navigation Links -->
+                    <div class="flex items-center gap-6 xl:gap-8 font-opensans">
+                        <a href="/self-apply" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300">
+                            Self Apply
                         </a>
-                        <a href="/signup" class="font-opensans bg-black hover:bg-slate-900 text-white font-bold text-[14px] px-4 py-2.5 rounded-xl hover:shadow-lg hover:shadow-gray-200 transition-all active:scale-[0.97]">
-                            Sign Up
+
+                        <!-- Supporting Businesses Dropdown on Top Line -->
+                        <div class="relative py-3 group">
+                            <button class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                                Supporting Businesses
+                                <ChevronDown class="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
+                            </button>
+
+                            <!-- Dropdown Card -->
+                            <div class="absolute top-full left-0 pt-2 w-[480px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3">
+                                    <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                        {supportiveServicesItems.map((item) => {
+                                            const IconComponent = item.icon;
+                                            return (
+                                                <a 
+                                                    href={item.href}
+                                                    class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
+                                                >
+                                                    <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Immigration Assistance Dropdown (Restored to Top line) -->
+                        <div class="relative py-3 group">
+                            <button
+                                class={`font-opensans top-menu-link text-[15px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap group-hover:text-[#ef4444] ${
+                                    pathname?.startsWith("/emergency") || pathname?.startsWith("/migration") ? "text-[#ef4444]" : "text-navy"
+                                }`}
+                            >
+                                Immigration Assistance
+                                <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                            </button>
+
+                            <!-- Dropdown Card -->
+                            <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-left z-50">
+                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                                    <div class="flex flex-col gap-2">
+                                        <!-- Migration Agents & Lawyers -->
+                                        <a href="/emergency" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                            <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                                <path d="M9 12l2 2 4-4"/>
+                                            </svg>
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Agents & Lawyers</span>
+                                        </a>
+
+                                        <!-- Migration Visa -->
+                                        <a href="/migration-visa" class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item">
+                                            <svg class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                                <path d="M17 8l-5 4-5-4"/>
+                                            </svg>
+                                            <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">Migration Visa</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Our Services Dropdown (Desktop) -->
+                        <div class="relative py-3 group font-opensans animate-fade-in">
+                            <button class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 flex items-center gap-1 focus:outline-none">
+                                Our Services
+                                <ChevronDown class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+                            </button>
+                            
+                            <!-- Dropdown Menu Card -->
+                            <div class="absolute top-[85%] right-0 pt-3 w-[460px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-4">
+                                    <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                                        {servicesDropdownItems.map((item) => {
+                                            const IconComponent = item.icon;
+                                            return (
+                                                <a 
+                                                    href={item.href}
+                                                    class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition-all duration-150 group/item"
+                                                >
+                                                    <IconComponent class="w-5 h-5 text-slate-500 shrink-0 transition-colors group-hover/item:text-red-500" className="w-5 h-5" color="currentColor" />
+                                                    <span class="text-[14px] font-semibold text-slate-700 transition-colors group-hover/item:text-red-500">{item.title}</span>
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="/support" class="font-opensans top-menu-link text-[15px] font-semibold text-navy hover:text-[#ef4444] transition-all duration-300 animate-fade-in">
+                            Contact
                         </a>
                     </div>
 
-                    <!-- Desktop Profile dropdown -->
-                    <div id="nav-profile-block" class="relative hidden py-2 group font-opensans">
-                        <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white font-opensans">
-                            <div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-black text-white shadow-sm" id="nav-profile-avatar-container">
-                                <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                                <span class="font-bold text-sm" id="nav-profile-avatar-letters">U</span>
-                            </div>
-                            <ChevronDown class="w-4 h-4 text-slate-500 pr-1.5 shrink-0" />
-                        </button>
-                        
-                        <!-- Dropdown Menu -->
-                        <div class="absolute right-0 top-[90%] pt-4 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
-                            <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5 font-opensans">
-                                <div class="px-3.5 py-2 border-b border-slate-100">
-                                    <div class="text-[10px] text-slate-400 font-bold tracking-wider font-opensans">Signed in as</div>
-                                    <div class="text-sm font-bold text-black truncate mt-0.5 font-opensans" id="nav-profile-name">User Profile</div>
+                    <!-- Red Vertical Divider -->
+                    <div class="w-[1.5px] h-4 bg-[#ef4444] shrink-0 mx-2"></div>
+
+                    <!-- Right Portal Auth Buttons & Profile Block -->
+                    <div class="flex items-center gap-4 shrink-0 z-50">
+                        <div class="flex items-center gap-1.5 xl:gap-2.5" id="nav-auth-buttons-wrapper">
+                            <a href="/login" id="login-btn" class="font-opensans text-[14px] font-bold text-navy hover:text-black border border-gray-200 hover:border-black px-4 py-2.5 rounded-xl transition-all duration-300">
+                                Log In
+                            </a>
+                            <a href="/signup" class="font-opensans bg-black hover:bg-slate-900 text-white font-bold text-[14px] px-4 py-2.5 rounded-xl hover:shadow-lg hover:shadow-gray-200 transition-all active:scale-[0.97]">
+                                Sign Up
+                            </a>
+                        </div>
+
+                        <!-- Desktop Profile dropdown -->
+                        <div id="nav-profile-block" class="relative hidden py-2 group font-opensans">
+                            <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white font-opensans">
+                                <div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-black text-white shadow-sm" id="nav-profile-avatar-container">
+                                    <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
+                                    <span class="font-bold text-sm" id="nav-profile-avatar-letters">U</span>
                                 </div>
-                                <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-black hover:bg-slate-50 transition-all font-opensans">
-                                    <LayoutDashboard class="w-4 h-4 text-slate-400" />
-                                    <span>My Dashboard</span>
-                                </a>
-                                <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-red-650 hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent font-opensans">
-                                    <LogOut class="w-4 h-4 text-slate-450" />
-                                    <span>Log Out</span>
-                                </button>
+                                <ChevronDown class="w-4 h-4 text-slate-500 pr-1.5 shrink-0" />
+                            </button>
+                            
+                            <!-- Dropdown Menu -->
+                            <div class="absolute right-0 top-[90%] pt-4 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 transform origin-top-right z-50">
+                                <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5 font-opensans">
+                                    <div class="px-3.5 py-2 border-b border-slate-100">
+                                        <div class="text-[10px] text-slate-400 font-bold tracking-wider font-opensans">Signed in as</div>
+                                        <div class="text-sm font-bold text-black truncate mt-0.5 font-opensans" id="nav-profile-name">User Profile</div>
+                                    </div>
+                                    <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-black hover:bg-slate-50 transition-all font-opensans">
+                                        <LayoutDashboard class="w-4 h-4 text-slate-400" />
+                                        <span>My Dashboard</span>
+                                    </a>
+                                    <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-red-650 hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent font-opensans">
+                                        <LogOut class="w-4 h-4 text-slate-450" />
+                                        <span>Log Out</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

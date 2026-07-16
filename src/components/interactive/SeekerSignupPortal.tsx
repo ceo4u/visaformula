@@ -128,7 +128,7 @@ export function SeekerSignupPortal() {
                                 }`}>
                                     {step > i + 1 ? "✓" : s.icon}
                                 </div>
-                                <span className={`text-[11px] md:text-sm font-semibold whitespace-nowrap ${step >= i + 1 ? "text-black" : "text-slate-450"}`}>{s.label}</span>
+                                <span className={`hidden md:inline text-[11px] md:text-sm font-semibold whitespace-nowrap ${step >= i + 1 ? "text-black" : "text-slate-450"}`}>{s.label}</span>
                             </div>
                             {i < steps.length - 1 && (
                                 <div className={`h-0.5 w-6 md:w-16 shrink-0 transition-all ${step > i + 1 ? "bg-black" : "bg-slate-200"}`} />

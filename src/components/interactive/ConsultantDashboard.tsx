@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, Settings, X, Save, Edit2, Globe, Sparkles } from "lucide-react";
+import { DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, Menu } from "lucide-react";
 
 const stats = [
     { label: "Total Earnings", value: "₹4,85,000", icon: DollarSign, change: "+12%", color: "text-emerald-600 bg-emerald-50" },
@@ -57,6 +57,8 @@ export function ConsultantDashboard() {
     const [services, setServices] = useState(servicesData);
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [showSuccessToast, setShowSuccessToast] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState("overview");
 
     // Profile Settings States
     const [profile, setProfile] = useState({
@@ -102,17 +104,146 @@ export function ConsultantDashboard() {
     };
 
     return (
-        <div className="bg-white min-h-screen font-sans pb-20">
+        <div className="flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen antialiased text-black font-sans">
             {/* Success Notification */}
             {showSuccessToast && (
-                <div className="fixed bottom-6 right-6 z-50 bg-[#0C1A2E] text-white px-5 py-3 rounded-2xl text-xs font-bold shadow-xl animate-bounce flex items-center gap-2">
+                <div className="fixed bottom-6 right-6 z-[110] bg-[#0C1A2E] text-white px-5 py-3 rounded-2xl text-xs font-bold shadow-xl animate-bounce flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-emerald-400" />
                     Profile saved successfully!
                 </div>
             )}
 
-            {/* Header */}
-            <section className="bg-gradient-to-r from-[#0c1a2e] to-[#1a3347] text-white py-12 px-6 relative overflow-hidden">
+            {/* Mobile Header / Navigation Bar */}
+            <div className="lg:hidden w-full bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+                <a href="/" className="flex items-center">
+                    <img src="/logo.png" className="h-10 w-auto object-contain" alt="VisaFormula Logo" />
+                </a>
+                <button 
+                    onClick={() => setIsSidebarOpen(true)} 
+                    className="p-2 text-slate-700 hover:bg-slate-100 rounded-xl focus:outline-none"
+                    aria-label="Open Sidebar"
+                >
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            {/* Desktop Sidebar (hidden on mobile) */}
+            <aside className="hidden lg:flex w-64 bg-white border-r border-slate-200 flex-col justify-between py-8 px-5 flex-shrink-0 text-black">
+                <div className="flex flex-col items-stretch gap-8">
+                    {/* Logo / Branding */}
+                    <div className="flex flex-col gap-3 px-3">
+                        <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
+                            <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
+                        </a>
+                    </div>
+                    
+                    <nav className="flex flex-col gap-2">
+                        {[
+                            { id: "overview", label: "Overview", icon: LayoutDashboard },
+                            { id: "pipeline", label: "Client Pipeline", icon: Briefcase },
+                            { id: "services", label: "Services & Pricing", icon: DollarSign },
+                            { id: "availability", label: "Consultation Hours", icon: Calendar },
+                        ].map(tab => {
+                            const isActive = activeTab === tab.id;
+                            const IconComponent = tab.icon;
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => {
+                                        setActiveTab(tab.id);
+                                        document.getElementById(tab.id)?.scrollIntoView({ behavior: 'smooth' });
+                                    }}
+                                    className={`flex items-center gap-3 px-5 py-3.5 rounded-full font-bold text-xs tracking-wide transition-all relative ${
+                                        isActive 
+                                            ? "bg-[#0c1a2e] text-white shadow-md active:scale-[0.98]" 
+                                            : "text-slate-600 hover:text-[#0c1a2e] hover:bg-slate-100"
+                                    }`}
+                                >
+                                    <IconComponent className="w-4 h-4 flex-shrink-0" />
+                                    <span>{tab.label}</span>
+                                </button>
+                            );
+                        })}
+                    </nav>
+                </div>
+
+                <div className="px-2">
+                    <button 
+                        onClick={() => window.location.href = '/login'} 
+                        className="flex items-center gap-3 px-5 py-3.5 text-slate-650 hover:text-red-600 hover:bg-slate-55 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer border-none bg-transparent"
+                    >
+                        <LogOut className="w-4 h-4" />
+                        <span>Log Out</span>
+                    </button>
+                </div>
+            </aside>
+
+            {/* Mobile Slide-Over Sidebar Drawer */}
+            <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+                {/* Backdrop */}
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />
+                
+                {/* Drawer Content */}
+                <aside className={`absolute top-0 left-0 w-64 h-full bg-white shadow-2xl flex flex-col justify-between py-8 px-5 transform transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                    <div className="flex flex-col gap-6">
+                        <div className="flex justify-between items-center px-1">
+                            <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
+                                <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
+                            </a>
+                            <button onClick={() => setIsSidebarOpen(false)} className="p-1 hover:bg-slate-100 rounded text-slate-500">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        
+                        <nav className="flex flex-col gap-1.5">
+                            {[
+                                { id: "overview", label: "Overview", icon: LayoutDashboard },
+                                { id: "pipeline", label: "Client Pipeline", icon: Briefcase },
+                                { id: "services", label: "Services & Pricing", icon: DollarSign },
+                                { id: "availability", label: "Consultation Hours", icon: Calendar },
+                            ].map(tab => {
+                                const isActive = activeTab === tab.id;
+                                const IconComponent = tab.icon;
+                                return (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => {
+                                            setActiveTab(tab.id);
+                                            setIsSidebarOpen(false);
+                                            document.getElementById(tab.id)?.scrollIntoView({ behavior: 'smooth' });
+                                        }}
+                                        className={`flex items-center gap-3 px-5 py-3 rounded-full font-bold text-xs tracking-wide transition-all ${
+                                            isActive 
+                                                ? "bg-[#0c1a2e] text-white shadow-md" 
+                                                : "text-slate-600 hover:text-black hover:bg-slate-100"
+                                        }`}
+                                    >
+                                        <IconComponent className="w-4 h-4 flex-shrink-0" />
+                                        <span>{tab.label}</span>
+                                    </button>
+                                );
+                            })}
+                        </nav>
+                    </div>
+
+                    <div className="px-2">
+                        <button 
+                            onClick={() => window.location.href = '/login'} 
+                            className="flex items-center gap-3 px-5 py-3 text-slate-650 hover:text-red-600 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left"
+                        >
+                            <LogOut className="w-4 h-4" />
+                            <span>Log Out</span>
+                        </button>
+                    </div>
+                </aside>
+            </div>
+
+            {/* Main Content Area */}
+            <main className="flex-grow overflow-y-auto w-full pb-20 bg-[#f3f7fa] scroll-smooth">
+                {/* Header */}
+                <section id="overview" className="bg-gradient-to-r from-[#0c1a2e] to-[#1a3347] text-white py-12 px-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-red-500/10 via-transparent to-transparent pointer-events-none" />
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
@@ -152,7 +283,7 @@ export function ConsultantDashboard() {
             </section>
 
             {/* Kanban Pipeline */}
-            <section className="max-w-7xl mx-auto px-6 mb-10">
+            <section id="pipeline" className="max-w-7xl mx-auto px-6 mb-10">
                 <h2 className="font-sora text-lg font-bold text-navy mb-5 flex items-center gap-2">
                     <BarChart3 className="w-5 h-5 text-red-500" /> Client Pipeline Kanban
                 </h2>
@@ -187,7 +318,7 @@ export function ConsultantDashboard() {
             <section className="max-w-7xl mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Services */}
-                    <div className="bg-white rounded-3xl border border-slate-150 p-6 shadow-md">
+                    <div id="services" className="bg-white rounded-3xl border border-slate-150 p-6 shadow-md">
                         <h3 className="font-sora font-bold text-navy mb-5">Service Offered & Escrow Pricing</h3>
                         <div className="space-y-3">
                             {services.map(s => (
@@ -207,7 +338,7 @@ export function ConsultantDashboard() {
                     </div>
 
                     {/* Availability */}
-                    <div className="bg-white rounded-3xl border border-slate-150 p-6 shadow-md">
+                    <div id="availability" className="bg-white rounded-3xl border border-slate-150 p-6 shadow-md">
                         <h3 className="font-sora font-bold text-navy mb-5">Weekly Consultation Availability</h3>
                         <div className="overflow-x-auto">
                             <div className="grid grid-cols-8 gap-1.5 min-w-[500px]">
@@ -234,6 +365,8 @@ export function ConsultantDashboard() {
                     </div>
                 </div>
             </section>
+
+            </main>
 
             {/* Profile settings Modal Drawer */}
             {isEditingProfile && (

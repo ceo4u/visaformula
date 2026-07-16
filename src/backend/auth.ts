@@ -8,7 +8,7 @@ export interface SessionInfo {
   expiresAt: Date;
 }
 
-export async function loginUser(email: string, password_hash: string): Promise<{ user: any; type: 'seeker' | 'expert' } | null> {
+export async function loginUser(email: string, password_hash: string): Promise<{ user: any; type: 'seeker' | 'expert' }> {
   await runMigrations();
   const pool = getPool();
 
@@ -18,6 +18,8 @@ export async function loginUser(email: string, password_hash: string): Promise<{
     const user = seekerRes.rows[0];
     if (user.password_hash === password_hash) {
       return { user, type: 'seeker' };
+    } else {
+      throw new Error('Incorrect password.');
     }
   }
 
@@ -27,10 +29,12 @@ export async function loginUser(email: string, password_hash: string): Promise<{
     const user = expertRes.rows[0];
     if (user.password_hash === password_hash) {
       return { user, type: 'expert' };
+    } else {
+      throw new Error('Incorrect password.');
     }
   }
 
-  return null;
+  throw new Error('Email is not registered.');
 }
 
 export async function createSession(userId: number, userType: 'seeker' | 'expert'): Promise<string> {

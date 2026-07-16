@@ -13,15 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const authResult = await loginUser(email, password);
-    if (!authResult) {
-      return new Response(JSON.stringify({ status: 'error', message: 'Invalid email or password.' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    const { user, type } = authResult;
+    const { user, type } = await loginUser(email, password);
     const token = await createSession(user.id, type);
 
     // Set cookie headers for session persistence
@@ -49,8 +41,9 @@ export const POST: APIRoute = async ({ request }) => {
 
   } catch (err: any) {
     console.error('Login API error:', err);
+    const isValidation = err.message === 'Email is not registered.' || err.message === 'Incorrect password.';
     return new Response(JSON.stringify({ status: 'error', message: err.message || 'Server error' }), {
-      status: 500,
+      status: isValidation ? 401 : 500,
       headers: { 'Content-Type': 'application/json' }
     });
   }

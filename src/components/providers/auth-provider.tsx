@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const signIn = async (email: string, password: string) => {
         try {
-            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL}/api/login`, {
+            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
@@ -163,29 +163,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
                     return;
                 }
-                // Automatic local registration & login fallback when backend is down
-                const fallbackName = email.split("@")[0];
-                const mockUser = {
-                    uid: `local_${Date.now()}`,
-                    email: email,
-                    displayName: fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1),
-                    type: email.toLowerCase().includes("expert") ? "expert" : "seeker"
-                };
-                
-                if (mockUser.type === "expert") {
-                    localStorage.setItem("expert_businessName", mockUser.displayName + " Consulting");
-                    localStorage.setItem("expert_email", mockUser.email);
-                    localStorage.setItem("expert_advisorType", "Freelancer");
-                    localStorage.setItem("expert_isLoggedIn", "true");
-                } else {
-                    localStorage.setItem("seeker_firstName", mockUser.displayName);
-                    localStorage.setItem("seeker_email", mockUser.email);
-                }
-
-                setUser(mockUser);
-                localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
-                return;
             }
+            throw new Error(error.message || "Email is not registered. Please sign up first.");
         }
     };
 

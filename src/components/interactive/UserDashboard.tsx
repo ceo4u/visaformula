@@ -3,7 +3,7 @@ import {
     Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
     ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
-    Video, User, LogOut, CheckSquare, Sparkles
+    Video, User, LogOut, CheckSquare, Sparkles, X
 } from "lucide-react";
 
 const destinations = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];

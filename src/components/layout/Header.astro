@@ -172,12 +172,12 @@ const pathname = Astro.url.pathname;
                             <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
                             <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name">User Profile</div>
                         </div>
-                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-black hover:bg-slate-50 transition-all">
-                            <LayoutDashboard class="w-4 h-4 text-slate-400" />
+                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 transition-all group/item">
+                            <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-blue-600 transition-colors" />
                             <span>My Dashboard</span>
                         </a>
-                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-red-650 hover:bg-red-50 transition-all w-full text-left cursor-pointer border-none bg-transparent">
-                            <LogOut class="w-4 h-4 text-slate-450" />
+                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 transition-all w-full text-left cursor-pointer border-none bg-transparent group/item">
+                            <LogOut class="w-4 h-4 text-slate-400 group-hover/item:text-blue-600 transition-colors" />
                             <span>Log Out</span>
                         </button>
                     </div>

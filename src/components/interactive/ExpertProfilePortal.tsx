@@ -18,11 +18,14 @@ interface ExpertProfilePortalProps {
         isEmergency: boolean;
         tags: string[];
         image: string;
+        about_me?: string;
+        qualifications?: string;
+        languages?: string;
     };
 }
 
 export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
-    const [currentExpert, setCurrentExpert] = useState(expert);
+    const [currentExpert, setCurrentExpert] = useState<any>(expert);
     const [selectedSlot, setSelectedSlot] = useState<string>("");
     const [selectedService, setSelectedService] = useState<string>("Initial Consultation");
 
@@ -51,7 +54,10 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                     isAvailableToday: true,
                     isEmergency: false,
                     tags: tagsArray,
-                    image: localStorage.getItem("expert_profilePhoto") || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face"
+                    image: localStorage.getItem("expert_profilePhoto") || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face",
+                    about_me: localStorage.getItem("expert_aboutMe") || "Dynamic immigration expert specializing in helping individuals, families, and corporations successfully navigate visa pathways.",
+                    qualifications: localStorage.getItem("expert_govRegNumber") ? `Registered Gov ID: ${localStorage.getItem("expert_govRegNumber")}` : "Certified Immigration Consultant",
+                    languages: "English, Hindi"
                 });
             }
         }
@@ -178,16 +184,16 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                                 <Award className="w-5 h-5 text-red-500" /> About & Bio
                             </h2>
                             <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                                Dynamic, results-driven professional specializing in immigration policies and student visa advisories. Over a decade of consulting record assisting families, employees, and students successfully transition into new international jurisdictions. Proven success in handling complex visa scenarios, visa appeal filings, study permits, and employer sponsorships.
+                                {currentExpert.about_me || "Dynamic, results-driven professional specializing in immigration policies and student visa advisories. Over a decade of consulting record assisting families, employees, and students successfully transition into new international jurisdictions. Proven success in handling complex visa scenarios, visa appeal filings, study permits, and employer sponsorships."}
                             </p>
                             <div className="grid grid-cols-2 gap-4 mt-6">
                                 <div className="border border-slate-100 p-4 rounded-xl">
                                     <div className="text-[10px] font-bold text-gray-400 tracking-wider">Qualifications</div>
-                                    <div className="text-xs font-bold text-navy mt-1">Certified Immigration Consultant, Legal Degree</div>
+                                    <div className="text-xs font-bold text-navy mt-1">{currentExpert.qualifications || "Certified Immigration Consultant, Legal Degree"}</div>
                                 </div>
                                 <div className="border border-slate-100 p-4 rounded-xl">
                                     <div className="text-[10px] font-bold text-gray-400 tracking-wider">Languages</div>
-                                    <div className="text-xs font-bold text-navy mt-1">English, Hindi, Telugu</div>
+                                    <div className="text-xs font-bold text-navy mt-1">{currentExpert.languages || "English, Hindi, Telugu"}</div>
                                 </div>
                             </div>
                         </section>

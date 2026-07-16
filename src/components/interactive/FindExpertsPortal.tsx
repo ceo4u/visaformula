@@ -17,6 +17,7 @@ const availFilters = ["Anytime", "Today", "This Week", "Emergency 24/7"];
 
 export function FindExpertsPortal() {
     const [viewMode, setViewMode] = useState<"list" | "map">("list");
+    const [experts, setExperts] = useState(allExperts);
     const [category, setCategory] = useState("All");
     const [city, setCity] = useState("All Cities");
     const [rating, setRating] = useState("Any");
@@ -26,6 +27,39 @@ export function FindExpertsPortal() {
     const [showMobileFilters, setShowMobileFilters] = useState(false);
     const [selectedCountry, setSelectedCountry] = useState("All");
     const [sortOpen, setSortOpen] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const hasLocalExpert = localStorage.getItem("expert_businessName") && localStorage.getItem("expert_isLoggedIn") === "true";
+            if (hasLocalExpert) {
+                let tagsArray = ["Express Entry", "PNP"];
+                try {
+                    const savedTags = localStorage.getItem("expert_expertiseTags");
+                    if (savedTags) tagsArray = JSON.parse(savedTags);
+                } catch(e) {}
+                
+                const localExpert = {
+                    id: 7,
+                    name: localStorage.getItem("expert_businessName") || "Marcus Thorne",
+                    category: "pr",
+                    role: localStorage.getItem("expert_advisorType") === "Agency" ? "Immigration Agency" : "Immigration Consultant",
+                    rating: 5.0,
+                    reviews: 1,
+                    price: 1800,
+                    city: localStorage.getItem("expert_officeAddress") || "Remote",
+                    countries: (localStorage.getItem("expert_countriesExpertise") || "Canada").split(",").map((c: string) => c.trim()),
+                    experience: 12,
+                    isRemote: true,
+                    isAvailableToday: true,
+                    isEmergency: false,
+                    tags: tagsArray,
+                    image: localStorage.getItem("expert_profilePhoto") || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face"
+                };
+                
+                setExperts([localExpert, ...allExperts]);
+            }
+        }
+    }, []);
 
     useEffect(() => {
         if (!sortOpen) return;
@@ -69,7 +103,7 @@ export function FindExpertsPortal() {
         }
     }, []);
 
-    const filtered = allExperts.filter(e => {
+    const filtered = experts.filter(e => {
         if (category !== "All" && !e.tags.some(t => t.toLowerCase().includes(category.toLowerCase().replace(" visa", "").replace(" permit", "").replace("local ", "")))) {
             if (category === "Student Visa" && e.category !== "student") return false;
             if (category === "Work Permit" && e.category !== "work") return false;

@@ -3,28 +3,45 @@
 import Layout from '../../layouts/Layout.astro';
 import { ExpertProfilePortal } from '../../components/interactive/ExpertProfilePortal';
 
-export async function getStaticPaths() {
-    const allExperts = [
-        { id: 1, name: "Marcus Thorne, JD", category: "work", role: "Immigration Attorney", rating: 4.9, reviews: 142, price: 2500, city: "Hyderabad", countries: ["USA", "Canada"], experience: 15, isRemote: true, isAvailableToday: true, isEmergency: true, tags: ["H-1B", "L-1", "EB-1"], image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face" },
-        { id: 2, name: "Elena Rodriguez", category: "student", role: "Student Visa Consultant", rating: 5.0, reviews: 89, price: 1500, city: "Mumbai", countries: ["UK", "Australia"], experience: 8, isRemote: true, isAvailableToday: true, isEmergency: false, tags: ["Student Visa", "SOP Review"], image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face" },
-        { id: 3, name: "Raj Patel", category: "pr", role: "Express Entry Specialist", rating: 4.8, reviews: 234, price: 1800, city: "Delhi", countries: ["Canada", "Australia"], experience: 12, isRemote: false, isAvailableToday: false, isEmergency: false, tags: ["Express Entry", "PNP", "SINP"], image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face" },
-        { id: 4, name: "Aisha Khan", category: "student", role: "UK Visa Consultant", rating: 4.6, reviews: 67, price: 1200, city: "Bangalore", countries: ["UK", "Germany"], experience: 5, isRemote: true, isAvailableToday: true, isEmergency: false, tags: ["UK Student", "Germany Blue Card"], image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face" },
-        { id: 5, name: "Deepak Kumar", category: "work", role: "Work Permit Advisor", rating: 4.7, reviews: 156, price: 2000, city: "Hyderabad", countries: ["Canada", "UAE"], experience: 10, isRemote: true, isAvailableToday: false, isEmergency: true, tags: ["LMIA", "Work Permit", "PGWP"], image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=face" },
-        { id: 6, name: "Priya Nair", category: "pr", role: "PR & Citizenship Expert", rating: 4.9, reviews: 312, price: 3000, city: "Chennai", countries: ["Canada", "Australia", "USA"], experience: 18, isRemote: true, isAvailableToday: true, isEmergency: false, tags: ["PR", "Citizenship", "Super Visa"], image: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&h=200&fit=crop&crop=face" },
-    ];
+export const prerender = false;
 
-    return allExperts.map((expert) => ({
-        params: { id: expert.id.toString() },
-        props: { expert },
-    }));
+const { id } = Astro.params;
+
+const allExperts = [
+    { id: 1, name: "Marcus Thorne, JD", category: "work", role: "Immigration Attorney", rating: 4.9, reviews: 142, price: 2500, city: "Hyderabad", countries: ["USA", "Canada"], experience: 15, isRemote: true, isAvailableToday: true, isEmergency: true, tags: ["H-1B", "L-1", "EB-1"], image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face" },
+    { id: 2, name: "Elena Rodriguez", category: "student", role: "Student Visa Consultant", rating: 5.0, reviews: 89, price: 1500, city: "Mumbai", countries: ["UK", "Australia"], experience: 8, isRemote: true, isAvailableToday: true, isEmergency: false, tags: ["Student Visa", "SOP Review"], image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face" },
+    { id: 3, name: "Raj Patel", category: "pr", role: "Express Entry Specialist", rating: 4.8, reviews: 234, price: 1800, city: "Delhi", countries: ["Canada", "Australia"], experience: 12, isRemote: false, isAvailableToday: false, isEmergency: false, tags: ["Express Entry", "PNP", "SINP"], image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face" },
+    { id: 4, name: "Aisha Khan", category: "student", role: "UK Visa Consultant", rating: 4.6, reviews: 67, price: 1200, city: "Bangalore", countries: ["UK", "Germany"], experience: 5, isRemote: true, isAvailableToday: true, isEmergency: false, tags: ["UK Student", "Germany Blue Card"], image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face" },
+    { id: 5, name: "Deepak Kumar", category: "work", role: "Work Permit Advisor", rating: 4.7, reviews: 156, price: 2000, city: "Hyderabad", countries: ["Canada", "UAE"], experience: 10, isRemote: true, isAvailableToday: false, isEmergency: true, tags: ["LMIA", "Work Permit", "PGWP"], image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=face" },
+    { id: 6, name: "Priya Nair", category: "pr", role: "PR & Citizenship Expert", rating: 4.9, reviews: 312, price: 3000, city: "Chennai", countries: ["Canada", "Australia", "USA"], experience: 18, isRemote: true, isAvailableToday: true, isEmergency: false, tags: ["PR", "Citizenship", "Super Visa"], image: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&h=200&fit=crop&crop=face" },
+];
+
+let expert = allExperts.find((e) => e.id.toString() === id);
+
+if (!expert) {
+    expert = {
+        id: Number(id) || 7,
+        name: "Loading Expert...",
+        category: "pr",
+        role: "Immigration Consultant",
+        rating: 5.0,
+        reviews: 1,
+        price: 1800,
+        city: "Remote",
+        countries: ["Canada"],
+        experience: 5,
+        isRemote: true,
+        isAvailableToday: true,
+        isEmergency: false,
+        tags: ["Express Entry"],
+        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face"
+    };
 }
-
-const { expert } = Astro.props;
 ---
 
 <Layout 
   title={`${expert.name} — Expert Profile`}
   description={`Consult with ${expert.name}, verified ${expert.role} in VisaFormula. Choose booking slots and obtain expert guidance on visa applications.`}
 >
-  <ExpertProfilePortal client:load expert={expert} />
+  <ExpertProfilePortal client:only="react" expert={expert} />
 </Layout>

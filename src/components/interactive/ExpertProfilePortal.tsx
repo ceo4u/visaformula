@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Star, MapPin, CheckCircle, Clock, Shield, Globe, Award, BookOpen, MessageSquare, Calendar, Phone } from "lucide-react";
 
 interface ExpertProfilePortalProps {
@@ -22,18 +22,50 @@ interface ExpertProfilePortalProps {
 }
 
 export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
+    const [currentExpert, setCurrentExpert] = useState(expert);
     const [selectedSlot, setSelectedSlot] = useState<string>("");
     const [selectedService, setSelectedService] = useState<string>("Initial Consultation");
 
+    useEffect(() => {
+        if (typeof window !== "undefined" && expert.id === 7) {
+            const hasLocalExpert = localStorage.getItem("expert_businessName") && localStorage.getItem("expert_isLoggedIn") === "true";
+            if (hasLocalExpert) {
+                let tagsArray = ["Express Entry", "PNP"];
+                try {
+                    const savedTags = localStorage.getItem("expert_expertiseTags");
+                    if (savedTags) tagsArray = JSON.parse(savedTags);
+                } catch(e) {}
+
+                setCurrentExpert({
+                    id: 7,
+                    name: localStorage.getItem("expert_businessName") || "Marcus Thorne",
+                    category: "pr",
+                    role: localStorage.getItem("expert_advisorType") === "Agency" ? "Immigration Agency" : "Immigration Consultant",
+                    rating: 5.0,
+                    reviews: 1,
+                    price: 1800,
+                    city: localStorage.getItem("expert_officeAddress") || "Remote",
+                    countries: (localStorage.getItem("expert_countriesExpertise") || "Canada").split(",").map((c: string) => c.trim()),
+                    experience: 12,
+                    isRemote: true,
+                    isAvailableToday: true,
+                    isEmergency: false,
+                    tags: tagsArray,
+                    image: localStorage.getItem("expert_profilePhoto") || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face"
+                });
+            }
+        }
+    }, [expert]);
+
     // Dynamic packages based on category
-    const services = expert.category === "work" || expert.category === "pr" ? [
-        { name: "Initial Consultation (30 min)", price: expert.price, desc: "30-minute introductory call to review eligibility, visa pathway strategies, and documentation outline.", active: true },
-        { name: "Full Visa Application Support", price: expert.price * 6, desc: "End-to-end guidance, case strategy, application filing support, and mock interview prep.", active: true },
-        { name: "Document Review & Audit", price: expert.price * 2.5, desc: "Detailed evaluation of your prepared visa file to identify flaws and ensure approval compliance.", active: true }
+    const services = currentExpert.category === "work" || currentExpert.category === "pr" ? [
+        { name: "Initial Consultation (30 min)", price: currentExpert.price, desc: "30-minute introductory call to review eligibility, visa pathway strategies, and documentation outline.", active: true },
+        { name: "Full Visa Application Support", price: currentExpert.price * 6, desc: "End-to-end guidance, case strategy, application filing support, and mock interview prep.", active: true },
+        { name: "Document Review & Audit", price: currentExpert.price * 2.5, desc: "Detailed evaluation of your prepared visa file to identify flaws and ensure approval compliance.", active: true }
     ] : [
-        { name: "Initial Consultation (30 min)", price: expert.price, desc: "SOP guidelines, document checklist, and targeted country intake review.", active: true },
-        { name: "SOP Review & Letter of Recommendation Check", price: expert.price * 2, desc: "Multiple rounds of editing and polishing for your Statement of Purpose (SOP) and resumes.", active: true },
-        { name: "Full University & Visa Filing Suite", price: expert.price * 5, desc: "University selection support, document evaluation, visa form filing, and slots setup.", active: true }
+        { name: "Initial Consultation (30 min)", price: currentExpert.price, desc: "SOP guidelines, document checklist, and targeted country intake review.", active: true },
+        { name: "SOP Review & Letter of Recommendation Check", price: currentExpert.price * 2, desc: "Multiple rounds of editing and polishing for your Statement of Purpose (SOP) and resumes.", active: true },
+        { name: "Full University & Visa Filing Suite", price: currentExpert.price * 5, desc: "University selection support, document evaluation, visa form filing, and slots setup.", active: true }
     ];
 
     const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -65,7 +97,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
             return;
         }
         const activeService = services.find(s => s.name === selectedService) || services[0];
-        window.location.href = `/payment/EXPERT-SECURE-${expert.id}?slot=${encodeURIComponent(selectedSlot)}&service=${encodeURIComponent(activeService.name)}&amount=${activeService.price}`;
+        window.location.href = `/payment/EXPERT-SECURE-${currentExpert.id}?slot=${encodeURIComponent(selectedSlot)}&service=${encodeURIComponent(activeService.name)}&amount=${activeService.price}`;
     };
 
     return (
@@ -80,8 +112,8 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                 <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row gap-6 md:gap-8 items-start">
                     {/* Portrait Avatar */}
                     <div className="relative w-32 h-32 md:w-40 md:h-40 shrink-0 mx-auto md:mx-0">
-                        <img src={expert.image} alt={expert.name} className="w-full h-full object-cover rounded-3xl border-4 border-white shadow-lg" />
-                        {expert.isAvailableToday && (
+                        <img src={currentExpert.image} alt={currentExpert.name} className="w-full h-full object-cover rounded-3xl border-4 border-white shadow-lg" />
+                        {currentExpert.isAvailableToday && (
                             <span className="absolute bottom-2 right-2 bg-emerald-500 text-white text-[10px] font-black tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse">
                                 Active Now
                             </span>
@@ -92,29 +124,29 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                     <div className="flex-1 text-center md:text-left">
                         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 mb-2 justify-center md:justify-start">
                             <h1 className="text-2xl md:text-3xl font-extrabold font-sora text-navy leading-tight flex items-center justify-center md:justify-start gap-2">
-                                {expert.name} <CheckCircle className="w-5 h-5 text-red-500 fill-red-50 shrink-0" />
+                                {currentExpert.name} <CheckCircle className="w-5 h-5 text-red-500 fill-red-50 shrink-0" />
                             </h1>
                             <span className="inline-block bg-red-50 text-red-600 text-[10px] font-black tracking-wider px-2.5 py-1 rounded-full border border-red-100 mx-auto md:mx-0 w-max">
-                                {expert.role}
+                                {currentExpert.role}
                             </span>
                         </div>
 
                         <p className="text-sm text-gray-500 font-medium mb-4">
-                            {expert.experience} Years Experience · Located in {expert.city} · {expert.isRemote ? "Remote Available" : "In-Person Only"}
+                            {currentExpert.experience} Years Experience · Located in {currentExpert.city} · {currentExpert.isRemote ? "Remote Available" : "In-Person Only"}
                         </p>
 
                         <div className="flex flex-wrap justify-center md:justify-start items-center gap-4 text-sm font-semibold text-gray-500 mb-6">
                             <span className="flex items-center gap-1">
-                                <Star className="w-4 h-4 text-amber-500 fill-amber-500" /> {expert.rating} ({expert.reviews} reviews)
+                                <Star className="w-4 h-4 text-amber-500 fill-amber-500" /> {currentExpert.rating} ({currentExpert.reviews} reviews)
                             </span>
                             <span>·</span>
                             <span className="flex items-center gap-1">
-                                <Globe className="w-4 h-4 text-slate-400" /> Destination Countries: {expert.countries.join(", ")}
+                                <Globe className="w-4 h-4 text-slate-400" /> Destination Countries: {currentExpert.countries.join(", ")}
                             </span>
                         </div>
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-1.5">
-                            {expert.tags.map(tag => (
+                            {currentExpert.tags.map(tag => (
                                 <span key={tag} className="bg-slate-50 text-slate-700 text-[11px] font-bold px-3 py-1 rounded-full border border-slate-200">{tag}</span>
                             ))}
                         </div>
@@ -123,7 +155,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                     {/* Quick Cost Block */}
                     <div className="w-full md:w-auto shrink-0 bg-slate-50 border border-slate-100 rounded-2xl p-5 text-center md:text-left">
                         <div className="text-[10px] font-black tracking-widest text-gray-400 mb-1">Session Rate Starts At</div>
-                        <div className="text-3xl font-extrabold text-navy mb-0.5">₹{expert.price.toLocaleString()}</div>
+                        <div className="text-3xl font-extrabold text-navy mb-0.5">₹{currentExpert.price.toLocaleString()}</div>
                         <div className="text-[10px] text-gray-500 mb-4 font-semibold tracking-wider">per consultation</div>
                         <button 
                             onClick={() => document.getElementById("booking-section")?.scrollIntoView({ behavior: "smooth" })}
@@ -300,7 +332,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                                     <div className="flex justify-between items-center pt-2">
                                         <span className="text-navy font-bold text-sm">Total:</span>
                                         <span className="text-lg font-extrabold text-navy">
-                                            ₹{(services.find(s => s.name === selectedService)?.price || expert.price).toLocaleString()}
+                                            ₹{(services.find(s => s.name === selectedService)?.price || currentExpert.price).toLocaleString()}
                                         </span>
                                     </div>
                                 </div>

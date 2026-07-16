@@ -40,7 +40,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                     id: 7,
                     name: localStorage.getItem("expert_businessName") || "Marcus Thorne",
                     category: "pr",
-                    role: localStorage.getItem("expert_advisorType") === "Agency" ? "Immigration Agency" : "Immigration Consultant",
+                    role: localStorage.getItem("expert_advisorType") || "Immigration Consultant",
                     rating: 5.0,
                     reviews: 1,
                     price: 1800,

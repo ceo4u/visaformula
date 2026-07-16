@@ -306,7 +306,7 @@ export function FindExpertsPortal() {
                     {viewMode === "list" ? (
                         <div className="space-y-4">
                             {sorted.map(e => (
-                                <div key={e.id} className="block group cursor-default">
+                                <div key={e.id} onClick={() => window.location.reload()} className="block group cursor-pointer">
                                     <div className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col md:flex-row gap-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                                         <div className="relative w-20 h-20 shrink-0 mx-auto md:mx-0">
                                             <img src={e.image} alt={e.name} className="w-full h-full object-cover rounded-2xl border border-slate-100" />
@@ -346,6 +346,7 @@ export function FindExpertsPortal() {
                                             </div>
                                             <div className="flex justify-center sm:justify-start gap-2">
                                                 <button onClick={(event) => { event.stopPropagation(); handleBooking(e.id); }} className="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-all hover:shadow-md active:scale-[0.97]">Book Now</button>
+                                                <button onClick={(event) => { event.stopPropagation(); window.location.reload(); }} className="border border-slate-300 text-slate-800 px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all">View Profile</button>
                                             </div>
                                         </div>
                                     </div>

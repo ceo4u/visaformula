@@ -20,6 +20,7 @@ const initialVisasProcessing: any[] = [];
 export function UserDashboard() {
     const [ieltsScore, setIeltsScore] = useState({ L: 7.5, R: 7.0, W: 6.5, S: 7.0 });
     const overallBand = ((ieltsScore.L + ieltsScore.R + ieltsScore.W + ieltsScore.S) / 4).toFixed(1);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const [firstName, setFirstName] = useState("Seeker");
     const [lastName, setLastName] = useState("");
@@ -100,15 +101,31 @@ export function UserDashboard() {
     const uploadedCount = documents.filter(d => d.status === "uploaded").length;
 
     return (
-        <div className="flex bg-[#f3f7fa] min-h-screen antialiased text-black font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>
+        <div className="flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen antialiased text-black font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>
             <style dangerouslySetInnerHTML={{__html: `
                 .font-roboto, .font-roboto * {
                     font-family: 'Roboto', sans-serif !important;
                 }
             `}} />
 
-            {/* Redesigned Premium Sidebar Navigation */}
-            <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between py-8 px-5 flex-shrink-0 text-black">
+            {/* Mobile Header / Navigation Bar */}
+            <div className="lg:hidden w-full bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+                <a href="/" className="flex items-center">
+                    <img src="/logo.png" className="h-10 w-auto object-contain" alt="VisaFormula Logo" />
+                </a>
+                <button 
+                    onClick={() => setIsSidebarOpen(true)} 
+                    className="p-2 text-slate-700 hover:bg-slate-100 rounded-xl focus:outline-none"
+                    aria-label="Open Sidebar"
+                >
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            {/* Desktop Sidebar (hidden on mobile) */}
+            <aside className="hidden lg:flex w-64 bg-white border-r border-slate-200 flex-col justify-between py-8 px-5 flex-shrink-0 text-black">
                 <div className="flex flex-col items-stretch gap-8">
                     {/* Logo / Branding */}
                     <div className="flex flex-col gap-3 px-3">
@@ -158,8 +175,70 @@ export function UserDashboard() {
                 </div>
             </aside>
 
+            {/* Mobile Slide-Over Sidebar Drawer */}
+            <div className={`fixed inset-0 z-55 lg:hidden transition-all duration-300 ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+                {/* Backdrop */}
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />
+                
+                {/* Drawer Content */}
+                <aside className={`absolute top-0 left-0 w-64 h-full bg-white shadow-2xl flex flex-col justify-between py-8 px-5 transform transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                    <div className="flex flex-col gap-6">
+                        <div className="flex justify-between items-center px-1">
+                            <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
+                                <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
+                            </a>
+                            <button onClick={() => setIsSidebarOpen(false)} className="p-1 hover:bg-slate-100 rounded text-slate-500">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        
+                        <nav className="flex flex-col gap-1.5">
+                            {[
+                                { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+                                { id: "consultations", label: "Consultations", icon: Calendar },
+                                { id: "cases", label: "Active Cases", icon: Briefcase },
+                                { id: "scanned-documents", label: "Scanned Documents", icon: FileText },
+                                { id: "escrow-milestones", label: "Escrow Payments", icon: Lock },
+                                { id: "visa-history", label: "Visa History", icon: BookOpen },
+                                { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark }
+                            ].map(tab => {
+                                const isActive = activeTab === tab.id;
+                                const IconComponent = tab.icon;
+                                return (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => {
+                                            setActiveTab(tab.id);
+                                            setIsSidebarOpen(false);
+                                        }}
+                                        className={`flex items-center gap-3 px-5 py-3 rounded-full font-bold text-xs tracking-wide transition-all ${
+                                            isActive 
+                                                ? "bg-black text-white shadow-md" 
+                                                : "text-slate-600 hover:text-black hover:bg-slate-100"
+                                        }`}
+                                    >
+                                        <IconComponent className="w-4 h-4 flex-shrink-0" />
+                                        <span>{tab.label}</span>
+                                    </button>
+                                );
+                            })}
+                        </nav>
+                    </div>
+
+                    <div className="px-2">
+                        <button 
+                            onClick={() => window.location.href = '/login'} 
+                            className="flex items-center gap-3 px-5 py-3 text-slate-650 hover:text-red-600 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left"
+                        >
+                            <LogOut className="w-4 h-4" />
+                            <span>Log Out</span>
+                        </button>
+                    </div>
+                </aside>
+            </div>
+
             {/* Main Content Area */}
-            <main className="flex-grow p-8 overflow-y-auto space-y-8">
+            <main className="flex-grow p-4 sm:p-8 overflow-y-auto space-y-8 w-full">
                 {/* Redesigned Premium Header Bar */}
                 <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-4xl">

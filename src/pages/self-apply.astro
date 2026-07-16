@@ -1,9 +1,13 @@
 ---
 // src/pages/self-apply.astro
 import Layout from '../layouts/Layout.astro';
+
+const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'dummy_razorpay_key';
 ---
 
 <Layout title="Self Apply — Your Visa, Your Way" description="Fill your application yourself. Get AI-powered suggestions and add our services if you need help." hideHeader={true}>
+  <script src="https://checkout.razorpay.com/v1/checkout.js" is:inline></script>
+  <div id="razorpay-config" data-key={razorpayKeyId} style="display: none;"></div>
   <!-- CSS Styles directly copied from source -->
   <style is:inline>
     :root {
@@ -1337,41 +1341,27 @@ import Layout from '../layouts/Layout.astro';
       
       // Simulate file reading and parsing delay
       setTimeout(() => {
-        // Generate random realistic credentials based on common Indian naming
-        const firstNames = ["Arjun", "Karan", "Simran", "Neha", "Vijay", "Aisha", "Aditya", "Rohan", "Pooja", "Vikram"];
-        const lastNames = ["Sharma", "Verma", "Patel", "Singh", "Nair", "Reddy", "Gupta", "Joshi", "Das", "Mehta"];
-        const randomFirst = firstNames[Math.floor(Math.random() * firstNames.length)];
-        const randomLast = lastNames[Math.floor(Math.random() * lastNames.length)];
-        const randomPassport = "J" + Math.floor(1000000 + Math.random() * 9000000);
+        const loggedFirst = localStorage.getItem("seeker_firstName") || "";
+        const loggedLast = localStorage.getItem("seeker_lastName") || "";
+        const loggedEmail = localStorage.getItem("seeker_email") || "";
+        const loggedPhone = localStorage.getItem("seeker_phone") || "";
         
-        // Random birth dates (between 1985 and 2004)
-        const birthYear = Math.floor(1985 + Math.random() * 20);
-        const birthMonth = String(Math.floor(1 + Math.random() * 12)).padStart(2, '0');
-        const birthDay = String(Math.floor(1 + Math.random() * 28)).padStart(2, '0');
-        const dobVal = `${birthYear}-${birthMonth}-${birthDay}`;
-        
-        // Expiry date (random year between 2030 and 2036)
-        const expYear = Math.floor(2030 + Math.random() * 7);
-        const expMonth = String(Math.floor(1 + Math.random() * 12)).padStart(2, '0');
-        const expDay = String(Math.floor(1 + Math.random() * 28)).padStart(2, '0');
-        const expiryVal = `${expYear}-${expMonth}-${expDay}`;
-
         // Populate fields
-        document.getElementById('firstName').value = randomFirst;
-        document.getElementById('lastName').value = randomLast;
-        document.getElementById('dob').value = dobVal;
-        document.getElementById('passportNo').value = randomPassport;
-        document.getElementById('passportExpiry').value = expiryVal;
+        document.getElementById('firstName').value = loggedFirst;
+        document.getElementById('lastName').value = loggedLast;
+        document.getElementById('dob').value = "";
+        document.getElementById('passportNo').value = "";
+        document.getElementById('passportExpiry').value = "";
         document.getElementById('nationality').value = "Indian";
-        document.getElementById('emailAddress').value = `${randomFirst.toLowerCase()}.${randomLast.toLowerCase()}@email.com`;
-        document.getElementById('mobileNumber').value = "+91 " + Math.floor(9000000000 + Math.random() * 1000000000);
+        document.getElementById('emailAddress').value = loggedEmail;
+        document.getElementById('mobileNumber').value = loggedPhone;
 
         // Show parsing confirmation message
         const info = document.getElementById('extractedInfo');
-        info.textContent = `✅ OCR Parsed: ${randomFirst} ${randomLast}, Passport: ${randomPassport}`;
+        info.textContent = `✅ Passport file loaded successfully: ${file.name}`;
         info.classList.add('show');
         
-        toast('📸 Passport parsed! Fields populated successfully.');
+        toast('📸 Passport file loaded! Please verify and fill in the details below.');
       }, 1200);
     }
 
@@ -1396,14 +1386,53 @@ import Layout from '../layouts/Layout.astro';
     }
 
     // ==========================================
-    // SUBMIT APPLICATION
+    // SUBMIT APPLICATION (RAZORPAY INTEGRATION)
     // ==========================================
     function submitApplication() {
-      toast('📤 Submitting your application...');
-      setTimeout(() => {
-        goToStep(5);
-        toast('✅ Application submitted successfully!');
-      }, 1500);
+      const razorpayKey = document.getElementById('razorpay-config').getAttribute('data-key');
+      const amount = 2997 * 100; // in paisa (₹2,997)
+      const email = document.getElementById('emailAddress').value || "seeker@visaformula.com";
+      const phone = document.getElementById('mobileNumber').value || "9999999999";
+      const name = `${document.getElementById('firstName').value || 'Seeker'} ${document.getElementById('lastName').value || ''}`.trim();
+
+      toast('💳 Connecting to secure payment checkout...');
+
+      const options = {
+        key: razorpayKey,
+        amount: amount,
+        currency: "INR",
+        name: "VisaFormula",
+        description: "Smart Visa Application Suite",
+        image: "/logo.png",
+        handler: function (response) {
+          toast('💳 Payment successful! Reference: ' + response.razorpay_payment_id);
+          goToStep(5);
+        },
+        prefill: {
+          name: name,
+          email: email,
+          contact: phone
+        },
+        theme: {
+          color: "#000000"
+        },
+        modal: {
+          ondismiss: function() {
+            toast('❌ Payment canceled by user.');
+          }
+        }
+      };
+
+      try {
+        const rzp = new Razorpay(options);
+        rzp.open();
+      } catch (e) {
+        console.error('Razorpay Error:', e);
+        toast('⚠️ Payment checkout failed to launch. Proceeding with demo validation.');
+        setTimeout(() => {
+          goToStep(5);
+        }, 1500);
+      }
     }
 
     // ==========================================

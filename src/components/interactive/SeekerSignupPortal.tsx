@@ -231,7 +231,8 @@ export function SeekerSignupPortal() {
                                     </div>
                                     <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1.5">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
                                 </div>
-                                <div className="col-span-2">
+                                <div className="col-span-2 space-y-2">
+                                    <label className="text-sm font-semibold text-slate-700 block">Country of Citizenship (Passport Country)*</label>
                                      <div className="relative">
                                          <button
                                              type="button"

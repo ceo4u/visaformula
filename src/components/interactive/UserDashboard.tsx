@@ -241,33 +241,33 @@ export function UserDashboard() {
             <main className="flex-grow p-4 sm:p-8 overflow-y-auto space-y-8 w-full">
                 {/* Redesigned Premium Header Bar */}
                 <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-4xl">
+                    <div className="flex flex-col md:flex-row md:items-center gap-5 flex-grow max-w-4xl w-full">
                         {/* Seeker Profile Card (Premium Gradient Theme) */}
-                        <div className="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 border border-slate-200/80 rounded-[28px] shadow-sm flex items-center overflow-hidden max-w-md w-full relative">
+                        <div className="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 border border-slate-200/80 rounded-[28px] shadow-sm flex items-center overflow-hidden max-w-full md:max-w-md w-full relative">
                             {/* Left side: Avatar */}
-                            <div className="p-4 pr-2 flex-shrink-0 z-10">
-                                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[20px] bg-gradient-to-br from-black via-slate-800 to-slate-950 text-white border-2 border-white shadow-md flex items-center justify-center font-black text-xl tracking-tight">
+                            <div className="p-3 md:p-4 pr-1.5 md:pr-2 flex-shrink-0 z-10">
+                                <div className="w-14 h-14 md:w-20 md:h-20 rounded-[16px] md:rounded-[20px] bg-gradient-to-br from-black via-slate-800 to-slate-950 text-white border-2 border-white shadow-md flex items-center justify-center font-black text-sm md:text-xl tracking-tight">
                                     {(firstName || "Seeker").substring(0, 2).toUpperCase()}
                                 </div>
                             </div>
 
                             {/* Right side: Info */}
-                            <div className="p-4 pl-3 flex flex-col justify-center flex-grow z-10">
+                            <div className="p-3 md:p-4 pl-1.5 md:pl-3 flex flex-col justify-center flex-grow z-10 min-w-0">
                                 {/* Name and Badge */}
-                                <div className="flex items-center gap-2 flex-wrap">
-                                    <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{firstName} {lastName || "Sharma"}</h2>
-                                    <span className="bg-emerald-500/10 text-emerald-700 text-[9px] font-black tracking-widest px-2 py-0.5 rounded-full border border-emerald-500/20">Verified</span>
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                    <h2 className="text-sm md:text-base font-extrabold text-black tracking-tight leading-snug truncate">{firstName} {lastName || "Sharma"}</h2>
+                                    <span className="bg-emerald-500/10 text-emerald-700 text-[8px] md:text-[9px] font-black tracking-widest px-1.5 py-0.5 rounded-full border border-emerald-500/20 shrink-0">Verified</span>
                                 </div>
 
                                 {/* Description/Location */}
-                                <p className="text-[11px] text-slate-500 font-semibold mt-1 leading-tight max-w-[220px] flex items-center gap-1.5">
-                                    <span>🛂</span> Passport holder from <span className="text-black font-extrabold">{countryOfCitizenship || "India"}</span>
+                                <p className="text-[10px] md:text-[11px] text-slate-500 font-semibold mt-1 leading-tight flex items-center gap-1.5 flex-wrap">
+                                    <span>🛂</span> Passport: <span className="text-black font-extrabold">{countryOfCitizenship || "India"}</span>
                                 </p>
                             </div>
                         </div>
 
                         {/* Search Bar next to Profile */}
-                        <div className="relative w-full sm:w-[450px] flex-shrink-0">
+                        <div className="relative w-full md:w-[350px] lg:w-[450px] flex-shrink-0">
                             <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                             <input 
                                 type="text"

@@ -7,7 +7,7 @@ function createPoolInstance(forceNoSSL = false) {
   if (pool) {
     try { pool.end(); } catch(e) {}
   }
-  let connStr = process.env.DATABASE_URL || '';
+  let connStr = import.meta.env.DATABASE_URL || process.env.DATABASE_URL || '';
   if (forceNoSSL || !useSSL) {
     connStr = connStr.replace('sslmode=require', 'sslmode=disable');
     pool = new pg.Pool({

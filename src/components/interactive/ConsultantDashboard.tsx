@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, Menu } from "lucide-react";
+import { DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, Menu, Briefcase, Calendar } from "lucide-react";
 
 const stats = [
     { label: "Total Earnings", value: "₹4,85,000", icon: DollarSign, change: "+12%", color: "text-emerald-600 bg-emerald-50" },

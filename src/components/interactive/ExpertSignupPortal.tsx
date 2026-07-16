@@ -322,10 +322,11 @@ export function ExpertSignupPortal() {
   ];
 
   return (
-    <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-sora" style={{ fontFamily: "'Sora', sans-serif" }}>
+    <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-sora" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style dangerouslySetInnerHTML={{__html: `
-        .font-sora, .font-sora * {
-            font-family: 'Sora', sans-serif !important;
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+        .font-sora, .font-sora *, body, html {
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
         }
         @keyframes premiumFadeIn {
           from {

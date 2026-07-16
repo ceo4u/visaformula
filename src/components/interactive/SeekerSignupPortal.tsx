@@ -80,11 +80,12 @@ export function SeekerSignupPortal() {
 
     return (
         <div className="min-h-screen text-[#111111] font-sora flex flex-col justify-between selection:bg-black selection:text-white bg-white" style={{ 
-            fontFamily: "'Sora', sans-serif"
+            fontFamily: "'Plus Jakarta Sans', sans-serif"
         }}>
             <style dangerouslySetInnerHTML={{__html: `
-                .font-sora, .font-sora * {
-                    font-family: 'Sora', sans-serif !important;
+                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+                .font-sora, .font-sora *, body, html {
+                    font-family: 'Plus Jakarta Sans', sans-serif !important;
                 }
             `}} />
             <header className="w-full px-4 md:px-8 py-4 flex flex-col md:flex-row items-center justify-between font-sans gap-4 border-b border-slate-100 bg-white md:min-h-[120px] relative">

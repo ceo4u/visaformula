@@ -1,15 +1,55 @@
 import pg from 'pg';
 
 let pool: pg.Pool | null = null;
+let useSSL = true;
 
-export function getPool() {
-  if (!pool) {
+function createPoolInstance(forceNoSSL = false) {
+  if (pool) {
+    try { pool.end(); } catch(e) {}
+  }
+  let connStr = process.env.DATABASE_URL || '';
+  if (forceNoSSL || !useSSL) {
+    connStr = connStr.replace('sslmode=require', 'sslmode=disable');
     pool = new pg.Pool({
-      connectionString: process.env.DATABASE_URL,
+      connectionString: connStr,
+      ssl: false
+    });
+  } else {
+    pool = new pg.Pool({
+      connectionString: connStr,
       ssl: { rejectUnauthorized: false }
     });
   }
-  return pool;
+}
+
+export function getPool() {
+  if (!pool) {
+    createPoolInstance();
+  }
+  
+  return {
+    query: async (text: string, params?: any[]) => {
+      try {
+        return await pool!.query(text, params);
+      } catch (err: any) {
+        if (err.message && (
+          err.message.includes('SSL') || 
+          err.message.includes('ssl') || 
+          err.message.includes('support SSL') || 
+          err.message.includes('SSL connection')
+        )) {
+          console.warn('Database does not support SSL. Retrying without SSL...');
+          useSSL = false;
+          createPoolInstance(true);
+          return await pool!.query(text, params);
+        }
+        throw err;
+      }
+    },
+    end: async () => {
+      if (pool) return pool.end();
+    }
+  } as unknown as pg.Pool;
 }
 
 export async function runMigrations() {

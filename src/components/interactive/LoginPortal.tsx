@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, Gavel, ArrowRight, ArrowLeft } from "lucide-react";
-import { useAuth } from "../providers/auth-provider";
+import { useAuth, AuthProvider } from "../providers/auth-provider";
 import airplanePaths from "../../data/clean_airplane.json";
 import checkmarkPaths from "../../data/clean_checkmark.json";
 
-export function LoginPortal() {
+function LoginPortalContent() {
     const { signIn } = useAuth();
     const [loginStep, setLoginStep] = useState(0); // 0 = Email, 1 = Password
     const [email, setEmail] = useState("");
@@ -170,5 +170,13 @@ export function LoginPortal() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export function LoginPortal() {
+    return (
+        <AuthProvider>
+            <LoginPortalContent />
+        </AuthProvider>
     );
 }

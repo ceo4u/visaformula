@@ -2,7 +2,6 @@
 // src/pages/login.astro
 import Layout from '../layouts/Layout.astro';
 import { LoginPortal } from '../components/interactive/LoginPortal';
-import { AuthProvider } from '../components/providers/auth-provider';
 ---
 
 <Layout 
@@ -12,7 +11,5 @@ import { AuthProvider } from '../components/providers/auth-provider';
   hideFooter={true}
 >
   <!-- Mount client-only React login portal island -->
-  <AuthProvider client:only="react">
-    <LoginPortal client:only="react" />
-  </AuthProvider>
+  <LoginPortal client:only="react" />
 </Layout>

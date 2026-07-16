@@ -176,7 +176,7 @@ export function UserDashboard() {
             </aside>
 
             {/* Mobile Slide-Over Sidebar Drawer */}
-            <div className={`fixed inset-0 z-55 lg:hidden transition-all duration-300 ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+            <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
                 {/* Backdrop */}
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />
                 

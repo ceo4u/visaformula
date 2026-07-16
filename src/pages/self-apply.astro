@@ -919,7 +919,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         <div class="visa-pills" id="visaPills">
           <span class="visa-pill" data-visa="student" onclick="selectVisa(this)">🎓 Student Visa</span>
           <span class="visa-pill" data-visa="work" onclick="selectVisa(this)">💼 Work Permit</span>
-          <span class="visa-pill" data-visa="visitor" onclick="window.location.href='/tours'">✈️ Visitor / Tourist</span>
+          <span class="visa-pill" data-visa="visitor" onclick="selectVisa(this)">✈️ Visitor / Tourist</span>
           <span class="visa-pill" data-visa="pr" onclick="selectVisa(this)">🏡 PR / Express Entry</span>
         </div>
 

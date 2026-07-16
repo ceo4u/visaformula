@@ -59,6 +59,12 @@ function LoginPortalContent() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-gray-50/50 font-opensans relative">
+            <style dangerouslySetInnerHTML={{__html: `
+                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+                * {
+                    font-family: 'Plus Jakarta Sans', sans-serif !important;
+                }
+            `}} />
             {/* Back Button - Top Left */}
             <a href="/" className="absolute top-6 left-6 flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-xs font-bold text-black hover:bg-slate-50 shadow-sm transition-all z-50 font-opensans shrink-0">
                 <span className="text-sm font-semibold">&larr;</span>

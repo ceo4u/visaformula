@@ -101,10 +101,11 @@ export function UserDashboard() {
     const uploadedCount = documents.filter(d => d.status === "uploaded").length;
 
     return (
-        <div className="flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen antialiased text-black font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>
+        <div className="flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen antialiased text-black font-roboto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             <style dangerouslySetInnerHTML={{__html: `
-                .font-roboto, .font-roboto * {
-                    font-family: 'Roboto', sans-serif !important;
+                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+                * {
+                    font-family: 'Plus Jakarta Sans', sans-serif !important;
                 }
             `}} />
 

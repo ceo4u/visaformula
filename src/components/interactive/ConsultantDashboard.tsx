@@ -105,6 +105,12 @@ export function ConsultantDashboard() {
 
     return (
         <div className="flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen antialiased text-black font-sans">
+            <style dangerouslySetInnerHTML={{__html: `
+                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+                * {
+                    font-family: 'Plus Jakarta Sans', sans-serif !important;
+                }
+            `}} />
             {/* Success Notification */}
             {showSuccessToast && (
                 <div className="fixed bottom-6 right-6 z-[110] bg-[#0C1A2E] text-white px-5 py-3 rounded-2xl text-xs font-bold shadow-xl animate-bounce flex items-center gap-2">

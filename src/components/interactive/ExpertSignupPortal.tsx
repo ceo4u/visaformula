@@ -74,6 +74,7 @@ export function ExpertSignupPortal() {
   const [facebookLink, setFacebookLink] = useState("");
   const [linkedinLink, setLinkedinLink] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [countryCode, setCountryCode] = useState("+91");
   const [validationError, setValidationError] = useState("");
   const [countryCodeOpen, setCountryCodeOpen] = useState(false);
@@ -182,6 +183,11 @@ export function ExpertSignupPortal() {
     }
     if (!hasNumber || !hasSymbol) {
       setValidationError("Password must contain at least one number and one special character / symbol (e.g. !, @, #, etc).");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setValidationError("Passwords do not match. Please verify your password entry.");
       return;
     }
 
@@ -556,6 +562,18 @@ export function ExpertSignupPortal() {
                       className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                     />
                     <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1.5">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
+                  </div>
+
+                  <div className="col-span-2">
+                    <input 
+                      required
+                      type="password"
+                      value={confirmPassword} 
+                      onChange={(e) => setConfirmPassword(e.target.value)} 
+                      placeholder="Confirm Password" 
+                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
+                    />
                   </div>
 
                   <div className="col-span-2" onClick={(e) => e.stopPropagation()}>

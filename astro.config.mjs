@@ -23,6 +23,7 @@ export default defineConfig({
     }),
   ],
   vite: {
+    envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_'],
     ssr: {
       noExternal: ['framer-motion', 'lucide-react'],
     },

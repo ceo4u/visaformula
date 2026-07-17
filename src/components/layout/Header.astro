@@ -5,20 +5,20 @@ const pathname = Astro.url.pathname;
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-100 transition-all duration-300">
-    <div class="max-w-[1440px] mx-auto px-4 xl:px-8 relative flex items-center justify-between h-16 xl:h-20">
+    <div class="max-w-[1440px] mx-auto px-4 xl:px-6 2xl:px-8 relative flex items-center justify-between h-16 xl:h-16 2xl:h-20">
         
         <!-- Logo - Left corner -->
         <div class="flex items-center shrink-0 py-2">
             <a href="/" class="flex items-center focus:outline-none -ml-2 xl:-ml-4">
-                <img src="/logo.png" class="h-16 xl:h-20 w-auto object-contain" alt="VisaFormula Logo" />
+                <img src="/logo.png" class="h-14 xl:h-16 2xl:h-20 w-auto object-contain" alt="VisaFormula Logo" />
             </a>
         </div>
 
         <!-- Desktop Navigation Links (Centered) -->
-        <nav class="hidden xl:flex items-center gap-7 font-plus-jakarta">
+        <nav class="hidden xl:flex items-center gap-4 2xl:gap-7 font-plus-jakarta">
             <!-- 1. Find an Expert -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[13px] xl:text-[14px] 2xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Find an Expert
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
@@ -45,13 +45,13 @@ const pathname = Astro.url.pathname;
             </div>
 
             <!-- 2. Smart Apply (Direct link, no dropdown, between Find Expert and Visa Services) -->
-            <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-colors whitespace-nowrap">
+            <a href="/self-apply" class="font-plus-jakarta text-[13px] xl:text-[14px] 2xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-colors whitespace-nowrap">
                 Smart Apply
             </a>
 
             <!-- 3. Visa Services -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[13px] xl:text-[14px] 2xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Visa Services
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
@@ -87,7 +87,7 @@ const pathname = Astro.url.pathname;
 
             <!-- 4. Resources -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[13px] xl:text-[14px] 2xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Resources
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
@@ -111,7 +111,7 @@ const pathname = Astro.url.pathname;
 
             <!-- 5. AI Tools -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[13px] xl:text-[14px] 2xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     AI Tools
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
@@ -135,22 +135,22 @@ const pathname = Astro.url.pathname;
         </nav>
 
         <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
-        <div class="hidden xl:flex items-center gap-5 shrink-0 z-50 font-plus-jakarta">
+        <div class="hidden xl:flex items-center gap-3 2xl:gap-5 shrink-0 z-50 font-plus-jakarta">
             <!-- Contact Link (Replaces Globe selector) -->
-            <a href="/support" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none">
+            <a href="/support" class="flex items-center gap-1.5 text-[13px] 2xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none">
                 <MessageSquare class="w-4.5 h-4.5 text-slate-500" />
                 <span>Contact</span>
             </a>
 
             <!-- Red Vertical Divider (shown only when logged in) -->
-            <div id="nav-logged-in-divider" class="w-[1.5px] h-4 bg-[#ef4444] shrink-0 mx-2 hidden"></div>
+            <div id="nav-logged-in-divider" class="w-[1.5px] h-4 bg-[#ef4444] shrink-0 mx-1 hidden"></div>
 
             <!-- Auth Buttons Wrapper -->
-            <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="text-[#2563eb] border border-[#2563eb] hover:bg-blue-50/30 px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200">
+            <div class="flex items-center gap-2 2xl:gap-3" id="nav-auth-buttons-wrapper">
+                <a href="/login" id="login-btn" class="text-[#2563eb] border border-[#2563eb] hover:bg-blue-50/30 px-3.5 2xl:px-5 py-2 rounded-lg text-[13px] 2xl:text-[14px] font-bold transition-all duration-200">
                     Log in
                 </a>
-                <a href="/signup" class="bg-[#2563eb] hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200">
+                <a href="/signup" class="bg-[#2563eb] hover:bg-blue-700 text-white px-3.5 2xl:px-5 py-2 rounded-lg text-[13px] 2xl:text-[14px] font-bold transition-all duration-200">
                     Sign Up
                 </a>
             </div>

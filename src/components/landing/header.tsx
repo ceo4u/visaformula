@@ -121,7 +121,7 @@ export function Header() {
             <img
               src="/logo.png"
               alt="VisaFormula Logo"
-              className="h-14 w-auto object-contain"
+              className="h-18 w-auto object-contain"
             />
           </a>
 

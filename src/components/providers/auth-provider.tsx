@@ -1,5 +1,28 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+let auth: any = null;
+let googleProvider: any = null;
+
+if (typeof window !== "undefined") {
+    const firebaseConfig = {
+        apiKey: import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+        authDomain: import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+        projectId: import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+        storageBucket: import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+        appId: import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
+    };
+    try {
+        const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+        auth = getAuth(app);
+        googleProvider = new GoogleAuthProvider();
+    } catch (e) {
+        console.error("Firebase init error:", e);
+    }
+}
 
 // Mock User Type
 export interface User {
@@ -212,10 +235,64 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signInWithGoogle = async () => {
-        await delay(1000);
-        setUser(DEMO_USER);
-        if (typeof window !== "undefined") {
-            localStorage.setItem("visaformula_user", JSON.stringify(DEMO_USER));
+        if (!auth || !googleProvider) {
+            throw new Error("Google authentication is not configured.");
+        }
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const fbUser = result.user;
+
+            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/auth/google`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: fbUser.email,
+                    name: fbUser.displayName,
+                    uid: fbUser.uid
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setUser(data.user);
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                    
+                    if (data.user && data.user.rawUser) {
+                        const raw = data.user.rawUser;
+                        if (data.user.type === "seeker") {
+                            localStorage.setItem("seeker_firstName", raw.first_name || "Seeker");
+                            localStorage.setItem("seeker_lastName", raw.last_name || "");
+                            localStorage.setItem("seeker_phone", raw.phone || "");
+                            localStorage.setItem("seeker_email", raw.email);
+                            localStorage.setItem("seeker_country_of_citizenship", raw.passport_country || "");
+                            localStorage.setItem("seeker_resident_of", raw.passport_country || "");
+                            localStorage.setItem("seeker_passportCountry", raw.passport_country || "");
+                            localStorage.setItem("seeker_goals", typeof raw.goals === "string" ? raw.goals : JSON.stringify(raw.goals || []));
+                            localStorage.setItem("seeker_destinations", typeof raw.destinations === "string" ? raw.destinations : JSON.stringify(raw.destinations || []));
+                        } else if (data.user.type === "expert") {
+                            localStorage.setItem("expert_businessName", raw.business_name || "Expert");
+                            localStorage.setItem("expert_email", raw.email);
+                            localStorage.setItem("expert_contactNumber", raw.contact_number || "");
+                            localStorage.setItem("expert_advisorType", raw.advisor_type || "Freelancer");
+                            localStorage.setItem("expert_aboutMe", raw.about_me || "");
+                            localStorage.setItem("expert_portfolioLink", raw.portfolio_link || "");
+                            localStorage.setItem("expert_officeAddress", raw.office_address || "");
+                            localStorage.setItem("expert_govRegNumber", raw.gov_registration_number || "");
+                            localStorage.setItem("expert_expertiseTags", typeof raw.expertise_tags === "string" ? raw.expertise_tags : JSON.stringify(raw.expertise_tags || []));
+                            localStorage.setItem("expert_countriesExpertise", typeof raw.countries_expertise === "string" ? raw.countries_expertise : JSON.stringify(raw.countries_expertise || []));
+                            localStorage.setItem("expert_profilePhoto", raw.profile_photo || "");
+                            localStorage.setItem("expert_isLoggedIn", "true");
+                        }
+                    }
+                }
+            } else {
+                const errData = await response.json();
+                throw new Error(errData.message || "Failed to log in with Google.");
+            }
+        } catch (error: any) {
+            console.error("Google login failed:", error);
+            throw new Error(error.message || "Google authentication failed.");
         }
     };
 

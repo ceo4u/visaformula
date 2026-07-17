@@ -5,7 +5,27 @@ import airplanePaths from "../../data/clean_airplane.json";
 import checkmarkPaths from "../../data/clean_checkmark.json";
 
 function LoginPortalContent() {
-    const { signIn } = useAuth();
+    const { signIn, signInWithGoogle } = useAuth();
+    const handleGoogleLogin = async () => {
+        setError("");
+        setLoading(true);
+        try {
+            await signInWithGoogle();
+            const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+            if (userStr) {
+                const parsed = JSON.parse(userStr);
+                if (parsed.type === "expert") {
+                    window.location.href = "/consultant/dashboard";
+                } else {
+                    window.location.href = "/dashboard";
+                }
+            }
+        } catch (e: any) {
+            setError(e.message || "Google Login failed.");
+        } finally {
+            setLoading(false);
+        }
+    };
     const [loginStep, setLoginStep] = useState(0); // 0 = Email, 1 = Password
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -153,6 +173,28 @@ function LoginPortalContent() {
                             {!loading && <ArrowRight className="w-4 h-4" />}
                         </button>
                     </form>
+
+                    <div className="relative my-5 flex items-center justify-center">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-gray-100"></div>
+                        </div>
+                        <span className="relative px-3 bg-white text-[10px] font-bold text-slate-400 tracking-wider font-opensans uppercase">— OR —</span>
+                    </div>
+
+                    <button 
+                        type="button" 
+                        onClick={handleGoogleLogin} 
+                        disabled={loading}
+                        className="w-full h-12 rounded-xl border border-gray-200 hover:bg-slate-50 transition-all font-bold text-sm text-black flex items-center justify-center gap-2.5 font-opensans shadow-sm cursor-pointer disabled:opacity-50"
+                    >
+                        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                            <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.64 14.99 1 12 1 7.35 1 3.37 3.67 1.39 7.56l3.85 2.99c.92-2.76 3.49-4.51 6.76-4.51z"/>
+                            <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.48c-.29 1.48-1.14 2.73-2.43 3.58l3.77 2.92c2.2-2.03 3.47-5.01 3.47-8.66z"/>
+                            <path fill="#FBBC05" d="M5.24 10.55c-.24-.72-.37-1.49-.37-2.28s.13-1.56.37-2.28L1.39 7.56C.5 9.36 0 11.37 0 13.5s.5 4.14 1.39 5.94l3.85-2.99c-.24-.72-.37-1.49-.37-2.28s.13-1.56.37-2.28z"/>
+                            <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.77-2.92c-1.09.73-2.49 1.16-4.19 1.16-3.27 0-5.84-1.75-6.76-4.51L1.39 16.8C3.37 20.33 7.35 23 12 23z"/>
+                        </svg>
+                        <span>Continue with Google</span>
+                    </button>
 
                     <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col gap-3">
                         <div className="text-center text-[11px] text-slate-500 font-bold tracking-wider mb-1 font-opensans">

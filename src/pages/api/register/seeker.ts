@@ -11,6 +11,9 @@ export const POST: APIRoute = async ({ request }) => {
     await runMigrations();
     const pool = getPool();
 
+    const checkRes = await pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
+    const isNew = checkRes.rows.length === 0;
+
     // Insert seeker record
     await pool.query(`
       INSERT INTO seekers (first_name, last_name, email, password_hash, phone, passport_country, goals, destinations)
@@ -27,6 +30,23 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify(goals || []), 
       JSON.stringify(destinations || [])
     ]);
+
+    if (isNew) {
+      try {
+        const { sendEmailWithRetry } = await import('../../../lib/mail');
+        const { generateWelcomeHtml } = await import('../../../emails/WelcomeEmail');
+        
+        const html = generateWelcomeHtml({ firstName: first_name, displayName: `${first_name} ${last_name || ''}`.trim() });
+        await sendEmailWithRetry({
+          from: `"Visa Formula" <noreply@visaformula.com>`,
+          to: email,
+          subject: `Welcome to Visa Formula 👋`,
+          html: html
+        });
+      } catch (emailErr) {
+        console.error('Welcome email failed for standard Seeker user:', emailErr);
+      }
+    }
 
     return new Response(JSON.stringify({ status: 'success', message: 'Seeker registered successfully!' }), {
       status: 200,

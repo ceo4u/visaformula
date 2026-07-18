@@ -10,12 +10,20 @@ function LoginPortalContent() {
     const [showPwd, setShowPwd] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
+    const [googleLoadingText, setGoogleLoadingText] = useState("");
 
     const handleGoogleLogin = async () => {
         setError("");
-        setLoading(true);
+        setGoogleLoading(true);
+        setGoogleLoadingText("Connecting to Google Auth...");
         try {
             await signInWithGoogle();
+            setGoogleLoadingText("Authenticated! Setting up your workspace...");
+            
+            // Premium transition delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
             const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
             if (userStr) {
                 const parsed = JSON.parse(userStr);
@@ -24,11 +32,13 @@ function LoginPortalContent() {
                 } else {
                     window.location.href = "/dashboard";
                 }
+            } else {
+                // Default fallback redirect
+                window.location.href = "/dashboard";
             }
         } catch (e: any) {
             setError(e.message || "Google Login failed.");
-        } finally {
-            setLoading(false);
+            setGoogleLoading(false);
         }
     };
 
@@ -75,9 +85,18 @@ function LoginPortalContent() {
             setLoading(false);
         }
     };
-
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-gray-50/50 font-opensans relative">
+            {googleLoading && (
+                <div className="absolute inset-0 bg-white/80 backdrop-blur-md flex flex-col items-center justify-center z-[9999] transition-all duration-300">
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
+                        <p className="text-sm font-bold text-black font-opensans tracking-wide animate-pulse">
+                            {googleLoadingText}
+                        </p>
+                    </div>
+                </div>
+            )}
             <style dangerouslySetInnerHTML={{__html: `
                 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
                 * {

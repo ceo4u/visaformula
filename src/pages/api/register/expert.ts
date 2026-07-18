@@ -15,6 +15,9 @@ export const POST: APIRoute = async ({ request }) => {
     await runMigrations();
     const pool = getPool();
 
+    const checkRes = await pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
+    const isNew = checkRes.rows.length === 0;
+
     // Insert expert record
     await pool.query(`
       INSERT INTO experts (
@@ -42,6 +45,23 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify(expertise_tags || []),
       countries_expertise || ''
     ]);
+
+    if (isNew) {
+      try {
+        const { sendEmailWithRetry } = await import('../../../lib/mail');
+        const { generateWelcomeHtml } = await import('../../../emails/WelcomeEmail');
+        
+        const html = generateWelcomeHtml({ firstName: business_name, displayName: business_name });
+        await sendEmailWithRetry({
+          from: `"Visa Formula" <noreply@visaformula.com>`,
+          to: email,
+          subject: `Welcome to Visa Formula 👋`,
+          html: html
+        });
+      } catch (emailErr) {
+        console.error('Welcome email failed for standard Expert user:', emailErr);
+      }
+    }
 
     return new Response(JSON.stringify({ status: 'success', message: 'Expert registered successfully!' }), {
       status: 200,

@@ -72,7 +72,7 @@ function SeekerSignupPortalContent() {
                 setOtpSent(true);
                 setResendCooldown(60);
                 if (data.otp) {
-                    alert(`Test Verification Code: ${data.otp}`);
+                    console.log(`[Test Mode Code]: ${data.otp}`);
                 }
             } else {
                 setValidationError(data.message || "Failed to send verification code.");
@@ -367,83 +367,53 @@ function SeekerSignupPortalContent() {
                                 </div>
 
                                 <div className="col-span-2 space-y-2">
-                                    <input 
-                                        type="email" 
-                                        required
-                                        placeholder="Email address" 
-                                        value={email}
-                                        onChange={(e) => {
-                                            setEmail(e.target.value);
-                                            setEmailVerified(false);
-                                        }}
-                                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                                    />
-                                    {!emailVerified ? (
-                                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 font-sans">
-                                            <div className="flex items-center justify-between gap-4">
-                                                <span className="text-xs font-semibold text-slate-600">Please verify your email address to register.</span>
-                                                <button
-                                                    type="button"
-                                                    onClick={handleSendVerificationCode}
-                                                    disabled={sendingCode || resendCooldown > 0}
-                                                    className="bg-black text-white text-[10px] font-bold tracking-wider px-4 py-2 rounded-xl hover:bg-neutral-900 transition-all uppercase cursor-pointer disabled:bg-slate-200 disabled:text-slate-400"
-                                                >
-                                                    {resendCooldown > 0 ? `Resend (${resendCooldown}s)` : otpSent ? "Resend OTP" : "Send OTP"}
-                                                </button>
-                                            </div>
-
-                                            {otpSent && (
-                                                <div className="space-y-3 pt-2.5 border-t border-slate-250/60">
-                                                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Enter 6-digit OTP code</div>
-                                                    <div className="flex gap-2 justify-center">
-                                                        {[0, 1, 2, 3, 4, 5].map((index) => (
-                                                            <input
-                                                                key={index}
-                                                                id={`otp-${index}`}
-                                                                type="text"
-                                                                maxLength={1}
-                                                                value={otpDigits[index] || ""}
-                                                                onChange={(e) => {
-                                                                    const val = e.target.value;
-                                                                    const newDigits = [...otpDigits];
-                                                                    newDigits[index] = val;
-                                                                    setOtpDigits(newDigits);
-                                                                    if (val && index < 5) {
-                                                                        const nextInput = document.getElementById(`otp-${index + 1}`);
-                                                                        if (nextInput) nextInput.focus();
-                                                                    }
-                                                                    const fullCode = newDigits.join("");
-                                                                    if (fullCode.length === 6) {
-                                                                        handleVerifyCode(fullCode);
-                                                                    }
-                                                                }}
-                                                                onKeyDown={(e) => {
-                                                                    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
-                                                                        const prevInput = document.getElementById(`otp-${index - 1}`);
-                                                                        if (prevInput) prevInput.focus();
-                                                                    }
-                                                                }}
-                                                                className="w-10 h-12 bg-white border border-slate-300 rounded-xl text-center font-bold text-base text-black focus:border-black outline-none transition-all shadow-sm"
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                    {verificationError && (
-                                                        <p className="text-[10px] text-rose-600 font-semibold">{verificationError}</p>
-                                                    )}
-                                                    <button
-                                                        type="button"
-                                                        onClick={handleVerifyCode}
-                                                        className="w-full bg-black text-white font-extrabold text-[10px] tracking-wider py-2.5 rounded-xl uppercase transition-all shadow-sm cursor-pointer hover:bg-neutral-900"
-                                                    >
-                                                        Confirm & Verify Code
-                                                    </button>
-                                                </div>
+                                    <div className="flex flex-col sm:flex-row gap-3 items-stretch">
+                                        <div className="flex-grow relative">
+                                            <input 
+                                                type="email"
+                                                required
+                                                value={email}
+                                                onChange={(e) => {
+                                                    setEmail(e.target.value);
+                                                    setEmailVerified(false);
+                                                }}
+                                                style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
+                                            />
+                                            {emailVerified && (
+                                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-emerald-600 font-bold flex items-center gap-1">
+                                                    ✅ Verified
+                                                </span>
                                             )}
                                         </div>
-                                    ) : (
-                                        <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold px-1 py-0.5">
-                                            <span>✅</span> Email verified and secured!
+                                        
+                                        {!emailVerified && (
+                                            <button
+                                                type="button"
+                                                onClick={handleSendVerificationCode}
+                                                disabled={sendingCode || resendCooldown > 0}
+                                                className="bg-black text-white text-xs font-bold tracking-wider px-5 py-3 rounded-md hover:bg-neutral-900 transition-all uppercase cursor-pointer disabled:bg-slate-200 disabled:text-slate-400 h-[46px] shrink-0"
+                                            >
+                                                {resendCooldown > 0 ? `Resend (${resendCooldown}s)` : otpSent ? "Resend" : "Send OTP"}
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {otpSent && !emailVerified && (
+                                        <div className="flex items-center gap-3 mt-2 animate-premium-fade bg-slate-50 p-3 rounded-xl border border-slate-150">
+                                            <input
+                                                type="text"
+                                                maxLength={6}
+                                                placeholder="Enter 6-Digit OTP"
+                                                onChange={(e) => {
+                                                    const val = e.target.value;
+                                                    if (val.length === 6) {
+                                                        handleVerifyCode(val);
+                                                    }
+                                                }}
+                                                className="w-40 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs outline-none focus:border-black text-center font-bold tracking-widest text-black shadow-sm"
+                                            />
+                                            <span className="text-[10px] text-slate-500 font-semibold">Auto-verifies on typing 6th digit</span>
                                         </div>
                                     )}
                                 </div>

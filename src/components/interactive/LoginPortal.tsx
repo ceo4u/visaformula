@@ -222,6 +222,34 @@ function LoginPortalContent() {
 }
 
 export function LoginPortal() {
+    const [crashError, setCrashError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const handleError = (e: ErrorEvent) => {
+            setCrashError(e.message || "Unknown client-side runtime error.");
+        };
+        window.addEventListener("error", handleError);
+        return () => window.removeEventListener("error", handleError);
+    }, []);
+
+    if (crashError) {
+        return (
+            <div className="p-6 max-w-lg mx-auto my-12 bg-red-50 text-red-700 font-mono text-xs border border-red-200 rounded-xl shadow-sm">
+                <h3 className="font-bold text-sm mb-2">🚨 Client Hydration/Runtime Error Detected:</h3>
+                <p className="mb-4">Something went wrong while loading this page in the browser.</p>
+                <div className="bg-white p-4 border border-red-100 rounded-lg overflow-auto max-h-60">
+                    <pre className="whitespace-pre-wrap">{crashError}</pre>
+                </div>
+                <button 
+                    onClick={() => window.location.reload()} 
+                    className="mt-4 px-4 py-2 bg-red-700 text-white font-bold rounded-lg hover:bg-red-800 transition-colors cursor-pointer"
+                >
+                    Force Reload Page
+                </button>
+            </div>
+        );
+    }
+
     return (
         <AuthProvider>
             <LoginPortalContent />

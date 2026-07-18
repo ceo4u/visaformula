@@ -28,9 +28,13 @@ export default defineConfig({
       noExternal: ['framer-motion', 'lucide-react'],
     },
     resolve: {
+      dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
+    },
+    optimizeDeps: {
+      include: ['react', 'react-dom'],
     },
   },
 });

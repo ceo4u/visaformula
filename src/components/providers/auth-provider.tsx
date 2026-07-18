@@ -1,35 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-let auth: any = null;
-let googleProvider: any = null;
+// ⚠️ Firebase is loaded DYNAMICALLY (inside event handlers only)
+// This prevents the "multiple copies of React" / "Invalid hook call" error
+// that occurs when Firebase is imported at the top level in an Astro client:only island
 
-if (typeof window !== "undefined") {
-    const firebaseConfig = {
-        apiKey: import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-        authDomain: import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-        projectId: import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-        storageBucket: import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-        messagingSenderId: import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-        appId: import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
-    };
-    try {
-        const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-        auth = getAuth(app);
-        googleProvider = new GoogleAuthProvider();
-    } catch (e) {
-        console.error("Firebase init error:", e);
-    }
-}
-
-// Mock User Type
 export interface User {
     uid: string;
     email: string;
     displayName: string;
     photoURL?: string;
+    type?: string;
 }
 
 interface AuthContextType {
@@ -42,16 +23,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
-
-// Helper to simulate network latency
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-const DEMO_USER: User = {
-    uid: "demo_123",
-    email: "demo@visaformula.com",
-    displayName: "Demo User",
-    photoURL: "https://lh3.googleusercontent.com/aida-public/AB6AXuCPX5DdMioKPF507Mg3uao_AKD7Y3D0cr4Oxpjz4j9Zhvn61dy6OJs_n9QaPUnw16htoJMGcQD5P48-Iiv7vxYN7ldHTnhRhVZcJD6vIDKa8nDLb457YmRDk8yMBA54syMEntEGlBvXj7AArUmykZR1L8yeGJ80eTIHcxGbTpw179ybHlUG-c9pydM6kYBqpeeOuXkS7JQZYR50642AqYN6oq9VYLrzRuhFithlymj6S07GbapH1EGotT-47tHyl3bgeiYhNPV4xWaW",
-};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
@@ -83,8 +54,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 setUser(data.user);
                 if (typeof window !== "undefined") {
                     localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-                    
-                    // Unpack rawUser details to local storage so dashboards can read them
                     if (data.user && data.user.rawUser) {
                         const raw = data.user.rawUser;
                         if (data.user.type === "seeker") {
@@ -126,62 +95,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 throw new Error(msg);
             }
         } catch (error: any) {
-            // Fallback: Check local storage for registered users/seekers/experts
+            // Fallback: Check local storage for registered users
             if (typeof window !== "undefined") {
                 const seekerEmail = localStorage.getItem("seeker_email");
                 const expertEmail = localStorage.getItem("expert_email");
-
                 if (seekerEmail && seekerEmail.toLowerCase() === email.toLowerCase()) {
-                    const mockUser = {
-                        uid: "local_seeker",
-                        email: seekerEmail,
-                        displayName: localStorage.getItem("seeker_firstName") || "Seeker",
-                        type: "seeker"
-                    };
+                    const mockUser = { uid: "local_seeker", email: seekerEmail, displayName: localStorage.getItem("seeker_firstName") || "Seeker", type: "seeker" };
                     setUser(mockUser);
                     localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
                     return;
                 }
-
                 if (expertEmail && expertEmail.toLowerCase() === email.toLowerCase()) {
-                    const mockUser = {
-                        uid: "local_expert",
-                        email: expertEmail,
-                        displayName: localStorage.getItem("expert_businessName") || "Expert",
-                        type: "expert"
-                    };
-                    setUser(mockUser);
-                    localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
-                    return;
-                }
-
-                const localUsersStr = localStorage.getItem("visaformula_local_users");
-                if (localUsersStr) {
-                    try {
-                        const localUsers = JSON.parse(localUsersStr);
-                        const matched = localUsers.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
-                        if (matched) {
-                            const mockUser = {
-                                uid: matched.uid || `mock_${Date.now()}`,
-                                email: matched.email,
-                                displayName: matched.displayName || "User",
-                                type: matched.email.includes("expert") ? "expert" : "seeker"
-                            };
-                            setUser(mockUser);
-                            localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
-                            return;
-                        }
-                    } catch (e) {}
-                }
-                
-                // Allow login with any password if email is the demo email
-                if (email.toLowerCase() === "demo@visaformula.com") {
-                    const mockUser = {
-                        uid: "demo_123",
-                        email: "demo@visaformula.com",
-                        displayName: "Demo User",
-                        type: "seeker"
-                    };
+                    const mockUser = { uid: "local_expert", email: expertEmail, displayName: localStorage.getItem("expert_businessName") || "Expert", type: "expert" };
                     setUser(mockUser);
                     localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
                     return;
@@ -192,42 +117,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signUp = async (email: string, password: string, name: string) => {
-        // Save locally first to ensure client-side success is guaranteed
-        if (typeof window !== "undefined") {
-            const localUsersStr = localStorage.getItem("visaformula_local_users") || "[]";
-            try {
-                const localUsers = JSON.parse(localUsersStr);
-                // Check if user already exists locally
-                if (!localUsers.some((u: any) => u.email.toLowerCase() === email.toLowerCase())) {
-                    localUsers.push({ uid: `mock_${Date.now()}`, email, password, displayName: name });
-                    localStorage.setItem("visaformula_local_users", JSON.stringify(localUsers));
-                }
-            } catch (e) {
-                // ignore
-            }
-        }
-
         try {
-            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL}/api/register/seeker`, {
+            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/seeker`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password, first_name: name, last_name: "" })
             });
             if (response.ok) {
                 const data = await response.json();
-                setUser(data.user);
-                if (typeof window !== "undefined") {
-                    localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                if (data.user) {
+                    setUser(data.user);
+                    if (typeof window !== "undefined") {
+                        localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                    }
                 }
             }
         } catch (error: any) {
-            // If backend fails, we proceed with local login directly (no error thrown to user)
             if (typeof window !== "undefined") {
-                const mockUser: User = {
-                    uid: `mock_${Date.now()}`,
-                    email,
-                    displayName: name,
-                };
+                const mockUser: User = { uid: `mock_${Date.now()}`, email, displayName: name };
                 setUser(mockUser);
                 localStorage.setItem("visaformula_user", JSON.stringify(mockUser));
             }
@@ -235,21 +142,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const signInWithGoogle = async () => {
-        if (!auth || !googleProvider) {
-            throw new Error("Google authentication is not configured.");
-        }
+        // 🔥 DYNAMIC IMPORT - Firebase is loaded only when this button is clicked
+        // This avoids the "multiple copies of React" error from static top-level imports
         try {
+            const { initializeApp, getApps, getApp } = await import("firebase/app");
+            const { getAuth, GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
+
+            const firebaseConfig = {
+                apiKey: import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+                authDomain: import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+                projectId: import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+                storageBucket: import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+                messagingSenderId: import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+                appId: import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
+            };
+
+            const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+            const auth = getAuth(app);
+            const googleProvider = new GoogleAuthProvider();
+
             const result = await signInWithPopup(auth, googleProvider);
             const fbUser = result.user;
 
             const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/auth/google`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email: fbUser.email,
-                    name: fbUser.displayName,
-                    uid: fbUser.uid
-                })
+                body: JSON.stringify({ email: fbUser.email, name: fbUser.displayName, uid: fbUser.uid })
             });
 
             if (response.ok) {
@@ -257,37 +175,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 setUser(data.user);
                 if (typeof window !== "undefined") {
                     localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-                    
                     if (data.user && data.user.rawUser) {
                         const raw = data.user.rawUser;
                         if (data.user.type === "seeker") {
                             localStorage.setItem("seeker_firstName", raw.first_name || "Seeker");
                             localStorage.setItem("seeker_lastName", raw.last_name || "");
-                            localStorage.setItem("seeker_phone", raw.phone || "");
                             localStorage.setItem("seeker_email", raw.email);
-                            localStorage.setItem("seeker_country_of_citizenship", raw.passport_country || "");
-                            localStorage.setItem("seeker_resident_of", raw.passport_country || "");
                             localStorage.setItem("seeker_passportCountry", raw.passport_country || "");
                             localStorage.setItem("seeker_goals", typeof raw.goals === "string" ? raw.goals : JSON.stringify(raw.goals || []));
                             localStorage.setItem("seeker_destinations", typeof raw.destinations === "string" ? raw.destinations : JSON.stringify(raw.destinations || []));
                         } else if (data.user.type === "expert") {
                             localStorage.setItem("expert_businessName", raw.business_name || "Expert");
                             localStorage.setItem("expert_email", raw.email);
-                            localStorage.setItem("expert_contactNumber", raw.contact_number || "");
-                            localStorage.setItem("expert_advisorType", raw.advisor_type || "Freelancer");
-                            localStorage.setItem("expert_aboutMe", raw.about_me || "");
-                            localStorage.setItem("expert_portfolioLink", raw.portfolio_link || "");
-                            localStorage.setItem("expert_officeAddress", raw.office_address || "");
-                            localStorage.setItem("expert_govRegNumber", raw.gov_registration_number || "");
-                            localStorage.setItem("expert_expertiseTags", typeof raw.expertise_tags === "string" ? raw.expertise_tags : JSON.stringify(raw.expertise_tags || []));
-                            localStorage.setItem("expert_countriesExpertise", typeof raw.countries_expertise === "string" ? raw.countries_expertise : JSON.stringify(raw.countries_expertise || []));
-                            localStorage.setItem("expert_profilePhoto", raw.profile_photo || "");
                             localStorage.setItem("expert_isLoggedIn", "true");
                         }
                     }
                 }
             } else {
-                const errData = await response.json();
+                const errData = await response.json().catch(() => ({ message: "Unknown error" }));
                 throw new Error(errData.message || "Failed to log in with Google.");
             }
         } catch (error: any) {
@@ -298,12 +203,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const signOut = async () => {
         try {
-            await fetch(`${import.meta.env.PUBLIC_BACKEND_URL}/api/logout`, {
+            await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/logout`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" }
             });
         } catch (e) {
-            // Ignore logout network issues, local clear remains primary
+            // Ignore logout network issues
         }
         setUser(null);
         if (typeof window !== "undefined") {

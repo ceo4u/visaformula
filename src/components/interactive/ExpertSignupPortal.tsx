@@ -7,7 +7,7 @@ import {
   CreditCard, Settings, ChevronRight, LayoutDashboard, Search, 
   Calendar, LogOut, CheckSquare, TrendingUp, Bookmark, Bell, Clock, ChevronDown
 } from "lucide-react";
-import { useAuth } from "../providers/auth-provider";
+import { useAuth, AuthProvider } from "../providers/auth-provider";
 import airplanePaths from "../../data/clean_airplane.json";
 import checkmarkPaths from "../../data/clean_checkmark.json";
 

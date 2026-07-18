@@ -12,13 +12,22 @@ function LoginPortalContent() {
     const [loading, setLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
     const [googleLoadingText, setGoogleLoadingText] = useState("");
+    const [onboardingUser, setOnboardingUser] = useState<any>(null);
 
     const handleGoogleLogin = async () => {
         setError("");
         setGoogleLoading(true);
         setGoogleLoadingText("Connecting to Google Auth...");
         try {
-            await signInWithGoogle();
+            const res = await signInWithGoogle();
+            
+            // Check if user is brand new and needs role selection
+            if (res && res.status === 'needs_role') {
+                setGoogleLoading(false);
+                setOnboardingUser(res);
+                return;
+            }
+
             setGoogleLoadingText("Authenticated! Setting up your workspace...");
             
             // Premium transition delay
@@ -38,6 +47,65 @@ function LoginPortalContent() {
             }
         } catch (e: any) {
             setError(e.message || "Google Login failed.");
+            setGoogleLoading(false);
+        }
+    };
+
+    const handleCompleteOnboarding = async (role: 'seeker' | 'expert') => {
+        if (!onboardingUser) return;
+        setError("");
+        setGoogleLoading(true);
+        setGoogleLoadingText("Creating your visa profile...");
+        try {
+            const response = await fetch("/api/auth/google/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: onboardingUser.email,
+                    name: onboardingUser.name,
+                    uid: onboardingUser.uid,
+                    role: role
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                    
+                    if (data.user && data.user.rawUser) {
+                        const raw = data.user.rawUser;
+                        if (role === "seeker") {
+                            localStorage.setItem("seeker_firstName", raw.first_name || "Seeker");
+                            localStorage.setItem("seeker_lastName", raw.last_name || "");
+                            localStorage.setItem("seeker_email", raw.email);
+                            localStorage.setItem("seeker_passportCountry", raw.passport_country || "");
+                            localStorage.setItem("seeker_goals", typeof raw.goals === "string" ? raw.goals : JSON.stringify(raw.goals || []));
+                            localStorage.setItem("seeker_destinations", typeof raw.destinations === "string" ? raw.destinations : JSON.stringify(raw.destinations || []));
+                        } else {
+                            localStorage.setItem("expert_businessName", raw.business_name || "Expert");
+                            localStorage.setItem("expert_email", raw.email);
+                            localStorage.setItem("expert_isLoggedIn", "true");
+                        }
+                    }
+                }
+
+                setGoogleLoadingText("Profile initialized! Opening dashboard...");
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                if (role === "expert") {
+                    window.location.href = "/consultant/dashboard";
+                } else {
+                    window.location.href = "/dashboard";
+                }
+            } else {
+                const errData = await response.json();
+                setError(errData.message || "Failed to complete role registration.");
+                setGoogleLoading(false);
+            }
+        } catch (err: any) {
+            setError(err.message || "An error occurred.");
             setGoogleLoading(false);
         }
     };
@@ -85,6 +153,74 @@ function LoginPortalContent() {
             setLoading(false);
         }
     };
+    if (onboardingUser) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-gray-50/50 font-opensans relative">
+                {googleLoading && (
+                    <div className="absolute inset-0 bg-white/80 backdrop-blur-md flex flex-col items-center justify-center z-[9999] transition-all duration-300">
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
+                            <p className="text-sm font-bold text-black font-opensans tracking-wide animate-pulse">
+                                {googleLoadingText}
+                            </p>
+                        </div>
+                    </div>
+                )}
+                
+                <div className="w-full max-w-3xl text-center">
+                    <h1 className="text-4xl md:text-5xl font-black text-black tracking-tight mb-2">
+                        I want to join as
+                    </h1>
+                    <p className="text-slate-500 text-lg font-medium mb-12">
+                        Select your role to get started with VisaFormula
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                        {/* Seeker Card */}
+                        <div className="bg-white border-2 border-black rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all flex flex-col items-center">
+                            <div className="w-24 h-24 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mb-6">
+                                <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <h2 className="text-2xl font-black text-black mb-2">Visa Seeker</h2>
+                            <p className="text-sm text-slate-500 font-semibold mb-8 text-center min-h-[40px]">
+                                Find, consult & book immigration experts
+                            </p>
+                            <button
+                                onClick={() => handleCompleteOnboarding('seeker')}
+                                className="w-full py-4 bg-black text-white hover:bg-slate-900 rounded-xl font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 group cursor-pointer"
+                            >
+                                <span>Register as Seeker</span>
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </button>
+                        </div>
+
+                        {/* Expert Card */}
+                        <div className="bg-white border-2 border-black rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all flex flex-col items-center">
+                            <div className="w-24 h-24 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mb-6">
+                                <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <h2 className="text-2xl font-black text-black mb-2">Visa Expert</h2>
+                            <p className="text-sm text-slate-500 font-semibold mb-8 text-center min-h-[40px]">
+                                Grow your global client consulting practice
+                            </p>
+                            <button
+                                onClick={() => handleCompleteOnboarding('expert')}
+                                className="w-full py-4 bg-black text-white hover:bg-slate-900 rounded-xl font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 group cursor-pointer"
+                            >
+                                <span>Register as Expert</span>
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-gray-50/50 font-opensans relative">
             {googleLoading && (

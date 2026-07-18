@@ -172,6 +172,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             if (response.ok) {
                 const data = await response.json();
+                if (data.status === 'needs_role') {
+                    return data;
+                }
                 setUser(data.user);
                 if (typeof window !== "undefined") {
                     localStorage.setItem("visaformula_user", JSON.stringify(data.user));

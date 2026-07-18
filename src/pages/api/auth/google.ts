@@ -34,44 +34,17 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // 3. Auto-Register as Seeker if user is brand new (Deferred Onboarding)
+    // 3. Return role onboarding prompt status if user is brand new
     if (!user) {
-      const names = (name || 'Google User').split(' ');
-      const firstName = names[0];
-      const lastName = names.slice(1).join(' ') || '';
-
-      const insertRes = await pool.query(`
-        INSERT INTO seekers (first_name, last_name, email, password_hash, phone, passport_country, goals, destinations)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-        RETURNING *;
-      `, [
-        firstName,
-        lastName,
-        email,
-        '', // No password hash for OAuth
-        '',
-        '',
-        '[]',
-        '[]'
-      ]);
-      user = insertRes.rows[0];
-      type = 'seeker';
-
-      // Trigger Welcome Email for new Google Seeker
-      try {
-        const { sendEmailWithRetry } = await import('../../../lib/mail');
-        const { generateWelcomeHtml } = await import('../../../emails/WelcomeEmail');
-        
-        const html = generateWelcomeHtml({ firstName, displayName: name || 'Google User' });
-        await sendEmailWithRetry({
-          from: `"Visa Formula" <noreply@visaformula.com>`,
-          to: email,
-          subject: `Welcome to Visa Formula 👋`,
-          html: html
-        });
-      } catch (emailErr) {
-        console.error('Welcome email failed for new Google user:', emailErr);
-      }
+      return new Response(JSON.stringify({
+        status: 'needs_role',
+        email: email,
+        name: name,
+        uid: uid
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     // 4. Create Session

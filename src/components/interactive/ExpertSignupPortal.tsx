@@ -5,7 +5,7 @@ import {
   MessageSquare, Briefcase, Mail, Phone, ExternalLink, 
   Percent, Award, Image as ImageIcon, Sparkles, Building, 
   CreditCard, Settings, ChevronRight, LayoutDashboard, Search, 
-  Calendar, LogOut, CheckSquare, TrendingUp, Bookmark, Bell, Clock, ChevronDown
+  Calendar, LogOut, CheckSquare, TrendingUp, Bookmark, Bell, Clock, ChevronDown, AlertTriangle
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import airplanePaths from "../../data/clean_airplane.json";
@@ -1196,7 +1196,20 @@ function ExpertSignupPortalContent() {
             </header>
 
             {activeTab === "dashboard" ? (
-              <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+              <div className="space-y-8">
+                {(!aboutMe || !contactNumber || (!expertAddress && !officeAddress)) && (
+                  <div className="bg-amber-50 border border-amber-250/60 rounded-3xl p-5 flex items-start gap-4 shadow-sm animate-premium-fade">
+                    <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs font-bold text-amber-900 tracking-wider">Your Profile is Incomplete</h4>
+                      <p className="text-[11px] font-semibold text-amber-700 mt-1">
+                        Please complete your advisor category, contact number, and office details under the <button onClick={() => setActiveTab("profile")} className="font-extrabold underline hover:text-amber-900 cursor-pointer">Edit Profile</button> tab to complete your setup.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
                 
                 {/* Column 1: Applicant Inquiries (styled as My Tasks mockup) */}
                 <div className="xl:col-span-1 bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
@@ -1462,6 +1475,7 @@ function ExpertSignupPortalContent() {
                 </div>
 
               </div>
+            </div>
             ) : activeTab === "profile" ? (
               <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-8 animate-premium-fade">
                 <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 tracking-wide">

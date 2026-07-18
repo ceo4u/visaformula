@@ -382,7 +382,7 @@ function LoginPortalContent() {
                                             Remember me
                                         </span>
                                     </label>
-                                    <a href="#" className="text-xs font-bold text-black hover:underline font-opensans">
+                                    <a href="/forgot-password" className="text-xs font-bold text-black hover:underline font-opensans">
                                         Forgot password?
                                     </a>
                                 </div>

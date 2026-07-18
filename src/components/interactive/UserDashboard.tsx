@@ -293,9 +293,9 @@ export function UserDashboard() {
                         </div>
                         <button
                             onClick={() => setShowProfileModal(true)}
-                            className="bg-black hover:bg-neutral-900 text-white font-extrabold text-[10px] tracking-wider px-4.5 py-2 rounded-xl transition-all shadow-sm shrink-0"
+                            className="bg-black hover:bg-neutral-900 text-white font-extrabold text-[10px] tracking-wider px-6 py-2.5 rounded-full transition-all shadow-sm shrink-0 uppercase cursor-pointer hover:scale-[1.02] active:scale-95 duration-200"
                         >
-                            Complete Profile
+                            Complete
                         </button>
                     </div>
                 )}

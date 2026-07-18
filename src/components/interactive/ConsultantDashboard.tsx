@@ -1,37 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, Menu, Briefcase, Calendar } from "lucide-react";
 
 const stats = [
-    { label: "Total Earnings", value: "₹4,85,000", icon: DollarSign, change: "+12%", color: "text-emerald-600 bg-emerald-50" },
-    { label: "Active Clients", value: "18", icon: Users, change: "+3", color: "text-red-600 bg-red-50" },
-    { label: "Completed Visas", value: "142", icon: CheckCircle, change: "+8", color: "text-violet-600 bg-violet-50" },
-    { label: "This Month", value: "₹62,500", icon: TrendingUp, change: "+22%", color: "text-red-600 bg-red-50" },
+    { label: "Total Earnings", value: "₹0", icon: DollarSign, change: "0%", color: "text-emerald-600 bg-emerald-50" },
+    { label: "Active Clients", value: "0", icon: Users, change: "0", color: "text-red-600 bg-red-50" },
+    { label: "Completed Visas", value: "0", icon: CheckCircle, change: "0", color: "text-violet-600 bg-violet-50" },
+    { label: "This Month", value: "₹0", icon: TrendingUp, change: "0%", color: "text-red-600 bg-red-50" },
 ];
 
-const columns = [
+interface CardItem {
+    name: string;
+    visa: string;
+    days: number;
+    urgent: boolean;
+}
+
+interface Column {
+    id: string;
+    title: string;
+    color: string;
+    cards: CardItem[];
+}
+
+const columns: Column[] = [
     {
-        id: "new", title: "New Requests", color: "border-red-200", cards: [
-            { name: "Priya Sharma", visa: "Express Entry", days: 1, urgent: false },
-            { name: "Rahul Verma", visa: "H-1B Transfer", days: 0, urgent: true },
-        ]
+        id: "new", title: "New Requests", color: "border-red-200", cards: []
     },
     {
-        id: "waiting", title: "Waiting on Client", color: "border-slate-200", cards: [
-            { name: "Ananya Patel", visa: "UK Student", days: 3, urgent: false },
-        ]
+        id: "waiting", title: "Waiting on Client", color: "border-slate-200", cards: []
     },
     {
-        id: "processing", title: "Processing", color: "border-red-100", cards: [
-            { name: "Deepak Kumar", visa: "Australia PR", days: 5, urgent: false },
-            { name: "Fatima Ali", visa: "Canada Study", days: 7, urgent: false },
-            { name: "Arjun Nair", visa: "Germany JSV", days: 2, urgent: false },
-        ]
+        id: "processing", title: "Processing", color: "border-red-100", cards: []
     },
     {
-        id: "completed", title: "Completed", color: "border-emerald-250", cards: [
-            { name: "Meera Joshi", visa: "Canada PR", days: 0, urgent: false },
-            { name: "Vikram Singh", visa: "US B-1 Visa", days: 0, urgent: false },
-        ]
+        id: "completed", title: "Completed", color: "border-emerald-250", cards: []
     },
 ];
 
@@ -62,25 +64,71 @@ export function ConsultantDashboard() {
 
     // Profile Settings States
     const [profile, setProfile] = useState({
-        name: "Marcus Thorne, JD",
-        role: "Immigration Attorney",
-        city: "Hyderabad",
-        experience: 15,
-        bio: "Immigration attorney with 15+ years of experience helping individuals, families, and corporations successfully navigate visa applications, PR pathways, and citizenship applications globally.",
-        specializations: "H-1B, L-1, EB-1, Express Entry",
-        countries: "USA, Canada",
-        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face"
+        name: "Immigration Expert",
+        role: "Registered Consultant",
+        city: "",
+        experience: 5,
+        bio: "",
+        specializations: "Visa Applications",
+        countries: "",
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face"
     });
 
     // Temp Form States for Modal
-    const [formName, setFormName] = useState(profile.name);
-    const [formRole, setFormRole] = useState(profile.role);
-    const [formCity, setFormCity] = useState(profile.city);
-    const [formExperience, setFormExperience] = useState(profile.experience);
-    const [formBio, setFormBio] = useState(profile.bio);
-    const [formSpecs, setFormSpecs] = useState(profile.specializations);
-    const [formCountries, setFormCountries] = useState(profile.countries);
-    const [formImage, setFormImage] = useState(profile.image);
+    const [formName, setFormName] = useState("");
+    const [formRole, setFormRole] = useState("");
+    const [formCity, setFormCity] = useState("");
+    const [formExperience, setFormExperience] = useState(5);
+    const [formBio, setFormBio] = useState("");
+    const [formSpecs, setFormSpecs] = useState("");
+    const [formCountries, setFormCountries] = useState("");
+    const [formImage, setFormImage] = useState("");
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const firstName = localStorage.getItem("expert_firstName") || "";
+            const lastName = localStorage.getItem("expert_lastName") || "";
+            const storedName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "";
+            const bizName = localStorage.getItem("expert_businessName") || "";
+            const finalName = storedName || bizName || "Immigration Expert";
+            const role = localStorage.getItem("expert_advisorType") || "Registered Consultant";
+            const city = localStorage.getItem("expert_officeAddress") || "";
+            const bio = localStorage.getItem("expert_aboutMe") || "";
+            const image = localStorage.getItem("expert_profilePhoto") || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face";
+            
+            const loadedSpecs = (() => {
+                try {
+                    const tags = localStorage.getItem("expert_expertiseTags");
+                    if (tags) {
+                        const parsed = JSON.parse(tags);
+                        if (Array.isArray(parsed)) return parsed.join(", ");
+                    }
+                } catch(e) {}
+                return "";
+            })() || "Visa Applications";
+
+            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "";
+
+            setProfile({
+                name: finalName,
+                role: role,
+                city: city,
+                experience: 5,
+                bio: bio,
+                specializations: loadedSpecs,
+                countries: loadedCountries,
+                image: image
+            });
+
+            setFormName(finalName);
+            setFormRole(role);
+            setFormCity(city);
+            setFormBio(bio);
+            setFormSpecs(loadedSpecs);
+            setFormCountries(loadedCountries);
+            setFormImage(image);
+        }
+    }, []);
 
     const toggleSlot = (key: string) => {
         setAvailability(prev => ({ ...prev, [key]: !prev[key] }));

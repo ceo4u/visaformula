@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, User, Upload, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../providers/auth-provider";
 import airplanePaths from "../../data/clean_airplane.json";
 import checkmarkPaths from "../../data/clean_checkmark.json";
 
@@ -47,6 +48,58 @@ export function SeekerSignupPortal() {
     const [validationError, setValidationError] = useState("");
     const [countryCodeOpen, setCountryCodeOpen] = useState(false);
 
+    const { signInWithGoogle } = useAuth();
+    const [googleLoading, setGoogleLoading] = useState(false);
+    const [googleLoadingText, setGoogleLoadingText] = useState("");
+
+    const handleGoogleSignup = async () => {
+        setValidationError("");
+        setGoogleLoading(true);
+        setGoogleLoadingText("Connecting to Google Auth...");
+        try {
+            const res = await signInWithGoogle();
+            
+            // If user is brand new (needs_role), immediately auto-register them as a Seeker!
+            if (res && res.status === 'needs_role') {
+                setGoogleLoadingText("Initializing your seeker profile...");
+                const response = await fetch("/api/auth/google/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: res.email,
+                        name: res.name,
+                        uid: res.uid,
+                        role: 'seeker'
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (typeof window !== "undefined") {
+                        localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                        if (data.user && data.user.rawUser) {
+                            const raw = data.user.rawUser;
+                            localStorage.setItem("seeker_firstName", raw.first_name || "Seeker");
+                            localStorage.setItem("seeker_lastName", raw.last_name || "");
+                            localStorage.setItem("seeker_email", raw.email);
+                            localStorage.setItem("seeker_passportCountry", raw.passport_country || "");
+                        }
+                    }
+                } else {
+                    const errData = await response.json();
+                    throw new Error(errData.message || "Failed to register seeker profile.");
+                }
+            }
+
+            setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
+            await new Promise(resolve => setTimeout(resolve, 800));
+            window.location.href = "/dashboard";
+        } catch (e: any) {
+            setValidationError(e.message || "Google signup failed.");
+            setGoogleLoading(false);
+        }
+    };
+
     const toggleItem = (id: string, list: string[], setList: (l: string[]) => void) => {
         setList(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
     };
@@ -81,9 +134,19 @@ export function SeekerSignupPortal() {
     }
 
     return (
-        <div className="min-h-screen text-[#111111] font-sora flex flex-col justify-between selection:bg-black selection:text-white bg-white" style={{ 
+        <div className="min-h-screen text-[#111111] font-sora flex flex-col justify-between selection:bg-black selection:text-white bg-white relative" style={{ 
             fontFamily: "'Plus Jakarta Sans', sans-serif"
         }}>
+            {googleLoading && (
+                <div className="absolute inset-0 bg-white/80 backdrop-blur-md flex flex-col items-center justify-center z-[9999] transition-all duration-300">
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
+                        <p className="text-sm font-bold text-black tracking-wide animate-pulse">
+                            {googleLoadingText}
+                        </p>
+                    </div>
+                </div>
+            )}
             <style dangerouslySetInnerHTML={{__html: `
                 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
                 .font-sora, .font-sora *, body, html {
@@ -181,6 +244,25 @@ export function SeekerSignupPortal() {
                             setValidationError("");
                             setStep(2);
                         }} className="space-y-4">
+                            <div className="flex flex-col items-center gap-4 mb-6">
+                                <button
+                                    type="button"
+                                    onClick={handleGoogleSignup}
+                                    className="w-full max-w-[280px] h-12 border border-slate-200 bg-white hover:bg-slate-50 transition-all text-black font-bold text-xs rounded-xl flex items-center justify-center gap-2.5 shadow-sm shrink-0 cursor-pointer"
+                                >
+                                    <svg className="w-4 h-4" viewBox="0 0 24 24">
+                                        <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.41 0-6.19-2.78-6.19-6.19s2.78-6.19 6.19-6.19c1.7 0 3.2.69 4.2 1.8l3.2-3.2C19.2 2.385 15.9 1 12.24 1 6.04 1 1.04 6 1.04 12.2s5 11.2 11.2 11.2c6.2 0 11.2-5 11.2-11.2 0-.8-.1-1.6-.2-2.315H12.24z" />
+                                    </svg>
+                                    <span>Continue with Google</span>
+                                </button>
+
+                                <div className="flex items-center justify-center gap-3 w-full max-w-[280px] my-1">
+                                    <div className="h-[1px] bg-slate-200 flex-grow" />
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">— OR —</span>
+                                    <div className="h-[1px] bg-slate-200 flex-grow" />
+                                </div>
+                            </div>
+
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="col-span-1">
                                     <input 
@@ -365,15 +447,14 @@ export function SeekerSignupPortal() {
                                      {validationError}
                                  </div>
                              )}
-
                              <div className="pt-8 flex justify-center">
-                                 <button 
-                                     type="submit"
-                                     className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
-                                 >
-                                     Continue
-                                 </button>
-                             </div>
+                                  <button 
+                                      type="submit"
+                                      className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+                                  >
+                                      Continue
+                                  </button>
+                              </div>              
                         </form>
                     )}
 

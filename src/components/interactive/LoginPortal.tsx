@@ -22,7 +22,7 @@ function LoginPortalContent() {
             setGoogleLoadingText("Authenticated! Setting up your workspace...");
             
             // Premium transition delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            await new Promise(resolve => setTimeout(resolve, 500));
             
             const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
             if (userStr) {

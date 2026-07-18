@@ -828,8 +828,33 @@ export function UserDashboard() {
 
                         {/* Modal Form Content */}
                         <form
-                            onSubmit={(e) => {
+                            onSubmit={async (e) => {
                                 e.preventDefault();
+                                try {
+                                    const response = await fetch("/api/profile/update", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({
+                                            email: email || localStorage.getItem("seeker_email"),
+                                            role: 'seeker',
+                                            first_name: modalFirstName,
+                                            last_name: modalLastName,
+                                            phone: modalPhone,
+                                            passport_country: modalPassportCountry,
+                                            resident_of: modalResidentOf
+                                        })
+                                    });
+
+                                    if (response.ok) {
+                                        const data = await response.json();
+                                        if (data.user) {
+                                            localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                                        }
+                                    }
+                                } catch (err) {
+                                    console.error("Failed to save profile on backend:", err);
+                                }
+
                                 setFirstName(modalFirstName);
                                 setLastName(modalLastName);
                                 setPhone(modalPhone);

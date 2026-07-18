@@ -40,13 +40,81 @@ function SeekerSignupPortalContent() {
 
     // Email Verification States
     const [email, setEmail] = useState("");
-    const [otp, setOtp] = useState("");
     const [otpSent, setOtpSent] = useState(false);
-    const [emailVerified, setEmailVerified] = useState(true);
+    const [emailVerified, setEmailVerified] = useState(false); // must verify
     const [verificationError, setVerificationError] = useState("");
     const [countryCode, setCountryCode] = useState("+91");
     const [validationError, setValidationError] = useState("");
     const [countryCodeOpen, setCountryCodeOpen] = useState(false);
+    const [lookingFor, setLookingFor] = useState("");
+    const [lookingForOpen, setLookingForOpen] = useState(false);
+
+    const [otpDigits, setOtpDigits] = useState<string[]>(Array(6).fill(""));
+    const [resendCooldown, setResendCooldown] = useState(0);
+    const [sendingCode, setSendingCode] = useState(false);
+
+    const handleSendVerificationCode = async () => {
+        setValidationError("");
+        setVerificationError("");
+        if (!email) {
+            setValidationError("Please enter your email address first.");
+            return;
+        }
+        setSendingCode(true);
+        try {
+            const res = await fetch("/api/auth/send-verification-code", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setOtpSent(true);
+                setResendCooldown(60);
+            } else {
+                setValidationError(data.message || "Failed to send verification code.");
+            }
+        } catch (err) {
+            setValidationError("Server connection error. Please try again.");
+        } finally {
+            setSendingCode(false);
+        }
+    };
+
+    const handleVerifyCode = async () => {
+        setVerificationError("");
+        const code = otpDigits.join("");
+        if (code.length < 6) {
+            setVerificationError("Please enter all 6 digits of the code.");
+            return;
+        }
+        try {
+            const res = await fetch("/api/auth/verify-email-code", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, otp: code })
+            });
+            const data = await res.json();
+            if (res.ok && data.verified) {
+                setOtpSent(false);
+                setEmailVerified(true);
+            } else {
+                setVerificationError(data.message || "Invalid or expired verification code.");
+            }
+        } catch (err) {
+            setVerificationError("Failed to verify code. Please try again.");
+        }
+    };
+
+    useEffect(() => {
+        let timer: any;
+        if (resendCooldown > 0) {
+            timer = setInterval(() => {
+                setResendCooldown((prev) => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [resendCooldown]);
 
     const { signInWithGoogle } = useAuth();
     const [googleLoading, setGoogleLoading] = useState(false);
@@ -241,6 +309,11 @@ function SeekerSignupPortalContent() {
                                 return;
                             }
 
+                            if (!emailVerified) {
+                                setValidationError("Please verify your email address with the OTP code first.");
+                                return;
+                            }
+
                             setValidationError("");
                             setStep(2);
                         }} className="space-y-4">
@@ -290,16 +363,82 @@ function SeekerSignupPortalContent() {
                                     />
                                 </div>
 
-                                <div className="col-span-2">
+                                <div className="col-span-2 space-y-2">
                                     <input 
                                         type="email" 
                                         required
                                         placeholder="Email address" 
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e) => {
+                                            setEmail(e.target.value);
+                                            setEmailVerified(false);
+                                        }}
                                         style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                                         className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                                     />
+                                    {!emailVerified ? (
+                                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 font-sans">
+                                            <div className="flex items-center justify-between gap-4">
+                                                <span className="text-xs font-semibold text-slate-600">Please verify your email address to register.</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={handleSendVerificationCode}
+                                                    disabled={sendingCode || resendCooldown > 0}
+                                                    className="bg-black text-white text-[10px] font-bold tracking-wider px-4 py-2 rounded-xl hover:bg-neutral-900 transition-all uppercase cursor-pointer disabled:bg-slate-200 disabled:text-slate-400"
+                                                >
+                                                    {resendCooldown > 0 ? `Resend (${resendCooldown}s)` : otpSent ? "Resend OTP" : "Send OTP"}
+                                                </button>
+                                            </div>
+
+                                            {otpSent && (
+                                                <div className="space-y-3 pt-2.5 border-t border-slate-250/60">
+                                                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Enter 6-digit OTP code</div>
+                                                    <div className="flex gap-2 justify-center">
+                                                        {[0, 1, 2, 3, 4, 5].map((index) => (
+                                                            <input
+                                                                key={index}
+                                                                id={`otp-${index}`}
+                                                                type="text"
+                                                                maxLength={1}
+                                                                value={otpDigits[index] || ""}
+                                                                onChange={(e) => {
+                                                                    const val = e.target.value;
+                                                                    const newDigits = [...otpDigits];
+                                                                    newDigits[index] = val;
+                                                                    setOtpDigits(newDigits);
+                                                                    if (val && index < 5) {
+                                                                        const nextInput = document.getElementById(`otp-${index + 1}`);
+                                                                        if (nextInput) nextInput.focus();
+                                                                    }
+                                                                }}
+                                                                onKeyDown={(e) => {
+                                                                    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+                                                                        const prevInput = document.getElementById(`otp-${index - 1}`);
+                                                                        if (prevInput) prevInput.focus();
+                                                                    }
+                                                                }}
+                                                                className="w-10 h-12 bg-white border border-slate-300 rounded-xl text-center font-bold text-base text-black focus:border-black outline-none transition-all shadow-sm"
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                    {verificationError && (
+                                                        <p className="text-[10px] text-rose-600 font-semibold">{verificationError}</p>
+                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleVerifyCode}
+                                                        className="w-full bg-black text-white font-extrabold text-[10px] tracking-wider py-2.5 rounded-xl uppercase transition-all shadow-sm cursor-pointer hover:bg-neutral-900"
+                                                    >
+                                                        Confirm & Verify Code
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold px-1 py-0.5">
+                                            <span>✅</span> Email verified and secured!
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="col-span-2">
@@ -443,6 +582,33 @@ function SeekerSignupPortalContent() {
                                          />
                                      </div>
                                  </div>
+
+                                  <div className="col-span-2 space-y-2">
+                                      <label className="text-sm font-semibold text-slate-700 block">I want help with*</label>
+                                      <div className="relative">
+                                          <button
+                                              type="button"
+                                              onClick={() => { setLookingForOpen(!lookingForOpen); setCitizenshipOpen(false); setResidenceOpen(false); }}
+                                              className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm text-left flex justify-between items-center cursor-pointer font-semibold h-[58px]"
+                                          >
+                                              <span>{lookingFor || "Select a service"}</span>
+                                              <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                          </button>
+                                          {lookingForOpen && (
+                                              <div className="absolute z-50 w-full mt-1 bg-white border border-slate-250 rounded-xl shadow-xl max-h-60 overflow-y-auto">
+                                                  {["Visitor Visa", "Student Visa", "Work Visa", "Permanent Residence", "Citizenship", "Visa Appeal"].map(opt => (
+                                                      <div
+                                                          key={opt}
+                                                          onClick={() => { setLookingFor(opt); setLookingForOpen(false); }}
+                                                          className="px-5 py-3 text-base text-black hover:bg-black hover:text-white cursor-pointer transition-colors"
+                                                      >
+                                                          {opt}
+                                                      </div>
+                                                  ))}
+                                              </div>
+                                          )}
+                                      </div>
+                                  </div>
                              </div>
 
                              {validationError && (
@@ -579,9 +745,10 @@ function SeekerSignupPortalContent() {
                                                     phone: `${countryCode} ${phone}`,
                                                     country_of_citizenship: countryOfCitizenship,
                                                     resident_of: residentOf,
-                                                    passport_country: countryOfCitizenship, // legacy fallback
+                                                    passport_country: countryOfCitizenship,
                                                     goals: selectedGoals,
-                                                    destinations: selectedDests
+                                                    destinations: selectedDests,
+                                                    looking_for: lookingFor
                                                 })
                                             });
                                             if (!response.ok) {
@@ -603,6 +770,7 @@ function SeekerSignupPortalContent() {
                                         localStorage.setItem("seeker_passportCountry", countryOfCitizenship); // legacy fallback
                                         localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
                                         localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
+                                        localStorage.setItem("seeker_looking_for", lookingFor);
                                         if (typeof window !== "undefined") {
                                             window.scrollTo({ top: 0, behavior: "instant" });
                                         }

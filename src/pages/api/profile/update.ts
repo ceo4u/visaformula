@@ -6,7 +6,7 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { email, role, first_name, last_name, phone, passport_country, resident_of } = body;
+    const { email, role, first_name, last_name, phone, passport_country, resident_of, looking_for } = body;
 
     if (!email) {
       return new Response(JSON.stringify({ status: 'error', message: 'Email is required to update profile.' }), {
@@ -30,9 +30,9 @@ export const POST: APIRoute = async ({ request }) => {
       // Update seeker
       await pool.query(
         `UPDATE seekers 
-         SET first_name = $1, last_name = $2, phone = $3, passport_country = $4, resident_of = $5 
-         WHERE LOWER(email) = LOWER($6)`,
-        [first_name, last_name, phone, passport_country, resident_of, email]
+         SET first_name = $1, last_name = $2, phone = $3, passport_country = $4, resident_of = $5, looking_for = $6 
+         WHERE LOWER(email) = LOWER($7)`,
+        [first_name, last_name, phone, passport_country, resident_of, looking_for, email]
       );
     }
 

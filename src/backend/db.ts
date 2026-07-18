@@ -71,6 +71,10 @@ export async function runMigrations() {
     );
   `);
 
+  await p.query(`
+    ALTER TABLE seekers ADD COLUMN IF NOT EXISTS looking_for VARCHAR(100);
+  `);
+
   // 2. Experts Table
   await p.query(`
     CREATE TABLE IF NOT EXISTS experts (

@@ -68,10 +68,74 @@ function ExpertSignupPortalContent() {
   }, []);
   const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
-  const [emailVerified, setEmailVerified] = useState(true);
+  const [emailVerified, setEmailVerified] = useState(false); // must verify
   const [verifyingEmail, setVerifyingEmail] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
-  const [otpValue, setOtpValue] = useState("");
+  const [otpDigits, setOtpDigits] = useState<string[]>(Array(6).fill(""));
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [sendingCode, setSendingCode] = useState(false);
+
+  const handleSendVerificationCode = async () => {
+    setValidationError("");
+    if (!email) {
+      setValidationError("Please enter your email address first.");
+      return;
+    }
+    setSendingCode(true);
+    try {
+      const res = await fetch("/api/auth/send-verification-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setOtpSent(true);
+        setResendCooldown(60);
+      } else {
+        setValidationError(data.message || "Failed to send verification code.");
+      }
+    } catch (err) {
+      setValidationError("Server connection error. Please try again.");
+    } finally {
+      setSendingCode(false);
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    setValidationError("");
+    const code = otpDigits.join("");
+    if (code.length < 6) {
+      setValidationError("Please enter all 6 digits of the code.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/auth/verify-email-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp: code })
+      });
+      const data = await res.json();
+      if (res.ok && data.verified) {
+        setOtpSent(false);
+        setEmailVerified(true);
+      } else {
+        setValidationError(data.message || "Invalid or expired verification code.");
+      }
+    } catch (err) {
+      setValidationError("Failed to verify code. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    let timer: any;
+    if (resendCooldown > 0) {
+      timer = setInterval(() => {
+        setResendCooldown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
   const [facebookLink, setFacebookLink] = useState("");
   const [linkedinLink, setLinkedinLink] = useState("");
   const [password, setPassword] = useState("");
@@ -240,6 +304,11 @@ function ExpertSignupPortalContent() {
 
     if (password !== confirmPassword) {
       setValidationError("Passwords do not match. Please verify your password entry.");
+      return;
+    }
+
+    if (!emailVerified) {
+      setValidationError("Please verify your email address with the OTP code first.");
       return;
     }
 
@@ -518,16 +587,79 @@ function ExpertSignupPortalContent() {
                     />
                   </div>
 
-                  <div className="col-span-2">
+                   <div className="col-span-2 space-y-2">
                     <input 
                       type="email"
                       required
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setEmailVerified(false);
+                      }}
                       placeholder="Email address" 
                       style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                       className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                     />
+                    {!emailVerified ? (
+                      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 font-sans text-black">
+                        <div className="flex items-center justify-between gap-4">
+                          <span className="text-xs font-semibold text-slate-600">Please verify your email address to register.</span>
+                          <button
+                            type="button"
+                            onClick={handleSendVerificationCode}
+                            disabled={sendingCode || resendCooldown > 0}
+                            className="bg-black text-white text-[10px] font-bold tracking-wider px-4 py-2 rounded-xl hover:bg-neutral-900 transition-all uppercase cursor-pointer disabled:bg-slate-200 disabled:text-slate-400"
+                          >
+                            {resendCooldown > 0 ? `Resend (${resendCooldown}s)` : otpSent ? "Resend OTP" : "Send OTP"}
+                          </button>
+                        </div>
+
+                        {otpSent && (
+                          <div className="space-y-3 pt-2.5 border-t border-slate-250/60">
+                            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Enter 6-digit OTP code</div>
+                            <div className="flex gap-2 justify-center">
+                              {[0, 1, 2, 3, 4, 5].map((index) => (
+                                <input
+                                  key={index}
+                                  id={`otp-${index}`}
+                                  type="text"
+                                  maxLength={1}
+                                  value={otpDigits[index] || ""}
+                                  onChange={(e) => {
+                                    const val = e.target.value;
+                                    const newDigits = [...otpDigits];
+                                    newDigits[index] = val;
+                                    setOtpDigits(newDigits);
+                                    if (val && index < 5) {
+                                      const nextInput = document.getElementById(`otp-${index + 1}`);
+                                      if (nextInput) nextInput.focus();
+                                    }
+                                  }}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+                                      const prevInput = document.getElementById(`otp-${index - 1}`);
+                                      if (prevInput) prevInput.focus();
+                                    }
+                                  }}
+                                  className="w-10 h-12 bg-white border border-slate-300 rounded-xl text-center font-bold text-base text-black focus:border-black outline-none transition-all shadow-sm"
+                                />
+                              ))}
+                            </div>
+                            <button
+                              type="button"
+                              onClick={handleVerifyCode}
+                              className="w-full bg-black text-white font-extrabold text-[10px] tracking-wider py-2.5 rounded-xl uppercase transition-all shadow-sm cursor-pointer hover:bg-neutral-900"
+                            >
+                              Confirm & Verify Code
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold px-1 py-0.5">
+                        <span>✅</span> Email verified and secured!
+                      </div>
+                    )}
                   </div>
 
                   <div className="col-span-2 md:col-span-1" onClick={(e) => e.stopPropagation()}>

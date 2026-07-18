@@ -6,7 +6,7 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { first_name, last_name, email, password, phone, passport_country, goals, destinations } = body;
+    const { first_name, last_name, email, password, phone, passport_country, goals, destinations, looking_for } = body;
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email || !emailRegex.test(email)) {
@@ -33,10 +33,10 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Insert seeker record
     await pool.query(`
-      INSERT INTO seekers (first_name, last_name, email, password_hash, phone, passport_country, goals, destinations)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO seekers (first_name, last_name, email, password_hash, phone, passport_country, goals, destinations, looking_for)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       ON CONFLICT (email) DO UPDATE 
-      SET first_name = $1, last_name = $2, phone = $5, passport_country = $6, goals = $7, destinations = $8;
+      SET first_name = $1, last_name = $2, phone = $5, passport_country = $6, goals = $7, destinations = $8, looking_for = $9;
     `, [
       first_name, 
       last_name, 
@@ -45,7 +45,8 @@ export const POST: APIRoute = async ({ request }) => {
       phone, 
       passport_country, 
       JSON.stringify(goals || []), 
-      JSON.stringify(destinations || [])
+      JSON.stringify(destinations || []),
+      looking_for || ''
     ]);
 
     if (isNew) {

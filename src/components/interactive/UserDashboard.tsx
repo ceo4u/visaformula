@@ -96,6 +96,11 @@ export function UserDashboard() {
             setModalResidentOf(savedResidence);
         }
 
+        const savedLookingFor = localStorage.getItem("seeker_looking_for");
+        if (savedLookingFor) {
+            setModalLookingFor(savedLookingFor);
+        }
+
         try {
             const savedGoals = localStorage.getItem("seeker_goals");
             if (savedGoals) setSelectedGoals(JSON.parse(savedGoals));
@@ -112,6 +117,8 @@ export function UserDashboard() {
     const [modalPhone, setModalPhone] = useState("");
     const [modalPassportCountry, setModalPassportCountry] = useState("");
     const [modalResidentOf, setModalResidentOf] = useState("");
+    const [modalLookingFor, setModalLookingFor] = useState("");
+    const [modalLookingForOpen, setModalLookingForOpen] = useState(false);
 
     const [citizenshipOpen, setCitizenshipOpen] = useState(false);
     const [residenceOpen, setResidenceOpen] = useState(false);
@@ -862,7 +869,8 @@ export function UserDashboard() {
                                             last_name: modalLastName,
                                             phone: fullPhone,
                                             passport_country: modalPassportCountry,
-                                            resident_of: modalResidentOf
+                                            resident_of: modalResidentOf,
+                                            looking_for: modalLookingFor
                                         })
                                     });
 
@@ -891,6 +899,7 @@ export function UserDashboard() {
                                 localStorage.setItem("seeker_passportCountry", modalPassportCountry);
                                 localStorage.setItem("seeker_resident_of", modalResidentOf);
                                 localStorage.setItem("seeker_country_of_citizenship", modalPassportCountry);
+                                localStorage.setItem("seeker_looking_for", modalLookingFor);
                             }}
                             className="space-y-6"
                         >
@@ -1024,6 +1033,31 @@ export function UserDashboard() {
                                         </div>
                                     )}
                                 </div>
+                            </div>
+
+                            <div className="space-y-1.5 relative">
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">I want help with*</label>
+                                <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); setModalLookingForOpen(!modalLookingForOpen); setCitizenshipOpen(false); setResidenceOpen(false); }}
+                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black text-black shadow-sm text-left flex justify-between items-center cursor-pointer font-semibold h-[46px]"
+                                >
+                                    <span>{modalLookingFor || "Select a service"}</span>
+                                    <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                </button>
+                                {modalLookingForOpen && (
+                                    <div className="absolute z-[70] w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+                                        {["Visitor Visa", "Student Visa", "Work Visa", "Permanent Residence", "Citizenship", "Visa Appeal"].map(opt => (
+                                            <div
+                                                key={opt}
+                                                onClick={() => { setModalLookingFor(opt); setModalLookingForOpen(false); }}
+                                                className="px-4 py-2.5 text-xs text-black font-semibold hover:bg-black hover:text-white cursor-pointer transition-colors"
+                                            >
+                                                {opt}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="pt-4 border-t border-slate-100 flex justify-end">

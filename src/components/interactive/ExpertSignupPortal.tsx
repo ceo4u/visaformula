@@ -1830,11 +1830,10 @@ function ExpertSignupPortalContent() {
                     <input 
                       type="file" 
                       accept="image/*,application/pdf"
-                      className="hidden" 
-                      onChange={(e) => {
+                                  onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          handleFileUpload(file.name);
+                          handleFileUpload(file);
                         }
                       }}
                     />
@@ -1851,7 +1850,7 @@ function ExpertSignupPortalContent() {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          handleFileUpload(file.name);
+                          handleFileUpload(file);
                         }
                       }}
                     />
@@ -1863,8 +1862,8 @@ function ExpertSignupPortalContent() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {uploadedFiles.map((file, idx) => (
                       <div key={idx} className="bg-slate-50 border border-slate-150 p-4.5 rounded-xl flex items-center justify-between text-xs font-bold text-black shadow-sm">
-                        <span className="truncate pr-2">{file}</span>
-                        <button onClick={() => setUploadedFiles(uploadedFiles.filter(item => item !== file))} className="text-black font-extrabold hover:text-red-650 transition-colors text-sm">×</button>
+                        <span className="truncate pr-2">{file.name}</span>
+                        <button onClick={() => setUploadedFiles(uploadedFiles.filter(item => item.name !== file.name))} className="text-black font-extrabold hover:text-red-650 transition-colors text-sm">×</button>
                       </div>
                     ))}
                   </div>

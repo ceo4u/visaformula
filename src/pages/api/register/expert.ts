@@ -12,6 +12,14 @@ export const POST: APIRoute = async ({ request }) => {
       license_document_url, expertise_tags, countries_expertise 
     } = body;
 
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!email || !emailRegex.test(email)) {
+      return new Response(JSON.stringify({ status: 'error', message: 'Please provide a valid email address.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     await runMigrations();
     const pool = getPool();
 

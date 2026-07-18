@@ -1,15 +1,15 @@
 ---
 // src/pages/consultant/dashboard.astro
 import Layout from '../../layouts/Layout.astro';
-import { ConsultantDashboard } from '../../components/interactive/ConsultantDashboard';
+import { ExpertSignupPortal } from '../../components/interactive/ExpertSignupPortal';
 ---
 
 <Layout 
   title="Consultant Backoffice Dashboard" 
-  description="Manage your immigration practice. Check active clients in your pipeline, update weekly interview availability, and track your escrow earnings."
+  description="Manage your immigration practice."
   hideHeader={true}
   hideFooter={true}
 >
-  <!-- Mount client-only React consultant dashboard island -->
-  <ConsultantDashboard client:only="react" />
+  <!-- Mount client-only React expert dashboard island -->
+  <ExpertSignupPortal client:only="react" />
 </Layout>

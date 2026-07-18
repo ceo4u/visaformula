@@ -1317,7 +1317,7 @@ function ExpertSignupPortalContent() {
                           <circle cx="80" cy="15" r="2.5" fill="orange" />
                         </svg>
                         <div className="absolute top-2 right-2 bg-black text-white text-[8px] px-2 py-0.5 rounded font-bold">
-                          Income: 24,600$
+                          Income: ₹{(activeCases.length * 15000).toLocaleString()}
                         </div>
                       </div>
 

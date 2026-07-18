@@ -48,7 +48,20 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    return new Response(JSON.stringify({ status: 'success', message: 'Seeker registered successfully!' }), {
+    const userRes = await pool.query('SELECT * FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
+    const user = userRes.rows[0];
+
+    return new Response(JSON.stringify({
+      status: 'success',
+      message: 'Seeker registered successfully!',
+      user: {
+        uid: `seeker_${user.id}`,
+        email: user.email,
+        displayName: `${user.first_name} ${user.last_name || ''}`.trim(),
+        type: 'seeker',
+        rawUser: user
+      }
+    }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });

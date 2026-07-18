@@ -21,6 +21,7 @@ export function UserDashboard() {
     const [ieltsScore, setIeltsScore] = useState({ L: 7.5, R: 7.0, W: 6.5, S: 7.0 });
     const overallBand = ((ieltsScore.L + ieltsScore.R + ieltsScore.W + ieltsScore.S) / 4).toFixed(1);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [showProfileModal, setShowProfileModal] = useState(false);
 
     const [firstName, setFirstName] = useState("Seeker");
     const [lastName, setLastName] = useState("");
@@ -280,6 +281,24 @@ export function UserDashboard() {
                         </div>
                     </div>
                 </header>
+
+                {(!lastName || !phone || !residentOf || residentOf === "—") && (
+                    <div className="bg-gradient-to-r from-amber-50 to-orange-50/50 border border-amber-200 p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm animate-pulse-subtle">
+                        <div className="flex items-center gap-3">
+                            <span className="text-xl">⚠️</span>
+                            <div>
+                                <h4 className="text-xs font-black text-black">Your Profile is Incomplete</h4>
+                                <p className="text-[11px] text-slate-500 font-semibold mt-0.5">Please add your contact number and passport details to complete your application portal setup.</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setShowProfileModal(true)}
+                            className="bg-black hover:bg-neutral-900 text-white font-extrabold text-[10px] tracking-wider px-4.5 py-2 rounded-xl transition-all shadow-sm shrink-0"
+                        >
+                            Complete Profile
+                        </button>
+                    </div>
+                )}
 
                 {/* Dashboard Responsive Grid */}
                 {activeTab === "dashboard" ? (

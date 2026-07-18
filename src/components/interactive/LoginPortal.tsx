@@ -155,67 +155,109 @@ function LoginPortalContent() {
     };
     if (onboardingUser) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-gray-50/50 font-opensans relative">
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 py-16 font-sans relative">
                 {googleLoading && (
                     <div className="absolute inset-0 bg-white/80 backdrop-blur-md flex flex-col items-center justify-center z-[9999] transition-all duration-300">
                         <div className="flex flex-col items-center gap-4">
                             <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
-                            <p className="text-sm font-bold text-black font-opensans tracking-wide animate-pulse">
+                            <p className="text-sm font-bold text-black tracking-wide animate-pulse">
                                 {googleLoadingText}
                             </p>
                         </div>
                     </div>
                 )}
-                
-                <div className="w-full max-w-3xl text-center">
-                    <h1 className="text-4xl md:text-5xl font-black text-black tracking-tight mb-2">
-                        I want to join as
-                    </h1>
-                    <p className="text-slate-500 text-lg font-medium mb-12">
-                        Select your role to get started with VisaFormula
-                    </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-                        {/* Seeker Card */}
-                        <div className="bg-white border-2 border-black rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all flex flex-col items-center">
-                            <div className="w-24 h-24 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mb-6">
-                                <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                <style dangerouslySetInnerHTML={{__html: `
+                    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+                    * {
+                        font-family: 'Plus Jakarta Sans', sans-serif !important;
+                    }
+                    @keyframes float {
+                        0%, 100% { transform: translateY(0px); }
+                        50% { transform: translateY(-8px); }
+                    }
+                    @keyframes pulse-ring {
+                        0% { transform: scale(1); opacity: 0.4; }
+                        50% { transform: scale(1.08); opacity: 0.15; }
+                        100% { transform: scale(1); opacity: 0.4; }
+                    }
+                    .circle-float-1 { animation: float 4s ease-in-out infinite; }
+                    .circle-float-2 { animation: float 4s ease-in-out infinite 0.5s; }
+                    .pulse-ring { animation: pulse-ring 3s ease-in-out infinite; }
+                `}} />
+
+                {/* Logo */}
+                <div className="inline-flex items-center justify-center gap-2 group mb-4">
+                    <img src="/logo.png" alt="VisaFormula" className="h-40 w-auto object-contain mx-auto" />
+                </div>
+
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-4 py-1.5 mb-6">
+                    <svg className="w-3.5 h-3.5 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                    <span className="text-xs font-bold text-slate-800">Join 50,000+ users</span>
+                </div>
+
+                {/* Heading */}
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-black mb-2 text-center">
+                    I want to join as
+                </h1>
+                <p className="text-slate-400 text-sm mb-12 text-center">Select your role to get started with VisaFormula</p>
+
+                {/* Selection Cards */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-20 mb-12">
+                    
+                    {/* Seeker Option */}
+                    <div onClick={() => handleCompleteOnboarding('seeker')} className="group flex flex-col items-center text-center cursor-pointer">
+                        <div className="relative circle-float-1">
+                            <div className="absolute inset-[-6px] rounded-full border-2 border-slate-100 pulse-ring"></div>
+                            <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-xl group-hover:border-black transition-all duration-300 relative z-10">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="sm:w-14 sm:h-14">
+                                    <circle cx="12" cy="8" r="3.5" fill="#000" opacity="0.2"></circle>
+                                    <circle cx="12" cy="8" r="3.5" stroke="#000" strokeWidth="1.8" fill="none"></circle>
+                                    <path d="M5 20c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="#000" strokeWidth="1.8" strokeLinecap="round" fill="none"></path>
+                                    <path d="M16 4l1.5 1.5L16 7" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                    <path d="M17.5 5.5H15" stroke="#000" strokeWidth="1.5" strokeLinecap="round"></path>
                                 </svg>
                             </div>
-                            <h2 className="text-2xl font-black text-black mb-2">Visa Seeker</h2>
-                            <p className="text-sm text-slate-500 font-semibold mb-8 text-center min-h-[40px]">
-                                Find, consult & book immigration experts
-                            </p>
-                            <button
-                                onClick={() => handleCompleteOnboarding('seeker')}
-                                className="w-full py-4 bg-black text-white hover:bg-slate-900 rounded-xl font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 group cursor-pointer"
-                            >
-                                <span>Register as Seeker</span>
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </button>
                         </div>
-
-                        {/* Expert Card */}
-                        <div className="bg-white border-2 border-black rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all flex flex-col items-center">
-                            <div className="w-24 h-24 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mb-6">
-                                <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <h2 className="text-2xl font-black text-black mb-2">Visa Expert</h2>
-                            <p className="text-sm text-slate-500 font-semibold mb-8 text-center min-h-[40px]">
-                                Grow your global client consulting practice
-                            </p>
-                            <button
-                                onClick={() => handleCompleteOnboarding('expert')}
-                                className="w-full py-4 bg-black text-white hover:bg-slate-900 rounded-xl font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 group cursor-pointer"
-                            >
-                                <span>Register as Expert</span>
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </button>
-                        </div>
+                        <span className="mt-5 font-extrabold text-black text-base sm:text-lg group-hover:text-slate-600 transition-colors">Visa Seeker</span>
+                        <span className="text-xs text-slate-400 mt-1 mb-4 font-semibold">Find, consult & book immigration experts</span>
+                        <span className="bg-black hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all active:scale-[0.97]">
+                            Register as Seeker <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        </span>
                     </div>
+
+                    {/* Divider */}
+                    <div className="flex flex-row sm:flex-col items-center gap-2 text-slate-200 font-bold text-xs tracking-widest py-4">
+                        <div className="w-12 sm:w-px h-px sm:h-10 bg-slate-200"></div>
+                        <span className="text-slate-400">OR</span>
+                        <div className="w-12 sm:w-px h-px sm:h-10 bg-slate-200"></div>
+                    </div>
+
+                    {/* Expert Option */}
+                    <div onClick={() => handleCompleteOnboarding('expert')} className="group flex flex-col items-center text-center cursor-pointer">
+                        <div className="relative circle-float-2">
+                            <div className="absolute inset-[-6px] rounded-full border-2 border-slate-100 pulse-ring"></div>
+                            <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-xl group-hover:border-black transition-all duration-300 relative z-10">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="sm:w-14 sm:h-14">
+                                    <rect x="5" y="2" width="14" height="20" rx="3" fill="#000" opacity="0.12"></rect>
+                                    <rect x="5" y="2" width="14" height="20" rx="3" stroke="#000" strokeWidth="1.8" fill="none"></rect>
+                                    <circle cx="12" cy="10" r="2.5" stroke="#000" strokeWidth="1.5" fill="none"></circle>
+                                    <path d="M8.5 16c0-1.5 1.6-2.8 3.5-2.8s3.5 1.3 3.5 2.8" stroke="#000" strokeWidth="1.5" strokeLinecap="round" fill="none"></path>
+                                    <circle cx="16" cy="5" r="0.7" fill="#000"></circle>
+                                    <circle cx="16" cy="7.5" r="0.7" fill="#000"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                        <span className="mt-5 font-extrabold text-black text-base sm:text-lg group-hover:text-slate-600 transition-colors">Visa Expert</span>
+                        <span className="text-xs text-slate-400 mt-1 mb-4 font-semibold">Grow your global client consulting practice</span>
+                        <span className="bg-black hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all active:scale-[0.97]">
+                            Register as Expert <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        </span>
+                    </div>
+
                 </div>
             </div>
         );

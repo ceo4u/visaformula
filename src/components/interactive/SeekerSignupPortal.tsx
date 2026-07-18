@@ -371,6 +371,7 @@ function SeekerSignupPortalContent() {
                                         <div className="flex-grow relative w-full">
                                             <input 
                                                 type="email"
+                                                placeholder="Email Address"
                                                 required
                                                 value={email}
                                                 onChange={(e) => {

@@ -234,22 +234,6 @@ function ExpertSignupPortalContent() {
   const [escrowAccepted, setEscrowAccepted] = useState(true);
   const [subscribeUpdates, setSubscribeUpdates] = useState("Yes");
 
-  // --- Verification functions ---
-  const handleSendOtp = () => {
-    if (!email) return;
-    setVerifyingEmail(true);
-    setTimeout(() => {
-      setOtpSent(true);
-      setVerifyingEmail(false);
-    }, 800);
-  };
-
-  const handleVerifyOtp = () => {
-    if (otpValue === "123456" || otpValue.length > 2) {
-      setEmailVerified(true);
-      setOtpSent(false);
-    }
-  };
 
   // --- Tag Helpers ---
   const addTag = () => {

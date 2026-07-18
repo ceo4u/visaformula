@@ -9,7 +9,7 @@ export function getMailTransporter() {
     const port = parseInt(process.env.SMTP_PORT || import.meta.env.SMTP_PORT || "587", 10);
     const user = process.env.SMTP_USER || import.meta.env.SMTP_USER;
     const pass = process.env.SMTP_PASS || import.meta.env.SMTP_PASS;
-    const secure = (process.env.SMTP_SECURE || import.meta.env.SMTP_SECURE) === "true";
+    const secure = (process.env.SMTP_SECURE || import.meta.env.SMTP_SECURE) === "true" || port === 465;
 
     transporter = nodemailer.createTransport({
         host,

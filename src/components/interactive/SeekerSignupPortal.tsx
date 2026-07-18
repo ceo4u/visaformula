@@ -71,6 +71,9 @@ function SeekerSignupPortalContent() {
             if (res.ok) {
                 setOtpSent(true);
                 setResendCooldown(60);
+                if (data.otp) {
+                    alert(`Test Verification Code: ${data.otp}`);
+                }
             } else {
                 setValidationError(data.message || "Failed to send verification code.");
             }
@@ -81,9 +84,9 @@ function SeekerSignupPortalContent() {
         }
     };
 
-    const handleVerifyCode = async () => {
+    const handleVerifyCode = async (forcedCode?: string) => {
         setVerificationError("");
-        const code = otpDigits.join("");
+        const code = forcedCode || otpDigits.join("");
         if (code.length < 6) {
             setVerificationError("Please enter all 6 digits of the code.");
             return;
@@ -409,6 +412,10 @@ function SeekerSignupPortalContent() {
                                                                     if (val && index < 5) {
                                                                         const nextInput = document.getElementById(`otp-${index + 1}`);
                                                                         if (nextInput) nextInput.focus();
+                                                                    }
+                                                                    const fullCode = newDigits.join("");
+                                                                    if (fullCode.length === 6) {
+                                                                        handleVerifyCode(fullCode);
                                                                     }
                                                                 }}
                                                                 onKeyDown={(e) => {

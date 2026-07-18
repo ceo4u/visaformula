@@ -108,9 +108,9 @@ function ExpertSignupPortalContent() {
     }
   };
 
-  const handleVerifyCode = async () => {
+  const handleVerifyCode = async (forcedCode?: string) => {
     setValidationError("");
-    const code = otpDigits.join("");
+    const code = forcedCode || otpDigits.join("");
     if (code.length < 6) {
       setValidationError("Please enter all 6 digits of the code.");
       return;
@@ -657,6 +657,10 @@ function ExpertSignupPortalContent() {
                                     if (val && index < 5) {
                                       const nextInput = document.getElementById(`otp-${index + 1}`);
                                       if (nextInput) nextInput.focus();
+                                    }
+                                    const fullCode = newDigits.join("");
+                                    if (fullCode.length === 6) {
+                                      handleVerifyCode(fullCode);
                                     }
                                   }}
                                   onKeyDown={(e) => {

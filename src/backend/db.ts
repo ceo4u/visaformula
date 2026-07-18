@@ -127,4 +127,16 @@ export async function runMigrations() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
+
+  // 6. Email Verifications Table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS email_verifications (
+      email VARCHAR(255) PRIMARY KEY,
+      otp_hash VARCHAR(255) NOT NULL,
+      expires_at TIMESTAMP NOT NULL,
+      attempts INTEGER DEFAULT 0,
+      verified BOOLEAN DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
 }

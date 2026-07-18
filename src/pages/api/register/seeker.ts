@@ -19,6 +19,15 @@ export const POST: APIRoute = async ({ request }) => {
     await runMigrations();
     const pool = getPool();
 
+    // Verify email verification has succeeded
+    const verCheck = await pool.query('SELECT verified FROM email_verifications WHERE LOWER(email) = LOWER($1)', [email]);
+    if (verCheck.rows.length === 0 || !verCheck.rows[0].verified) {
+      return new Response(JSON.stringify({ status: 'error', message: 'Email address has not been verified.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const checkRes = await pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
     const isNew = checkRes.rows.length === 0;
 

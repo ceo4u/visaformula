@@ -51,13 +51,22 @@ export function UserDashboard() {
 
     useEffect(() => {
         const savedFirst = localStorage.getItem("seeker_firstName");
-        if (savedFirst) setFirstName(savedFirst);
+        if (savedFirst) {
+            setFirstName(savedFirst);
+            setModalFirstName(savedFirst);
+        }
         
         const savedLast = localStorage.getItem("seeker_lastName");
-        if (savedLast) setLastName(savedLast);
+        if (savedLast) {
+            setLastName(savedLast);
+            setModalLastName(savedLast);
+        }
 
         const savedPhone = localStorage.getItem("seeker_phone");
-        if (savedPhone) setPhone(savedPhone);
+        if (savedPhone) {
+            setPhone(savedPhone);
+            setModalPhone(savedPhone);
+        }
 
         const savedEmail = localStorage.getItem("seeker_email");
         if (savedEmail) setEmail(savedEmail);
@@ -66,13 +75,20 @@ export function UserDashboard() {
         if (savedCountry) {
             setPassportCountry(savedCountry);
             setCountryOfCitizenship(savedCountry);
+            setModalPassportCountry(savedCountry);
         }
 
         const savedCitizenship = localStorage.getItem("seeker_country_of_citizenship");
-        if (savedCitizenship) setCountryOfCitizenship(savedCitizenship);
+        if (savedCitizenship) {
+            setCountryOfCitizenship(savedCitizenship);
+            setModalPassportCountry(savedCitizenship);
+        }
 
         const savedResidence = localStorage.getItem("seeker_resident_of");
-        if (savedResidence) setResidentOf(savedResidence);
+        if (savedResidence) {
+            setResidentOf(savedResidence);
+            setModalResidentOf(savedResidence);
+        }
 
         try {
             const savedGoals = localStorage.getItem("seeker_goals");
@@ -160,7 +176,8 @@ export function UserDashboard() {
                             { id: "scanned-documents", label: "Scanned Documents", icon: FileText },
                             { id: "escrow-milestones", label: "Escrow Payments", icon: Lock },
                             { id: "visa-history", label: "Visa History", icon: BookOpen },
-                            { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark }
+                            { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark },
+                            { id: "profile", label: "My Profile", icon: User }
                         ].map(tab => {
                             const isActive = activeTab === tab.id;
                             const IconComponent = tab.icon;
@@ -218,7 +235,8 @@ export function UserDashboard() {
                                 { id: "scanned-documents", label: "Scanned Documents", icon: FileText },
                                 { id: "escrow-milestones", label: "Escrow Payments", icon: Lock },
                                 { id: "visa-history", label: "Visa History", icon: BookOpen },
-                                { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark }
+                                { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark },
+                                { id: "profile", label: "My Profile", icon: User }
                             ].map(tab => {
                                 const isActive = activeTab === tab.id;
                                 const IconComponent = tab.icon;
@@ -806,6 +824,145 @@ export function UserDashboard() {
                                 </div>
                             ))}
                         </div>
+                    </div>
+                ) : activeTab === "profile" ? (
+                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-2xl animate-premium-fade text-left">
+                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+                            <div>
+                                <h3 className="text-lg font-extrabold text-black">My Profile Settings</h3>
+                                <p className="text-xs text-slate-400 mt-1">View and update your personal credentials and location details</p>
+                            </div>
+                            <User className="w-5 h-5 text-black" />
+                        </div>
+
+                        {/* Profile Edit Fields */}
+                        <form
+                            onSubmit={async (e) => {
+                                e.preventDefault();
+                                try {
+                                    const response = await fetch("/api/profile/update", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({
+                                            email: email || localStorage.getItem("seeker_email"),
+                                            role: 'seeker',
+                                            first_name: modalFirstName,
+                                            last_name: modalLastName,
+                                            phone: modalPhone,
+                                            passport_country: modalPassportCountry,
+                                            resident_of: modalResidentOf
+                                        })
+                                    });
+
+                                    if (response.ok) {
+                                        const data = await response.json();
+                                        if (data.user) {
+                                            localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                                        }
+                                        alert("Profile updated successfully!");
+                                    }
+                                } catch (err) {
+                                    console.error("Failed to save profile on backend:", err);
+                                    alert("Failed to update profile settings.");
+                                }
+
+                                setFirstName(modalFirstName);
+                                setLastName(modalLastName);
+                                setPhone(modalPhone);
+                                setPassportCountry(modalPassportCountry);
+                                setCountryOfCitizenship(modalPassportCountry);
+                                setResidentOf(modalResidentOf);
+
+                                localStorage.setItem("seeker_firstName", modalFirstName);
+                                localStorage.setItem("seeker_lastName", modalLastName);
+                                localStorage.setItem("seeker_phone", modalPhone);
+                                localStorage.setItem("seeker_passportCountry", modalPassportCountry);
+                                localStorage.setItem("seeker_resident_of", modalResidentOf);
+                                localStorage.setItem("seeker_country_of_citizenship", modalPassportCountry);
+                            }}
+                            className="space-y-6"
+                        >
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">First Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={modalFirstName}
+                                        onChange={(e) => setModalFirstName(e.target.value)}
+                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm"
+                                    />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Last Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={modalLastName}
+                                        onChange={(e) => setModalLastName(e.target.value)}
+                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Email Address</label>
+                                <input
+                                    type="email"
+                                    disabled
+                                    value={email}
+                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-400 outline-none shadow-sm cursor-not-allowed"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Phone Number</label>
+                                <input
+                                    type="tel"
+                                    required
+                                    placeholder="+91 99999 99999"
+                                    value={modalPhone}
+                                    onChange={(e) => setModalPhone(e.target.value)}
+                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Country of Citizenship (Passport Country)</label>
+                                    <select
+                                        value={modalPassportCountry}
+                                        onChange={(e) => setModalPassportCountry(e.target.value)}
+                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm cursor-pointer"
+                                    >
+                                        {["India", "Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"].map(c => (
+                                            <option key={c} value={c}>{c}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Current Country of Residence</label>
+                                    <select
+                                        value={modalResidentOf}
+                                        onChange={(e) => setModalResidentOf(e.target.value)}
+                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm cursor-pointer"
+                                    >
+                                        {["India", "Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"].map(c => (
+                                            <option key={c} value={c}>{c}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="pt-4 border-t border-slate-100 flex justify-end">
+                                <button
+                                    type="submit"
+                                    className="bg-black hover:bg-neutral-900 text-white font-extrabold text-[10px] tracking-wider px-8 py-3 rounded-full uppercase transition-all shadow-md cursor-pointer hover:scale-[1.02] active:scale-95 duration-200"
+                                >
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 ) : null}
 

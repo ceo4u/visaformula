@@ -50,6 +50,24 @@ export function UserDashboard() {
     ]);
 
     useEffect(() => {
+        if (typeof window !== "undefined") {
+            const userStr = localStorage.getItem("visaformula_user");
+            const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
+            if (isLoggedInExpert === "true") {
+                window.location.href = "/consultant/dashboard";
+                return;
+            }
+            if (userStr) {
+                try {
+                    const u = JSON.parse(userStr);
+                    if (u && u.type === "expert") {
+                        window.location.href = "/consultant/dashboard";
+                        return;
+                    }
+                } catch(e) {}
+            }
+        }
+
         const savedFirst = localStorage.getItem("seeker_firstName");
         if (savedFirst) {
             setFirstName(savedFirst);

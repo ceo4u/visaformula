@@ -385,7 +385,7 @@ const pathname = Astro.url.pathname;
         if (expertBusiness) {
             displayName = expertBusiness;
             displayLetters = expertBusiness.charAt(0).toUpperCase();
-            dashboardHref = "/signup/expert";
+            dashboardHref = "/consultant/dashboard";
             displayPhoto = localStorage.getItem("expert_profilePhoto") || "";
         } else if (seekerFirst) {
             displayName = seekerFirst + " " + (localStorage.getItem("seeker_lastName") || "");
@@ -404,6 +404,11 @@ const pathname = Astro.url.pathname;
                 }
                 if (u && u.photoURL) {
                     displayPhoto = u.photoURL;
+                }
+                if (u && u.type === "expert") {
+                    dashboardHref = "/consultant/dashboard";
+                } else {
+                    dashboardHref = "/dashboard";
                 }
             } catch(e) {}
         }

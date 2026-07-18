@@ -86,6 +86,23 @@ export function ConsultantDashboard() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
+            const userStr = localStorage.getItem("visaformula_user");
+            const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
+            const seekerFirst = localStorage.getItem("seeker_firstName");
+            if (seekerFirst && isLoggedInExpert !== "true") {
+                window.location.href = "/dashboard";
+                return;
+            }
+            if (userStr) {
+                try {
+                    const u = JSON.parse(userStr);
+                    if (u && u.type === "seeker") {
+                        window.location.href = "/dashboard";
+                        return;
+                    }
+                } catch(e) {}
+            }
+
             const firstName = localStorage.getItem("expert_firstName") || "";
             const lastName = localStorage.getItem("expert_lastName") || "";
             const storedName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "";

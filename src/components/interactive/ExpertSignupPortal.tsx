@@ -340,6 +340,10 @@ function ExpertSignupPortalContent() {
         setValidationError(errData.message || "Expert registration failed.");
         return;
       }
+      const data = await response.json();
+      if (data.user && typeof window !== "undefined") {
+        localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+      }
     } catch (err) {
       console.warn("Backend server offline. Falling back to local simulation mode.", err);
     }

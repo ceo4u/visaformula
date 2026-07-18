@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, User, Upload, Eye, EyeOff } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import airplanePaths from "../../data/clean_airplane.json";

@@ -1,11 +1,16 @@
-import { useState, useEffect } from "react";
-import { Mail, Lock, Eye, EyeOff, Gavel, ArrowRight, ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
-import airplanePaths from "../../data/clean_airplane.json";
-import checkmarkPaths from "../../data/clean_checkmark.json";
 
 function LoginPortalContent() {
     const { signIn, signInWithGoogle } = useAuth();
+    const [loginStep, setLoginStep] = useState(0); // 0 = Email, 1 = Password
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPwd, setShowPwd] = useState(false);
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const handleGoogleLogin = async () => {
         setError("");
         setLoading(true);
@@ -26,12 +31,6 @@ function LoginPortalContent() {
             setLoading(false);
         }
     };
-    const [loginStep, setLoginStep] = useState(0); // 0 = Email, 1 = Password
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPwd, setShowPwd] = useState(false);
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
 
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
@@ -62,7 +61,7 @@ function LoginPortalContent() {
                 try {
                     const userObj = JSON.parse(userStr);
                     if (userObj.type === "expert") {
-                        window.location.href = "/signup/expert";
+                        window.location.href = "/consultant/dashboard";
                         return;
                     }
                 } catch (e) {}
@@ -92,7 +91,7 @@ function LoginPortalContent() {
             </a>
 
             <div className="w-full max-w-md">
-                {/* Login Container Box with border (Logo moved inside) */}
+                {/* Login Container Box with border */}
                 <div className="w-full bg-white border-2 border-black rounded-3xl p-6 md:p-8 shadow-xl shadow-gray-150/40">
                     <div className="text-center mb-4">
                         <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
@@ -116,69 +115,94 @@ function LoginPortalContent() {
                         </div>
                     )}
 
-                    <form onSubmit={handleEmailLogin} className="space-y-5">
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-black tracking-wider mb-1 block font-opensans">Email address</label>
-                            <div className="relative">
-                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="john@example.com"
-                                    required
-                                    className="w-full h-12 pl-12 pr-4 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black font-opensans"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-4">
+                    {loginStep === 0 ? (
+                        <form onSubmit={handleNextStep} className="space-y-5">
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-black tracking-wider mb-1 block font-opensans">Password</label>
+                                <label className="text-xs font-bold text-black tracking-wider mb-1 block font-opensans">Email address</label>
                                 <div className="relative">
-                                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                     <input
-                                        type={showPwd ? "text" : "password"}
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="••••••••"
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="john@example.com"
                                         required
-                                        className="w-full h-12 pl-12 pr-12 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black font-opensans"
+                                        className="w-full h-12 pl-12 pr-4 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black font-opensans"
                                     />
-                                    <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                        {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                                    </button>
                                 </div>
                             </div>
 
-                            {/* Remember Me & Forgot Password Row */}
-                            <div className="flex items-center justify-between font-opensans">
-                                <label className="flex items-center gap-2 cursor-pointer group">
-                                    <input
-                                        type="checkbox"
-                                        className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer accent-black"
-                                    />
-                                    <span className="text-xs font-semibold text-slate-500 group-hover:text-black transition-colors select-none">
-                                        Remember me
-                                    </span>
-                                </label>
-                                <a href="#" className="text-xs font-bold text-black hover:underline font-opensans">
-                                    Forgot password?
-                                </a>
+                            <button type="submit" className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-black hover:bg-slate-900 transition-all text-white flex items-center justify-center shadow-sm font-opensans">
+                                Continue
+                                <ArrowRight className="w-4 h-4" />
+                            </button>
+                        </form>
+                    ) : (
+                        <form onSubmit={handleEmailLogin} className="space-y-5">
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <label className="text-xs font-bold text-black tracking-wider mb-1 block font-opensans">Email address</label>
+                                    <button 
+                                        type="button" 
+                                        onClick={() => setLoginStep(0)} 
+                                        className="text-xs font-semibold text-slate-500 hover:text-black transition-colors"
+                                    >
+                                        Change
+                                    </button>
+                                </div>
+                                <div className="w-full h-12 px-4 rounded-xl border border-gray-150 bg-gray-50/50 flex items-center text-sm font-semibold text-slate-700">
+                                    {email}
+                                </div>
                             </div>
-                        </div>
 
-                        <button type="submit" disabled={loading} className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-black hover:bg-slate-900 transition-all text-white flex items-center justify-center shadow-sm font-opensans">
-                            {loading ? "Signing in..." : "Sign In"}
-                            {!loading && <ArrowRight className="w-4 h-4" />}
-                        </button>
-                    </form>
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-black tracking-wider mb-1 block font-opensans">Password</label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                        <input
+                                            type={showPwd ? "text" : "password"}
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            placeholder="••••••••"
+                                            required
+                                            className="w-full h-12 pl-12 pr-12 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black font-semibold transition-all text-sm text-black font-opensans"
+                                        />
+                                        <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                            {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Remember Me & Forgot Password Row */}
+                                <div className="flex items-center justify-between font-opensans">
+                                    <label className="flex items-center gap-2 cursor-pointer group">
+                                        <input
+                                            type="checkbox"
+                                            className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer accent-black"
+                                        />
+                                        <span className="text-xs font-semibold text-slate-500 group-hover:text-black transition-colors select-none">
+                                            Remember me
+                                        </span>
+                                    </label>
+                                    <a href="#" className="text-xs font-bold text-black hover:underline font-opensans">
+                                        Forgot password?
+                                    </a>
+                                </div>
+                            </div>
+
+                            <button type="submit" disabled={loading} className="w-full h-12 rounded-xl font-bold text-sm gap-2 bg-black hover:bg-slate-900 transition-all text-white flex items-center justify-center shadow-sm font-opensans">
+                                {loading ? "Signing in..." : "Sign In"}
+                                {!loading && <ArrowRight className="w-4 h-4" />}
+                            </button>
+                        </form>
+                    )}
 
                     <div className="relative my-5 flex items-center justify-center">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-100"></div>
                         </div>
-                        <span className="relative px-3 bg-white text-[10px] font-bold text-slate-400 tracking-wider font-opensans uppercase">— OR —</span>
+                        <span className="relative px-3 bg-white text-[10px] font-bold text-slate-400 tracking-wider font-opensans uppercase bg-white">— OR —</span>
                     </div>
 
                     <button 
@@ -222,34 +246,6 @@ function LoginPortalContent() {
 }
 
 export function LoginPortal() {
-    const [crashError, setCrashError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const handleError = (e: ErrorEvent) => {
-            setCrashError(e.message || "Unknown client-side runtime error.");
-        };
-        window.addEventListener("error", handleError);
-        return () => window.removeEventListener("error", handleError);
-    }, []);
-
-    if (crashError) {
-        return (
-            <div className="p-6 max-w-lg mx-auto my-12 bg-red-50 text-red-700 font-mono text-xs border border-red-200 rounded-xl shadow-sm">
-                <h3 className="font-bold text-sm mb-2">🚨 Client Hydration/Runtime Error Detected:</h3>
-                <p className="mb-4">Something went wrong while loading this page in the browser.</p>
-                <div className="bg-white p-4 border border-red-100 rounded-lg overflow-auto max-h-60">
-                    <pre className="whitespace-pre-wrap">{crashError}</pre>
-                </div>
-                <button 
-                    onClick={() => window.location.reload()} 
-                    className="mt-4 px-4 py-2 bg-red-700 text-white font-bold rounded-lg hover:bg-red-800 transition-colors cursor-pointer"
-                >
-                    Force Reload Page
-                </button>
-            </div>
-        );
-    }
-
     return (
         <AuthProvider>
             <LoginPortalContent />

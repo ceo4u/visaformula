@@ -182,13 +182,13 @@ export function UserDashboard() {
                     <nav className="flex flex-col gap-2">
                         {[
                             { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+                            { id: "profile", label: "My Profile", icon: User },
                             { id: "consultations", label: "Consultations", icon: Calendar },
                             { id: "cases", label: "Active Cases", icon: Briefcase },
                             { id: "scanned-documents", label: "Scanned Documents", icon: FileText },
                             { id: "escrow-milestones", label: "Escrow Payments", icon: Lock },
                             { id: "visa-history", label: "Visa History", icon: BookOpen },
-                            { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark },
-                            { id: "profile", label: "My Profile", icon: User }
+                            { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark }
                         ].map(tab => {
                             const isActive = activeTab === tab.id;
                             const IconComponent = tab.icon;
@@ -241,13 +241,13 @@ export function UserDashboard() {
                         <nav className="flex flex-col gap-1.5">
                             {[
                                 { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+                                { id: "profile", label: "My Profile", icon: User },
                                 { id: "consultations", label: "Consultations", icon: Calendar },
                                 { id: "cases", label: "Active Cases", icon: Briefcase },
                                 { id: "scanned-documents", label: "Scanned Documents", icon: FileText },
                                 { id: "escrow-milestones", label: "Escrow Payments", icon: Lock },
                                 { id: "visa-history", label: "Visa History", icon: BookOpen },
-                                { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark },
-                                { id: "profile", label: "My Profile", icon: User }
+                                { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark }
                             ].map(tab => {
                                 const isActive = activeTab === tab.id;
                                 const IconComponent = tab.icon;

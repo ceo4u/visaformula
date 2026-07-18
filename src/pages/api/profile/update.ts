@@ -19,12 +19,13 @@ export const POST: APIRoute = async ({ request }) => {
     const pool = getPool();
 
     if (role === 'expert') {
+      const { advisor_type, about_me, portfolio_link, office_address, gov_registration_number, countries_expertise } = body;
       // Update expert
       await pool.query(
         `UPDATE experts 
-         SET business_name = $1, contact_number = $2 
-         WHERE LOWER(email) = LOWER($3)`,
-        [`${first_name} ${last_name}`.trim(), phone, email]
+         SET business_name = $1, contact_number = $2, advisor_type = $3, about_me = $4, portfolio_link = $5, office_address = $6, gov_registration_number = $7, countries_expertise = $8
+         WHERE LOWER(email) = LOWER($9)`,
+        [first_name || business_name, phone, advisor_type, about_me, portfolio_link, office_address, gov_registration_number, countries_expertise, email]
       );
     } else {
       // Update seeker

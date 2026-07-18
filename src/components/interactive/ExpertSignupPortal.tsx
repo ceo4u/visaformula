@@ -95,9 +95,6 @@ function ExpertSignupPortalContent() {
       if (res.ok) {
         setOtpSent(true);
         setResendCooldown(60);
-        if (data.otp) {
-          alert(`Test Verification Code: ${data.otp}`);
-        }
       } else {
         setValidationError(data.message || "Failed to send verification code.");
       }

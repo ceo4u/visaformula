@@ -65,7 +65,13 @@ export function UserDashboard() {
         const savedPhone = localStorage.getItem("seeker_phone");
         if (savedPhone) {
             setPhone(savedPhone);
-            setModalPhone(savedPhone);
+            const match = savedPhone.match(/^(\+\d+)\s*(.*)$/);
+            if (match) {
+                setCountryCode(match[1]);
+                setModalPhone(match[2]);
+            } else {
+                setModalPhone(savedPhone);
+            }
         }
 
         const savedEmail = localStorage.getItem("seeker_email");
@@ -106,6 +112,11 @@ export function UserDashboard() {
     const [modalPhone, setModalPhone] = useState("");
     const [modalPassportCountry, setModalPassportCountry] = useState("");
     const [modalResidentOf, setModalResidentOf] = useState("");
+
+    const [citizenshipOpen, setCitizenshipOpen] = useState(false);
+    const [residenceOpen, setResidenceOpen] = useState(false);
+    const [countryCodeOpen, setCountryCodeOpen] = useState(false);
+    const [countryCode, setCountryCode] = useState("+91");
 
     useEffect(() => {
         if (showProfileModal) {
@@ -839,6 +850,7 @@ export function UserDashboard() {
                         <form
                             onSubmit={async (e) => {
                                 e.preventDefault();
+                                const fullPhone = `${countryCode} ${modalPhone}`.trim();
                                 try {
                                     const response = await fetch("/api/profile/update", {
                                         method: "POST",
@@ -848,7 +860,7 @@ export function UserDashboard() {
                                             role: 'seeker',
                                             first_name: modalFirstName,
                                             last_name: modalLastName,
-                                            phone: modalPhone,
+                                            phone: fullPhone,
                                             passport_country: modalPassportCountry,
                                             resident_of: modalResidentOf
                                         })
@@ -868,14 +880,14 @@ export function UserDashboard() {
 
                                 setFirstName(modalFirstName);
                                 setLastName(modalLastName);
-                                setPhone(modalPhone);
+                                setPhone(fullPhone);
                                 setPassportCountry(modalPassportCountry);
                                 setCountryOfCitizenship(modalPassportCountry);
                                 setResidentOf(modalResidentOf);
 
                                 localStorage.setItem("seeker_firstName", modalFirstName);
                                 localStorage.setItem("seeker_lastName", modalLastName);
-                                localStorage.setItem("seeker_phone", modalPhone);
+                                localStorage.setItem("seeker_phone", fullPhone);
                                 localStorage.setItem("seeker_passportCountry", modalPassportCountry);
                                 localStorage.setItem("seeker_resident_of", modalResidentOf);
                                 localStorage.setItem("seeker_country_of_citizenship", modalPassportCountry);
@@ -916,41 +928,101 @@ export function UserDashboard() {
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Phone Number</label>
-                                <input
-                                    type="tel"
-                                    required
-                                    placeholder="+91 99999 99999"
-                                    value={modalPhone}
-                                    onChange={(e) => setModalPhone(e.target.value)}
-                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm"
-                                />
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Phone Number*</label>
+                                <div className="flex gap-3">
+                                    <div className="relative" onClick={(e) => e.stopPropagation()}>
+                                        <button
+                                            type="button"
+                                            onClick={() => setCountryCodeOpen(!countryCodeOpen)}
+                                            className="px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black text-black shadow-sm shrink-0 cursor-pointer flex items-center justify-between gap-1.5 h-[46px] font-bold"
+                                        >
+                                            <span>{countryCode}</span>
+                                            <svg className={`w-3.5 h-3.5 text-slate-500 transition-transform ${countryCodeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                                        </button>
+                                        {countryCodeOpen && (
+                                            <div className="absolute left-0 mt-1.5 w-40 bg-white border border-slate-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-[60] font-sans">
+                                                {[
+                                                    { val: "+91", label: "+91 (IN)" },
+                                                    { val: "+1", label: "+1 (US/CA)" },
+                                                    { val: "+44", label: "+44 (UK)" },
+                                                    { val: "+61", label: "+61 (AU)" },
+                                                    { val: "+971", label: "+971 (AE)" },
+                                                    { val: "+49", label: "+49 (DE)" },
+                                                    { val: "+33", label: "+33 (FR)" },
+                                                    { val: "+65", label: "+65 (SG)" },
+                                                    { val: "+64", label: "+64 (NZ)" }
+                                                ].map(opt => (
+                                                    <button
+                                                        key={opt.val}
+                                                        type="button"
+                                                        onClick={() => { setCountryCode(opt.val); setCountryCodeOpen(false); }}
+                                                        className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                                    >
+                                                        {opt.label}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <input 
+                                        type="tel" 
+                                        required
+                                        placeholder="99999 99999" 
+                                        value={modalPhone}
+                                        onChange={(e) => setModalPhone(e.target.value)}
+                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm" 
+                                    />
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                <div className="space-y-1.5">
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Country of Citizenship (Passport Country)</label>
-                                    <select
-                                        value={modalPassportCountry}
-                                        onChange={(e) => setModalPassportCountry(e.target.value)}
-                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm cursor-pointer"
+                                <div className="space-y-1.5 relative">
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Country of Citizenship (Passport Country)*</label>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => { e.stopPropagation(); setCitizenshipOpen(!citizenshipOpen); setResidenceOpen(false); }}
+                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black text-black shadow-sm text-left flex justify-between items-center cursor-pointer font-semibold h-[46px]"
                                     >
-                                        {["India", "Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"].map(c => (
-                                            <option key={c} value={c}>{c}</option>
-                                        ))}
-                                    </select>
+                                        <span>{modalPassportCountry || "Select passport country"}</span>
+                                        <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                    </button>
+                                    {citizenshipOpen && (
+                                        <div className="absolute z-[70] w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+                                            {["India", "Nigeria", "Philippines", "Brazil", "Pakistan", "Bangladesh", "United States", "United Kingdom", "Canada", "Australia", "Other"].map(opt => (
+                                                <div
+                                                    key={opt}
+                                                    onClick={() => { setModalPassportCountry(opt); setCitizenshipOpen(false); }}
+                                                    className="px-4 py-2.5 text-xs text-black font-semibold hover:bg-black hover:text-white cursor-pointer transition-colors"
+                                                >
+                                                    {opt}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="space-y-1.5">
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Current Country of Residence</label>
-                                    <select
-                                        value={modalResidentOf}
-                                        onChange={(e) => setModalResidentOf(e.target.value)}
-                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm cursor-pointer"
+                                <div className="space-y-1.5 relative">
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Current Country of Residence*</label>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => { e.stopPropagation(); setResidenceOpen(!residenceOpen); setCitizenshipOpen(false); }}
+                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black text-black shadow-sm text-left flex justify-between items-center cursor-pointer font-semibold h-[46px]"
                                     >
-                                        {["India", "Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"].map(c => (
-                                            <option key={c} value={c}>{c}</option>
-                                        ))}
-                                    </select>
+                                        <span>{modalResidentOf || "Select current residence"}</span>
+                                        <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                    </button>
+                                    {residenceOpen && (
+                                        <div className="absolute z-[70] w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+                                            {["India", "Nigeria", "Philippines", "Brazil", "Pakistan", "Bangladesh", "United States", "United Kingdom", "Canada", "Australia", "Singapore", "United Arab Emirates", "Germany", "France", "Other"].map(opt => (
+                                                <div
+                                                    key={opt}
+                                                    onClick={() => { setModalResidentOf(opt); setResidenceOpen(false); }}
+                                                    className="px-4 py-2.5 text-xs text-black font-semibold hover:bg-black hover:text-white cursor-pointer transition-colors"
+                                                >
+                                                    {opt}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

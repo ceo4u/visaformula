@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getPool, runMigrations } from '../../../backend/db';
+import bcrypt from 'bcryptjs';
 
 export const prerender = false;
 
@@ -35,6 +36,9 @@ export const POST: APIRoute = async ({ request }) => {
     const checkRes = await pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
     const isNew = checkRes.rows.length === 0;
 
+    // Hash password with bcrypt (12 salt rounds)
+    const hashedPassword = password ? await bcrypt.hash(password, 12) : '';
+
     // Insert expert record
     await pool.query(`
       INSERT INTO experts (
@@ -51,7 +55,7 @@ export const POST: APIRoute = async ({ request }) => {
     `, [
       business_name,
       email,
-      password || '',
+      hashedPassword,
       contact_number,
       advisor_type,
       about_me || '',
@@ -91,7 +95,7 @@ export const POST: APIRoute = async ({ request }) => {
         email: user.email,
         displayName: user.business_name,
         type: 'expert',
-        rawUser: user
+        rawUser: { ...user, password_hash: undefined }
       }
     }), {
       status: 200,

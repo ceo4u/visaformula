@@ -5,8 +5,33 @@ import { sendEmailWithRetry } from '../../../lib/mail';
 
 export const prerender = false;
 
+// In-memory rate limiter: max 5 OTP requests per IP per 10 minutes
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // IP-based rate limiting
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const now = Date.now();
+    const entry = rateLimitMap.get(ip);
+    if (entry) {
+      if (now < entry.resetAt) {
+        if (entry.count >= RATE_LIMIT_MAX) {
+          return new Response(JSON.stringify({ status: 'error', message: 'Too many OTP requests. Please wait 10 minutes and try again.' }), {
+            status: 429,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+        entry.count++;
+      } else {
+        rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+      }
+    } else {
+      rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    }
+
     const body = await request.json();
     const { email } = body;
 
@@ -89,8 +114,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({ 
       status: 'success', 
-      message: 'Verification code sent successfully!',
-      otp: otp
+      message: 'Verification code sent successfully! Please check your email.'
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }

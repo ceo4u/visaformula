@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getPool, runMigrations } from '../../../backend/db';
+import bcrypt from 'bcryptjs';
 
 export const prerender = false;
 
@@ -31,6 +32,9 @@ export const POST: APIRoute = async ({ request }) => {
     const checkRes = await pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
     const isNew = checkRes.rows.length === 0;
 
+    // Hash password with bcrypt (12 salt rounds)
+    const hashedPassword = password ? await bcrypt.hash(password, 12) : '';
+
     // Insert seeker record
     await pool.query(`
       INSERT INTO seekers (first_name, last_name, email, password_hash, phone, passport_country, goals, destinations, looking_for)
@@ -41,7 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
       first_name, 
       last_name, 
       email, 
-      password || '', 
+      hashedPassword,
       phone, 
       passport_country, 
       JSON.stringify(goals || []), 
@@ -77,7 +81,7 @@ export const POST: APIRoute = async ({ request }) => {
         email: user.email,
         displayName: `${user.first_name} ${user.last_name || ''}`.trim(),
         type: 'seeker',
-        rawUser: user
+        rawUser: { ...user, password_hash: undefined }
       }
     }), {
       status: 200,

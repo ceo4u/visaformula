@@ -1,16 +1,43 @@
 import type { APIRoute } from 'astro';
 import { getPool, runMigrations } from '../../../backend/db';
+import { verifySession } from '../../../backend/auth';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // Verify session cookie — reject unauthenticated requests
+    const cookieHeader = request.headers.get('cookie') || '';
+    const sidMatch = cookieHeader.match(/visaformula_sid=([^;]+)/);
+    const sessionToken = sidMatch ? sidMatch[1] : null;
+    if (!sessionToken) {
+      return new Response(JSON.stringify({ status: 'error', message: 'Unauthorized. Please log in.' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    const sessionData = await verifySession(sessionToken);
+    if (!sessionData) {
+      return new Response(JSON.stringify({ status: 'error', message: 'Session expired. Please log in again.' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const body = await request.json();
     const { email, role, first_name, last_name, phone, passport_country, resident_of, looking_for } = body;
 
     if (!email) {
       return new Response(JSON.stringify({ status: 'error', message: 'Email is required to update profile.' }), {
         status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Ensure session user matches the email being updated
+    if (sessionData.user.email.toLowerCase() !== email.toLowerCase()) {
+      return new Response(JSON.stringify({ status: 'error', message: 'Unauthorized. Cannot update another user\'s profile.' }), {
+        status: 403,
         headers: { 'Content-Type': 'application/json' }
       });
     }

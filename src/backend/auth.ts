@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import { getPool, runMigrations } from './db';
 
 export interface SessionInfo {
@@ -16,7 +17,8 @@ export async function loginUser(email: string, password_hash: string): Promise<{
   const seekerRes = await pool.query('SELECT * FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
   if (seekerRes.rows.length > 0) {
     const user = seekerRes.rows[0];
-    if (user.password_hash === password_hash) {
+    const passwordMatch = user.password_hash && await bcrypt.compare(password_hash, user.password_hash);
+    if (passwordMatch) {
       return { user, type: 'seeker' };
     } else {
       throw new Error('Incorrect password.');
@@ -27,7 +29,8 @@ export async function loginUser(email: string, password_hash: string): Promise<{
   const expertRes = await pool.query('SELECT * FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
   if (expertRes.rows.length > 0) {
     const user = expertRes.rows[0];
-    if (user.password_hash === password_hash) {
+    const passwordMatch = user.password_hash && await bcrypt.compare(password_hash, user.password_hash);
+    if (passwordMatch) {
       return { user, type: 'expert' };
     } else {
       throw new Error('Incorrect password.');

@@ -21,7 +21,7 @@ export const POST: APIRoute = async ({ request }) => {
     headers.append('Content-Type', 'application/json');
     headers.append(
       'Set-Cookie',
-      `visaformula_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
+      `visaformula_sid=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
     );
 
     const displayName = type === 'seeker' 
@@ -35,15 +35,15 @@ export const POST: APIRoute = async ({ request }) => {
         email: user.email,
         displayName: displayName || 'User',
         type,
-        rawUser: user
+        rawUser: { ...user, password_hash: undefined }
       }
     }), { status: 200, headers });
 
   } catch (err: any) {
     console.error('Login API error:', err);
-    const isValidation = err.message === 'Email is not registered.' || err.message === 'Incorrect password.';
-    return new Response(JSON.stringify({ status: 'error', message: err.message || 'Server error' }), {
-      status: isValidation ? 401 : 500,
+    // Generic message to prevent email enumeration
+    return new Response(JSON.stringify({ status: 'error', message: 'Invalid email or password.' }), {
+      status: 401,
       headers: { 'Content-Type': 'application/json' }
     });
   }

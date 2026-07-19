@@ -32,8 +32,6 @@ export async function sendEmailWithRetry(mailOptions: nodemailer.SendMailOptions
     const activeTransporter = getMailTransporter();
 
     try {
-        // Verify transporter before sending
-        await activeTransporter.verify();
         const info = await activeTransporter.sendMail(mailOptions);
         console.log(`[Email Sent] Recipient: ${mailOptions.to}, Time: ${new Date().toISOString()}, MessageID: ${info.messageId}`);
         return info;

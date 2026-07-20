@@ -24,16 +24,20 @@ export function ForgotPasswordPortal() {
 
         setLoading(true);
         try {
-            // Import client-side Firebase auth dynamically
-            const { getAuth, sendPasswordResetEmail } = await import("firebase/auth");
-            const { app } = await import("../../lib/firebase");
-            const auth = getAuth(app);
-            
-            await sendPasswordResetEmail(auth, email);
-            setSuccess(true);
+            const res = await fetch("/api/auth/forgot-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setSuccess(true);
+            } else {
+                setError(data.message || "Failed to send reset link.");
+            }
         } catch (err: any) {
-            console.error("Firebase Password Reset Error:", err);
-            setError(err.message || "Failed to send reset link. Please check your email.");
+            console.error("Password Reset Error:", err);
+            setError("Server connection error. Please try again.");
         } finally {
             setLoading(false);
         }

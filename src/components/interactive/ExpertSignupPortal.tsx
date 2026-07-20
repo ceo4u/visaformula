@@ -776,7 +776,7 @@ function ExpertSignupPortalContent() {
                     />
                   </div>
 
-                  <!-- Connected Passwords Area -->
+                  {/* Connected Passwords Area */}
                   <div className={`col-span-2 space-y-4 border-l-4 pl-4 transition-all duration-300 ${
                     !password && !confirmPassword ? 'border-slate-200' :
                     password === confirmPassword ? 'border-emerald-500 bg-emerald-50/10 py-2 rounded-r-md' : 'border-rose-500 bg-rose-50/10 py-2 rounded-r-md'

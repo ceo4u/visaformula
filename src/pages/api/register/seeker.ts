@@ -31,8 +31,18 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const checkRes = await pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
-    const isNew = checkRes.rows.length === 0;
+    const [seekerCheck, expertCheck] = await Promise.all([
+      pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]),
+      pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]),
+    ]);
+    if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
+      return new Response(JSON.stringify({ status: 'error', message: 'This email is already registered. Please login instead.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const isNew = true;
 
     // Hash password with bcrypt (12 salt rounds)
     const hashedPassword = password ? await bcrypt.hash(password, 12) : '';

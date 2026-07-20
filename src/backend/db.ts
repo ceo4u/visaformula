@@ -29,21 +29,40 @@ export function getPool() {
   
   return {
     query: async (text: string, params?: any[]) => {
-      try {
-        return await pool!.query(text, params);
-      } catch (err: any) {
-        if (err.message && (
-          err.message.includes('SSL') || 
-          err.message.includes('ssl') || 
-          err.message.includes('support SSL') || 
-          err.message.includes('SSL connection')
-        )) {
-          console.warn('Database does not support SSL. Retrying without SSL...');
-          useSSL = false;
-          createPoolInstance(true);
+      let retries = 3;
+      while (true) {
+        try {
           return await pool!.query(text, params);
+        } catch (err: any) {
+          retries--;
+          const isTimeoutOrConnError = 
+            err.code === 'ETIMEDOUT' || 
+            err.code === 'ECONNRESET' || 
+            (err.message && (
+              err.message.toLowerCase().includes('timeout') || 
+              err.message.toLowerCase().includes('connection') ||
+              err.message.toLowerCase().includes('connect')
+            ));
+          
+          if (isTimeoutOrConnError && retries > 0) {
+            console.warn(`[Neon DB] Connection timed out/lost: ${err.message}. Retrying query in 3 seconds... (${retries} retries left)`);
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            continue;
+          }
+
+          if (err.message && (
+            err.message.includes('SSL') || 
+            err.message.includes('ssl') || 
+            err.message.includes('support SSL') || 
+            err.message.includes('SSL connection')
+          )) {
+            console.warn('Database does not support SSL. Retrying without SSL...');
+            useSSL = false;
+            createPoolInstance(true);
+            return await pool!.query(text, params);
+          }
+          throw err;
         }
-        throw err;
       }
     },
     end: async () => {

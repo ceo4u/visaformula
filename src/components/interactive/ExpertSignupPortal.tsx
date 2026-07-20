@@ -5,7 +5,8 @@ import {
   MessageSquare, Briefcase, Mail, Phone, ExternalLink, 
   Percent, Award, Image as ImageIcon, Sparkles, Building, 
   CreditCard, Settings, ChevronRight, LayoutDashboard, Search, 
-  Calendar, LogOut, CheckSquare, TrendingUp, Bookmark, Bell, Clock, ChevronDown, AlertTriangle, Menu
+  Calendar, LogOut, CheckSquare, TrendingUp, Bookmark, Bell, Clock, ChevronDown, AlertTriangle, Menu,
+  Eye, EyeOff
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import airplanePaths from "../../data/clean_airplane.json";

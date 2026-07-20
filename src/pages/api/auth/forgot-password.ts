@@ -48,17 +48,17 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // Always return success to prevent email enumeration
+    // Return error if user does not exist to guide reset flow
     if (!user) {
       return new Response(JSON.stringify({
-        status: 'success',
-        message: 'If an account exists with this email, a reset link has been sent.',
-      }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        status: 'error',
+        message: 'This email is not registered with us.',
+      }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // ── Generate secure token ─────────────────────────────────
-    const resetToken = crypto.randomBytes(48).toString('hex');
-    const tokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+    // ── Generate 6-digit numeric OTP ────────────────────────────
+    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const tokenHash = crypto.createHash('sha256').update(otpCode).digest('hex');
     const expiresAt = new Date(Date.now() + RESET_TOKEN_EXPIRY_MINUTES * 60 * 1000);
 
     // Invalidate any previous unused tokens for this email
@@ -73,7 +73,7 @@ export const POST: APIRoute = async ({ request }) => {
     // ── Send reset email ──────────────────────────────────────
     const firstName = userType === 'seeker' ? user.first_name : user.business_name;
     sendPasswordReset({
-      resetToken,
+      resetToken: otpCode,
       email,
       firstName,
       expiresInMinutes: RESET_TOKEN_EXPIRY_MINUTES,
@@ -81,7 +81,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       status: 'success',
-      message: 'If an account exists with this email, a reset link has been sent.',
+      message: 'A 6-digit verification code has been sent to your email address.',
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (err: any) {

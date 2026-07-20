@@ -47,20 +47,14 @@ export function generatePasswordResetEmailHtml(data: {
                 Reset your password
               </h1>
               <p style="color: #4b5563; font-size: 15px; margin: 0 0 28px 0; line-height: 24px; text-align: center;">
-                Hi ${firstName}, we received a request to reset your password. Click the button below to choose a new one.
+                Hi ${firstName}, we received a request to reset your password. Use the secure 6-digit verification code below to verify your request.
               </p>
 
-              <!-- Reset Button -->
-              <div style="text-align: center; margin: 32px 0;">
-                <a href="${resetLink}" 
-                   style="display: inline-block; background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%); color: #ffffff !important; font-size: 15px; font-weight: 700; padding: 16px 36px; border-radius: 12px; text-decoration: none; letter-spacing: 0.3px; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);">
-                  Reset Password
-                </a>
-              </div>
-
-              <p style="margin: 0 0 8px 0; font-size: 13px; color: #6b7280; font-weight: 600;">Or copy this link into your browser:</p>
-              <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px; word-break: break-all; margin-bottom: 28px;">
-                <a href="${resetLink}" style="color: #3b82f6; font-size: 12px; text-decoration: none; font-weight: 500;">${resetLink}</a>
+              <!-- OTP Code Display -->
+              <div style="text-align: center; margin: 36px 0;">
+                <div style="display: inline-block; background-color: #f9fafb; border: 2px dashed #1e3a8a; color: #111827; font-size: 32px; font-weight: 800; padding: 18px 48px; border-radius: 16px; letter-spacing: 8px; font-family: Courier, monospace; box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);">
+                  ${resetToken}
+                </div>
               </div>
 
               <!-- Expiry + Security -->

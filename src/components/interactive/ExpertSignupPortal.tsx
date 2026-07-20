@@ -658,6 +658,9 @@ function ExpertSignupPortalContent() {
                         </button>
                       )}
                     </div>
+                    {validationError && (
+                      <p className="text-xs text-red-500 font-semibold mt-1.5">{validationError}</p>
+                    )}
                   </div>
 
                   <div className="col-span-2 md:col-span-1" onClick={(e) => e.stopPropagation()}>

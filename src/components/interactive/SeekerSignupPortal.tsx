@@ -416,6 +416,9 @@ function SeekerSignupPortalContent() {
                                             </button>
                                         )}
                                     </div>
+                                    {validationError && (
+                                        <p className="text-xs text-red-500 font-semibold mt-1.5">{validationError}</p>
+                                    )}
                                 </div>
 
                                 <div className="col-span-2">

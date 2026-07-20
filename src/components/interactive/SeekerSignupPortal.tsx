@@ -52,6 +52,7 @@ function SeekerSignupPortalContent() {
     const [otpDigits, setOtpDigits] = useState<string[]>(Array(6).fill(""));
     const [resendCooldown, setResendCooldown] = useState(0);
     const [sendingCode, setSendingCode] = useState(false);
+    const [otpInput, setOtpInput] = useState("");
 
     const handleSendVerificationCode = async () => {
         setValidationError("");
@@ -382,26 +383,31 @@ function SeekerSignupPortalContent() {
                                                 className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
                                             />
                                             {emailVerified && (
-                                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-emerald-600 font-bold flex items-center gap-1">
-                                                    ✅ Verified
+                                                <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center bg-emerald-50 border border-emerald-250 p-1.5 rounded-full animate-premium-fade shadow-sm">
+                                                    <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                    </svg>
                                                 </span>
                                             )}
                                         </div>
 
                                         {otpSent && !emailVerified && (
-                                            <div className="relative w-full sm:w-44 shrink-0 animate-premium-fade">
+                                            <div className="relative w-full sm:w-auto shrink-0 flex gap-2 animate-premium-fade">
                                                 <input
                                                     type="text"
                                                     maxLength={6}
-                                                    placeholder="Enter OTP"
-                                                    onChange={(e) => {
-                                                        const val = e.target.value;
-                                                        if (val.length === 6) {
-                                                            handleVerifyCode(val);
-                                                        }
-                                                    }}
-                                                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-black text-center font-bold tracking-widest text-black shadow-sm"
+                                                    placeholder="OTP"
+                                                    value={otpInput}
+                                                    onChange={(e) => setOtpInput(e.target.value)}
+                                                    className="w-24 px-2 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-black text-center font-bold tracking-widest text-black shadow-sm"
                                                 />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleVerifyCode(otpInput)}
+                                                    className="bg-black hover:bg-neutral-900 text-white text-xs font-bold tracking-wider px-4 py-3 rounded-md uppercase cursor-pointer h-[46px] shrink-0"
+                                                >
+                                                    Verify
+                                                </button>
                                             </div>
                                         )}
                                         
@@ -421,7 +427,22 @@ function SeekerSignupPortalContent() {
                                     )}
                                 </div>
 
-                                <div className="col-span-2">
+                                <!-- Connected Passwords Area -->
+                                <div className={`col-span-2 space-y-4 border-l-4 pl-4 transition-all duration-300 ${
+                                    !password && !confirmPassword ? 'border-slate-200' :
+                                    password === confirmPassword ? 'border-emerald-500 bg-emerald-50/10 py-2 rounded-r-md' : 'border-rose-500 bg-rose-50/10 py-2 rounded-r-md'
+                                }`}>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Security Credentials</span>
+                                        {password && confirmPassword && (
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                                password === confirmPassword ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                                            }`}>
+                                                {password === confirmPassword ? '✓ Passwords Match' : '✗ Passwords Do Not Match'}
+                                            </span>
+                                        )}
+                                    </div>
+
                                     <div className="relative">
                                         <input 
                                             type={showPassword ? "text" : "password"} 
@@ -440,10 +461,8 @@ function SeekerSignupPortalContent() {
                                             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                         </button>
                                     </div>
-                                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1.5">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
-                                </div>
+                                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
 
-                                <div className="col-span-2">
                                     <div className="relative">
                                         <input 
                                             type={showConfirmPassword ? "text" : "password"} 

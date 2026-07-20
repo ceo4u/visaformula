@@ -143,4 +143,38 @@ export async function runMigrations() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
+  // Add resend tracking columns if they don't exist
+  await p.query(`ALTER TABLE email_verifications ADD COLUMN IF NOT EXISTS resend_count INTEGER DEFAULT 0;`);
+  await p.query(`ALTER TABLE email_verifications ADD COLUMN IF NOT EXISTS last_resend_at TIMESTAMP;`);
+
+  // 7. Email Logs Table — track every email sent for analytics
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS email_logs (
+      id SERIAL PRIMARY KEY,
+      email VARCHAR(255) NOT NULL,
+      type VARCHAR(50) NOT NULL,
+      status VARCHAR(20) NOT NULL,
+      provider VARCHAR(30) DEFAULT 'plunk',
+      provider_id VARCHAR(255),
+      error_message TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  // Index for fast lookups by email
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_email_logs_email ON email_logs (email);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_email_logs_type ON email_logs (type);`);
+
+  // 8. Password Resets Table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS password_resets (
+      id SERIAL PRIMARY KEY,
+      email VARCHAR(255) NOT NULL,
+      token_hash VARCHAR(255) NOT NULL,
+      expires_at TIMESTAMP NOT NULL,
+      used BOOLEAN DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_password_resets_email ON password_resets (email);`);
 }
+

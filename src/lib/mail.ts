@@ -1,43 +1,31 @@
-import Plunk from "@plunk/node";
+// ============================================================
+// src/lib/mail.ts
+// Backward-compatible wrapper — delegates to EmailService
+// All new code should use src/lib/email.ts directly
+// ============================================================
 
-let plunkClient: Plunk | null = null;
+export { sendVerificationOTP, sendWelcomeEmail, sendPasswordReset, EmailService } from './email';
 
-function getPlunkClient(): Plunk {
-    if (plunkClient) return plunkClient;
-    const apiKey = process.env.PLUNK_SECRET_KEY || import.meta.env.PLUNK_SECRET_KEY;
-    if (!apiKey) {
-        throw new Error("PLUNK_SECRET_KEY environment variable is not set.");
-    }
-    plunkClient = new Plunk(apiKey);
-    return plunkClient;
-}
-
+// Legacy interface kept for any existing callers
 export interface MailOptions {
-    to: string;
-    subject: string;
-    html: string;
-    from?: string; // kept for API compatibility but Plunk uses dashboard sender
+  to: string;
+  subject: string;
+  html: string;
+  from?: string;
 }
 
-export async function sendEmailWithRetry(mailOptions: MailOptions, retryCount = 1): Promise<any> {
-    const client = getPlunkClient();
-
-    try {
-        const info = await client.emails.send({
-            to: mailOptions.to,
-            subject: mailOptions.subject,
-            body: mailOptions.html,
-        });
-        console.log(`[Email Sent] Recipient: ${mailOptions.to}, Time: ${new Date().toISOString()}`);
-        return info;
-    } catch (error: any) {
-        console.error(`[Plunk Error] Error sending email to ${mailOptions.to}:`, error);
-
-        if (retryCount > 0) {
-            console.log(`[Plunk Retry] Retrying once to send email to ${mailOptions.to}...`);
-            return sendEmailWithRetry(mailOptions, retryCount - 1);
-        }
-
-        throw error;
-    }
+/**
+ * @deprecated Use EmailService from src/lib/email.ts instead.
+ * This function is kept for backward compatibility only.
+ */
+export async function sendEmailWithRetry(options: MailOptions, _retryCount = 1): Promise<any> {
+  const { getPlunkClient } = await import('./plunk');
+  const client = getPlunkClient();
+  const result = await client.emails.send({
+    to: options.to,
+    subject: options.subject,
+    body: options.html,
+  });
+  console.log(`[mail.ts legacy] Sent to ${options.to}`);
+  return result;
 }

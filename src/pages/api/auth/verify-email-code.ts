@@ -1,74 +1,62 @@
+// ============================================================
+// src/pages/api/auth/verify-email-code.ts
+// Verify OTP using the otp.ts module
+// ============================================================
+
 import type { APIRoute } from 'astro';
-import { getPool } from '../../../backend/db';
-import crypto from 'crypto';
+import { verifyOtp } from '../../../lib/otp';
+import { checkRateLimit, RATE_LIMITS, getIpFromRequest, rateLimitErrorResponse } from '../../../lib/rate-limit';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // ── Rate limit by IP ──────────────────────────────────────
+    const ip = getIpFromRequest(request);
+    const rl = checkRateLimit(`verify-otp:${ip}`, RATE_LIMITS.VERIFY_OTP);
+    if (!rl.allowed) return rateLimitErrorResponse(rl.resetAt);
+
+    // ── Validate input ────────────────────────────────────────
     const body = await request.json();
     const { email, otp } = body;
 
     if (!email || !otp) {
       return new Response(JSON.stringify({ status: 'error', message: 'Email and verification code are required.' }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    const pool = getPool();
-    const verRes = await pool.query('SELECT * FROM email_verifications WHERE LOWER(email) = LOWER($1)', [email]);
+    // ── Verify OTP ────────────────────────────────────────────
+    const result = await verifyOtp(email, otp);
 
-    if (verRes.rows.length === 0) {
-      return new Response(JSON.stringify({ status: 'error', message: 'No verification request found for this email.' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' }
+    if (result.success) {
+      return new Response(JSON.stringify({ status: 'success', verified: true, message: 'Email verified successfully!' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    const record = verRes.rows[0];
+    // ── Map errors to user-friendly messages ─────────────────
+    const errorMessages: Record<string, { message: string; code: string }> = {
+      NOT_FOUND: { message: 'No verification request found. Please request a new code.', code: 'NOT_FOUND' },
+      EXPIRED:   { message: 'Verification code has expired. Please request a new one.', code: 'EXPIRED' },
+      TOO_MANY_ATTEMPTS: { message: 'Too many failed attempts. Please request a new code.', code: 'TOO_MANY_ATTEMPTS' },
+      INVALID:   { message: 'Invalid verification code. Please check and try again.', code: 'INVALID_OTP' },
+    };
 
-    // Check attempts limit
-    if (record.attempts >= 5) {
-      return new Response(JSON.stringify({ status: 'error', message: 'Too many failed attempts. Code locked.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
+    const errorInfo = errorMessages[result.error] || { message: 'Verification failed.', code: 'UNKNOWN' };
 
-    // Check expiry
-    if (new Date() > new Date(record.expires_at)) {
-      return new Response(JSON.stringify({ status: 'error', message: 'Verification code has expired.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    // Compare sha256 hash
-    const computedHash = crypto.createHash('sha256').update(otp).digest('hex');
-    const isValid = computedHash === record.otp_hash;
-
-    if (!isValid) {
-      // Increment attempts
-      await pool.query('UPDATE email_verifications SET attempts = attempts + 1 WHERE LOWER(email) = LOWER($1)', [email]);
-      return new Response(JSON.stringify({ status: 'error', message: 'Invalid verification code.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    // Set as verified
-    await pool.query('UPDATE email_verifications SET verified = true, otp_hash = \'\' WHERE LOWER(email) = LOWER($1)', [email]);
-
-    return new Response(JSON.stringify({ status: 'success', verified: true, message: 'Email verified successfully!' }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
+    return new Response(JSON.stringify({ status: 'error', code: errorInfo.code, message: errorInfo.message }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
     });
+
   } catch (err: any) {
-    console.error('Verify OTP API error:', err);
-    return new Response(JSON.stringify({ status: 'error', message: err.message || 'Server error' }), {
+    console.error('[verify-email-code] Error:', err);
+    return new Response(JSON.stringify({ status: 'error', message: 'An unexpected error occurred.' }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 };

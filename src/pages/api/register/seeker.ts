@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getPool, runMigrations } from '../../../backend/db';
 import bcrypt from 'bcryptjs';
+import { sendWelcomeEmail } from '../../../lib/email';
+import { deleteOtpRecord } from '../../../lib/otp';
 
 export const prerender = false;
 
@@ -55,18 +57,17 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (isNew) {
       try {
-        const { sendEmailWithRetry } = await import('../../../lib/mail');
-        const { generateWelcomeHtml } = await import('../../../emails/WelcomeEmail');
-        
-        const html = generateWelcomeHtml({ firstName: first_name, displayName: `${first_name} ${last_name || ''}`.trim() });
-        await sendEmailWithRetry({
-          from: `"Visa Formula" <noreply@visaformula.com>`,
-          to: email,
-          subject: `Welcome to Visa Formula 👋`,
-          html: html
-        });
+        // Clean up OTP record after successful registration
+        await deleteOtpRecord(email);
+        // Send welcome email via EmailService
+        sendWelcomeEmail({
+          firstName: first_name,
+          displayName: `${first_name} ${last_name || ''}`.trim(),
+          email,
+          userType: 'seeker',
+        }).catch(err => console.error('Welcome email failed for seeker:', err));
       } catch (emailErr) {
-        console.error('Welcome email failed for standard Seeker user:', emailErr);
+        console.error('Post-registration actions failed for seeker:', emailErr);
       }
     }
 

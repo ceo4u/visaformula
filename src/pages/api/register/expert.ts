@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getPool, runMigrations } from '../../../backend/db';
 import bcrypt from 'bcryptjs';
+import { sendWelcomeEmail } from '../../../lib/email';
+import { deleteOtpRecord } from '../../../lib/otp';
 
 export const prerender = false;
 
@@ -69,18 +71,15 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (isNew) {
       try {
-        const { sendEmailWithRetry } = await import('../../../lib/mail');
-        const { generateWelcomeHtml } = await import('../../../emails/WelcomeEmail');
-        
-        const html = generateWelcomeHtml({ firstName: business_name, displayName: business_name });
-        await sendEmailWithRetry({
-          from: `"Visa Formula" <noreply@visaformula.com>`,
-          to: email,
-          subject: `Welcome to Visa Formula 👋`,
-          html: html
-        });
+        await deleteOtpRecord(email);
+        sendWelcomeEmail({
+          firstName: business_name,
+          displayName: business_name,
+          email,
+          userType: 'expert',
+        }).catch(err => console.error('Welcome email failed for expert:', err));
       } catch (emailErr) {
-        console.error('Welcome email failed for standard Expert user:', emailErr);
+        console.error('Post-registration actions failed for expert:', emailErr);
       }
     }
 

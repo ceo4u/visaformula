@@ -18,7 +18,7 @@ import type {
 
 const FROM_NAME = process.env.EMAIL_FROM_NAME || 'Visa Formula';
 const FROM_EMAIL = process.env.EMAIL_FROM || 'noreply@visaformula.com';
-const APP_URL = process.env.APP_URL || 'https://visaformula.com';
+const APP_URL = import.meta.env.APP_URL || process.env.APP_URL || 'https://visaformula.com';
 
 // ─── Core Send Function ────────────────────────────────────
 

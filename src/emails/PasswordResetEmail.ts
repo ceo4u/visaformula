@@ -10,7 +10,7 @@ export function generatePasswordResetEmailHtml(data: {
   expiresInMinutes?: number;
 }): string {
   const { resetToken, firstName = 'there', expiresInMinutes = 30 } = data;
-  const appUrl = process.env.APP_URL || 'https://visaformula.com';
+  const appUrl = import.meta.env.APP_URL || process.env.APP_URL || 'https://visaformula.com';
   const resetLink = `${appUrl}/reset-password?token=${resetToken}`;
 
   return `<!DOCTYPE html>

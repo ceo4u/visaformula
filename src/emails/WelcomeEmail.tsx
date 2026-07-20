@@ -97,7 +97,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                                 </tr>
                                 <tr>
                                     <td align="center" style="padding-top: 20px;">
-                                        <a href="https://visaformula.com/find-expert" style="color: #2563eb; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 2px solid #dbeafe; padding-bottom: 2px;">
+                                        <a href="https://visaformula.com/find-experts" style="color: #2563eb; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 2px solid #dbeafe; padding-bottom: 2px;">
                                             Find Verified Visa Experts &rarr;
                                         </a>
                                     </td>

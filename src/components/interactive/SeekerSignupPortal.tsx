@@ -247,7 +247,7 @@ function SeekerSignupPortalContent() {
                 </div>
             </header>
 
-            <div className="flex-grow flex flex-col justify-start py-10 px-6 max-w-4xl w-full mx-auto">
+            <div className="flex-grow flex flex-col justify-start pt-10 pb-28 px-6 max-w-4xl w-full mx-auto">
                 <div className="text-center my-8">
                     <h1 className="text-2xl md:text-3xl font-semibold text-black tracking-tight mb-3">Register as Seeker</h1>
                     <p className="text-base text-slate-400 font-medium">Setup immigration goals and match with verified advisors.</p>

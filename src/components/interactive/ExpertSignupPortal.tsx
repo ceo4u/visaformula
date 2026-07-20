@@ -527,7 +527,7 @@ function ExpertSignupPortalContent() {
       )}
 
       {step < 3 ? (
-        <div className="flex-grow flex flex-col justify-start py-6 px-6 max-w-4xl w-full mx-auto">
+        <div className="flex-grow flex flex-col justify-start pt-6 pb-28 px-6 max-w-4xl w-full mx-auto">
           <div className="text-center my-6">
             <h1 className="text-2xl md:text-3xl font-bold text-[#0c1a2e] tracking-tight mb-2 font-jakarta">Register as Expert</h1>
             <p className="text-base text-slate-400 font-medium">Enter your details to initialize your portal</p>

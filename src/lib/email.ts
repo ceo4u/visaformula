@@ -31,6 +31,7 @@ async function sendEmail(
 
   try {
     const result = await client.emails.send({
+      from: FROM_EMAIL,
       to: options.to,
       subject: options.subject,
       body: options.html,

@@ -11,6 +11,7 @@ export function ForgotPasswordPortal() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [codeSent, setCodeSent] = useState(false);
+    const [otpVerified, setOtpVerified] = useState(false);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
 
@@ -52,15 +53,42 @@ export function ForgotPasswordPortal() {
         }
     };
 
-    const handleResetPassword = async (e: React.FormEvent) => {
+    const handleVerifyOtp = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
         setMessage("");
 
         if (!otpCode || otpCode.length < 6) {
-            setError("Please enter the 6-digit verification code sent to your email.");
+            setError("Please enter the 6-digit verification code.");
             return;
         }
+
+        setLoading(true);
+        try {
+            const res = await fetch("/api/auth/verify-reset-code", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, token: otpCode })
+            });
+            const data = await res.json();
+            if (res.ok && data.verified) {
+                setOtpVerified(true);
+                setMessage("Code verified successfully! Now create your new password.");
+            } else {
+                setError(data.message || "Invalid or expired verification code.");
+            }
+        } catch (err: any) {
+            console.error("OTP verification error:", err);
+            setError("Server connection error. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleResetPassword = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError("");
+        setMessage("");
 
         if (password !== confirmPassword) {
             setError("Passwords do not match.");
@@ -83,7 +111,7 @@ export function ForgotPasswordPortal() {
             if (res.ok) {
                 setSuccess(true);
             } else {
-                setError(data.message || "Verification failed. Please check the code.");
+                setError(data.message || "Password reset failed. Please request a new code.");
             }
         } catch (err: any) {
             console.error("Reset password error:", err);
@@ -180,9 +208,9 @@ export function ForgotPasswordPortal() {
                                     {loading ? "Sending code..." : "Send Verification Code"}
                                 </button>
                             </form>
-                        ) : (
-                            /* Step 2: Verification Code + Passwords Form */
-                            <form onSubmit={handleResetPassword} className="space-y-5 text-left">
+                        ) : !otpVerified ? (
+                            /* Step 2: Input Verification Code ONLY */
+                            <form onSubmit={handleVerifyOtp} className="space-y-6 text-left">
                                 <div className="text-center mb-4">
                                     <h1 className="text-2xl font-extrabold text-black tracking-tight mb-2">
                                         Verification Required
@@ -198,7 +226,6 @@ export function ForgotPasswordPortal() {
                                     </div>
                                 )}
 
-                                {/* Code input */}
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold text-slate-800 tracking-wide uppercase">Enter Code</label>
                                     <input
@@ -210,6 +237,65 @@ export function ForgotPasswordPortal() {
                                         onChange={(e) => setOtpCode(e.target.value)}
                                         className="w-full h-12 px-4 rounded-xl border border-slate-250 bg-slate-50 text-center font-bold tracking-widest text-lg focus:outline-none focus:ring-2 focus:ring-slate-100 focus:border-black text-black shadow-sm"
                                     />
+                                </div>
+
+                                {error && (
+                                    <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold text-center leading-relaxed">
+                                        {error}
+                                    </div>
+                                )}
+
+                                <div className="flex gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => { setCodeSent(false); setError(""); setMessage(""); }}
+                                        className="w-1/3 h-12 border border-slate-200 hover:bg-slate-50 text-slate-700 font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all flex items-center justify-center cursor-pointer"
+                                    >
+                                        Back
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={loading}
+                                        className="w-2/3 h-12 bg-black hover:bg-slate-900 disabled:bg-slate-300 text-white font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                                    >
+                                        {loading ? "Verifying..." : "Verify Code"}
+                                    </button>
+                                </div>
+                            </form>
+                        ) : (
+                            /* Step 3: Enter New Password ONLY (Unlocked after Verification) */
+                            <form onSubmit={handleResetPassword} className="space-y-6 text-left">
+                                <div className="text-center mb-4">
+                                    <h1 className="text-2xl font-extrabold text-black tracking-tight mb-2">
+                                        Choose New Password
+                                    </h1>
+                                    <p className="text-slate-500 text-sm font-semibold leading-normal">
+                                        Your code is verified! Please configure a secure password.
+                                    </p>
+                                </div>
+
+                                {message && (
+                                    <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs font-semibold text-center">
+                                        {message}
+                                    </div>
+                                )}
+
+                                {/* Code display (read-only verified) */}
+                                <div className="space-y-2 relative">
+                                    <label className="text-xs font-bold text-slate-400 tracking-wide uppercase">Verified Code</label>
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            disabled
+                                            value={otpCode}
+                                            className="w-full h-12 px-4 rounded-xl border border-emerald-250 bg-emerald-50 text-center font-bold tracking-widest text-lg text-emerald-800 cursor-not-allowed"
+                                        />
+                                        <span className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center bg-emerald-100 border border-emerald-200 p-1 rounded-full shadow-sm">
+                                            <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                    </div>
                                 </div>
 
                                 {/* Connected Passwords Indicator Area */}
@@ -244,7 +330,7 @@ export function ForgotPasswordPortal() {
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
                                             >
                                                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                             </button>
@@ -281,22 +367,13 @@ export function ForgotPasswordPortal() {
                                     </div>
                                 )}
 
-                                <div className="flex gap-3">
-                                    <button
-                                        type="button"
-                                        onClick={() => { setCodeSent(false); setError(""); }}
-                                        className="w-1/3 h-12 border border-slate-200 hover:bg-slate-50 text-slate-700 font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all flex items-center justify-center cursor-pointer"
-                                    >
-                                        Back
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        disabled={loading}
-                                        className="w-2/3 h-12 bg-black hover:bg-slate-900 disabled:bg-slate-300 text-white font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-                                    >
-                                        {loading ? "Verifying..." : "Reset Password"}
-                                    </button>
-                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full h-12 bg-black hover:bg-slate-900 disabled:bg-slate-300 text-white font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                                >
+                                    {loading ? "Resetting password..." : "Confirm Password Reset"}
+                                </button>
                             </form>
                         )}
                     </div>

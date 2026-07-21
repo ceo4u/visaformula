@@ -66,8 +66,13 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // ── Send OTP email (awaited — Vercel serverless safe) ────
-    // Must await before returning or Vercel kills the outgoing HTTP request
-    const emailResult = await sendVerificationOTP({ otp, email, expiresInMinutes: 10 });
+    let emailResult: { success: boolean; error?: string };
+    try {
+      emailResult = await sendVerificationOTP({ otp, email, expiresInMinutes: 10 });
+    } catch (emailEx: any) {
+      console.error('[send-verification-code] Email exception:', emailEx?.message || emailEx);
+      emailResult = { success: false, error: emailEx?.message };
+    }
 
     if (!emailResult.success) {
       console.error('[send-verification-code] Email failed:', emailResult.error);

@@ -26,9 +26,8 @@ async function sendEmail(
   type: EmailType,
   retryCount = 1
 ): Promise<EmailResult> {
-  const client = getPlunkClient();
-
   try {
+    const client = getPlunkClient();
     const result = await client.emails.send({
       to: options.to,
       subject: options.subject,

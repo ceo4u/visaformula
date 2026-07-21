@@ -70,30 +70,17 @@ export const POST: APIRoute = async ({ request }) => {
       [email.toLowerCase(), tokenHash, expiresAt]
     );
 
-    // ── Send reset email (MUST await on Vercel serverless) ───────────────
-    // CRITICAL: fire-and-forget gets killed by Vercel before email sends
+    // ── Send reset email ──────────────────────────────────────
     const firstName = userType === 'seeker' ? user.first_name : user.business_name;
-    let emailSent = false;
     try {
-      const emailResult = await sendPasswordReset({
+      await sendPasswordReset({
         resetToken: otpCode,
         email,
         firstName,
         expiresInMinutes: RESET_TOKEN_EXPIRY_MINUTES,
       });
-      emailSent = emailResult.success;
-      if (!emailResult.success) {
-        console.error('[forgot-password] Email send failed:', emailResult.error);
-      }
-    } catch (emailErr: any) {
-      console.error('[forgot-password] Email exception:', emailErr?.message || emailErr);
-    }
-
-    if (!emailSent) {
-      return new Response(JSON.stringify({
-        status: 'error',
-        message: 'Failed to send reset email. Please try again in a moment.',
-      }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    } catch (emailErr) {
+      console.error('[forgot-password] Email dispatch error:', emailErr);
     }
 
     return new Response(JSON.stringify({

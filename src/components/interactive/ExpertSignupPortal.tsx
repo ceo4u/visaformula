@@ -26,6 +26,24 @@ function ExpertSignupPortalContent() {
   const [contactNumber, setContactNumber] = useState("");
   const [consultantType, setConsultantType] = useState("Freelancer");
 
+  // Granular Address States
+  const [addressArea, setAddressArea] = useState("");
+  const [addressCity, setAddressCity] = useState("");
+  const [addressState, setAddressState] = useState("");
+  const [addressCountry, setAddressCountry] = useState("India");
+  const [addressZip, setAddressZip] = useState("");
+
+  const updateFullAddress = (area: string, city: string, state: string, country: string, zip: string) => {
+    setAddressArea(area);
+    setAddressCity(city);
+    setAddressState(state);
+    setAddressCountry(country);
+    setAddressZip(zip);
+    const fullStr = [area, city, state, country].filter(Boolean).join(", ") + (zip ? ` - ${zip}` : "");
+    setExpertAddress(fullStr);
+    setOfficeAddress(fullStr);
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
         const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
@@ -873,14 +891,70 @@ function ExpertSignupPortalContent() {
                     </div>
                   </div>
 
-                  <div className="col-span-2">
-                    <input 
-                      required
-                      value={expertAddress} 
-                      onChange={(e) => setExpertAddress(e.target.value)} 
-                      placeholder="Enter your Office Address or Practice Location" 
-                      className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
-                    />
+                  <div className="col-span-2 space-y-3 pt-2 border-t border-slate-100">
+                    <label className="text-xs font-bold text-slate-800 block uppercase tracking-wider">Office / Practice Location Address*</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {/* Area */}
+                      <div className="col-span-2">
+                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">Area / Locality / Street Address*</label>
+                        <input 
+                          type="text"
+                          required
+                          value={addressArea} 
+                          onChange={(e) => updateFullAddress(e.target.value, addressCity, addressState, addressCountry, addressZip)} 
+                          placeholder="e.g. Suite 402, MG Road, Landmark Building" 
+                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        />
+                      </div>
+                      {/* City or District or Town */}
+                      <div className="col-span-1">
+                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">City / District / Town*</label>
+                        <input 
+                          type="text"
+                          required
+                          value={addressCity} 
+                          onChange={(e) => updateFullAddress(addressArea, e.target.value, addressState, addressCountry, addressZip)} 
+                          placeholder="e.g. Mumbai / New Delhi" 
+                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        />
+                      </div>
+                      {/* State */}
+                      <div className="col-span-1">
+                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">State / Province*</label>
+                        <input 
+                          type="text"
+                          required
+                          value={addressState} 
+                          onChange={(e) => updateFullAddress(addressArea, addressCity, e.target.value, addressCountry, addressZip)} 
+                          placeholder="e.g. Maharashtra" 
+                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        />
+                      </div>
+                      {/* Country */}
+                      <div className="col-span-1">
+                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">Country*</label>
+                        <input 
+                          type="text"
+                          required
+                          value={addressCountry} 
+                          onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, e.target.value, addressZip)} 
+                          placeholder="e.g. India" 
+                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        />
+                      </div>
+                      {/* Zip code */}
+                      <div className="col-span-1">
+                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">ZIP / Postal Code*</label>
+                        <input 
+                          type="text"
+                          required
+                          value={addressZip} 
+                          onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, addressCountry, e.target.value)} 
+                          placeholder="e.g. 400001" 
+                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -1819,14 +1893,60 @@ function ExpertSignupPortalContent() {
                           className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none"
                         />
                       </div>
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-slate-800">Office Location Address</label>
-                        <input 
-                          type="text"
-                          value={officeAddress}
-                          onChange={(e) => setOfficeAddress(e.target.value)}
-                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none"
-                        />
+                      <div className="space-y-3 md:col-span-2 pt-2 border-t border-slate-100">
+                        <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">Office / Practice Address Details</label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="col-span-2">
+                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">Area / Locality / Street Address</label>
+                            <input 
+                              type="text"
+                              value={addressArea}
+                              onChange={(e) => updateFullAddress(e.target.value, addressCity, addressState, addressCountry, addressZip)}
+                              placeholder="e.g. Suite 402, MG Road, Landmark Building"
+                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                            />
+                          </div>
+                          <div className="col-span-1">
+                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">City / District / Town</label>
+                            <input 
+                              type="text"
+                              value={addressCity}
+                              onChange={(e) => updateFullAddress(addressArea, e.target.value, addressState, addressCountry, addressZip)}
+                              placeholder="e.g. Mumbai / New Delhi"
+                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                            />
+                          </div>
+                          <div className="col-span-1">
+                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">State / Province</label>
+                            <input 
+                              type="text"
+                              value={addressState}
+                              onChange={(e) => updateFullAddress(addressArea, addressCity, e.target.value, addressCountry, addressZip)}
+                              placeholder="e.g. Maharashtra"
+                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                            />
+                          </div>
+                          <div className="col-span-1">
+                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">Country</label>
+                            <input 
+                              type="text"
+                              value={addressCountry}
+                              onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, e.target.value, addressZip)}
+                              placeholder="e.g. India"
+                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                            />
+                          </div>
+                          <div className="col-span-1">
+                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">ZIP / Postal Code</label>
+                            <input 
+                              type="text"
+                              value={addressZip}
+                              onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, addressCountry, e.target.value)}
+                              placeholder="e.g. 400001"
+                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                            />
+                          </div>
+                        </div>
                       </div>
                       <div className="space-y-1.5 md:col-span-2">
                         <label className="text-xs font-bold text-slate-800">Upload License / ID Document Copy</label>

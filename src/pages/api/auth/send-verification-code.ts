@@ -65,10 +65,29 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // ── Send email via Plunk asynchronously ──────────────────
-    // Fire-and-forget: HTTP response returns immediately
-    sendVerificationOTP({ otp, email, expiresInMinutes: 10 })
-      .catch(err => console.error('[send-verification-code] Async email failed:', err));
+    // ── Send email via Plunk (MUST await on Vercel serverless) ──────────
+    // CRITICAL: On Vercel, fire-and-forget async calls get killed when the
+    // function returns. We MUST await the email send before responding.
+    let emailSent = false;
+    try {
+      const emailResult = await sendVerificationOTP({ otp, email, expiresInMinutes: 10 });
+      emailSent = emailResult.success;
+      if (!emailResult.success) {
+        console.error('[send-verification-code] Email send failed:', emailResult.error);
+      }
+    } catch (emailErr: any) {
+      console.error('[send-verification-code] Email exception:', emailErr?.message || emailErr);
+    }
+
+    if (!emailSent) {
+      return new Response(JSON.stringify({
+        status: 'error',
+        message: 'Failed to send verification email. Please try again in a moment.',
+      }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     return new Response(JSON.stringify({
       status: 'success',

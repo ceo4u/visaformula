@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-import vercel from '@astrojs/vercel/serverless';
+import node from '@astrojs/node';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -10,11 +10,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // https://astro.build/config
 export default defineConfig({
   site: 'https://visaformula.com',
-  output: 'hybrid',
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
+  output: 'server',
+  adapter: node({
+    mode: 'standalone'
   }),
   integrations: [
     react(),

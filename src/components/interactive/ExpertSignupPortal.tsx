@@ -499,7 +499,7 @@ function ExpertSignupPortalContent() {
       )}
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
-        .font-sora, .font-sora *, body, html {
+        * {
             font-family: 'Plus Jakarta Sans', sans-serif !important;
         }
         @keyframes premiumFadeIn {

@@ -47,8 +47,8 @@ export function checkRateLimit(key: string, config: RateLimitConfig): RateLimitR
 
 // Predefined configs for each endpoint
 export const RATE_LIMITS = {
-  /** Send OTP: 5 requests per 5 minutes per IP */
-  SEND_OTP: { max: 5, windowMs: 5 * 60 * 1000 } satisfies RateLimitConfig,
+  /** Send OTP: 20 requests per 5 minutes per email/IP */
+  SEND_OTP: { max: 20, windowMs: 5 * 60 * 1000 } satisfies RateLimitConfig,
   /** Verify OTP: 10 attempts per 5 minutes per IP */
   VERIFY_OTP: { max: 10, windowMs: 5 * 60 * 1000 } satisfies RateLimitConfig,
   /** Password reset: 5 requests per 5 minutes per IP */

@@ -72,12 +72,16 @@ export const POST: APIRoute = async ({ request }) => {
 
     // ── Send reset email ──────────────────────────────────────
     const firstName = userType === 'seeker' ? user.first_name : user.business_name;
-    sendPasswordReset({
-      resetToken: otpCode,
-      email,
-      firstName,
-      expiresInMinutes: RESET_TOKEN_EXPIRY_MINUTES,
-    }).catch(err => console.error('[forgot-password] Email failed:', err));
+    try {
+      await sendPasswordReset({
+        resetToken: otpCode,
+        email,
+        firstName,
+        expiresInMinutes: RESET_TOKEN_EXPIRY_MINUTES,
+      });
+    } catch (emailErr) {
+      console.error('[forgot-password] Email dispatch error:', emailErr);
+    }
 
     return new Response(JSON.stringify({
       status: 'success',

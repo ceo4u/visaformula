@@ -67,10 +67,12 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // ── Send email via Plunk asynchronously ──────────────────
-    // Fire-and-forget: HTTP response returns immediately
-    sendVerificationOTP({ otp, email, expiresInMinutes: 10 })
-      .catch(err => console.error('[send-verification-code] Async email failed:', err));
+    // ── Send email via Plunk ──────────────────────────────────
+    try {
+      await sendVerificationOTP({ otp, email, expiresInMinutes: 10 });
+    } catch (emailErr) {
+      console.error('[send-verification-code] Email dispatch error:', emailErr);
+    }
 
     return new Response(JSON.stringify({
       status: 'success',

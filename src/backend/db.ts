@@ -71,10 +71,17 @@ export function getPool() {
   } as unknown as pg.Pool;
 }
 
+let migrationsPromise: Promise<void> | null = null;
+
 export async function runMigrations() {
-  const p = getPool();
+  if (migrationsPromise) {
+    return migrationsPromise;
+  }
   
-  // 1. Seekers Table
+  migrationsPromise = (async () => {
+    const p = getPool();
+    
+    // 1. Seekers Table
   await p.query(`
     CREATE TABLE IF NOT EXISTS seekers (
       id SERIAL PRIMARY KEY,
@@ -195,5 +202,7 @@ export async function runMigrations() {
     );
   `);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_password_resets_email ON password_resets (email);`);
+  })();
+  return migrationsPromise;
 }
 

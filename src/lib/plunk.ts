@@ -14,12 +14,12 @@ let _client: Plunk | null = null;
 export function getPlunkClient(): Plunk {
   if (_client) return _client;
 
+  console.log("[Plunk Debug] process.env.PLUNK_SECRET_KEY:", process.env.PLUNK_SECRET_KEY);
+  console.log("[Plunk Debug] import.meta.env.PLUNK_SECRET_KEY:", import.meta.env.PLUNK_SECRET_KEY);
+
   const apiKey = (
     process.env.PLUNK_SECRET_KEY ||
-    process.env.PLUNK_API_KEY ||
-    process.env.PUBLIC_PLUNK_SECRET_KEY ||
-    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined) ||
-    (import.meta?.env?.PUBLIC_PLUNK_SECRET_KEY as string | undefined)
+    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined)
   )?.trim();
 
   if (!apiKey || apiKey === 'YOUR_PLUNK_SECRET_KEY_HERE') {
@@ -31,7 +31,7 @@ export function getPlunkClient(): Plunk {
 
   const PlunkConstructor = (Plunk as any).default || Plunk;
   _client = new PlunkConstructor(apiKey, {
-    baseUrl: 'https://api.useplunk.com/v1/'
+    baseUrl: 'https://next-api.useplunk.com/v1/'
   });
   return _client;
 }

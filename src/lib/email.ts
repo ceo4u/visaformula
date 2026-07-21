@@ -27,49 +27,20 @@ async function sendEmail(
   type: EmailType,
   retryCount = 1
 ): Promise<EmailResult> {
-  const apiKey = (
-    process.env.PLUNK_SECRET_KEY ||
-    process.env.PLUNK_API_KEY ||
-    process.env.PUBLIC_PLUNK_SECRET_KEY ||
-    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined) ||
-    (import.meta?.env?.PUBLIC_PLUNK_SECRET_KEY as string | undefined)
-  )?.trim();
+  const client = getPlunkClient();
 
   try {
-    const client = getPlunkClient();
-    let result: any;
-    try {
-      result = await client.emails.send({
-        to: options.to,
-        subject: options.subject,
-        body: options.html,
-      });
-    } catch (sdkErr) {
-      // Fallback: Direct Plunk REST API dispatch
-      if (!apiKey) throw sdkErr;
-      const res = await fetch('https://api.useplunk.com/v1/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          to: options.to,
-          subject: options.subject,
-          body: options.html,
-        })
-      });
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`Plunk API HTTP ${res.status}: ${errText}`);
-      }
-      result = await res.json();
-    }
+    const result = await client.emails.send({
+      from: FROM_EMAIL,
+      to: options.to,
+      subject: options.subject,
+      body: options.html,
+    });
 
     console.log(`[EmailService] ✅ Sent "${type}" to ${options.to}`);
-    logEmail({ email: options.to, type, status: 'sent', providerId: String(result?.id || result) }).catch(() => {});
+    logEmail({ email: options.to, type, status: 'sent', providerId: String(result) }).catch(() => {});
 
-    return { success: true, messageId: String(result?.id || result) };
+    return { success: true, messageId: String(result) };
   } catch (error: any) {
     console.error(`[EmailService] ❌ Failed "${type}" to ${options.to}:`, error?.message || error);
 

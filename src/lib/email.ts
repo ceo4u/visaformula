@@ -1,86 +1,90 @@
 // ============================================================
 // src/lib/email.ts
-// Central EmailService — all emails go through Plunk SDK
+// Sends all emails via direct HTTP fetch to Plunk API
+// No SDK — works reliably on Vercel serverless
 // ============================================================
 
-import { getPlunkClient } from './plunk';
-import { getPool } from '../backend/db';
 import type {
   EmailType,
   EmailResult,
-  SendEmailOptions,
   VerificationEmailData,
   WelcomeEmailData,
   PasswordResetEmailData,
   LoginAlertEmailData,
 } from '../types/email';
 
-const FROM_NAME  = process.env.EMAIL_FROM_NAME || 'Visa Formula';
-const FROM_EMAIL = process.env.EMAIL_FROM      || 'noreply@visaformula.com';
-const APP_URL    = process.env.APP_URL || 'https://visaformula.com';
+const APP_URL = process.env.APP_URL || 'https://visaformula.com';
 
-// ─── Core Send Function ────────────────────────────────────
+// ─── Core Send ─────────────────────────────────────────────
 
 async function sendEmail(
-  options: SendEmailOptions,
-  type: EmailType,
-  retryCount = 1
+  to: string,
+  subject: string,
+  html: string,
+  type: EmailType
 ): Promise<EmailResult> {
+  const apiKey = (process.env.PLUNK_SECRET_KEY || '').trim();
+
+  if (!apiKey) {
+    console.error('[Email] PLUNK_SECRET_KEY missing');
+    return { success: false, error: 'Email service not configured' };
+  }
+
   try {
-    const client = getPlunkClient();
-    const result = await client.emails.send({
-      to: options.to,
-      subject: options.subject,
-      body: options.html,
+    const res = await fetch('https://api.useplunk.com/v1/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({ to, subject, body: html }),
     });
 
-    console.log(`[EmailService] ✅ Sent "${type}" to ${options.to}`);
-    logEmail({ email: options.to, type, status: 'sent', providerId: String(result) }).catch(() => {});
+    const text = await res.text();
 
-    return { success: true, messageId: String(result) };
-  } catch (error: any) {
-    console.error(`[EmailService] ❌ Failed "${type}" to ${options.to}:`, error?.message || error);
-
-    if (retryCount > 0) {
-      console.log(`[EmailService] 🔄 Retrying "${type}" to ${options.to}...`);
-      await new Promise(r => setTimeout(r, 1000));
-      return sendEmail(options, type, retryCount - 1);
+    if (res.ok) {
+      console.log(`[Email] ✅ Sent ${type} to ${to}`);
+      return { success: true };
     }
 
-    logEmail({ email: options.to, type, status: 'failed', errorMessage: error?.message }).catch(() => {});
-    return { success: false, error: error?.message || 'Unknown email send error' };
+    // Retry once on server errors
+    if (res.status >= 500) {
+      console.warn(`[Email] Retrying ${type} to ${to} (${res.status})...`);
+      await new Promise(r => setTimeout(r, 1000));
+      const res2 = await fetch('https://api.useplunk.com/v1/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({ to, subject, body: html }),
+      });
+      if (res2.ok) {
+        console.log(`[Email] ✅ Sent ${type} to ${to} on retry`);
+        return { success: true };
+      }
+      const text2 = await res2.text();
+      console.error(`[Email] ❌ ${type} to ${to} failed retry: ${res2.status} ${text2}`);
+      return { success: false, error: `HTTP ${res2.status}` };
+    }
+
+    console.error(`[Email] ❌ ${type} to ${to} failed: ${res.status} ${text}`);
+    return { success: false, error: `HTTP ${res.status}: ${text}` };
+
+  } catch (err: any) {
+    console.error(`[Email] ❌ ${type} to ${to} exception:`, err?.message);
+    return { success: false, error: err?.message || 'Network error' };
   }
 }
 
-// ─── Non-blocking DB Logging ───────────────────────────────
-
-interface LogEntry {
-  email: string;
-  type: EmailType;
-  status: 'sent' | 'failed' | 'retried';
-  providerId?: string;
-  errorMessage?: string;
-}
-
-async function logEmail(entry: LogEntry): Promise<void> {
-  try {
-    const pool = getPool();
-    await pool.query(
-      `INSERT INTO email_logs (email, type, status, provider, provider_id, error_message, created_at)
-       VALUES ($1, $2, $3, 'plunk', $4, $5, NOW())`,
-      [entry.email, entry.type, entry.status, entry.providerId || null, entry.errorMessage || null]
-    );
-  } catch {
-    // Silently ignore — never let logging break email delivery
-  }
-}
-
-// ─── Public Email Functions ────────────────────────────────
+// ─── Public Functions ───────────────────────────────────────
 
 export async function sendVerificationOTP(data: VerificationEmailData): Promise<EmailResult> {
   const { generateVerificationEmailHtml } = await import('../emails/VerificationEmail');
   return sendEmail(
-    { to: data.email, subject: 'Your Visa Formula Verification Code', html: generateVerificationEmailHtml(data) },
+    data.email,
+    'Your Visa Formula Verification Code',
+    generateVerificationEmailHtml(data),
     'otp_verification'
   );
 }
@@ -88,7 +92,9 @@ export async function sendVerificationOTP(data: VerificationEmailData): Promise<
 export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<EmailResult> {
   const { generateWelcomeHtml } = await import('../emails/WelcomeEmail');
   return sendEmail(
-    { to: data.email, subject: 'Welcome to Visa Formula 🎉', html: generateWelcomeHtml({ firstName: data.firstName, displayName: data.displayName }) },
+    data.email,
+    'Welcome to Visa Formula 🎉',
+    generateWelcomeHtml({ firstName: data.firstName, displayName: data.displayName }),
     'welcome'
   );
 }
@@ -96,44 +102,26 @@ export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<EmailRes
 export async function sendPasswordReset(data: PasswordResetEmailData): Promise<EmailResult> {
   const { generatePasswordResetEmailHtml } = await import('../emails/PasswordResetEmail');
   return sendEmail(
-    { to: data.email, subject: 'Reset your Visa Formula password', html: generatePasswordResetEmailHtml(data) },
+    data.email,
+    'Reset your Visa Formula password',
+    generatePasswordResetEmailHtml(data),
     'password_reset'
   );
 }
 
 export async function sendLoginAlert(data: LoginAlertEmailData): Promise<EmailResult> {
-  const html = `<!DOCTYPE html><html><body style="background:#0A0A0A;font-family:'Segoe UI',sans-serif;padding:40px 20px;">
-  <div style="max-width:500px;margin:0 auto;background:#111;border:1px solid #222;border-radius:16px;overflow:hidden;">
-    <div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:28px 32px;text-align:center;">
-      <span style="font-size:24px;font-weight:900;color:#fff;">Visa</span><span style="font-size:24px;font-weight:900;color:#4F7CFF;">Formula</span>
-    </div>
-    <div style="padding:32px;">
-      <h2 style="color:#fff;margin:0 0 12px;">New login detected</h2>
-      <p style="color:#94a3b8;font-size:14px;line-height:1.6;margin:0 0 20px;">Hi ${data.firstName || 'there'}, we noticed a new login to your account.</p>
-      <div style="background:#1a1a1a;border-radius:8px;padding:16px;margin-bottom:20px;">
-        <p style="color:#94a3b8;font-size:13px;margin:0 0 6px;">🕐 Time: <strong style="color:#fff;">${data.loginTime}</strong></p>
-        ${data.ipAddress ? `<p style="color:#94a3b8;font-size:13px;margin:0 0 6px;">🌐 IP: <strong style="color:#fff;">${data.ipAddress}</strong></p>` : ''}
-        ${data.device ? `<p style="color:#94a3b8;font-size:13px;margin:0;">📱 Device: <strong style="color:#fff;">${data.device}</strong></p>` : ''}
-      </div>
-      <div style="background:#1a1a1a;border-left:3px solid #ef4444;border-radius:8px;padding:14px 18px;">
-        <p style="color:#94a3b8;font-size:13px;margin:0;">Not you? <a href="${APP_URL}/reset-password" style="color:#4F7CFF;text-decoration:none;font-weight:600;">Reset your password immediately</a>.</p>
-      </div>
-    </div>
-    <div style="background:#0d0d0d;border-top:1px solid #222;padding:20px 32px;text-align:center;">
-      <p style="margin:0;font-size:12px;color:#374151;">© ${new Date().getFullYear()} Visa Formula. All rights reserved.</p>
-    </div>
-  </div></body></html>`;
-  return sendEmail({ to: data.email, subject: 'New login to your Visa Formula account', html }, 'login_alert');
+  const html = `<!DOCTYPE html><html><body style="background:#0A0A0A;font-family:'Segoe UI',sans-serif;padding:40px 20px;"><div style="max-width:500px;margin:0 auto;background:#111;border:1px solid #222;border-radius:16px;overflow:hidden;"><div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:28px 32px;text-align:center;"><span style="font-size:24px;font-weight:900;color:#fff;">Visa</span><span style="font-size:24px;font-weight:900;color:#4F7CFF;">Formula</span></div><div style="padding:32px;"><h2 style="color:#fff;margin:0 0 12px;">New login detected</h2><p style="color:#94a3b8;font-size:14px;">Hi ${data.firstName || 'there'}, we noticed a new login to your account.</p><div style="background:#1a1a1a;border-radius:8px;padding:16px;margin:16px 0;"><p style="color:#94a3b8;font-size:13px;margin:0 0 6px;">🕐 Time: <strong style="color:#fff;">${data.loginTime}</strong></p>${data.ipAddress ? `<p style="color:#94a3b8;font-size:13px;margin:0;">🌐 IP: <strong style="color:#fff;">${data.ipAddress}</strong></p>` : ''}</div></div><div style="background:#0d0d0d;border-top:1px solid #222;padding:20px 32px;text-align:center;"><p style="margin:0;font-size:12px;color:#374151;">© ${new Date().getFullYear()} Visa Formula.</p></div></div></body></html>`;
+  return sendEmail(data.email, 'New login to your Visa Formula account', html, 'login_alert');
 }
 
 export async function sendVisaNotification(data: { email: string; firstName: string; visaType: string; status: string; message: string; }): Promise<EmailResult> {
-  const html = `<!DOCTYPE html><html><body style="background:#0A0A0A;font-family:'Segoe UI',sans-serif;padding:40px 20px;"><div style="max-width:500px;margin:0 auto;background:#111;border:1px solid #222;border-radius:16px;overflow:hidden;"><div style="padding:32px;"><h2 style="color:#fff;">Visa Status Update</h2><p style="color:#94a3b8;">Hi ${data.firstName}, here's the latest on your application.</p><div style="background:linear-gradient(135deg,#1e1e3a,#1a2744);border:1px solid #4F7CFF;border-radius:12px;padding:20px;"><p style="color:#94a3b8;font-size:13px;margin:0 0 4px;">Visa Type: <strong style="color:#fff;">${data.visaType}</strong></p><p style="color:#94a3b8;font-size:13px;margin:0;">Status: <strong style="color:#4F7CFF;">${data.status}</strong></p></div><p style="color:#94a3b8;font-size:14px;margin-top:16px;">${data.message}</p></div></div></body></html>`;
-  return sendEmail({ to: data.email, subject: `Visa Status Update: ${data.status}`, html }, 'visa_notification');
+  const html = `<!DOCTYPE html><html><body style="background:#0A0A0A;padding:40px 20px;"><div style="max-width:500px;margin:0 auto;background:#111;border-radius:16px;padding:32px;"><h2 style="color:#fff;">Visa Status: ${data.status}</h2><p style="color:#94a3b8;">${data.message}</p></div></body></html>`;
+  return sendEmail(data.email, `Visa Status Update: ${data.status}`, html, 'visa_notification');
 }
 
 export async function sendAppointmentReminder(data: { email: string; firstName: string; expertName: string; appointmentDate: string; appointmentTime: string; }): Promise<EmailResult> {
-  const html = `<!DOCTYPE html><html><body style="background:#0A0A0A;font-family:'Segoe UI',sans-serif;padding:40px 20px;"><div style="max-width:500px;margin:0 auto;background:#111;border:1px solid #222;border-radius:16px;overflow:hidden;"><div style="padding:32px;"><h2 style="color:#fff;">Appointment Reminder</h2><p style="color:#94a3b8;">Hi ${data.firstName}, your consultation is coming up!</p><div style="background:linear-gradient(135deg,#1e1e3a,#1a2744);border:1px solid #4F7CFF;border-radius:12px;padding:20px;"><p style="color:#94a3b8;font-size:13px;margin:0 0 6px;">👤 Expert: <strong style="color:#fff;">${data.expertName}</strong></p><p style="color:#94a3b8;font-size:13px;margin:0 0 6px;">📅 Date: <strong style="color:#fff;">${data.appointmentDate}</strong></p><p style="color:#94a3b8;font-size:13px;margin:0;">🕐 Time: <strong style="color:#fff;">${data.appointmentTime}</strong></p></div></div></div></body></html>`;
-  return sendEmail({ to: data.email, subject: `Reminder: Appointment with ${data.expertName}`, html }, 'appointment_reminder');
+  const html = `<!DOCTYPE html><html><body style="background:#0A0A0A;padding:40px 20px;"><div style="max-width:500px;margin:0 auto;background:#111;border-radius:16px;padding:32px;"><h2 style="color:#fff;">Appointment Reminder</h2><p style="color:#94a3b8;">Hi ${data.firstName}, your appointment with ${data.expertName} is on ${data.appointmentDate} at ${data.appointmentTime}.</p></div></body></html>`;
+  return sendEmail(data.email, `Reminder: Appointment with ${data.expertName}`, html, 'appointment_reminder');
 }
 
 export const EmailService = {

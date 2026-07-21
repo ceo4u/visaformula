@@ -9,8 +9,8 @@ import { getPool, runMigrations } from '../backend/db';
 const OTP_LENGTH = parseInt(process.env.OTP_LENGTH || '6', 10);
 const OTP_EXPIRY_MINUTES = parseInt(process.env.OTP_EXPIRY_MINUTES || '10', 10);
 const MAX_ATTEMPTS = 5;
-const MAX_RESENDS = 3;
-const RESEND_COOLDOWN_SECONDS = 60;
+const MAX_RESENDS = 10;           // Allow up to 10 resends per session
+const RESEND_COOLDOWN_SECONDS = 30; // 30 second cooldown between resends
 
 // ─── Generation ────────────────────────────────────────────
 

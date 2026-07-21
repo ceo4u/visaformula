@@ -38,7 +38,7 @@ async function sendEmail(
     });
 
     console.log(`[EmailService] ✅ Sent "${type}" to ${options.to}`);
-    await logEmail({ email: options.to, type, status: 'sent', providerId: String(result) });
+    logEmail({ email: options.to, type, status: 'sent', providerId: String(result) }).catch(() => {});
 
     return { success: true, messageId: String(result) };
   } catch (error: any) {
@@ -46,11 +46,11 @@ async function sendEmail(
 
     if (retryCount > 0) {
       console.log(`[EmailService] 🔄 Retrying "${type}" to ${options.to}...`);
-      await logEmail({ email: options.to, type, status: 'retried', errorMessage: error?.message });
+      logEmail({ email: options.to, type, status: 'retried', errorMessage: error?.message }).catch(() => {});
       return sendEmail(options, type, retryCount - 1);
     }
 
-    await logEmail({ email: options.to, type, status: 'failed', errorMessage: error?.message });
+    logEmail({ email: options.to, type, status: 'failed', errorMessage: error?.message }).catch(() => {});
     return { success: false, error: error?.message || 'Unknown email send error' };
   }
 }

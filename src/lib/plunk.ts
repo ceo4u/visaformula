@@ -1,125 +1,50 @@
 // ============================================================
 // src/lib/plunk.ts
-// Enterprise-grade Plunk email client
-// - Direct fetch (no SDK overhead)
-// - AbortController timeout (8s)
-// - Auto-retry with backoff (2 attempts total)
-// - Detailed error logging for production debugging
+// Singleton Plunk client — single source of truth for all email sends
 // ============================================================
 
-const PLUNK_API_URL = 'https://api.useplunk.com/v1/send';
-const REQUEST_TIMEOUT_MS = 8000; // 8 seconds
-const MAX_RETRIES = 2;
+import Plunk from '@plunk/node';
 
-function getApiKey(): string {
-  const key = (
+let _client: Plunk | null = null;
+
+/**
+ * Returns the singleton Plunk client instance.
+ * Throws if PLUNK_SECRET_KEY is not configured.
+ */
+export function getPlunkClient(): Plunk {
+  if (_client) return _client;
+
+  const apiKey = (
     process.env.PLUNK_SECRET_KEY ||
-    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined) ||
-    ''
-  ).trim();
+    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined)
+  )?.trim();
 
-  if (!key || key === 'YOUR_PLUNK_SECRET_KEY_HERE') {
-    throw new Error('[Plunk] PLUNK_SECRET_KEY is not set in environment variables.');
+  if (!apiKey || apiKey === 'YOUR_PLUNK_SECRET_KEY_HERE') {
+    throw new Error(
+      '[Plunk] PLUNK_SECRET_KEY is not configured. ' +
+      'Add it to your .env file and Vercel environment variables.'
+    );
   }
-  return key;
+
+  const PlunkConstructor = (Plunk as any).default || Plunk;
+  _client = new PlunkConstructor(apiKey, {
+    baseUrl: 'https://api.useplunk.com/v1/'
+  });
+  return _client;
 }
 
-export interface PlunkSendOptions {
-  to: string;
-  subject: string;
-  body: string;
-  from?: string;
-  name?: string;
-}
-
-export interface PlunkSendResult {
-  success: boolean;
-  messageId?: string;
-  error?: string;
-  statusCode?: number;
-}
-
-// Core send with timeout and retry
-async function attemptSend(
-  options: PlunkSendOptions,
-  apiKey: string,
-  attempt: number
-): Promise<PlunkSendResult> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
+// Alias for new email.ts
+export async function sendViaplunk(options: { to: string; subject: string; body: string }) {
   try {
-    const payload = {
+    const client = getPlunkClient();
+    const result = await client.emails.send({
       to: options.to,
       subject: options.subject,
       body: options.body,
-      ...(options.from ? { from: options.from } : {}),
-      ...(options.name ? { name: options.name } : {}),
-    };
-
-    const res = await fetch(PLUNK_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
     });
-
-    clearTimeout(timeoutId);
-
-    const text = await res.text();
-    let json: any = {};
-    try { json = JSON.parse(text); } catch {}
-
-    if (res.ok) {
-      console.log(`[Plunk] ✅ Email sent to ${options.to} (attempt ${attempt}), status=${res.status}`);
-      return { success: true, messageId: json?.id || json?.messageId || String(res.status) };
-    }
-
-    console.error(`[Plunk] ❌ HTTP ${res.status} on attempt ${attempt} for ${options.to}: ${text}`);
-    return { success: false, error: `HTTP ${res.status}: ${text}`, statusCode: res.status };
-
+    return { success: true, messageId: String(result) };
   } catch (err: any) {
-    clearTimeout(timeoutId);
-    if (err.name === 'AbortError') {
-      console.error(`[Plunk] ⏱️ Timeout on attempt ${attempt} for ${options.to} (>${REQUEST_TIMEOUT_MS}ms)`);
-      return { success: false, error: `Timeout after ${REQUEST_TIMEOUT_MS}ms` };
-    }
-    console.error(`[Plunk] ⚠️ Network error on attempt ${attempt} for ${options.to}:`, err?.message);
-    return { success: false, error: err?.message || 'Network error' };
+    console.error('[Plunk] Send error:', err?.message || err);
+    return { success: false, error: err?.message || 'Unknown error' };
   }
-}
-
-/**
- * Send an email via Plunk with automatic retry.
- * Retries once after 1 second if the first attempt fails.
- */
-export async function sendViaplunk(options: PlunkSendOptions): Promise<PlunkSendResult> {
-  const apiKey = getApiKey();
-
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    const result = await attemptSend(options, apiKey, attempt);
-
-    if (result.success) return result;
-
-    // Don't retry on 4xx client errors (bad API key, invalid email, etc.)
-    if (result.statusCode && result.statusCode >= 400 && result.statusCode < 500) {
-      console.error(`[Plunk] 🚫 Not retrying — client error ${result.statusCode}`);
-      return result;
-    }
-
-    if (attempt < MAX_RETRIES) {
-      console.log(`[Plunk] 🔄 Retrying in 1s... (attempt ${attempt + 1}/${MAX_RETRIES})`);
-      await new Promise(r => setTimeout(r, 1000));
-    }
-  }
-
-  return { success: false, error: `Failed after ${MAX_RETRIES} attempts` };
-}
-
-// Legacy compatibility — keep getPlunkClient for any old references
-export function getPlunkClient() {
-  return { send: sendViaplunk };
 }

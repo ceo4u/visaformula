@@ -27,20 +27,50 @@ async function sendEmail(
   type: EmailType,
   retryCount = 1
 ): Promise<EmailResult> {
-  const client = getPlunkClient();
+  const apiKey = (
+    process.env.PLUNK_SECRET_KEY ||
+    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined) ||
+    'sk_b803783b31085835bace1da3cb5fbcd2f93304f684abf343073420eb70063e75'
+  )?.trim();
 
   try {
-    const result = await client.emails.send({
-      from: FROM_EMAIL,
-      to: options.to,
-      subject: options.subject,
-      body: options.html,
-    });
+    let result: any;
+    try {
+      const client = getPlunkClient();
+      result = await client.emails.send({
+        from: FROM_EMAIL,
+        name: FROM_NAME,
+        to: options.to,
+        subject: options.subject,
+        body: options.html,
+      });
+    } catch (sdkErr: any) {
+      console.warn('[EmailService] Plunk SDK call failed, using direct HTTP API fallback:', sdkErr?.message || sdkErr);
+      const res = await fetch('https://next-api.useplunk.com/v1/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          to: options.to,
+          subject: options.subject,
+          body: options.html,
+          from: FROM_EMAIL,
+          name: FROM_NAME,
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || data.success === false) {
+        throw new Error(`Plunk REST API Error ${res.status}: ${JSON.stringify(data)}`);
+      }
+      result = data;
+    }
 
     console.log(`[EmailService] ✅ Sent "${type}" to ${options.to}`);
-    logEmail({ email: options.to, type, status: 'sent', providerId: String(result) }).catch(() => {});
+    logEmail({ email: options.to, type, status: 'sent', providerId: JSON.stringify(result) }).catch(() => {});
 
-    return { success: true, messageId: String(result) };
+    return { success: true, messageId: JSON.stringify(result) };
   } catch (error: any) {
     console.error(`[EmailService] ❌ Failed "${type}" to ${options.to}:`, error?.message || error);
 

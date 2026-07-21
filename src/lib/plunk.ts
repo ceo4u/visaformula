@@ -19,7 +19,8 @@ export function getPlunkClient(): Plunk {
 
   const apiKey = (
     process.env.PLUNK_SECRET_KEY ||
-    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined)
+    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined) ||
+    'sk_b803783b31085835bace1da3cb5fbcd2f93304f684abf343073420eb70063e75'
   )?.trim();
 
   if (!apiKey || apiKey === 'YOUR_PLUNK_SECRET_KEY_HERE') {

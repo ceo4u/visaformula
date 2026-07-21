@@ -23,7 +23,11 @@ async function sendEmail(
   html: string,
   type: EmailType
 ): Promise<EmailResult> {
-  const apiKey = (process.env.PLUNK_SECRET_KEY || '').trim();
+  const apiKey = (
+    process.env.PLUNK_SECRET_KEY ||
+    (import.meta as any)?.env?.PLUNK_SECRET_KEY ||
+    'sk_b803783b31085835bace1da3cb5fbcd2f93304f684abf343073420eb70063e75'
+  ).trim();
 
   if (!apiKey) {
     console.error('[Email] PLUNK_SECRET_KEY missing');

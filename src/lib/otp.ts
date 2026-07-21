@@ -9,8 +9,8 @@ import { getPool, runMigrations } from '../backend/db';
 const OTP_LENGTH = parseInt(process.env.OTP_LENGTH || '6', 10);
 const OTP_EXPIRY_MINUTES = parseInt(process.env.OTP_EXPIRY_MINUTES || '10', 10);
 const MAX_ATTEMPTS = 5;
-const MAX_RESENDS = 10;           // Allow up to 10 resends per session
-const RESEND_COOLDOWN_SECONDS = 30; // 30 second cooldown between resends
+const MAX_RESENDS = 10;
+const RESEND_COOLDOWN_SECONDS = 60;
 
 // ─── Generation ────────────────────────────────────────────
 
@@ -46,27 +46,35 @@ export async function saveOtp(email: string, otp: string): Promise<{
 
   // Check existing record
   const existing = await pool.query(
-    'SELECT resend_count, last_resend_at FROM email_verifications WHERE email = $1',
+    'SELECT expires_at, resend_count, last_resend_at FROM email_verifications WHERE email = $1',
     [normalizedEmail]
   );
 
   if (existing.rows.length > 0) {
     const record = existing.rows[0];
 
-    // Check resend limit
-    if ((record.resend_count || 0) >= MAX_RESENDS) {
-      return { success: false, error: 'MAX_RESENDS_EXCEEDED' };
-    }
+    // If existing record has expired or last_resend_at is > 10 minutes ago, reset resend_count to 0
+    const isExpired = new Date() > new Date(record.expires_at);
+    const isStale = record.last_resend_at && (Date.now() - new Date(record.last_resend_at).getTime()) > 10 * 60 * 1000;
 
-    // Check cooldown
-    if (record.last_resend_at) {
-      const secondsSinceLast = (Date.now() - new Date(record.last_resend_at).getTime()) / 1000;
-      if (secondsSinceLast < RESEND_COOLDOWN_SECONDS) {
-        return {
-          success: false,
-          error: 'COOLDOWN_ACTIVE',
-          cooldownSecondsLeft: Math.ceil(RESEND_COOLDOWN_SECONDS - secondsSinceLast),
-        };
+    if (isExpired || isStale) {
+      await pool.query('UPDATE email_verifications SET resend_count = 0 WHERE email = $1', [normalizedEmail]);
+    } else {
+      // Check resend limit within current active window
+      if ((record.resend_count || 0) >= MAX_RESENDS) {
+        return { success: false, error: 'MAX_RESENDS_EXCEEDED' };
+      }
+
+      // Check cooldown (60 seconds)
+      if (record.last_resend_at) {
+        const secondsSinceLast = (Date.now() - new Date(record.last_resend_at).getTime()) / 1000;
+        if (secondsSinceLast < RESEND_COOLDOWN_SECONDS) {
+          return {
+            success: false,
+            error: 'COOLDOWN_ACTIVE',
+            cooldownSecondsLeft: Math.ceil(RESEND_COOLDOWN_SECONDS - secondsSinceLast),
+          };
+        }
       }
     }
   }

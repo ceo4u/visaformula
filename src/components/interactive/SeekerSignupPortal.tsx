@@ -85,28 +85,34 @@ function SeekerSignupPortalContent() {
         }
     };
 
+    const [verifyingCode, setVerifyingCode] = useState(false);
+
     const handleVerifyCode = async (forcedCode?: string) => {
-        setVerificationError("");
-        const code = forcedCode || otpDigits.join("");
+        setValidationError("");
+        const code = (forcedCode || otpInput || otpDigits.join("")).trim();
         if (code.length < 6) {
-            setVerificationError("Please enter all 6 digits of the code.");
+            setValidationError("Please enter all 6 digits of the code.");
             return;
         }
+        setVerifyingCode(true);
         try {
             const res = await fetch("/api/auth/verify-email-code", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, otp: code })
+                body: JSON.stringify({ email: email.trim(), otp: code })
             });
             const data = await res.json();
             if (res.ok && data.verified) {
                 setOtpSent(false);
                 setEmailVerified(true);
+                setValidationError("");
             } else {
-                setVerificationError(data.message || "Invalid or expired verification code.");
+                setValidationError(data.message || "Invalid or expired verification code.");
             }
         } catch (err) {
-            setVerificationError("Failed to verify code. Please try again.");
+            setValidationError("Failed to verify code. Please try again.");
+        } finally {
+            setVerifyingCode(false);
         }
     };
 
@@ -392,24 +398,25 @@ function SeekerSignupPortalContent() {
                                         </div>
 
                                         {otpSent && !emailVerified && (
-                                            <div className="relative w-full sm:w-auto shrink-0 flex gap-2 animate-premium-fade">
-                                                <input
-                                                    type="text"
-                                                    maxLength={6}
-                                                    placeholder="OTP"
-                                                    value={otpInput}
-                                                    onChange={(e) => setOtpInput(e.target.value)}
-                                                    className="w-24 px-2 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-black text-center font-bold tracking-widest text-black shadow-sm"
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleVerifyCode(otpInput)}
-                                                    className="bg-black hover:bg-neutral-900 text-white text-xs font-bold tracking-wider px-4 py-3 rounded-md uppercase cursor-pointer h-[46px] shrink-0"
-                                                >
-                                                    Verify
-                                                </button>
-                                            </div>
-                                        )}
+                                             <div className="relative w-full sm:w-auto shrink-0 flex gap-2 animate-premium-fade">
+                                                 <input
+                                                     type="text"
+                                                     maxLength={6}
+                                                     placeholder="OTP"
+                                                     value={otpInput}
+                                                     onChange={(e) => setOtpInput(e.target.value)}
+                                                     className="w-24 px-2 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-black text-center font-bold tracking-widest text-black shadow-sm"
+                                                 />
+                                                 <button
+                                                     type="button"
+                                                     disabled={verifyingCode}
+                                                     onClick={() => handleVerifyCode(otpInput)}
+                                                     className="bg-black hover:bg-neutral-900 text-white text-xs font-bold tracking-wider px-4 py-3 rounded-md uppercase cursor-pointer h-[46px] shrink-0 active:scale-95 disabled:opacity-50"
+                                                 >
+                                                     {verifyingCode ? "Verifying..." : "Verify"}
+                                                 </button>
+                                             </div>
+                                         )}
                                         
                                         {!emailVerified && (
                                             <button

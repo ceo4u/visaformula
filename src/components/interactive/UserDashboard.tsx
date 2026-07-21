@@ -42,11 +42,11 @@ export function UserDashboard() {
     const [visasProcessingState, setVisasProcessingState] = useState(initialVisasProcessing);
 
     const [documents, setDocuments] = useState([
-        { id: 1, label: "Passport scan", status: "uploaded", icon: "✅", bg: "bg-emerald-50/40 text-emerald-800 border-emerald-100" },
-        { id: 2, label: "IELTS Score Card", status: "pending", icon: "⚠️", bg: "bg-amber-50/40 text-amber-800 border-amber-100" },
-        { id: 3, label: "Financial Statement", status: "missing", icon: "❌", bg: "bg-rose-50/40 text-rose-800 border-rose-100" },
-        { id: 4, label: "Offer Letter", status: "uploaded", icon: "✅", bg: "bg-emerald-50/40 text-emerald-800 border-emerald-100" },
-        { id: 5, label: "SOP / Cover Letter", status: "pending", icon: "⚠️", bg: "bg-amber-50/40 text-amber-800 border-amber-100" },
+        { id: 1, label: "Passport scan", status: "uploaded", icon: "✅", bg: "bg-emerald-50/40 text-emerald-800 border-emerald-100", studentOnly: false },
+        { id: 2, label: "IELTS Score Card", status: "pending", icon: "⚠️", bg: "bg-amber-50/40 text-amber-800 border-amber-100", studentOnly: true },
+        { id: 3, label: "Financial Statement", status: "missing", icon: "❌", bg: "bg-rose-50/40 text-rose-800 border-rose-100", studentOnly: false },
+        { id: 4, label: "Offer Letter", status: "uploaded", icon: "✅", bg: "bg-emerald-50/40 text-emerald-800 border-emerald-100", studentOnly: false },
+        { id: 5, label: "SOP / Cover Letter", status: "pending", icon: "⚠️", bg: "bg-amber-50/40 text-amber-800 border-amber-100", studentOnly: false },
     ]);
 
     useEffect(() => {
@@ -167,7 +167,15 @@ export function UserDashboard() {
         }));
     };
 
-    const uploadedCount = documents.filter(d => d.status === "uploaded").length;
+    const isStudent = selectedGoals.some(g => 
+        typeof g === 'string' && (g.toLowerCase().includes("study") || g.toLowerCase().includes("student"))
+    ) || (typeof modalLookingFor === 'string' && (
+        modalLookingFor.toLowerCase().includes("student") || 
+        modalLookingFor.toLowerCase().includes("study")
+    ));
+
+    const visibleDocuments = documents.filter(doc => !doc.studentOnly || isStudent);
+    const uploadedCount = visibleDocuments.filter(d => d.status === "uploaded").length;
 
     return (
         <div className="flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen antialiased text-black font-roboto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -393,14 +401,14 @@ export function UserDashboard() {
 
                         <div className="bg-slate-50 border border-slate-200/60 p-3 rounded-2xl flex items-center justify-between text-xs font-bold text-black">
                             <div className="flex items-center gap-2">
-                                <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px]">{documents.length}</div>
+                                <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px]">{visibleDocuments.length}</div>
                                 <span>Total Files needed</span>
                             </div>
                         </div>
 
                         {/* Document items styled like mockup cards */}
                         <div className="flex flex-col gap-4">
-                            {documents.map((doc, idx) => {
+                            {visibleDocuments.map((doc, idx) => {
                                 const bgColors = ["bg-[#ffeae6]/40", "bg-[#e8f5e9]/40", "bg-[#e1f5fe]/40", "bg-[#f3e5f5]/40", "bg-[#fff8e1]/40"];
                                 return (
                                     <div 
@@ -431,7 +439,7 @@ export function UserDashboard() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             
                             {/* Goals / Destination Pie Chart layout */}
-                            <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
+                            <div className={`bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px] ${!isStudent ? 'md:col-span-2' : ''}`}>
                                 <div className="flex justify-between items-center">
                                     <span className="text-xs font-bold text-slate-450 tracking-widest block">Goals Overview</span>
                                     <button className="text-slate-400 hover:text-black">
@@ -456,44 +464,46 @@ export function UserDashboard() {
                                 </div>
                             </div>
 
-                            {/* IELTS Tracker (styled like Income VS Expense curve) */}
-                            <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <span className="text-xs font-bold text-slate-400 tracking-widest block">IELTS Scores</span>
-                                        <span className="text-lg font-bold text-black mt-1 block">Band {overallBand}</span>
+                            {/* IELTS Tracker (shown ONLY for Students) */}
+                            {isStudent && (
+                                <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <span className="text-xs font-bold text-slate-400 tracking-widest block">IELTS Scores</span>
+                                            <span className="text-lg font-bold text-black mt-1 block">Band {overallBand}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1 text-[10px] font-bold text-slate-450">
+                                            <TrendingUp className="w-4 h-4 text-emerald-500" />
+                                            <span>Target 7.0</span>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-450">
-                                        <TrendingUp className="w-4 h-4 text-emerald-500" />
-                                        <span>Target 7.0</span>
+
+                                    {/* Custom Score Curves */}
+                                    <div className="space-y-3 py-2">
+                                        {(["L", "R", "W", "S"] as const).map((key, idx) => {
+                                            const labels = { L: "Listening", R: "Reading", W: "Writing", S: "Speaking" };
+                                            const colors = ["bg-black", "bg-orange-500", "bg-sky-500", "bg-purple-500"];
+                                            return (
+                                                <div key={key}>
+                                                    <div className="flex justify-between text-[11px] font-bold mb-1">
+                                                        <span className="text-slate-500 font-semibold">{labels[key]}</span>
+                                                        <span className="text-black font-extrabold">{ieltsScore[key]}</span>
+                                                    </div>
+                                                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                                        <div className={`h-full ${colors[idx]} rounded-full`} style={{ width: `${(ieltsScore[key] / 9) * 100}%` }} />
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
-                                </div>
 
-                                {/* Custom Score Curves */}
-                                <div className="space-y-3 py-2">
-                                    {(["L", "R", "W", "S"] as const).map((key, idx) => {
-                                        const labels = { L: "Listening", R: "Reading", W: "Writing", S: "Speaking" };
-                                        const colors = ["bg-black", "bg-orange-500", "bg-sky-500", "bg-purple-500"];
-                                        return (
-                                            <div key={key}>
-                                                <div className="flex justify-between text-[11px] font-bold mb-1">
-                                                    <span className="text-slate-500 font-semibold">{labels[key]}</span>
-                                                    <span className="text-black font-extrabold">{ieltsScore[key]}</span>
-                                                </div>
-                                                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                                    <div className={`h-full ${colors[idx]} rounded-full`} style={{ width: `${(ieltsScore[key] / 9) * 100}%` }} />
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                    <a href="/training" className="block pt-2 border-t border-slate-100">
+                                        <button className="w-full bg-black text-white py-2 rounded-xl text-[10px] font-bold tracking-wider hover:bg-slate-900 transition-all">
+                                            Find IELTS Coaching
+                                        </button>
+                                    </a>
                                 </div>
-
-                                <a href="/training" className="block pt-2 border-t border-slate-100">
-                                    <button className="w-full bg-black text-white py-2 rounded-xl text-[10px] font-bold tracking-wider hover:bg-slate-900 transition-all">
-                                        Find IELTS Coaching
-                                    </button>
-                                </a>
-                            </div>
+                            )}
 
                         </div>
 

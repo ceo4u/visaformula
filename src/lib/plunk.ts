@@ -1,10 +1,37 @@
 // ============================================================
 // src/lib/plunk.ts
-// Kept for backward compatibility only — email sending is now
-// handled directly in email.ts via fetch (no SDK needed)
+// Singleton Plunk client — single source of truth for all email sends
 // ============================================================
 
-export function getPlunkClient() {
-  // No-op — email.ts now uses direct fetch
-  return null;
+import Plunk from '@plunk/node';
+
+let _client: Plunk | null = null;
+
+/**
+ * Returns the singleton Plunk client instance.
+ * Throws if PLUNK_SECRET_KEY is not configured.
+ */
+export function getPlunkClient(): Plunk {
+  if (_client) return _client;
+
+  const apiKey = (
+    process.env.PLUNK_SECRET_KEY ||
+    process.env.PLUNK_API_KEY ||
+    process.env.PUBLIC_PLUNK_SECRET_KEY ||
+    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined) ||
+    (import.meta?.env?.PUBLIC_PLUNK_SECRET_KEY as string | undefined)
+  )?.trim();
+
+  if (!apiKey || apiKey === 'YOUR_PLUNK_SECRET_KEY_HERE') {
+    throw new Error(
+      '[Plunk] PLUNK_SECRET_KEY is not configured. ' +
+      'Add it to your .env file and Vercel environment variables.'
+    );
+  }
+
+  const PlunkConstructor = (Plunk as any).default || Plunk;
+  _client = new PlunkConstructor(apiKey, {
+    baseUrl: 'https://api.useplunk.com/v1/'
+  });
+  return _client;
 }

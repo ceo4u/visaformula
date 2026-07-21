@@ -80,10 +80,18 @@ function ExpertSignupPortalContent() {
   const [sendingCode, setSendingCode] = useState(false);
   const [otpInput, setOtpInput] = useState("");
 
+  const [verifyingCode, setVerifyingCode] = useState(false);
+
   const handleSendVerificationCode = async () => {
     setValidationError("");
-    if (!email) {
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
       setValidationError("Please enter your email address first.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setValidationError("Please enter a valid email address.");
       return;
     }
     setSendingCode(true);
@@ -91,7 +99,7 @@ function ExpertSignupPortalContent() {
       const res = await fetch("/api/auth/send-verification-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email: trimmedEmail })
       });
       const data = await res.json();
       if (res.ok) {
@@ -109,26 +117,30 @@ function ExpertSignupPortalContent() {
 
   const handleVerifyCode = async (forcedCode?: string) => {
     setValidationError("");
-    const code = forcedCode || otpDigits.join("");
+    const code = (forcedCode || otpInput || otpDigits.join("")).trim();
     if (code.length < 6) {
       setValidationError("Please enter all 6 digits of the code.");
       return;
     }
+    setVerifyingCode(true);
     try {
       const res = await fetch("/api/auth/verify-email-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp: code })
+        body: JSON.stringify({ email: email.trim(), otp: code })
       });
       const data = await res.json();
       if (res.ok && data.verified) {
         setOtpSent(false);
         setEmailVerified(true);
+        setValidationError("");
       } else {
         setValidationError(data.message || "Invalid or expired verification code.");
       }
     } catch (err) {
       setValidationError("Failed to verify code. Please try again.");
+    } finally {
+      setVerifyingCode(false);
     }
   };
 
@@ -648,10 +660,11 @@ function ExpertSignupPortalContent() {
                           />
                           <button
                             type="button"
+                            disabled={verifyingCode}
                             onClick={() => handleVerifyCode(otpInput)}
-                            className="bg-black hover:bg-neutral-900 text-white text-xs font-bold tracking-wider px-4 py-3 rounded-md uppercase cursor-pointer h-[46px] shrink-0"
+                            className="bg-black hover:bg-neutral-900 text-white text-xs font-bold tracking-wider px-4 py-3 rounded-md uppercase cursor-pointer h-[46px] shrink-0 disabled:opacity-50"
                           >
-                            Verify
+                            {verifyingCode ? "Verifying..." : "Verify"}
                           </button>
                         </div>
                       )}

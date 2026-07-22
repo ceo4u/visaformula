@@ -529,7 +529,7 @@ function SeekerSignupPortalContent() {
                                          )}
                                      </div>
                                  </div>
-                                 <div className="space-y-2">
+                                 <div className="space-y-2 col-span-2 lg:col-span-1">
                                      <label className="text-sm font-semibold text-slate-700 block">Current Country of Residence*</label>
                                      <div className="relative">
                                          <button
@@ -555,7 +555,7 @@ function SeekerSignupPortalContent() {
                                          )}
                                      </div>
                                  </div>
-                                <div className="space-y-2">
+                                 <div className="space-y-2 col-span-2 lg:col-span-1">
                                      <label className="text-sm font-semibold text-slate-700 block">Phone Number*</label>
                                      <div className="flex gap-3">
                                          <div className="relative" onClick={(e) => e.stopPropagation()}>

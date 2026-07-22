@@ -251,14 +251,25 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Right side: HTML-based connected 3x3 Grid Collage of 9 Square Landmark Photos */}
-          <div className="flex w-full md:flex-1 items-center justify-center md:justify-end overflow-visible mt-4 md:mt-0">
-            <div className="relative w-full max-w-[440px] md:max-w-[540px] bg-white p-2.5 rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
-              <div className="grid grid-cols-3 gap-2">
-                
-                {/* 1. Cyprus */}
+          {/* Right side: HTML-based connected 3x3 Grid Collage of 9 Square Classifieds Posts */}
+          <div className="flex w-full md:flex-1 items-center justify-center md:justify-end overflow-visible mt-4 md:mt-0 font-sans">
+            <div className="relative w-full max-w-[460px] md:max-w-[560px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+              {/* Classifieds Board Header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <h3 className="font-sora font-extrabold text-xs text-[#0c1a2e] uppercase tracking-wider">Latest Offers</h3>
+                </div>
+                <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                  Verified Classifieds
+                </span>
+              </div>
+
+              {/* 3x3 Grid */}
+              <div className="p-2.5 grid grid-cols-3 gap-2 bg-slate-100/50">
+                {/* 1. Cyprus Universities */}
                 <div 
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300" 
                   onClick={() => {
                     if (typeof window !== "undefined") {
                       sessionStorage.setItem("auto_open_cyprus", "true");
@@ -266,18 +277,31 @@ export function HeroSection() {
                     }
                   }}
                 >
-                  <img 
-                    src="/images/cyprus.jpg" 
-                    alt="Cyprus Landmark" 
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[10px] sm:text-[11px] font-bold text-white tracking-wide font-sans leading-tight">Cyprus Universities</span>
+                  <img src="/images/cyprus.jpg" alt="Cyprus Universities" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  {/* Top Badge */}
+                  <span className="absolute top-1.5 left-1.5 text-[8px] sm:text-[9px] font-black bg-cyan-500 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
+                    SPECIAL OFFER
+                  </span>
+                  
+                  {/* Price Tag */}
+                  <span className="absolute top-1.5 right-1.5 text-[8px] sm:text-[9px] font-extrabold bg-black/75 backdrop-blur-md text-cyan-300 px-1.5 py-0.5 rounded-md border border-cyan-400/30">
+                    €3,300/yr
+                  </span>
+
+                  {/* Bottom Text */}
+                  <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide font-sans leading-tight block truncate group-hover:text-cyan-300 transition-colors">
+                      Cyprus Universities
+                    </span>
+                    <span className="text-[8px] font-semibold text-slate-300 block truncate">100% Visa • Oct Intake</span>
+                  </div>
                 </div>
 
-                {/* 2. Greece */}
+                {/* 2. Greece Cricket Tours */}
                 <div 
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300" 
                   onClick={() => {
                     if (typeof window !== "undefined") {
                       sessionStorage.setItem("auto_open_greece_tour", "true");
@@ -285,113 +309,192 @@ export function HeroSection() {
                     }
                   }}
                 >
-                  <img 
-                    src="/images/greece.jpg" 
-                    alt="Greece Landmark" 
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[10px] sm:text-[11px] font-bold text-white tracking-wide font-sans leading-tight">Greece Cricket Tours</span>
+                  <img src="/images/greece.jpg" alt="Greece Cricket Tours" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <span className="absolute top-1.5 left-1.5 text-[8px] sm:text-[9px] font-black bg-emerald-500 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
+                    FEATURED AD
+                  </span>
+                  
+                  <span className="absolute top-1.5 right-1.5 text-[8px] sm:text-[9px] font-extrabold bg-black/75 backdrop-blur-md text-emerald-300 px-1.5 py-0.5 rounded-md border border-emerald-400/30">
+                    ₹2.5 Lakhs
+                  </span>
+
+                  <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide font-sans leading-tight block truncate group-hover:text-emerald-300 transition-colors">
+                      Greece Cricket Tours
+                    </span>
+                    <span className="text-[8px] font-semibold text-slate-300 block truncate">3 x T20 Matches • Hotel</span>
+                  </div>
                 </div>
 
-                {/* 3. UK (London Big Ben) */}
+                {/* 3. UK Universities */}
                 <div 
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300" 
                   onClick={() => { window.location.href = '/universities?country=UK'; }}
                 >
-                  <img 
-                    src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=400&fit=crop" 
-                    alt="London Big Ben" 
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">UK</span>
+                  <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=400&fit=crop" alt="UK Universities" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <span className="absolute top-1.5 left-1.5 text-[8px] sm:text-[9px] font-black bg-indigo-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
+                    CLASSIFIED
+                  </span>
+                  
+                  <span className="absolute top-1.5 right-1.5 text-[8px] sm:text-[9px] font-extrabold bg-black/75 backdrop-blur-md text-indigo-300 px-1.5 py-0.5 rounded-md border border-indigo-400/30">
+                    PSW 2-Yr
+                  </span>
+
+                  <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide font-sans leading-tight block truncate group-hover:text-indigo-300 transition-colors">
+                      UK Study Pathways
+                    </span>
+                    <span className="text-[8px] font-semibold text-slate-300 block truncate">Top Russell Group</span>
+                  </div>
                 </div>
 
-                {/* 4. Australia (Sydney Opera House) */}
+                {/* 4. Canada Work & Study */}
                 <div 
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { window.location.href = '/universities?country=Australia'; }}
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=400&h=400&fit=crop" 
-                    alt="Sydney Opera House" 
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Australia</span>
-                </div>
-
-                {/* 5. Dubai / UAE */}
-                <div 
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { window.location.href = '/universities?country=UAE'; }}
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=400&fit=crop" 
-                    alt="Dubai UAE" 
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Dubai / UAE</span>
-                </div>
-
-                {/* 6. Japan (Tokyo) */}
-                <div 
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { window.location.href = '/universities?country=Japan'; }}
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400&h=400&fit=crop" 
-                    alt="Tokyo Japan" 
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Japan</span>
-                </div>
-
-                {/* 7. Singapore */}
-                <div 
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { window.location.href = '/universities?country=Singapore'; }}
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=400&fit=crop" 
-                    alt="Singapore Skyline" 
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Singapore</span>
-                </div>
-
-                {/* 8. Italy / Schengen */}
-                <div 
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { window.location.href = '/universities?country=Italy'; }}
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&h=400&fit=crop" 
-                    alt="Rome Italy" 
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Italy</span>
-                </div>
-
-                {/* 9. Canada */}
-                <div 
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300" 
                   onClick={() => { window.location.href = '/universities?country=Canada'; }}
                 >
-                  <img 
-                    src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=400&h=400&fit=crop" 
-                    alt="Canada Skyline" 
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Canada</span>
+                  <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=400&h=400&fit=crop" alt="Canada Pathways" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <span className="absolute top-1.5 left-1.5 text-[8px] sm:text-[9px] font-black bg-red-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
+                    HOT OFFER
+                  </span>
+                  
+                  <span className="absolute top-1.5 right-1.5 text-[8px] sm:text-[9px] font-extrabold bg-black/75 backdrop-blur-md text-red-300 px-1.5 py-0.5 rounded-md border border-red-400/30">
+                    PGWP Eligible
+                  </span>
+
+                  <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide font-sans leading-tight block truncate group-hover:text-red-300 transition-colors">
+                      Canada Colleges
+                    </span>
+                    <span className="text-[8px] font-semibold text-slate-300 block truncate">Express Entry Link</span>
+                  </div>
                 </div>
 
+                {/* 5. Australia PR Pathway */}
+                <div 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300" 
+                  onClick={() => { window.location.href = '/universities?country=Australia'; }}
+                >
+                  <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=400&h=400&fit=crop" alt="Australia PR" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <span className="absolute top-1.5 left-1.5 text-[8px] sm:text-[9px] font-black bg-amber-500 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
+                    CLASSIFIED
+                  </span>
+                  
+                  <span className="absolute top-1.5 right-1.5 text-[8px] sm:text-[9px] font-extrabold bg-black/75 backdrop-blur-md text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-400/30">
+                    Subclass 189
+                  </span>
+
+                  <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide font-sans leading-tight block truncate group-hover:text-amber-300 transition-colors">
+                      Australia PR Visa
+                    </span>
+                    <span className="text-[8px] font-semibold text-slate-300 block truncate">Skill Assessment</span>
+                  </div>
+                </div>
+
+                {/* 6. Dubai / UAE Work & Visit */}
+                <div 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300" 
+                  onClick={() => { window.location.href = '/universities?country=UAE'; }}
+                >
+                  <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=400&fit=crop" alt="Dubai UAE" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <span className="absolute top-1.5 left-1.5 text-[8px] sm:text-[9px] font-black bg-purple-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
+                    FEATURED
+                  </span>
+                  
+                  <span className="absolute top-1.5 right-1.5 text-[8px] sm:text-[9px] font-extrabold bg-black/75 backdrop-blur-md text-purple-300 px-1.5 py-0.5 rounded-md border border-purple-400/30">
+                    2-Yr Visa
+                  </span>
+
+                  <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide font-sans leading-tight block truncate group-hover:text-purple-300 transition-colors">
+                      Dubai UAE Offers
+                    </span>
+                    <span className="text-[8px] font-semibold text-slate-300 block truncate">Golden & Work Visa</span>
+                  </div>
+                </div>
+
+                {/* 7. Japan Work Visa */}
+                <div 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300" 
+                  onClick={() => { window.location.href = '/universities?country=Japan'; }}
+                >
+                  <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400&h=400&fit=crop" alt="Japan Work Visa" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <span className="absolute top-1.5 left-1.5 text-[8px] sm:text-[9px] font-black bg-rose-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
+                    CLASSIFIED
+                  </span>
+                  
+                  <span className="absolute top-1.5 right-1.5 text-[8px] sm:text-[9px] font-extrabold bg-black/75 backdrop-blur-md text-rose-300 px-1.5 py-0.5 rounded-md border border-rose-400/30">
+                    SSW Permit
+                  </span>
+
+                  <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide font-sans leading-tight block truncate group-hover:text-rose-300 transition-colors">
+                      Japan Tech Jobs
+                    </span>
+                    <span className="text-[8px] font-semibold text-slate-300 block truncate">Language & Sponsor</span>
+                  </div>
+                </div>
+
+                {/* 8. Singapore Higher Ed */}
+                <div 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300" 
+                  onClick={() => { window.location.href = '/universities?country=Singapore'; }}
+                >
+                  <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=400&fit=crop" alt="Singapore" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <span className="absolute top-1.5 left-1.5 text-[8px] sm:text-[9px] font-black bg-blue-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
+                    SPECIAL OFFER
+                  </span>
+                  
+                  <span className="absolute top-1.5 right-1.5 text-[8px] sm:text-[9px] font-extrabold bg-black/75 backdrop-blur-md text-blue-300 px-1.5 py-0.5 rounded-md border border-blue-400/30">
+                    Fast Pass
+                  </span>
+
+                  <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide font-sans leading-tight block truncate group-hover:text-blue-300 transition-colors">
+                      Singapore Ed
+                    </span>
+                    <span className="text-[8px] font-semibold text-slate-300 block truncate">Top Tech Academies</span>
+                  </div>
+                </div>
+
+                {/* 9. Italy & Europe Schengen */}
+                <div 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300" 
+                  onClick={() => { window.location.href = '/universities?country=Italy'; }}
+                >
+                  <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&h=400&fit=crop" alt="Italy Schengen" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <span className="absolute top-1.5 left-1.5 text-[8px] sm:text-[9px] font-black bg-teal-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
+                    CLASSIFIED
+                  </span>
+                  
+                  <span className="absolute top-1.5 right-1.5 text-[8px] sm:text-[9px] font-extrabold bg-black/75 backdrop-blur-md text-teal-300 px-1.5 py-0.5 rounded-md border border-teal-400/30">
+                    Schengen
+                  </span>
+
+                  <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-wide font-sans leading-tight block truncate group-hover:text-teal-300 transition-colors">
+                      Italy & EU Visa
+                    </span>
+                    <span className="text-[8px] font-semibold text-slate-300 block truncate">27 Countries Access</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

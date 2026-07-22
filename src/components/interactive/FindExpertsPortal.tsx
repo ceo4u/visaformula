@@ -30,8 +30,14 @@ export function FindExpertsPortal() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const hasLocalExpert = localStorage.getItem("expert_businessName") && localStorage.getItem("expert_isLoggedIn") === "true";
-            if (hasLocalExpert) {
+            const name = localStorage.getItem("expert_businessName");
+            const isLoggedIn = localStorage.getItem("expert_isLoggedIn") === "true";
+            const advisorType = (localStorage.getItem("expert_advisorType") || "").toLowerCase().trim();
+            
+            // Only profiles registered as "Registered consultancy" are visible in the public Find Experts directory
+            const isRegisteredConsultancy = advisorType.includes("registered consultancy");
+
+            if (isLoggedIn && name && isRegisteredConsultancy && name.toLowerCase() !== "soul") {
                 let tagsArray = ["Express Entry", "PNP"];
                 try {
                     const savedTags = localStorage.getItem("expert_expertiseTags");
@@ -40,9 +46,9 @@ export function FindExpertsPortal() {
                 
                 const localExpert = {
                     id: 7,
-                    name: localStorage.getItem("expert_businessName") || "Marcus Thorne",
+                    name: name,
                     category: "pr",
-                    role: localStorage.getItem("expert_advisorType") || "Immigration Consultant",
+                    role: localStorage.getItem("expert_advisorType") || "Registered Consultancy",
                     rating: 5.0,
                     reviews: 1,
                     price: 1800,
@@ -57,6 +63,8 @@ export function FindExpertsPortal() {
                 };
                 
                 setExperts([localExpert, ...allExperts]);
+            } else {
+                setExperts(allExperts);
             }
         }
     }, []);

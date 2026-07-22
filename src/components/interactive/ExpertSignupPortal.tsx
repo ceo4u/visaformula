@@ -341,12 +341,16 @@ function ExpertSignupPortalContent() {
   const [showAdModal, setShowAdModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [adTitle, setAdTitle] = useState("");
+  const [adCompany, setAdCompany] = useState("");
+  const [adCategory, setAdCategory] = useState("Visit Visa");
+  const [adCoverPhoto, setAdCoverPhoto] = useState("");
   const [adDescription, setAdDescription] = useState("");
+  const [adNotice, setAdNotice] = useState("");
   const [offerTitle, setOfferTitle] = useState("");
   const [offerDiscount, setOfferDiscount] = useState("");
   const [membershipTier, setMembershipTier] = useState("Standard Directory");
 
-  const [adsList, setAdsList] = useState<Array<{title: string, desc: string}>>([]);
+  const [adsList, setAdsList] = useState<Array<{title: string, company?: string, category?: string, coverPhoto?: string, desc: string, status?: string}>>([]);
   const [offersList, setOffersList] = useState<Array<{title: string, discount: string}>>([]);
 
   const handleLaunchDashboard = async (e: React.FormEvent) => {
@@ -419,10 +423,25 @@ function ExpertSignupPortalContent() {
   const handleAddAd = (e: React.FormEvent) => {
     e.preventDefault();
     if (adTitle) {
-      setAdsList([...adsList, { title: adTitle, desc: adDescription }]);
-      setAdTitle("");
-      setAdDescription("");
-      setShowAdModal(false);
+      const newAd = {
+        title: adTitle,
+        company: adCompany || businessName || "Consultancy Partner",
+        category: adCategory,
+        coverPhoto: adCoverPhoto,
+        desc: adDescription,
+        status: "Under Verification"
+      };
+      setAdsList([...adsList, newAd]);
+      setAdNotice("Our team will verify your details.");
+      setTimeout(() => {
+        setAdTitle("");
+        setAdCompany("");
+        setAdCategory("Visit Visa");
+        setAdCoverPhoto("");
+        setAdDescription("");
+        setAdNotice("");
+        setShowAdModal(false);
+      }, 2500);
     }
   };
 
@@ -2245,43 +2264,149 @@ function ExpertSignupPortalContent() {
             ) : null}
           </main>
       {showAdModal && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn px-4">
-              <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
-                <div className="flex justify-between items-center border-b pb-2">
-                  <h3 className="font-bold text-sm text-black tracking-wider">Post a New Ad</h3>
-                  <button onClick={() => setShowAdModal(false)} className="text-slate-450 hover:text-black font-bold">×</button>
-                </div>
-                <form onSubmit={handleAddAd} className="space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-500">Ad Title</label>
-                    <input 
-                      required
-                      type="text" 
-                      value={adTitle} 
-                      onChange={(e) => setAdTitle(e.target.value)} 
-                      placeholder="e.g. Express Admission Consultation Session"
-                      className="w-full px-4.5 py-3 border rounded-xl text-xs outline-none"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-500">Description</label>
-                    <textarea 
-                      required
-                      value={adDescription} 
-                      onChange={(e) => setAdDescription(e.target.value)} 
-                      placeholder="Give details about your advertisement offer..."
-                      rows={3}
-                      className="w-full px-4.5 py-3 border rounded-xl text-xs outline-none resize-none"
-                    />
-                  </div>
-                  <div className="flex justify-end gap-2.5 pt-2">
-                    <button type="button" onClick={() => setShowAdModal(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-500">Cancel</button>
-                    <button type="submit" className="px-5 py-2 bg-black text-white rounded-lg text-xs font-bold tracking-wider">Publish Ad</button>
-                  </div>
-                </form>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 animate-fadeIn px-4 font-sans">
+          <div className="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4 border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+              <div>
+                <h3 className="font-sora font-extrabold text-base text-black tracking-wide">Post a New Ad</h3>
+                <p className="text-xs text-slate-400 font-medium">Create a promotional advertisement offer for your services</p>
               </div>
+              <button 
+                onClick={() => { setAdNotice(""); setShowAdModal(false); }} 
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center transition-all cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
-          )}
+
+            {adNotice ? (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center space-y-2 my-4 animate-fadeIn">
+                <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto text-xl font-bold shadow-md">✓</div>
+                <h4 className="font-sora font-extrabold text-emerald-900 text-base">Ad Submitted!</h4>
+                <p className="text-xs font-semibold text-emerald-700">{adNotice}</p>
+              </div>
+            ) : (
+              <form onSubmit={handleAddAd} className="space-y-4 text-left">
+                {/* Ad Title */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700 block">Ad Title *</label>
+                  <input 
+                    required
+                    type="text" 
+                    value={adTitle} 
+                    onChange={(e) => setAdTitle(e.target.value)} 
+                    placeholder="e.g. Express Admission & Student Visa Assistance"
+                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:border-black transition-colors"
+                  />
+                </div>
+
+                {/* Company Name */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700 block">Company Name *</label>
+                  <input 
+                    required
+                    type="text" 
+                    value={adCompany || businessName} 
+                    onChange={(e) => setAdCompany(e.target.value)} 
+                    placeholder="e.g. VisaFormula Overseas Education"
+                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:border-black transition-colors"
+                  />
+                </div>
+
+                {/* Category Dropdown */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700 block">Category *</label>
+                  <select
+                    value={adCategory}
+                    onChange={(e) => setAdCategory(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:border-black bg-white font-semibold cursor-pointer"
+                  >
+                    <option value="Visit Visa">Visit Visa</option>
+                    <option value="Student Visa">Student Visa</option>
+                    <option value="Work Visa">Work Visa</option>
+                    <option value="PR & Residency">PR & Residency</option>
+                  </select>
+                </div>
+
+                {/* Cover Photo */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-700 block">Cover Photo / Banner</label>
+                  <div className="flex flex-col sm:flex-row gap-2.5 items-center">
+                    <label className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-4 py-2.5 rounded-xl cursor-pointer flex items-center justify-center gap-2 border border-slate-200 shrink-0 transition-colors">
+                      <Upload className="w-4 h-4" />
+                      <span>Upload Cover Photo</span>
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              setAdCoverPhoto(reader.result as string);
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                    </label>
+                    <span className="text-[10px] text-slate-400 font-medium hidden sm:inline">OR</span>
+                    <input 
+                      type="text" 
+                      value={adCoverPhoto.startsWith("data:") ? "Image Uploaded ✓" : adCoverPhoto} 
+                      onChange={(e) => setAdCoverPhoto(e.target.value)} 
+                      placeholder="Paste Image URL..."
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none"
+                    />
+                  </div>
+                  {adCoverPhoto && (
+                    <div className="relative rounded-xl overflow-hidden border border-slate-200 h-28 bg-slate-50 flex items-center justify-center mt-2">
+                      <img src={adCoverPhoto} alt="Ad Preview" className="h-full w-full object-cover" />
+                      <button 
+                        type="button" 
+                        onClick={() => setAdCoverPhoto("")}
+                        className="absolute top-1.5 right-1.5 bg-black/70 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Description */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700 block">Description *</label>
+                  <textarea 
+                    required
+                    value={adDescription} 
+                    onChange={(e) => setAdDescription(e.target.value)} 
+                    placeholder="Provide full details about your advertisement offer..."
+                    rows={3}
+                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:border-black transition-colors resize-none"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-2.5 pt-3 border-t border-slate-100">
+                  <button 
+                    type="button" 
+                    onClick={() => { setAdNotice(""); setShowAdModal(false); }} 
+                    className="px-4 py-2.5 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    className="px-6 py-2.5 bg-black hover:bg-neutral-900 text-white rounded-xl text-xs font-bold tracking-wider shadow-md active:scale-95 transition-all"
+                  >
+                    Publish Ad
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
           {showOfferModal && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn px-4">

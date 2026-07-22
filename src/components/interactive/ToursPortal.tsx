@@ -218,7 +218,7 @@ const sportTours = [
         reviews: 128, 
         days: 7, 
         nights: 6, 
-        image: "/images/greece-cricket-ad.jpg", 
+        image: "/images/greece.jpg", 
         poster: "/images/greece-cricket-ad.jpg",
         registrationFee: "INR 10,000/-",
         contactPhone: "76611989366",

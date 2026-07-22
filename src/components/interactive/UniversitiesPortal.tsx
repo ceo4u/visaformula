@@ -257,103 +257,7 @@ export function UniversitiesPortal() {
         {toastMsg}
       </div>
 
-      {activeUniv ? (
-        /* DETAIL VIEW */
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 font-sans">
-          <button
-            onClick={() => { setActiveUniv(null); window.scrollTo(0, 0); }}
-            className="text-xs font-bold text-black hover:underline mb-6 flex items-center gap-1.5 outline-none cursor-pointer"
-          >
-            ← Back to Universities
-          </button>
-
-          <div className="bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-xl relative text-left space-y-5">
-            {/* Banner Image Container */}
-            <div className="relative rounded-2xl overflow-hidden border border-slate-100 shadow-xs bg-white w-full flex items-center justify-center">
-              <img src={activeUniv.heroImg} alt={activeUniv.location} className="w-full h-auto max-h-[340px] sm:max-h-[440px] object-contain rounded-xl" />
-              <div className="absolute bottom-3 left-4 flex items-center gap-2 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-md">
-                <img src={`https://flagcdn.com/w40/${activeUniv.countryCode}.png`} alt="flag" className="h-4 rounded shadow" />
-                <span className="text-white font-bold text-xs flex items-center gap-1.5 font-sans">
-                  <MapPin className="w-3.5 h-3.5 text-red-400" /> {activeUniv.location}
-                </span>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] font-extrabold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  OCTOBER INTAKE • 100% VISA
-                </span>
-                <span className="text-emerald-600 font-bold text-xs flex items-center gap-1">
-                  <BadgeCheck className="w-4 h-4 text-emerald-500" /> Verified Pathway
-                </span>
-              </div>
-              <h1 className="font-sora text-xl sm:text-2xl font-extrabold text-[#0c1a2e] leading-snug">{activeUniv.name}</h1>
-              <p className="text-xs text-slate-500 font-medium mt-1.5 leading-relaxed">{activeUniv.desc}</p>
-            </div>
-
-            {/* Program Fee Breakdown */}
-            <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4">
-              <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Tuition Fee Structure</span>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase block">Foundation Program</span>
-                  <span className="font-sora font-extrabold text-base text-[#159BB8]">€ 3,300</span>
-                  <span className="text-[10px] text-slate-400 block font-normal">per year</span>
-                </div>
-                <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase block">Bachelor's Program</span>
-                  <span className="font-sora font-extrabold text-base text-[#159BB8]">€ 3,800</span>
-                  <span className="text-[10px] text-slate-400 block font-normal">per year</span>
-                </div>
-                <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase block">Master's Program</span>
-                  <span className="font-sora font-extrabold text-base text-[#159BB8]">€ 5,000</span>
-                  <span className="text-[10px] text-slate-400 block font-normal">per year</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Highlights & Inclusions */}
-            <div>
-              <h4 className="text-[11px] font-extrabold text-[#0c1a2e] uppercase tracking-wider mb-2.5">Key Highlights & Admissions Perks:</h4>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
-                {[
-                  "100% Visa Approval Guarantee",
-                  "Zero Apostille & Documentation Charges",
-                  "Part-Time Work Allowed While Studying",
-                  "Affordable Tuition & Living Costs",
-                  "Easy Admission & Direct Processing",
-                  "Complete Support Till Visa Approval"
-                ].map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-2">
-                    <span className="text-emerald-500 font-bold">✓</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Bottom Actions Bar */}
-            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row gap-3 items-center justify-between">
-              <div className="text-xs font-bold text-slate-600 text-center sm:text-left">
-                Direct Contact: <a href="https://www.gugportal.com" target="_blank" rel="noreferrer" className="text-[#159BB8] hover:underline font-extrabold">www.gugportal.com</a>
-              </div>
-              <a
-                href="https://wa.me/919044854415?text=Hi,%20I%20am%20interested%20in%20Study%20in%20Cyprus%20October%20Intake%202026."
-                target="_blank"
-                rel="noreferrer"
-                className="w-full sm:w-auto bg-black hover:bg-neutral-900 text-white font-extrabold text-xs px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-lg transition-all outline-none active:scale-95 shrink-0"
-              >
-                <span>Apply / Register (+91 9044854415)</span>
-                <ArrowRight className="w-4 h-4 text-white" />
-              </a>
-            </div>
-          </div>
-        </div>
-      ) : (
-        /* MAIN LISTING VIEW */
-        <div>
+        {/* MAIN LISTING VIEW */}
         <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
           {/* Main Twilight Universities Banner Container */}
           <div 
@@ -673,6 +577,102 @@ export function UniversitiesPortal() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* AD DETAIL POPUP MODAL */}
+          {activeUniv && (
+        <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto font-sans">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-4 sm:p-6 relative shadow-2xl border border-slate-200 my-auto max-h-[92vh] overflow-y-auto flex flex-col">
+            <button
+              onClick={() => setActiveUniv(null)}
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold flex items-center justify-center transition-all z-20 outline-none shadow-sm cursor-pointer"
+            >
+              ✕
+            </button>
+
+            {/* Banner Image Container */}
+            <div className="relative rounded-2xl overflow-hidden mb-4 border border-slate-100 shadow-xs bg-white w-full flex items-center justify-center shrink-0">
+              <img src={activeUniv.heroImg} alt={activeUniv.location} className="w-full h-auto max-h-[320px] sm:max-h-[420px] object-contain rounded-xl" />
+              <div className="absolute bottom-3 left-4 flex items-center gap-2 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-md">
+                <img src={`https://flagcdn.com/w40/${activeUniv.countryCode}.png`} alt="flag" className="h-4 rounded shadow" />
+                <span className="text-white font-bold text-xs flex items-center gap-1.5 font-sans">
+                  <MapPin className="w-3.5 h-3.5 text-red-400" /> {activeUniv.location}
+                </span>
+              </div>
+            </div>
+
+            <div className="text-left space-y-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[10px] font-extrabold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2.5 py-1 rounded-full uppercase tracking-wider inline-block">
+                    OCTOBER INTAKE • 100% VISA
+                  </span>
+                  <span className="text-emerald-600 font-bold text-xs flex items-center gap-1">
+                    <BadgeCheck className="w-4 h-4 text-emerald-500" /> Verified Pathway
+                  </span>
+                </div>
+                <h2 className="font-sora font-extrabold text-lg sm:text-xl text-[#0c1a2e] leading-snug">{activeUniv.name}</h2>
+                <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">{activeUniv.desc}</p>
+              </div>
+
+              {/* Program Fee Breakdown */}
+              <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4">
+                <span className="text-[9px] sm:text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Tuition Fee Structure</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Foundation Program</span>
+                    <span className="font-sora font-extrabold text-base text-[#159BB8]">€ 3,300</span>
+                    <span className="text-[10px] text-slate-400 block font-normal">per year</span>
+                  </div>
+                  <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Bachelor's Program</span>
+                    <span className="font-sora font-extrabold text-base text-[#159BB8]">€ 3,800</span>
+                    <span className="text-[10px] text-slate-400 block font-normal">per year</span>
+                  </div>
+                  <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Master's Program</span>
+                    <span className="font-sora font-extrabold text-base text-[#159BB8]">€ 5,000</span>
+                    <span className="text-[10px] text-slate-400 block font-normal">per year</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Highlights & Inclusions */}
+              <div>
+                <h4 className="text-[11px] font-extrabold text-[#0c1a2e] uppercase tracking-wider mb-2">Key Highlights & Admissions Perks:</h4>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
+                  {[
+                    "100% Visa Approval Guarantee",
+                    "Zero Apostille & Documentation Charges",
+                    "Part-Time Work Allowed While Studying",
+                    "Affordable Tuition & Living Costs",
+                    "Easy Admission & Direct Processing",
+                    "Complete Support Till Visa Approval"
+                  ].map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold shrink-0 mt-0.5">✓</span>
+                      <span className="leading-snug">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Bottom Actions Bar */}
+              <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row gap-3 items-center justify-between">
+                <div className="text-xs font-bold text-slate-600 text-center sm:text-left">
+                  Direct Contact: <a href="https://www.gugportal.com" target="_blank" rel="noreferrer" className="text-[#159BB8] hover:underline font-extrabold">www.gugportal.com</a>
+                </div>
+                <a
+                  href="https://wa.me/919044854415?text=Hi,%20I%20am%20interested%20in%20Study%20in%20Cyprus%20October%20Intake%202026."
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full sm:w-auto bg-black hover:bg-neutral-900 text-white font-extrabold text-xs px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-lg transition-all outline-none active:scale-95 shrink-0"
+                >
+                  <span>Apply / Register (+91 9044854415)</span>
+                  <ArrowRight className="w-4 h-4 text-white" />
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -251,92 +251,135 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Right side: HTML-based connected Grid Collage of Landmarks */}
-          <div className="flex w-full md:flex-1 h-[320px] sm:h-[400px] md:h-[480px] items-center justify-center md:justify-end overflow-visible mt-4 md:mt-0">
-            <div className="relative w-full h-full max-w-[440px] md:max-w-[580px] bg-white p-1 rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
-              <div className="absolute inset-1 grid grid-cols-2 grid-rows-3 gap-1">
+          {/* Right side: HTML-based connected 3x3 Grid Collage of 9 Square Landmark Photos */}
+          <div className="flex w-full md:flex-1 items-center justify-center md:justify-end overflow-visible mt-4 md:mt-0">
+            <div className="relative w-full max-w-[440px] md:max-w-[540px] bg-white p-2.5 rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+              <div className="grid grid-cols-3 gap-2">
                 
-                {/* Row 1, Left: Statue of Liberty (NYC) */}
+                {/* 1. USA (Golden Gate / NYC) */}
                 <div 
-                  className="relative w-full h-full overflow-hidden cursor-pointer group" 
-                  style={{ clipPath: 'polygon(0 0, 100% 0, 92% 100%, 0 100%)' }}
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
                   onClick={() => { setCountry('USA'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=500&h=400&fit=crop" 
-                    alt="New York Statue of Liberty" 
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" 
+                    src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=400&fit=crop" 
+                    alt="USA Landmark" 
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">USA</span>
                 </div>
-                {/* Row 1, Right: Eiffel Tower (Paris) */}
+
+                {/* 2. France (Eiffel Tower) */}
                 <div 
-                  className="relative w-full h-full overflow-hidden cursor-pointer group" 
-                  style={{ clipPath: 'polygon(8% 0, 100% 0, 100% 100%, 0 100%)' }}
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
                   onClick={() => { setCountry('France'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=500&h=400&fit=crop" 
+                    src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=400&fit=crop" 
                     alt="Paris Eiffel Tower" 
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" 
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">France</span>
                 </div>
 
-                {/* ── ROW 2 ── */}
-                {/* Row 2, Left: Big Ben (London) */}
+                {/* 3. UK (London Big Ben) */}
                 <div 
-                  className="relative w-full h-full overflow-hidden z-10 cursor-pointer group" 
-                  style={{ clipPath: 'polygon(0 0, 92% 0, 100% 100%, 0 100%)' }}
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
                   onClick={() => { setCountry('UK'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&h=400&fit=crop" 
+                    src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=400&fit=crop" 
                     alt="London Big Ben" 
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" 
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">UK</span>
                 </div>
-                {/* Row 2, Right: Sydney Opera House (Sydney) */}
+
+                {/* 4. Australia (Sydney Opera House) */}
                 <div 
-                  className="relative w-full h-full overflow-hidden cursor-pointer group" 
-                  style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 8% 100%)' }}
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
                   onClick={() => { setCountry('Australia'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=500&h=400&fit=crop" 
+                    src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=400&h=400&fit=crop" 
                     alt="Sydney Opera House" 
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" 
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Australia</span>
                 </div>
 
-                {/* ── ROW 3 ── */}
-                {/* Row 3, Left: NYC Skyline */}
+                {/* 5. Dubai / UAE */}
                 <div 
-                  className="relative w-full h-full overflow-hidden z-10 cursor-pointer group" 
-                  style={{ clipPath: 'polygon(0 0, 100% 0, 92% 100%, 0 100%)' }}
-                  onClick={() => { setCountry('USA'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
+                  onClick={() => { setCountry('UAE'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=500&h=400&fit=crop" 
-                    alt="New York City Skyline" 
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" 
+                    src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=400&fit=crop" 
+                    alt="Dubai UAE" 
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Dubai / UAE</span>
                 </div>
-                {/* Row 3, Right: Tokyo Tower & Cityscape */}
+
+                {/* 6. Japan (Tokyo) */}
                 <div 
-                  className="relative w-full h-full overflow-hidden cursor-pointer group" 
-                  style={{ clipPath: 'polygon(8% 0, 100% 0, 100% 100%, 0 100%)' }}
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
                   onClick={() => { setCountry('Japan'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=500&h=400&fit=crop" 
-                    alt="Tokyo Japan Cityscape" 
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" 
+                    src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400&h=400&fit=crop" 
+                    alt="Tokyo Japan" 
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Japan</span>
+                </div>
+
+                {/* 7. Singapore */}
+                <div 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
+                  onClick={() => { setCountry('Singapore'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                >
+                  <img 
+                    src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=400&fit=crop" 
+                    alt="Singapore Skyline" 
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Singapore</span>
+                </div>
+
+                {/* 8. Italy / Schengen */}
+                <div 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
+                  onClick={() => { setCountry('Italy'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                >
+                  <img 
+                    src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&h=400&fit=crop" 
+                    alt="Rome Italy" 
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Italy</span>
+                </div>
+
+                {/* 9. Canada */}
+                <div 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
+                  onClick={() => { setCountry('Canada'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                >
+                  <img 
+                    src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=400&h=400&fit=crop" 
+                    alt="Canada Skyline" 
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Canada</span>
                 </div>
 
               </div>

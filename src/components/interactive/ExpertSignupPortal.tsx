@@ -634,7 +634,9 @@ function ExpertSignupPortalContent() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
+                  {/* 1. First Name & Last Name */}
                   <div className="col-span-1">
+                    <label className="text-xs font-bold text-slate-700 mb-1 block">First Name *</label>
                     <input 
                       required
                       value={firstName} 
@@ -645,6 +647,7 @@ function ExpertSignupPortalContent() {
                     />
                   </div>
                   <div className="col-span-1">
+                    <label className="text-xs font-bold text-slate-700 mb-1 block">Last Name *</label>
                     <input 
                       required
                       value={lastName} 
@@ -655,7 +658,50 @@ function ExpertSignupPortalContent() {
                     />
                   </div>
 
-                   <div className="col-span-2 space-y-2">
+                  {/* 2. Type of Expert & Business Name */}
+                  <div className="col-span-2 md:col-span-1" onClick={(e) => e.stopPropagation()}>
+                    <label className="text-xs font-bold text-slate-700 mb-1 block">Type of Expert *</label>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setSignupConsultantOpen(!signupConsultantOpen)}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none text-left focus:border-gray-500 text-slate-800 cursor-pointer flex items-center justify-between shadow-sm"
+                      >
+                        <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>{consultantType}</span>
+                        <svg className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${signupConsultantOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                      </button>
+                      {signupConsultantOpen && (
+                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-xl mt-1 py-1 z-50 font-sans">
+                          {["Freelancer", "Registered consultancy", "Employer/ hr agency", "University/ educational institute", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"].map(type => (
+                            <button
+                              key={type}
+                              type="button"
+                              onClick={() => { setConsultantType(type); setSignupConsultantOpen(false); }}
+                              className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-black hover:text-white transition-colors"
+                            >
+                              {type}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="col-span-2 md:col-span-1">
+                    <label className="text-xs font-bold text-slate-700 mb-1 block">Business / Agency Name *</label>
+                    <input 
+                      required
+                      value={businessName} 
+                      onChange={(e) => setBusinessName(e.target.value)} 
+                      placeholder="Business or Consultancy Name" 
+                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
+                    />
+                  </div>
+
+                  {/* 3. Email Address & Email Verification */}
+                  <div className="col-span-2 space-y-2">
+                    <label className="text-xs font-bold text-slate-700 block">Email Address *</label>
                     <div className="flex flex-col sm:flex-row gap-3 items-center">
                       <div className="flex-grow relative w-full">
                         <input 
@@ -666,7 +712,7 @@ function ExpertSignupPortalContent() {
                             setEmail(e.target.value);
                             setEmailVerified(false);
                           }}
-                          placeholder="Email address" 
+                          placeholder="name@example.com" 
                           style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                           className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
                         />
@@ -711,50 +757,67 @@ function ExpertSignupPortalContent() {
                         </button>
                       )}
                     </div>
-                    {validationError && (
-                      <p className="text-xs text-red-500 font-semibold mt-1.5">{validationError}</p>
-                    )}
                   </div>
 
-                  <div className="col-span-2 md:col-span-1" onClick={(e) => e.stopPropagation()}>
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setSignupConsultantOpen(!signupConsultantOpen)}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none text-left focus:border-gray-500 text-slate-800 cursor-pointer flex items-center justify-between shadow-sm"
-                      >
-                        <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>{consultantType}</span>
-                        <svg className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${signupConsultantOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
-                      </button>
-                      {signupConsultantOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-xl mt-1 py-1 z-50 font-sans">
-                          {["Freelancer", "Registered consultancy", "Employer/ hr agency", "University/ educational institute", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"].map(type => (
-                            <button
-                              key={type}
-                              type="button"
-                              onClick={() => { setConsultantType(type); setSignupConsultantOpen(false); }}
-                              className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-black hover:text-white transition-colors"
-                            >
-                              {type}
-                            </button>
-                          ))}
-                        </div>
+                  {/* 4. Create Password & Confirm Password */}
+                  <div className={`col-span-2 space-y-4 border-l-4 pl-4 transition-all duration-300 ${
+                    !password && !confirmPassword ? 'border-slate-200' :
+                    password === confirmPassword ? 'border-emerald-500 bg-emerald-50/10 py-2 rounded-r-md' : 'border-rose-500 bg-rose-50/10 py-2 rounded-r-md'
+                  }`}>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Security Credentials *</span>
+                      {password && confirmPassword && (
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          password === confirmPassword ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                        }`}>
+                          {password === confirmPassword ? '✓ Passwords Match' : '✗ Passwords Do Not Match'}
+                        </span>
                       )}
+                    </div>
+
+                    <div className="relative">
+                      <input 
+                        type={showPassword ? "text" : "password"} 
+                        required
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        placeholder="Create Password" 
+                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
+                      />
+                      <button 
+                        type="button" 
+                        onClick={() => setShowPassword(!showPassword)} 
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
+
+                    <div className="relative">
+                      <input 
+                        type={showConfirmPassword ? "text" : "password"} 
+                        required
+                        value={confirmPassword} 
+                        onChange={(e) => setConfirmPassword(e.target.value)} 
+                        placeholder="Confirm Password" 
+                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
+                      />
+                      <button 
+                        type="button" 
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
+                      >
+                        {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
                     </div>
                   </div>
 
-                  <div className="col-span-2 md:col-span-1">
-                    <input 
-                      required
-                      value={businessName} 
-                      onChange={(e) => setBusinessName(e.target.value)} 
-                      placeholder="Business Name" 
-                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                    />
-                  </div>
-
+                  {/* 5. Mobile Number */}
                   <div className="col-span-2">
+                    <label className="text-xs font-bold text-slate-700 mb-1 block">Mobile / Phone Number *</label>
                     <div className="flex gap-3">
                       <div className="relative" onClick={(e) => e.stopPropagation()}>
                         <button
@@ -794,179 +857,10 @@ function ExpertSignupPortalContent() {
                         required
                         value={contactNumber} 
                         onChange={(e) => setContactNumber(e.target.value)} 
-                        placeholder="Contact Number (e.g. 99999 99999)" 
+                        placeholder="e.g. 99999 99999" 
                         style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                         className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                       />
-                    </div>
-                  </div>
-
-                  <div className="col-span-2 md:col-span-1">
-                    <input 
-                      value={website} 
-                      onChange={(e) => setWebsite(e.target.value)} 
-                      placeholder="Website (Optional)" 
-                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                    />
-                  </div>
-
-                  <div className="col-span-2 md:col-span-1">
-                    <input 
-                      value={facebookLink} 
-                      onChange={(e) => setFacebookLink(e.target.value)} 
-                      placeholder="Facebook / Social Link (Optional)" 
-                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                    />
-                  </div>
-
-                  {/* Connected Passwords Area */}
-                  <div className={`col-span-2 space-y-4 border-l-4 pl-4 transition-all duration-300 ${
-                    !password && !confirmPassword ? 'border-slate-200' :
-                    password === confirmPassword ? 'border-emerald-500 bg-emerald-50/10 py-2 rounded-r-md' : 'border-rose-500 bg-rose-50/10 py-2 rounded-r-md'
-                  }`}>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Security Credentials</span>
-                      {password && confirmPassword && (
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          password === confirmPassword ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
-                        }`}>
-                          {password === confirmPassword ? '✓ Passwords Match' : '✗ Passwords Do Not Match'}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="relative">
-                      <input 
-                        type={showPassword ? "text" : "password"} 
-                        required
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        placeholder="Password" 
-                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
-                      />
-                      <button 
-                        type="button" 
-                        onClick={() => setShowPassword(!showPassword)} 
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
-                      >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                    </div>
-                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
-
-                    <div className="relative">
-                      <input 
-                        type={showConfirmPassword ? "text" : "password"} 
-                        required
-                        value={confirmPassword} 
-                        onChange={(e) => setConfirmPassword(e.target.value)} 
-                        placeholder="Confirm Password" 
-                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
-                      />
-                      <button 
-                        type="button" 
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
-                      >
-                        {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="col-span-2" onClick={(e) => e.stopPropagation()}>
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setSignupCategoryOpen(!signupCategoryOpen)}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none text-left focus:border-gray-500 text-slate-800 cursor-pointer flex items-center justify-between shadow-sm"
-                      >
-                        <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>Category: {expertCategory}</span>
-                        <svg className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${signupCategoryOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
-                      </button>
-                      {signupCategoryOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-xl mt-1 py-1 z-50 font-sans max-h-60 overflow-y-auto">
-                          {["Student Visa", "Job Visas", "Visit Visas", "Migration Visas", "Immigration Assistance"].map(category => (
-                            <button
-                              key={category}
-                              type="button"
-                              onClick={() => { setExpertCategory(category); setSignupCategoryOpen(false); }}
-                              className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-black hover:text-white transition-colors"
-                            >
-                              {category}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="col-span-2 space-y-3 pt-2 border-t border-slate-100">
-                    <label className="text-xs font-bold text-slate-800 block uppercase tracking-wider">Office / Practice Location Address*</label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {/* Area */}
-                      <div className="col-span-2">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">Area / Locality / Street Address*</label>
-                        <input 
-                          type="text"
-                          required
-                          value={addressArea} 
-                          onChange={(e) => updateFullAddress(e.target.value, addressCity, addressState, addressCountry, addressZip)} 
-                          placeholder="e.g. Suite 402, MG Road, Landmark Building" 
-                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
-                        />
-                      </div>
-                      {/* City or District or Town */}
-                      <div className="col-span-1">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">City / District / Town*</label>
-                        <input 
-                          type="text"
-                          required
-                          value={addressCity} 
-                          onChange={(e) => updateFullAddress(addressArea, e.target.value, addressState, addressCountry, addressZip)} 
-                          placeholder="e.g. Mumbai / New Delhi" 
-                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
-                        />
-                      </div>
-                      {/* State */}
-                      <div className="col-span-1">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">State / Province*</label>
-                        <input 
-                          type="text"
-                          required
-                          value={addressState} 
-                          onChange={(e) => updateFullAddress(addressArea, addressCity, e.target.value, addressCountry, addressZip)} 
-                          placeholder="e.g. Maharashtra" 
-                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
-                        />
-                      </div>
-                      {/* Country */}
-                      <div className="col-span-1">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">Country*</label>
-                        <input 
-                          type="text"
-                          required
-                          value={addressCountry} 
-                          onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, e.target.value, addressZip)} 
-                          placeholder="e.g. India" 
-                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
-                        />
-                      </div>
-                      {/* Zip code */}
-                      <div className="col-span-1">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">ZIP / Postal Code*</label>
-                        <input 
-                          type="text"
-                          required
-                          value={addressZip} 
-                          onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, addressCountry, e.target.value)} 
-                          placeholder="e.g. 400001" 
-                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -977,12 +871,13 @@ function ExpertSignupPortalContent() {
                   </div>
                 )}
 
-                <div className="pt-8 flex justify-center">
+                <div className="pt-6 flex justify-center">
                   <button 
                     type="submit"
-                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer flex items-center gap-2"
                   >
-                    Next
+                    <span>Proceed to Location & Expertise Details</span>
+                    <span>&rarr;</span>
                   </button>
                 </div>
               </form>
@@ -997,6 +892,73 @@ function ExpertSignupPortalContent() {
                   ) : (
                     <span className="text-[10px] bg-red-50 text-red-700 px-3 py-1 rounded-lg border border-red-200 font-semibold">Verification Documents: Required</span>
                   )}
+                </div>
+
+                {/* 1. Office / Practice Location Address */}
+                <div className="bg-white border border-slate-150 rounded-xl p-6 shadow-sm space-y-3">
+                  <label className="text-sm font-bold text-slate-800 block uppercase tracking-wider">Office / Practice Location Address *</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {/* Area */}
+                    <div className="col-span-2">
+                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">Area / Locality / Street Address *</label>
+                      <input 
+                        type="text"
+                        required
+                        value={addressArea} 
+                        onChange={(e) => updateFullAddress(e.target.value, addressCity, addressState, addressCountry, addressZip)} 
+                        placeholder="e.g. Suite 402, MG Road, Landmark Building" 
+                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                      />
+                    </div>
+                    {/* City or District or Town */}
+                    <div className="col-span-1">
+                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">City / District / Town *</label>
+                      <input 
+                        type="text"
+                        required
+                        value={addressCity} 
+                        onChange={(e) => updateFullAddress(addressArea, e.target.value, addressState, addressCountry, addressZip)} 
+                        placeholder="e.g. Mumbai / New Delhi" 
+                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                      />
+                    </div>
+                    {/* State */}
+                    <div className="col-span-1">
+                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">State / Province *</label>
+                      <input 
+                        type="text"
+                        required
+                        value={addressState} 
+                        onChange={(e) => updateFullAddress(addressArea, addressCity, e.target.value, addressCountry, addressZip)} 
+                        placeholder="e.g. Maharashtra" 
+                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                      />
+                    </div>
+                    {/* Country */}
+                    <div className="col-span-1">
+                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">Country *</label>
+                      <input 
+                        type="text"
+                        required
+                        value={addressCountry} 
+                        onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, e.target.value, addressZip)} 
+                        placeholder="e.g. India" 
+                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                      />
+                    </div>
+                    {/* Zip code */}
+                    <div className="col-span-1">
+                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">ZIP / Postal Code *</label>
+                      <input 
+                        type="text"
+                        required
+                        value={addressZip} 
+                        onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, addressCountry, e.target.value)} 
+                        placeholder="e.g. 400001" 
+                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="bg-white border border-slate-150 rounded-xl p-6 shadow-sm space-y-4">

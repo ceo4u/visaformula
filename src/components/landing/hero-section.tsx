@@ -272,7 +272,7 @@ export function HeroSection() {
                     className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Cyprus</span>
+                  <span className="absolute bottom-1.5 left-2 text-[10px] sm:text-[11px] font-bold text-white tracking-wide font-sans leading-tight">Cyprus Universities</span>
                 </div>
 
                 {/* 2. Greece */}
@@ -291,7 +291,7 @@ export function HeroSection() {
                     className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Greece</span>
+                  <span className="absolute bottom-1.5 left-2 text-[10px] sm:text-[11px] font-bold text-white tracking-wide font-sans leading-tight">Greece Cricket Tours</span>
                 </div>
 
                 {/* 3. UK (London Big Ben) */}

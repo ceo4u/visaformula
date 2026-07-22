@@ -280,26 +280,25 @@ export function HeroSection() {
                   <img src="/images/cyprus.jpg" alt="Cyprus Universities" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
                   
-                  {/* Top Row: Consultant Name + Category */}
+                  {/* Top Row: Category + Consultant */}
                   <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <div className="flex items-center gap-1 bg-black/65 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/10 max-w-[65%]">
+                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-cyan-500 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                      Student Visa
+                    </span>
+                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
                       <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0"></span>
                       <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">EuroEdu Consult ✓</span>
                     </div>
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-cyan-500/90 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
-                      Student Visa
-                    </span>
                   </div>
 
-                  {/* Bottom Content: Title & Country */}
-                  <div className="relative z-10 p-1.5">
-                    <span className="inline-block text-[7.5px] sm:text-[8px] font-bold bg-white/20 backdrop-blur-xs text-cyan-200 px-1 py-0.5 rounded mb-0.5">
+                  {/* Bottom Content: Destination Country & Ad Title */}
+                  <div className="relative z-10 p-2">
+                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-cyan-200 px-1.5 py-0.5 rounded mb-1">
                       🇨🇾 Cyprus
                     </span>
-                    <h4 className="text-[9.5px] sm:text-[10.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-cyan-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-cyan-300 transition-colors">
                       Cyprus Oct Intake 2026
                     </h4>
-                    <p className="text-[7.5px] font-medium text-slate-300 truncate mt-0.5">€3,300/yr • 100% Visa Support</p>
                   </div>
                 </div>
 
@@ -317,23 +316,22 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
                   
                   <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <div className="flex items-center gap-1 bg-black/65 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/10 max-w-[65%]">
+                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-emerald-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                      Visit Visa
+                    </span>
+                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
                       <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Olympus Sports ✓</span>
                     </div>
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-emerald-600/90 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
-                      Sports Visa
-                    </span>
                   </div>
 
-                  <div className="relative z-10 p-1.5">
-                    <span className="inline-block text-[7.5px] sm:text-[8px] font-bold bg-white/20 backdrop-blur-xs text-emerald-200 px-1 py-0.5 rounded mb-0.5">
+                  <div className="relative z-10 p-2">
+                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-emerald-200 px-1.5 py-0.5 rounded mb-1">
                       🇬🇷 Greece
                     </span>
-                    <h4 className="text-[9.5px] sm:text-[10.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-emerald-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-emerald-300 transition-colors">
                       Greece Cricket Tour Package
                     </h4>
-                    <p className="text-[7.5px] font-medium text-slate-300 truncate mt-0.5">₹2.5L • 3 T20 Matches + Visa</p>
                   </div>
                 </div>
 
@@ -346,23 +344,22 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
                   
                   <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <div className="flex items-center gap-1 bg-black/65 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/10 max-w-[65%]">
+                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-indigo-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                      Student Visa
+                    </span>
+                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
                       <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></span>
                       <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Britannic Consult ✓</span>
                     </div>
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-indigo-600/90 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
-                      Student Visa
-                    </span>
                   </div>
 
-                  <div className="relative z-10 p-1.5">
-                    <span className="inline-block text-[7.5px] sm:text-[8px] font-bold bg-white/20 backdrop-blur-xs text-indigo-200 px-1 py-0.5 rounded mb-0.5">
-                      🇬🇧 UK
+                  <div className="relative z-10 p-2">
+                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-indigo-200 px-1.5 py-0.5 rounded mb-1">
+                      🇬🇧 United Kingdom
                     </span>
-                    <h4 className="text-[9.5px] sm:text-[10.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-indigo-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-indigo-300 transition-colors">
                       UK Masters Admissions
                     </h4>
-                    <p className="text-[7.5px] font-medium text-slate-300 truncate mt-0.5">Direct Offer • 2-Yr PSW</p>
                   </div>
                 </div>
 
@@ -375,23 +372,22 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
                   
                   <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <div className="flex items-center gap-1 bg-black/65 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/10 max-w-[65%]">
+                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-red-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                      PR & Residency
+                    </span>
+                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
                       <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0"></span>
                       <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">MapleLeaf Agency ✓</span>
                     </div>
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-red-600/90 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
-                      PR & Study
-                    </span>
                   </div>
 
-                  <div className="relative z-10 p-1.5">
-                    <span className="inline-block text-[7.5px] sm:text-[8px] font-bold bg-white/20 backdrop-blur-xs text-red-200 px-1 py-0.5 rounded mb-0.5">
+                  <div className="relative z-10 p-2">
+                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-red-200 px-1.5 py-0.5 rounded mb-1">
                       🇨🇦 Canada
                     </span>
-                    <h4 className="text-[9.5px] sm:text-[10.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-red-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-red-300 transition-colors">
                       Express Entry & PGWP
                     </h4>
-                    <p className="text-[7.5px] font-medium text-slate-300 truncate mt-0.5">Public College Permits</p>
                   </div>
                 </div>
 
@@ -404,23 +400,22 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
                   
                   <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <div className="flex items-center gap-1 bg-black/65 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/10 max-w-[65%]">
+                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-amber-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                      PR & Residency
+                    </span>
+                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
                       <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span>
                       <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Pacific Migration ✓</span>
                     </div>
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-amber-600/90 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
-                      PR & Residency
-                    </span>
                   </div>
 
-                  <div className="relative z-10 p-1.5">
-                    <span className="inline-block text-[7.5px] sm:text-[8px] font-bold bg-white/20 backdrop-blur-xs text-amber-200 px-1 py-0.5 rounded mb-0.5">
+                  <div className="relative z-10 p-2">
+                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-amber-200 px-1.5 py-0.5 rounded mb-1">
                       🇦🇺 Australia
                     </span>
-                    <h4 className="text-[9.5px] sm:text-[10.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-amber-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-amber-300 transition-colors">
                       Subclass 189 Skill PR
                     </h4>
-                    <p className="text-[7.5px] font-medium text-slate-300 truncate mt-0.5">Fast Skill Assessment</p>
                   </div>
                 </div>
 
@@ -433,23 +428,22 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
                   
                   <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <div className="flex items-center gap-1 bg-black/65 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/10 max-w-[65%]">
+                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-purple-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                      Work Visa
+                    </span>
+                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
                       <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0"></span>
                       <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Gulf Horizon ✓</span>
                     </div>
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-purple-600/90 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
-                      Work Visa
-                    </span>
                   </div>
 
-                  <div className="relative z-10 p-1.5">
-                    <span className="inline-block text-[7.5px] sm:text-[8px] font-bold bg-white/20 backdrop-blur-xs text-purple-200 px-1 py-0.5 rounded mb-0.5">
+                  <div className="relative z-10 p-2">
+                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-purple-200 px-1.5 py-0.5 rounded mb-1">
                       🇦🇪 UAE / Dubai
                     </span>
-                    <h4 className="text-[9.5px] sm:text-[10.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-purple-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-purple-300 transition-colors">
                       2-Yr Dubai Work Visa
                     </h4>
-                    <p className="text-[7.5px] font-medium text-slate-300 truncate mt-0.5">Golden & Freelance</p>
                   </div>
                 </div>
 
@@ -462,23 +456,22 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
                   
                   <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <div className="flex items-center gap-1 bg-black/65 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/10 max-w-[65%]">
+                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-rose-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                      Work Visa
+                    </span>
+                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
                       <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0"></span>
                       <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Nippon Career ✓</span>
                     </div>
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-rose-600/90 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
-                      Work Visa
-                    </span>
                   </div>
 
-                  <div className="relative z-10 p-1.5">
-                    <span className="inline-block text-[7.5px] sm:text-[8px] font-bold bg-white/20 backdrop-blur-xs text-rose-200 px-1 py-0.5 rounded mb-0.5">
+                  <div className="relative z-10 p-2">
+                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-rose-200 px-1.5 py-0.5 rounded mb-1">
                       🇯🇵 Japan
                     </span>
-                    <h4 className="text-[9.5px] sm:text-[10.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-rose-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-rose-300 transition-colors">
                       Japan SSW Work Visa
                     </h4>
-                    <p className="text-[7.5px] font-medium text-slate-300 truncate mt-0.5">Tech & Skilled Jobs</p>
                   </div>
                 </div>
 
@@ -491,23 +484,22 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
                   
                   <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <div className="flex items-center gap-1 bg-black/65 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/10 max-w-[65%]">
+                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-blue-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                      Student Visa
+                    </span>
+                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></span>
                       <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">AsiaPac Ed ✓</span>
                     </div>
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-blue-600/90 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
-                      Student Visa
-                    </span>
                   </div>
 
-                  <div className="relative z-10 p-1.5">
-                    <span className="inline-block text-[7.5px] sm:text-[8px] font-bold bg-white/20 backdrop-blur-xs text-blue-200 px-1 py-0.5 rounded mb-0.5">
+                  <div className="relative z-10 p-2">
+                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-blue-200 px-1.5 py-0.5 rounded mb-1">
                       🇸🇬 Singapore
                     </span>
-                    <h4 className="text-[9.5px] sm:text-[10.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-blue-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-blue-300 transition-colors">
                       Singapore Tech Academy
                     </h4>
-                    <p className="text-[7.5px] font-medium text-slate-300 truncate mt-0.5">Fast Student Pass</p>
                   </div>
                 </div>
 
@@ -520,23 +512,22 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
                   
                   <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <div className="flex items-center gap-1 bg-black/65 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/10 max-w-[65%]">
+                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-teal-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                      Visit Visa
+                    </span>
+                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
                       <span className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0"></span>
                       <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Schengen Gateway ✓</span>
                     </div>
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-teal-600/90 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
-                      Visit & Study
-                    </span>
                   </div>
 
-                  <div className="relative z-10 p-1.5">
-                    <span className="inline-block text-[7.5px] sm:text-[8px] font-bold bg-white/20 backdrop-blur-xs text-teal-200 px-1 py-0.5 rounded mb-0.5">
+                  <div className="relative z-10 p-2">
+                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-teal-200 px-1.5 py-0.5 rounded mb-1">
                       🇮🇹 Italy
                     </span>
-                    <h4 className="text-[9.5px] sm:text-[10.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-teal-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-teal-300 transition-colors">
                       Italy & EU Schengen
                     </h4>
-                    <p className="text-[7.5px] font-medium text-slate-300 truncate mt-0.5">27 Europe Countries</p>
                   </div>
                 </div>
               </div>

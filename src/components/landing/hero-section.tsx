@@ -259,7 +259,7 @@ export function HeroSection() {
                 {/* 1. Cyprus */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('Cyprus'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { window.location.href = '/universities?country=Cyprus&ad=cyprus'; }}
                 >
                   <img 
                     src="/images/cyprus.jpg" 

@@ -188,6 +188,20 @@ export function UniversitiesPortal() {
   const [toastMsg, setToastMsg] = useState("");
   const [toastOn, setToastOn] = useState(false);
 
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      const countryParam = searchParams.get("country");
+      const adParam = searchParams.get("ad");
+      if (adParam === "cyprus" || countryParam?.toLowerCase() === "cyprus") {
+        const cyprusItem = initialUniversities.find(u => u.country.toLowerCase() === "cyprus");
+        if (cyprusItem) {
+          setActiveUniv(cyprusItem);
+        }
+      }
+    }
+  }, []);
+
   const showToast = (msg: string) => {
     setToastMsg(msg); setToastOn(true);
     setTimeout(() => setToastOn(false), 2500);

@@ -258,7 +258,19 @@ const eventTours = [
 
 export function ToursPortal() {
     // Current Active Tab: 'holiday' | 'sports' | 'cruises' | 'events'
-    const [activeTab, setActiveTab] = useState<"holiday" | "sports" | "cruises" | "events">("holiday");
+    const [activeTab, setActiveTab] = useState<"holiday" | "sports" | "cruises" | "events">(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            const cat = params.get("category");
+            const country = params.get("country");
+            const autoGreece = sessionStorage.getItem("auto_open_greece_tour");
+            if (autoGreece === "true" || cat === "sports" || country?.toLowerCase() === "greece") {
+                return "sports";
+            }
+            if (cat === "cruises" || cat === "events" || cat === "holiday") return cat;
+        }
+        return "holiday";
+    });
     const [toastMsg, setToastMsg] = useState("");
     const [isToastVisible, setIsToastVisible] = useState(false);
 

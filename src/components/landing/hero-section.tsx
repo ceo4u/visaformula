@@ -281,7 +281,7 @@ export function HeroSection() {
                   onClick={() => {
                     if (typeof window !== "undefined") {
                       sessionStorage.setItem("auto_open_greece_tour", "true");
-                      window.location.href = '/tours';
+                      window.location.href = '/tours?category=sports&country=greece';
                     }
                   }}
                 >

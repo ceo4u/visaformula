@@ -259,7 +259,12 @@ export function HeroSection() {
                 {/* 1. Cyprus */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { window.location.href = '/universities?country=Cyprus&ad=cyprus'; }}
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      sessionStorage.setItem("auto_open_cyprus", "true");
+                      window.location.href = '/universities';
+                    }
+                  }}
                 >
                   <img 
                     src="/images/cyprus.jpg" 
@@ -270,24 +275,24 @@ export function HeroSection() {
                   <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Cyprus</span>
                 </div>
 
-                {/* 2. France (Eiffel Tower) */}
+                {/* 2. Greece */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('France'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { window.location.href = '/universities?country=Greece'; }}
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=400&fit=crop" 
-                    alt="Paris Eiffel Tower" 
+                    src="/images/greece.jpg" 
+                    alt="Greece Landmark" 
                     className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">France</span>
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Greece</span>
                 </div>
 
                 {/* 3. UK (London Big Ben) */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('UK'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { window.location.href = '/universities?country=UK'; }}
                 >
                   <img 
                     src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=400&fit=crop" 
@@ -301,7 +306,7 @@ export function HeroSection() {
                 {/* 4. Australia (Sydney Opera House) */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('Australia'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { window.location.href = '/universities?country=Australia'; }}
                 >
                   <img 
                     src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=400&h=400&fit=crop" 
@@ -315,7 +320,7 @@ export function HeroSection() {
                 {/* 5. Dubai / UAE */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('UAE'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { window.location.href = '/universities?country=UAE'; }}
                 >
                   <img 
                     src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=400&fit=crop" 
@@ -329,7 +334,7 @@ export function HeroSection() {
                 {/* 6. Japan (Tokyo) */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('Japan'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { window.location.href = '/universities?country=Japan'; }}
                 >
                   <img 
                     src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400&h=400&fit=crop" 
@@ -343,7 +348,7 @@ export function HeroSection() {
                 {/* 7. Singapore */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('Singapore'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { window.location.href = '/universities?country=Singapore'; }}
                 >
                   <img 
                     src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=400&fit=crop" 
@@ -357,7 +362,7 @@ export function HeroSection() {
                 {/* 8. Italy / Schengen */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('Italy'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { window.location.href = '/universities?country=Italy'; }}
                 >
                   <img 
                     src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&h=400&fit=crop" 
@@ -371,7 +376,7 @@ export function HeroSection() {
                 {/* 9. Canada */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('Canada'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { window.location.href = '/universities?country=Canada'; }}
                 >
                   <img 
                     src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=400&h=400&fit=crop" 

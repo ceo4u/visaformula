@@ -1291,38 +1291,39 @@ export function ToursPortal() {
 
             {/* Tour Detail Modal */}
             {selectedTour && (
-                <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-                    <div className="bg-white rounded-3xl max-w-2xl w-full p-6 relative shadow-2xl border border-slate-200 my-8">
+                <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto font-sans">
+                    <div className="bg-white rounded-3xl max-w-2xl w-full p-4 sm:p-6 relative shadow-2xl border border-slate-200 my-auto max-h-[92vh] overflow-y-auto flex flex-col">
                         <button
                             onClick={() => setSelectedTour(null)}
-                            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold flex items-center justify-center transition-all z-20 outline-none"
+                            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold flex items-center justify-center transition-all z-20 outline-none shadow-sm cursor-pointer"
                         >
                             ✕
                         </button>
 
-                        <div className="relative rounded-2xl overflow-hidden mb-5 border border-slate-100 shadow-md bg-slate-950 max-h-[380px] flex items-center justify-center">
-                            <img src={selectedTour.poster || selectedTour.image} alt={selectedTour.name} className="w-full h-full object-contain max-h-[360px]" />
+                        {/* Banner Image Container */}
+                        <div className="relative rounded-2xl overflow-hidden mb-4 border border-slate-100 shadow-sm bg-white w-full flex items-center justify-center shrink-0">
+                            <img src={selectedTour.poster || selectedTour.image} alt={selectedTour.name} className="w-full h-auto max-h-[320px] sm:max-h-[420px] object-contain rounded-xl" />
                         </div>
 
-                        <div className="text-left space-y-4 font-sans">
+                        <div className="text-left space-y-4">
                             <div>
-                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                                <span className="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider inline-block">
                                     {selectedTour.sport ? `${selectedTour.sport.toUpperCase()} TOUR` : "FEATURED PACKAGE"}
                                 </span>
-                                <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e] mt-2 leading-snug">{selectedTour.name}</h2>
-                                <p className="text-xs text-slate-500 font-medium mt-1">{selectedTour.description}</p>
+                                <h2 className="font-sora font-extrabold text-lg sm:text-xl text-[#0c1a2e] mt-2 leading-snug">{selectedTour.name}</h2>
+                                <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">{selectedTour.description}</p>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <div className="grid grid-cols-2 gap-3 bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-100">
                                 <div>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">Package Price</span>
-                                    <span className="font-sora font-black text-lg text-[#0c1a2e]">₹{selectedTour.price?.toLocaleString()}</span>
+                                    <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">Package Price</span>
+                                    <span className="font-sora font-black text-base sm:text-lg text-[#0c1a2e]">₹{selectedTour.price?.toLocaleString()}</span>
                                     <span className="text-[10px] text-slate-400 font-bold block">All Inclusive Cost</span>
                                 </div>
                                 {selectedTour.registrationFee && (
                                     <div>
-                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">Registration Fee</span>
-                                        <span className="font-sora font-extrabold text-base text-emerald-600">{selectedTour.registrationFee}</span>
+                                        <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">Registration Fee</span>
+                                        <span className="font-sora font-extrabold text-sm sm:text-base text-emerald-600">{selectedTour.registrationFee}</span>
                                         <span className="text-[10px] text-slate-400 font-bold block">Seat Booking Fee</span>
                                     </div>
                                 )}
@@ -1330,12 +1331,12 @@ export function ToursPortal() {
 
                             {selectedTour.includes && (
                                 <div>
-                                    <h4 className="text-xs font-bold text-[#0c1a2e] uppercase tracking-wider mb-2">Package Highlights & Inclusions:</h4>
+                                    <h4 className="text-[11px] font-extrabold text-[#0c1a2e] uppercase tracking-wider mb-2">Package Highlights & Inclusions:</h4>
                                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
                                         {selectedTour.includes.map((inc: string, idx: number) => (
-                                            <li key={idx} className="flex items-center gap-2">
-                                                <span className="text-emerald-500 font-bold">✓</span>
-                                                <span>{inc}</span>
+                                            <li key={idx} className="flex items-start gap-2">
+                                                <span className="text-emerald-500 font-bold shrink-0 mt-0.5">✓</span>
+                                                <span className="leading-snug">{inc}</span>
                                             </li>
                                         ))}
                                     </ul>
@@ -1343,14 +1344,14 @@ export function ToursPortal() {
                             )}
 
                             <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row gap-3 items-center justify-between">
-                                <div className="text-xs font-bold text-slate-600">
+                                <div className="text-xs font-bold text-slate-600 text-center sm:text-left">
                                     Organized by: <span className="text-black">{selectedTour.organizer || "VisaFormula Verified Partner"}</span>
                                 </div>
                                 <a
                                     href={`https://wa.me/91${selectedTour.contactPhone || "76611989366"}?text=Hi%20Risingat%20Sports,%20I%20am%20interested%20in%20the%20${encodeURIComponent(selectedTour.name)}`}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-lg transition-all outline-none"
+                                    className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-lg transition-all outline-none active:scale-95 shrink-0"
                                 >
                                     <span>Register & Contact (+91 76611989366)</span>
                                 </a>

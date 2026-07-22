@@ -80,7 +80,7 @@ function ExpertSignupPortalContent() {
         if (nameParam) setBusinessName(nameParam);
         if (phoneParam) setContactNumber(phoneParam);
         if (typeParam) {
-          const validTypes = ["Freelancer", "Business expert", "Institute or company", "Legal professional", "Supportive business"];
+          const validTypes = ["Freelancer", "Registered consultancy", "Employer/ hr agency", "University/ educational institute", "Insurance agent", "Bank or financer"];
           if (validTypes.includes(typeParam)) {
             setConsultantType(typeParam);
           }
@@ -351,6 +351,11 @@ function ExpertSignupPortalContent() {
 
   const handleLaunchDashboard = async (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError("");
+    if ((consultantType === "Freelancer" || consultantType === "Registered consultancy") && expertiseTags.length === 0) {
+      setValidationError("Please select at least one area of expertise (Expert in).");
+      return;
+    }
     try {
       const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/expert`, {
         method: "POST",
@@ -723,12 +728,12 @@ function ExpertSignupPortalContent() {
                       </button>
                       {signupConsultantOpen && (
                         <div className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-xl mt-1 py-1 z-50 font-sans">
-                          {["Freelancer", "Business Expert", "Institute or company", "Legal professional", "Supportive business"].map(type => (
+                          {["Freelancer", "Registered consultancy", "Employer/ hr agency", "University/ educational institute", "Insurance agent", "Bank or financer"].map(type => (
                             <button
                               key={type}
                               type="button"
                               onClick={() => { setConsultantType(type); setSignupConsultantOpen(false); }}
-                              className="w-full text-left px-4 py-2 text-sm font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
+                              className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-black hover:text-white transition-colors"
                             >
                               {type}
                             </button>
@@ -1146,28 +1151,64 @@ function ExpertSignupPortalContent() {
 
                 <div className="border-t border-slate-150 pt-6 space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="col-span-1">
-                      <div className="flex gap-2">
-                        <input 
-                          value={newTag} 
-                          onChange={(e) => setNewTag(e.target.value)} 
-                          placeholder="Add Area of Expertise (e.g. Work Visa)" 
-                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                          className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-[14px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                        />
-                        <button type="button" onClick={addTag} className="bg-black hover:bg-slate-900 text-white text-xs px-4 py-2.5 rounded-md font-semibold active:scale-95 transition-all shadow-sm shrink-0">Add</button>
+                    {(consultantType === "Freelancer" || consultantType === "Registered consultancy") ? (
+                      <div className="col-span-2 space-y-3">
+                        <label className="text-xs font-bold text-slate-800 block uppercase tracking-wider">Expert in (Select all that apply)*</label>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          {[
+                            "Study visa",
+                            "Travel visa",
+                            "Job visa",
+                            "Visa filing assistance",
+                            "Visa appointment",
+                            "Tourist visa",
+                            "PR migration visas"
+                          ].map(service => {
+                            const isChecked = expertiseTags.includes(service);
+                            return (
+                              <button
+                                key={service}
+                                type="button"
+                                onClick={() => {
+                                  if (isChecked) {
+                                    setExpertiseTags(expertiseTags.filter(t => t !== service));
+                                  } else {
+                                    setExpertiseTags([...expertiseTags, service]);
+                                  }
+                                }}
+                                className={`flex items-center justify-between p-3.5 rounded-xl border text-xs font-bold transition-all text-left ${isChecked ? "bg-black border-black text-white" : "bg-white border-slate-200 text-slate-700 hover:border-slate-350"}`}
+                              >
+                                <span>{service}</span>
+                                <span className={`w-4 h-4 rounded-full flex items-center justify-center border text-[9px] ${isChecked ? "bg-white border-white text-black" : "border-slate-300 text-transparent"}`}>✓</span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
-                      <div className="flex flex-wrap gap-1.5 pt-2">
-                        {expertiseTags.map(tag => (
-                          <span key={tag} className="inline-flex items-center gap-1.5 bg-slate-100 border border-slate-200 rounded-full px-3 py-0.5 text-xs font-semibold text-slate-650 shadow-xs">
-                            {tag}
-                            <button type="button" onClick={() => removeTag(tag)} className="text-slate-400 hover:text-black font-bold">×</button>
-                          </span>
-                        ))}
+                    ) : (
+                      <div className="col-span-1">
+                        <div className="flex gap-2">
+                          <input 
+                            value={newTag} 
+                            onChange={(e) => setNewTag(e.target.value)} 
+                            placeholder="Add Area of Expertise (e.g. Work Visa)" 
+                            style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                            className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-[14px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
+                          />
+                          <button type="button" onClick={addTag} className="bg-black hover:bg-slate-900 text-white text-xs px-4 py-2.5 rounded-md font-semibold active:scale-95 transition-all shadow-sm shrink-0">Add</button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 pt-2">
+                          {expertiseTags.map(tag => (
+                            <span key={tag} className="inline-flex items-center gap-1.5 bg-slate-100 border border-slate-200 rounded-full px-3 py-0.5 text-xs font-semibold text-slate-650 shadow-xs">
+                              {tag}
+                              <button type="button" onClick={() => removeTag(tag)} className="text-slate-400 hover:text-black font-bold">×</button>
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="col-span-1">
+                    <div className="col-span-2 md:col-span-1">
                       <input 
                         value={countriesExpertise}
                         onChange={(e) => setCountriesExpertise(e.target.value)}
@@ -1783,7 +1824,7 @@ function ExpertSignupPortalContent() {
                       </button>
                       {editConsultantOpen && (
                         <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
-                          {["Freelancer", "Business Expert", "Institute or company", "Legal professional"].map(type => (
+                          {["Freelancer", "Registered consultancy", "Employer/ hr agency", "University/ educational institute", "Insurance agent", "Bank or financer"].map(type => (
                             <button
                               key={type}
                               type="button"

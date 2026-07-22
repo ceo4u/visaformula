@@ -31,6 +31,28 @@ interface University {
 
 const initialUniversities: University[] = [
   {
+    id: "cyprus-october-intake",
+    name: "Study In Cyprus (October Intake - 100% Visa)",
+    location: "Cyprus (Europe)",
+    country: "Cyprus",
+    countryCode: "cy",
+    category: "Higher Education",
+    tuition: "€3,300–€5,000",
+    tuitionNote: "per year",
+    posted: "1d ago",
+    degreeType: "Foundation / Bachelor's / Master's",
+    pgwp: true,
+    scholarships: true,
+    featured: true,
+    urgent: true,
+    logo: "/images/cyprus.jpg",
+    heroImg: "/images/cyprus-ad.jpg",
+    tags: ["100% Visa", "October Intake", "Zero Apostille Fees", "Part-Time Work Allowed"],
+    desc: "Last chance for October Intake in Cyprus! Limited Seats Available with Zero Apostille & Documentation Charges. Fees: Foundation (€3300), Bachelor's (€3800), Master's (€5000). 100% transparency & complete support till visa. Submit your application or partnership call: 9044854415 / www.gugportal.com.",
+    rank: "🔥 Top Featured Ad",
+    ieltsMin: "No IELTS Mandatory"
+  },
+  {
     id: "1",
     name: "University of Toronto",
     location: "Toronto, Canada",
@@ -143,15 +165,15 @@ const initialUniversities: University[] = [
 ];
 
 const countryCards = [
-  { name: "Canada",       code: "ca", jobs: "150 universities", img: "/images/dest_canada_cold.png" },
-  { name: "Singapore",   code: "sg", jobs: "45 universities",  img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=300&fit=crop&q=90" },
-  { name: "UK",           code: "gb", jobs: "120 universities", img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&h=300&fit=crop&q=90" },
-  { name: "Australia",    code: "au", jobs: "85 universities",  img: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&h=300&fit=crop&q=90" },
-  { name: "Germany",      code: "de", jobs: "60 universities",  img: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=500&h=300&fit=crop&q=90" },
+  { name: "Cyprus",      code: "cy", jobs: "15 universities",  img: "/images/cyprus.jpg" },
+  { name: "Canada",      code: "ca", jobs: "150 universities", img: "/images/dest_canada_cold.png" },
+  { name: "Singapore",  code: "sg", jobs: "45 universities",  img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=300&fit=crop&q=90" },
+  { name: "UK",          code: "gb", jobs: "120 universities", img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&h=300&fit=crop&q=90" },
+  { name: "Australia",   code: "au", jobs: "85 universities",  img: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&h=300&fit=crop&q=90" },
 ];
 
-const streamsList = ["All Categories", "IT & Tech", "Business", "Engineering", "Arts"];
-const countriesList = ["All Countries", "Canada", "Australia", "UK", "Germany", "Singapore"];
+const streamsList = ["All Categories", "Higher Education", "IT & Tech", "Business", "Engineering", "Arts"];
+const countriesList = ["All Countries", "Cyprus", "Canada", "Australia", "UK", "Singapore"];
 
 export function UniversitiesPortal() {
   const [universities, setUniversities] = useState(initialUniversities);
@@ -231,14 +253,13 @@ export function UniversitiesPortal() {
             ← Back to Universities
           </button>
 
-          {/* Hero Image */}
-          <div className="relative rounded-3xl overflow-hidden h-52 mb-6 border border-slate-100 shadow-sm">
+          {/* Hero Image / Ad Banner */}
+          <div className="relative aspect-square w-full max-w-[520px] mx-auto rounded-3xl overflow-hidden mb-8 border border-slate-200 shadow-xl bg-white flex items-center justify-center">
             <img src={activeUniv.heroImg} alt={activeUniv.location} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a2e]/70 to-transparent"></div>
-            <div className="absolute bottom-4 left-5 flex items-center gap-2">
-              <img src={`https://flagcdn.com/w40/${activeUniv.countryCode}.png`} alt="flag" className="h-5 rounded shadow" />
-              <span className="text-white font-bold text-sm flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-indigo-200" /> {activeUniv.location}
+            <div className="absolute bottom-4 left-5 flex items-center gap-2 bg-black/70 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-md">
+              <img src={`https://flagcdn.com/w40/${activeUniv.countryCode}.png`} alt="flag" className="h-4 rounded shadow" />
+              <span className="text-white font-bold text-xs flex items-center gap-1.5 font-sans">
+                <MapPin className="w-3.5 h-3.5 text-red-400" /> {activeUniv.location}
               </span>
             </div>
           </div>
@@ -521,11 +542,11 @@ export function UniversitiesPortal() {
                 <div className="space-y-2">
                   <span className="text-xs font-light text-[#359FC2] tracking-normal block">Country</span>
                   {[
+                    { flag: "🇨🇾", label: "Cyprus",          count: "15" },
                     { flag: "🇨🇦", label: "Canada",          count: "150" },
                     { flag: "🇸🇬", label: "Singapore",        count: "45"   },
                     { flag: "🇬🇧", label: "United Kingdom",  count: "120"   },
                     { flag: "🇦🇺", label: "Australia",       count: "85"   },
-                    { flag: "🇩🇪", label: "Germany",         count: "60"   },
                   ].map(item => (
                     <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-medium group">
                       <input type="checkbox" className="rounded border-slate-200 w-4 h-4 accent-black" />
@@ -601,23 +622,24 @@ export function UniversitiesPortal() {
                 <div
                   key={univ.id}
                   onClick={() => setActiveUniv(univ)}
-                  className="bg-white border border-slate-200/80 rounded-2xl p-5 hover:shadow-xl hover:border-[#359FC2]/50 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start justify-between relative group"
+                  className="bg-white border border-slate-200/90 rounded-[22px] p-5 hover:shadow-xl hover:border-[#159BB8]/60 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start justify-between relative group shadow-xs"
                 >
-                  <div className="flex gap-4 items-start w-full">
-                    <img src={univ.logo} alt={univ.name} className="w-16 h-16 rounded-2xl object-cover border border-slate-100 shrink-0 shadow-sm" />
+                  <div className="flex gap-4 items-center w-full">
+                    <img src={univ.logo} alt={univ.name} className="w-16 h-16 rounded-[18px] object-cover border border-slate-100 shrink-0 shadow-sm" />
                     <div className="flex-grow min-w-0">
-                      <h3 className="font-sora font-semibold text-lg text-[#0c1a2e] mb-1.5 leading-snug group-hover:text-[#359FC2] transition-colors">{univ.name}</h3>
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-[#475569] font-semibold">
+                      <h3 className="font-sans font-bold text-lg text-[#159BB8] mb-1.5 leading-snug group-hover:text-[#0b6e83] transition-colors">{univ.name}</h3>
+                      <div className="flex flex-wrap items-center gap-2.5 text-xs text-slate-600 font-semibold">
                         <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#ef4444]" />{univ.location}</span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1"><DollarSign className="w-3.5 h-3.5 text-indigo-500" />{univ.tuition} <span className="text-gray-400 font-medium">{univ.tuitionNote}</span></span>
+                        <span className="text-slate-300">•</span>
+                        <span className="flex items-center gap-1"><DollarSign className="w-3.5 h-3.5 text-indigo-500" />{univ.tuition} <span className="text-slate-400 font-normal">{univ.tuitionNote}</span></span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex sm:flex-col items-end justify-between sm:justify-start gap-4 w-full sm:w-auto shrink-0 border-t sm:border-t-0 border-slate-100 pt-3.5 sm:pt-0">
-                    <div className="text-[10px] text-slate-400 font-medium tracking-normal">{univ.posted}</div>
-                    <button className="bg-black hover:bg-neutral-900 text-white font-bold text-[11px] tracking-wider px-4 py-2 rounded-xl flex items-center gap-1 transition-all outline-none shrink-0 shadow-sm">
-                      Details <ArrowRight className="w-3.5 h-3.5" />
+                  <div className="flex sm:flex-col items-end justify-between sm:justify-center gap-3 w-full sm:w-auto shrink-0 border-t sm:border-t-0 border-slate-100 pt-3 sm:pt-0">
+                    <div className="text-[11px] text-slate-400 font-medium tracking-wide">{univ.posted}</div>
+                    <button className="bg-black hover:bg-neutral-900 text-white font-bold text-xs tracking-wide px-5 py-2 rounded-full flex items-center gap-1.5 transition-all outline-none shrink-0 shadow-sm active:scale-95">
+                      <span>Details</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>

@@ -256,18 +256,18 @@ export function HeroSection() {
             <div className="relative w-full max-w-[440px] md:max-w-[540px] bg-white p-2.5 rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
               <div className="grid grid-cols-3 gap-2">
                 
-                {/* 1. USA (Golden Gate / NYC) */}
+                {/* 1. Cyprus */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { setCountry('USA'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={() => { setCountry('Cyprus'); document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' }); }}
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=400&fit=crop" 
-                    alt="USA Landmark" 
+                    src="/images/cyprus.jpg" 
+                    alt="Cyprus Landmark" 
                     className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
-                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">USA</span>
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white tracking-wide font-sans">Cyprus</span>
                 </div>
 
                 {/* 2. France (Eiffel Tower) */}

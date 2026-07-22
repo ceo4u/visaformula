@@ -206,7 +206,35 @@ const holidayTours = [
 
 // 2. Sport Tours
 const sportTours = [
-    { id: "s5", name: "Greece Cricket Tours", sport: "cricket", country: "greece", month: "Upcoming Autumn Batch", price: 125000, originalPrice: 160000, rating: 4.9, reviews: 45, days: 7, nights: 6, image: "/cricket_stadium.png", includes: ["Match tickets", "Schengen Visa", "Athens & Corfu", "Itinerary"], tags: ["Sports Tourism", "Athens & Corfu", "Managed by Rising At Sports"], description: "Managed exclusively by Rising At Sports. Athens & Corfu | Upcoming Autumn Batch. Vibe: Sports tourism, professional, exciting.", partnerLogo: "/images/rising_sports_logo.jpg" },
+    { 
+        id: "s5", 
+        name: "Cricket Tours — Europe | Canada (Greece Special)", 
+        sport: "cricket", 
+        country: "greece", 
+        month: "Upcoming Autumn Batch", 
+        price: 250000, 
+        originalPrice: 300000, 
+        rating: 5.0, 
+        reviews: 128, 
+        days: 7, 
+        nights: 6, 
+        image: "/images/greece-cricket-ad.jpg", 
+        poster: "/images/greece-cricket-ad.jpg",
+        registrationFee: "INR 10,000/-",
+        contactPhone: "76611989366",
+        organizer: "RISINGAT SPORTS INDIA - HYDERABAD",
+        includes: [
+            "3 X T20 Matches Minimum", 
+            "Invitations from official clubs or national level cricket boards", 
+            "Star Hotel Stays Included", 
+            "Visa Application Assistance", 
+            "All Inclusive Package: ₹2.5 Lakhs",
+            "Registration Fee: ₹10,000/-"
+        ], 
+        tags: ["3 X T20 Matches", "Schengen Visa", "Risingat Sports India"], 
+        description: "Official Cricket Tour to Greece, Europe & Canada. Includes minimum 3 x T20 matches against official clubs and national level cricket boards, star hotel stays, and complete visa application assistance. Registration fee: INR 10,000. All inclusive package: INR 2.5 Lakhs.",
+        partnerLogo: "/images/rising_sports_logo.jpg" 
+    },
     { id: "s1", name: "FIFA World Cup 2026 — USA Package", sport: "football", country: "usa", month: "June 2025", price: 185000, originalPrice: 220000, rating: 4.9, reviews: 142, days: 11, nights: 10, image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800&h=500&fit=crop", includes: ["Match tickets", "Hotel", "Visa included", "Transfers"], tags: ["Match tickets", "Hotel", "Visa included"], description: "Watch FIFA World Cup live! Includes match tickets, luxurious hotel stay, and complete USA tourist visa processing." },
     { id: "s2", name: "F1 Abu Dhabi Grand Prix Package", sport: "f1", country: "uae", month: "Dec 2025", price: 95000, originalPrice: 120000, rating: 4.8, reviews: 87, days: 5, nights: 4, image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&h=500&fit=crop", includes: ["Race tickets", "Paddock access", "5-star hotel"], tags: ["Race tickets", "Paddock access", "5-star hotel"], description: "Experience the thrilling F1 season finale in Abu Dhabi. Complete VIP paddock access and luxury stay with UAE visa." },
     { id: "s3", name: "ICC Champions Trophy — South Africa", sport: "cricket", country: "australia", month: "July 2025", price: 72000, originalPrice: 90000, rating: 4.9, reviews: 204, days: 8, nights: 7, image: "/luxury_stadium.png", includes: ["3 match tickets", "Visa", "Transfers"], tags: ["3 match tickets", "Visa", "Transfers"], description: "Cheer for India live in South Africa. Includes prime tickets for high-profile matches, sightseeing, and tourist visa." },
@@ -260,12 +288,25 @@ export function ToursPortal() {
     // Sorting
     const [sortBy, setSortBy] = useState("popular");
 
+    const [selectedTour, setSelectedTour] = useState<any | null>(null);
+
     useEffect(() => {
-        // Read URL query parameters to set active tab if present
+        // Read URL query parameters or sessionStorage to set active tab & auto open tour
         if (typeof window !== "undefined") {
             const params = new URLSearchParams(window.location.search);
             const category = params.get("category");
-            if (category === "holiday" || category === "sports" || category === "cruises" || category === "events") {
+            const country = params.get("country");
+            const autoGreece = sessionStorage.getItem("auto_open_greece_tour");
+
+            if (autoGreece === "true" || country?.toLowerCase() === "greece") {
+                sessionStorage.removeItem("auto_open_greece_tour");
+                setActiveTab("sports");
+                setActiveSportFilter("cricket");
+                const greeceTour = sportTours.find(t => t.id === "s5" || t.country === "greece");
+                if (greeceTour) {
+                    setSelectedTour(greeceTour);
+                }
+            } else if (category === "holiday" || category === "sports" || category === "cruises" || category === "events") {
                 setActiveTab(category);
             }
         }
@@ -276,8 +317,8 @@ export function ToursPortal() {
         setIsToastVisible(true);
     };
 
-    const handleBooking = (tourName: string) => {
-        window.location.reload();
+    const handleBooking = (tour: any) => {
+        setSelectedTour(tour);
     };
 
     // Filter Logic
@@ -943,7 +984,7 @@ export function ToursPortal() {
                                 key={tour.id}
                                 className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
                                 style={{ background: '#0C1A2E' }}
-                                onClick={() => handleBooking(tour.name)}
+                                onClick={() => handleBooking(tour)}
                             >
                                 {/* Background Image Container */}
                                 <div className="absolute inset-0 z-0">
@@ -1021,7 +1062,7 @@ export function ToursPortal() {
                                     key={tour.id}
                                     className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
                                     style={{ background: '#0C1A2E' }}
-                                    onClick={() => handleBooking(tour.name)}
+                                    onClick={() => handleBooking(tour)}
                                 >
                                     {/* Background Image Container */}
                                     <div className="absolute inset-0 z-0">
@@ -1096,7 +1137,7 @@ export function ToursPortal() {
                                         key={tour.id}
                                         className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
                                         style={{ background: '#0C1A2E' }}
-                                        onClick={() => handleBooking(tour.name)}
+                                        onClick={() => handleBooking(tour)}
                                     >
                                         {/* Background Image Container */}
                                         <div className="absolute inset-0 z-0">
@@ -1182,7 +1223,7 @@ export function ToursPortal() {
                                     key={tour.id}
                                     className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
                                     style={{ background: '#0C1A2E' }}
-                                    onClick={() => handleBooking(tour.name)}
+                                    onClick={() => handleBooking(tour)}
                                 >
                                     {/* Background Image Container */}
                                     <div className="absolute inset-0 z-0">
@@ -1247,6 +1288,77 @@ export function ToursPortal() {
                     </div>
                 )}
             </div>
+
+            {/* Tour Detail Modal */}
+            {selectedTour && (
+                <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+                    <div className="bg-white rounded-3xl max-w-2xl w-full p-6 relative shadow-2xl border border-slate-200 my-8">
+                        <button
+                            onClick={() => setSelectedTour(null)}
+                            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold flex items-center justify-center transition-all z-20 outline-none"
+                        >
+                            ✕
+                        </button>
+
+                        <div className="relative rounded-2xl overflow-hidden mb-5 border border-slate-100 shadow-md bg-slate-950 max-h-[380px] flex items-center justify-center">
+                            <img src={selectedTour.poster || selectedTour.image} alt={selectedTour.name} className="w-full h-full object-contain max-h-[360px]" />
+                        </div>
+
+                        <div className="text-left space-y-4 font-sans">
+                            <div>
+                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                                    {selectedTour.sport ? `${selectedTour.sport.toUpperCase()} TOUR` : "FEATURED PACKAGE"}
+                                </span>
+                                <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e] mt-2 leading-snug">{selectedTour.name}</h2>
+                                <p className="text-xs text-slate-500 font-medium mt-1">{selectedTour.description}</p>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                <div>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">Package Price</span>
+                                    <span className="font-sora font-black text-lg text-[#0c1a2e]">₹{selectedTour.price?.toLocaleString()}</span>
+                                    <span className="text-[10px] text-slate-400 font-bold block">All Inclusive Cost</span>
+                                </div>
+                                {selectedTour.registrationFee && (
+                                    <div>
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">Registration Fee</span>
+                                        <span className="font-sora font-extrabold text-base text-emerald-600">{selectedTour.registrationFee}</span>
+                                        <span className="text-[10px] text-slate-400 font-bold block">Seat Booking Fee</span>
+                                    </div>
+                                )}
+                            </div>
+
+                            {selectedTour.includes && (
+                                <div>
+                                    <h4 className="text-xs font-bold text-[#0c1a2e] uppercase tracking-wider mb-2">Package Highlights & Inclusions:</h4>
+                                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
+                                        {selectedTour.includes.map((inc: string, idx: number) => (
+                                            <li key={idx} className="flex items-center gap-2">
+                                                <span className="text-emerald-500 font-bold">✓</span>
+                                                <span>{inc}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                            <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row gap-3 items-center justify-between">
+                                <div className="text-xs font-bold text-slate-600">
+                                    Organized by: <span className="text-black">{selectedTour.organizer || "VisaFormula Verified Partner"}</span>
+                                </div>
+                                <a
+                                    href={`https://wa.me/91${selectedTour.contactPhone || "76611989366"}?text=Hi%20Risingat%20Sports,%20I%20am%20interested%20in%20the%20${encodeURIComponent(selectedTour.name)}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-lg transition-all outline-none"
+                                >
+                                    <span>Register & Contact (+91 76611989366)</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

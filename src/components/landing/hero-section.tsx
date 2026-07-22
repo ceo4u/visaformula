@@ -278,7 +278,12 @@ export function HeroSection() {
                 {/* 2. Greece */}
                 <div 
                   className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-sm" 
-                  onClick={() => { window.location.href = '/universities?country=Greece'; }}
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      sessionStorage.setItem("auto_open_greece_tour", "true");
+                      window.location.href = '/tours';
+                    }
+                  }}
                 >
                   <img 
                     src="/images/greece.jpg" 

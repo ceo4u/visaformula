@@ -85,25 +85,25 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
-            <!-- 4. Resources -->
+            <!-- 4. Latest News -->
             <div class="relative py-3 group">
                 <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
-                    Resources
+                    Latest News
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
-                <div class="absolute top-full left-0 pt-2 w-[240px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
+                <div class="absolute top-full left-0 pt-2 w-[250px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
-                            <span class="text-[14px] font-semibold">Visa Guides</span>
+                            <span class="text-[14px] font-semibold">Immigration News & Updates</span>
+                        </a>
+                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
+                            <span class="text-[14px] font-semibold">Policy Changes 2026</span>
                         </a>
                         <a href="/success-stories" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Success Stories</span>
-                        </a>
-                        <a href="/support" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
-                            <HeartHandshake class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
-                            <span class="text-[14px] font-semibold">Support / Helpdesk</span>
                         </a>
                     </div>
                 </div>
@@ -242,16 +242,18 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
-            <!-- Mobile Resources Accordion -->
+
+
+            <!-- Mobile Latest News Accordion -->
             <div class="border-b border-gray-50 py-1.5">
-                <button id="mobile-resources-btn" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg">
-                    <span>Resources</span>
-                    <ChevronDown id="mobile-resources-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
+                <button id="mobile-latest-news-btn" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg">
+                    <span>Latest News</span>
+                    <ChevronDown id="mobile-latest-news-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
                 </button>
-                <div id="mobile-resources-drawer" class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
-                    <a href="/visa-guide" class="block py-1.5 text-xs text-slate-600 font-medium">Visa Guides</a>
+                <div id="mobile-latest-news-drawer" class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
+                    <a href="/visa-guide" class="block py-1.5 text-xs text-slate-600 font-medium">Immigration News & Updates</a>
+                    <a href="/visa-guide" class="block py-1.5 text-xs text-slate-600 font-medium">Policy Changes 2026</a>
                     <a href="/success-stories" class="block py-1.5 text-xs text-slate-600 font-medium">Success Stories</a>
-                    <a href="/support" class="block py-1.5 text-xs text-slate-600 font-medium">Support / Helpdesk</a>
                 </div>
             </div>
 
@@ -335,7 +337,7 @@ const pathname = Astro.url.pathname;
     const accordions = [
         { btn: 'mobile-find-expert-btn', drawer: 'mobile-find-expert-drawer', arrow: 'mobile-find-expert-arrow' },
         { btn: 'mobile-visa-services-btn', drawer: 'mobile-visa-services-drawer', arrow: 'mobile-visa-services-arrow' },
-        { btn: 'mobile-resources-btn', drawer: 'mobile-resources-drawer', arrow: 'mobile-resources-arrow' },
+        { btn: 'mobile-latest-news-btn', drawer: 'mobile-latest-news-drawer', arrow: 'mobile-latest-news-arrow' },
         { btn: 'mobile-tools-btn', drawer: 'mobile-tools-drawer', arrow: 'mobile-tools-arrow' },
     ];
 

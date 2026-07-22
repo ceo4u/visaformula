@@ -261,7 +261,7 @@ export function HeroSection() {
                   <h3 className="font-sora font-extrabold text-xs text-[#0c1a2e] uppercase tracking-wider">Latest Offers</h3>
                 </div>
                 <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                  Verified Classifieds
+                  Visa Categories & Offers
                 </span>
               </div>
 

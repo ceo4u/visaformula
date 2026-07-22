@@ -202,6 +202,23 @@ export async function runMigrations() {
     );
   `);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_password_resets_email ON password_resets (email);`);
+
+  // 9. Ads Table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS ads (
+      id SERIAL PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      company VARCHAR(255) NOT NULL,
+      category VARCHAR(100) NOT NULL,
+      cover_photo TEXT,
+      description TEXT NOT NULL,
+      expert_email VARCHAR(255),
+      status VARCHAR(50) DEFAULT 'under_verification',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_ads_category ON ads (category);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_ads_expert_email ON ads (expert_email);`);
   })();
   return migrationsPromise;
 }

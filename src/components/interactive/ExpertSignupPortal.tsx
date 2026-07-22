@@ -420,17 +420,37 @@ function ExpertSignupPortalContent() {
     setStep(3);
   };
 
-  const handleAddAd = (e: React.FormEvent) => {
+  const handleAddAd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (adTitle) {
+      const finalCompany = adCompany || businessName || "Consultancy Partner";
       const newAd = {
         title: adTitle,
-        company: adCompany || businessName || "Consultancy Partner",
+        company: finalCompany,
         category: adCategory,
         coverPhoto: adCoverPhoto,
         desc: adDescription,
         status: "Under Verification"
       };
+
+      // Save ad details into PostgreSQL database
+      try {
+        await fetch("/api/ads/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: adTitle,
+            company: finalCompany,
+            category: adCategory,
+            cover_photo: adCoverPhoto,
+            description: adDescription,
+            expert_email: email || (typeof window !== "undefined" ? localStorage.getItem("expert_email") : "") || ""
+          })
+        });
+      } catch (dbErr) {
+        console.warn("Could not persist ad to server DB, saved to local state.", dbErr);
+      }
+
       setAdsList([...adsList, newAd]);
       setAdNotice("Our team will verify your details.");
       setTimeout(() => {

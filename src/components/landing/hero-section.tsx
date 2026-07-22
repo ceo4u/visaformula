@@ -266,10 +266,10 @@ export function HeroSection() {
               </div>
 
               {/* 3x3 Grid */}
-              <div className="p-2.5 grid grid-cols-3 gap-2 bg-slate-100/50">
+              <div className="p-2 grid grid-cols-3 gap-2 bg-slate-100/60">
                 {/* 1. Cyprus Universities Post */}
                 <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => {
                     if (typeof window !== "undefined") {
                       sessionStorage.setItem("auto_open_cyprus", "true");
@@ -278,25 +278,24 @@ export function HeroSection() {
                   }}
                 >
                   <img src="/images/cyprus.jpg" alt="Cyprus Universities" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/50" />
                   
-                  {/* Top Row: Category + Consultant */}
-                  <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-cyan-500 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                  {/* Top Bar: Category + Consultant */}
+                  <div className="relative z-10 p-1.5 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-cyan-300 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded uppercase tracking-wider">
                       Student Visa
                     </span>
-                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0"></span>
-                      <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">EuroEdu Consult ✓</span>
-                    </div>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-slate-200 truncate bg-black/40 backdrop-blur-xs px-1 py-0.5 rounded">
+                      EuroEdu Consult ✓
+                    </span>
                   </div>
 
-                  {/* Bottom Content: Destination Country & Ad Title */}
+                  {/* Bottom Bar: Country + Title */}
                   <div className="relative z-10 p-2">
-                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-cyan-200 px-1.5 py-0.5 rounded mb-1">
+                    <span className="text-[8px] font-semibold text-cyan-200 block mb-0.5">
                       🇨🇾 Cyprus
                     </span>
-                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-cyan-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11px] font-bold text-white leading-tight block truncate group-hover:text-cyan-300 transition-colors">
                       Cyprus Oct Intake 2026
                     </h4>
                   </div>
@@ -304,7 +303,7 @@ export function HeroSection() {
 
                 {/* 2. Greece Cricket Tour Post */}
                 <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => {
                     if (typeof window !== "undefined") {
                       sessionStorage.setItem("auto_open_greece_tour", "true");
@@ -313,23 +312,22 @@ export function HeroSection() {
                   }}
                 >
                   <img src="/images/greece.jpg" alt="Greece Cricket Tours" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/50" />
                   
-                  <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-emerald-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                  <div className="relative z-10 p-1.5 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-emerald-300 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded uppercase tracking-wider">
                       Visit Visa
                     </span>
-                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
-                      <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Olympus Sports ✓</span>
-                    </div>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-slate-200 truncate bg-black/40 backdrop-blur-xs px-1 py-0.5 rounded">
+                      Olympus Sports ✓
+                    </span>
                   </div>
 
                   <div className="relative z-10 p-2">
-                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-emerald-200 px-1.5 py-0.5 rounded mb-1">
+                    <span className="text-[8px] font-semibold text-emerald-200 block mb-0.5">
                       🇬🇷 Greece
                     </span>
-                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-emerald-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11px] font-bold text-white leading-tight block truncate group-hover:text-emerald-300 transition-colors">
                       Greece Cricket Tour Package
                     </h4>
                   </div>
@@ -337,27 +335,26 @@ export function HeroSection() {
 
                 {/* 3. UK Universities Post */}
                 <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => { window.location.href = '/universities?country=UK'; }}
                 >
                   <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=400&fit=crop" alt="UK Universities" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/50" />
                   
-                  <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-indigo-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                  <div className="relative z-10 p-1.5 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-indigo-300 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded uppercase tracking-wider">
                       Student Visa
                     </span>
-                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></span>
-                      <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Britannic Consult ✓</span>
-                    </div>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-slate-200 truncate bg-black/40 backdrop-blur-xs px-1 py-0.5 rounded">
+                      Britannic Consult ✓
+                    </span>
                   </div>
 
                   <div className="relative z-10 p-2">
-                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-indigo-200 px-1.5 py-0.5 rounded mb-1">
+                    <span className="text-[8px] font-semibold text-indigo-200 block mb-0.5">
                       🇬🇧 United Kingdom
                     </span>
-                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-indigo-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11px] font-bold text-white leading-tight block truncate group-hover:text-indigo-300 transition-colors">
                       UK Masters Admissions
                     </h4>
                   </div>
@@ -365,27 +362,26 @@ export function HeroSection() {
 
                 {/* 4. Canada Work & Study Post */}
                 <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => { window.location.href = '/universities?country=Canada'; }}
                 >
                   <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=400&h=400&fit=crop" alt="Canada Pathways" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/50" />
                   
-                  <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-red-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                  <div className="relative z-10 p-1.5 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-red-300 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded uppercase tracking-wider">
                       PR & Residency
                     </span>
-                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0"></span>
-                      <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">MapleLeaf Agency ✓</span>
-                    </div>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-slate-200 truncate bg-black/40 backdrop-blur-xs px-1 py-0.5 rounded">
+                      MapleLeaf Agency ✓
+                    </span>
                   </div>
 
                   <div className="relative z-10 p-2">
-                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-red-200 px-1.5 py-0.5 rounded mb-1">
+                    <span className="text-[8px] font-semibold text-red-200 block mb-0.5">
                       🇨🇦 Canada
                     </span>
-                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-red-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11px] font-bold text-white leading-tight block truncate group-hover:text-red-300 transition-colors">
                       Express Entry & PGWP
                     </h4>
                   </div>
@@ -393,27 +389,26 @@ export function HeroSection() {
 
                 {/* 5. Australia PR Post */}
                 <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => { window.location.href = '/universities?country=Australia'; }}
                 >
                   <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=400&h=400&fit=crop" alt="Australia PR" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/50" />
                   
-                  <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-amber-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                  <div className="relative z-10 p-1.5 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-amber-300 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded uppercase tracking-wider">
                       PR & Residency
                     </span>
-                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span>
-                      <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Pacific Migration ✓</span>
-                    </div>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-slate-200 truncate bg-black/40 backdrop-blur-xs px-1 py-0.5 rounded">
+                      Pacific Migration ✓
+                    </span>
                   </div>
 
                   <div className="relative z-10 p-2">
-                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-amber-200 px-1.5 py-0.5 rounded mb-1">
+                    <span className="text-[8px] font-semibold text-amber-200 block mb-0.5">
                       🇦🇺 Australia
                     </span>
-                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-amber-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11px] font-bold text-white leading-tight block truncate group-hover:text-amber-300 transition-colors">
                       Subclass 189 Skill PR
                     </h4>
                   </div>
@@ -421,27 +416,26 @@ export function HeroSection() {
 
                 {/* 6. Dubai / UAE Work Post */}
                 <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => { window.location.href = '/universities?country=UAE'; }}
                 >
                   <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=400&fit=crop" alt="Dubai UAE" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/50" />
                   
-                  <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-purple-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                  <div className="relative z-10 p-1.5 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-purple-300 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded uppercase tracking-wider">
                       Work Visa
                     </span>
-                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0"></span>
-                      <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Gulf Horizon ✓</span>
-                    </div>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-slate-200 truncate bg-black/40 backdrop-blur-xs px-1 py-0.5 rounded">
+                      Gulf Horizon ✓
+                    </span>
                   </div>
 
                   <div className="relative z-10 p-2">
-                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-purple-200 px-1.5 py-0.5 rounded mb-1">
+                    <span className="text-[8px] font-semibold text-purple-200 block mb-0.5">
                       🇦🇪 UAE / Dubai
                     </span>
-                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-purple-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11px] font-bold text-white leading-tight block truncate group-hover:text-purple-300 transition-colors">
                       2-Yr Dubai Work Visa
                     </h4>
                   </div>
@@ -449,27 +443,26 @@ export function HeroSection() {
 
                 {/* 7. Japan Work Post */}
                 <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => { window.location.href = '/universities?country=Japan'; }}
                 >
                   <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400&h=400&fit=crop" alt="Japan Work Visa" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/50" />
                   
-                  <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-rose-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                  <div className="relative z-10 p-1.5 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-rose-300 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded uppercase tracking-wider">
                       Work Visa
                     </span>
-                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0"></span>
-                      <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Nippon Career ✓</span>
-                    </div>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-slate-200 truncate bg-black/40 backdrop-blur-xs px-1 py-0.5 rounded">
+                      Nippon Career ✓
+                    </span>
                   </div>
 
                   <div className="relative z-10 p-2">
-                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-rose-200 px-1.5 py-0.5 rounded mb-1">
+                    <span className="text-[8px] font-semibold text-rose-200 block mb-0.5">
                       🇯🇵 Japan
                     </span>
-                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-rose-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11px] font-bold text-white leading-tight block truncate group-hover:text-rose-300 transition-colors">
                       Japan SSW Work Visa
                     </h4>
                   </div>
@@ -477,27 +470,26 @@ export function HeroSection() {
 
                 {/* 8. Singapore Student Post */}
                 <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => { window.location.href = '/universities?country=Singapore'; }}
                 >
                   <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=400&fit=crop" alt="Singapore" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/50" />
                   
-                  <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-blue-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                  <div className="relative z-10 p-1.5 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-blue-300 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded uppercase tracking-wider">
                       Student Visa
                     </span>
-                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></span>
-                      <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">AsiaPac Ed ✓</span>
-                    </div>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-slate-200 truncate bg-black/40 backdrop-blur-xs px-1 py-0.5 rounded">
+                      AsiaPac Ed ✓
+                    </span>
                   </div>
 
                   <div className="relative z-10 p-2">
-                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-blue-200 px-1.5 py-0.5 rounded mb-1">
+                    <span className="text-[8px] font-semibold text-blue-200 block mb-0.5">
                       🇸🇬 Singapore
                     </span>
-                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-blue-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11px] font-bold text-white leading-tight block truncate group-hover:text-blue-300 transition-colors">
                       Singapore Tech Academy
                     </h4>
                   </div>
@@ -505,27 +497,26 @@ export function HeroSection() {
 
                 {/* 9. Italy & Europe Schengen Post */}
                 <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs border border-white/40 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
+                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => { window.location.href = '/universities?country=Italy'; }}
                 >
                   <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&h=400&fit=crop" alt="Italy Schengen" className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/50" />
                   
-                  <div className="relative z-10 p-1.5 flex items-start justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8.5px] font-extrabold bg-teal-600 text-white px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-xs">
+                  <div className="relative z-10 p-1.5 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-teal-300 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded uppercase tracking-wider">
                       Visit Visa
                     </span>
-                    <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-white/15 max-w-[60%]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0"></span>
-                      <span className="text-[7.5px] sm:text-[8.5px] font-bold text-slate-100 truncate">Schengen Gateway ✓</span>
-                    </div>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-slate-200 truncate bg-black/40 backdrop-blur-xs px-1 py-0.5 rounded">
+                      Schengen Gateway ✓
+                    </span>
                   </div>
 
                   <div className="relative z-10 p-2">
-                    <span className="inline-block text-[8px] font-bold bg-white/20 backdrop-blur-xs text-teal-200 px-1.5 py-0.5 rounded mb-1">
+                    <span className="text-[8px] font-semibold text-teal-200 block mb-0.5">
                       🇮🇹 Italy
                     </span>
-                    <h4 className="text-[10px] sm:text-[11.5px] font-extrabold text-white leading-tight font-sans block truncate group-hover:text-teal-300 transition-colors">
+                    <h4 className="text-[10px] sm:text-[11px] font-bold text-white leading-tight block truncate group-hover:text-teal-300 transition-colors">
                       Italy & EU Schengen
                     </h4>
                   </div>

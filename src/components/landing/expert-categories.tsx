@@ -13,7 +13,7 @@ export function ExpertCategories() {
           <path d="M29 38c0-5 2.5-9 6-10.5" stroke="#1d4ed8" strokeWidth="2.5" strokeLinecap="round"/>
         </svg>
       ),
-      title: 'Visa Consultants',
+      title: 'Study Visa Consultants',
       description: 'Get help with new visa applications and documentation.',
       count: '12,540 Experts',
     },
@@ -57,9 +57,9 @@ export function ExpertCategories() {
           <circle cx="44" cy="33" r="2" fill="#1d4ed8"/>
         </svg>
       ),
-      title: 'Education Counsellors',
+      title: 'Visit Visa Consultants',
       description: 'Study abroad guidance and university admissions.',
-      count: '6,850 Counsellors',
+      count: '6,850 Consultants',
     },
     {
       icon: (
@@ -84,7 +84,7 @@ export function ExpertCategories() {
           <rect x="20" y="28" width="8" height="12" rx="1" fill="#1d4ed8" opacity="0.3"/>
         </svg>
       ),
-      title: 'Relocation Experts',
+      title: 'PR and Residency Experts',
       description: 'Relocation, settlement and post-landing support.',
       count: '4,210 Experts',
     },

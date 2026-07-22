@@ -212,9 +212,23 @@ function SeekerSignupPortalContent() {
     }
 
     return (
-        <div className="min-h-screen text-[#111111] font-sora flex flex-col justify-between selection:bg-black selection:text-white bg-white relative" style={{ 
+        <div className="min-h-screen text-[#111111] font-sora flex flex-col justify-between selection:bg-black selection:text-white bg-white relative overflow-x-hidden w-full max-w-full" style={{ 
             fontFamily: "'Plus Jakarta Sans', sans-serif"
         }}>
+            <style dangerouslySetInnerHTML={{__html: `
+                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+                * {
+                    font-family: 'Plus Jakarta Sans', sans-serif !important;
+                    box-sizing: border-box;
+                }
+                html, body {
+                    overflow-x: hidden !important;
+                    max-width: 100% !important;
+                    width: 100% !important;
+                    margin: 0;
+                    padding: 0;
+                }
+            `}} />
             {googleLoading && (
                 <div className="absolute inset-0 bg-white/80 backdrop-blur-md flex flex-col items-center justify-center z-[9999] transition-all duration-300">
                     <div className="flex flex-col items-center gap-4">

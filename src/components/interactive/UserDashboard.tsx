@@ -1064,7 +1064,7 @@ export function UserDashboard() {
                             </div>
 
                             <div className="space-y-1.5 relative">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">I want help with*</label>
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Looking for*</label>
                                 <button
                                     type="button"
                                     onClick={(e) => { e.stopPropagation(); setModalLookingForOpen(!modalLookingForOpen); setCitizenshipOpen(false); setResidenceOpen(false); }}

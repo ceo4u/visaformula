@@ -604,7 +604,7 @@ function SeekerSignupPortalContent() {
                                  </div>
 
                                   <div className="col-span-2 space-y-2">
-                                      <label className="text-sm font-semibold text-slate-700 block">I want help with*</label>
+                                      <label className="text-sm font-semibold text-slate-700 block">Looking for*</label>
                                       <div className="relative">
                                           <button
                                               type="button"

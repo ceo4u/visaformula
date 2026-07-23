@@ -81,7 +81,7 @@ export function ExpertCategories() {
   ]
 
   return (
-    <section className="w-full pt-2 pb-8 sm:pt-4 sm:pb-12 px-4 sm:px-6 lg:px-8 bg-white">
+    <section className="w-full pt-1 pb-8 sm:pt-2 sm:pb-12 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto space-y-4">
         
         {/* Thin & Elegant Header Title */}

@@ -177,7 +177,7 @@ export function HeroSection() {
   }
 
   return (
-    <section className="w-full bg-white pb-16 md:pb-24 overflow-visible">
+    <section className="w-full bg-white pb-4 md:pb-6 overflow-visible">
       {/* Top hero area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 md:pt-10 pb-6">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">

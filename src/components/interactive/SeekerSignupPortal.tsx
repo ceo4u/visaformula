@@ -54,9 +54,12 @@ function SeekerSignupPortalContent() {
     const [sendingCode, setSendingCode] = useState(false);
     const [otpInput, setOtpInput] = useState("");
 
+    const [emailErrorMsg, setEmailErrorMsg] = useState("");
+
     const handleSendVerificationCode = async () => {
         setValidationError("");
         setVerificationError("");
+        setEmailErrorMsg("");
         if (!email) {
             setValidationError("Please enter your email address first.");
             return;
@@ -76,7 +79,11 @@ function SeekerSignupPortalContent() {
                     console.log(`[Test Mode Code]: ${data.otp}`);
                 }
             } else {
-                setValidationError(data.message || "Failed to send verification code.");
+                const errorText = data.message || "Failed to send verification code.";
+                setValidationError(errorText);
+                if (data.code === 'EMAIL_ALREADY_EXISTS' || errorText.toLowerCase().includes('already registered')) {
+                    setEmailErrorMsg("This email is already registered.");
+                }
             }
         } catch (err) {
             setValidationError("Server connection error. Please try again.");
@@ -398,6 +405,7 @@ function SeekerSignupPortalContent() {
                                                 onChange={(e) => {
                                                     setEmail(e.target.value);
                                                     setEmailVerified(false);
+                                                    setEmailErrorMsg("");
                                                 }}
                                                 style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                                                 className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
@@ -443,7 +451,18 @@ function SeekerSignupPortalContent() {
                                             </button>
                                         )}
                                     </div>
-                                    {validationError && (
+                                    {emailErrorMsg && (
+                                        <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center justify-between gap-3 mt-2 w-full animate-premium-fade shadow-sm">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-amber-600 font-bold">⚠️</span>
+                                                <span>{emailErrorMsg}</span>
+                                            </div>
+                                            <a href="/login" className="px-3.5 py-1.5 bg-black text-white rounded-md text-xs font-bold shrink-0 hover:bg-slate-800 transition-colors shadow-xs">
+                                                Log In &rarr;
+                                            </a>
+                                        </div>
+                                    )}
+                                    {validationError && !emailErrorMsg && (
                                         <p className="text-xs text-red-500 font-semibold mt-1.5">{validationError}</p>
                                     )}
                                 </div>

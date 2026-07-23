@@ -100,8 +100,11 @@ function ExpertSignupPortalContent() {
 
   const [verifyingCode, setVerifyingCode] = useState(false);
 
+  const [emailErrorMsg, setEmailErrorMsg] = useState("");
+
   const handleSendVerificationCode = async () => {
     setValidationError("");
+    setEmailErrorMsg("");
     const trimmedEmail = email.trim();
     if (!trimmedEmail) {
       setValidationError("Please enter your email address first.");
@@ -124,7 +127,11 @@ function ExpertSignupPortalContent() {
         setOtpSent(true);
         setResendCooldown(60);
       } else {
-        setValidationError(data.message || "Failed to send verification code.");
+        const errorText = data.message || "Failed to send verification code.";
+        setValidationError(errorText);
+        if (data.code === 'EMAIL_ALREADY_EXISTS' || errorText.toLowerCase().includes('already registered')) {
+          setEmailErrorMsg("This email is already registered.");
+        }
       }
     } catch (err) {
       setValidationError("Server connection error. Please try again.");
@@ -755,6 +762,7 @@ function ExpertSignupPortalContent() {
                           onChange={(e) => {
                             setEmail(e.target.value);
                             setEmailVerified(false);
+                            setEmailErrorMsg("");
                           }}
                           placeholder="name@example.com" 
                           style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
@@ -801,6 +809,18 @@ function ExpertSignupPortalContent() {
                         </button>
                       )}
                     </div>
+
+                    {emailErrorMsg && (
+                      <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center justify-between gap-3 mt-2 w-full animate-premium-fade shadow-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="text-amber-600 font-bold">⚠️</span>
+                          <span>{emailErrorMsg}</span>
+                        </div>
+                        <a href="/login" className="px-3.5 py-1.5 bg-black text-white rounded-md text-xs font-bold shrink-0 hover:bg-slate-800 transition-colors shadow-xs">
+                          Log In &rarr;
+                        </a>
+                      </div>
+                    )}
                   </div>
 
                   {/* 4. Create Password & Confirm Password */}

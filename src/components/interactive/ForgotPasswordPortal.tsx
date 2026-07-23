@@ -195,8 +195,16 @@ export function ForgotPasswordPortal() {
                                 </div>
 
                                 {error && (
-                                    <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold text-center leading-relaxed">
-                                        {error}
+                                    <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold text-center leading-relaxed space-y-3">
+                                        <p>{error}</p>
+                                        {(error.toLowerCase().includes("google") || error.toLowerCase().includes("google sign-in")) && (
+                                            <div>
+                                                <a href="/login" className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition-all shadow-sm">
+                                                    <span>Go to Login Page</span>
+                                                    <span>&rarr;</span>
+                                                </a>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
 

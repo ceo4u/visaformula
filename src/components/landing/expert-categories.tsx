@@ -150,43 +150,45 @@ export function ExpertCategories() {
           </p>
         </div>
 
-        {/* 3x3 Grid of 9 Perfectly Square Boxes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* 3x3 Grid of 9 Category Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {categories.map((cat, i) => (
             <a
               key={i}
               href={cat.href}
-              className="group aspect-square flex flex-col justify-between p-6 sm:p-7 rounded-2xl border border-slate-200/90 bg-white hover:border-blue-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer relative overflow-hidden"
+              className="group flex flex-col justify-between p-5 sm:p-6 rounded-2xl border border-slate-200/90 bg-white hover:border-blue-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer relative overflow-hidden"
             >
               {/* Top Accent Line on Hover */}
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
-              {/* Header Icon + Number Tag */}
-              <div className="flex items-center justify-between">
-                <div className="p-2.5 rounded-xl group-hover:scale-110 transition-transform duration-300">
-                  {cat.icon}
+              <div className="space-y-4">
+                {/* Header Icon + Number Tag */}
+                <div className="flex items-center justify-between">
+                  <div className="p-1 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    {cat.icon}
+                  </div>
+                  <span className="text-[11px] font-bold text-slate-400 bg-slate-100 group-hover:bg-blue-50 group-hover:text-blue-600 px-2.5 py-0.5 rounded-full transition-colors">
+                    0{i + 1}
+                  </span>
                 </div>
-                <span className="text-[11px] font-bold text-slate-400 bg-slate-100 group-hover:bg-blue-50 group-hover:text-blue-600 px-2.5 py-1 rounded-full transition-colors">
-                  0{i + 1}
-                </span>
-              </div>
 
-              {/* Title & Description */}
-              <div className="space-y-2">
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug">
-                  {cat.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed line-clamp-3">
-                  {cat.description}
-                </p>
+                {/* Title & Description */}
+                <div className="space-y-1.5">
+                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors whitespace-nowrap truncate">
+                    {cat.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-500 leading-relaxed line-clamp-2">
+                    {cat.description}
+                  </p>
+                </div>
               </div>
 
               {/* Footer Count & Arrow */}
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
                 <span className="text-xs font-extrabold text-blue-600">
                   {cat.count}
                 </span>
-                <span className="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center text-slate-400 transition-colors">
+                <span className="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center text-slate-400 text-xs transition-colors">
                   →
                 </span>
               </div>

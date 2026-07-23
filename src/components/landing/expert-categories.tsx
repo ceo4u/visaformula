@@ -81,11 +81,11 @@ export function ExpertCategories() {
   ]
 
   return (
-    <section className="w-full pt-1 pb-8 sm:pt-2 sm:pb-12 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-7xl mx-auto space-y-4">
+    <section className="w-full pt-8 pb-12 sm:pt-10 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-7xl mx-auto">
         
         {/* Thin & Elegant Header Title */}
-        <div className="text-center max-w-3xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#0c1a2e] tracking-tight">
             Find the Right <span className="text-blue-600 font-bold">Immigration Expert</span> for Your Needs
           </h2>

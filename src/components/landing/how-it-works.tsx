@@ -79,10 +79,10 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="w-full pt-8 pb-8 sm:pt-10 sm:pb-10 px-4 bg-white">
+    <section className="w-full pt-2 pb-4 sm:pt-3 sm:pb-6 px-4 bg-white">
       <div className="max-w-6xl mx-auto">
         {/* Heading */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-5">
           <h2 className="text-2xl md:text-[26px] font-bold text-gray-900">
             How <span className="text-blue-600">VisaFormula</span> Works
           </h2>

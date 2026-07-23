@@ -4,18 +4,15 @@ export function ExpertCategories() {
   const categories = [
     {
       icon: (
-        <svg className="w-7 h-7 text-[#0f2b5c]" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-          <circle cx="5" cy="9" r="2" />
-          <path d="M5.5 13c-1.3 0-4 .67-4 2v2h3.5v-2c0-.75.29-1.44.75-2z" />
-          <circle cx="19" cy="9" r="2" />
-          <path d="M18.5 13c.46.56.75 1.25.75 2v2H23v-2c0-1.33-2.7-2-4-2z" />
+        <svg className="w-7 h-7 text-[#2563eb]" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
+          <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fillOpacity="0.7" />
         </svg>
       ),
-      title: 'Visa Consultants',
-      description: 'Get help with new visa applications and documentation.',
+      title: 'Study Visa Consultants',
+      description: 'Get help with student visas, university applications & SOP filing.',
       count: '12,540 Experts',
-      href: '/find-experts?category=visa-consultants'
+      href: '/find-experts?category=student'
     },
     {
       icon: (
@@ -49,15 +46,14 @@ export function ExpertCategories() {
     },
     {
       icon: (
-        <svg className="w-7 h-7 text-[#0f172a]" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
-          <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fillOpacity="0.7" />
+        <svg className="w-7 h-7 text-[#16a34a]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3.5c-.5-.5-2.5 0-4 1.5L13.5 8.5 5.3 6.7c-.5-.1-.9.1-1.2.4l-.6.6c-.3.4-.2 1 .2 1.3L8 12l-3 3-2.2-.6c-.3-.1-.7 0-.9.3l-.4.4c-.3.3-.2.9.2 1.1l3.4 2.2 2.2 3.4c.2.4.8.5 1.1.2l.4-.4c.3-.2.4-.6.3-.9L8.5 19l3-3 3.1 4.3c.3.4.9.5 1.3.2l.6-.6c.3-.3.5-.7.4-1.2z" />
         </svg>
       ),
-      title: 'Education Counsellors',
-      description: 'Study abroad guidance and university admissions.',
-      count: '6,850 Counsellors',
-      href: '/find-experts?category=education'
+      title: 'Visit Visa Consultants',
+      description: 'Tourist, business, and short-term visitor visa filing assistance.',
+      count: '6,850 Consultants',
+      href: '/find-experts?category=tourist'
     },
     {
       icon: (
@@ -72,20 +68,21 @@ export function ExpertCategories() {
     },
     {
       icon: (
-        <svg className="w-7 h-7 text-[#0f172a]" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        <svg className="w-7 h-7 text-[#7c3aed]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="m9 12 2 2 4-4" />
         </svg>
       ),
-      title: 'Relocation Experts',
-      description: 'Relocation, settlement and post-landing support.',
+      title: 'PR & Residency Experts',
+      description: 'Permanent residency, Express Entry points, and relocation settlement.',
       count: '4,210 Experts',
-      href: '/find-experts?category=relocation'
+      href: '/find-experts?category=pr'
     },
   ]
 
   return (
-    <section className="w-full pt-6 pb-12 sm:pt-8 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <section className="w-full pt-2 pb-8 sm:pt-4 sm:pb-12 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-7xl mx-auto space-y-4">
         
         {/* Thin & Elegant Header Title */}
         <div className="text-center max-w-3xl mx-auto">

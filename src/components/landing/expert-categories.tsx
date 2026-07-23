@@ -125,7 +125,7 @@ export function ExpertCategories() {
         </div>
 
         {/* View All Categories Button */}
-        <div className="text-center pt-1">
+        <div className="text-center mt-8 sm:mt-10">
           <a
             href="/find-experts"
             className="inline-flex items-center justify-center px-5 py-1.5 bg-white border border-blue-500 text-blue-600 hover:bg-blue-50 rounded-lg text-xs font-semibold shadow-2xs transition-all hover:scale-105"

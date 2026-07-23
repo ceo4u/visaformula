@@ -79,12 +79,12 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="w-full py-12 px-4 bg-white">
+    <section className="w-full pt-4 pb-8 sm:pt-6 sm:pb-10 px-4 bg-white">
       <div className="max-w-6xl mx-auto">
         {/* Heading */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <h2 className="text-2xl md:text-[26px] font-bold text-gray-900">
-            How <span className="text-blue-700">VisaFormula</span> Works
+            How <span className="text-blue-600">VisaFormula</span> Works
           </h2>
         </div>
 
@@ -104,7 +104,7 @@ export function HowItWorks() {
                 {/* Icon circle with number badge */}
                 <div className="relative mb-3 flex-shrink-0">
                   <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center"
+                    className="w-14 h-14 rounded-full flex items-center justify-center shadow-xs"
                     style={{ backgroundColor: step.bgColor }}
                   >
                     {step.icon}

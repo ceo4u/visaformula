@@ -282,7 +282,7 @@ export function HeroSection() {
                   
                   {/* Top Bar: Category Pill + Consultant Glass Pill */}
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-sky-500/90 backdrop-blur-xs px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
                       Student Visa
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
@@ -315,7 +315,7 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-emerald-500/90 backdrop-blur-xs px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
                       Visit Visa
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
@@ -342,7 +342,7 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-sky-500/90 backdrop-blur-xs px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
                       Student Visa
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
@@ -369,7 +369,7 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-amber-500/90 backdrop-blur-xs px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
                       PR & Residency
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
@@ -396,7 +396,7 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-amber-500/90 backdrop-blur-xs px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
                       PR & Residency
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
@@ -423,7 +423,7 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-purple-500/90 backdrop-blur-xs px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
                       Work Visa
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
@@ -450,7 +450,7 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-purple-500/90 backdrop-blur-xs px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
                       Work Visa
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
@@ -477,7 +477,7 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-sky-500/90 backdrop-blur-xs px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
                       Student Visa
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
@@ -504,7 +504,7 @@ export function HeroSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-emerald-500/90 backdrop-blur-xs px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
                       Visit Visa
                     </span>
                     <span className="text-[7.5px] sm:text-[8.5px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">

@@ -16,10 +16,10 @@ const pathname = Astro.url.pathname;
 
         <!-- Desktop Navigation Links (Centered) -->
         <nav class="hidden lg:flex items-center gap-3.5 xl:gap-7 font-plus-jakarta">
-            <!-- 1. Find an Expert -->
+            <!-- 1. Find Consultants -->
             <div class="relative py-3 group">
                 <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
-                    Find an Expert
+                    Find Consultants
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
@@ -44,9 +44,9 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
-            <!-- 2. Smart Apply (Direct link, no dropdown, between Find Expert and Visa Services) -->
+            <!-- 2. Self Apply Now (Direct link, no dropdown, between Find Consultants and Visa Services) -->
             <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-colors whitespace-nowrap">
-                Smart Apply
+                Self Apply Now
             </a>
 
             <!-- 3. Visa Services -->
@@ -205,10 +205,10 @@ const pathname = Astro.url.pathname;
     <div id="mobile-menu-drawer" class="hidden lg:hidden w-full bg-white border-t border-gray-100 shadow-lg max-h-[calc(100vh-64px)] overflow-y-auto z-40 transition-all duration-300">
         <div class="flex flex-col py-4 px-4 gap-1">
             
-            <!-- Mobile Find an Expert Accordion -->
+            <!-- Mobile Find Consultants Accordion -->
             <div class="border-b border-gray-50 py-1.5">
                 <button id="mobile-find-expert-btn" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg">
-                    <span>Find an Expert</span>
+                    <span>Find Consultants</span>
                     <ChevronDown id="mobile-find-expert-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
                 </button>
                 <div id="mobile-find-expert-drawer" class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
@@ -219,10 +219,10 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
-            <!-- Mobile Smart Apply Link -->
+            <!-- Mobile Self Apply Now Link -->
             <div class="border-b border-gray-50 py-2.5">
                 <a href="/self-apply" class="block py-1 text-sm font-semibold text-navy hover:text-[#2563eb] transition-colors">
-                    Smart Apply
+                    Self Apply Now
                 </a>
             </div>
 

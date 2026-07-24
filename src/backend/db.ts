@@ -99,6 +99,12 @@ export async function runMigrations() {
 
   await p.query(`
     ALTER TABLE seekers ADD COLUMN IF NOT EXISTS looking_for VARCHAR(100);
+    ALTER TABLE seekers ADD COLUMN IF NOT EXISTS address TEXT;
+    ALTER TABLE seekers ADD COLUMN IF NOT EXISTS area VARCHAR(255);
+    ALTER TABLE seekers ADD COLUMN IF NOT EXISTS city VARCHAR(100);
+    ALTER TABLE seekers ADD COLUMN IF NOT EXISTS state VARCHAR(100);
+    ALTER TABLE seekers ADD COLUMN IF NOT EXISTS zip_code VARCHAR(50);
+    ALTER TABLE seekers ADD COLUMN IF NOT EXISTS current_visa_status VARCHAR(100);
   `);
 
   // 2. Experts Table

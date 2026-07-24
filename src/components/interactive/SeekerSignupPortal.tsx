@@ -46,8 +46,14 @@ function SeekerSignupPortalContent() {
     const [countryCode, setCountryCode] = useState("+91");
     const [validationError, setValidationError] = useState("");
     const [countryCodeOpen, setCountryCodeOpen] = useState(false);
-    const [lookingFor, setLookingFor] = useState("");
-    const [lookingForOpen, setLookingForOpen] = useState(false);
+    const [currentVisaStatus, setCurrentVisaStatus] = useState("");
+    const [currentVisaStatusOpen, setCurrentVisaStatusOpen] = useState(false);
+
+    // Residential Address States
+    const [addressArea, setAddressArea] = useState("");
+    const [addressCity, setAddressCity] = useState("");
+    const [addressState, setAddressState] = useState("");
+    const [addressZip, setAddressZip] = useState("");
 
     const [otpDigits, setOtpDigits] = useState<string[]>(Array(6).fill(""));
     const [resendCooldown, setResendCooldown] = useState(0);
@@ -345,6 +351,17 @@ function SeekerSignupPortalContent() {
                                 return;
                             }
 
+                            const isDiffCountry = countryOfCitizenship && residentOf && countryOfCitizenship.toLowerCase().trim() !== residentOf.toLowerCase().trim();
+                            if (isDiffCountry && !currentVisaStatus) {
+                                setValidationError(`Please select your current visa status in ${residentOf}.`);
+                                return;
+                            }
+
+                            if (!addressArea.trim() || !addressCity.trim() || !addressState.trim() || !addressZip.trim()) {
+                                setValidationError("Please fill out all address fields (Area, City/District, State, and PIN Code).");
+                                return;
+                            }
+
                             setValidationError("");
                             setStep(2);
                         }} className="space-y-4">
@@ -622,30 +639,114 @@ function SeekerSignupPortalContent() {
                                      </div>
                                  </div>
 
-                                  <div className="col-span-2 space-y-2">
-                                      <label className="text-sm font-semibold text-slate-700 block">Looking for*</label>
-                                      <div className="relative">
-                                          <button
-                                              type="button"
-                                              onClick={() => { setLookingForOpen(!lookingForOpen); setCitizenshipOpen(false); setResidenceOpen(false); }}
-                                              className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm text-left flex justify-between items-center cursor-pointer font-semibold h-[58px]"
-                                          >
-                                              <span>{lookingFor || "Select a service"}</span>
-                                              <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                          </button>
-                                          {lookingForOpen && (
-                                              <div className="absolute z-50 w-full mt-1 bg-white border border-slate-250 rounded-xl shadow-xl max-h-60 overflow-y-auto">
-                                                  {["Visitor Visa", "Student Visa", "Work Visa", "Permanent Residence", "Citizenship", "Visa Appeal"].map(opt => (
-                                                      <div
-                                                          key={opt}
-                                                          onClick={() => { setLookingFor(opt); setLookingForOpen(false); }}
-                                                          className="px-5 py-3 text-base text-black hover:bg-black hover:text-white cursor-pointer transition-colors"
-                                                      >
-                                                          {opt}
-                                                      </div>
-                                                  ))}
-                                              </div>
-                                          )}
+                                  {/* Conditional Current Visa Status if Passport Country != Residence Country */}
+                                  {countryOfCitizenship && residentOf && countryOfCitizenship.toLowerCase().trim() !== residentOf.toLowerCase().trim() && (
+                                      <div className="col-span-2 space-y-2 animate-premium-fade">
+                                          <label className="text-sm font-semibold text-slate-700 block">
+                                              Current Visa Status in {residentOf} *
+                                          </label>
+                                          <div className="relative">
+                                              <button
+                                                  type="button"
+                                                  onClick={() => {
+                                                      setCurrentVisaStatusOpen(!currentVisaStatusOpen);
+                                                      setCitizenshipOpen(false);
+                                                      setResidenceOpen(false);
+                                                  }}
+                                                  className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black text-black text-left flex justify-between items-center cursor-pointer font-semibold h-[58px]"
+                                              >
+                                                  <span>{currentVisaStatus || `Select your visa status in ${residentOf}`}</span>
+                                                  <svg className={`fill-current h-4 w-4 text-slate-500 transition-transform ${currentVisaStatusOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                              </button>
+                                              {currentVisaStatusOpen && (
+                                                  <div className="absolute z-50 w-full mt-1 bg-white border border-slate-250 rounded-xl shadow-xl max-h-60 overflow-y-auto">
+                                                      {[
+                                                          "Student Visa",
+                                                          "Work Permit / Work Visa",
+                                                          "Tourist / Short-Term Visitor",
+                                                          "Permanent Resident (PR)",
+                                                          "Business Visa",
+                                                          "Dependent / Spouse Visa",
+                                                          "Temporary Resident",
+                                                          "Other"
+                                                      ].map((opt) => (
+                                                          <div
+                                                              key={opt}
+                                                              onClick={() => {
+                                                                  setCurrentVisaStatus(opt);
+                                                                  setCurrentVisaStatusOpen(false);
+                                                              }}
+                                                              className="px-5 py-3 text-base text-black hover:bg-black hover:text-white cursor-pointer transition-colors"
+                                                          >
+                                                              {opt}
+                                                          </div>
+                                                      ))}
+                                                  </div>
+                                              )}
+                                          </div>
+                                      </div>
+                                  )}
+
+                                  {/* Residential Address Details (Area, City, State, Pin Code) */}
+                                  <div className="col-span-2 space-y-4 pt-3 border-t border-slate-100">
+                                      <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">Residential Address Details *</label>
+                                      
+                                      {/* Area / Locality / Street Address */}
+                                      <div className="space-y-1.5">
+                                          <label className="text-xs font-semibold text-slate-600 block">Area / Locality / Street Address *</label>
+                                          <input 
+                                              type="text" 
+                                              required
+                                              value={addressArea} 
+                                              onChange={(e) => setAddressArea(e.target.value)} 
+                                              placeholder="e.g. Flat 302, Green Park Road, Landmark" 
+                                              style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                              className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                          />
+                                      </div>
+
+                                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                          {/* City / District */}
+                                          <div>
+                                              <label className="text-xs font-semibold text-slate-600 block mb-1.5">City / District / Town *</label>
+                                              <input 
+                                                  type="text" 
+                                                  required
+                                                  value={addressCity} 
+                                                  onChange={(e) => setAddressCity(e.target.value)} 
+                                                  placeholder="e.g. Mumbai / New Delhi" 
+                                                  style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                                  className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                              />
+                                          </div>
+
+                                          {/* State / Province */}
+                                          <div>
+                                              <label className="text-xs font-semibold text-slate-600 block mb-1.5">State / Province *</label>
+                                              <input 
+                                                  type="text" 
+                                                  required
+                                                  value={addressState} 
+                                                  onChange={(e) => setAddressState(e.target.value)} 
+                                                  placeholder="e.g. Maharashtra" 
+                                                  style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                                  className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                              />
+                                          </div>
+                                      </div>
+
+                                      {/* PIN Code / ZIP Code */}
+                                      <div className="space-y-1.5">
+                                          <label className="text-xs font-semibold text-slate-600 block">PIN Code / ZIP Code *</label>
+                                          <input 
+                                              type="text" 
+                                              required
+                                              value={addressZip} 
+                                              onChange={(e) => setAddressZip(e.target.value)} 
+                                              placeholder="e.g. 400001" 
+                                              style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                              className="w-full px-5 py-4 bg-white border border-slate-250 rounded-xl text-base outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-slate-400 shadow-sm"
+                                          />
                                       </div>
                                   </div>
                              </div>
@@ -785,9 +886,14 @@ function SeekerSignupPortalContent() {
                                                     country_of_citizenship: countryOfCitizenship,
                                                     resident_of: residentOf,
                                                     passport_country: countryOfCitizenship,
+                                                    current_visa_status: currentVisaStatus,
                                                     goals: selectedGoals,
                                                     destinations: selectedDests,
-                                                    looking_for: lookingFor
+                                                    area: addressArea,
+                                                    city: addressCity,
+                                                    state: addressState,
+                                                    zip_code: addressZip,
+                                                    address: [addressArea, addressCity, addressState, addressZip].filter(Boolean).join(", ")
                                                 })
                                             });
                                             if (!response.ok) {
@@ -810,10 +916,15 @@ function SeekerSignupPortalContent() {
                                         localStorage.setItem("seeker_email", email);
                                         localStorage.setItem("seeker_country_of_citizenship", countryOfCitizenship);
                                         localStorage.setItem("seeker_resident_of", residentOf);
+                                        localStorage.setItem("seeker_current_visa_status", currentVisaStatus);
                                         localStorage.setItem("seeker_passportCountry", countryOfCitizenship); // legacy fallback
+                                        localStorage.setItem("seeker_area", addressArea);
+                                        localStorage.setItem("seeker_city", addressCity);
+                                        localStorage.setItem("seeker_state", addressState);
+                                        localStorage.setItem("seeker_zip", addressZip);
+                                        localStorage.setItem("seeker_address", [addressArea, addressCity, addressState, addressZip].filter(Boolean).join(", "));
                                         localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
                                         localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
-                                        localStorage.setItem("seeker_looking_for", lookingFor);
                                         if (typeof window !== "undefined") {
                                             window.scrollTo({ top: 0, behavior: "instant" });
                                         }

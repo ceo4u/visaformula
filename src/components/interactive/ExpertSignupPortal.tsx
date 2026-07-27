@@ -140,12 +140,12 @@ function ExpertSignupPortalContent() {
     }
   };
 
-  const handleVerifyCode = async (forcedCode?: string) => {
+  const handleVerifyCode = async (forcedCode?: string): Promise<boolean> => {
     setValidationError("");
     const code = (forcedCode || otpInput || otpDigits.join("")).trim();
     if (code.length < 6) {
       setValidationError("Please enter all 6 digits of the code.");
-      return;
+      return false;
     }
     setVerifyingCode(true);
     try {
@@ -156,14 +156,16 @@ function ExpertSignupPortalContent() {
       });
       const data = await res.json();
       if (res.ok && data.verified) {
-        setOtpSent(false);
         setEmailVerified(true);
         setValidationError("");
+        return true;
       } else {
         setValidationError(data.message || "Invalid or expired verification code.");
+        return false;
       }
     } catch (err) {
       setValidationError("Failed to verify code. Please try again.");
+      return false;
     } finally {
       setVerifyingCode(false);
     }
@@ -332,11 +334,6 @@ function ExpertSignupPortalContent() {
 
     if (password !== confirmPassword) {
       setValidationError("Passwords do not match. Please verify your password entry.");
-      return;
-    }
-
-    if (!emailVerified) {
-      setValidationError("Please verify your email address with the OTP code first.");
       return;
     }
 
@@ -750,63 +747,29 @@ function ExpertSignupPortalContent() {
                     />
                   </div>
 
-                  {/* 3. Email Address & Email Verification */}
+                  {/* 3. Email Address */}
                   <div className="col-span-2 space-y-2">
                     <label className="text-xs font-bold text-slate-700 block">Email Address *</label>
-                    <div className="flex flex-col sm:flex-row gap-3 items-center">
-                      <div className="flex-grow relative w-full">
-                        <input 
-                          type="email"
-                          required
-                          value={email}
-                          onChange={(e) => {
-                            setEmail(e.target.value);
-                            setEmailVerified(false);
-                            setEmailErrorMsg("");
-                          }}
-                          placeholder="name@example.com" 
-                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
-                        />
-                        {emailVerified && (
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center bg-emerald-50 border border-emerald-250 p-1.5 rounded-full animate-premium-fade shadow-sm">
-                            <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
-                          </span>
-                        )}
-                      </div>
-
-                      {otpSent && !emailVerified && (
-                        <div className="relative w-full sm:w-auto shrink-0 flex gap-2 animate-premium-fade">
-                          <input
-                            type="text"
-                            maxLength={6}
-                            placeholder="OTP"
-                            value={otpInput}
-                            onChange={(e) => setOtpInput(e.target.value)}
-                            className="w-24 px-2 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-black text-center font-bold tracking-widest text-black shadow-sm"
-                          />
-                          <button
-                            type="button"
-                            disabled={verifyingCode}
-                            onClick={() => handleVerifyCode(otpInput)}
-                            className="bg-black hover:bg-neutral-900 text-white text-xs font-bold tracking-wider px-4 py-3 rounded-md uppercase cursor-pointer h-[46px] shrink-0 disabled:opacity-50"
-                          >
-                            {verifyingCode ? "Verifying..." : "Verify"}
-                          </button>
-                        </div>
-                      )}
-                      
-                      {!emailVerified && (
-                        <button
-                          type="button"
-                          onClick={handleSendVerificationCode}
-                          disabled={sendingCode || resendCooldown > 0}
-                          className="bg-black text-white text-xs font-bold tracking-wider px-5 py-3 rounded-md hover:bg-neutral-900 transition-all uppercase cursor-pointer disabled:bg-slate-200 disabled:text-slate-400 h-[46px] shrink-0 w-full sm:w-auto"
-                        >
-                          {sendingCode ? "Sending..." : resendCooldown > 0 ? `Resend (${resendCooldown}s)` : otpSent ? "Resend" : "Send OTP"}
-                        </button>
+                    <div className="relative w-full">
+                      <input 
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          setEmailVerified(false);
+                          setEmailErrorMsg("");
+                        }}
+                        placeholder="name@example.com" 
+                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
+                      />
+                      {emailVerified && (
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center bg-emerald-50 border border-emerald-250 p-1.5 rounded-full animate-premium-fade shadow-sm">
+                          <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </span>
                       )}
                     </div>
 
@@ -1260,6 +1223,71 @@ function ExpertSignupPortalContent() {
                   </div>
                 </div>
 
+                {/* Email OTP Verification Block at End of Registration */}
+                {!emailVerified && (
+                  <div className="my-6 p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-4 shadow-sm animate-premium-fade max-w-lg mx-auto">
+                    <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto text-base font-bold shadow-md">
+                      ✉️
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-black">Verify Email & Complete Registration</h3>
+                      <p className="text-xs text-slate-500 font-medium mt-1">
+                        Enter the 6-digit OTP code sent to <span className="font-bold text-slate-800">{email}</span>
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 items-center justify-center pt-1">
+                      <input
+                        type="text"
+                        maxLength={6}
+                        placeholder="000000"
+                        value={otpInput}
+                        onChange={(e) => setOtpInput(e.target.value)}
+                        className="w-36 px-3 py-3 bg-white border border-slate-300 rounded-xl text-center text-lg font-bold tracking-widest text-black outline-none focus:border-black shadow-sm"
+                      />
+                      <button
+                        type="button"
+                        disabled={verifyingCode}
+                        onClick={async () => {
+                          const ok = await handleVerifyCode(otpInput);
+                          if (ok) {
+                            const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+                            handleLaunchDashboard(fakeEvent);
+                          }
+                        }}
+                        className="bg-black hover:bg-neutral-900 text-white text-xs font-bold px-6 py-3.5 rounded-xl uppercase tracking-wider cursor-pointer shadow-md disabled:opacity-50 w-full sm:w-auto"
+                      >
+                        {verifyingCode ? "Verifying..." : "Verify OTP & Finish"}
+                      </button>
+                    </div>
+
+                    <div className="text-[11px] text-slate-500 font-semibold pt-1">
+                      {!otpSent ? (
+                        <button
+                          type="button"
+                          onClick={handleSendVerificationCode}
+                          disabled={sendingCode}
+                          className="text-black font-bold hover:underline"
+                        >
+                          {sendingCode ? "Sending OTP Code..." : `Send OTP Code to ${email}`}
+                        </button>
+                      ) : (
+                        <span>
+                          Didn't receive code?{" "}
+                          <button
+                            type="button"
+                            onClick={handleSendVerificationCode}
+                            disabled={sendingCode || resendCooldown > 0}
+                            className="text-black font-bold hover:underline disabled:opacity-50"
+                          >
+                            {sendingCode ? "Sending..." : resendCooldown > 0 ? `Resend (${resendCooldown}s)` : "Resend OTP"}
+                          </button>
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {validationError && (
                   <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-sans text-center transition-all animate-premium-fade max-w-lg mx-auto mt-6">
                     {validationError}
@@ -1276,10 +1304,20 @@ function ExpertSignupPortalContent() {
                   </button>
 
                   <button 
-                    type="submit"
+                    type="button"
+                    onClick={async (e) => {
+                      if (!emailVerified) {
+                        if (!otpSent) {
+                          await handleSendVerificationCode();
+                        }
+                        setValidationError("Please enter the 6-digit verification code sent to your email to complete registration.");
+                        return;
+                      }
+                      handleLaunchDashboard(e);
+                    }}
                     className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
                   >
-                    Submit
+                    {emailVerified ? "Submit" : "Verify Email & Submit"}
                   </button>
                 </div>
               </form>

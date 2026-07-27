@@ -100,12 +100,12 @@ function SeekerSignupPortalContent() {
 
     const [verifyingCode, setVerifyingCode] = useState(false);
 
-    const handleVerifyCode = async (forcedCode?: string) => {
+    const handleVerifyCode = async (forcedCode?: string): Promise<boolean> => {
         setValidationError("");
         const code = (forcedCode || otpInput || otpDigits.join("")).trim();
         if (code.length < 6) {
             setValidationError("Please enter all 6 digits of the code.");
-            return;
+            return false;
         }
         setVerifyingCode(true);
         try {
@@ -116,14 +116,16 @@ function SeekerSignupPortalContent() {
             });
             const data = await res.json();
             if (res.ok && data.verified) {
-                setOtpSent(false);
                 setEmailVerified(true);
                 setValidationError("");
+                return true;
             } else {
                 setValidationError(data.message || "Invalid or expired verification code.");
+                return false;
             }
         } catch (err) {
             setValidationError("Failed to verify code. Please try again.");
+            return false;
         } finally {
             setVerifyingCode(false);
         }
@@ -193,6 +195,64 @@ function SeekerSignupPortalContent() {
 
     const toggleItem = (id: string, list: string[], setList: (l: string[]) => void) => {
         setList(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
+    };
+
+    const handleFinalSubmit = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/seeker`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email,
+                    password: password,
+                    phone: `${countryCode} ${phone}`,
+                    country_of_citizenship: countryOfCitizenship,
+                    resident_of: residentOf,
+                    passport_country: countryOfCitizenship,
+                    current_visa_status: currentVisaStatus,
+                    goals: selectedGoals,
+                    destinations: selectedDests,
+                    area: addressArea,
+                    city: addressCity,
+                    state: addressState,
+                    zip_code: addressZip,
+                    address: [addressArea, addressCity, addressState, addressZip].filter(Boolean).join(", ")
+                })
+            });
+            if (!response.ok) {
+                const errData = await response.json();
+                setValidationError(errData.message || "Registration failed.");
+                return;
+            }
+            const data = await response.json();
+            if (data.user && typeof window !== "undefined") {
+                localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+            }
+        } catch (err) {
+            console.warn("Backend server offline. Falling back to local simulation mode.", err);
+        }
+        // Save locally and proceed
+        localStorage.setItem("seeker_firstName", firstName);
+        localStorage.setItem("seeker_lastName", lastName);
+        localStorage.setItem("seeker_phone", `${countryCode} ${phone}`);
+        localStorage.setItem("seeker_email", email);
+        localStorage.setItem("seeker_country_of_citizenship", countryOfCitizenship);
+        localStorage.setItem("seeker_resident_of", residentOf);
+        localStorage.setItem("seeker_current_visa_status", currentVisaStatus);
+        localStorage.setItem("seeker_passportCountry", countryOfCitizenship); // legacy fallback
+        localStorage.setItem("seeker_area", addressArea);
+        localStorage.setItem("seeker_city", addressCity);
+        localStorage.setItem("seeker_state", addressState);
+        localStorage.setItem("seeker_zip", addressZip);
+        localStorage.setItem("seeker_address", [addressArea, addressCity, addressState, addressZip].filter(Boolean).join(", "));
+        localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
+        localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
+        if (typeof window !== "undefined") {
+            window.scrollTo({ top: 0, behavior: "instant" });
+        }
+        setSubmitted(true);
     };
 
     if (submitted) {
@@ -412,77 +472,43 @@ function SeekerSignupPortalContent() {
                                 </div>
 
                                 <div className="col-span-2 space-y-2">
-                                    <div className="flex flex-col sm:flex-row gap-3 items-center">
-                                        <div className="flex-grow relative w-full">
-                                            <input 
-                                                type="email"
-                                                placeholder="Email Address"
-                                                required
-                                                value={email}
-                                                onChange={(e) => {
-                                                    setEmail(e.target.value);
-                                                    setEmailVerified(false);
-                                                    setEmailErrorMsg("");
-                                                }}
-                                                style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                                                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
-                                            />
-                                            {emailVerified && (
-                                                <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center bg-emerald-50 border border-emerald-250 p-1.5 rounded-full animate-premium-fade shadow-sm">
-                                                    <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                                    </svg>
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {otpSent && !emailVerified && (
-                                             <div className="relative w-full sm:w-auto shrink-0 flex gap-2 animate-premium-fade">
-                                                 <input
-                                                     type="text"
-                                                     maxLength={6}
-                                                     placeholder="OTP"
-                                                     value={otpInput}
-                                                     onChange={(e) => setOtpInput(e.target.value)}
-                                                     className="w-24 px-2 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-black text-center font-bold tracking-widest text-black shadow-sm"
-                                                 />
-                                                 <button
-                                                     type="button"
-                                                     disabled={verifyingCode}
-                                                     onClick={() => handleVerifyCode(otpInput)}
-                                                     className="bg-black hover:bg-neutral-900 text-white text-xs font-bold tracking-wider px-4 py-3 rounded-md uppercase cursor-pointer h-[46px] shrink-0 active:scale-95 disabled:opacity-50"
-                                                 >
-                                                     {verifyingCode ? "Verifying..." : "Verify"}
-                                                 </button>
-                                             </div>
+                                     <div className="relative w-full">
+                                         <input 
+                                             type="email"
+                                             placeholder="Email Address *"
+                                             required
+                                             value={email}
+                                             onChange={(e) => {
+                                                 setEmail(e.target.value);
+                                                 setEmailVerified(false);
+                                                 setEmailErrorMsg("");
+                                             }}
+                                             style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                                             className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
+                                         />
+                                         {emailVerified && (
+                                             <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center bg-emerald-50 border border-emerald-250 p-1.5 rounded-full animate-premium-fade shadow-sm">
+                                                 <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                 </svg>
+                                             </span>
                                          )}
-                                        
-                                        {!emailVerified && (
-                                            <button
-                                                type="button"
-                                                onClick={handleSendVerificationCode}
-                                                disabled={sendingCode || resendCooldown > 0}
-                                                className="bg-black text-white text-xs font-bold tracking-wider px-5 py-3 rounded-md hover:bg-neutral-900 transition-all uppercase cursor-pointer disabled:bg-slate-200 disabled:text-slate-400 h-[46px] shrink-0 w-full sm:w-auto"
-                                            >
-                                                {sendingCode ? "Sending..." : resendCooldown > 0 ? `Resend (${resendCooldown}s)` : otpSent ? "Resend" : "Send OTP"}
-                                            </button>
-                                        )}
-                                    </div>
-                                    {emailErrorMsg && (
-                                        <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center justify-between gap-3 mt-2 w-full animate-premium-fade shadow-sm">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-amber-600 font-bold">⚠️</span>
-                                                <span>{emailErrorMsg}</span>
-                                            </div>
-                                            <a href="/login" className="px-3.5 py-1.5 bg-black text-white rounded-md text-xs font-bold shrink-0 hover:bg-slate-800 transition-colors shadow-xs">
-                                                Log In &rarr;
-                                            </a>
-                                        </div>
-                                    )}
-                                    {validationError && !emailErrorMsg && (
+                                     </div>
+                                     {emailErrorMsg && (
+                                         <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center justify-between gap-3 mt-2 w-full animate-premium-fade shadow-sm">
+                                             <div className="flex items-center gap-2">
+                                                 <span className="text-amber-600 font-bold">⚠️</span>
+                                                 <span>{emailErrorMsg}</span>
+                                             </div>
+                                             <a href="/login" className="px-3.5 py-1.5 bg-black text-white rounded-md text-xs font-bold shrink-0 hover:bg-slate-800 transition-colors shadow-xs">
+                                                 Log In &rarr;
+                                             </a>
+                                         </div>
+                                     )}
+                                     {validationError && !emailErrorMsg && (
                                         <p className="text-xs text-red-500 font-semibold mt-1.5">{validationError}</p>
                                     )}
-                                </div>
+                                 </div>
 
                                 {/* Connected Passwords Area */}
                                 <div className={`col-span-2 space-y-4 border-l-4 pl-4 transition-all duration-300 ${
@@ -855,6 +881,70 @@ function SeekerSignupPortalContent() {
                                 </div>
                             )}
 
+                            {/* Email OTP Verification Block at End of Registration */}
+                            {!emailVerified && (
+                                <div className="my-6 p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-4 shadow-sm animate-premium-fade max-w-lg mx-auto">
+                                    <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto text-base font-bold shadow-md">
+                                        ✉️
+                                    </div>
+                                    <div>
+                                        <h3 className="text-base font-bold text-black">Verify Email & Complete Registration</h3>
+                                        <p className="text-xs text-slate-500 font-medium mt-1">
+                                            Enter the 6-digit OTP code sent to <span className="font-bold text-slate-800">{email}</span>
+                                        </p>
+                                    </div>
+
+                                    <div className="flex flex-col sm:flex-row gap-3 items-center justify-center pt-1">
+                                        <input
+                                            type="text"
+                                            maxLength={6}
+                                            placeholder="000000"
+                                            value={otpInput}
+                                            onChange={(e) => setOtpInput(e.target.value)}
+                                            className="w-36 px-3 py-3 bg-white border border-slate-300 rounded-xl text-center text-lg font-bold tracking-widest text-black outline-none focus:border-black shadow-sm"
+                                        />
+                                        <button
+                                            type="button"
+                                            disabled={verifyingCode}
+                                            onClick={async () => {
+                                                const ok = await handleVerifyCode(otpInput);
+                                                if (ok) {
+                                                    handleFinalSubmit();
+                                                }
+                                            }}
+                                            className="bg-black hover:bg-neutral-900 text-white text-xs font-bold px-6 py-3.5 rounded-xl uppercase tracking-wider cursor-pointer shadow-md disabled:opacity-50 w-full sm:w-auto"
+                                        >
+                                            {verifyingCode ? "Verifying..." : "Verify OTP & Finish"}
+                                        </button>
+                                    </div>
+
+                                    <div className="text-[11px] text-slate-500 font-semibold pt-1">
+                                        {!otpSent ? (
+                                            <button
+                                                type="button"
+                                                onClick={handleSendVerificationCode}
+                                                disabled={sendingCode}
+                                                className="text-black font-bold hover:underline"
+                                            >
+                                                {sendingCode ? "Sending OTP Code..." : `Send OTP Code to ${email}`}
+                                            </button>
+                                        ) : (
+                                            <span>
+                                                Didn't receive code?{" "}
+                                                <button
+                                                    type="button"
+                                                    onClick={handleSendVerificationCode}
+                                                    disabled={sendingCode || resendCooldown > 0}
+                                                    className="text-black font-bold hover:underline disabled:opacity-50"
+                                                >
+                                                    {sendingCode ? "Sending..." : resendCooldown > 0 ? `Resend (${resendCooldown}s)` : "Resend OTP"}
+                                                </button>
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
                             {validationError && (
                                 <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-sans text-center transition-all animate-premium-fade max-w-lg mx-auto mt-6">
                                     {validationError}
@@ -873,66 +963,18 @@ function SeekerSignupPortalContent() {
                                 <button 
                                     type="button"
                                     onClick={async () => {
-                                        try {
-                                            const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/seeker`, {
-                                                method: "POST",
-                                                headers: { "Content-Type": "application/json" },
-                                                body: JSON.stringify({
-                                                    first_name: firstName,
-                                                    last_name: lastName,
-                                                    email: email,
-                                                    password: password,
-                                                    phone: `${countryCode} ${phone}`,
-                                                    country_of_citizenship: countryOfCitizenship,
-                                                    resident_of: residentOf,
-                                                    passport_country: countryOfCitizenship,
-                                                    current_visa_status: currentVisaStatus,
-                                                    goals: selectedGoals,
-                                                    destinations: selectedDests,
-                                                    area: addressArea,
-                                                    city: addressCity,
-                                                    state: addressState,
-                                                    zip_code: addressZip,
-                                                    address: [addressArea, addressCity, addressState, addressZip].filter(Boolean).join(", ")
-                                                })
-                                            });
-                                            if (!response.ok) {
-                                                const errData = await response.json();
-                                                setValidationError(errData.message || "Registration failed.");
-                                                setStep(1);
-                                                return;
+                                        if (!emailVerified) {
+                                            if (!otpSent) {
+                                                await handleSendVerificationCode();
                                             }
-                                            const data = await response.json();
-                                            if (data.user && typeof window !== "undefined") {
-                                                localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-                                            }
-                                        } catch (err) {
-                                            console.warn("Backend server offline. Falling back to local simulation mode.", err);
+                                            setValidationError("Please enter the 6-digit verification code sent to your email to complete registration.");
+                                            return;
                                         }
-                                        // Save locally and proceed
-                                        localStorage.setItem("seeker_firstName", firstName);
-                                        localStorage.setItem("seeker_lastName", lastName);
-                                        localStorage.setItem("seeker_phone", `${countryCode} ${phone}`);
-                                        localStorage.setItem("seeker_email", email);
-                                        localStorage.setItem("seeker_country_of_citizenship", countryOfCitizenship);
-                                        localStorage.setItem("seeker_resident_of", residentOf);
-                                        localStorage.setItem("seeker_current_visa_status", currentVisaStatus);
-                                        localStorage.setItem("seeker_passportCountry", countryOfCitizenship); // legacy fallback
-                                        localStorage.setItem("seeker_area", addressArea);
-                                        localStorage.setItem("seeker_city", addressCity);
-                                        localStorage.setItem("seeker_state", addressState);
-                                        localStorage.setItem("seeker_zip", addressZip);
-                                        localStorage.setItem("seeker_address", [addressArea, addressCity, addressState, addressZip].filter(Boolean).join(", "));
-                                        localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
-                                        localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
-                                        if (typeof window !== "undefined") {
-                                            window.scrollTo({ top: 0, behavior: "instant" });
-                                        }
-                                        setSubmitted(true);
+                                        handleFinalSubmit();
                                     }}
                                     className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
                                 >
-                                    Submit
+                                    {emailVerified ? "Submit" : "Verify Email & Submit"}
                                 </button>
                             </div>
                         </div>

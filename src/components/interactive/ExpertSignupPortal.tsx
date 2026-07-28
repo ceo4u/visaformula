@@ -102,6 +102,10 @@ function ExpertSignupPortalContent() {
 
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
 
+  // Modal OTP States
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [modalError, setModalError] = useState("");
+
   const handleSendVerificationCode = async () => {
     setValidationError("");
     setEmailErrorMsg("");
@@ -1223,71 +1227,6 @@ function ExpertSignupPortalContent() {
                   </div>
                 </div>
 
-                {/* Email OTP Verification Block at End of Registration */}
-                {!emailVerified && (
-                  <div className="my-6 p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-4 shadow-sm animate-premium-fade max-w-lg mx-auto">
-                    <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto text-base font-bold shadow-md">
-                      ✉️
-                    </div>
-                    <div>
-                      <h3 className="text-base font-bold text-black">Verify Email & Complete Registration</h3>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Enter the 6-digit OTP code sent to <span className="font-bold text-slate-800">{email}</span>
-                      </p>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-3 items-center justify-center pt-1">
-                      <input
-                        type="text"
-                        maxLength={6}
-                        placeholder="000000"
-                        value={otpInput}
-                        onChange={(e) => setOtpInput(e.target.value)}
-                        className="w-36 px-3 py-3 bg-white border border-slate-300 rounded-xl text-center text-lg font-bold tracking-widest text-black outline-none focus:border-black shadow-sm"
-                      />
-                      <button
-                        type="button"
-                        disabled={verifyingCode}
-                        onClick={async () => {
-                          const ok = await handleVerifyCode(otpInput);
-                          if (ok) {
-                            const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
-                            handleLaunchDashboard(fakeEvent);
-                          }
-                        }}
-                        className="bg-black hover:bg-neutral-900 text-white text-xs font-bold px-6 py-3.5 rounded-xl uppercase tracking-wider cursor-pointer shadow-md disabled:opacity-50 w-full sm:w-auto"
-                      >
-                        {verifyingCode ? "Verifying..." : "Verify OTP & Finish"}
-                      </button>
-                    </div>
-
-                    <div className="text-[11px] text-slate-500 font-semibold pt-1">
-                      {!otpSent ? (
-                        <button
-                          type="button"
-                          onClick={handleSendVerificationCode}
-                          disabled={sendingCode}
-                          className="text-black font-bold hover:underline"
-                        >
-                          {sendingCode ? "Sending OTP Code..." : `Send OTP Code to ${email}`}
-                        </button>
-                      ) : (
-                        <span>
-                          Didn't receive code?{" "}
-                          <button
-                            type="button"
-                            onClick={handleSendVerificationCode}
-                            disabled={sendingCode || resendCooldown > 0}
-                            className="text-black font-bold hover:underline disabled:opacity-50"
-                          >
-                            {sendingCode ? "Sending..." : resendCooldown > 0 ? `Resend (${resendCooldown}s)` : "Resend OTP"}
-                          </button>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )}
-
                 {validationError && (
                   <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-sans text-center transition-all animate-premium-fade max-w-lg mx-auto mt-6">
                     {validationError}
@@ -1298,7 +1237,7 @@ function ExpertSignupPortalContent() {
                   <button 
                     type="button"
                     onClick={() => setStep(1)}
-                    className="text-sm font-semibold text-slate-550 hover:text-black flex items-center gap-1 transition-colors"
+                    className="text-sm font-semibold text-slate-550 hover:text-black flex items-center gap-1 transition-colors cursor-pointer"
                   >
                     ← Back
                   </button>
@@ -1306,20 +1245,132 @@ function ExpertSignupPortalContent() {
                   <button 
                     type="button"
                     onClick={async (e) => {
+                      setValidationError("");
                       if (!emailVerified) {
+                        setShowOtpModal(true);
+                        setModalError("");
                         if (!otpSent) {
                           await handleSendVerificationCode();
                         }
-                        setValidationError("Please enter the 6-digit verification code sent to your email to complete registration.");
                         return;
                       }
                       handleLaunchDashboard(e);
                     }}
                     className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
                   >
-                    {emailVerified ? "Submit" : "Verify Email & Submit"}
+                    Submit
                   </button>
                 </div>
+
+                {/* Email Verification Modal Pop-Up */}
+                {showOtpModal && (
+                  <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-premium-fade font-sans">
+                    <div className="bg-white rounded-3xl border border-slate-150 shadow-2xl p-8 max-w-md w-full relative space-y-6">
+                      <button
+                        type="button"
+                        onClick={() => setShowOtpModal(false)}
+                        className="absolute top-5 right-5 text-slate-400 hover:text-black p-1.5 rounded-full hover:bg-slate-100 transition-all cursor-pointer"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+
+                      <div className="text-center space-y-3">
+                        <div className="w-16 h-16 bg-blue-50 border border-blue-100 text-[#2563eb] rounded-2xl flex items-center justify-center mx-auto shadow-sm">
+                          <Mail className="w-8 h-8 text-[#2563eb]" />
+                        </div>
+                        <h3 className="text-xl font-extrabold text-[#0c1a2e] font-jakarta">Verify Email Address</h3>
+                        <p className="text-xs text-slate-500 font-semibold leading-relaxed">
+                          Enter the 6-digit OTP verification code sent to your email:
+                        </p>
+                        <div className="bg-slate-100/90 border border-slate-250 py-2.5 px-4 rounded-xl text-center text-sm font-bold text-slate-800 break-all shadow-inner">
+                          {email}
+                        </div>
+                      </div>
+
+                      {/* OTP Actions */}
+                      {!otpSent ? (
+                        <div className="pt-2 text-center">
+                          <button
+                            type="button"
+                            disabled={sendingCode}
+                            onClick={handleSendVerificationCode}
+                            className="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl text-sm transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                          >
+                            {sendingCode ? (
+                              <>
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <span>Sending OTP Code...</span>
+                              </>
+                            ) : (
+                              <span>Send OTP Code &rarr;</span>
+                            )}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-4 pt-1">
+                          <div className="space-y-2 text-center">
+                            <label className="text-xs font-bold text-slate-600 uppercase tracking-wider block">Enter 6-Digit Code</label>
+                            <input
+                              type="text"
+                              maxLength={6}
+                              placeholder="000000"
+                              value={otpInput}
+                              onChange={(e) => {
+                                setOtpInput(e.target.value);
+                                setModalError("");
+                              }}
+                              className="w-full py-3.5 px-4 bg-white border-2 border-slate-300 rounded-xl text-center text-2xl font-black tracking-[0.3em] text-black outline-none focus:border-[#2563eb] focus:ring-2 focus:ring-blue-100 shadow-sm"
+                            />
+                          </div>
+
+                          {modalError && (
+                            <div className="p-3 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-bold text-center animate-premium-fade">
+                              {modalError}
+                            </div>
+                          )}
+
+                          <button
+                            type="button"
+                            disabled={verifyingCode || otpInput.trim().length < 6}
+                            onClick={async () => {
+                              setModalError("");
+                              const ok = await handleVerifyCode(otpInput);
+                              if (ok) {
+                                setShowOtpModal(false);
+                                const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+                                handleLaunchDashboard(fakeEvent);
+                              } else {
+                                setModalError("Invalid or expired OTP code. Please try again.");
+                              }
+                            }}
+                            className="w-full bg-[#111111] hover:bg-black text-white font-extrabold py-4 px-6 rounded-xl text-sm transition-all shadow-lg active:scale-95 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                          >
+                            {verifyingCode ? (
+                              <>
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <span>Verifying Code...</span>
+                              </>
+                            ) : (
+                              <span>Verify & Complete Registration &rarr;</span>
+                            )}
+                          </button>
+
+                          <div className="text-center text-xs font-semibold text-slate-500 pt-1">
+                            Didn't receive code?{" "}
+                            <button
+                              type="button"
+                              onClick={handleSendVerificationCode}
+                              disabled={sendingCode || resendCooldown > 0}
+                              className="text-[#2563eb] font-bold hover:underline disabled:opacity-50 cursor-pointer"
+                            >
+                              {sendingCode ? "Sending..." : resendCooldown > 0 ? `Resend (${resendCooldown}s)` : "Resend OTP"}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </form>
             )}
           </div>

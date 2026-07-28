@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, User, Upload, Eye, EyeOff, Mail, X } from "lucide-react";
+import { Globe, GraduationCap, Briefcase, Plane, Home, CheckCircle, ArrowRight, ArrowLeft, User, Upload, Eye, EyeOff, Mail, X, Pencil } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import airplanePaths from "../../data/clean_airplane.json";
 import checkmarkPaths from "../../data/clean_checkmark.json";
@@ -52,6 +52,7 @@ function SeekerSignupPortalContent() {
     // Modal OTP States
     const [showOtpModal, setShowOtpModal] = useState(false);
     const [modalError, setModalError] = useState("");
+    const [isEditingEmail, setIsEditingEmail] = useState(false);
 
     // Residential Address States
     const [addressArea, setAddressArea] = useState("");
@@ -976,9 +977,52 @@ function SeekerSignupPortalContent() {
                             <p className="text-sm font-medium text-slate-500">
                                 Enter the verification code sent to
                             </p>
-                            <div className="text-sm font-bold text-slate-900 break-all">
-                                {email}
-                            </div>
+                            {!isEditingEmail ? (
+                                <div className="flex items-center justify-center gap-2 bg-slate-100/90 border border-slate-200/90 py-2 px-4 rounded-xl shadow-inner max-w-xs mx-auto">
+                                    <span className="text-sm font-bold text-slate-900 break-all">{email}</span>
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsEditingEmail(true)}
+                                        className="text-xs text-[#2563eb] font-bold hover:underline shrink-0 flex items-center gap-1 cursor-pointer pl-1"
+                                    >
+                                        <span>Edit</span>
+                                        <Pencil className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-2 max-w-xs mx-auto animate-premium-fade">
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => {
+                                                setEmail(e.target.value);
+                                                setEmailErrorMsg("");
+                                                setModalError("");
+                                            }}
+                                            className="w-full px-3 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
+                                            placeholder="Enter new email address"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={async () => {
+                                                if (!email || !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) {
+                                                    setModalError("Please enter a valid email address.");
+                                                    return;
+                                                }
+                                                setIsEditingEmail(false);
+                                                setOtpDigits(Array(6).fill(""));
+                                                setOtpInput("");
+                                                setOtpSent(false);
+                                                await handleSendVerificationCode();
+                                            }}
+                                            className="bg-black text-white text-xs font-bold px-3.5 py-2 rounded-xl shrink-0 hover:bg-neutral-800 cursor-pointer shadow-sm"
+                                        >
+                                            Save & Resend
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* 6 Individual Digit Inputs with Black Accent */}

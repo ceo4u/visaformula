@@ -72,16 +72,21 @@ async function sendEmail(
 
     return { success: true, messageId: JSON.stringify(result) };
   } catch (error: any) {
-    console.error(`[EmailService] ❌ Failed "${type}" to ${options.to}:`, error?.message || error);
+    const errorMsg = error?.message || String(error);
+    console.error(`[EmailService] ❌ Failed "${type}" to ${options.to}:`, errorMsg);
 
-    if (retryCount > 0) {
+    if (errorMsg.includes('not verified') || errorMsg.includes('DNS')) {
+      console.warn(`\n⚠️  [PLUNK DOMAIN UNVERIFIED NOTICE]  ⚠️\nTo send emails via Plunk, please verify your domain in Plunk Dashboard:\n1. Open https://useplunk.com -> Settings -> Domains\n2. Add domain "${FROM_EMAIL.split('@')[1] || 'visaformula.com'}"\n3. Add the displayed DKIM/CNAME records to your DNS provider (Cloudflare, GoDaddy, Hostinger, Vercel)\n`);
+    }
+
+    if (retryCount > 0 && !errorMsg.includes('not verified')) {
       console.log(`[EmailService] 🔄 Retrying "${type}" to ${options.to}...`);
-      logEmail({ email: options.to, type, status: 'retried', errorMessage: error?.message }).catch(() => {});
+      logEmail({ email: options.to, type, status: 'retried', errorMessage: errorMsg }).catch(() => {});
       return sendEmail(options, type, retryCount - 1);
     }
 
-    logEmail({ email: options.to, type, status: 'failed', errorMessage: error?.message }).catch(() => {});
-    return { success: false, error: error?.message || 'Unknown email send error' };
+    logEmail({ email: options.to, type, status: 'failed', errorMessage: errorMsg }).catch(() => {});
+    return { success: false, error: errorMsg };
   }
 }
 

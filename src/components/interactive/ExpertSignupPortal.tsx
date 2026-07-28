@@ -1312,8 +1312,8 @@ function ExpertSignupPortalContent() {
                       </button>
 
                       <div className="text-center space-y-2 pt-2">
-                        <div className="w-20 h-20 bg-blue-50/80 rounded-full flex items-center justify-center mx-auto shadow-xs mb-3">
-                          <Mail className="w-10 h-10 text-[#2b56f5]" />
+                        <div className="w-20 h-20 bg-slate-100/90 border border-slate-200/80 rounded-full flex items-center justify-center mx-auto shadow-xs mb-3">
+                          <Mail className="w-10 h-10 text-slate-900" />
                         </div>
                         <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Check your email</h2>
                         <p className="text-sm font-medium text-slate-500">
@@ -1324,7 +1324,7 @@ function ExpertSignupPortalContent() {
                         </div>
                       </div>
 
-                      {/* 6 Individual Digit Inputs matching Image 2 */}
+                      {/* 6 Individual Digit Inputs with Black Accent */}
                       <div className="space-y-5 pt-1">
                         <div className="flex justify-center gap-2 md:gap-3 my-2">
                           {otpDigits.map((digit, idx) => (
@@ -1339,7 +1339,7 @@ function ExpertSignupPortalContent() {
                               onKeyDown={(e) => handleDigitKeyDown(e, idx)}
                               onPaste={idx === 0 ? handleDigitPaste : undefined}
                               className={`w-11 h-13 md:w-12 md:h-14 border-2 rounded-xl text-center text-xl font-bold text-slate-900 outline-none transition-all shadow-xs ${
-                                digit ? "border-[#2b56f5] bg-blue-50/20" : "border-slate-300 focus:border-[#2b56f5]"
+                                digit ? "border-black bg-slate-50" : "border-slate-300 focus:border-black"
                               }`}
                             />
                           ))}
@@ -1351,7 +1351,7 @@ function ExpertSignupPortalContent() {
                             type="button"
                             onClick={handleSendVerificationCode}
                             disabled={sendingCode || resendCooldown > 0}
-                            className="text-[#2b56f5] font-semibold underline underline-offset-2 hover:text-blue-700 disabled:opacity-50 cursor-pointer"
+                            className="text-black font-bold underline underline-offset-2 hover:text-slate-700 disabled:opacity-50 cursor-pointer"
                           >
                             resend{resendCooldown > 0 ? ` (${resendCooldown}s)` : ""}
                           </button>
@@ -1378,7 +1378,7 @@ function ExpertSignupPortalContent() {
                               setModalError("Invalid or expired verification code. Please try again.");
                             }
                           }}
-                          className="w-full bg-[#2b56f5] hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-base transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                          className="w-full bg-[#111111] hover:bg-black text-white font-bold py-4 rounded-xl text-base transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                           {verifyingCode ? (
                             <>

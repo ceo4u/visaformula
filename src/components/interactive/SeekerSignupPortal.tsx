@@ -1034,7 +1034,11 @@ function SeekerSignupPortalContent() {
                                         setModalError("Invalid or expired verification code. Please try again.");
                                     }
                                 }}
-                                className="w-full bg-[#111111] hover:bg-black text-white font-bold py-4 rounded-xl text-base transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                className={`w-full font-bold py-4 rounded-xl text-base transition-all duration-300 shadow-md active:scale-95 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 ${
+                                    otpDigits.join("").trim().length === 6
+                                        ? "bg-black hover:bg-neutral-900 text-white shadow-xl scale-[1.01]"
+                                        : "bg-[#2563eb] hover:bg-blue-700 text-white"
+                                }`}
                             >
                                 {verifyingCode ? (
                                     <>

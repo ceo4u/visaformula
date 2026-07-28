@@ -128,10 +128,47 @@ function SeekerSignupPortalContent() {
                 return false;
             }
         } catch (err) {
-            setValidationError("Failed to verify code. Please try again.");
+            setValidationError("Server error while verifying code.");
             return false;
         } finally {
             setVerifyingCode(false);
+        }
+    };
+
+    const handleDigitChange = (val: string, idx: number) => {
+        const cleanVal = val.replace(/\D/g, "").slice(-1);
+        const updated = [...otpDigits];
+        updated[idx] = cleanVal;
+        setOtpDigits(updated);
+        setOtpInput(updated.join(""));
+        setModalError("");
+
+        if (cleanVal && idx < 5) {
+            const nextInput = document.getElementById(`otp-box-${idx + 1}`);
+            if (nextInput) nextInput.focus();
+        }
+    };
+
+    const handleDigitKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, idx: number) => {
+        if (e.key === "Backspace" && !otpDigits[idx] && idx > 0) {
+            const prevInput = document.getElementById(`otp-box-${idx - 1}`);
+            if (prevInput) prevInput.focus();
+        }
+    };
+
+    const handleDigitPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+        if (pasted) {
+            const digitsArr = pasted.split("");
+            const updated = Array(6).fill("");
+            digitsArr.forEach((d, i) => { updated[i] = d; });
+            setOtpDigits(updated);
+            setOtpInput(pasted);
+            setModalError("");
+            const targetIdx = Math.min(digitsArr.length, 5);
+            const targetInput = document.getElementById(`otp-box-${targetIdx}`);
+            if (targetInput) targetInput.focus();
         }
     };
 
@@ -407,11 +444,6 @@ function SeekerSignupPortalContent() {
                             const cleanPhone = phone.replace(/\D/g, "");
                             if (cleanPhone.length < 10) {
                                 setValidationError("Please enter a valid phone number containing at least 10 digits.");
-                                return;
-                            }
-
-                            if (!emailVerified) {
-                                setValidationError("Please verify your email address with the OTP code first.");
                                 return;
                             }
 
@@ -924,10 +956,10 @@ function SeekerSignupPortalContent() {
                 </div>
             </div>
 
-            {/* Email Verification Modal Pop-Up */}
+            {/* Email Verification Modal Pop-Up (Matching Image 2) */}
             {showOtpModal && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-premium-fade font-sans">
-                    <div className="bg-white rounded-3xl border border-slate-150 shadow-2xl p-8 max-w-md w-full relative space-y-6">
+                    <div className="bg-white rounded-3xl border border-slate-150 shadow-2xl p-8 max-w-[420px] w-full relative space-y-6">
                         <button
                             type="button"
                             onClick={() => setShowOtpModal(false)}
@@ -936,99 +968,84 @@ function SeekerSignupPortalContent() {
                             <X className="w-5 h-5" />
                         </button>
 
-                        <div className="text-center space-y-3">
-                            <div className="w-16 h-16 bg-blue-50 border border-blue-100 text-[#2563eb] rounded-2xl flex items-center justify-center mx-auto shadow-sm">
-                                <Mail className="w-8 h-8 text-[#2563eb]" />
+                        <div className="text-center space-y-2 pt-2">
+                            <div className="w-20 h-20 bg-blue-50/80 rounded-full flex items-center justify-center mx-auto shadow-xs mb-3">
+                                <Mail className="w-10 h-10 text-[#2b56f5]" />
                             </div>
-                            <h3 className="text-xl font-extrabold text-[#0c1a2e] font-jakarta">Verify Email Address</h3>
-                            <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-                                Enter the 6-digit OTP verification code sent to your email:
+                            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Check your email</h2>
+                            <p className="text-sm font-medium text-slate-500">
+                                Enter the verification code sent to
                             </p>
-                            <div className="bg-slate-100/90 border border-slate-250 py-2.5 px-4 rounded-xl text-center text-sm font-bold text-slate-800 break-all shadow-inner">
+                            <div className="text-sm font-bold text-slate-900 break-all">
                                 {email}
                             </div>
                         </div>
 
-                        {/* OTP Actions */}
-                        {!otpSent ? (
-                            <div className="pt-2 text-center">
-                                <button
-                                    type="button"
-                                    disabled={sendingCode}
-                                    onClick={handleSendVerificationCode}
-                                    className="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl text-sm transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
-                                >
-                                    {sendingCode ? (
-                                        <>
-                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                            <span>Sending OTP Code...</span>
-                                        </>
-                                    ) : (
-                                        <span>Send OTP Code &rarr;</span>
-                                    )}
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="space-y-4 pt-1">
-                                <div className="space-y-2 text-center">
-                                    <label className="text-xs font-bold text-slate-600 uppercase tracking-wider block">Enter 6-Digit Code</label>
+                        {/* 6 Individual Digit Inputs matching Image 2 */}
+                        <div className="space-y-5 pt-1">
+                            <div className="flex justify-center gap-2 md:gap-3 my-2">
+                                {otpDigits.map((digit, idx) => (
                                     <input
+                                        key={idx}
+                                        id={`otp-box-${idx}`}
                                         type="text"
-                                        maxLength={6}
-                                        placeholder="000000"
-                                        value={otpInput}
-                                        onChange={(e) => {
-                                            setOtpInput(e.target.value);
-                                            setModalError("");
-                                        }}
-                                        className="w-full py-3.5 px-4 bg-white border-2 border-slate-300 rounded-xl text-center text-2xl font-black tracking-[0.3em] text-black outline-none focus:border-[#2563eb] focus:ring-2 focus:ring-blue-100 shadow-sm"
+                                        inputMode="numeric"
+                                        maxLength={1}
+                                        value={digit}
+                                        onChange={(e) => handleDigitChange(e.target.value, idx)}
+                                        onKeyDown={(e) => handleDigitKeyDown(e, idx)}
+                                        onPaste={idx === 0 ? handleDigitPaste : undefined}
+                                        className={`w-11 h-13 md:w-12 md:h-14 border-2 rounded-xl text-center text-xl font-bold text-slate-900 outline-none transition-all shadow-xs ${
+                                            digit ? "border-[#2b56f5] bg-blue-50/20" : "border-slate-300 focus:border-[#2b56f5]"
+                                        }`}
                                     />
-                                </div>
+                                ))}
+                            </div>
 
-                                {modalError && (
-                                    <div className="p-3 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-bold text-center animate-premium-fade">
-                                        {modalError}
-                                    </div>
-                                )}
-
+                            <div className="text-center text-sm font-medium text-slate-500">
+                                Didn't get a code?{" "}
                                 <button
                                     type="button"
-                                    disabled={verifyingCode || otpInput.trim().length < 6}
-                                    onClick={async () => {
-                                        setModalError("");
-                                        const ok = await handleVerifyCode(otpInput);
-                                        if (ok) {
-                                            setShowOtpModal(false);
-                                            handleFinalSubmit();
-                                        } else {
-                                            setModalError("Invalid or expired OTP code. Please try again.");
-                                        }
-                                    }}
-                                    className="w-full bg-[#111111] hover:bg-black text-white font-extrabold py-4 px-6 rounded-xl text-sm transition-all shadow-lg active:scale-95 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    onClick={handleSendVerificationCode}
+                                    disabled={sendingCode || resendCooldown > 0}
+                                    className="text-[#2b56f5] font-semibold underline underline-offset-2 hover:text-blue-700 disabled:opacity-50 cursor-pointer"
                                 >
-                                    {verifyingCode ? (
-                                        <>
-                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                            <span>Verifying Code...</span>
-                                        </>
-                                    ) : (
-                                        <span>Verify & Complete Registration &rarr;</span>
-                                    )}
+                                    resend{resendCooldown > 0 ? ` (${resendCooldown}s)` : ""}
                                 </button>
-
-                                <div className="text-center text-xs font-semibold text-slate-500 pt-1">
-                                    Didn't receive code?{" "}
-                                    <button
-                                        type="button"
-                                        onClick={handleSendVerificationCode}
-                                        disabled={sendingCode || resendCooldown > 0}
-                                        className="text-[#2563eb] font-bold hover:underline disabled:opacity-50 cursor-pointer"
-                                    >
-                                        {sendingCode ? "Sending..." : resendCooldown > 0 ? `Resend (${resendCooldown}s)` : "Resend OTP"}
-                                    </button>
-                                </div>
                             </div>
-                        )}
+
+                            {modalError && (
+                                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center animate-premium-fade">
+                                    {modalError}
+                                </div>
+                            )}
+
+                            <button
+                                type="button"
+                                disabled={verifyingCode || otpDigits.join("").length < 6}
+                                onClick={async () => {
+                                    setModalError("");
+                                    const codeStr = otpDigits.join("");
+                                    const ok = await handleVerifyCode(codeStr);
+                                    if (ok) {
+                                        setShowOtpModal(false);
+                                        handleFinalSubmit();
+                                    } else {
+                                        setModalError("Invalid or expired verification code. Please try again.");
+                                    }
+                                }}
+                                className="w-full bg-[#2b56f5] hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-base transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                            >
+                                {verifyingCode ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                        <span>Verifying...</span>
+                                    </>
+                                ) : (
+                                    <span>Verify email</span>
+                                )}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

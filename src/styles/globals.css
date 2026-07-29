@@ -120,6 +120,11 @@
       -webkit-text-size-adjust: 100%;
       touch-action: manipulation;
     }
+
+    /* Minimum 44px touch targets for mobile buttons & controls */
+    button, input[type="button"], input[type="submit"], select, .touch-target {
+      min-height: 44px;
+    }
   }
 
   /* ── HEADINGS ── */

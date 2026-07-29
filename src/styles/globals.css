@@ -112,6 +112,16 @@
     position: relative;
   }
 
+  /* ── PREVENT MOBILE SAFARI AUTO-ZOOM & SCREEN SHIFTING ON INPUT FOCUS ── */
+  @media screen and (max-width: 768px) {
+    input, select, textarea,
+    input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"] {
+      font-size: 16px !important;
+      -webkit-text-size-adjust: 100%;
+      touch-action: manipulation;
+    }
+  }
+
   /* ── HEADINGS ── */
   h1, h2, h3, h4, h5, h6,
   .title-class {

@@ -1288,9 +1288,7 @@ function ExpertSignupPortalContent() {
                       if (!emailVerified) {
                         setShowOtpModal(true);
                         setModalError("");
-                        if (!otpSent) {
-                          await handleSendVerificationCode();
-                        }
+                        await handleSendVerificationCode();
                         return;
                       }
                       handleLaunchDashboard(e);
@@ -1300,151 +1298,151 @@ function ExpertSignupPortalContent() {
                     Submit
                   </button>
                 </div>
-
-                {/* Email Verification Modal Pop-Up (Matching Image 2) */}
-                {showOtpModal && (
-                  <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-premium-fade font-sans">
-                    <div className="bg-white rounded-3xl border border-slate-150 shadow-2xl p-5 sm:p-8 max-w-[420px] w-full relative space-y-5 sm:space-y-6 max-h-[95vh] overflow-y-auto">
-                      <button
-                        type="button"
-                        onClick={() => setShowOtpModal(false)}
-                        className="absolute top-4 right-4 sm:top-5 sm:right-5 text-slate-400 hover:text-black p-1.5 rounded-full hover:bg-slate-100 transition-all cursor-pointer"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
-
-                      <div className="text-center space-y-2 pt-1 sm:pt-2">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-slate-100/90 border border-slate-200/80 rounded-full flex items-center justify-center mx-auto shadow-xs mb-2 sm:mb-3">
-                          <Mail className="w-8 h-8 sm:w-10 sm:h-10 text-slate-900" />
-                        </div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Check your email</h2>
-                        <p className="text-xs sm:text-sm font-medium text-slate-500">
-                          Enter the verification code sent to
-                        </p>
-                        {!isEditingEmail ? (
-                          <div className="flex items-center justify-center gap-2 bg-slate-100/90 border border-slate-200/90 py-2 px-3 sm:px-4 rounded-xl shadow-inner max-w-xs mx-auto">
-                            <span className="text-xs sm:text-sm font-bold text-slate-900 break-all">{email}</span>
-                            <button
-                              type="button"
-                              onClick={() => setIsEditingEmail(true)}
-                              className="text-xs text-[#2563eb] font-bold hover:underline shrink-0 flex items-center gap-1 cursor-pointer pl-1"
-                            >
-                              <span>Edit</span>
-                              <Pencil className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="flex flex-col gap-2 max-w-xs mx-auto animate-premium-fade">
-                            <div className="flex gap-2">
-                              <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => {
-                                  setEmail(e.target.value);
-                                  setEmailErrorMsg("");
-                                  setModalError("");
-                                }}
-                                className="w-full px-3 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
-                                placeholder="Enter new email address"
-                              />
-                              <button
-                                type="button"
-                                onClick={async () => {
-                                  if (!email || !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) {
-                                    setModalError("Please enter a valid email address.");
-                                    return;
-                                  }
-                                  setIsEditingEmail(false);
-                                  setOtpDigits(Array(6).fill(""));
-                                  setOtpInput("");
-                                  setOtpSent(false);
-                                  await handleSendVerificationCode();
-                                }}
-                                className="bg-black text-white text-xs font-bold px-3.5 py-2 rounded-xl shrink-0 hover:bg-neutral-800 cursor-pointer shadow-sm"
-                              >
-                                Save & Resend
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* 6 Individual Digit Inputs with Black Accent */}
-                      <div className="space-y-4 sm:space-y-5 pt-1">
-                        <div className="flex justify-center gap-1.5 sm:gap-2.5 md:gap-3 my-1 sm:my-2 w-full">
-                          {otpDigits.map((digit, idx) => (
-                            <input
-                              key={idx}
-                              id={`expert-otp-box-${idx}`}
-                              type="text"
-                              inputMode="numeric"
-                              maxLength={1}
-                              value={digit}
-                              onChange={(e) => handleDigitChange(e.target.value, idx)}
-                              onKeyDown={(e) => handleDigitKeyDown(e, idx)}
-                              onPaste={idx === 0 ? handleDigitPaste : undefined}
-                              className={`w-9 h-11 sm:w-11 sm:h-13 md:w-12 md:h-14 border-2 rounded-xl text-center text-lg sm:text-xl font-bold text-slate-900 outline-none transition-all shadow-xs shrink-0 ${
-                                digit ? "border-black bg-slate-50" : "border-slate-300 focus:border-black"
-                              }`}
-                            />
-                          ))}
-                        </div>
-
-                        <div className="text-center text-sm font-medium text-slate-500">
-                          Didn't get a code?{" "}
-                          <button
-                            type="button"
-                            onClick={handleSendVerificationCode}
-                            disabled={sendingCode || resendCooldown > 0}
-                            className="text-black font-bold underline underline-offset-2 hover:text-slate-700 disabled:opacity-50 cursor-pointer"
-                          >
-                            resend{resendCooldown > 0 ? ` (${resendCooldown}s)` : ""}
-                          </button>
-                        </div>
-
-                        {modalError && (
-                          <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center animate-premium-fade">
-                            {modalError}
-                          </div>
-                        )}
-
-                        <button
-                          type="button"
-                          disabled={verifyingCode || otpDigits.join("").length < 6}
-                          onClick={async () => {
-                            setModalError("");
-                            const codeStr = otpDigits.join("");
-                            const ok = await handleVerifyCode(codeStr);
-                            if (ok) {
-                              setShowOtpModal(false);
-                              const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
-                              handleLaunchDashboard(fakeEvent);
-                            } else {
-                              setModalError("Invalid or expired verification code. Please try again.");
-                            }
-                          }}
-                          className={`w-full font-bold py-4 rounded-xl text-base transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 ${
-                            otpDigits.join("").trim().length === 6
-                              ? "bg-slate-900 hover:bg-black text-white shadow-xl shadow-slate-900/20 scale-[1.01] cursor-pointer"
-                              : "bg-slate-200 border border-slate-300 text-slate-400 cursor-not-allowed shadow-none"
-                          }`}
-                        >
-                          {verifyingCode ? (
-                            <>
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                              <span>Verifying...</span>
-                            </>
-                          ) : (
-                            <span>Verify email</span>
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </form>
             )}
           </div>
+
+          {/* Email Verification Modal Pop-Up (At Root Level) */}
+          {showOtpModal && (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-premium-fade font-sans">
+              <div className="bg-white rounded-3xl border border-slate-150 shadow-2xl p-5 sm:p-8 max-w-[420px] w-full relative space-y-5 sm:space-y-6 max-h-[95vh] overflow-y-auto">
+                <button
+                  type="button"
+                  onClick={() => setShowOtpModal(false)}
+                  className="absolute top-4 right-4 sm:top-5 sm:right-5 text-slate-400 hover:text-black p-1.5 rounded-full hover:bg-slate-100 transition-all cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <div className="text-center space-y-2 pt-1 sm:pt-2">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-slate-100/90 border border-slate-200/80 rounded-full flex items-center justify-center mx-auto shadow-xs mb-2 sm:mb-3">
+                    <Mail className="w-8 h-8 sm:w-10 sm:h-10 text-slate-900" />
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Check your email</h2>
+                  <p className="text-xs sm:text-sm font-medium text-slate-500">
+                    Enter the verification code sent to
+                  </p>
+                  {!isEditingEmail ? (
+                    <div className="flex items-center justify-center gap-2 bg-slate-100/90 border border-slate-200/90 py-2 px-3 sm:px-4 rounded-xl shadow-inner max-w-xs mx-auto">
+                      <span className="text-xs sm:text-sm font-bold text-slate-900 break-all">{email}</span>
+                      <button
+                        type="button"
+                        onClick={() => setIsEditingEmail(true)}
+                        className="text-xs text-[#2563eb] font-bold hover:underline shrink-0 flex items-center gap-1 cursor-pointer pl-1"
+                      >
+                        <span>Edit</span>
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-2 max-w-xs mx-auto animate-premium-fade">
+                      <div className="flex gap-2">
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                            setEmailErrorMsg("");
+                            setModalError("");
+                          }}
+                          className="w-full px-3 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
+                          placeholder="Enter new email address"
+                        />
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            if (!email || !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) {
+                              setModalError("Please enter a valid email address.");
+                              return;
+                            }
+                            setIsEditingEmail(false);
+                            setOtpDigits(Array(6).fill(""));
+                            setOtpInput("");
+                            setOtpSent(false);
+                            await handleSendVerificationCode();
+                          }}
+                          className="bg-black text-white text-xs font-bold px-3.5 py-2 rounded-xl shrink-0 hover:bg-neutral-800 cursor-pointer shadow-sm"
+                        >
+                          Save & Resend
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* 6 Individual Digit Inputs with Black Accent */}
+                <div className="space-y-4 sm:space-y-5 pt-1">
+                  <div className="flex justify-center gap-1.5 sm:gap-2.5 md:gap-3 my-1 sm:my-2 w-full">
+                    {otpDigits.map((digit, idx) => (
+                      <input
+                        key={idx}
+                        id={`expert-otp-box-${idx}`}
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleDigitChange(e.target.value, idx)}
+                        onKeyDown={(e) => handleDigitKeyDown(e, idx)}
+                        onPaste={idx === 0 ? handleDigitPaste : undefined}
+                        className={`w-9 h-11 sm:w-11 sm:h-13 md:w-12 md:h-14 border-2 rounded-xl text-center text-lg sm:text-xl font-bold text-slate-900 outline-none transition-all shadow-xs shrink-0 ${
+                          digit ? "border-black bg-slate-50" : "border-slate-300 focus:border-black"
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="text-center text-sm font-medium text-slate-500">
+                    Didn't get a code?{" "}
+                    <button
+                      type="button"
+                      onClick={handleSendVerificationCode}
+                      disabled={sendingCode || resendCooldown > 0}
+                      className="text-black font-bold underline underline-offset-2 hover:text-slate-700 disabled:opacity-50 cursor-pointer"
+                    >
+                      resend{resendCooldown > 0 ? ` (${resendCooldown}s)` : ""}
+                    </button>
+                  </div>
+
+                  {modalError && (
+                    <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center animate-premium-fade">
+                      {modalError}
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    disabled={verifyingCode || otpDigits.join("").length < 6}
+                    onClick={async () => {
+                      setModalError("");
+                      const codeStr = otpDigits.join("");
+                      const ok = await handleVerifyCode(codeStr);
+                      if (ok) {
+                        setShowOtpModal(false);
+                        const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+                        handleLaunchDashboard(fakeEvent);
+                      } else {
+                        setModalError("Invalid or expired verification code. Please try again.");
+                      }
+                    }}
+                    className={`w-full font-bold py-4 rounded-xl text-base transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 ${
+                      otpDigits.join("").trim().length === 6
+                        ? "bg-slate-900 hover:bg-black text-white shadow-xl shadow-slate-900/20 scale-[1.01] cursor-pointer"
+                        : "bg-slate-200 border border-slate-300 text-slate-400 cursor-not-allowed shadow-none"
+                    }`}
+                  >
+                    {verifyingCode ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span>Verifying...</span>
+                      </>
+                    ) : (
+                      <span>Verify email</span>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex-grow flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen text-[#111111] antialiased animate-premium-fade font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>

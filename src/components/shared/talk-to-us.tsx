@@ -57,7 +57,7 @@ export function TalkToUs() {
     { icon: GraduationCap, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Student Visa Help", sub: "Canada · UK · Australia · Germany", action: () => { setView("chat"); setTimeout(() => sendMsg("Student visa for Canada"), 200); } },
     { icon: Ticket, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Event Visa", sub: "FIFA · Concerts · Exhibitions", action: () => { setView("chat"); setTimeout(() => sendMsg("Event visa for FIFA / concert"), 200); } },
     { icon: Briefcase, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Work Permit", sub: "H-1B · LMIA · UK Skilled Worker", action: () => { setView("chat"); setTimeout(() => sendMsg("Work permit help"), 200); } },
-    { icon: Phone, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Call Us", sub: "+91 98765 43210 · 9AM–8PM", action: () => setView("call") },
+    { icon: Phone, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Call Us", sub: "+91 766 1989 366 · 9AM–8PM", action: () => setView("call") },
     { icon: Mail, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Email Support", sub: "support@visaformula.com", action: () => setView("call") },
   ];
 
@@ -154,7 +154,7 @@ export function TalkToUs() {
               <div className="p-5 flex flex-col gap-4">
                 <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center gap-4">
                   <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center"><Phone className="w-5 h-5 text-black" /></div>
-                  <div><div className="font-bold text-black text-sm">Phone Support</div><div className="text-black font-extrabold text-sm">+91 98765 43210</div><div className="text-xs text-gray-400">Mon–Sat · 9AM–8PM IST</div></div>
+                  <div><div className="font-bold text-black text-sm">Phone Support</div><div className="text-black font-extrabold text-sm">+91 766 1989 366</div><div className="text-xs text-gray-400">Mon–Sat · 9AM–8PM IST</div></div>
                 </div>
                 <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center gap-4">
                   <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center"><Mail className="w-5 h-5 text-black" /></div>

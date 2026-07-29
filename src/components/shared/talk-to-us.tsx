@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageSquare, X, Phone, Mail, ArrowLeft, Send, Bot, User, ChevronRight, Calendar, Globe, GraduationCap, Ticket, Briefcase } from "lucide-react";
+import { MessageSquare, X, Phone, Mail, ArrowLeft, Send, Bot, User, ChevronRight, Calendar, Globe, GraduationCap, Ticket, Briefcase, MessageCircle } from "lucide-react";
 
 type Msg = { role: "ai" | "user"; text: string; quickReplies?: string[] };
 
@@ -52,7 +52,10 @@ export function TalkToUs() {
     }, 900);
   };
 
+  const whatsappUrl = "https://wa.me/917661989366?text=Hi%20VisaFormula%20Team%2C%20I%20need%20assistance%20with%20my%20visa%20application.";
+
   const options = [
+    { icon: MessageCircle, bg: "bg-emerald-50 border border-emerald-200", iconColor: "text-emerald-600", title: "WhatsApp Chat", sub: "Direct chat on WhatsApp · +91 766 1989 366", action: () => window.open(whatsappUrl, "_blank") },
     { icon: Globe, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Visa Assistance", sub: "Apply for any visa online", action: () => { setView("chat"); } },
     { icon: GraduationCap, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Student Visa Help", sub: "Canada · UK · Australia · Germany", action: () => { setView("chat"); setTimeout(() => sendMsg("Student visa for Canada"), 200); } },
     { icon: Ticket, bg: "bg-slate-50 border border-slate-100", iconColor: "text-black", title: "Event Visa", sub: "FIFA · Concerts · Exhibitions", action: () => { setView("chat"); setTimeout(() => sendMsg("Event visa for FIFA / concert"), 200); } },
@@ -83,7 +86,7 @@ export function TalkToUs() {
                 {options.map((opt, i) => {
                   const IconComponent = opt.icon;
                   return (
-                    <button key={i} onClick={opt.action} className="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-150 transition-all text-left mb-1.5">
+                    <button key={i} onClick={opt.action} className="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-150 transition-all text-left mb-1.5 cursor-pointer">
                       <div className={`w-10 h-10 ${opt.bg} rounded-xl flex items-center justify-center shrink-0`}>
                         <IconComponent className={`w-5 h-5 ${opt.iconColor}`} />
                       </div>
@@ -152,6 +155,24 @@ export function TalkToUs() {
                 <button onClick={() => setOpen(false)} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><X className="w-4 h-4" /></button>
               </div>
               <div className="p-5 flex flex-col gap-4">
+                <a 
+                  href={whatsappUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl p-4 flex items-center justify-between shadow-md transition-all font-bold text-sm cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-emerald-500/80 rounded-xl flex items-center justify-center text-white">
+                      <MessageCircle className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-white font-extrabold text-sm">Chat on WhatsApp</div>
+                      <div className="text-emerald-100 text-xs font-medium">+91 766 1989 366 · Instant Reply</div>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-white" />
+                </a>
+
                 <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center gap-4">
                   <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center"><Phone className="w-5 h-5 text-black" /></div>
                   <div><div className="font-bold text-black text-sm">Phone Support</div><div className="text-black font-extrabold text-sm">+91 766 1989 366</div><div className="text-xs text-gray-400">Mon–Sat · 9AM–8PM IST</div></div>
@@ -160,12 +181,6 @@ export function TalkToUs() {
                   <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center"><Mail className="w-5 h-5 text-black" /></div>
                   <div><div className="font-bold text-black text-sm">Email Support</div><div className="text-black font-extrabold text-sm">support@visaformula.com</div><div className="text-xs text-gray-400">Response within 2–4 hours</div></div>
                 </div>
-                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
-                  <div className="font-bold text-black text-sm mb-2 flex items-center gap-2"><Calendar className="w-4 h-4 text-black" /> Book a Free Consultation</div>
-                  <div className="text-xs text-gray-500 mb-3">30-minute video call with a VisaFormula expert — completely free.</div>
-                  <button onClick={() => setView("chat")} className="w-full bg-black text-white font-bold py-2.5 rounded-xl text-xs hover:bg-slate-900 transition-all">Book Now → Free</button>
-                </div>
-                <button onClick={() => setView("chat")} className="w-full border border-slate-350 text-slate-800 font-bold py-2.5 rounded-xl text-xs hover:bg-slate-50 transition-all flex items-center justify-center gap-2"><MessageSquare className="w-4 h-4" /> Chat with AI instead</button>
               </div>
             </>
           )}

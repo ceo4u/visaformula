@@ -185,10 +185,14 @@ const pathname = Astro.url.pathname;
             </div>
         </div>
 
-        <!-- Mobile Menu Toggler (Hamburger + Mobile Sign Up Button) -->
+        <!-- Mobile Menu Toggler (Hamburger + Mobile Sign Up Button / Logged In Profile Icon) -->
         <div class="flex items-center gap-2 lg:hidden z-50">
             <a href="/signup" id="mobile-top-signup-btn" class="bg-[#2563eb] hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200">
                 Sign Up
+            </a>
+            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 rounded-full border border-slate-200 bg-white hover:border-black transition-all overflow-hidden shrink-0 shadow-sm">
+                <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
+                <span class="font-bold text-xs text-white bg-black w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">U</span>
             </a>
             <button id="mobile-menu-btn" class="p-2 hover:bg-gray-100 rounded-xl transition-colors flex items-center justify-center">
                 <span id="menu-icon" class="block">
@@ -438,7 +442,28 @@ const pathname = Astro.url.pathname;
             }
         }
 
-        // Show Mobile Profile Block
+        // Show Mobile Top Header Profile Icon Button (Next to Hamburger)
+        const mobileTopProfileBtn = document.getElementById("mobile-top-profile-btn");
+        if (mobileTopProfileBtn) {
+            mobileTopProfileBtn.classList.remove("hidden");
+            mobileTopProfileBtn.classList.add("flex");
+            mobileTopProfileBtn.setAttribute("href", dashboardHref);
+            
+            const mobileTopAvatarLetters = document.getElementById("mobile-top-profile-avatar-letters");
+            const mobileTopAvatarImg = document.getElementById("mobile-top-profile-avatar-img") as HTMLImageElement;
+
+            if (displayPhoto && mobileTopAvatarImg) {
+                mobileTopAvatarImg.src = displayPhoto;
+                mobileTopAvatarImg.classList.remove("hidden");
+                if (mobileTopAvatarLetters) mobileTopAvatarLetters.classList.add("hidden");
+            } else {
+                if (mobileTopAvatarLetters) mobileTopAvatarLetters.textContent = displayLetters;
+                if (mobileTopAvatarLetters) mobileTopAvatarLetters.classList.remove("hidden");
+                if (mobileTopAvatarImg) mobileTopAvatarImg.classList.add("hidden");
+            }
+        }
+
+        // Show Mobile Profile Block in Drawer
         const mobileProfileBlock = document.getElementById("mobile-nav-profile-block");
         if (mobileProfileBlock) {
             mobileProfileBlock.classList.remove("hidden");

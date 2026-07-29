@@ -1078,10 +1078,10 @@ function SeekerSignupPortalContent() {
                                         setModalError("Invalid or expired verification code. Please try again.");
                                     }
                                 }}
-                                className={`w-full font-bold py-4 rounded-xl text-base transition-all duration-300 shadow-md active:scale-95 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 ${
+                                className={`w-full font-bold py-4 rounded-xl text-base transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 ${
                                     otpDigits.join("").trim().length === 6
-                                        ? "bg-black hover:bg-neutral-900 text-white shadow-xl scale-[1.01]"
-                                        : "bg-[#2563eb] hover:bg-blue-700 text-white"
+                                        ? "bg-slate-900 hover:bg-black text-white shadow-xl shadow-slate-900/20 scale-[1.01] cursor-pointer"
+                                        : "bg-slate-200 border border-slate-300 text-slate-400 cursor-not-allowed shadow-none"
                                 }`}
                             >
                                 {verifyingCode ? (

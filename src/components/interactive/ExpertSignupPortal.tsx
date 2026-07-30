@@ -726,48 +726,46 @@ function ExpertSignupPortalContent() {
                 <div className="grid grid-cols-2 gap-4">
                   {/* 1. First Name & Last Name */}
                   <div className="col-span-1">
-                    <label className="text-xs font-bold text-slate-700 mb-1 block">First Name *</label>
+                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">First Name *</label>
                     <input 
                       required
                       value={firstName} 
                       onChange={(e) => setFirstName(e.target.value)} 
                       placeholder="First name" 
-                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
+                      className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
                     />
                   </div>
                   <div className="col-span-1">
-                    <label className="text-xs font-bold text-slate-700 mb-1 block">Last Name *</label>
+                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Last Name *</label>
                     <input 
                       required
                       value={lastName} 
                       onChange={(e) => setLastName(e.target.value)} 
                       placeholder="Last name" 
-                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
+                      className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
                     />
                   </div>
 
                   {/* 2. Type of Expert & Business Name */}
                   <div className="col-span-2 md:col-span-1" onClick={(e) => e.stopPropagation()}>
-                    <label className="text-xs font-bold text-slate-700 mb-1 block">Type of Expert *</label>
+                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Type of Expert *</label>
                     <div className="relative">
                       <button
                         type="button"
                         onClick={() => setSignupConsultantOpen(!signupConsultantOpen)}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none text-left focus:border-gray-500 text-slate-800 cursor-pointer flex items-center justify-between shadow-sm"
+                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 text-[#202124] cursor-pointer flex items-center justify-between shadow-2xs h-[46px] font-normal"
                       >
-                        <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>{consultantType}</span>
-                        <svg className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${signupConsultantOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                        <span>{consultantType}</span>
+                        <svg className={`w-4 h-4 text-[#5f6368] transition-transform duration-200 ${signupConsultantOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
                       </button>
                       {signupConsultantOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-xl mt-1 py-1 z-50 font-sans">
+                        <div className="absolute top-full left-0 w-full bg-white border border-[#dadce0] rounded-lg shadow-lg mt-1 py-1 z-50">
                           {["Freelancer", "Registered consultancy", "Employer/ hr agency", "University/ educational institute", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"].map(type => (
                             <button
                               key={type}
                               type="button"
                               onClick={() => { setConsultantType(type); setSignupConsultantOpen(false); }}
-                              className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-black hover:text-white transition-colors"
+                              className="w-full text-left px-4 py-2.5 text-[14px] font-normal text-[#202124] hover:bg-slate-100 transition-colors"
                             >
                               {type}
                             </button>
@@ -778,20 +776,19 @@ function ExpertSignupPortalContent() {
                   </div>
 
                   <div className="col-span-2 md:col-span-1">
-                    <label className="text-xs font-bold text-slate-700 mb-1 block">Business / Agency Name *</label>
+                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Business / Agency Name *</label>
                     <input 
                       required
                       value={businessName} 
                       onChange={(e) => setBusinessName(e.target.value)} 
                       placeholder="Business or Consultancy Name" 
-                      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
+                      className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
                     />
                   </div>
 
                   {/* 3. Email Address */}
-                  <div className="col-span-2 space-y-2">
-                    <label className="text-xs font-bold text-slate-700 block">Email Address *</label>
+                  <div className="col-span-2 space-y-1">
+                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Email Address *</label>
                     <div className="relative w-full">
                       <input 
                         type="email"
@@ -803,8 +800,7 @@ function ExpertSignupPortalContent() {
                           setEmailErrorMsg("");
                         }}
                         placeholder="name@example.com" 
-                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
+                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs pr-10"
                       />
                       {emailVerified && (
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center bg-emerald-50 border border-emerald-250 p-1.5 rounded-full animate-premium-fade shadow-sm">
@@ -816,12 +812,12 @@ function ExpertSignupPortalContent() {
                     </div>
 
                     {emailErrorMsg && (
-                      <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center justify-between gap-3 mt-2 w-full animate-premium-fade shadow-sm">
+                      <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-medium flex items-center justify-between gap-3 mt-2 w-full animate-premium-fade shadow-sm">
                         <div className="flex items-center gap-2">
                           <span className="text-amber-600 font-bold">⚠️</span>
                           <span>{emailErrorMsg}</span>
                         </div>
-                        <a href="/login" className="px-3.5 py-1.5 bg-black text-white rounded-md text-xs font-bold shrink-0 hover:bg-slate-800 transition-colors shadow-xs">
+                        <a href="/login" className="px-3 py-1.5 bg-[#1a73e8] text-white rounded-lg text-xs font-medium shrink-0 hover:bg-[#1557b0] transition-colors shadow-xs">
                           Log In &rarr;
                         </a>
                       </div>
@@ -829,76 +825,73 @@ function ExpertSignupPortalContent() {
                   </div>
 
                   {/* 4. Create Password & Confirm Password */}
-                  <div className={`col-span-2 space-y-4 border-l-4 pl-4 transition-all duration-300 ${
-                    !password && !confirmPassword ? 'border-slate-200' :
-                    password === confirmPassword ? 'border-emerald-500 bg-emerald-50/10 py-2 rounded-r-md' : 'border-rose-500 bg-rose-50/10 py-2 rounded-r-md'
-                  }`}>
+                  <div className="col-span-2 space-y-3 pt-1">
                     <div className="flex justify-between items-center">
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Security Credentials *</span>
+                      <label className="text-[13px] font-medium text-[#3c4043] block">Password *</label>
                       {password && confirmPassword && (
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          password === confirmPassword ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                        <span className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full ${
+                          password === confirmPassword ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'
                         }`}>
-                          {password === confirmPassword ? '✓ Passwords Match' : '✗ Passwords Do Not Match'}
+                          {password === confirmPassword ? '✓ Passwords match' : '✗ Passwords do not match'}
                         </span>
                       )}
                     </div>
 
-                    <div className="relative">
-                      <input 
-                        type={showPassword ? "text" : "password"} 
-                        required
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        placeholder="Create Password" 
-                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
-                      />
-                      <button 
-                        type="button" 
-                        onClick={() => setShowPassword(!showPassword)} 
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
-                      >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                    </div>
-                    <span className="text-[10px] text-slate-400 block font-semibold leading-normal mt-1">Must be at least 8 characters long, containing 1 number and 1 special symbol (e.g. @, #, $, !).</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="relative">
+                        <input 
+                          type={showPassword ? "text" : "password"} 
+                          required
+                          value={password} 
+                          onChange={(e) => setPassword(e.target.value)} 
+                          placeholder="Password" 
+                          className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs pr-10"
+                        />
+                        <button 
+                          type="button" 
+                          onClick={() => setShowPassword(!showPassword)} 
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
 
-                    <div className="relative">
-                      <input 
-                        type={showConfirmPassword ? "text" : "password"} 
-                        required
-                        value={confirmPassword} 
-                        onChange={(e) => setConfirmPassword(e.target.value)} 
-                        placeholder="Confirm Password" 
-                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm pr-10"
-                      />
-                      <button 
-                        type="button" 
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
-                      >
-                        {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
+                      <div className="relative">
+                        <input 
+                          type={showConfirmPassword ? "text" : "password"} 
+                          required
+                          value={confirmPassword} 
+                          onChange={(e) => setConfirmPassword(e.target.value)} 
+                          placeholder="Confirm" 
+                          className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs pr-10"
+                        />
+                        <button 
+                          type="button" 
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
+                        >
+                          {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
                     </div>
+                    <span className="text-[11px] text-[#5f6368] block font-normal leading-normal">Use 8 or more characters with a mix of letters, numbers & symbols</span>
                   </div>
 
                   {/* 5. Mobile Number */}
-                  <div className="col-span-2">
-                    <label className="text-xs font-bold text-slate-700 mb-1 block">Mobile / Phone Number *</label>
-                    <div className="flex gap-3">
+                  <div className="col-span-2 space-y-1">
+                    <label className="text-[13px] font-medium text-[#3c4043] block">Mobile / Phone Number *</label>
+                    <div className="flex gap-2.5">
                       <div className="relative" onClick={(e) => e.stopPropagation()}>
                         <button
                           type="button"
                           onClick={() => setCountryCodeOpen(!countryCodeOpen)}
-                          className="px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 shadow-sm shrink-0 cursor-pointer flex items-center justify-between gap-1.5 h-[46px] font-semibold"
+                          className="px-3 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 text-[#202124] shadow-2xs shrink-0 cursor-pointer flex items-center justify-between gap-1 h-[46px] font-medium"
                         >
-                          <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>{countryCode}</span>
-                          <svg className={`w-3.5 h-3.5 text-slate-500 transition-transform ${countryCodeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
+                          <span>{countryCode}</span>
+                          <svg className={`w-3.5 h-3.5 text-[#5f6368] transition-transform ${countryCodeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
                         </button>
                         {countryCodeOpen && (
-                          <div className="absolute left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-xl max-h-60 overflow-y-auto z-[60] font-sans">
+                          <div className="absolute left-0 mt-1 w-40 bg-white border border-[#dadce0] rounded-lg shadow-lg max-h-60 overflow-y-auto z-[60]">
                             {[
                               { val: "+91", label: "+91 (IN)" },
                               { val: "+1", label: "+1 (US/CA)" },
@@ -914,7 +907,7 @@ function ExpertSignupPortalContent() {
                                 key={opt.val}
                                 type="button"
                                 onClick={() => { setCountryCode(opt.val); setCountryCodeOpen(false); }}
-                                className="w-full text-left px-4 py-2 text-xs font-bold text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                className="w-full text-left px-3.5 py-2 text-xs font-medium text-[#202124] hover:bg-slate-100 transition-colors"
                               >
                                 {opt.label}
                               </button>
@@ -927,23 +920,22 @@ function ExpertSignupPortalContent() {
                         value={contactNumber} 
                         onChange={(e) => setContactNumber(e.target.value)} 
                         placeholder="e.g. 99999 99999" 
-                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
+                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
                       />
                     </div>
                   </div>
                 </div>
 
                 {validationError && (
-                  <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-sans text-center transition-all animate-premium-fade max-w-lg mx-auto mt-6">
+                  <div className="p-3.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-medium text-center transition-all animate-premium-fade max-w-lg mx-auto mt-4">
                     {validationError}
                   </div>
                 )}
 
-                <div className="pt-6 flex justify-center">
+                <div className="pt-6 flex justify-end">
                   <button 
                     type="submit"
-                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer flex items-center gap-2"
+                    className="bg-[#1a73e8] hover:bg-[#1557b0] text-white px-8 py-3 rounded-lg text-[14px] font-medium tracking-wide transition-all shadow-sm active:scale-98 cursor-pointer flex items-center gap-2"
                   >
                     <span>Proceed to Location & Expertise Details</span>
                     <span>&rarr;</span>

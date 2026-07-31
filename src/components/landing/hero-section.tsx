@@ -9,7 +9,7 @@ const heroSlides = [
     highlightText: 'Expert Help.',
     buttonText: 'Visa Experts',
     creditTitle: 'VisaFormula Platform',
-    creditSub: 'Photo of Dubai Marina',
+    creditSub: 'Photo of Dubai Marina Skyline',
     bgImage: '/hero-bg.jpg',
   },
   {
@@ -19,8 +19,8 @@ const heroSlides = [
     highlightText: 'Admissions.',
     buttonText: 'Universities',
     creditTitle: 'Global Education',
-    creditSub: 'Photo of Campus',
-    bgImage: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=2800&auto=format&fit=crop&q=95',
+    creditSub: 'Photo of University Campus',
+    bgImage: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=3840&auto=format&fit=crop&q=100',
   },
   {
     id: 2,
@@ -29,8 +29,8 @@ const heroSlides = [
     highlightText: 'Work Permits.',
     buttonText: 'Work Permits',
     creditTitle: 'Skilled Migration',
-    creditSub: 'Photo of Financial District',
-    bgImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=2800&auto=format&fit=crop&q=95',
+    creditSub: 'Photo of Global Financial District',
+    bgImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=3840&auto=format&fit=crop&q=100',
   },
 ]
 
@@ -342,11 +342,11 @@ export function HeroSection() {
                   </h1>
                 </div>
 
-                {/* Yelp-Style Compact Red Pill Button */}
+                {/* VisaFormula Signature Turquoise Action Pill Button */}
                 <div className="mt-4 sm:mt-5">
                   <button
                     onClick={() => document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
+                    className="inline-flex items-center gap-2 bg-[#00a896] hover:bg-[#008e7f] text-white font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
                   >
                     <Search className="w-4 h-4 stroke-[2.5]" />
                     <span>{heroSlides[activeSlide].buttonText}</span>

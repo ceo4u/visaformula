@@ -1,7 +1,35 @@
-'use client'
-
-import { ChevronDown, Search, Globe, MapPin, LayoutGrid, FileText } from 'lucide-react'
+import { ChevronDown, Search, Globe, MapPin, LayoutGrid, FileText, Pause, Play } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
+
+const heroSlides = [
+  {
+    id: 0,
+    titleLine1: 'Move Anywhere.',
+    titleLine2: 'Get ',
+    highlightText: 'Expert Help',
+    titleLine2End: ' Anywhere.',
+    description: 'AI-powered guidance connecting you with verified immigration lawyers, visa experts and relocation professionals across 150+ countries.',
+    bgImage: '/hero-bg.jpg',
+  },
+  {
+    id: 1,
+    titleLine1: 'Study Worldwide.',
+    titleLine2: 'Get ',
+    highlightText: 'Top Admissions',
+    titleLine2End: ' Easily.',
+    description: 'Direct admissions to accredited universities across USA, UK, Canada, Australia, Cyprus and Europe with full visa guidance.',
+    bgImage: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=2800&auto=format&fit=crop&q=95',
+  },
+  {
+    id: 2,
+    titleLine1: 'Work & Relocate.',
+    titleLine2: 'Find ',
+    highlightText: 'Verified Jobs',
+    titleLine2End: ' & Permits.',
+    description: 'Connect with licensed relocation specialists for work permits, skilled worker migration, and corporate mobility.',
+    bgImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=2800&auto=format&fit=crop&q=95',
+  },
+]
 
 const visaTypes = [
   { 
@@ -131,6 +159,10 @@ const popularSearches = [
 ]
 
 export function HeroSection() {
+  const [activeSlide, setActiveSlide] = useState(0)
+  const [slideProgress, setSlideProgress] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+
   const [query, setQuery] = useState('')
   const [country, setCountry] = useState('Select Country')
   const [location, setLocation] = useState('Select Location')
@@ -143,6 +175,32 @@ export function HeroSection() {
   const countryRef = useRef<HTMLDivElement>(null)
   const locationRef = useRef<HTMLDivElement>(null)
   const categoryRef = useRef<HTMLDivElement>(null)
+
+  // Auto-advancing story carousel timer
+  useEffect(() => {
+    if (isPaused) return
+
+    const intervalTime = 50
+    const totalDuration = 5000 // 5 seconds per slide segment
+    const step = (intervalTime / totalDuration) * 100
+
+    const timer = setInterval(() => {
+      setSlideProgress((prev) => {
+        if (prev >= 100) {
+          setActiveSlide((current) => (current + 1) % heroSlides.length)
+          return 0
+        }
+        return prev + step
+      })
+    }, intervalTime)
+
+    return () => clearInterval(timer)
+  }, [isPaused, activeSlide])
+
+  const goToSlide = (index: number) => {
+    setActiveSlide(index)
+    setSlideProgress(0)
+  }
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -206,39 +264,87 @@ export function HeroSection() {
 
   return (
     <section className="w-full relative overflow-visible pb-4 md:pb-6 bg-slate-950">
-      {/* Background Image - Dubai Marina Sunset Skyline */}
+      {/* Background Images - Auto-switching Story Carousel with Smooth Cross-fade */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <img 
-          src="/hero-bg.jpg" 
-          alt="Global Mobility Skyline Background" 
-          className="w-full h-full object-cover object-top"
-        />
+        {heroSlides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              activeSlide === index ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img 
+              src={slide.bgImage} 
+              alt={slide.titleLine1} 
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
+        ))}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/65 to-slate-950/90"></div>
       </div>
 
       {/* Top hero area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 sm:pt-12 md:pt-14 pb-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          {/* Left content */}
-          <div className="w-full md:w-[40%] md:flex-shrink-0 space-y-6 pb-6">
-            <div className="space-y-1">
-              <h1
-                className="text-[32px] sm:text-[44px] md:text-[54px] font-extrabold text-white leading-[1.08] drop-shadow-sm"
-                style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
-              >
-                Move Anywhere.
-              </h1>
-              <h1
-                className="text-[32px] sm:text-[44px] md:text-[54px] font-extrabold text-white leading-[1.08] drop-shadow-sm"
-                style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
-              >
-                Get <span className="text-cyan-400">Expert Help</span> Anywhere.
-              </h1>
-            </div>
+          {/* Left content with Vertical Story Line Control */}
+          <div className="w-full md:w-[46%] md:flex-shrink-0 pb-6">
+            <div className="flex items-start gap-4 sm:gap-5">
+              {/* Vertical Segmented Progress Line Bar (Matching Reference Image) */}
+              <div className="flex flex-col gap-2 shrink-0 pt-2.5 items-center select-none">
+                {heroSlides.map((slide, index) => {
+                  const isActive = activeSlide === index
+                  const isCompleted = activeSlide > index
+                  const heightPercent = isActive ? `${slideProgress}%` : isCompleted ? '100%' : '0%'
 
-            <p className="text-slate-200 text-[15px] sm:text-[16px] leading-relaxed max-w-[420px] font-medium drop-shadow-sm">
-              AI-powered guidance connecting you with verified immigration lawyers, visa experts and relocation professionals across 150+ countries.
-            </p>
+                  return (
+                    <button
+                      key={slide.id}
+                      onClick={() => goToSlide(index)}
+                      className="w-2 h-10 sm:h-12 bg-white/25 hover:bg-white/40 rounded-full overflow-hidden relative cursor-pointer transition-all border border-white/10"
+                      title={`Go to slide ${index + 1}`}
+                    >
+                      <div 
+                        className="absolute top-0 left-0 w-full bg-white rounded-full transition-all ease-linear"
+                        style={{ height: heightPercent }}
+                      />
+                    </button>
+                  )
+                })}
+
+                {/* Pause / Play Toggle Icon */}
+                <button
+                  onClick={() => setIsPaused(!isPaused)}
+                  className="w-6 h-6 mt-1 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md flex items-center justify-center text-white transition-all cursor-pointer border border-white/20"
+                  title={isPaused ? "Resume story transition" : "Pause story transition"}
+                >
+                  {isPaused ? <Play className="w-3 h-3 fill-current ml-0.5" /> : <Pause className="w-3 h-3 fill-current" />}
+                </button>
+              </div>
+
+              {/* Title & Description Text Content */}
+              <div className="flex-1 space-y-4 min-h-[220px]">
+                <div className="space-y-1">
+                  <h1
+                    className="text-[32px] sm:text-[44px] md:text-[52px] font-extrabold text-white leading-[1.08] drop-shadow-sm transition-all duration-300"
+                    style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
+                  >
+                    {heroSlides[activeSlide].titleLine1}
+                  </h1>
+                  <h1
+                    className="text-[32px] sm:text-[44px] md:text-[52px] font-extrabold text-white leading-[1.08] drop-shadow-sm transition-all duration-300"
+                    style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
+                  >
+                    {heroSlides[activeSlide].titleLine2}
+                    <span className="text-cyan-400">{heroSlides[activeSlide].highlightText}</span>
+                    {heroSlides[activeSlide].titleLine2End}
+                  </h1>
+                </div>
+
+                <p className="text-slate-200 text-[15px] sm:text-[16px] leading-relaxed max-w-[420px] font-medium drop-shadow-sm transition-all duration-300">
+                  {heroSlides[activeSlide].description}
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Right side: HTML-based connected 3x3 Grid Collage of 9 Square Classifieds Posts */}

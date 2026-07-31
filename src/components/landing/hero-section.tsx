@@ -452,7 +452,7 @@ export function HeroSection() {
                   className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => { window.location.href = '/find-experts?category=pr&country=Canada'; }}
                 >
-                  <img src="https://images.unsplash.com/photo-1517935703635-27c737826572?w=400&h=400&fit=crop" alt="Canada PR" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+                  <img src="https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=600&auto=format&fit=crop&q=85" alt="Canada PR" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">

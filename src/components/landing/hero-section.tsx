@@ -206,56 +206,39 @@ export function HeroSection() {
 
   return (
     <section className="w-full relative overflow-visible pb-4 md:pb-6 bg-slate-950">
-      {/* Background Image - Dubai Marina Sunset Skyline */}
+      {/* Background Image - 4K Ultra HD Dubai Marina Sunset Skyline */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img 
-          src="/hero-bg.jpg" 
-          alt="Global Mobility Skyline Background" 
-          className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000"
+          src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=3840&auto=format&fit=crop&q=100" 
+          alt="4K Ultra HD Global Mobility Skyline Background" 
+          className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-900/75 to-slate-950/95 backdrop-blur-[0.5px]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/75 via-slate-950/60 to-slate-950/85"></div>
       </div>
 
       {/* Top hero area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 md:pt-10 pb-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          {/* Left content — Yelp Style Overlay */}
-          <div className="w-full md:w-[42%] md:flex-shrink-0 space-y-5 pb-6">
+          {/* Left content */}
+          <div className="w-full md:w-[40%] md:flex-shrink-0 space-y-6 pb-6">
             <div className="space-y-1">
               <h1
-                className="text-[34px] sm:text-[48px] md:text-[56px] font-black text-white leading-[1.06] drop-shadow-md tracking-tight"
+                className="text-[32px] sm:text-[44px] md:text-[54px] font-extrabold text-white leading-[1.08] drop-shadow-sm"
                 style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
               >
                 Move Anywhere.
               </h1>
               <h1
-                className="text-[34px] sm:text-[48px] md:text-[56px] font-black text-white leading-[1.06] drop-shadow-md tracking-tight"
+                className="text-[32px] sm:text-[44px] md:text-[54px] font-extrabold text-white leading-[1.08] drop-shadow-sm"
                 style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
               >
                 Get <span className="text-cyan-400">Expert Help</span> Anywhere.
               </h1>
             </div>
 
-            <p className="text-slate-200 text-[15px] sm:text-[16px] leading-relaxed max-w-[440px] font-medium drop-shadow-sm">
+            <p className="text-slate-200 text-[15px] sm:text-[16px] leading-relaxed max-w-[420px] font-medium drop-shadow-sm">
               AI-powered guidance connecting you with verified immigration lawyers, visa experts and relocation professionals across 150+ countries.
             </p>
-
-            {/* Yelp-Style Red Category Badge / CTA */}
-            <div className="pt-1">
-              <a
-                href="/find-experts"
-                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-lg transition-all transform hover:scale-105 active:scale-95"
-              >
-                <Search className="w-4 h-4 stroke-[2.5]" />
-                <span>Find Visa Experts</span>
-              </a>
-            </div>
-
-            {/* Yelp-Style Bottom Left Photo Caption */}
-            <div className="pt-6 border-l-2 border-red-500 pl-3">
-              <p className="text-xs font-bold text-white leading-tight">Dubai Marina &amp; Global Mobility Hub</p>
-              <p className="text-[11px] text-slate-300 font-medium mt-0.5">Photo from verified platform partner</p>
-            </div>
           </div>
 
           {/* Right side: HTML-based connected 3x3 Grid Collage of 9 Square Classifieds Posts */}

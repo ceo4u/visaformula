@@ -512,7 +512,7 @@ const isHome = pathname === '/' || pathname === '';
         if (mobileLogoutBtn) mobileLogoutBtn.addEventListener("click", handleLogout);
 
         // Dynamic scroll header background transition on homepage
-        const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
+        const isHomePage = window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('/');
         const headerEl = document.getElementById("main-header");
         const logoImgEl = document.getElementById("header-logo-img");
         const loginBtnEl = document.getElementById("login-btn");
@@ -521,7 +521,7 @@ const isHome = pathname === '/' || pathname === '';
 
         if (isHomePage && headerEl) {
             const onScroll = () => {
-                const scrolled = window.scrollY > 40;
+                const scrolled = window.scrollY > 15;
                 if (scrolled) {
                     headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white shadow-md border-b border-gray-100 text-slate-800";
                     if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
@@ -533,6 +533,10 @@ const isHome = pathname === '/' || pathname === '';
                                 el.classList.remove("text-white", "group-hover:text-cyan-300");
                                 el.classList.add("text-[#0c1a2e]", "hover:text-[#2563eb]");
                             }
+                        });
+                        navContainer.querySelectorAll("svg").forEach((svg) => {
+                            svg.classList.remove("text-white/70");
+                            svg.classList.add("text-slate-500");
                         });
                     }
                 } else {
@@ -547,10 +551,15 @@ const isHome = pathname === '/' || pathname === '';
                                 el.classList.add("text-white", "group-hover:text-cyan-300");
                             }
                         });
+                        navContainer.querySelectorAll("svg").forEach((svg) => {
+                            svg.classList.remove("text-slate-500");
+                            svg.classList.add("text-white/70");
+                        });
                     }
                 }
             };
             window.addEventListener("scroll", onScroll, { passive: true });
+            document.addEventListener("astro:page-load", onScroll);
             onScroll();
         }
     }

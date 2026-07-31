@@ -342,11 +342,11 @@ export function HeroSection() {
                   </h1>
                 </div>
 
-                {/* VisaFormula Signature Turquoise Action Pill Button */}
+                {/* Brand Blue Action Pill Button */}
                 <div className="mt-4 sm:mt-5">
                   <button
                     onClick={() => document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="inline-flex items-center gap-2 bg-[#00a896] hover:bg-[#008e7f] text-white font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
+                    className="inline-flex items-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
                   >
                     <Search className="w-4 h-4 stroke-[2.5]" />
                     <span>{heroSlides[activeSlide].buttonText}</span>

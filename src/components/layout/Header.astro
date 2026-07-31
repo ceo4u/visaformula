@@ -10,23 +10,8 @@ const isHome = pathname === '/' || pathname === '';
         
         <!-- Logo - Left corner -->
         <div class="flex items-center shrink-0 py-2">
-            <a href="/" class="flex items-center gap-2.5 focus:outline-none -ml-2 lg:-ml-4 group">
-                <!-- White VF Symbol Icon -->
-                <div class="relative flex items-center justify-center shrink-0">
-                    <svg viewBox="0 0 36 32" fill="none" class={`h-8 lg:h-9 w-auto ${isHome ? 'text-white' : 'text-[#2563eb]'} transition-transform group-hover:scale-105`} stroke="currentColor">
-                        <path d="M3 10L14 28L30 4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M22 7.5L30 4L28.5 12L25.5 10L23.5 13L21.5 12L23 9.5L20.5 8L22 7.5Z" fill="currentColor" stroke="none" />
-                    </svg>
-                </div>
-                <!-- Title & Tagline -->
-                <div class="flex flex-col">
-                    <span class={`font-extrabold text-[20px] lg:text-[23px] tracking-tight leading-none ${isHome ? 'text-white' : 'text-[#0c1a2e]'}`} style="font-family: 'Plus Jakarta Sans', sans-serif;">
-                        Visa<span class={isHome ? 'text-cyan-400' : 'text-[#2563eb]'}>Formula</span>
-                    </span>
-                    <span class={`text-[9px] font-semibold tracking-wider mt-0.5 whitespace-nowrap ${isHome ? 'text-white/80' : 'text-slate-500'}`}>
-                        The Global Immigration & Mobility Platform
-                    </span>
-                </div>
+            <a href="/" class="flex items-center focus:outline-none -ml-2 lg:-ml-4">
+                <img src={isHome ? "/logo-white.png" : "/logo.png"} class="h-16 lg:h-20 w-auto object-contain" alt="VisaFormula Logo" />
             </a>
         </div>
 

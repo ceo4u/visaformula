@@ -643,16 +643,16 @@ export function HeroSection() {
 
       {/* Advance Search Card — Matching User Reference Image */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 relative z-10">
-        <div id="search-panel" className="bg-[#0B1527] rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800">
+        <div id="search-panel" className="bg-[#0B1527] rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800/90">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-center">
             
             {/* Box 1: What are you looking for? */}
-            <div className="bg-white rounded-xl border border-slate-200/90 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500/20 px-3.5 py-2.5 h-[62px] flex items-center gap-3 shadow-2xs relative">
-              <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
-                <FileText className="w-4 h-4" />
+            <div className="bg-white rounded-xl border border-slate-200/90 focus-within:border-[#2563eb] focus-within:ring-4 focus-within:ring-blue-500/15 hover:border-blue-400/80 px-3.5 py-2.5 h-[62px] flex items-center gap-3 shadow-xs relative transition-all duration-200">
+              <div className="w-8.5 h-8.5 rounded-lg bg-blue-50 flex items-center justify-center text-[#2563eb] shrink-0">
+                <FileText className="w-4.5 h-4.5 stroke-[2.2]" />
               </div>
               <div className="flex-1 flex flex-col justify-center min-w-0">
-                <label className="text-[11px] font-semibold text-slate-800 leading-none mb-1 block select-none">
+                <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1 block select-none tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   What are you looking for?
                 </label>
                 <input
@@ -660,7 +660,8 @@ export function HeroSection() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="e.g. USA Student Visa, Consultant"
-                  className="w-full text-xs text-slate-700 placeholder:text-slate-400 outline-none bg-transparent font-medium"
+                  className="w-full text-[13px] font-semibold text-slate-900 placeholder:text-slate-400/80 outline-none bg-transparent"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 />
               </div>
             </div>
@@ -669,22 +670,22 @@ export function HeroSection() {
             <div 
               ref={countryRef}
               onClick={() => { setCountryOpen(!countryOpen); setLocationOpen(false); setCategoryOpen(false); }}
-              className="bg-white rounded-xl border border-slate-200/90 hover:border-teal-500 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-2xs relative cursor-pointer"
+              className="bg-white rounded-xl border border-slate-200/90 hover:border-[#2563eb]/80 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-xs relative cursor-pointer transition-all duration-200"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
-                  <Globe className="w-4 h-4" />
+                <div className="w-8.5 h-8.5 rounded-lg bg-blue-50 flex items-center justify-center text-[#2563eb] shrink-0">
+                  <Globe className="w-4.5 h-4.5 stroke-[2.2]" />
                 </div>
                 <div className="flex flex-col justify-center min-w-0 select-none">
-                  <span className="text-[11px] font-semibold text-slate-800 leading-none mb-1 block">
+                  <span className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Country
                   </span>
-                  <span className={`text-xs font-medium truncate ${country !== 'Select Country' ? 'text-slate-800 font-semibold' : 'text-slate-400'}`}>
+                  <span className={`text-[13px] font-semibold truncate ${country !== 'Select Country' ? 'text-slate-900' : 'text-slate-400/80'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {country}
                   </span>
                 </div>
               </div>
-              <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`} />
 
               {countryOpen && (
                 <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto font-sans">
@@ -694,7 +695,7 @@ export function HeroSection() {
                       type="button"
                       onClick={(e) => { e.stopPropagation(); setCountry(c); setCountryOpen(false); }}
                       className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-medium ${
-                        country === c ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                        country === c ? 'bg-blue-50 text-[#2563eb] font-bold' : 'text-slate-700 hover:bg-slate-50'
                       }`}
                     >
                       {c}
@@ -708,22 +709,22 @@ export function HeroSection() {
             <div 
               ref={locationRef}
               onClick={() => { setLocationOpen(!locationOpen); setCountryOpen(false); setCategoryOpen(false); }}
-              className="bg-white rounded-xl border border-slate-200/90 hover:border-teal-500 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-2xs relative cursor-pointer"
+              className="bg-white rounded-xl border border-slate-200/90 hover:border-[#2563eb]/80 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-xs relative cursor-pointer transition-all duration-200"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
-                  <MapPin className="w-4 h-4" />
+                <div className="w-8.5 h-8.5 rounded-lg bg-blue-50 flex items-center justify-center text-[#2563eb] shrink-0">
+                  <MapPin className="w-4.5 h-4.5 stroke-[2.2]" />
                 </div>
                 <div className="flex flex-col justify-center min-w-0 select-none">
-                  <span className="text-[11px] font-semibold text-slate-800 leading-none mb-1 block">
+                  <span className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Location
                   </span>
-                  <span className={`text-xs font-medium truncate ${location !== 'Select Location' ? 'text-slate-800 font-semibold' : 'text-slate-400'}`}>
+                  <span className={`text-[13px] font-semibold truncate ${location !== 'Select Location' ? 'text-slate-900' : 'text-slate-400/80'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {location}
                   </span>
                 </div>
               </div>
-              <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${locationOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${locationOpen ? 'rotate-180' : ''}`} />
 
               {locationOpen && (
                 <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto font-sans">
@@ -733,7 +734,7 @@ export function HeroSection() {
                       type="button"
                       onClick={(e) => { e.stopPropagation(); setLocation(loc); setLocationOpen(false); }}
                       className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-medium ${
-                        location === loc ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                        location === loc ? 'bg-blue-50 text-[#2563eb] font-bold' : 'text-slate-700 hover:bg-slate-50'
                       }`}
                     >
                       {loc}
@@ -747,22 +748,22 @@ export function HeroSection() {
             <div 
               ref={categoryRef}
               onClick={() => { setCategoryOpen(!categoryOpen); setCountryOpen(false); setLocationOpen(false); }}
-              className="bg-white rounded-xl border border-slate-200/90 hover:border-teal-500 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-2xs relative cursor-pointer"
+              className="bg-white rounded-xl border border-slate-200/90 hover:border-[#2563eb]/80 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-xs relative cursor-pointer transition-all duration-200"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
-                  <LayoutGrid className="w-4 h-4" />
+                <div className="w-8.5 h-8.5 rounded-lg bg-blue-50 flex items-center justify-center text-[#2563eb] shrink-0">
+                  <LayoutGrid className="w-4.5 h-4.5 stroke-[2.2]" />
                 </div>
                 <div className="flex flex-col justify-center min-w-0 select-none">
-                  <span className="text-[11px] font-semibold text-slate-800 leading-none mb-1 block">
+                  <span className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     All Categories
                   </span>
-                  <span className={`text-xs font-medium truncate ${category !== 'Select Category' ? 'text-slate-800 font-semibold' : 'text-slate-400'}`}>
+                  <span className={`text-[13px] font-semibold truncate ${category !== 'Select Category' ? 'text-slate-900' : 'text-slate-400/80'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {category}
                   </span>
                 </div>
               </div>
-              <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${categoryOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${categoryOpen ? 'rotate-180' : ''}`} />
 
               {categoryOpen && (
                 <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto font-sans">
@@ -772,7 +773,7 @@ export function HeroSection() {
                       type="button"
                       onClick={(e) => { e.stopPropagation(); setCategory(cat); setCategoryOpen(false); }}
                       className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-medium ${
-                        category === cat ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                        category === cat ? 'bg-blue-50 text-[#2563eb] font-bold' : 'text-slate-700 hover:bg-slate-50'
                       }`}
                     >
                       {cat}
@@ -785,7 +786,8 @@ export function HeroSection() {
             {/* Box 5: Search Button */}
             <button 
               onClick={handleSearch}
-              className="h-[62px] bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-xl shadow-md flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all active:scale-98 w-full"
+              className="h-[62px] bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-xl shadow-md flex items-center justify-center gap-2 font-extrabold text-sm sm:text-base cursor-pointer transition-all active:scale-98 w-full"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <Search className="w-5 h-5 stroke-[2.5]" />
               <span>Search</span>

@@ -345,23 +345,97 @@ const isHome = pathname === '/' || pathname === '';
         { btn: 'mobile-latest-news-btn', drawer: 'mobile-latest-news-drawer', arrow: 'mobile-latest-news-arrow' },
         { btn: 'mobile-tools-btn', drawer: 'mobile-tools-drawer', arrow: 'mobile-tools-arrow' },
     ];
+    // 1. Dynamic Scroll Header Background Transition on Homepage
+    const isHomePage = window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('/');
+    const headerEl = document.getElementById("main-header");
+    const logoImgEl = document.getElementById("header-logo-img");
+    const loginBtnEl = document.getElementById("login-btn");
+    const contactBtnEl = document.getElementById("contact-btn");
+    const navContainer = document.querySelector("#main-header nav");
 
-    accordions.forEach(({ btn, drawer, arrow }) => {
-        const btnEl = document.getElementById(btn);
-        const drawerEl = document.getElementById(drawer);
-        const arrowEl = document.getElementById(arrow);
-        if (btnEl && drawerEl && arrowEl) {
-            btnEl.addEventListener('click', () => {
-                const isHidden = drawerEl.classList.contains('hidden');
-                if (isHidden) {
-                    drawerEl.classList.remove('hidden');
-                    arrowEl.classList.add('rotate-180');
-                } else {
-                    drawerEl.classList.add('hidden');
-                    arrowEl.classList.remove('rotate-180');
+    if (isHomePage && headerEl) {
+        const updateHeaderStyle = () => {
+            const scrolled = window.scrollY > 10;
+            if (scrolled) {
+                // Solid white header on scroll
+                headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white shadow-md border-b border-gray-100 text-slate-800";
+                if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
+                if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/30 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
+                if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none";
+                if (navContainer) {
+                    navContainer.querySelectorAll("button, a").forEach((el) => {
+                        if (!el.closest(".absolute")) {
+                            el.style.color = "#0c1a2e";
+                        }
+                    });
+                    navContainer.querySelectorAll("svg").forEach((svg) => {
+                        svg.style.color = "#0c1a2e";
+                    });
                 }
+            } else {
+                // Transparent gradient header over hero skyline
+                headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-none text-white";
+                if (logoImgEl) logoImgEl.setAttribute("src", "/logo-white.png");
+                if (loginBtnEl) loginBtnEl.className = "text-white border-white/80 hover:bg-white/10 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
+                if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-white hover:text-cyan-300 transition-colors focus:outline-none";
+                if (navContainer) {
+                    navContainer.querySelectorAll("button, a").forEach((el) => {
+                        if (!el.closest(".absolute")) {
+                            el.style.color = "";
+                        }
+                    });
+                    navContainer.querySelectorAll("svg").forEach((svg) => {
+                        svg.style.color = "";
+                    });
+                }
+            }
+        };
+
+        window.addEventListener("scroll", updateHeaderStyle, { passive: true });
+        document.addEventListener("DOMContentLoaded", updateHeaderStyle);
+        document.addEventListener("astro:page-load", updateHeaderStyle);
+        updateHeaderStyle();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Mobile Drawer Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const closeBtn = document.getElementById('close-icon');
+        const drawer = document.getElementById('mobile-menu-drawer');
+
+        if (menuBtn && drawer) {
+            menuBtn.addEventListener('click', () => {
+                drawer.classList.toggle('hidden');
+                document.getElementById('menu-icon').classList.toggle('hidden');
+                document.getElementById('close-icon').classList.toggle('hidden');
             });
         }
+
+        // Mobile Accordion Items
+        const accordions = [
+            { btn: 'mobile-find-expert-btn', drawer: 'mobile-find-expert-drawer', arrow: 'mobile-find-expert-arrow' },
+            { btn: 'mobile-visa-services-btn', drawer: 'mobile-visa-services-drawer', arrow: 'mobile-visa-services-arrow' },
+            { btn: 'mobile-latest-news-btn', drawer: 'mobile-latest-news-drawer', arrow: 'mobile-latest-news-arrow' },
+            { btn: 'mobile-tools-btn', drawer: 'mobile-tools-drawer', arrow: 'mobile-tools-arrow' },
+        ];
+
+        accordions.forEach(({ btn, drawer, arrow }) => {
+            const btnEl = document.getElementById(btn);
+            const drawerEl = document.getElementById(drawer);
+            const arrowEl = document.getElementById(arrow);
+            if (btnEl && drawerEl && arrowEl) {
+                btnEl.addEventListener('click', () => {
+                    const isHidden = drawerEl.classList.contains('hidden');
+                    if (isHidden) {
+                        drawerEl.classList.remove('hidden');
+                        arrowEl.classList.add('rotate-180');
+                    } else {
+                        drawerEl.classList.add('hidden');
+                        arrowEl.classList.remove('rotate-180');
+                    }
+                });
+            }
+        });
     });
 
     // Dynamic Auth Header Button & Profile Dropdown Updates
@@ -425,7 +499,7 @@ const isHome = pathname === '/' || pathname === '';
         if (desktopProfileBlock) {
             desktopProfileBlock.classList.remove("hidden");
             const avatarLetters = document.getElementById("nav-profile-avatar-letters");
-            const avatarImg = document.getElementById("nav-profile-avatar-img") as HTMLImageElement;
+            const avatarImg = document.getElementById("nav-profile-avatar-img");
             const profileName = document.getElementById("nav-profile-name");
             const dashboardLink = document.getElementById("nav-profile-dashboard-link");
 
@@ -433,7 +507,7 @@ const isHome = pathname === '/' || pathname === '';
             if (dashboardLink) dashboardLink.setAttribute("href", dashboardHref);
             
             if (displayPhoto && avatarImg) {
-                avatarImg.src = displayPhoto;
+                avatarImg.setAttribute("src", displayPhoto);
                 avatarImg.classList.remove("hidden");
                 if (avatarLetters) avatarLetters.classList.add("hidden");
             } else {
@@ -451,10 +525,10 @@ const isHome = pathname === '/' || pathname === '';
             mobileTopProfileBtn.setAttribute("href", dashboardHref);
             
             const mobileTopAvatarLetters = document.getElementById("mobile-top-profile-avatar-letters");
-            const mobileTopAvatarImg = document.getElementById("mobile-top-profile-avatar-img") as HTMLImageElement;
+            const mobileTopAvatarImg = document.getElementById("mobile-top-profile-avatar-img");
 
             if (displayPhoto && mobileTopAvatarImg) {
-                mobileTopAvatarImg.src = displayPhoto;
+                mobileTopAvatarImg.setAttribute("src", displayPhoto);
                 mobileTopAvatarImg.classList.remove("hidden");
                 if (mobileTopAvatarLetters) mobileTopAvatarLetters.classList.add("hidden");
             } else {
@@ -510,57 +584,13 @@ const isHome = pathname === '/' || pathname === '';
 
         if (desktopLogoutBtn) desktopLogoutBtn.addEventListener("click", handleLogout);
         if (mobileLogoutBtn) mobileLogoutBtn.addEventListener("click", handleLogout);
-
-        // Dynamic scroll header background transition on homepage
-        const isHomePage = window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('/');
-        const headerEl = document.getElementById("main-header");
-        const logoImgEl = document.getElementById("header-logo-img");
-        const loginBtnEl = document.getElementById("login-btn");
-        const contactBtnEl = document.getElementById("contact-btn");
-        const navContainer = document.querySelector("#main-header nav");
-
-        if (isHomePage && headerEl) {
-            const updateHeaderStyle = () => {
-                const scrolled = window.scrollY > 10;
-                if (scrolled) {
-                    // Solid white header on scroll
-                    headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white shadow-md border-b border-gray-100 text-slate-800";
-                    if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
-                    if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/30 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
-                    if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none";
-                    if (navContainer) {
-                        navContainer.querySelectorAll("button, a").forEach((el) => {
-                            if (!el.closest(".absolute")) {
-                                el.style.color = "#0c1a2e";
-                            }
-                        });
-                        navContainer.querySelectorAll("svg").forEach((svg) => {
-                            svg.style.color = "#0c1a2e";
-                        });
-                    }
-                } else {
-                    // Transparent gradient header over hero skyline
-                    headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-none text-white";
-                    if (logoImgEl) logoImgEl.setAttribute("src", "/logo-white.png");
-                    if (loginBtnEl) loginBtnEl.className = "text-white border-white/80 hover:bg-white/10 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
-                    if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-white hover:text-cyan-300 transition-colors focus:outline-none";
-                    if (navContainer) {
-                        navContainer.querySelectorAll("button, a").forEach((el) => {
-                            if (!el.closest(".absolute")) {
-                                el.style.color = "";
-                            }
-                        });
-                        navContainer.querySelectorAll("svg").forEach((svg) => {
-                            svg.style.color = "";
-                        });
-                    }
-                }
-            };
-
-            window.addEventListener("scroll", updateHeaderStyle, { passive: true });
-            document.addEventListener("DOMContentLoaded", updateHeaderStyle);
-            document.addEventListener("astro:page-load", updateHeaderStyle);
-            updateHeaderStyle();
-        }
     }
 </script>
+
+<style is:global>
+    #main-header.bg-white {
+        background-color: #ffffff !important;
+        background-image: none !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    }
+</style>

@@ -280,16 +280,16 @@ export function HeroSection() {
             />
           </div>
         ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/65 to-slate-950/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-slate-950/95"></div>
       </div>
 
       {/* Top hero area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 sm:pt-12 md:pt-14 pb-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 md:pt-32 pb-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          {/* Left content with Vertical Story Line Control */}
-          <div className="w-full md:w-[46%] md:flex-shrink-0 pb-6">
+          {/* Left content with Vertical Story Line Control (Matching Yelp Screenshot) */}
+          <div className="w-full md:w-[48%] md:flex-shrink-0 pb-6">
             <div className="flex items-start gap-4 sm:gap-5">
-              {/* Vertical Segmented Progress Line Bar (Matching Reference Image) */}
+              {/* Vertical Segmented Progress Line Bar (Matching Yelp Screenshot) */}
               <div className="flex flex-col gap-2 shrink-0 pt-2.5 items-center select-none">
                 {heroSlides.map((slide, index) => {
                   const isActive = activeSlide === index
@@ -321,17 +321,17 @@ export function HeroSection() {
                 </button>
               </div>
 
-              {/* Title & Description Text Content */}
+              {/* Title, Subtitle & Red Pill Action Button */}
               <div className="flex-1 space-y-4 min-h-[220px]">
                 <div className="space-y-1">
                   <h1
-                    className="text-[32px] sm:text-[44px] md:text-[52px] font-extrabold text-white leading-[1.08] drop-shadow-sm transition-all duration-300"
+                    className="text-[34px] sm:text-[46px] md:text-[54px] font-extrabold text-white leading-[1.05] tracking-tight drop-shadow-md transition-all duration-300"
                     style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
                   >
                     {heroSlides[activeSlide].titleLine1}
                   </h1>
                   <h1
-                    className="text-[32px] sm:text-[44px] md:text-[52px] font-extrabold text-white leading-[1.08] drop-shadow-sm transition-all duration-300"
+                    className="text-[34px] sm:text-[46px] md:text-[54px] font-extrabold text-white leading-[1.05] tracking-tight drop-shadow-md transition-all duration-300"
                     style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
                   >
                     {heroSlides[activeSlide].titleLine2}
@@ -340,9 +340,27 @@ export function HeroSection() {
                   </h1>
                 </div>
 
-                <p className="text-slate-200 text-[15px] sm:text-[16px] leading-relaxed max-w-[420px] font-medium drop-shadow-sm transition-all duration-300">
+                <p className="text-slate-200 text-[14px] sm:text-[15px] leading-relaxed max-w-[420px] font-medium drop-shadow-sm transition-all duration-300">
                   {heroSlides[activeSlide].description}
                 </p>
+
+                {/* Yelp-Style Red Pill Button */}
+                <div className="pt-2">
+                  <button
+                    onClick={() => document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="inline-flex items-center gap-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-sm sm:text-base px-6 py-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
+                  >
+                    <Search className="w-4 h-4 stroke-[2.5]" />
+                    <span>Find Visa Experts</span>
+                  </button>
+                </div>
+
+                {/* Bottom Left Photo Credit */}
+                <div className="pt-4 text-xs text-white/70 select-none font-sans flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                  <span className="font-semibold text-white">VisaFormula Platform</span>
+                  <span className="text-white/40">• Photo by VisaFormula</span>
+                </div>
               </div>
             </div>
           </div>

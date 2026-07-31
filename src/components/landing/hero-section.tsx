@@ -8,8 +8,8 @@ const heroSlides = [
     titleLine2: 'Get ',
     highlightText: 'Expert Help.',
     buttonText: 'Visa Experts',
-    creditTitle: 'VisaFormula Platform',
-    creditSub: 'Photo of Dubai Marina Skyline',
+    creditTitle: 'Dubai Marina Skyline',
+    creditSub: 'Photo by Oscar K.',
     bgImage: '/hero-bg.jpg',
   },
   {
@@ -18,8 +18,8 @@ const heroSlides = [
     titleLine2: 'Get ',
     highlightText: 'Admissions.',
     buttonText: 'Universities',
-    creditTitle: 'Global Education',
-    creditSub: 'Photo of University Campus',
+    creditTitle: 'Global Campus',
+    creditSub: 'Photo by Alex P.',
     bgImage: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=3840&auto=format&fit=crop&q=100',
   },
   {
@@ -28,8 +28,8 @@ const heroSlides = [
     titleLine2: 'Get ',
     highlightText: 'Work Permits.',
     buttonText: 'Work Permits',
-    creditTitle: 'Skilled Migration',
-    creditSub: 'Photo of Global Financial District',
+    creditTitle: 'Financial Center',
+    creditSub: 'Photo by Marcus B.',
     bgImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=3840&auto=format&fit=crop&q=100',
   },
 ]

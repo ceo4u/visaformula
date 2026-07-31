@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Search, Globe, MapPin, LayoutGrid, FileText } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 
 const visaTypes = [
@@ -82,47 +82,78 @@ const visaTypes = [
   },
 ]
 
-const servicesList = [
-  'Visitor Visa',
-  'Student Visa',
-  'Work Visa',
-  'Permanent Residence',
-  'Citizenship',
-  'Visa Appeal',
-  'Deportation Defence',
-  'Business Immigration'
-]
-
 const countriesList = [
-  'Canada',
+  'All Countries',
   'USA',
+  'Canada',
   'UK',
   'Australia',
+  'Germany',
   'France',
-  'Japan'
+  'Japan',
+  'Singapore',
+  'UAE',
+  'Other'
 ]
 
-const popularSearches = ['Canada PR', 'USA Visa Appeal', 'UK Student Visa', 'Australia Work Visa', 'Canada Visitor Visa']
+const locationsList = [
+  'All Locations',
+  'New York, USA',
+  'Toronto, Canada',
+  'London, UK',
+  'Sydney, Australia',
+  'Dubai, UAE',
+  'Berlin, Germany',
+  'Paris, France',
+  'Other Location'
+]
+
+const categoriesList = [
+  'All Categories',
+  'Student Visa',
+  'Work Visa',
+  'Visitor / Tourist Visa',
+  'Permanent Residence',
+  'Business Visa',
+  'Visa Appeal',
+  'Deportation Defence',
+  'Citizenship'
+]
+
+const popularSearches = [
+  'USA Visa',
+  'Canada PR',
+  'UK Student Visa',
+  'Australia Visa',
+  'Schengen Visa',
+  'Work Visa',
+  'Business Visa'
+]
 
 export function HeroSection() {
-  const [activeTab, setActiveTab] = useState(0)
-  const [service, setService] = useState('Select a service')
-  const [country, setCountry] = useState('Select country')
-  const [city, setCity] = useState('')
+  const [query, setQuery] = useState('')
+  const [country, setCountry] = useState('Select Country')
+  const [location, setLocation] = useState('Select Location')
+  const [category, setCategory] = useState('Select Category')
 
-  const [serviceOpen, setServiceOpen] = useState(false)
   const [countryOpen, setCountryOpen] = useState(false)
+  const [locationOpen, setLocationOpen] = useState(false)
+  const [categoryOpen, setCategoryOpen] = useState(false)
 
-  const serviceRef = useRef<HTMLDivElement>(null)
   const countryRef = useRef<HTMLDivElement>(null)
+  const locationRef = useRef<HTMLDivElement>(null)
+  const categoryRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
-      if (serviceRef.current && !serviceRef.current.contains(e.target as Node)) {
-        setServiceOpen(false)
-      }
       if (countryRef.current && !countryRef.current.contains(e.target as Node)) {
         setCountryOpen(false)
+      }
+      if (locationRef.current && !locationRef.current.contains(e.target as Node)) {
+        setLocationOpen(false)
+      }
+      if (categoryRef.current && !categoryRef.current.contains(e.target as Node)) {
+        setCategoryOpen(false)
       }
     }
     document.addEventListener('mousedown', handleOutsideClick)
@@ -141,38 +172,35 @@ export function HeroSection() {
     }
   }, [])
 
-  const handleTabClick = (index: number, label: string) => {
-    setActiveTab(index)
-    setService(label)
-  }
-
   const handlePopularSearch = (search: string) => {
-    if (search === 'Canada PR') {
-      setService('Permanent Residence')
-      setCountry('Canada')
-    } else if (search === 'USA Visa Appeal') {
-      setService('Visa Appeal')
+    if (search === 'USA Visa') {
+      setQuery('USA Visa')
       setCountry('USA')
-    } else if (search === 'UK Student Visa') {
-      setService('Student Visa')
-      setCountry('UK')
-    } else if (search === 'Australia Work Visa') {
-      setService('Work Visa')
-      setCountry('Australia')
-    } else if (search === 'Canada Visitor Visa') {
-      setService('Visitor Visa')
+    } else if (search === 'Canada PR') {
+      setCategory('Permanent Residence')
       setCountry('Canada')
+    } else if (search === 'UK Student Visa') {
+      setCategory('Student Visa')
+      setCountry('UK')
+    } else if (search === 'Australia Visa') {
+      setCategory('Work Visa')
+      setCountry('Australia')
+    } else if (search === 'Schengen Visa') {
+      setCategory('Visitor / Tourist Visa')
+      setCountry('France')
+    } else if (search === 'Work Visa') {
+      setCategory('Work Visa')
+    } else if (search === 'Business Visa') {
+      setCategory('Business Visa')
     }
   }
 
   const handleSearch = () => {
-    const serviceParam = service !== 'Select a service' ? encodeURIComponent(service) : ''
-    const countryParam = country !== 'Select country' ? encodeURIComponent(country) : ''
-    const cityParam = city ? encodeURIComponent(city) : ''
     const params = new URLSearchParams()
-    if (serviceParam) params.set('query', serviceParam)
-    if (countryParam) params.set('country', countryParam)
-    if (cityParam) params.set('location', cityParam)
+    if (query.trim()) params.set('query', query.trim())
+    if (country !== 'Select Country' && country !== 'All Countries') params.set('country', country)
+    if (location !== 'Select Location' && location !== 'All Locations') params.set('location', location)
+    if (category !== 'Select Category' && category !== 'All Categories') params.set('category', category)
     window.location.href = `/find-experts?${params.toString()}`
   }
 
@@ -201,54 +229,6 @@ export function HeroSection() {
             <p className="text-gray-500 text-[15px] sm:text-[16px] leading-relaxed max-w-[420px]">
               AI-powered guidance connecting you with verified immigration lawyers, visa experts and relocation professionals across 150+ countries.
             </p>
-
-            {/* Feature badges */}
-            <div className="flex items-center gap-4 sm:gap-6 flex-wrap pt-1">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0 text-blue-600">
-                  <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                  </svg>
-                </div>
-                <div className="leading-tight">
-                  <p className="text-xs font-semibold text-gray-800">Verified</p>
-                  <p className="text-xs text-gray-500">Professionals</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-green-50 flex items-center justify-center flex-shrink-0 text-green-600">
-                  <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                  </svg>
-                </div>
-                <div className="leading-tight">
-                  <p className="text-xs font-semibold text-gray-800">Secure &amp; Private</p>
-                  <p className="text-xs text-gray-500">Consultations</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-orange-50 flex items-center justify-center flex-shrink-0 text-orange-500">
-                  <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div className="leading-tight">
-                  <p className="text-xs font-semibold text-gray-800">Transparent</p>
-                  <p className="text-xs text-gray-500">Pricing</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0 text-purple-600">
-                  <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-                  </svg>
-                </div>
-                <div className="leading-tight">
-                  <p className="text-xs font-semibold text-gray-800">Thousands of</p>
-                  <p className="text-xs text-gray-500">Success Stories</p>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Right side: HTML-based connected 3x3 Grid Collage of 9 Square Classifieds Posts */}
@@ -319,7 +299,7 @@ export function HeroSection() {
                       Visit
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
-                      Rising At Sports ✓
+                      Hellas Sports ✓
                     </span>
                   </div>
 
@@ -328,17 +308,44 @@ export function HeroSection() {
                       🇬🇷 Greece
                     </span>
                     <h4 className="text-[10.5px] sm:text-[11.5px] font-bold text-white leading-tight block truncate group-hover:text-emerald-300 transition-colors">
-                      Greece Cricket Tour Package
+                      Greece Cricket Tour
                     </h4>
                   </div>
                 </div>
 
-                {/* 3. UK Universities Post */}
+                {/* 3. Canada PR Post */}
                 <div 
                   className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between" 
-                  onClick={() => { window.location.href = '/universities?country=UK'; }}
+                  onClick={() => { window.location.href = '/find-experts?category=pr&country=Canada'; }}
                 >
-                  <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=400&fit=crop" alt="UK Universities" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+                  <img src="https://images.unsplash.com/photo-1517935703635-27c737826572?w=400&h=400&fit=crop" alt="Canada PR" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                  
+                  <div className="relative z-10 p-2 flex items-center justify-between gap-1">
+                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
+                      PR
+                    </span>
+                    <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
+                      Maple Immigrate ✓
+                    </span>
+                  </div>
+
+                  <div className="relative z-10 p-2.5">
+                    <span className="text-[8.5px] font-medium text-red-200 block mb-0.5">
+                      🇨🇦 Canada
+                    </span>
+                    <h4 className="text-[10.5px] sm:text-[11.5px] font-bold text-white leading-tight block truncate group-hover:text-red-300 transition-colors">
+                      Express Entry PR 2026
+                    </h4>
+                  </div>
+                </div>
+
+                {/* 4. USA F-1 Student Post */}
+                <div 
+                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between" 
+                  onClick={() => { window.location.href = '/universities?country=USA'; }}
+                >
+                  <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&h=400&fit=crop" alt="USA Campus" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
@@ -346,75 +353,48 @@ export function HeroSection() {
                       Student
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
-                      Britannic Consult ✓
+                      Stateside Ed ✓
                     </span>
                   </div>
 
                   <div className="relative z-10 p-2.5">
-                    <span className="text-[8.5px] font-medium text-sky-200 block mb-0.5">
-                      🇬🇧 United Kingdom
+                    <span className="text-[8.5px] font-medium text-blue-200 block mb-0.5">
+                      🇺🇸 USA
                     </span>
-                    <h4 className="text-[10.5px] sm:text-[11.5px] font-bold text-white leading-tight block truncate group-hover:text-sky-300 transition-colors">
-                      UK Masters Admissions
+                    <h4 className="text-[10.5px] sm:text-[11.5px] font-bold text-white leading-tight block truncate group-hover:text-blue-300 transition-colors">
+                      USA F-1 Fall Intake
                     </h4>
                   </div>
                 </div>
 
-                {/* 4. Canada Work & Study Post */}
+                {/* 5. UK Student & Work Post */}
                 <div 
                   className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between" 
-                  onClick={() => { window.location.href = '/universities?country=Canada'; }}
+                  onClick={() => { window.location.href = '/universities?country=UK'; }}
                 >
-                  <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=400&h=400&fit=crop" alt="Canada Pathways" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+                  <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=400&fit=crop" alt="London UK" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
                     <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
-                      PR
+                      Student
                     </span>
                     <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
-                      MapleLeaf Agency ✓
+                      Britannia Visas ✓
                     </span>
                   </div>
 
                   <div className="relative z-10 p-2.5">
                     <span className="text-[8.5px] font-medium text-amber-200 block mb-0.5">
-                      🇨🇦 Canada
+                      🇬🇧 UK / London
                     </span>
                     <h4 className="text-[10.5px] sm:text-[11.5px] font-bold text-white leading-tight block truncate group-hover:text-amber-300 transition-colors">
-                      Express Entry & PGWP
+                      UK Masters & PSW 2026
                     </h4>
                   </div>
                 </div>
 
-                {/* 5. Australia PR Post */}
-                <div 
-                  className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between" 
-                  onClick={() => { window.location.href = '/universities?country=Australia'; }}
-                >
-                  <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=400&h=400&fit=crop" alt="Australia PR" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                  
-                  <div className="relative z-10 p-2 flex items-center justify-between gap-1">
-                    <span className="text-[7.5px] sm:text-[8px] font-bold text-white bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10 uppercase tracking-wider shadow-xs">
-                      PR
-                    </span>
-                    <span className="text-[7.5px] sm:text-[8px] font-medium text-white/90 truncate bg-slate-900/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 shadow-xs max-w-[55%]">
-                      Pacific Migration ✓
-                    </span>
-                  </div>
-
-                  <div className="relative z-10 p-2.5">
-                    <span className="text-[8.5px] font-medium text-amber-200 block mb-0.5">
-                      🇦🇺 Australia
-                    </span>
-                    <h4 className="text-[10.5px] sm:text-[11.5px] font-bold text-white leading-tight block truncate group-hover:text-amber-300 transition-colors">
-                      Subclass 189 Skill PR
-                    </h4>
-                  </div>
-                </div>
-
-                {/* 6. Dubai / UAE Work Post */}
+                {/* 6. UAE Dubai Work Visa Post */}
                 <div 
                   className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group shadow-xs hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between" 
                   onClick={() => { window.location.href = '/universities?country=UAE'; }}
@@ -527,157 +507,171 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Dark search card — flush with hero */}
+      {/* Advance Search Card — Matching User Reference Image */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
-            <div id="search-panel" className="bg-[#0f1f3d] rounded-2xl px-4 sm:px-7 py-6 shadow-2xl">
-          <h2 className="text-white text-base font-semibold mb-4">What do you need help with?</h2>
-
-          {/* Visa type tabs — 2-col grid on mobile, even horizontal flex on desktop */}
-          <div className="bg-white rounded-xl px-2 py-3 mb-4">
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:flex lg:items-stretch lg:justify-between gap-y-2 lg:gap-y-0 w-full">
-              {visaTypes.map((type, i) => (
-                <div key={i} className="flex items-center lg:flex-1 justify-center">
-                  <button
-                    onClick={() => {
-                      if (type.label === 'Visitor Visa') {
-                        window.location.href = '/tours';
-                      } else if (type.label === 'Student Visa') {
-                        window.location.href = '/universities';
-                      } else if (type.label === 'Work Visa') {
-                        window.location.href = '/jobs';
-                      } else {
-                        handleTabClick(i, type.label);
-                      }
-                    }}
-                    className={`flex flex-col items-center gap-1.5 px-2 py-2 rounded-lg w-full transition-all cursor-pointer ${
-                      activeTab === i ? 'bg-blue-50/50' : 'hover:bg-gray-50/50'
-                    }`}
-                  >
-                    <span className={`${type.color} flex items-center justify-center`}>
-                      {type.icon}
-                    </span>
-                    <span className="text-[11px] font-bold text-gray-800 text-center leading-tight">
-                      {type.label}
-                    </span>
-                  </button>
-                  {i < visaTypes.length - 1 && (
-                    <div className="hidden lg:block w-px h-8 bg-gray-100 self-center flex-shrink-0" />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Search filters — stack on mobile */}
-          <div className="flex flex-col md:flex-row items-stretch gap-4">
-            {/* Filter 1 */}
-            <div ref={serviceRef} className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-2 flex flex-col justify-center relative">
-              <label className="text-[11px] text-gray-800 font-bold mb-0.5">I want help with</label>
-              <div 
-                className="relative cursor-pointer flex items-center justify-between"
-                onClick={() => setServiceOpen(!serviceOpen)}
-              >
-                <span className="text-sm text-gray-700 font-medium select-none py-0.5">
-                  {service}
-                </span>
-                <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${serviceOpen ? 'rotate-180' : ''}`} />
+        <div id="search-panel" className="bg-[#0B1527] rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-center">
+            
+            {/* Box 1: What are you looking for? */}
+            <div className="bg-white rounded-xl border border-slate-200/90 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500/20 px-3.5 py-2.5 h-[62px] flex items-center gap-3 shadow-2xs relative">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
+                <FileText className="w-4 h-4" />
               </div>
-
-              {/* Custom Service Dropdown */}
-              {serviceOpen && (
-                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-2xl border border-gray-100 py-1.5 z-50 max-h-60 overflow-y-auto">
-                  <button
-                    onClick={() => { setService('Select a service'); setServiceOpen(false); }}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-400 hover:bg-gray-50 transition-colors font-medium"
-                  >
-                    Select a service
-                  </button>
-                  {servicesList.map((item) => (
-                    <button
-                      key={item}
-                      onClick={() => { setService(item); setServiceOpen(false); }}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors font-medium ${
-                        service === item ? 'bg-blue-50/70 text-blue-600' : 'text-gray-700 hover:bg-blue-50/40 hover:text-blue-600'
-                      }`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <div className="flex-1 flex flex-col justify-center min-w-0">
+                <label className="text-[11px] font-semibold text-slate-800 leading-none mb-1 block select-none">
+                  What are you looking for?
+                </label>
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="e.g. USA Student Visa, Consultant"
+                  className="w-full text-xs text-slate-700 placeholder:text-slate-400 outline-none bg-transparent font-medium"
+                />
+              </div>
             </div>
 
-            {/* Filter 2 */}
-            <div ref={countryRef} className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-2 flex flex-col justify-center relative">
-              <label className="text-[11px] text-gray-800 font-bold mb-0.5">Country</label>
-              <div 
-                className="relative cursor-pointer flex items-center justify-between"
-                onClick={() => setCountryOpen(!countryOpen)}
-              >
-                <span className="text-sm text-gray-700 font-medium select-none py-0.5">
-                  {country}
-                </span>
-                <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`} />
+            {/* Box 2: Country */}
+            <div 
+              ref={countryRef}
+              onClick={() => { setCountryOpen(!countryOpen); setLocationOpen(false); setCategoryOpen(false); }}
+              className="bg-white rounded-xl border border-slate-200/90 hover:border-teal-500 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-2xs relative cursor-pointer"
+            >
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
+                  <Globe className="w-4 h-4" />
+                </div>
+                <div className="flex flex-col justify-center min-w-0 select-none">
+                  <span className="text-[11px] font-semibold text-slate-800 leading-none mb-1 block">
+                    Country
+                  </span>
+                  <span className={`text-xs font-medium truncate ${country !== 'Select Country' ? 'text-slate-800 font-semibold' : 'text-slate-400'}`}>
+                    {country}
+                  </span>
+                </div>
               </div>
+              <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`} />
 
-              {/* Custom Country Dropdown */}
               {countryOpen && (
-                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-2xl border border-gray-100 py-1.5 z-50 max-h-60 overflow-y-auto">
-                  <button
-                    onClick={() => { setCountry('Select country'); setCountryOpen(false); }}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-400 hover:bg-gray-50 transition-colors font-medium"
-                  >
-                    Select country
-                  </button>
-                  {countriesList.map((item) => (
+                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto font-sans">
+                  {countriesList.map((c) => (
                     <button
-                      key={item}
-                      onClick={() => { setCountry(item); setCountryOpen(false); }}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors font-medium ${
-                        country === item ? 'bg-blue-50/70 text-blue-600' : 'text-gray-700 hover:bg-blue-50/40 hover:text-blue-600'
+                      key={c}
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setCountry(c); setCountryOpen(false); }}
+                      className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-medium ${
+                        country === c ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
                       }`}
                     >
-                      {item}
+                      {c}
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Filter 3 */}
-            <div className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-2 flex flex-col justify-center">
-              <label className="text-[11px] text-gray-800 font-bold mb-0.5">
-                City or Region <span className="text-gray-400 font-normal">(Optional)</span>
-              </label>
-              <input
-                type="text"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="Enter city or region"
-                className="w-full text-sm text-gray-700 placeholder-gray-400 bg-transparent outline-none py-0.5"
-              />
+            {/* Box 3: Location */}
+            <div 
+              ref={locationRef}
+              onClick={() => { setLocationOpen(!locationOpen); setCountryOpen(false); setCategoryOpen(false); }}
+              className="bg-white rounded-xl border border-slate-200/90 hover:border-teal-500 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-2xs relative cursor-pointer"
+            >
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
+                  <MapPin className="w-4 h-4" />
+                </div>
+                <div className="flex flex-col justify-center min-w-0 select-none">
+                  <span className="text-[11px] font-semibold text-slate-800 leading-none mb-1 block">
+                    Location
+                  </span>
+                  <span className={`text-xs font-medium truncate ${location !== 'Select Location' ? 'text-slate-800 font-semibold' : 'text-slate-400'}`}>
+                    {location}
+                  </span>
+                </div>
+              </div>
+              <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${locationOpen ? 'rotate-180' : ''}`} />
+
+              {locationOpen && (
+                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto font-sans">
+                  {locationsList.map((loc) => (
+                    <button
+                      key={loc}
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setLocation(loc); setLocationOpen(false); }}
+                      className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-medium ${
+                        location === loc ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      {loc}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Search Button */}
+            {/* Box 4: All Categories */}
+            <div 
+              ref={categoryRef}
+              onClick={() => { setCategoryOpen(!categoryOpen); setCountryOpen(false); setLocationOpen(false); }}
+              className="bg-white rounded-xl border border-slate-200/90 hover:border-teal-500 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-2xs relative cursor-pointer"
+            >
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 shrink-0">
+                  <LayoutGrid className="w-4 h-4" />
+                </div>
+                <div className="flex flex-col justify-center min-w-0 select-none">
+                  <span className="text-[11px] font-semibold text-slate-800 leading-none mb-1 block">
+                    All Categories
+                  </span>
+                  <span className={`text-xs font-medium truncate ${category !== 'Select Category' ? 'text-slate-800 font-semibold' : 'text-slate-400'}`}>
+                    {category}
+                  </span>
+                </div>
+              </div>
+              <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${categoryOpen ? 'rotate-180' : ''}`} />
+
+              {categoryOpen && (
+                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto font-sans">
+                  {categoriesList.map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setCategory(cat); setCategoryOpen(false); }}
+                      className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-medium ${
+                        category === cat ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Box 5: Search Button */}
             <button 
               onClick={handleSearch}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-8 py-3.5 rounded-xl transition-colors flex-shrink-0 whitespace-nowrap flex items-center justify-center shadow-sm w-full md:w-auto"
+              className="h-[62px] bg-[#00a896] hover:bg-[#029384] text-white rounded-xl shadow-md flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all active:scale-98 w-full"
             >
-              Search Experts
+              <Search className="w-5 h-5 stroke-[2.5]" />
+              <span>Search</span>
             </button>
           </div>
 
-          {/* Popular searches — wraps on mobile */}
-          <div className="flex items-center gap-2 sm:gap-3 mt-5 flex-wrap">
-            <span className="text-gray-400 text-xs font-semibold">Popular Searches:</span>
-            {popularSearches.map((s, i) => (
-              <button
-                key={i}
-                onClick={() => handlePopularSearch(s)}
-                className="text-xs text-gray-300 bg-[#162744] hover:bg-[#1f355c] px-3.5 py-1.5 rounded-full hover:text-white transition-colors"
-              >
-                {s}
-              </button>
+          {/* Popular Searches Row (Matching User Reference Image) */}
+          <div className="flex items-center gap-2 sm:gap-3 mt-4 pt-1 text-xs overflow-x-auto pb-1 scrollbar-none">
+            <span className="text-white font-bold shrink-0">Popular Searches:</span>
+            {popularSearches.map((item, idx) => (
+              <div key={item} className="flex items-center gap-2 shrink-0">
+                {idx > 0 && <span className="text-teal-400/60 font-bold text-[10px] select-none">&gt;</span>}
+                <button 
+                  type="button"
+                  onClick={() => handlePopularSearch(item)}
+                  className="text-slate-200 hover:text-cyan-300 font-medium hover:underline transition-colors text-xs whitespace-nowrap cursor-pointer"
+                >
+                  {item}
+                </button>
+              </div>
             ))}
           </div>
         </div>

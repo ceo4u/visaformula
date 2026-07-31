@@ -355,9 +355,17 @@ const isHome = pathname === '/' || pathname === '';
 
     if (isHomePage && headerEl) {
         const updateHeaderStyle = () => {
-            const scrolled = window.scrollY > 10;
+            // Calculate when the white section below hero/search-panel starts
+            const searchPanel = document.getElementById("search-panel");
+            let scrollThreshold = 450;
+            if (searchPanel) {
+                const rect = searchPanel.getBoundingClientRect();
+                scrollThreshold = rect.bottom + window.scrollY - 80;
+            }
+
+            const scrolled = window.scrollY >= scrollThreshold;
             if (scrolled) {
-                // Solid white header on scroll
+                // Solid white header once user reaches the white screen background
                 headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white shadow-md border-b border-gray-100 text-slate-800";
                 if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
                 if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/30 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
@@ -373,7 +381,7 @@ const isHome = pathname === '/' || pathname === '';
                     });
                 }
             } else {
-                // Transparent gradient header over hero skyline
+                // Transparent gradient header while on hero skyline photo
                 headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-none text-white";
                 if (logoImgEl) logoImgEl.setAttribute("src", "/logo-white.png");
                 if (loginBtnEl) loginBtnEl.className = "text-white border-white/80 hover:bg-white/10 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
@@ -392,6 +400,7 @@ const isHome = pathname === '/' || pathname === '';
         };
 
         window.addEventListener("scroll", updateHeaderStyle, { passive: true });
+        window.addEventListener("resize", updateHeaderStyle, { passive: true });
         document.addEventListener("DOMContentLoaded", updateHeaderStyle);
         document.addEventListener("astro:page-load", updateHeaderStyle);
         updateHeaderStyle();

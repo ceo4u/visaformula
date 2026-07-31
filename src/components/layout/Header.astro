@@ -515,58 +515,52 @@ const isHome = pathname === '/' || pathname === '';
         const isHomePage = window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('/');
         const headerEl = document.getElementById("main-header");
         const logoImgEl = document.getElementById("header-logo-img");
+        const loginBtnEl = document.getElementById("login-btn");
+        const contactBtnEl = document.getElementById("contact-btn");
+        const navContainer = document.querySelector("#main-header nav");
 
         if (isHomePage && headerEl) {
-            const onScroll = () => {
+            const updateHeaderStyle = () => {
                 const scrolled = window.scrollY > 10;
                 if (scrolled) {
-                    headerEl.classList.add("is-header-scrolled");
+                    // Solid white header on scroll
+                    headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white shadow-md border-b border-gray-100 text-slate-800";
                     if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
+                    if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/30 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
+                    if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none";
+                    if (navContainer) {
+                        navContainer.querySelectorAll("button, a").forEach((el) => {
+                            if (!el.closest(".absolute")) {
+                                el.style.color = "#0c1a2e";
+                            }
+                        });
+                        navContainer.querySelectorAll("svg").forEach((svg) => {
+                            svg.style.color = "#0c1a2e";
+                        });
+                    }
                 } else {
-                    headerEl.classList.remove("is-header-scrolled");
+                    // Transparent gradient header over hero skyline
+                    headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-none text-white";
                     if (logoImgEl) logoImgEl.setAttribute("src", "/logo-white.png");
+                    if (loginBtnEl) loginBtnEl.className = "text-white border-white/80 hover:bg-white/10 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
+                    if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-white hover:text-cyan-300 transition-colors focus:outline-none";
+                    if (navContainer) {
+                        navContainer.querySelectorAll("button, a").forEach((el) => {
+                            if (!el.closest(".absolute")) {
+                                el.style.color = "";
+                            }
+                        });
+                        navContainer.querySelectorAll("svg").forEach((svg) => {
+                            svg.style.color = "";
+                        });
+                    }
                 }
             };
-            window.addEventListener("scroll", onScroll, { passive: true });
-            document.addEventListener("astro:page-load", onScroll);
-            onScroll();
+
+            window.addEventListener("scroll", updateHeaderStyle, { passive: true });
+            document.addEventListener("DOMContentLoaded", updateHeaderStyle);
+            document.addEventListener("astro:page-load", updateHeaderStyle);
+            updateHeaderStyle();
         }
     }
 </script>
-
-<style is:global>
-    #main-header.is-header-scrolled {
-        background-color: #ffffff !important;
-        background-image: none !important;
-        border-bottom: 1px solid #f3f4f6 !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-        color: #0c1a2e !important;
-    }
-
-    #main-header.is-header-scrolled nav button,
-    #main-header.is-header-scrolled nav a,
-    #main-header.is-header-scrolled #contact-btn {
-        color: #0c1a2e !important;
-    }
-
-    #main-header.is-header-scrolled nav button:hover,
-    #main-header.is-header-scrolled nav a:hover,
-    #main-header.is-header-scrolled #contact-btn:hover {
-        color: #2563eb !important;
-    }
-
-    #main-header.is-header-scrolled nav svg,
-    #main-header.is-header-scrolled #contact-btn svg {
-        color: #0c1a2e !important;
-    }
-
-    #main-header.is-header-scrolled #login-btn {
-        color: #2563eb !important;
-        border-color: #2563eb !important;
-        background-color: transparent !important;
-    }
-
-    #main-header.is-header-scrolled #login-btn:hover {
-        background-color: rgba(37, 99, 235, 0.08) !important;
-    }
-</style>

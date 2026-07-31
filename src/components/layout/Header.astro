@@ -50,10 +50,10 @@ const isHome = pathname === '/' || pathname === '';
                 Self Apply
             </a>
 
-            <!-- 3. Our Services -->
+            <!-- 3. Visa Services -->
             <div class="relative py-3 group">
                 <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold ${isHome ? 'text-white group-hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'} transition-all duration-200 flex items-center gap-1 focus:outline-none`}>
-                    Our Services
+                    Visa Services
                     <ChevronDown class={`w-3.5 h-3.5 ${isHome ? 'text-white/70 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'} transition-all duration-200 group-hover:rotate-180`} />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
@@ -86,10 +86,10 @@ const isHome = pathname === '/' || pathname === '';
                 </div>
             </div>
 
-            <!-- 4. Latest offers -->
+            <!-- 4. Latest News & offers -->
             <div class="relative py-3 group">
                 <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold ${isHome ? 'text-white group-hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'} transition-all duration-200 flex items-center gap-1 focus:outline-none`}>
-                    Latest offers
+                    Latest News & offers
                     <ChevronDown class={`w-3.5 h-3.5 ${isHome ? 'text-white/70 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'} transition-all duration-200 group-hover:rotate-180`} />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[250px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
@@ -148,10 +148,10 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class={`${isHome ? 'text-white border-white/80 hover:bg-white/10' : 'text-[#2563eb] border-[#2563eb] hover:bg-blue-50/30'} border px-5 py-2 rounded-full text-[14px] font-bold transition-all duration-200`}>
+                <a href="/login" id="login-btn" class={`${isHome ? 'text-white border-white/80 hover:bg-white/10' : 'text-[#2563eb] border-[#2563eb] hover:bg-blue-50/30'} border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200`}>
                     Log in
                 </a>
-                <a href="/signup" class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-5 py-2 rounded-full text-[14px] font-bold transition-all duration-200 shadow-md">
+                <a href="/signup" id="signup-btn" class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-5 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200 shadow-md">
                     Sign Up
                 </a>
             </div>
@@ -515,47 +515,16 @@ const isHome = pathname === '/' || pathname === '';
         const isHomePage = window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('/');
         const headerEl = document.getElementById("main-header");
         const logoImgEl = document.getElementById("header-logo-img");
-        const loginBtnEl = document.getElementById("login-btn");
-        const contactBtnEl = document.getElementById("contact-btn");
-        const navContainer = document.querySelector("#main-header nav");
 
         if (isHomePage && headerEl) {
             const onScroll = () => {
-                const scrolled = window.scrollY > 15;
+                const scrolled = window.scrollY > 10;
                 if (scrolled) {
-                    headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white shadow-md border-b border-gray-100 text-slate-800";
+                    headerEl.classList.add("is-header-scrolled");
                     if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
-                    if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/30 border px-5 py-2 rounded-full text-[14px] font-bold transition-all duration-200";
-                    if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none";
-                    if (navContainer) {
-                        navContainer.querySelectorAll("button, a").forEach((el) => {
-                            if (!el.classList.contains("py-2") && !el.closest(".absolute")) {
-                                el.classList.remove("text-white", "group-hover:text-cyan-300");
-                                el.classList.add("text-[#0c1a2e]", "hover:text-[#2563eb]");
-                            }
-                        });
-                        navContainer.querySelectorAll("svg").forEach((svg) => {
-                            svg.classList.remove("text-white/70");
-                            svg.classList.add("text-slate-500");
-                        });
-                    }
                 } else {
-                    headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-none text-white";
+                    headerEl.classList.remove("is-header-scrolled");
                     if (logoImgEl) logoImgEl.setAttribute("src", "/logo-white.png");
-                    if (loginBtnEl) loginBtnEl.className = "text-white border-white/80 hover:bg-white/10 border px-5 py-2 rounded-full text-[14px] font-bold transition-all duration-200";
-                    if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-white hover:text-cyan-300 transition-colors focus:outline-none";
-                    if (navContainer) {
-                        navContainer.querySelectorAll("button, a").forEach((el) => {
-                            if (!el.classList.contains("py-2") && !el.closest(".absolute")) {
-                                el.classList.remove("text-[#0c1a2e]", "hover:text-[#2563eb]");
-                                el.classList.add("text-white", "group-hover:text-cyan-300");
-                            }
-                        });
-                        navContainer.querySelectorAll("svg").forEach((svg) => {
-                            svg.classList.remove("text-slate-500");
-                            svg.classList.add("text-white/70");
-                        });
-                    }
                 }
             };
             window.addEventListener("scroll", onScroll, { passive: true });
@@ -564,3 +533,40 @@ const isHome = pathname === '/' || pathname === '';
         }
     }
 </script>
+
+<style is:global>
+    #main-header.is-header-scrolled {
+        background-color: #ffffff !important;
+        background-image: none !important;
+        border-bottom: 1px solid #f3f4f6 !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+        color: #0c1a2e !important;
+    }
+
+    #main-header.is-header-scrolled nav button,
+    #main-header.is-header-scrolled nav a,
+    #main-header.is-header-scrolled #contact-btn {
+        color: #0c1a2e !important;
+    }
+
+    #main-header.is-header-scrolled nav button:hover,
+    #main-header.is-header-scrolled nav a:hover,
+    #main-header.is-header-scrolled #contact-btn:hover {
+        color: #2563eb !important;
+    }
+
+    #main-header.is-header-scrolled nav svg,
+    #main-header.is-header-scrolled #contact-btn svg {
+        color: #0c1a2e !important;
+    }
+
+    #main-header.is-header-scrolled #login-btn {
+        color: #2563eb !important;
+        border-color: #2563eb !important;
+        background-color: transparent !important;
+    }
+
+    #main-header.is-header-scrolled #login-btn:hover {
+        background-color: rgba(37, 99, 235, 0.08) !important;
+    }
+</style>

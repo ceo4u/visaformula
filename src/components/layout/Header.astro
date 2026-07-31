@@ -2,9 +2,10 @@
 // src/components/layout/Header.astro
 import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare } from 'lucide-react';
 const pathname = Astro.url.pathname;
+const isHome = pathname === '/' || pathname === '';
 ---
 
-<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-100 transition-all duration-300">
+<header id="main-header" class={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isHome ? 'bg-slate-950/30 backdrop-blur-md border-b border-white/10 text-white' : 'bg-white border-b border-gray-100 text-[#0c1a2e]'}`}>
     <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex items-center justify-between h-16 lg:h-20">
         
         <!-- Logo - Left corner -->
@@ -18,12 +19,12 @@ const pathname = Astro.url.pathname;
         <nav class="hidden lg:flex items-center gap-3.5 xl:gap-7 font-plus-jakarta">
             <!-- 1. Find Consultants -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-all duration-200 flex items-center gap-1 focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'}`}>
                     Find Consultants
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
+                    <ChevronDown class={`w-3.5 h-3.5 transition-all duration-200 group-hover:rotate-180 ${isHome ? 'text-slate-300 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'}`} />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
                         <a href="/find-experts?category=student" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <GraduationCap class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Student Visa Experts</span>
@@ -44,19 +45,19 @@ const pathname = Astro.url.pathname;
                 </div>
             </div>
 
-            <!-- 2. Self Apply (Direct link, no dropdown, between Find Consultants and Visa Services) -->
-            <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-colors whitespace-nowrap">
+            <!-- 2. Self Apply -->
+            <a href="/self-apply" class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-colors whitespace-nowrap ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] hover:text-[#2563eb]'}`}>
                 Self Apply
             </a>
 
             <!-- 3. Our Services -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-all duration-200 flex items-center gap-1 focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'}`}>
                     Our Services
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
+                    <ChevronDown class={`w-3.5 h-3.5 transition-all duration-200 group-hover:rotate-180 ${isHome ? 'text-slate-300 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'}`} />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
                         <a href="/visa-documentation" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Visa Documentation Filing</span>
@@ -87,12 +88,12 @@ const pathname = Astro.url.pathname;
 
             <!-- 4. Latest offers -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-all duration-200 flex items-center gap-1 focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'}`}>
                     Latest offers
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
+                    <ChevronDown class={`w-3.5 h-3.5 transition-all duration-200 group-hover:rotate-180 ${isHome ? 'text-slate-300 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'}`} />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[250px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
                         <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Immigration News & Updates</span>
@@ -111,12 +112,12 @@ const pathname = Astro.url.pathname;
 
             <!-- 5. AI Tools -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-all duration-200 flex items-center gap-1 focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'}`}>
                     AI Tools
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
+                    <ChevronDown class={`w-3.5 h-3.5 transition-all duration-200 group-hover:rotate-180 ${isHome ? 'text-slate-300 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'}`} />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
                         <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Migration Tools Portal</span>
@@ -134,11 +135,11 @@ const pathname = Astro.url.pathname;
             </div>
         </nav>
 
-        <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
+        <!-- Right Side Actions (Contact, Auth Buttons / Profile Block) -->
         <div class="hidden lg:flex items-center gap-3.5 xl:gap-5 shrink-0 z-50 font-plus-jakarta">
-            <!-- Contact Link (Replaces Globe selector) -->
-            <a href="/support" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none">
-                <MessageSquare class="w-4.5 h-4.5 text-slate-500" />
+            <!-- Contact Link -->
+            <a href="/support" class={`flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold transition-colors focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] hover:text-[#2563eb]'}`}>
+                <MessageSquare class={`w-4.5 h-4.5 ${isHome ? 'text-cyan-300' : 'text-slate-500'}`} />
                 <span>Contact</span>
             </a>
 
@@ -147,27 +148,27 @@ const pathname = Astro.url.pathname;
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="text-[#2563eb] border border-[#2563eb] hover:bg-blue-50/30 px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200">
+                <a href="/login" id="login-btn" class={`px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200 ${isHome ? 'text-white border border-white/40 hover:bg-white/10' : 'text-[#2563eb] border border-[#2563eb] hover:bg-blue-50/30'}`}>
                     Log in
                 </a>
-                <a href="/signup" class="bg-[#2563eb] hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200">
+                <a href="/signup" class="bg-[#2563eb] hover:bg-blue-600 text-white px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200 shadow-md">
                     Sign Up
                 </a>
             </div>
 
             <!-- Desktop Profile Dropdown (visible when logged in) -->
             <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta">
-                <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white">
+                <button id="nav-profile-trigger" class={`flex items-center gap-7 pl-1.5 pr-7 py-1.5 border rounded-full transition-all focus:outline-none ${isHome ? 'border-white/30 bg-slate-900/60 text-white' : 'border-slate-200 bg-white text-slate-800 hover:border-black'}`}>
                     <div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-black text-white shadow-sm" id="nav-profile-avatar-container">
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                         <span class="font-bold text-sm" id="nav-profile-avatar-letters">U</span>
                     </div>
-                    <ChevronDown class="w-4 h-4 text-slate-500 pr-1.5 shrink-0" />
+                    <ChevronDown class={`w-4 h-4 pr-1.5 shrink-0 ${isHome ? 'text-slate-300' : 'text-slate-500'}`} />
                 </button>
                 
                 <!-- Dropdown Menu -->
                 <div class="absolute right-0 top-[90%] pt-4 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-right z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5 text-slate-800">
                         <div class="px-3.5 py-2 border-b border-slate-100">
                             <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
                             <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name">User Profile</div>
@@ -187,19 +188,19 @@ const pathname = Astro.url.pathname;
 
         <!-- Mobile Menu Toggler (Hamburger + Mobile Sign Up Button / Logged In Profile Icon) -->
         <div class="flex items-center gap-2 lg:hidden z-50">
-            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#2563eb] hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200">
+            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#2563eb] hover:bg-blue-600 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200">
                 Sign Up
             </a>
             <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 rounded-full border border-slate-200 bg-white hover:border-black transition-all overflow-hidden shrink-0 shadow-sm">
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                 <span class="font-bold text-xs text-white bg-black w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">U</span>
             </a>
-            <button id="mobile-menu-btn" class="p-2 hover:bg-gray-100 rounded-xl transition-colors flex items-center justify-center">
+            <button id="mobile-menu-btn" class={`p-2 rounded-xl transition-colors flex items-center justify-center ${isHome ? 'hover:bg-white/10 text-white' : 'hover:bg-gray-100 text-navy'}`}>
                 <span id="menu-icon" class="block">
-                    <Menu class="w-6 h-6 text-navy" />
+                    <Menu class="w-6 h-6" />
                 </span>
                 <span id="close-icon" class="hidden">
-                    <X class="w-6 h-6 text-navy" />
+                    <X class="w-6 h-6" />
                 </span>
             </button>
         </div>

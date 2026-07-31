@@ -6,27 +6,30 @@ const heroSlides = [
     id: 0,
     titleLine1: 'Move Anywhere.',
     titleLine2: 'Get ',
-    highlightText: 'Expert Help',
-    titleLine2End: ' Anywhere.',
-    description: 'AI-powered guidance connecting you with verified immigration lawyers, visa experts and relocation professionals across 150+ countries.',
+    highlightText: 'Expert Help.',
+    buttonText: 'Visa Experts',
+    creditTitle: 'VisaFormula Platform',
+    creditSub: 'Photo of Dubai Marina',
     bgImage: '/hero-bg.jpg',
   },
   {
     id: 1,
     titleLine1: 'Study Worldwide.',
     titleLine2: 'Get ',
-    highlightText: 'Top Admissions',
-    titleLine2End: ' Easily.',
-    description: 'Direct admissions to accredited universities across USA, UK, Canada, Australia, Cyprus and Europe with full visa guidance.',
+    highlightText: 'Admissions.',
+    buttonText: 'Universities',
+    creditTitle: 'Global Education',
+    creditSub: 'Photo of Campus',
     bgImage: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=2800&auto=format&fit=crop&q=95',
   },
   {
     id: 2,
     titleLine1: 'Work & Relocate.',
-    titleLine2: 'Find ',
-    highlightText: 'Verified Jobs',
-    titleLine2End: ' & Permits.',
-    description: 'Connect with licensed relocation specialists for work permits, skilled worker migration, and corporate mobility.',
+    titleLine2: 'Get ',
+    highlightText: 'Work Permits.',
+    buttonText: 'Work Permits',
+    creditTitle: 'Skilled Migration',
+    creditSub: 'Photo of Financial District',
     bgImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=2800&auto=format&fit=crop&q=95',
   },
 ]
@@ -321,45 +324,39 @@ export function HeroSection() {
                 </button>
               </div>
 
-              {/* Title, Subtitle & Red Pill Action Button */}
-              <div className="flex-1 space-y-4 min-h-[220px]">
+              {/* Title & Compact Red Pill Button (Ultra-Clean matching reference screenshot) */}
+              <div className="flex-1 space-y-4">
                 <div className="space-y-1">
                   <h1
-                    className="text-[34px] sm:text-[46px] md:text-[54px] font-extrabold text-white leading-[1.05] tracking-tight drop-shadow-md transition-all duration-300"
+                    className="text-[36px] sm:text-[48px] md:text-[56px] font-extrabold text-white leading-[1.04] tracking-tight drop-shadow-md transition-all duration-300"
                     style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
                   >
                     {heroSlides[activeSlide].titleLine1}
                   </h1>
                   <h1
-                    className="text-[34px] sm:text-[46px] md:text-[54px] font-extrabold text-white leading-[1.05] tracking-tight drop-shadow-md transition-all duration-300"
+                    className="text-[36px] sm:text-[48px] md:text-[56px] font-extrabold text-white leading-[1.04] tracking-tight drop-shadow-md transition-all duration-300"
                     style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
                   >
                     {heroSlides[activeSlide].titleLine2}
                     <span className="text-cyan-400">{heroSlides[activeSlide].highlightText}</span>
-                    {heroSlides[activeSlide].titleLine2End}
                   </h1>
                 </div>
 
-                <p className="text-slate-200 text-[14px] sm:text-[15px] leading-relaxed max-w-[420px] font-medium drop-shadow-sm transition-all duration-300">
-                  {heroSlides[activeSlide].description}
-                </p>
-
-                {/* Yelp-Style Red Pill Button */}
-                <div className="pt-2">
+                {/* Yelp-Style Compact Red Pill Button */}
+                <div className="pt-1">
                   <button
                     onClick={() => document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="inline-flex items-center gap-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-sm sm:text-base px-6 py-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
+                    className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm px-4.5 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
                   >
-                    <Search className="w-4 h-4 stroke-[2.5]" />
-                    <span>Find Visa Experts</span>
+                    <Search className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>{heroSlides[activeSlide].buttonText}</span>
                   </button>
                 </div>
 
-                {/* Bottom Left Photo Credit */}
-                <div className="pt-4 text-xs text-white/70 select-none font-sans flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                  <span className="font-semibold text-white">VisaFormula Platform</span>
-                  <span className="text-white/40">• Photo by VisaFormula</span>
+                {/* Bottom Left Photo Credit (Matching screenshot) */}
+                <div className="pt-10 sm:pt-14 text-xs text-white/80 select-none font-sans leading-tight">
+                  <div className="font-bold text-white text-xs sm:text-sm">{heroSlides[activeSlide].creditTitle}</div>
+                  <div className="text-white/60 text-[11px] sm:text-xs">{heroSlides[activeSlide].creditSub}</div>
                 </div>
               </div>
             </div>

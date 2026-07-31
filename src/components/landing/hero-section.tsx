@@ -205,15 +205,15 @@ export function HeroSection() {
   }
 
   return (
-    <section className="w-full bg-slate-50/50 relative overflow-visible pb-4 md:pb-6">
-      {/* Background Image with Elegant Soft Overlay */}
+    <section className="w-full relative overflow-visible pb-4 md:pb-6 bg-slate-950">
+      {/* Background Image - Dubai Marina Sunset Skyline */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img 
-          src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1800&auto=format&fit=crop&q=80" 
-          alt="Global Travel & Immigration Background" 
-          className="w-full h-full object-cover object-center opacity-15 scale-105"
+          src="/hero-bg.jpg" 
+          alt="Global Mobility Skyline Background" 
+          className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/80 to-white/95"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-900/75 to-slate-950/95 backdrop-blur-[0.5px]"></div>
       </div>
 
       {/* Top hero area */}
@@ -223,20 +223,20 @@ export function HeroSection() {
           <div className="w-full md:w-[40%] md:flex-shrink-0 space-y-6 pb-6">
             <div className="space-y-1">
               <h1
-                className="text-[32px] sm:text-[44px] md:text-[54px] font-extrabold text-[#0f1f3d] leading-[1.08]"
+                className="text-[32px] sm:text-[44px] md:text-[54px] font-extrabold text-white leading-[1.08] drop-shadow-sm"
                 style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
               >
                 Move Anywhere.
               </h1>
               <h1
-                className="text-[32px] sm:text-[44px] md:text-[54px] font-extrabold text-[#0f1f3d] leading-[1.08]"
+                className="text-[32px] sm:text-[44px] md:text-[54px] font-extrabold text-white leading-[1.08] drop-shadow-sm"
                 style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
               >
-                Get <span className="text-blue-600">Expert Help</span> Anywhere.
+                Get <span className="text-cyan-400">Expert Help</span> Anywhere.
               </h1>
             </div>
 
-            <p className="text-gray-500 text-[15px] sm:text-[16px] leading-relaxed max-w-[420px]">
+            <p className="text-slate-200 text-[15px] sm:text-[16px] leading-relaxed max-w-[420px] font-medium drop-shadow-sm">
               AI-powered guidance connecting you with verified immigration lawyers, visa experts and relocation professionals across 150+ countries.
             </p>
           </div>

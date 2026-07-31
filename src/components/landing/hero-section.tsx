@@ -7,7 +7,8 @@ const heroSlides = [
     titleLine1: 'Move Anywhere.',
     titleLine2: 'Get ',
     highlightText: 'Expert Help.',
-    buttonText: 'Visa Experts',
+    buttonText: 'Tours & Packages',
+    targetUrl: '/tours',
     creditTitle: 'Dubai Marina Skyline',
     creditSub: 'Photo by Oscar K.',
     bgImage: '/hero-bg.jpg',
@@ -18,6 +19,7 @@ const heroSlides = [
     titleLine2: 'Get ',
     highlightText: 'Admissions.',
     buttonText: 'Universities',
+    targetUrl: '/universities',
     creditTitle: 'Global Campus',
     creditSub: 'Photo by Alex P.',
     bgImage: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=3840&auto=format&fit=crop&q=100',
@@ -28,6 +30,7 @@ const heroSlides = [
     titleLine2: 'Get ',
     highlightText: 'Work Permits.',
     buttonText: 'Work Permits',
+    targetUrl: '/jobs',
     creditTitle: 'Financial Center',
     creditSub: 'Photo by Marcus B.',
     bgImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=3840&auto=format&fit=crop&q=100',
@@ -344,13 +347,13 @@ export function HeroSection() {
 
                 {/* Brand Blue Action Pill Button */}
                 <div className="mt-4 sm:mt-5">
-                  <button
-                    onClick={() => document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' })}
+                  <a
+                    href={heroSlides[activeSlide].targetUrl}
                     className="inline-flex items-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
                   >
                     <Search className="w-4 h-4 stroke-[2.5]" />
                     <span>{heroSlides[activeSlide].buttonText}</span>
-                  </button>
+                  </a>
                 </div>
 
                 {/* Bottom Left Photo Credit */}

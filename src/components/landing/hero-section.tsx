@@ -338,7 +338,7 @@ export function HeroSection() {
                     style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
                   >
                     {heroSlides[activeSlide].titleLine2}
-                    <span className="text-cyan-400">{heroSlides[activeSlide].highlightText}</span>
+                    {heroSlides[activeSlide].highlightText}
                   </h1>
                 </div>
 

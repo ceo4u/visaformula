@@ -205,9 +205,19 @@ export function HeroSection() {
   }
 
   return (
-    <section className="w-full bg-white pb-4 md:pb-6 overflow-visible">
+    <section className="w-full bg-slate-50/50 relative overflow-visible pb-4 md:pb-6">
+      {/* Background Image with Elegant Soft Overlay */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img 
+          src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1800&auto=format&fit=crop&q=80" 
+          alt="Global Travel & Immigration Background" 
+          className="w-full h-full object-cover object-center opacity-15 scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/80 to-white/95"></div>
+      </div>
+
       {/* Top hero area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 md:pt-10 pb-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 md:pt-10 pb-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
           {/* Left content */}
           <div className="w-full md:w-[40%] md:flex-shrink-0 space-y-6 pb-6">
@@ -508,7 +518,7 @@ export function HeroSection() {
       </div>
 
       {/* Advance Search Card — Matching User Reference Image */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 relative z-10">
         <div id="search-panel" className="bg-[#0B1527] rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-center">
             

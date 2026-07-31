@@ -2,20 +2,16 @@
 // src/components/layout/Header.astro
 import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare } from 'lucide-react';
 const pathname = Astro.url.pathname;
+const isHome = pathname === '/' || pathname === '';
 ---
 
-<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-slate-950/40 backdrop-blur-md border-b border-white/10 transition-all duration-300">
+<header id="main-header" class={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isHome ? 'bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-2xs' : 'bg-white border-b border-gray-100'}`}>
     <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex items-center justify-between h-16 lg:h-20">
         
-        <!-- Brand Name & Symbol - Left corner -->
+        <!-- Logo - Left corner -->
         <div class="flex items-center shrink-0 py-2">
-            <a href="/" class="flex items-center gap-2.5 focus:outline-none group">
-                <div class="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform shrink-0">
-                    <Plane class="w-5 h-5 lg:w-6 lg:h-6 text-white rotate-45 stroke-[2.5]" />
-                </div>
-                <span class="font-sora font-extrabold text-xl lg:text-2xl text-white tracking-tight">
-                    Visa<span class="text-cyan-400">Formula</span>
-                </span>
+            <a href="/" class="flex items-center focus:outline-none -ml-2 lg:-ml-4">
+                <img src="/logo.png" class="h-16 lg:h-20 w-auto object-contain" alt="VisaFormula Logo" />
             </a>
         </div>
 
@@ -23,67 +19,67 @@ const pathname = Astro.url.pathname;
         <nav class="hidden lg:flex items-center gap-3.5 xl:gap-7 font-plus-jakarta">
             <!-- 1. Find Consultants -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-white group-hover:text-cyan-300 transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Find Consultants
-                    <ChevronDown class="w-3.5 h-3.5 text-white/70 group-hover:text-cyan-300 transition-all duration-200 group-hover:rotate-180" />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-3 flex flex-col gap-1 text-white">
-                        <a href="/find-experts?category=student" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <GraduationCap class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
+                        <a href="/find-experts?category=student" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <GraduationCap class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Student Visa Experts</span>
                         </a>
-                        <a href="/find-experts?category=work" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <Briefcase class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/find-experts?category=work" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <Briefcase class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Work & Job Visa Experts</span>
                         </a>
-                        <a href="/find-experts?category=pr" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/find-experts?category=pr" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">PR Agencies</span>
                         </a>
-                        <a href="/emergency" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/emergency" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Migration Agents & Lawyers</span>
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. Self Apply -->
-            <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-white hover:text-cyan-300 transition-colors whitespace-nowrap">
+            <!-- 2. Self Apply (Direct link, no dropdown, between Find Consultants and Visa Services) -->
+            <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-colors whitespace-nowrap">
                 Self Apply
             </a>
 
             <!-- 3. Our Services -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-white group-hover:text-cyan-300 transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Our Services
-                    <ChevronDown class="w-3.5 h-3.5 text-white/70 group-hover:text-cyan-300 transition-all duration-200 group-hover:rotate-180" />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-3 flex flex-col gap-1 text-white">
-                        <a href="/visa-documentation" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
+                        <a href="/visa-documentation" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Visa Documentation Filing</span>
                         </a>
-                        <a href="/visa-form-filing" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/visa-form-filing" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Visa Form Filing</span>
                         </a>
-                        <a href="/vfs-appointment" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <Calendar class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/vfs-appointment" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <Calendar class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">VFS Appointment Support</span>
                         </a>
-                        <a href="/services/form-fillers" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <PenLine class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/services/form-fillers" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <PenLine class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Visa Form Fillers</span>
                         </a>
-                        <a href="/services/travel-insurance" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <HeartHandshake class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/services/travel-insurance" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <HeartHandshake class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Travel Insurance</span>
                         </a>
-                        <a href="/services/airfares" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <Plane class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/services/airfares" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <Plane class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Airfares Booking</span>
                         </a>
                     </div>
@@ -92,22 +88,22 @@ const pathname = Astro.url.pathname;
 
             <!-- 4. Latest offers -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-white group-hover:text-cyan-300 transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Latest offers
-                    <ChevronDown class="w-3.5 h-3.5 text-white/70 group-hover:text-cyan-300 transition-all duration-200 group-hover:rotate-180" />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[250px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-3 flex flex-col gap-1 text-white">
-                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
+                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Immigration News & Updates</span>
                         </a>
-                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Policy Changes 2026</span>
                         </a>
-                        <a href="/success-stories" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/success-stories" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Success Stories</span>
                         </a>
                     </div>
@@ -116,22 +112,22 @@ const pathname = Astro.url.pathname;
 
             <!-- 5. AI Tools -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-white group-hover:text-cyan-300 transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     AI Tools
-                    <ChevronDown class="w-3.5 h-3.5 text-white/70 group-hover:text-cyan-300 transition-all duration-200 group-hover:rotate-180" />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-3 flex flex-col gap-1 text-white">
-                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
+                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Migration Tools Portal</span>
                         </a>
-                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">CRS Points Calculator</span>
                         </a>
-                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-cyan-300 transition-all duration-150 group/item">
-                            <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
+                            <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Eligibility Checker</span>
                         </a>
                     </div>
@@ -141,9 +137,9 @@ const pathname = Astro.url.pathname;
 
         <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
         <div class="hidden lg:flex items-center gap-3.5 xl:gap-5 shrink-0 z-50 font-plus-jakarta">
-            <!-- Contact Link -->
-            <a href="/support" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-white hover:text-cyan-300 transition-colors focus:outline-none">
-                <MessageSquare class="w-4.5 h-4.5 text-slate-300" />
+            <!-- Contact Link (Replaces Globe selector) -->
+            <a href="/support" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none">
+                <MessageSquare class="w-4.5 h-4.5 text-slate-500" />
                 <span>Contact</span>
             </a>
 
@@ -152,37 +148,37 @@ const pathname = Astro.url.pathname;
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="text-white border border-white/30 hover:bg-white/10 px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200">
+                <a href="/login" id="login-btn" class="text-[#2563eb] border border-[#2563eb] hover:bg-blue-50/30 px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200">
                     Log in
                 </a>
-                <a href="/signup" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200 shadow-md">
+                <a href="/signup" class="bg-[#2563eb] hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200">
                     Sign Up
                 </a>
             </div>
 
             <!-- Desktop Profile Dropdown (visible when logged in) -->
             <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta">
-                <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-white/30 hover:border-white rounded-full transition-all focus:outline-none bg-slate-900/60 backdrop-blur-md">
-                    <div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-blue-600 text-white shadow-sm" id="nav-profile-avatar-container">
+                <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white">
+                    <div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-black text-white shadow-sm" id="nav-profile-avatar-container">
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                        <span class="font-bold text-sm text-white" id="nav-profile-avatar-letters">U</span>
+                        <span class="font-bold text-sm" id="nav-profile-avatar-letters">U</span>
                     </div>
-                    <ChevronDown class="w-4 h-4 text-white/70 pr-1.5 shrink-0" />
+                    <ChevronDown class="w-4 h-4 text-slate-500 pr-1.5 shrink-0" />
                 </button>
                 
                 <!-- Dropdown Menu -->
                 <div class="absolute right-0 top-[90%] pt-4 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-right z-50">
-                    <div class="bg-slate-900 rounded-xl border border-slate-800 shadow-xl p-2.5 flex flex-col gap-1.5 text-white">
-                        <div class="px-3.5 py-2 border-b border-slate-800">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5">
+                        <div class="px-3.5 py-2 border-b border-slate-100">
                             <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
-                            <div class="text-sm font-bold text-white truncate mt-0.5" id="nav-profile-name">User Profile</div>
+                            <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name">User Profile</div>
                         </div>
-                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-200 hover:text-cyan-300 hover:bg-slate-800 transition-all group/item">
-                            <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 transition-all group/item">
+                            <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-blue-600 transition-colors" />
                             <span>My Dashboard</span>
                         </a>
-                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-200 hover:text-cyan-300 hover:bg-slate-800 transition-all w-full text-left cursor-pointer border-none bg-transparent group/item">
-                            <LogOut class="w-4 h-4 text-slate-400 group-hover/item:text-cyan-300 transition-colors" />
+                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 transition-all w-full text-left cursor-pointer border-none bg-transparent group/item">
+                            <LogOut class="w-4 h-4 text-slate-400 group-hover/item:text-blue-600 transition-colors" />
                             <span>Log Out</span>
                         </button>
                     </div>
@@ -190,21 +186,21 @@ const pathname = Astro.url.pathname;
             </div>
         </div>
 
-        <!-- Mobile Menu Toggler -->
+        <!-- Mobile Menu Toggler (Hamburger + Mobile Sign Up Button / Logged In Profile Icon) -->
         <div class="flex items-center gap-2 lg:hidden z-50">
-            <a href="/signup" id="mobile-top-signup-btn" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200">
+            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#2563eb] hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200">
                 Sign Up
             </a>
-            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 rounded-full border border-white/30 bg-slate-900 transition-all overflow-hidden shrink-0 shadow-sm">
+            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 rounded-full border border-slate-200 bg-white hover:border-black transition-all overflow-hidden shrink-0 shadow-sm">
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                <span class="font-bold text-xs text-white bg-blue-600 w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">U</span>
+                <span class="font-bold text-xs text-white bg-black w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">U</span>
             </a>
-            <button id="mobile-menu-btn" class="p-2 hover:bg-white/10 rounded-xl transition-colors flex items-center justify-center text-white">
+            <button id="mobile-menu-btn" class="p-2 hover:bg-gray-100 rounded-xl transition-colors flex items-center justify-center">
                 <span id="menu-icon" class="block">
-                    <Menu class="w-6 h-6 text-white" />
+                    <Menu class="w-6 h-6 text-navy" />
                 </span>
                 <span id="close-icon" class="hidden">
-                    <X class="w-6 h-6 text-white" />
+                    <X class="w-6 h-6 text-navy" />
                 </span>
             </button>
         </div>

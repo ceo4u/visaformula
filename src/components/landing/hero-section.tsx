@@ -217,7 +217,7 @@ export function HeroSection() {
       </div>
 
       {/* Top hero area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 lg:pt-32 pb-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 md:pt-32 pb-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
           {/* Left content */}
           <div className="w-full md:w-[40%] md:flex-shrink-0 space-y-6 pb-6">

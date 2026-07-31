@@ -11,7 +11,7 @@ const isHome = pathname === '/' || pathname === '';
         <!-- Logo - Left corner -->
         <div class="flex items-center shrink-0 py-2">
             <a href="/" class="flex items-center focus:outline-none -ml-2 lg:-ml-4">
-                <img src={isHome ? "/logo-white.png" : "/logo.png"} class="h-16 lg:h-20 w-auto object-contain" alt="VisaFormula Logo" />
+                <img id="header-logo-img" src={isHome ? "/logo-white.png" : "/logo.png"} class="h-16 lg:h-20 w-auto object-contain transition-all duration-200" alt="VisaFormula Logo" />
             </a>
         </div>
 
@@ -138,7 +138,7 @@ const isHome = pathname === '/' || pathname === '';
         <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
         <div class="hidden lg:flex items-center gap-3.5 xl:gap-5 shrink-0 z-50 font-plus-jakarta">
             <!-- Contact Link (Replaces Globe selector) -->
-            <a href="/support" class={`flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] hover:text-[#2563eb]'} transition-colors focus:outline-none`}>
+            <a href="/support" id="contact-btn" class={`flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] hover:text-[#2563eb]'} transition-colors focus:outline-none`}>
                 <MessageSquare class={`w-4.5 h-4.5 ${isHome ? 'text-white/80' : 'text-slate-500'}`} />
                 <span>Contact</span>
             </a>
@@ -510,5 +510,48 @@ const isHome = pathname === '/' || pathname === '';
 
         if (desktopLogoutBtn) desktopLogoutBtn.addEventListener("click", handleLogout);
         if (mobileLogoutBtn) mobileLogoutBtn.addEventListener("click", handleLogout);
+
+        // Dynamic scroll header background transition on homepage
+        const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
+        const headerEl = document.getElementById("main-header");
+        const logoImgEl = document.getElementById("header-logo-img");
+        const loginBtnEl = document.getElementById("login-btn");
+        const contactBtnEl = document.getElementById("contact-btn");
+        const navContainer = document.querySelector("#main-header nav");
+
+        if (isHomePage && headerEl) {
+            const onScroll = () => {
+                const scrolled = window.scrollY > 40;
+                if (scrolled) {
+                    headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white shadow-md border-b border-gray-100 text-slate-800";
+                    if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
+                    if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/30 border px-5 py-2 rounded-full text-[14px] font-bold transition-all duration-200";
+                    if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none";
+                    if (navContainer) {
+                        navContainer.querySelectorAll("button, a").forEach((el) => {
+                            if (!el.classList.contains("py-2") && !el.closest(".absolute")) {
+                                el.classList.remove("text-white", "group-hover:text-cyan-300");
+                                el.classList.add("text-[#0c1a2e]", "hover:text-[#2563eb]");
+                            }
+                        });
+                    }
+                } else {
+                    headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-none text-white";
+                    if (logoImgEl) logoImgEl.setAttribute("src", "/logo-white.png");
+                    if (loginBtnEl) loginBtnEl.className = "text-white border-white/80 hover:bg-white/10 border px-5 py-2 rounded-full text-[14px] font-bold transition-all duration-200";
+                    if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-white hover:text-cyan-300 transition-colors focus:outline-none";
+                    if (navContainer) {
+                        navContainer.querySelectorAll("button, a").forEach((el) => {
+                            if (!el.classList.contains("py-2") && !el.closest(".absolute")) {
+                                el.classList.remove("text-[#0c1a2e]", "hover:text-[#2563eb]");
+                                el.classList.add("text-white", "group-hover:text-cyan-300");
+                            }
+                        });
+                    }
+                }
+            };
+            window.addEventListener("scroll", onScroll, { passive: true });
+            onScroll();
+        }
     }
 </script>

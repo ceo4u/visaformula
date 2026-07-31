@@ -287,13 +287,13 @@ export function HeroSection() {
       </div>
 
       {/* Top hero area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 md:pt-36 pb-8 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          {/* Left content with Vertical Story Line Control (Matching Yelp Screenshot Spacing & Fit) */}
-          <div className="w-full md:w-[48%] md:flex-shrink-0 pb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-20 sm:pt-24 md:pt-28 pb-8 relative z-10 min-h-[75vh] md:min-h-[82vh] flex flex-col justify-center">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 md:gap-12 my-auto">
+          {/* Left content with Vertical Story Line Control (Yelp Exact Position & Alignment) */}
+          <div className="w-full md:w-[52%] md:flex-shrink-0 pl-0 sm:pl-4 lg:pl-6">
             <div className="flex items-start gap-4 sm:gap-6">
-              {/* Vertical Segmented Progress Line Bar (Aligned with top of title text) */}
-              <div className="flex flex-col gap-2 shrink-0 pt-1 items-center select-none">
+              {/* Vertical Segmented Progress Line Bar (Exact Yelp Height & Spacing) */}
+              <div className="flex flex-col gap-2.5 shrink-0 pt-2 items-center select-none">
                 {heroSlides.map((slide, index) => {
                   const isActive = activeSlide === index
                   const isCompleted = activeSlide > index
@@ -303,7 +303,7 @@ export function HeroSection() {
                     <button
                       key={slide.id}
                       onClick={() => goToSlide(index)}
-                      className="w-1.5 h-11 sm:h-14 bg-white/25 hover:bg-white/40 rounded-full overflow-hidden relative cursor-pointer transition-all border border-white/10"
+                      className="w-1.5 h-12 sm:h-16 bg-white/25 hover:bg-white/40 rounded-full overflow-hidden relative cursor-pointer transition-all border border-white/10"
                       title={`Go to slide ${index + 1}`}
                     >
                       <div 
@@ -317,24 +317,24 @@ export function HeroSection() {
                 {/* Pause / Play Toggle Icon */}
                 <button
                   onClick={() => setIsPaused(!isPaused)}
-                  className="w-5 h-5 mt-1.5 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md flex items-center justify-center text-white transition-all cursor-pointer border border-white/20"
+                  className="w-5.5 h-5.5 mt-2 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md flex items-center justify-center text-white transition-all cursor-pointer border border-white/20"
                   title={isPaused ? "Resume story transition" : "Pause story transition"}
                 >
                   {isPaused ? <Play className="w-2.5 h-2.5 fill-current ml-0.5" /> : <Pause className="w-2.5 h-2.5 fill-current" />}
                 </button>
               </div>
 
-              {/* Title & Compact Red Pill Button (Exact Spacing from Screenshot) */}
+              {/* Title & Compact Red Pill Button (Exact Yelp Font & Vertical Placement) */}
               <div className="flex-1">
                 <div>
                   <h1
-                    className="text-[38px] sm:text-[50px] md:text-[58px] font-extrabold text-white leading-[1.04] tracking-tight drop-shadow-md transition-all duration-300"
+                    className="text-[42px] sm:text-[54px] md:text-[64px] font-black text-white leading-[1.03] tracking-tight drop-shadow-lg transition-all duration-300"
                     style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
                   >
                     {heroSlides[activeSlide].titleLine1}
                   </h1>
                   <h1
-                    className="text-[38px] sm:text-[50px] md:text-[58px] font-extrabold text-white leading-[1.04] tracking-tight drop-shadow-md transition-all duration-300"
+                    className="text-[42px] sm:text-[54px] md:text-[64px] font-black text-white leading-[1.03] tracking-tight drop-shadow-lg transition-all duration-300"
                     style={{ fontFamily: 'var(--font-plus-jakarta, inherit)' }}
                   >
                     {heroSlides[activeSlide].titleLine2}
@@ -343,20 +343,20 @@ export function HeroSection() {
                 </div>
 
                 {/* Yelp-Style Compact Red Pill Button */}
-                <div className="mt-3.5 sm:mt-4">
+                <div className="mt-4 sm:mt-5">
                   <button
                     onClick={() => document.getElementById('search-panel')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm px-4 py-1.5 sm:py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
+                    className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
                   >
-                    <Search className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <Search className="w-4 h-4 stroke-[2.5]" />
                     <span>{heroSlides[activeSlide].buttonText}</span>
                   </button>
                 </div>
 
-                {/* Bottom Left Photo Credit (Pushed comfortably to bottom left) */}
+                {/* Bottom Left Photo Credit */}
                 <div className="mt-14 sm:mt-20 md:mt-28 text-xs text-white/85 select-none font-sans leading-tight">
-                  <div className="font-bold text-white text-xs sm:text-sm drop-shadow-sm">{heroSlides[activeSlide].creditTitle}</div>
-                  <div className="text-white/60 text-[11px] sm:text-xs drop-shadow-sm">{heroSlides[activeSlide].creditSub}</div>
+                  <div className="font-bold text-white text-xs sm:text-sm drop-shadow-md">{heroSlides[activeSlide].creditTitle}</div>
+                  <div className="text-white/60 text-[11px] sm:text-xs drop-shadow-md">{heroSlides[activeSlide].creditSub}</div>
                 </div>
               </div>
             </div>

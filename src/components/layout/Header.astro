@@ -345,7 +345,7 @@ const isHome = pathname === '/' || pathname === '';
         { btn: 'mobile-latest-news-btn', drawer: 'mobile-latest-news-drawer', arrow: 'mobile-latest-news-arrow' },
         { btn: 'mobile-tools-btn', drawer: 'mobile-tools-drawer', arrow: 'mobile-tools-arrow' },
     ];
-    // 1. Dynamic Scroll Header Background Transition on Homepage
+    // 1. Dynamic Scroll Header Background Transition on Homepage (Shaadi.com Glassmorphism Style)
     const isHomePage = window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('/');
     const headerEl = document.getElementById("main-header");
     const logoImgEl = document.getElementById("header-logo-img");
@@ -355,20 +355,12 @@ const isHome = pathname === '/' || pathname === '';
 
     if (isHomePage && headerEl) {
         const updateHeaderStyle = () => {
-            // Calculate when the white section below hero/search-panel starts
-            const searchPanel = document.getElementById("search-panel");
-            let scrollThreshold = 450;
-            if (searchPanel) {
-                const rect = searchPanel.getBoundingClientRect();
-                scrollThreshold = rect.bottom + window.scrollY - 80;
-            }
-
-            const scrolled = window.scrollY >= scrollThreshold;
+            const scrolled = window.scrollY > 10;
             if (scrolled) {
-                // Solid white header once user reaches the white screen background
-                headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white shadow-md border-b border-gray-100 text-slate-800";
+                // Shaadi.com Style: Semi-transparent frosted white glassmorphism header on scroll over background image
+                headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 scrolled-header bg-white/92 backdrop-blur-md shadow-xs border-b border-slate-200/80 text-slate-800";
                 if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
-                if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/30 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
+                if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/50 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
                 if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none";
                 if (navContainer) {
                     navContainer.querySelectorAll("button, a").forEach((el) => {
@@ -381,7 +373,7 @@ const isHome = pathname === '/' || pathname === '';
                     });
                 }
             } else {
-                // Transparent gradient header while on hero skyline photo
+                // Completely transparent header over top of hero skyline
                 headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-none text-white";
                 if (logoImgEl) logoImgEl.setAttribute("src", "/logo-white.png");
                 if (loginBtnEl) loginBtnEl.className = "text-white border-white/80 hover:bg-white/10 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
@@ -597,9 +589,12 @@ const isHome = pathname === '/' || pathname === '';
 </script>
 
 <style is:global>
-    #main-header.bg-white {
-        background-color: #ffffff !important;
+    #main-header.scrolled-header {
+        background-color: rgba(255, 255, 255, 0.88) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
         background-image: none !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+        box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.05) !important;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
     }
 </style>

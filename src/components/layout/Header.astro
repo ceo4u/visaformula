@@ -2,29 +2,57 @@
 // src/components/layout/Header.astro
 import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare } from 'lucide-react';
 const pathname = Astro.url.pathname;
-const isHome = pathname === '/' || pathname === '';
 ---
 
-<header id="main-header" class={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isHome ? 'bg-slate-950/30 backdrop-blur-md border-b border-white/10 text-white' : 'bg-white border-b border-gray-100 text-[#0c1a2e]'}`}>
-    <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex items-center justify-between h-16 lg:h-20">
+<header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-200/80 transition-all duration-300 shadow-xs">
+    <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex items-center justify-between h-16 lg:h-20 gap-4">
         
         <!-- Logo - Left corner -->
         <div class="flex items-center shrink-0 py-2">
             <a href="/" class="flex items-center focus:outline-none -ml-2 lg:-ml-4">
-                <img src="/logo.png" class="h-16 lg:h-20 w-auto object-contain" alt="VisaFormula Logo" />
+                <img src="/logo.png" class="h-14 lg:h-16 w-auto object-contain" alt="VisaFormula Logo" />
             </a>
         </div>
+
+        <!-- Yelp-Style Integrated Header Search Bar (Desktop) -->
+        <form action="/find-experts" method="GET" class="hidden md:flex items-center bg-white rounded-xl border border-slate-300 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20 shadow-xs h-11 flex-1 max-w-[500px] overflow-hidden">
+            <!-- Left field: Query -->
+            <div class="flex-1 flex items-center px-3.5 min-w-0">
+                <input 
+                    type="text" 
+                    name="query" 
+                    placeholder="USA Student Visa, Consultant..." 
+                    class="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                />
+            </div>
+            <!-- Divider -->
+            <div class="w-[1px] h-6 bg-slate-200 shrink-0"></div>
+            <!-- Right field: Location -->
+            <div class="flex-1 flex items-center px-3.5 min-w-0">
+                <MapPin class="w-3.5 h-3.5 text-slate-400 shrink-0 mr-1.5" />
+                <input 
+                    type="text" 
+                    name="location" 
+                    placeholder="Country or Location" 
+                    class="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                />
+            </div>
+            <!-- Red Action Search Button -->
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white h-full px-4 flex items-center justify-center shrink-0 transition-colors cursor-pointer">
+                <Search class="w-4 h-4 stroke-[2.5]" />
+            </button>
+        </form>
 
         <!-- Desktop Navigation Links (Centered) -->
         <nav class="hidden lg:flex items-center gap-3.5 xl:gap-7 font-plus-jakarta">
             <!-- 1. Find Consultants -->
             <div class="relative py-3 group">
-                <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-all duration-200 flex items-center gap-1 focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'}`}>
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Find Consultants
-                    <ChevronDown class={`w-3.5 h-3.5 transition-all duration-200 group-hover:rotate-180 ${isHome ? 'text-slate-300 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'}`} />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/find-experts?category=student" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <GraduationCap class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Student Visa Experts</span>
@@ -45,19 +73,19 @@ const isHome = pathname === '/' || pathname === '';
                 </div>
             </div>
 
-            <!-- 2. Self Apply -->
-            <a href="/self-apply" class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-colors whitespace-nowrap ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] hover:text-[#2563eb]'}`}>
+            <!-- 2. Self Apply (Direct link, no dropdown, between Find Consultants and Visa Services) -->
+            <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#2563eb] transition-colors whitespace-nowrap">
                 Self Apply
             </a>
 
             <!-- 3. Our Services -->
             <div class="relative py-3 group">
-                <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-all duration-200 flex items-center gap-1 focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'}`}>
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Our Services
-                    <ChevronDown class={`w-3.5 h-3.5 transition-all duration-200 group-hover:rotate-180 ${isHome ? 'text-slate-300 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'}`} />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/visa-documentation" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Visa Documentation Filing</span>
@@ -88,12 +116,12 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- 4. Latest offers -->
             <div class="relative py-3 group">
-                <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-all duration-200 flex items-center gap-1 focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'}`}>
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     Latest offers
-                    <ChevronDown class={`w-3.5 h-3.5 transition-all duration-200 group-hover:rotate-180 ${isHome ? 'text-slate-300 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'}`} />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[250px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Immigration News & Updates</span>
@@ -112,12 +140,12 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- 5. AI Tools -->
             <div class="relative py-3 group">
-                <button class={`font-plus-jakarta text-[14px] xl:text-[15px] font-semibold transition-all duration-200 flex items-center gap-1 focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] group-hover:text-[#2563eb]'}`}>
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#2563eb] transition-all duration-200 flex items-center gap-1 focus:outline-none">
                     AI Tools
-                    <ChevronDown class={`w-3.5 h-3.5 transition-all duration-200 group-hover:rotate-180 ${isHome ? 'text-slate-300 group-hover:text-cyan-300' : 'text-slate-400 group-hover:text-[#2563eb]'}`} />
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
                         <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#2563eb] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#2563eb] transition-colors" />
                             <span class="text-[14px] font-semibold">Migration Tools Portal</span>
@@ -135,40 +163,40 @@ const isHome = pathname === '/' || pathname === '';
             </div>
         </nav>
 
-        <!-- Right Side Actions (Contact, Auth Buttons / Profile Block) -->
+        <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
         <div class="hidden lg:flex items-center gap-3.5 xl:gap-5 shrink-0 z-50 font-plus-jakarta">
-            <!-- Contact Link -->
-            <a href="/support" class={`flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold transition-colors focus:outline-none ${isHome ? 'text-white hover:text-cyan-300' : 'text-[#0c1a2e] hover:text-[#2563eb]'}`}>
-                <MessageSquare class={`w-4.5 h-4.5 ${isHome ? 'text-cyan-300' : 'text-slate-500'}`} />
+            <!-- Contact Link (Replaces Globe selector) -->
+            <a href="/support" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none">
+                <MessageSquare class="w-4.5 h-4.5 text-slate-500" />
                 <span>Contact</span>
             </a>
 
             <!-- Red Vertical Divider (shown only when logged in) -->
             <div id="nav-logged-in-divider" class="w-[1.5px] h-4 bg-[#ef4444] shrink-0 mx-2 hidden"></div>
 
-            <!-- Auth Buttons Wrapper -->
-            <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class={`px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200 ${isHome ? 'text-white border border-white/40 hover:bg-white/10' : 'text-[#2563eb] border border-[#2563eb] hover:bg-blue-50/30'}`}>
-                    Log in
+            <!-- Auth Buttons Wrapper (Yelp Style) -->
+            <div class="flex items-center gap-2.5" id="nav-auth-buttons-wrapper">
+                <a href="/login" id="login-btn" class="text-slate-800 border border-slate-300 hover:border-slate-800 hover:bg-slate-50 px-4 py-2 rounded-xl text-[14px] font-bold transition-all duration-200">
+                    Log In
                 </a>
-                <a href="/signup" class="bg-[#2563eb] hover:bg-blue-600 text-white px-5 py-2 rounded-lg text-[14px] font-bold transition-all duration-200 shadow-md">
+                <a href="/signup" class="bg-red-600 hover:bg-red-700 text-white px-4.5 py-2 rounded-xl text-[14px] font-bold shadow-xs transition-all duration-200">
                     Sign Up
                 </a>
             </div>
 
             <!-- Desktop Profile Dropdown (visible when logged in) -->
             <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta">
-                <button id="nav-profile-trigger" class={`flex items-center gap-7 pl-1.5 pr-7 py-1.5 border rounded-full transition-all focus:outline-none ${isHome ? 'border-white/30 bg-slate-900/60 text-white' : 'border-slate-200 bg-white text-slate-800 hover:border-black'}`}>
+                <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white">
                     <div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-black text-white shadow-sm" id="nav-profile-avatar-container">
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                         <span class="font-bold text-sm" id="nav-profile-avatar-letters">U</span>
                     </div>
-                    <ChevronDown class={`w-4 h-4 pr-1.5 shrink-0 ${isHome ? 'text-slate-300' : 'text-slate-500'}`} />
+                    <ChevronDown class="w-4 h-4 text-slate-500 pr-1.5 shrink-0" />
                 </button>
                 
                 <!-- Dropdown Menu -->
                 <div class="absolute right-0 top-[90%] pt-4 w-[220px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-right z-50">
-                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5 text-slate-800">
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5">
                         <div class="px-3.5 py-2 border-b border-slate-100">
                             <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
                             <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name">User Profile</div>
@@ -188,21 +216,51 @@ const isHome = pathname === '/' || pathname === '';
 
         <!-- Mobile Menu Toggler (Hamburger + Mobile Sign Up Button / Logged In Profile Icon) -->
         <div class="flex items-center gap-2 lg:hidden z-50">
-            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#2563eb] hover:bg-blue-600 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200">
+            <a href="/signup" id="mobile-top-signup-btn" class="bg-red-600 hover:bg-red-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200">
                 Sign Up
             </a>
             <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 rounded-full border border-slate-200 bg-white hover:border-black transition-all overflow-hidden shrink-0 shadow-sm">
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                 <span class="font-bold text-xs text-white bg-black w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">U</span>
             </a>
-            <button id="mobile-menu-btn" class={`p-2 rounded-xl transition-colors flex items-center justify-center ${isHome ? 'hover:bg-white/10 text-white' : 'hover:bg-gray-100 text-navy'}`}>
+            <button id="mobile-menu-btn" class="p-2 hover:bg-gray-100 rounded-xl transition-colors flex items-center justify-center">
                 <span id="menu-icon" class="block">
-                    <Menu class="w-6 h-6" />
+                    <Menu class="w-6 h-6 text-navy" />
                 </span>
                 <span id="close-icon" class="hidden">
-                    <X class="w-6 h-6" />
+                    <X class="w-6 h-6 text-navy" />
                 </span>
             </button>
+        </div>
+    </div>
+
+    <!-- Yelp-Style Category Sub-Header Nav Bar (Desktop) -->
+    <div class="hidden lg:block border-t border-slate-200/60 bg-slate-50/70 backdrop-blur-xs">
+        <div class="max-w-[1440px] mx-auto px-4 lg:px-8 py-2 flex items-center gap-7 text-xs font-bold text-slate-700">
+            <a href="/tours" class="hover:text-red-600 flex items-center gap-1.5 transition-colors">
+                <span>Visitor Visa</span>
+                <ChevronDown class="w-3 h-3 text-slate-400" />
+            </a>
+            <a href="/universities" class="hover:text-red-600 flex items-center gap-1.5 transition-colors">
+                <span>Student Visa</span>
+                <ChevronDown class="w-3 h-3 text-slate-400" />
+            </a>
+            <a href="/jobs" class="hover:text-red-600 flex items-center gap-1.5 transition-colors">
+                <span>Work Visa</span>
+                <ChevronDown class="w-3 h-3 text-slate-400" />
+            </a>
+            <a href="/find-experts?category=pr" class="hover:text-red-600 flex items-center gap-1.5 transition-colors">
+                <span>PR &amp; Residency</span>
+                <ChevronDown class="w-3 h-3 text-slate-400" />
+            </a>
+            <a href="/find-experts?category=business" class="hover:text-red-600 flex items-center gap-1.5 transition-colors">
+                <span>Business Visa</span>
+                <ChevronDown class="w-3 h-3 text-slate-400" />
+            </a>
+            <a href="/services" class="hover:text-red-600 flex items-center gap-1.5 transition-colors">
+                <span>More Services</span>
+                <ChevronDown class="w-3 h-3 text-slate-400" />
+            </a>
         </div>
     </div>
 

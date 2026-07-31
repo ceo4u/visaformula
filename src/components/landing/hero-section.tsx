@@ -206,18 +206,18 @@ export function HeroSection() {
 
   return (
     <section className="w-full relative overflow-visible pb-4 md:pb-6 bg-slate-950">
-      {/* Background Image - 4K Ultra HD Dubai Marina Sunset Skyline */}
+      {/* Background Image - Dubai Marina Sunset Skyline */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img 
-          src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=3840&auto=format&fit=crop&q=100" 
-          alt="4K Ultra HD Global Mobility Skyline Background" 
-          className="w-full h-full object-cover object-center"
+          src="/hero-bg.jpg" 
+          alt="Global Mobility Skyline Background" 
+          className="w-full h-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/75 via-slate-950/60 to-slate-950/85"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/65 to-slate-950/90"></div>
       </div>
 
       {/* Top hero area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 md:pt-10 pb-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 sm:pt-12 md:pt-14 pb-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
           {/* Left content */}
           <div className="w-full md:w-[40%] md:flex-shrink-0 space-y-6 pb-6">

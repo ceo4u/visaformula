@@ -557,7 +557,7 @@ export function ConsultantDashboard() {
                         {/* Sleek Workspace Indicator Icon Badge — Prominent Readability */}
                         <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
                             <LayoutDashboard className="w-5.5 h-5.5 text-[#107c41] shrink-0" />
-                            <span className="text-sm sm:text-base font-black text-slate-900 capitalize tracking-tight">
+                            <span className="text-sm sm:text-base font-bold text-slate-900 capitalize tracking-tight">
                                 {activeTab.replace("-", " ")}
                             </span>
                         </div>
@@ -1034,7 +1034,7 @@ export function ConsultantDashboard() {
                     <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-10 p-6 sm:p-8 space-y-6">
                         <div className="flex justify-between items-center pb-4 border-b border-slate-100">
                             <div>
-                                <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                                     📢 Post an Advertisement
                                 </h2>
                                 <p className="text-xs font-medium text-slate-500 mt-0.5">Promote your consultation packages to visa applicants</p>
@@ -1117,7 +1117,7 @@ export function ConsultantDashboard() {
                     <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-10 p-6 sm:p-8 space-y-6">
                         <div className="flex justify-between items-center pb-4 border-b border-slate-100">
                             <div>
-                                <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                                     <Sparkles className="w-5 h-5 text-amber-500 fill-amber-500" /> Publish Special Offer
                                 </h2>
                                 <p className="text-xs font-medium text-slate-500 mt-0.5">Create a discount promo offer for client bookings</p>

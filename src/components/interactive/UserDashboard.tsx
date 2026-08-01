@@ -481,7 +481,7 @@ export function UserDashboard() {
                         {/* Sleek Workspace Indicator Icon Badge — Larger & Prominent */}
                         <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
                             <LayoutDashboard className="w-5.5 h-5.5 text-[#107c41] shrink-0" />
-                            <span className="text-sm sm:text-base font-black text-slate-900 capitalize tracking-tight">
+                            <span className="text-sm sm:text-base font-bold text-slate-900 capitalize tracking-tight">
                                 {activeTab.replace("-", " ")}
                             </span>
                         </div>

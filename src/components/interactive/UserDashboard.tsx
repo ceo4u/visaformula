@@ -469,7 +469,7 @@ export function UserDashboard() {
             {/* Main Workspace Area */}
             <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
                 
-                {/* Top Header Bar */}
+                {/* Top Header Bar — Ultra Clean Modern Layout */}
                 <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-20 shadow-2xs min-h-[76px]">
                     <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                         <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
@@ -478,9 +478,11 @@ export function UserDashboard() {
                         <a href="/" className="lg:hidden flex items-center shrink-0">
                             <img src="/logo.png" alt="VisaFormula Logo" className="h-12 sm:h-14 md:h-16 w-auto max-h-[56px] object-contain" />
                         </a>
-                        <h1 className="hidden sm:block text-xl lg:text-2xl font-extrabold text-slate-900 tracking-tight truncate">
-                            Dashboard
-                        </h1>
+                        {/* Sleek Workspace Indicator Icon Badge */}
+                        <div className="hidden lg:flex items-center gap-2 text-slate-500 font-bold text-xs bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl">
+                            <LayoutDashboard className="w-4 h-4 text-[#107c41]" />
+                            <span className="text-slate-800 font-extrabold capitalize">{activeTab.replace("-", " ")}</span>
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-2 sm:gap-3">

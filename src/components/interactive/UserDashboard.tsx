@@ -3,10 +3,10 @@ import {
     Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
     ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
-    Video, User, LogOut, CheckSquare, Sparkles, X
+    Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid
 } from "lucide-react";
 
-const destinations = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
+const destinationsList = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
 
 const initialBookings: any[] = [];
 const initialSavedExperts: any[] = [];
@@ -20,8 +20,10 @@ const initialVisasProcessing: any[] = [];
 export function UserDashboard() {
     const [ieltsScore, setIeltsScore] = useState({ L: 7.5, R: 7.0, W: 6.5, S: 7.0 });
     const overallBand = ((ieltsScore.L + ieltsScore.R + ieltsScore.W + ieltsScore.S) / 4).toFixed(1);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(false);
 
     const [firstName, setFirstName] = useState("Seeker");
     const [lastName, setLastName] = useState("");
@@ -34,6 +36,9 @@ export function UserDashboard() {
     const [selectedDests, setSelectedDests] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [activeTab, setActiveTab] = useState("dashboard");
+    const [timePeriod, setTimePeriod] = useState("Last 30 days");
+    const [timePeriodOpen, setTimePeriodOpen] = useState(false);
+
     const [scannedDocs, setScannedDocs] = useState(initialScannedDocuments);
     const [favouriteExperts, setFavouriteExperts] = useState(initialSavedExperts);
     const [previousVisas, setPreviousVisas] = useState(initialPreviousVisas);
@@ -42,11 +47,11 @@ export function UserDashboard() {
     const [visasProcessingState, setVisasProcessingState] = useState(initialVisasProcessing);
 
     const [documents, setDocuments] = useState([
-        { id: 1, label: "Passport scan", status: "uploaded", icon: "✅", bg: "bg-emerald-50/40 text-emerald-800 border-emerald-100", studentOnly: false },
-        { id: 2, label: "IELTS Score Card", status: "pending", icon: "⚠️", bg: "bg-amber-50/40 text-amber-800 border-amber-100", studentOnly: true },
-        { id: 3, label: "Financial Statement", status: "missing", icon: "❌", bg: "bg-rose-50/40 text-rose-800 border-rose-100", studentOnly: false },
-        { id: 4, label: "Offer Letter", status: "uploaded", icon: "✅", bg: "bg-emerald-50/40 text-emerald-800 border-emerald-100", studentOnly: false },
-        { id: 5, label: "SOP / Cover Letter", status: "pending", icon: "⚠️", bg: "bg-amber-50/40 text-amber-800 border-amber-100", studentOnly: false },
+        { id: 1, label: "Passport Scan Copy", status: "uploaded", icon: "✅", bg: "bg-emerald-50 text-emerald-700 border-emerald-200", studentOnly: false },
+        { id: 2, label: "IELTS Official Score Card", status: "pending", icon: "⚠️", bg: "bg-amber-50 text-amber-700 border-amber-200", studentOnly: true },
+        { id: 3, label: "Bank Statement (Financials)", status: "missing", icon: "❌", bg: "bg-rose-50 text-rose-700 border-rose-200", studentOnly: false },
+        { id: 4, label: "University Offer Letter", status: "uploaded", icon: "✅", bg: "bg-emerald-50 text-emerald-700 border-emerald-200", studentOnly: false },
+        { id: 5, label: "Statement of Purpose (SOP)", status: "pending", icon: "⚠️", bg: "bg-amber-50 text-amber-700 border-amber-200", studentOnly: false },
     ]);
 
     useEffect(() => {
@@ -136,971 +141,660 @@ export function UserDashboard() {
     const [modalPassportCountry, setModalPassportCountry] = useState("");
     const [modalResidentOf, setModalResidentOf] = useState("");
     const [modalLookingFor, setModalLookingFor] = useState("");
-    const [modalLookingForOpen, setModalLookingForOpen] = useState(false);
-
-    const [citizenshipOpen, setCitizenshipOpen] = useState(false);
-    const [residenceOpen, setResidenceOpen] = useState(false);
-    const [countryCodeOpen, setCountryCodeOpen] = useState(false);
     const [countryCode, setCountryCode] = useState("+91");
 
-    useEffect(() => {
-        if (showProfileModal) {
-            setModalFirstName(firstName || "");
-            setModalLastName(lastName || "");
-            setModalPhone(phone || "");
-            setModalPassportCountry(passportCountry || "India");
-            setModalResidentOf(residentOf || "India");
-        }
-    }, [showProfileModal]);
-
     const toggleDocStatus = (id: number) => {
-        setDocuments(documents.map(doc => {
-            if (doc.id === id) {
-                const nextStatus = doc.status === "uploaded" ? "pending" : doc.status === "pending" ? "missing" : "uploaded";
-                const nextIcon = nextStatus === "uploaded" ? "✅" : nextStatus === "pending" ? "⚠️" : "❌";
-                const nextBg = nextStatus === "uploaded" ? "bg-emerald-50/40 text-emerald-800 border-emerald-100" :
-                               nextStatus === "pending" ? "bg-amber-50/40 text-amber-800 border-amber-100" :
-                               "bg-rose-50/40 text-rose-800 border-rose-100";
-                return { ...doc, status: nextStatus, icon: nextIcon, bg: nextBg };
+        setDocuments(prev => prev.map(d => {
+            if (d.id === id) {
+                const nextStatus = d.status === "uploaded" ? "pending" : d.status === "pending" ? "missing" : "uploaded";
+                const bg = nextStatus === "uploaded" ? "bg-emerald-50 text-emerald-700 border-emerald-200" : nextStatus === "pending" ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-rose-50 text-rose-700 border-rose-200";
+                return { ...d, status: nextStatus, bg };
             }
-            return doc;
+            return d;
         }));
     };
 
-    const isStudent = selectedGoals.some(g => 
-        typeof g === 'string' && (g.toLowerCase().includes("study") || g.toLowerCase().includes("student"))
-    ) || (typeof modalLookingFor === 'string' && (
-        modalLookingFor.toLowerCase().includes("student") || 
-        modalLookingFor.toLowerCase().includes("study")
-    ));
-
-    const visibleDocuments = documents.filter(doc => !doc.studentOnly || isStudent);
+    const isStudent = selectedGoals.some(g => g.toLowerCase().includes("study") || g.toLowerCase().includes("university") || g.toLowerCase().includes("student"));
+    const visibleDocuments = documents.filter(d => !d.studentOnly || isStudent);
     const uploadedCount = visibleDocuments.filter(d => d.status === "uploaded").length;
 
+    const handleSaveProfileModal = (e: React.FormEvent) => {
+        e.preventDefault();
+        setFirstName(modalFirstName);
+        setLastName(modalLastName);
+        setPhone(countryCode + " " + modalPhone);
+        setCountryOfCitizenship(modalPassportCountry);
+        setResidentOf(modalResidentOf);
+
+        localStorage.setItem("seeker_firstName", modalFirstName);
+        localStorage.setItem("seeker_lastName", modalLastName);
+        localStorage.setItem("seeker_phone", countryCode + " " + modalPhone);
+        localStorage.setItem("seeker_passportCountry", modalPassportCountry);
+        localStorage.setItem("seeker_country_of_citizenship", modalPassportCountry);
+        localStorage.setItem("seeker_resident_of", modalResidentOf);
+        if (modalLookingFor) localStorage.setItem("seeker_looking_for", modalLookingFor);
+
+        setShowProfileModal(false);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("visaformula_user");
+        localStorage.removeItem("seeker_firstName");
+        localStorage.removeItem("seeker_lastName");
+        localStorage.removeItem("seeker_email");
+        localStorage.removeItem("seeker_phone");
+        localStorage.removeItem("seeker_passportCountry");
+        localStorage.removeItem("seeker_goals");
+        localStorage.removeItem("seeker_destinations");
+        localStorage.removeItem("seeker_profilePhoto");
+        window.location.href = "/";
+    };
+
+    // Flup reference sales categories data
+    const categoriesData = [
+        { label: "Living room / Student Visa", percent: "25%", color: "#8b5cf6" },
+        { label: "Kids / Work Permit", percent: "17%", color: "#3b82f6" },
+        { label: "Office / Tourist Visa", percent: "13%", color: "#a855f7" },
+        { label: "Bedroom / PR & Migration", percent: "12%", color: "#38bdf8" },
+        { label: "Kitchen / Consultations", percent: "9%", color: "#ec4899" },
+        { label: "Bathroom / SOP Review", percent: "8%", color: "#f43f5e" },
+        { label: "Dining room / VFS Booking", percent: "6%", color: "#f97316" },
+        { label: "Decor / IELTS Prep", percent: "5%", color: "#eab308" },
+        { label: "Lighting / Tour Packages", percent: "3%", color: "#10b981" },
+        { label: "Outdoor / Escrow Vault", percent: "2%", color: "#22c55e" },
+    ];
+
+    // Flup reference sales by countries data
+    const countriesData = [
+        { name: "Poland / Canada", percent: "19%" },
+        { name: "Austria / USA", percent: "15%" },
+        { name: "Spain / UK", percent: "13%" },
+        { name: "Romania / Australia", percent: "12%" },
+        { name: "France / Germany", percent: "11%" },
+        { name: "Italy / New Zealand", percent: "11%" },
+        { name: "Germany / Ireland", percent: "10%" },
+        { name: "Ukraine / UAE", percent: "9%" },
+    ];
+
+    // Flup Dual Bar Chart mock data
+    const barChartData = [
+        { day: "1 Jul", gross: 27, rev: 37 },
+        { day: "2 Jul", gross: 31, rev: 45 },
+        { day: "3 Jul", gross: 20, rev: 52 },
+        { day: "4 Jul", gross: 33, rev: 43 },
+        { day: "5 Jul", gross: 50, rev: 38 },
+        { day: "6 Jul", gross: 60, rev: 63, tooltip: true },
+        { day: "7 Jul", gross: 22, rev: 34 },
+        { day: "8 Jul", gross: 33, rev: 42 },
+        { day: "9 Jul", gross: 21, rev: 32 },
+        { day: "10 Jul", gross: 45, rev: 47 },
+        { day: "11 Jul", gross: 33, rev: 45 },
+        { day: "12 Jul", gross: 52, rev: 55 },
+    ];
+
     return (
-        <div className="flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen antialiased text-black font-roboto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            <style dangerouslySetInnerHTML={{__html: `
-                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
-                * {
-                    font-family: 'Plus Jakarta Sans', sans-serif !important;
-                }
-            `}} />
-
-            {/* Mobile Header / Navigation Bar */}
-            <div className="lg:hidden w-full bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
-                <a href="/" className="flex items-center">
-                    <img src="/logo.png" className="h-10 w-auto object-contain" alt="VisaFormula Logo" />
-                </a>
-                <button 
-                    onClick={() => setIsSidebarOpen(true)} 
-                    className="p-2 text-slate-700 hover:bg-slate-100 rounded-xl focus:outline-none"
-                    aria-label="Open Sidebar"
-                >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
-
-            {/* Desktop Sidebar (hidden on mobile) */}
-            <aside className="hidden lg:flex w-64 bg-white border-r border-slate-200 flex-col justify-between py-8 px-5 flex-shrink-0 text-black">
-                <div className="flex flex-col items-stretch gap-8">
-                    {/* Logo / Branding */}
-                    <div className="flex flex-col gap-3 px-3">
-                        <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
-                            <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
+        <div className="min-h-screen bg-[#f3f4f6] text-slate-800 font-sans flex overflow-x-hidden antialiased" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            
+            {/* Flup-Style Left Sidebar Navigation */}
+            <aside className={`bg-[#f8f9fa] border-r border-slate-200/90 flex flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
+                <div>
+                    {/* Brand Header */}
+                    <div className="p-4 border-b border-slate-200/70 flex items-center justify-between">
+                        <a href="/" className="flex items-center gap-2.5 min-w-0">
+                            <div className="w-8 h-8 rounded-full bg-[#107c41] flex items-center justify-center text-white font-bold shrink-0 shadow-xs">
+                                <span className="text-base">VF</span>
+                            </div>
+                            {!isSidebarCollapsed && (
+                                <span className="font-extrabold text-lg text-slate-900 tracking-tight truncate">
+                                    VisaFormula
+                                </span>
+                            )}
                         </a>
+                        <button 
+                            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
+                            className="p-1 rounded-lg hover:bg-slate-200/70 text-slate-500 transition-colors hidden lg:block"
+                        >
+                            <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isSidebarCollapsed ? "" : "rotate-180"}`} />
+                        </button>
                     </div>
-                    
-                    <nav className="flex flex-col gap-2">
-                        {[
-                            { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-                            { id: "profile", label: "My Profile", icon: User },
-                            { id: "consultations", label: "Consultations", icon: Calendar },
-                            { id: "cases", label: "Active Cases", icon: Briefcase },
-                            { id: "scanned-documents", label: "Scanned Documents", icon: FileText },
-                            { id: "escrow-milestones", label: "Escrow Payments", icon: Lock },
-                            { id: "visa-history", label: "Visa History", icon: BookOpen },
-                            { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark }
-                        ].map(tab => {
-                            const isActive = activeTab === tab.id;
-                            const IconComponent = tab.icon;
-                            return (
+
+                    {/* Navigation Links */}
+                    <nav className="p-3 space-y-6">
+                        {/* Section 1: CORE */}
+                        <div>
+                            {!isSidebarCollapsed && (
+                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
+                                    Core Workspace
+                                </p>
+                            )}
+                            <div className="space-y-1">
+                                {[
+                                    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+                                    { id: "cases", label: "Active Cases", icon: Briefcase },
+                                    { id: "consultations", label: "Consultations", icon: Calendar },
+                                    { id: "scanned-documents", label: "Document Vault", icon: FileText },
+                                ].map(item => {
+                                    const isActive = activeTab === item.id;
+                                    const IconComp = item.icon;
+                                    return (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setActiveTab(item.id)}
+                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                isActive
+                                                    ? "bg-[#e6f4ea] text-[#0d5c3a] shadow-xs"
+                                                    : "text-slate-600 hover:bg-slate-200/60 hover:text-slate-900"
+                                            }`}
+                                        >
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Section 2: SERVICES & PAYMENTS */}
+                        <div>
+                            {!isSidebarCollapsed && (
+                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
+                                    Services & Escrow
+                                </p>
+                            )}
+                            <div className="space-y-1">
+                                {[
+                                    { id: "escrow-milestones", label: "Escrow Vault", icon: Lock },
+                                    { id: "visa-history", label: "Visa History", icon: BookOpen },
+                                    { id: "favourite-experts", label: "Saved Experts", icon: Bookmark },
+                                ].map(item => {
+                                    const isActive = activeTab === item.id;
+                                    const IconComp = item.icon;
+                                    return (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setActiveTab(item.id)}
+                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                isActive
+                                                    ? "bg-[#e6f4ea] text-[#0d5c3a] shadow-xs"
+                                                    : "text-slate-600 hover:bg-slate-200/60 hover:text-slate-900"
+                                            }`}
+                                        >
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Section 3: SYSTEM */}
+                        <div>
+                            {!isSidebarCollapsed && (
+                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
+                                    System
+                                </p>
+                            )}
+                            <div className="space-y-1">
                                 <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center gap-3 px-5 py-3.5 rounded-full font-bold text-xs tracking-wide transition-all relative ${
-                                        isActive 
-                                            ? "bg-black text-white shadow-md active:scale-[0.98]" 
-                                            : "text-slate-600 hover:text-black hover:bg-slate-100"
-                                    }`}
+                                    onClick={() => setShowProfileModal(true)}
+                                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs text-slate-600 hover:bg-slate-200/60 hover:text-slate-900 transition-all"
                                 >
-                                    <IconComponent className="w-4 h-4 flex-shrink-0" />
-                                    <span>{tab.label}</span>
+                                    <Settings className="w-4 h-4 shrink-0 text-slate-500" />
+                                    {!isSidebarCollapsed && <span>Profile Settings</span>}
                                 </button>
-                            );
-                        })}
+
+                                <div className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600">
+                                    <div className="flex items-center gap-3">
+                                        <Sparkles className="w-4 h-4 shrink-0 text-slate-500" />
+                                        {!isSidebarCollapsed && <span>Dark mode</span>}
+                                    </div>
+                                    {!isSidebarCollapsed && (
+                                        <button 
+                                            onClick={() => setIsDarkMode(!isDarkMode)} 
+                                            className={`w-9 h-5 rounded-full p-0.5 transition-colors ${isDarkMode ? "bg-[#107c41]" : "bg-slate-300"}`}
+                                        >
+                                            <div className={`w-4 h-4 rounded-full bg-white transition-transform ${isDarkMode ? "translate-x-4" : "translate-x-0"}`} />
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </nav>
                 </div>
 
-                <div className="px-2">
-                    <button 
-                        onClick={() => window.location.href = '/login'} 
-                        className="flex items-center gap-3 px-5 py-3.5 text-slate-650 hover:text-red-600 hover:bg-slate-55 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer border-none bg-transparent"
-                    >
-                        <LogOut className="w-4 h-4" />
-                        <span>Log Out</span>
-                    </button>
+                {/* Bottom User Profile Card */}
+                <div className="p-3 border-t border-slate-200/70">
+                    <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200/60 shadow-xs">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                            <div className="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center font-extrabold text-xs shrink-0">
+                                {(firstName || "S").charAt(0).toUpperCase()}
+                            </div>
+                            {!isSidebarCollapsed && (
+                                <div className="min-w-0">
+                                    <h4 className="text-xs font-extrabold text-slate-900 truncate leading-tight">
+                                        {firstName} {lastName}
+                                    </h4>
+                                    <p className="text-[10px] font-semibold text-slate-500 truncate">
+                                        Seeker / Client
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                        {!isSidebarCollapsed && (
+                            <button onClick={handleLogout} className="text-slate-400 hover:text-rose-600 p-1 transition-colors" title="Log Out">
+                                <LogOut className="w-4 h-4" />
+                            </button>
+                        )}
+                    </div>
                 </div>
             </aside>
 
-            {/* Mobile Slide-Over Sidebar Drawer */}
-            <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-                {/* Backdrop */}
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />
+            {/* Main Workspace Area */}
+            <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
                 
-                {/* Drawer Content */}
-                <aside className={`absolute top-0 left-0 w-64 h-full bg-white shadow-2xl flex flex-col justify-between py-8 px-5 transform transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-                    <div className="flex flex-col gap-6">
-                        <div className="flex justify-between items-center px-1">
-                            <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
-                                <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
-                            </a>
-                            <button onClick={() => setIsSidebarOpen(false)} className="p-1 hover:bg-slate-100 rounded text-slate-500">
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-                        
-                        <nav className="flex flex-col gap-1.5">
-                            {[
-                                { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-                                { id: "profile", label: "My Profile", icon: User },
-                                { id: "consultations", label: "Consultations", icon: Calendar },
-                                { id: "cases", label: "Active Cases", icon: Briefcase },
-                                { id: "scanned-documents", label: "Scanned Documents", icon: FileText },
-                                { id: "escrow-milestones", label: "Escrow Payments", icon: Lock },
-                                { id: "visa-history", label: "Visa History", icon: BookOpen },
-                                { id: "favourite-experts", label: "Favourite Agents", icon: Bookmark }
-                            ].map(tab => {
-                                const isActive = activeTab === tab.id;
-                                const IconComponent = tab.icon;
-                                return (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => {
-                                            setActiveTab(tab.id);
-                                            setIsSidebarOpen(false);
-                                        }}
-                                        className={`flex items-center gap-3 px-5 py-3 rounded-full font-bold text-xs tracking-wide transition-all ${
-                                            isActive 
-                                                ? "bg-black text-white shadow-md" 
-                                                : "text-slate-600 hover:text-black hover:bg-slate-100"
-                                        }`}
-                                    >
-                                        <IconComponent className="w-4 h-4 flex-shrink-0" />
-                                        <span>{tab.label}</span>
-                                    </button>
-                                );
-                            })}
-                        </nav>
-                    </div>
-
-                    <div className="px-2">
-                        <button 
-                            onClick={() => window.location.href = '/login'} 
-                            className="flex items-center gap-3 px-5 py-3 text-slate-650 hover:text-red-600 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left"
-                        >
-                            <LogOut className="w-4 h-4" />
-                            <span>Log Out</span>
+                {/* Top Header Bar */}
+                <header className="bg-white border-b border-slate-200/80 px-6 py-4 flex items-center justify-between gap-4 sticky top-0 z-20 shadow-2xs">
+                    <div className="flex items-center gap-4">
+                        <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
+                            <LayoutGrid className="w-5 h-5" />
                         </button>
+                        <h1 className="text-xl lg:text-2xl font-extrabold text-slate-900 tracking-tight">
+                            Dashboard
+                        </h1>
                     </div>
-                </aside>
-            </div>
 
-            {/* Main Content Area */}
-            <main className="flex-grow p-4 sm:p-8 overflow-y-auto space-y-8 w-full">
-                {/* Redesigned Premium Header Bar */}
-                <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                    <div className="flex flex-col md:flex-row md:items-center gap-5 flex-grow max-w-4xl w-full">
-                        {/* Seeker Profile Card (Premium Gradient Theme) */}
-                        <div className="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 border border-slate-200/80 rounded-[28px] shadow-sm flex items-center overflow-hidden max-w-full md:max-w-md w-full relative">
-                            {/* Left side: Avatar */}
-                            <div className="p-3 md:p-4 pr-1.5 md:pr-2 flex-shrink-0 z-10">
-                                <div className="w-14 h-14 md:w-20 md:h-20 rounded-[16px] md:rounded-[20px] bg-gradient-to-br from-black via-slate-800 to-slate-950 text-white border-2 border-white shadow-md flex items-center justify-center font-black text-sm md:text-xl tracking-tight">
-                                    {(firstName || "Seeker").substring(0, 2).toUpperCase()}
+                    <div className="flex items-center gap-3">
+                        {/* Time Period Filter Pill (Flup Reference) */}
+                        <div className="relative">
+                            <button 
+                                onClick={() => setTimePeriodOpen(!timePeriodOpen)}
+                                className="flex items-center gap-2 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 transition-all shadow-2xs"
+                            >
+                                <span>📅 Time period: <strong className="text-slate-900">{timePeriod}</strong></span>
+                                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                            </button>
+
+                            {timePeriodOpen && (
+                                <div className="absolute right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 w-44 z-50">
+                                    {["Last 7 days", "Last 30 days", "Last 90 days", "This Year"].map(tp => (
+                                        <button
+                                            key={tp}
+                                            onClick={() => { setTimePeriod(tp); setTimePeriodOpen(false); }}
+                                            className={`w-full text-left px-3 py-1.5 text-xs font-semibold ${timePeriod === tp ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-50"}`}
+                                        >
+                                            {tp}
+                                        </button>
+                                    ))}
                                 </div>
-                            </div>
-
-                            {/* Right side: Info */}
-                            <div className="p-3 md:p-4 pl-1.5 md:pl-3 flex flex-col justify-center flex-grow z-10 min-w-0">
-                                {/* Name and Badge */}
-                                <div className="flex items-center gap-1.5 flex-wrap">
-                                    <h2 className="text-sm md:text-base font-extrabold text-black tracking-tight leading-snug truncate">{firstName} {lastName || "Sharma"}</h2>
-                                    <span className="bg-emerald-500/10 text-emerald-700 text-[8px] md:text-[9px] font-black tracking-widest px-1.5 py-0.5 rounded-full border border-emerald-500/20 shrink-0">Verified</span>
-                                </div>
-
-                                {/* Description/Location */}
-                                <p className="text-[10px] md:text-[11px] text-slate-500 font-semibold mt-1 leading-tight flex items-center gap-1.5 flex-wrap">
-                                    <span>🛂</span> Passport: <span className="text-black font-extrabold">{countryOfCitizenship || "India"}</span>
-                                </p>
-                            </div>
+                            )}
                         </div>
 
-                        {/* Search Bar next to Profile */}
-                        <div className="relative w-full md:w-[350px] lg:w-[450px] flex-shrink-0">
-                            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                        {/* Search Input */}
+                        <div className="relative hidden md:block w-52">
+                            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                             <input 
                                 type="text"
-                                placeholder="Search consultations, tasks, files..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-11 pr-5 py-4 bg-white border border-slate-200 rounded-full text-xs font-semibold focus:border-black outline-none shadow-sm transition-all"
+                                placeholder="Search workspace..."
+                                className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41]"
                             />
                         </div>
+
+                        {/* Notification Bell */}
+                        <button className="w-8.5 h-8.5 rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors relative">
+                            <Bell className="w-4 h-4" />
+                            <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-2 right-2 border border-white" />
+                        </button>
                     </div>
                 </header>
 
-                {(!lastName || !phone || !residentOf || residentOf === "—") && (
-                    <div className="bg-gradient-to-r from-amber-50 to-orange-50/50 border border-amber-200 p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm animate-pulse-subtle">
-                        <div className="flex items-center gap-3">
-                            <span className="text-xl">⚠️</span>
-                            <div>
-                                <h4 className="text-xs font-black text-black">Your Profile is Incomplete</h4>
-                                <p className="text-[11px] text-slate-500 font-semibold mt-0.5">Please add your contact number and passport details to complete your application portal setup.</p>
-                            </div>
-                        </div>
-                        <button
-                            onClick={() => setActiveTab("profile")}
-                            className="bg-black hover:bg-neutral-900 text-white font-extrabold text-[10px] tracking-wider px-6 py-2.5 rounded-full transition-all shadow-sm shrink-0 uppercase cursor-pointer hover:scale-[1.02] active:scale-95 duration-200"
-                        >
-                            Complete
-                        </button>
-                    </div>
-                )}
+                {/* Dashboard Page Content */}
+                <div className="p-6 lg:p-8 space-y-6">
 
-                {/* Dashboard Responsive Grid */}
-                {activeTab === "dashboard" ? (
-                <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
-                    
-                    {/* Column 1: Document Vault (My Tasks mockup layout) */}
-                    <div className="xl:col-span-1 bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
-                        <div className="flex items-center justify-between">
-                          <div className="flex flex-col">
-                              <h3 className="font-bold text-lg text-black">My Documents</h3>
-                              <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5">Document Vault</span>
-                          </div>
-                          <button className="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all">
-                              <Plus className="w-4 h-4 text-black" />
-                          </button>
-                        </div>
-
-                        <div className="flex gap-2">
-                            <button className="bg-black text-white text-xs font-bold px-4 py-2 rounded-full">All</button>
-                            <button className="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold px-4 py-2 rounded-full transition-all">Required</button>
-                        </div>
-
-                        <div className="bg-slate-50 border border-slate-200/60 p-3 rounded-2xl flex items-center justify-between text-xs font-bold text-black">
-                            <div className="flex items-center gap-2">
-                                <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px]">{visibleDocuments.length}</div>
-                                <span>Total Files needed</span>
-                            </div>
-                        </div>
-
-                        {/* Document items styled like mockup cards */}
-                        <div className="flex flex-col gap-4">
-                            {visibleDocuments.map((doc, idx) => {
-                                const bgColors = ["bg-[#ffeae6]/40", "bg-[#e8f5e9]/40", "bg-[#e1f5fe]/40", "bg-[#f3e5f5]/40", "bg-[#fff8e1]/40"];
-                                return (
-                                    <div 
-                                        key={doc.id} 
-                                        onClick={() => toggleDocStatus(doc.id)}
-                                        className={`p-4 border border-slate-150 rounded-2xl transition-all hover:scale-[1.01] active:scale-95 cursor-pointer ${bgColors[idx % bgColors.length]} flex flex-col justify-between gap-3`}
-                                    >
-                                        <div className="flex items-start justify-between">
-                                            <span className="text-xs font-semibold text-black block max-w-[80%]">{doc.label}</span>
-                                            <CheckSquare className={`w-4.5 h-4.5 ${doc.status === "uploaded" ? "text-black fill-black" : "text-slate-400"}`} />
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-[10px] text-slate-500 font-bold">Status</span>
-                                            <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${doc.bg}`}>
-                                                {doc.status}
-                                            </span>
-                                        </div>
+                    {activeTab === "dashboard" ? (
+                        <>
+                            {/* Top 4 Summary Metric Cards (Flup Reference Header Cards) */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                                
+                                {/* Card 1: Total Customers / Active Applications */}
+                                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-xs transition-all">
+                                    <div className="flex items-center justify-between text-slate-500 mb-2">
+                                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+                                            👥 Total applications
+                                        </span>
                                     </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* Column 2: Mid-Dashboard Overview (Project Overview & Invoice charts mockup) */}
-                    <div className="xl:col-span-2 flex flex-col gap-8">
-                        
-                        {/* Upper row: Dest & IELTS Progress mock */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            
-                            {/* Goals / Destination Pie Chart layout */}
-                            <div className={`bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px] ${!isStudent ? 'md:col-span-2' : ''}`}>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-xs font-bold text-slate-450 tracking-widest block">Goals Overview</span>
-                                    <button className="text-slate-400 hover:text-black">
-                                        <ArrowRight className="w-4 h-4" />
-                                    </button>
-                                </div>
-
-                                <div className="relative w-36 h-36 mx-auto flex items-center justify-center my-3">
-                                    {/* Simulated Doughnut Chart */}
-                                    <div className="absolute inset-0 border-[10px] border-slate-100 rounded-full"></div>
-                                    <div className="absolute inset-0 border-[10px] border-t-black border-r-orange-500 border-b-sky-500 border-l-slate-100 rounded-full animate-spin-slow"></div>
-                                    <div className="text-center z-10">
-                                        <span className="text-2xl font-bold text-black">{uploadedCount}</span>
-                                        <span className="text-[9px] text-slate-400 font-bold tracking-wider block mt-0.5">Uploaded</span>
+                                    <div className="flex items-baseline justify-between">
+                                        <span className="text-xl font-extrabold text-slate-900">
+                                            12 Active
+                                        </span>
+                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center gap-0.5 border border-emerald-200/60">
+                                            📈 2.5%
+                                        </span>
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between text-[10px] font-bold text-slate-500 pt-2 border-t border-slate-100">
-                                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-black rounded-xs"></span> Goals: {selectedGoals.length}</span>
-                                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-orange-500 rounded-xs"></span> Dests: {selectedDests.length}</span>
-                                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-sky-500 rounded-xs"></span> Ready: {uploadedCount}</span>
+                                {/* Card 2: Total Revenue / Escrow Vault */}
+                                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-xs transition-all">
+                                    <div className="flex items-center justify-between text-slate-500 mb-2">
+                                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+                                            💵 Total escrow & funds
+                                        </span>
+                                    </div>
+                                    <div className="flex items-baseline justify-between">
+                                        <span className="text-xl font-extrabold text-slate-900">
+                                            ₹45,200
+                                        </span>
+                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center gap-0.5 border border-emerald-200/60">
+                                            📈 0.5%
+                                        </span>
+                                    </div>
                                 </div>
+
+                                {/* Card 3: Total Orders / Consultations */}
+                                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-xs transition-all">
+                                    <div className="flex items-center justify-between text-slate-500 mb-2">
+                                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+                                            💬 Consultations
+                                        </span>
+                                    </div>
+                                    <div className="flex items-baseline justify-between">
+                                        <span className="text-xl font-extrabold text-slate-900">
+                                            8 Sessions
+                                        </span>
+                                        <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md flex items-center gap-0.5 border border-rose-200/60">
+                                            📉 0.2%
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Card 4: Total Returns / Saved Consultants */}
+                                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-xs transition-all">
+                                    <div className="flex items-center justify-between text-slate-500 mb-2">
+                                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+                                            ⭐ Saved experts
+                                        </span>
+                                    </div>
+                                    <div className="flex items-baseline justify-between">
+                                        <span className="text-xl font-extrabold text-slate-900">
+                                            15 Experts
+                                        </span>
+                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center gap-0.5 border border-emerald-200/60">
+                                            📈 0.12%
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Card 5: Add Data Widget (Flup Reference) */}
+                                <div className="bg-slate-50/70 rounded-xl border-2 border-dashed border-slate-200 hover:border-slate-300 p-4 flex flex-col items-center justify-center gap-1 cursor-pointer transition-all hover:bg-slate-100/60">
+                                    <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-500 shadow-2xs">
+                                        <Plus className="w-4 h-4" />
+                                    </div>
+                                    <span className="text-xs font-bold text-slate-600">Add custom data</span>
+                                </div>
+
                             </div>
 
-                            {/* IELTS Tracker (shown ONLY for Students) */}
-                            {isStudent && (
-                                <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
-                                    <div className="flex justify-between items-center">
-                                        <div>
-                                            <span className="text-xs font-bold text-slate-400 tracking-widest block">IELTS Scores</span>
-                                            <span className="text-lg font-bold text-black mt-1 block">Band {overallBand}</span>
-                                        </div>
-                                        <div className="flex items-center gap-1 text-[10px] font-bold text-slate-450">
-                                            <TrendingUp className="w-4 h-4 text-emerald-500" />
-                                            <span>Target 7.0</span>
-                                        </div>
+                            {/* Main Middle Section: Product Sales / Application Processing Dual Bar Chart */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div>
+                                        <h2 className="text-lg font-extrabold text-slate-900 tracking-tight">
+                                            Application Processing & Progress
+                                        </h2>
+                                        <p className="text-xs font-medium text-slate-500">
+                                            Monthly activity breakdown for Student Visas & Work Permits
+                                        </p>
                                     </div>
 
-                                    {/* Custom Score Curves */}
-                                    <div className="space-y-3 py-2">
-                                        {(["L", "R", "W", "S"] as const).map((key, idx) => {
-                                            const labels = { L: "Listening", R: "Reading", W: "Writing", S: "Speaking" };
-                                            const colors = ["bg-black", "bg-orange-500", "bg-sky-500", "bg-purple-500"];
-                                            return (
-                                                <div key={key}>
-                                                    <div className="flex justify-between text-[11px] font-bold mb-1">
-                                                        <span className="text-slate-500 font-semibold">{labels[key]}</span>
-                                                        <span className="text-black font-extrabold">{ieltsScore[key]}</span>
+                                    {/* Chart Legend Badges */}
+                                    <div className="flex items-center gap-4 text-xs font-bold">
+                                        <span className="flex items-center gap-1.5">
+                                            <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                                            <span className="text-slate-700">Student Visas</span>
+                                        </span>
+                                        <span className="flex items-center gap-1.5">
+                                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                                            <span className="text-slate-700">Work Permits</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Dual Vertical Bar Chart (Flup Reference Replication) */}
+                                <div className="relative pt-6 pb-2">
+                                    <div className="h-56 flex items-end justify-between gap-2 sm:gap-4 px-2 border-b border-slate-100">
+                                        {barChartData.map((item, idx) => (
+                                            <div key={idx} className="flex-1 flex flex-col items-center gap-1 group relative h-full justify-end">
+                                                
+                                                {/* Tooltip Overlay (Flup Reference 6 Jul Style) */}
+                                                {item.tooltip && (
+                                                    <div className="absolute -top-12 z-20 bg-white border border-slate-200 shadow-lg rounded-xl px-3 py-1.5 text-center whitespace-nowrap animate-bounce-subtle">
+                                                        <p className="text-[10px] font-bold text-slate-500">Active Cases</p>
+                                                        <p className="text-xs font-extrabold text-slate-900 flex items-center gap-1">
+                                                            ₹52,187 <span className="text-[9px] text-emerald-600">📈 2.5%</span>
+                                                        </p>
                                                     </div>
-                                                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                                        <div className={`h-full ${colors[idx]} rounded-full`} style={{ width: `${(ieltsScore[key] / 9) * 100}%` }} />
-                                                    </div>
+                                                )}
+
+                                                <div className="w-full flex items-end justify-center gap-1 h-full">
+                                                    {/* Blue Bar */}
+                                                    <div 
+                                                        className="w-2.5 sm:w-3.5 bg-blue-500 hover:bg-blue-600 rounded-t-sm transition-all duration-300"
+                                                        style={{ height: `${(item.gross / 70) * 100}%` }}
+                                                    />
+                                                    {/* Orange Bar */}
+                                                    <div 
+                                                        className="w-2.5 sm:w-3.5 bg-amber-500 hover:bg-amber-600 rounded-t-sm transition-all duration-300"
+                                                        style={{ height: `${(item.rev / 70) * 100}%` }}
+                                                    />
                                                 </div>
-                                            );
-                                        })}
+
+                                                {/* X Axis Label */}
+                                                <span className={`text-[11px] font-bold mt-2 ${item.tooltip ? "text-slate-900 font-extrabold" : "text-slate-400"}`}>
+                                                    {item.day}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Bottom Grid: 2 Column Panels (Flup Reference Donut Chart + Country Sales List) */}
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                
+                                {/* Left Panel: Sales by product category (Donut Chart & Legend Grid) */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs flex flex-col justify-between">
+                                    <div className="mb-4">
+                                        <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
+                                            Applications by Product Category
+                                        </h3>
+                                        <p className="text-xs text-slate-500 font-medium">Category distribution overview</p>
                                     </div>
 
-                                    <a href="/training" className="block pt-2 border-t border-slate-100">
-                                        <button className="w-full bg-black text-white py-2 rounded-xl text-[10px] font-bold tracking-wider hover:bg-slate-900 transition-all">
-                                            Find IELTS Coaching
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+                                        {/* Legend Grid Pills */}
+                                        <div className="grid grid-cols-2 gap-2 text-[11px]">
+                                            {categoriesData.map((cat, idx) => (
+                                                <div key={idx} className="flex items-center gap-1.5 bg-slate-50 p-1.5 rounded-lg border border-slate-100">
+                                                    <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cat.color }} />
+                                                    <span className="font-bold text-slate-800 truncate">{cat.label.split('/')[1] || cat.label}</span>
+                                                    <span className="text-[10px] font-extrabold text-slate-500 ml-auto">{cat.percent}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        {/* Donut Chart Graphic (Flup Reference SVG) */}
+                                        <div className="relative w-44 h-44 mx-auto flex items-center justify-center">
+                                            <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                                                <path strokeDasharray="25, 100" stroke="#8b5cf6" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path strokeDasharray="17, 100" strokeDashoffset="-25" stroke="#3b82f6" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path strokeDasharray="13, 100" strokeDashoffset="-42" stroke="#a855f7" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path strokeDasharray="12, 100" strokeDashoffset="-55" stroke="#38bdf8" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path strokeDasharray="9, 100" strokeDashoffset="-67" stroke="#ec4899" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path strokeDasharray="24, 100" strokeDashoffset="-76" stroke="#10b981" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            </svg>
+                                            <div className="absolute text-center">
+                                                <span className="text-xl font-extrabold text-slate-900">100%</span>
+                                                <span className="text-[10px] font-bold text-slate-400 block uppercase">Total</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Right Panel: Sales by countries (Country Ranking List & Map Graphic) */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs flex flex-col justify-between">
+                                    <div className="mb-4">
+                                        <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
+                                            Top Destination Visas by Country
+                                        </h3>
+                                        <p className="text-xs text-slate-500 font-medium">Demographic destination statistics</p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                                        {/* Country Percentage Ranking List */}
+                                        <div className="space-y-2.5">
+                                            {countriesData.map((c, idx) => (
+                                                <div key={idx} className="flex items-center justify-between text-xs font-bold border-b border-slate-100 pb-1">
+                                                    <span className="flex items-center gap-2 text-slate-800">
+                                                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                                                        {c.name.split('/')[1] || c.name}
+                                                    </span>
+                                                    <span className="text-slate-900 font-extrabold">{c.percent}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        {/* Stylized Mini Map Graphic */}
+                                        <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-center h-48 relative overflow-hidden">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-blue-500/10" />
+                                            <div className="text-center z-10 space-y-2">
+                                                <Globe className="w-12 h-12 text-[#107c41] mx-auto animate-pulse-subtle" />
+                                                <span className="text-xs font-extrabold text-slate-800 block">150+ Global Destinations</span>
+                                                <span className="text-[10px] font-bold text-slate-500 block">Worldwide Coverage</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </>
+                    ) : (
+                        /* Other Tab Views (Profile, Cases, Consultations, Documents, etc.) */
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs">
+                            {activeTab === "profile" && (
+                                <div className="space-y-6">
+                                    <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                                        <div>
+                                            <h2 className="text-xl font-extrabold text-slate-900">Profile & Passport Information</h2>
+                                            <p className="text-xs text-slate-500 font-semibold">Manage your personal visa application identity</p>
+                                        </div>
+                                        <button onClick={() => setShowProfileModal(true)} className="bg-[#107c41] hover:bg-[#0d5c3a] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs">
+                                            Edit Profile
                                         </button>
-                                    </a>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/70 space-y-2">
+                                            <span className="text-slate-400 font-bold block uppercase text-[10px]">Full Name</span>
+                                            <span className="text-slate-900 font-extrabold text-sm block">{firstName} {lastName}</span>
+                                        </div>
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/70 space-y-2">
+                                            <span className="text-slate-400 font-bold block uppercase text-[10px]">Contact Phone</span>
+                                            <span className="text-slate-900 font-extrabold text-sm block">{phone || "Not specified"}</span>
+                                        </div>
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/70 space-y-2">
+                                            <span className="text-slate-400 font-bold block uppercase text-[10px]">Passport Country</span>
+                                            <span className="text-slate-900 font-extrabold text-sm block">{countryOfCitizenship || "India"}</span>
+                                        </div>
+                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/70 space-y-2">
+                                            <span className="text-slate-400 font-bold block uppercase text-[10px]">Current Residence</span>
+                                            <span className="text-slate-900 font-extrabold text-sm block">{residentOf || "India"}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
 
+                            {activeTab !== "profile" && (
+                                <div className="py-12 text-center space-y-3">
+                                    <Briefcase className="w-12 h-12 text-slate-400 mx-auto" />
+                                    <h3 className="text-base font-extrabold text-slate-900 capitalize">{activeTab.replace('-', ' ')} Portal</h3>
+                                    <p className="text-xs text-slate-500 font-semibold max-w-sm mx-auto">
+                                        All active {activeTab.replace('-', ' ')} records are synchronized with your verified immigration advisor.
+                                    </p>
+                                </div>
+                            )}
                         </div>
-
-                        {/* Lower Block: Escrow & Funds Overview (Invoice Overview Layout) */}
-                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-6">
-                            <div className="flex items-center justify-between">
-                                <div className="flex flex-col">
-                                    <h3 className="font-bold text-lg text-black">Milestone Escrow Vault</h3>
-                                    <span className="text-[11px] text-slate-450 font-bold tracking-wider">Secured Payments</span>
-                                </div>
-                                <Shield className="w-5 h-5 text-black" />
-                            </div>
-
-                            <div className="space-y-4">
-                                {[
-                                    { label: "Held in Escrow", count: "0 Bookings", amount: "₹0", width: "0%", bg: "bg-purple-600" },
-                                    { label: "Released Payments", count: "0 Complete", amount: "₹0", width: "0%", bg: "bg-emerald-600" },
-                                    { label: "Total Spent", count: "0 Transactions", amount: "₹0", width: "0%", bg: "bg-sky-600" },
-                                ].map((item, idx) => (
-                                    <div key={idx} className="space-y-2">
-                                        <div className="flex justify-between text-xs font-bold text-black">
-                                            <span>{item.label}</span>
-                                            <div className="flex gap-4">
-                                                <span className="text-slate-450">{item.count}</span>
-                                                <span className="font-bold">{item.amount}</span>
-                                            </div>
-                                        </div>
-                                        <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                                            <div className={`h-full ${item.bg} rounded-full`} style={{ width: item.width }} />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                    </div>
-
-                    {/* Column 3: Meetings & Support (My Meetings & Tickets layout) */}
-                    <div className="xl:col-span-1 flex flex-col gap-8">
-                        
-                        {/* Account Information Card (Displays clean and proper registration details) */}
-                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
-                            <div>
-                                <h3 className="font-bold text-lg text-black">Account Information</h3>
-                                <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5 block">Registration Details</span>
-                            </div>
-                            
-                            <div className="text-xs space-y-3.5 pt-4 text-slate-500 font-semibold border-t border-slate-100">
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>First Name</span>
-                                    <span className="text-black font-extrabold">{firstName || "—"}</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>Last Name</span>
-                                    <span className="text-black font-extrabold">{lastName || "Sharma"}</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>Passport Country</span>
-                                    <span className="text-black font-extrabold">{countryOfCitizenship || "—"}</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>Current Residence</span>
-                                    <span className="text-black font-extrabold">{residentOf || "—"}</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-1 border-b border-slate-50">
-                                    <span>Email Address</span>
-                                    <span className="text-slate-900 font-bold truncate max-w-[150px]">{email || "—"}</span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span>Phone Number</span>
-                                    <span className="text-slate-900 font-bold">{phone || "—"}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Consultation Meetings */}
-                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
-                            <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-slate-450 tracking-widest block">My Consultations</span>
-                                <Calendar className="w-4 h-4 text-black" />
-                            </div>
-
-                            <div className="space-y-3">
-                                {initialBookings.map((b, idx) => (
-                                    <div key={idx} className="bg-slate-50 border border-slate-200/40 rounded-2xl p-4.5 space-y-3 hover:shadow-xs transition-all">
-                                        <div className="flex justify-between items-center text-xs font-bold">
-                                            <span className="text-slate-450">{b.date.split("·")[0]}</span>
-                                            <span className="bg-black text-white px-2 py-0.5 rounded-md text-[9px] tracking-wider">{b.platform}</span>
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <img src={b.avatar} alt={b.expert} className="w-8 h-8 rounded-full object-cover" />
-                                            <div className="truncate">
-                                                <span className="text-xs font-semibold text-black block truncate">{b.expert}</span>
-                                                <span className="text-[10px] text-slate-400 block truncate font-semibold mt-0.5">{b.service}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <a href="/find-experts" className="block text-center text-xs font-bold text-slate-700 hover:text-black pt-2">
-                                See All Consultations &gt;
-                            </a>
-                        </div>
-
-                        {/* Saved Experts list (styled like Open Tickets / Chats list) */}
-                        <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
-                            <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-slate-450 tracking-widest block">Saved Experts</span>
-                                <Bookmark className="w-4 h-4 text-black" />
-                            </div>
-
-                            <div className="space-y-4">
-                                {initialSavedExperts.map((e, idx) => (
-                                    <div key={idx} className="flex items-center gap-3">
-                                        <img src={e.avatar} alt={e.name} className="w-10 h-10 rounded-full object-cover border border-slate-100" />
-                                        <div className="flex-1 truncate">
-                                            <div className="text-xs font-semibold text-black leading-none">{e.name}</div>
-                                            <span className="text-[10px] text-slate-400 font-bold block mt-1 truncate">{e.role}</span>
-                                        </div>
-                                        <a href="/find-experts">
-                                            <button className="bg-black hover:bg-slate-900 text-white text-[10px] font-bold tracking-wider px-3.5 py-1.5 rounded-xl active:scale-95 transition-all">
-                                                Book
-                                            </button>
-                                        </a>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                    </div>
+                    )}
 
                 </div>
-                ) : activeTab === "consultations" ? (
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
-                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+            </main>
+
+            {/* Edit Profile Modal */}
+            {showProfileModal && (
+                <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-6">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <h3 className="text-base font-extrabold text-slate-900">Update Profile Details</h3>
+                            <button onClick={() => setShowProfileModal(false)} className="text-slate-400 hover:text-slate-700">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSaveProfileModal} className="space-y-4 text-xs">
                             <div>
-                                <h3 className="text-lg font-bold text-black">Scheduled Consultations</h3>
-                                <p className="text-xs text-slate-400 mt-1">Manage and attend your virtual counseling sessions</p>
-                            </div>
-                            <Calendar className="w-5 h-5 text-black" />
-                        </div>
-                        
-                        <div className="text-center py-12 space-y-4">
-                            <div className="w-16 h-16 bg-slate-50 border border-slate-150 rounded-full flex items-center justify-center mx-auto shadow-inner">
-                                <Clock className="w-7 h-7 text-slate-400" />
-                            </div>
-                            <div className="space-y-1">
-                                <h4 className="font-bold text-sm text-black">No Upcoming Sessions</h4>
-                                <p className="text-xs text-slate-400 max-w-xs mx-auto">Get expert guidance on universities, SOP reviews, and visa filings today.</p>
-                            </div>
-                            <a href="/find-experts" className="inline-block pt-2">
-                                <button className="bg-black hover:bg-slate-900 text-white text-xs font-bold tracking-wider px-6 py-3 rounded-xl transition-all shadow-sm active:scale-95">
-                                    Find & Book Advisors
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                ) : activeTab === "cases" ? (
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
-                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                            <div>
-                                <h3 className="text-lg font-bold text-black">Active Case Tracker</h3>
-                                <p className="text-xs text-slate-400 mt-1">Monitor the state of your application milestones and active visa processing</p>
-                            </div>
-                            <Shield className="w-5 h-5 text-black" />
-                        </div>
-                        
-                        <div className="space-y-6">
-                            {/* Module 13: Visas Under Processing */}
-                            <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-150 space-y-4">
-                                <h4 className="text-xs font-bold text-black tracking-wider uppercase">Visas Under Processing</h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {visasProcessingState.map(vp => (
-                                        <div key={vp.case_id} className="bg-white border border-slate-250 p-4 rounded-xl shadow-xs">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <span className="text-xs font-bold text-black">{vp.target_country} · {vp.visa_category}</span>
-                                                <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
-                                                    vp.live_status_flag === "In Progress" ? "bg-blue-50 text-blue-700 border-blue-100" : "bg-amber-50 text-amber-700 border-amber-100"
-                                                }`}>{vp.live_status_flag}</span>
-                                            </div>
-                                            <div className="text-[11px] text-slate-500 font-semibold mb-1">Workflow Stage:</div>
-                                            <div className="flex items-center gap-2">
-                                                <span className="w-2 h-2 bg-black rounded-full animate-ping" />
-                                                <span className="text-xs font-bold text-slate-900">{vp.current_workflow_stage}</span>
-                                            </div>
-                                            <div className="text-[9px] text-slate-400 font-bold mt-2">Case ID: {vp.case_id}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ) : activeTab === "scanned-documents" ? (
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
-                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                            <div>
-                                <h3 className="text-lg font-bold text-black">My Scanned Documents</h3>
-                                <p className="text-xs text-slate-400 mt-1">Cloud asset path references secured in AWS S3 storage buckets</p>
-                            </div>
-                            <FileText className="w-5 h-5 text-black" />
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {scannedDocs.map(doc => (
-                                <div key={doc.document_id} className="bg-slate-50 border border-slate-200/70 p-5 rounded-2xl hover:border-black transition-all flex flex-col justify-between gap-4">
-                                    <div className="flex items-start justify-between">
-                                        <div>
-                                            <span className="bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">{doc.document_type_label}</span>
-                                            <h4 className="text-xs font-bold text-black mt-2 truncate max-w-[200px]">{doc.file_name}</h4>
-                                        </div>
-                                        <span className="text-[10px] text-slate-400 font-bold">{doc.size}</span>
-                                    </div>
-                                    <div className="bg-white border border-slate-200/50 p-2.5 rounded-xl text-[10px] text-slate-500 font-medium truncate mb-2">
-                                        URL: <a href={doc.s3_secure_url} target="_blank" rel="noreferrer" className="text-indigo-650 hover:underline">{doc.s3_secure_url}</a>
-                                    </div>
-                                    <button 
-                                        onClick={() => window.open(doc.s3_secure_url, "_blank")}
-                                        className="w-full bg-black text-white text-xs font-bold py-2.5 rounded-xl hover:bg-slate-900 transition-all shadow-sm"
-                                    >
-                                        Download Secure S3 Asset
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                ) : activeTab === "escrow-milestones" ? (
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-8 max-w-4xl animate-premium-fade">
-                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                            <div>
-                                <h3 className="text-lg font-bold text-black">Payments & Escrow Security</h3>
-                                <p className="text-xs text-slate-400 mt-1">Financial holding accounts, milestones, and dispute resolution systems</p>
-                            </div>
-                            <Lock className="w-5 h-5 text-black" />
-                        </div>
-
-                        {/* Module 12: Escrow Payments */}
-                        <div className="space-y-4">
-                            <h4 className="text-xs font-bold text-black tracking-wider uppercase">Escrow Payments & Milestone Tracker</h4>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {escrowPaymentsState.map(esc => (
-                                    <div key={esc.escrow_id} className="bg-slate-50/50 border border-slate-200 p-5 rounded-2xl space-y-3">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-xs font-bold text-black">With {esc.expert_name}</span>
-                                            <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
-                                                esc.holding_status === "Held" ? "bg-purple-50 text-purple-700 border-purple-100" : "bg-emerald-50 text-emerald-700 border-emerald-100"
-                                            }`}>{esc.holding_status}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center py-1">
-                                            <span className="text-xs font-semibold text-slate-500">Secured Balance:</span>
-                                            <span className="text-base font-extrabold text-black">{esc.secured_amount}</span>
-                                        </div>
-                                        <div className="border-t border-slate-200/60 pt-2 text-[11px] text-slate-500 font-semibold">
-                                            Current Active Milestone:
-                                            <div className="text-xs font-bold text-slate-900 mt-1">🏁 {esc.current_active_milestone}</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Module 11: Active Disputes */}
-                        <div className="space-y-4 pt-4 border-t border-slate-100">
-                            <h4 className="text-xs font-bold text-black tracking-wider uppercase">Active Disputes hold mitigation</h4>
-                            {activeDisputes.length === 0 ? (
-                                <div className="p-4 bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs font-semibold rounded-xl">
-                                    No active dispute cases filed. Your escrow releases are currently running smoothly.
-                                </div>
-                            ) : (
-                                <div className="space-y-3">
-                                    {activeDisputes.map(disp => (
-                                        <div key={disp.dispute_id} className="bg-rose-50/30 border border-rose-100 p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                            <div className="space-y-1">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="bg-rose-600 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">{disp.status}</span>
-                                                    <span className="text-xs font-bold text-black">Case Reference: {disp.ticket_log}</span>
-                                                </div>
-                                                <h4 className="text-xs font-semibold text-slate-700">{disp.case_title}</h4>
-                                                <p className="text-[10px] text-slate-450 font-bold">Expert Assigned: {disp.expert_name}</p>
-                                            </div>
-                                            <div className="text-right shrink-0">
-                                                <div className="text-xs font-bold text-slate-400">Disputed Funds</div>
-                                                <div className="text-base font-black text-rose-700">{disp.disputed_amount}</div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                ) : activeTab === "visa-history" ? (
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
-                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                            <div>
-                                <h3 className="text-lg font-bold text-black">Visa Log History</h3>
-                                <p className="text-xs text-slate-400 mt-1">Previous applied visas outcome records and historical statistics tracker</p>
-                            </div>
-                            <BookOpen className="w-5 h-5 text-black" />
-                        </div>
-
-                        {/* Module 10: Previous Applied Visas */}
-                        <div className="space-y-4">
-                            <h4 className="text-xs font-bold text-black tracking-wider uppercase">Previous Applied Visas</h4>
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-left text-xs text-black border-collapse">
-                                    <thead>
-                                        <tr className="border-b border-slate-200 text-slate-400 font-bold">
-                                            <th className="py-3 px-2">Destination</th>
-                                            <th className="py-3 px-2">Visa Type</th>
-                                            <th className="py-3 px-2">Year</th>
-                                            <th className="py-3 px-2 text-right">Outcome</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {previousVisas.map(v => (
-                                            <tr key={v.history_id} className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50 transition-colors">
-                                                <td className="py-3.5 px-2 font-bold">{v.destination_country}</td>
-                                                <td className="py-3.5 px-2 text-slate-500 font-semibold">{v.visa_type}</td>
-                                                <td className="py-3.5 px-2 text-slate-500 font-semibold">{v.application_year}</td>
-                                                <td className="py-3.5 px-2 text-right">
-                                                    <span className={`text-[9px] font-black px-2.5 py-0.5 rounded-full border ${
-                                                        v.final_outcome === "Approved" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-rose-50 text-rose-700 border-rose-100"
-                                                    }`}>{v.final_outcome}</span>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                ) : activeTab === "favourite-experts" ? (
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-4xl animate-premium-fade">
-                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                            <div>
-                                <h3 className="text-lg font-bold text-black">Favourite Agents</h3>
-                                <p className="text-xs text-slate-400 mt-1">Bookmarked immigration consultants, agents, and legal advisors</p>
-                            </div>
-                            <Bookmark className="w-5 h-5 text-black" />
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {favouriteExperts.map(expert => (
-                                <div key={expert.agent_id} className="bg-slate-50 border border-slate-150 p-5 rounded-2xl flex items-center justify-between gap-4">
-                                    <div className="flex items-center gap-3 truncate">
-                                        <img src={expert.avatar} alt={expert.name} className="w-12 h-12 rounded-full object-cover border border-slate-200 shadow-sm" />
-                                        <div className="truncate">
-                                            <h4 className="text-xs font-bold text-black truncate leading-snug">{expert.name}</h4>
-                                            <span className="text-[10px] text-slate-400 font-bold block truncate mt-0.5">{expert.role}</span>
-                                            <div className="flex gap-1.5 mt-1">
-                                                {expert.specialization_tags.map(t => (
-                                                    <span key={t} className="bg-white border border-slate-200 text-slate-600 text-[8.5px] px-1.5 py-0.5 rounded font-semibold">{t}</span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="text-right shrink-0 flex flex-col items-end gap-2">
-                                        <span className="text-xs font-bold text-black flex items-center gap-0.5">⭐ {expert.rating_score}</span>
-                                        <a href="/find-experts">
-                                            <button className="bg-black hover:bg-neutral-900 text-white text-[10px] font-bold tracking-wider px-3.5 py-1.5 rounded-xl transition-all">
-                                                Consult
-                                            </button>
-                                        </a>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                ) : activeTab === "profile" ? (
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-6 max-w-2xl animate-premium-fade text-left">
-                        <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                            <div>
-                                <h3 className="text-lg font-extrabold text-black">My Profile Settings</h3>
-                                <p className="text-xs text-slate-400 mt-1">View and update your personal credentials and location details</p>
-                            </div>
-                            <User className="w-5 h-5 text-black" />
-                        </div>
-
-                        {/* Profile Edit Fields */}
-                        <form
-                            onSubmit={async (e) => {
-                                e.preventDefault();
-                                const fullPhone = `${countryCode} ${modalPhone}`.trim();
-                                try {
-                                    const response = await fetch("/api/profile/update", {
-                                        method: "POST",
-                                        headers: { "Content-Type": "application/json" },
-                                        body: JSON.stringify({
-                                            email: email || localStorage.getItem("seeker_email"),
-                                            role: 'seeker',
-                                            first_name: modalFirstName,
-                                            last_name: modalLastName,
-                                            phone: fullPhone,
-                                            passport_country: modalPassportCountry,
-                                            resident_of: modalResidentOf,
-                                            looking_for: modalLookingFor
-                                        })
-                                    });
-
-                                    if (response.ok) {
-                                        const data = await response.json();
-                                        if (data.user) {
-                                            localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-                                        }
-                                        alert("Profile updated successfully!");
-                                    }
-                                } catch (err) {
-                                    console.error("Failed to save profile on backend:", err);
-                                    alert("Failed to update profile settings.");
-                                }
-
-                                setFirstName(modalFirstName);
-                                setLastName(modalLastName);
-                                setPhone(fullPhone);
-                                setPassportCountry(modalPassportCountry);
-                                setCountryOfCitizenship(modalPassportCountry);
-                                setResidentOf(modalResidentOf);
-
-                                localStorage.setItem("seeker_firstName", modalFirstName);
-                                localStorage.setItem("seeker_lastName", modalLastName);
-                                localStorage.setItem("seeker_phone", fullPhone);
-                                localStorage.setItem("seeker_passportCountry", modalPassportCountry);
-                                localStorage.setItem("seeker_resident_of", modalResidentOf);
-                                localStorage.setItem("seeker_country_of_citizenship", modalPassportCountry);
-                                localStorage.setItem("seeker_looking_for", modalLookingFor);
-                            }}
-                            className="space-y-6"
-                        >
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                <div className="space-y-1.5">
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">First Name</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={modalFirstName}
-                                        onChange={(e) => setModalFirstName(e.target.value)}
-                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm"
-                                    />
-                                </div>
-                                <div className="space-y-1.5">
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Last Name</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={modalLastName}
-                                        onChange={(e) => setModalLastName(e.target.value)}
-                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-1.5">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Email Address</label>
-                                <input
-                                    type="email"
-                                    disabled
-                                    value={email}
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-400 outline-none shadow-sm cursor-not-allowed"
+                                <label className="font-bold text-slate-700 block mb-1">First Name</label>
+                                <input 
+                                    type="text"
+                                    value={modalFirstName}
+                                    onChange={(e) => setModalFirstName(e.target.value)}
+                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41]"
+                                    required
                                 />
                             </div>
 
-                            <div className="space-y-1.5">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Phone Number*</label>
-                                <div className="flex gap-3">
-                                    <div className="relative" onClick={(e) => e.stopPropagation()}>
-                                        <button
-                                            type="button"
-                                            onClick={() => setCountryCodeOpen(!countryCodeOpen)}
-                                            className="px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black text-black shadow-sm shrink-0 cursor-pointer flex items-center justify-between gap-1.5 h-[46px] font-bold"
-                                        >
-                                            <span>{countryCode}</span>
-                                            <svg className={`w-3.5 h-3.5 text-slate-500 transition-transform ${countryCodeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
-                                        </button>
-                                        {countryCodeOpen && (
-                                            <div className="absolute left-0 mt-1.5 w-40 bg-white border border-slate-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-[60] font-sans">
-                                                {[
-                                                    { val: "+91", label: "+91 (IN)" },
-                                                    { val: "+1", label: "+1 (US/CA)" },
-                                                    { val: "+44", label: "+44 (UK)" },
-                                                    { val: "+61", label: "+61 (AU)" },
-                                                    { val: "+971", label: "+971 (AE)" },
-                                                    { val: "+49", label: "+49 (DE)" },
-                                                    { val: "+33", label: "+33 (FR)" },
-                                                    { val: "+65", label: "+65 (SG)" },
-                                                    { val: "+64", label: "+64 (NZ)" }
-                                                ].map(opt => (
-                                                    <button
-                                                        key={opt.val}
-                                                        type="button"
-                                                        onClick={() => { setCountryCode(opt.val); setCountryCodeOpen(false); }}
-                                                        className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-black hover:text-white transition-colors"
-                                                    >
-                                                        {opt.label}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                    <input 
-                                        type="tel" 
-                                        required
-                                        placeholder="99999 99999" 
-                                        value={modalPhone}
-                                        onChange={(e) => setModalPhone(e.target.value)}
-                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:border-black outline-none shadow-sm" 
-                                    />
-                                </div>
+                            <div>
+                                <label className="font-bold text-slate-700 block mb-1">Last Name</label>
+                                <input 
+                                    type="text"
+                                    value={modalLastName}
+                                    onChange={(e) => setModalLastName(e.target.value)}
+                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41]"
+                                />
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                <div className="space-y-1.5 relative">
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Country of Citizenship (Passport Country)*</label>
-                                    <button
-                                        type="button"
-                                        onClick={(e) => { e.stopPropagation(); setCitizenshipOpen(!citizenshipOpen); setResidenceOpen(false); }}
-                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black text-black shadow-sm text-left flex justify-between items-center cursor-pointer font-semibold h-[46px]"
-                                    >
-                                        <span>{modalPassportCountry || "Select passport country"}</span>
-                                        <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                    </button>
-                                    {citizenshipOpen && (
-                                        <div className="absolute z-[70] w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-48 overflow-y-auto">
-                                            {["India", "Nigeria", "Philippines", "Brazil", "Pakistan", "Bangladesh", "United States", "United Kingdom", "Canada", "Australia", "Other"].map(opt => (
-                                                <div
-                                                    key={opt}
-                                                    onClick={() => { setModalPassportCountry(opt); setCitizenshipOpen(false); }}
-                                                    className="px-4 py-2.5 text-xs text-black font-semibold hover:bg-black hover:text-white cursor-pointer transition-colors"
-                                                >
-                                                    {opt}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="space-y-1.5 relative">
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Current Country of Residence*</label>
-                                    <button
-                                        type="button"
-                                        onClick={(e) => { e.stopPropagation(); setResidenceOpen(!residenceOpen); setCitizenshipOpen(false); }}
-                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black text-black shadow-sm text-left flex justify-between items-center cursor-pointer font-semibold h-[46px]"
-                                    >
-                                        <span>{modalResidentOf || "Select current residence"}</span>
-                                        <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                    </button>
-                                    {residenceOpen && (
-                                        <div className="absolute z-[70] w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-48 overflow-y-auto">
-                                            {["India", "Nigeria", "Philippines", "Brazil", "Pakistan", "Bangladesh", "United States", "United Kingdom", "Canada", "Australia", "Singapore", "United Arab Emirates", "Germany", "France", "Other"].map(opt => (
-                                                <div
-                                                    key={opt}
-                                                    onClick={() => { setModalResidentOf(opt); setResidenceOpen(false); }}
-                                                    className="px-4 py-2.5 text-xs text-black font-semibold hover:bg-black hover:text-white cursor-pointer transition-colors"
-                                                >
-                                                    {opt}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
+                            <div>
+                                <label className="font-bold text-slate-700 block mb-1">Phone Number</label>
+                                <input 
+                                    type="text"
+                                    value={modalPhone}
+                                    onChange={(e) => setModalPhone(e.target.value)}
+                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41]"
+                                />
                             </div>
 
-                            <div className="space-y-1.5 relative">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Looking for*</label>
-                                <button
-                                    type="button"
-                                    onClick={(e) => { e.stopPropagation(); setModalLookingForOpen(!modalLookingForOpen); setCitizenshipOpen(false); setResidenceOpen(false); }}
-                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black text-black shadow-sm text-left flex justify-between items-center cursor-pointer font-semibold h-[46px]"
-                                >
-                                    <span>{modalLookingFor || "Select a service"}</span>
-                                    <svg className="fill-current h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                            <div>
+                                <label className="font-bold text-slate-700 block mb-1">Passport Country</label>
+                                <input 
+                                    type="text"
+                                    value={modalPassportCountry}
+                                    onChange={(e) => setModalPassportCountry(e.target.value)}
+                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41]"
+                                />
+                            </div>
+
+                            <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                                <button type="button" onClick={() => setShowProfileModal(false)} className="px-4 py-2 border border-slate-200 rounded-xl font-bold text-slate-600 hover:bg-slate-50">
+                                    Cancel
                                 </button>
-                                {modalLookingForOpen && (
-                                    <div className="absolute z-[70] w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-48 overflow-y-auto">
-                                        {["Visitor Visa", "Student Visa", "Work Visa", "Permanent Residence", "Citizenship", "Visa Appeal"].map(opt => (
-                                            <div
-                                                key={opt}
-                                                onClick={() => { setModalLookingFor(opt); setModalLookingForOpen(false); }}
-                                                className="px-4 py-2.5 text-xs text-black font-semibold hover:bg-black hover:text-white cursor-pointer transition-colors"
-                                            >
-                                                {opt}
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="pt-4 border-t border-slate-100 flex justify-end">
-                                <button
-                                    type="submit"
-                                    className="bg-black hover:bg-neutral-900 text-white font-extrabold text-[10px] tracking-wider px-8 py-3 rounded-full uppercase transition-all shadow-md cursor-pointer hover:scale-[1.02] active:scale-95 duration-200"
-                                >
+                                <button type="submit" className="px-4 py-2 bg-[#107c41] hover:bg-[#0d5c3a] text-white rounded-xl font-bold transition-all">
                                     Save Changes
                                 </button>
                             </div>
                         </form>
                     </div>
-                ) : null}
+                </div>
+            )}
 
-            </main>
         </div>
     );
 }

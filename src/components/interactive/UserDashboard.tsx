@@ -233,26 +233,26 @@ export function UserDashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#f3f4f6] text-slate-800 font-sans flex overflow-x-hidden antialiased" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+        <div className="min-h-screen bg-[#f3f4f6] text-slate-800 font-sans flex overflow-x-hidden antialiased" style={{ fontFamily: "'Roboto', 'Google Sans', system-ui, -apple-system, sans-serif" }}>
+            <style dangerouslySetInnerHTML={{__html: `
+                @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Google+Sans:wght@400;500;700&display=swap');
+            `}} />
             
             {/* Flup-Style Left Sidebar Navigation */}
             <aside className={`bg-[#f8f9fa] border-r border-slate-200/90 flex flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
                 <div>
-                    {/* Brand Header */}
+                    {/* Brand Header — Using Official Logo */}
                     <div className="p-4 border-b border-slate-200/70 flex items-center justify-between">
-                        <a href="/" className="flex items-center gap-2.5 min-w-0">
-                            <div className="w-8 h-8 rounded-full bg-[#107c41] flex items-center justify-center text-white font-bold shrink-0 shadow-xs">
-                                <span className="text-base">VF</span>
-                            </div>
-                            {!isSidebarCollapsed && (
-                                <span className="font-extrabold text-lg text-slate-900 tracking-tight truncate">
-                                    VisaFormula
-                                </span>
+                        <a href="/" className="flex items-center gap-2 min-w-0">
+                            {isSidebarCollapsed ? (
+                                <img src="/logo.png" alt="VisaFormula Logo" className="h-7 w-auto object-contain shrink-0" />
+                            ) : (
+                                <img src="/logo.png" alt="VisaFormula Logo" className="h-9 w-auto object-contain shrink-0 max-w-[170px]" />
                             )}
                         </a>
                         <button 
                             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
-                            className="p-1 rounded-lg hover:bg-slate-200/70 text-slate-500 transition-colors hidden lg:block"
+                            className="p-1.5 rounded-lg hover:bg-slate-200/70 text-slate-500 transition-colors hidden lg:block"
                         >
                             <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isSidebarCollapsed ? "" : "rotate-180"}`} />
                         </button>

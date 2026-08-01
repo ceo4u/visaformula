@@ -242,12 +242,12 @@ export function UserDashboard() {
             <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
                 <div>
                     {/* Brand Header — Extra Large Official Logo */}
-                    <div className="p-4 border-b border-slate-200/70 flex items-center justify-between bg-white min-h-[72px]">
+                    <div className="p-4 border-b border-slate-200/70 flex items-center justify-between bg-white min-h-[76px]">
                         <a href="/" className="flex items-center gap-2 min-w-0">
                             {isSidebarCollapsed ? (
                                 <img src="/logo.png" alt="VisaFormula Logo" className="h-10 w-auto object-contain shrink-0" />
                             ) : (
-                                <img src="/logo.png" alt="VisaFormula Logo" className="h-12 sm:h-14 lg:h-15 w-auto object-contain shrink-0 max-w-[230px]" />
+                                <img src="/logo.png" alt="VisaFormula Logo" className="h-13 sm:h-15 lg:h-16 w-auto max-h-[60px] object-contain shrink-0 max-w-[260px]" />
                             )}
                         </a>
                         <button 
@@ -470,13 +470,13 @@ export function UserDashboard() {
             <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
                 
                 {/* Top Header Bar */}
-                <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-3.5 flex items-center justify-between gap-3 sticky top-0 z-20 shadow-2xs">
-                    <div className="flex items-center gap-3 min-w-0">
-                        <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-1.5 text-slate-700 hover:bg-slate-100 rounded-lg">
-                            <LayoutGrid className="w-5 h-5" />
+                <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-20 shadow-2xs min-h-[76px]">
+                    <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                        <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
+                            <LayoutGrid className="w-6 h-6" />
                         </button>
                         <a href="/" className="lg:hidden flex items-center shrink-0">
-                            <img src="/logo.png" alt="VisaFormula Logo" className="h-8 sm:h-9 w-auto object-contain" />
+                            <img src="/logo.png" alt="VisaFormula Logo" className="h-12 sm:h-14 md:h-16 w-auto max-h-[56px] object-contain" />
                         </a>
                         <h1 className="hidden sm:block text-xl lg:text-2xl font-extrabold text-slate-900 tracking-tight truncate">
                             Dashboard

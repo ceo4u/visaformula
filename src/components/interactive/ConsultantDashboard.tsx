@@ -96,7 +96,6 @@ export function ConsultantDashboard() {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("overview");
-    const [isDarkMode, setIsDarkMode] = useState(false);
     const [timePeriod, setTimePeriod] = useState("Last 30 days");
     const [timePeriodOpen, setTimePeriodOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -422,21 +421,6 @@ export function ConsultantDashboard() {
                                     <Settings className="w-4 h-4 shrink-0 text-slate-500" />
                                     {!isSidebarCollapsed && <span>Profile Settings</span>}
                                 </button>
-
-                                <div className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600">
-                                    <div className="flex items-center gap-3">
-                                        <Sparkles className="w-4 h-4 shrink-0 text-slate-500" />
-                                        {!isSidebarCollapsed && <span>Dark mode</span>}
-                                    </div>
-                                    {!isSidebarCollapsed && (
-                                        <button 
-                                            onClick={() => setIsDarkMode(!isDarkMode)} 
-                                            className={`w-9 h-5 rounded-full p-0.5 transition-colors ${isDarkMode ? "bg-[#107c41]" : "bg-slate-300"}`}
-                                        >
-                                            <div className={`w-4 h-4 rounded-full bg-white transition-transform ${isDarkMode ? "translate-x-4" : "translate-x-0"}`} />
-                                        </button>
-                                    )}
-                                </div>
                             </div>
                         </div>
                     </nav>

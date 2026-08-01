@@ -7,10 +7,10 @@ import {
 } from "lucide-react";
 
 const statsData = [
-    { label: "Active Clients", value: "18 Clients", change: "📈 3.2%", color: "text-emerald-700 bg-emerald-50 border-emerald-200/60" },
-    { label: "Total Earnings & Escrow", value: "₹1,24,500", change: "📈 4.8%", color: "text-emerald-700 bg-emerald-50 border-emerald-200/60" },
-    { label: "Booked Consultations", value: "14 Sessions", change: "📈 1.5%", color: "text-emerald-700 bg-emerald-50 border-emerald-200/60" },
-    { label: "Client Rating & Reviews", value: "4.9 ★", change: "⭐ (48 Reviews)", color: "text-amber-700 bg-amber-50 border-amber-200/60" },
+    { label: "Active Clients", value: "0 Clients", change: "0%", color: "text-slate-600 bg-slate-50 border-slate-200" },
+    { label: "Total Earnings & Escrow", value: "₹0", change: "₹0 Escrow", color: "text-slate-600 bg-slate-50 border-slate-200" },
+    { label: "Booked Consultations", value: "0 Sessions", change: "0 Upcoming", color: "text-slate-600 bg-slate-50 border-slate-200" },
+    { label: "Client Rating & Reviews", value: "5.0 ★", change: "⭐ (0 Reviews)", color: "text-amber-700 bg-amber-50 border-amber-200/60" },
 ];
 
 interface CardItem {
@@ -28,28 +28,10 @@ interface Column {
 }
 
 const initialColumns: Column[] = [
-    {
-        id: "new", title: "New Requests", color: "border-blue-400", cards: [
-            { name: "Rahul Sharma", visa: "Canada Student Visa", days: 1, urgent: true },
-            { name: "Ananya Roy", visa: "UK Work Permit", days: 2, urgent: false }
-        ]
-    },
-    {
-        id: "waiting", title: "Waiting on Client", color: "border-amber-400", cards: [
-            { name: "Vikram Malhotra", visa: "USA H-1B Visa", days: 3, urgent: false }
-        ]
-    },
-    {
-        id: "processing", title: "Processing & Filing", color: "border-indigo-400", cards: [
-            { name: "Priya Patel", visa: "Australia PR Subclass 189", days: 5, urgent: false },
-            { name: "Amit Verma", visa: "Germany Job Seeker", days: 4, urgent: true }
-        ]
-    },
-    {
-        id: "completed", title: "Completed & Approved", color: "border-emerald-400", cards: [
-            { name: "Sneha Reddy", visa: "Canada Express Entry PR", days: 12, urgent: false }
-        ]
-    },
+    { id: "new", title: "New Requests", color: "border-blue-400", cards: [] },
+    { id: "waiting", title: "Waiting on Client", color: "border-amber-400", cards: [] },
+    { id: "processing", title: "Processing & Filing", color: "border-indigo-400", cards: [] },
+    { id: "completed", title: "Completed & Approved", color: "border-emerald-400", cards: [] },
 ];
 
 const initialServicesData = [
@@ -182,12 +164,21 @@ export function ConsultantDashboard() {
             })() || "Canada PR, USA H-1B, UK Student Visa";
 
             const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Canada, USA, UK, Australia";
+            const expYears = Number(localStorage.getItem("expert_yearsExperience")) || 8;
+
+            // Load saved availability slots if any
+            try {
+                const savedAvail = localStorage.getItem("expert_availability");
+                if (savedAvail) {
+                    setAvailability(JSON.parse(savedAvail));
+                }
+            } catch(e) {}
 
             setProfile({
                 name: finalName,
                 role: role,
                 city: city,
-                experience: 8,
+                experience: expYears,
                 bio: bio,
                 specializations: loadedSpecs,
                 countries: loadedCountries,
@@ -197,6 +188,7 @@ export function ConsultantDashboard() {
             setFormName(finalName);
             setFormRole(role);
             setFormCity(city);
+            setFormExperience(expYears);
             setFormBio(bio);
             setFormSpecs(loadedSpecs);
             setFormCountries(loadedCountries);
@@ -205,7 +197,11 @@ export function ConsultantDashboard() {
     }, []);
 
     const toggleSlot = (key: string) => {
-        setAvailability(prev => ({ ...prev, [key]: !prev[key] }));
+        setAvailability(prev => {
+            const updated = { ...prev, [key]: !prev[key] };
+            localStorage.setItem("expert_availability", JSON.stringify(updated));
+            return updated;
+        });
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -227,7 +223,7 @@ export function ConsultantDashboard() {
 
     const handleSaveProfile = (e: React.FormEvent) => {
         e.preventDefault();
-        setProfile({
+        const updatedProfile = {
             name: formName,
             role: formRole,
             city: formCity,
@@ -236,9 +232,19 @@ export function ConsultantDashboard() {
             specializations: formSpecs,
             countries: formCountries,
             image: formImage
-        });
+        };
+        setProfile(updatedProfile);
+
+        // Sync with localStorage database
         localStorage.setItem("expert_businessName", formName);
+        localStorage.setItem("expert_advisorType", formRole);
+        localStorage.setItem("expert_officeAddress", formCity);
+        localStorage.setItem("expert_aboutMe", formBio);
+        localStorage.setItem("expert_yearsExperience", String(formExperience));
+        localStorage.setItem("expert_expertiseTags", JSON.stringify(formSpecs.split(",").map(s => s.trim())));
+        localStorage.setItem("expert_countriesExpertise", formCountries);
         localStorage.setItem("expert_profilePhoto", formImage);
+
         setIsEditingProfile(false);
         setShowSuccessToast(true);
         setTimeout(() => setShowSuccessToast(false), 3000);

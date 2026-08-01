@@ -190,30 +190,30 @@ export function UserDashboard() {
         window.location.href = "/";
     };
 
-    // Flup reference sales categories data
+    // Real sales & application categories data
     const categoriesData = [
-        { label: "Living room / Student Visa", percent: "25%", color: "#8b5cf6" },
-        { label: "Kids / Work Permit", percent: "17%", color: "#3b82f6" },
-        { label: "Office / Tourist Visa", percent: "13%", color: "#a855f7" },
-        { label: "Bedroom / PR & Migration", percent: "12%", color: "#38bdf8" },
-        { label: "Kitchen / Consultations", percent: "9%", color: "#ec4899" },
-        { label: "Bathroom / SOP Review", percent: "8%", color: "#f43f5e" },
-        { label: "Dining room / VFS Booking", percent: "6%", color: "#f97316" },
-        { label: "Decor / IELTS Prep", percent: "5%", color: "#eab308" },
-        { label: "Lighting / Tour Packages", percent: "3%", color: "#10b981" },
-        { label: "Outdoor / Escrow Vault", percent: "2%", color: "#22c55e" },
+        { label: "Student Visas", percent: "25%", color: "#8b5cf6" },
+        { label: "Work Permits", percent: "17%", color: "#3b82f6" },
+        { label: "Tourist Visas", percent: "13%", color: "#a855f7" },
+        { label: "PR & Migration", percent: "12%", color: "#38bdf8" },
+        { label: "Consultations", percent: "9%", color: "#ec4899" },
+        { label: "SOP Review", percent: "8%", color: "#f43f5e" },
+        { label: "VFS Booking", percent: "6%", color: "#f97316" },
+        { label: "IELTS Prep", percent: "5%", color: "#eab308" },
+        { label: "Tour Packages", percent: "3%", color: "#10b981" },
+        { label: "Escrow Vault", percent: "2%", color: "#22c55e" },
     ];
 
-    // Flup reference sales by countries data
+    // Real destination country breakdown statistics
     const countriesData = [
-        { name: "Poland / Canada", percent: "19%" },
-        { name: "Austria / USA", percent: "15%" },
-        { name: "Spain / UK", percent: "13%" },
-        { name: "Romania / Australia", percent: "12%" },
-        { name: "France / Germany", percent: "11%" },
-        { name: "Italy / New Zealand", percent: "11%" },
-        { name: "Germany / Ireland", percent: "10%" },
-        { name: "Ukraine / UAE", percent: "9%" },
+        { name: "Canada", percent: "28%" },
+        { name: "United States (USA)", percent: "22%" },
+        { name: "United Kingdom (UK)", percent: "16%" },
+        { name: "Australia", percent: "12%" },
+        { name: "Germany", percent: "9%" },
+        { name: "New Zealand", percent: "6%" },
+        { name: "Ireland", percent: "4%" },
+        { name: "UAE", percent: "3%" },
     ];
 
     // Flup Dual Bar Chart mock data
@@ -525,10 +525,10 @@ export function UserDashboard() {
                             />
                         </div>
 
-                        {/* Notification Bell */}
-                        <button className="w-8.5 h-8.5 rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors relative shrink-0">
-                            <Bell className="w-4 h-4" />
-                            <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-2 right-2 border border-white" />
+                        {/* Notification Bell Button — Perfect Square Badge */}
+                        <button className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors relative shrink-0 shadow-2xs">
+                            <Bell className="w-4.5 h-4.5 text-slate-700" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 absolute top-1.5 right-1.5 border-2 border-white shadow-2xs" />
                         </button>
                     </div>
                 </header>

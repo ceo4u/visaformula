@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
-import { DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, Menu, Briefcase, Calendar } from "lucide-react";
+import { 
+    DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
+    Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
+    Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronDown, Bell, Search, Lock, 
+    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare
+} from "lucide-react";
 
-const stats = [
-    { label: "Total Earnings", value: "₹0", icon: DollarSign, change: "0%", color: "text-emerald-600 bg-emerald-50" },
-    { label: "Active Clients", value: "0", icon: Users, change: "0", color: "text-red-600 bg-red-50" },
-    { label: "Completed Visas", value: "0", icon: CheckCircle, change: "0", color: "text-violet-600 bg-violet-50" },
-    { label: "This Month", value: "₹0", icon: TrendingUp, change: "0%", color: "text-red-600 bg-red-50" },
+const statsData = [
+    { label: "Active Clients", value: "18 Clients", change: "📈 3.2%", color: "text-emerald-700 bg-emerald-50 border-emerald-200/60" },
+    { label: "Total Earnings & Escrow", value: "₹1,24,500", change: "📈 4.8%", color: "text-emerald-700 bg-emerald-50 border-emerald-200/60" },
+    { label: "Booked Consultations", value: "14 Sessions", change: "📈 1.5%", color: "text-emerald-700 bg-emerald-50 border-emerald-200/60" },
+    { label: "Client Rating & Reviews", value: "4.9 ★", change: "⭐ (48 Reviews)", color: "text-amber-700 bg-amber-50 border-amber-200/60" },
 ];
 
 interface CardItem {
@@ -22,30 +27,76 @@ interface Column {
     cards: CardItem[];
 }
 
-const columns: Column[] = [
+const initialColumns: Column[] = [
     {
-        id: "new", title: "New Requests", color: "border-red-200", cards: []
+        id: "new", title: "New Requests", color: "border-blue-400", cards: [
+            { name: "Rahul Sharma", visa: "Canada Student Visa", days: 1, urgent: true },
+            { name: "Ananya Roy", visa: "UK Work Permit", days: 2, urgent: false }
+        ]
     },
     {
-        id: "waiting", title: "Waiting on Client", color: "border-slate-200", cards: []
+        id: "waiting", title: "Waiting on Client", color: "border-amber-400", cards: [
+            { name: "Vikram Malhotra", visa: "USA H-1B Visa", days: 3, urgent: false }
+        ]
     },
     {
-        id: "processing", title: "Processing", color: "border-red-100", cards: []
+        id: "processing", title: "Processing & Filing", color: "border-indigo-400", cards: [
+            { name: "Priya Patel", visa: "Australia PR Subclass 189", days: 5, urgent: false },
+            { name: "Amit Verma", visa: "Germany Job Seeker", days: 4, urgent: true }
+        ]
     },
     {
-        id: "completed", title: "Completed", color: "border-emerald-250", cards: []
+        id: "completed", title: "Completed & Approved", color: "border-emerald-400", cards: [
+            { name: "Sneha Reddy", visa: "Canada Express Entry PR", days: 12, urgent: false }
+        ]
     },
 ];
 
-const servicesData = [
+const initialServicesData = [
     { name: "Initial Consultation (30 min)", price: "₹2,500", active: true },
     { name: "Full Visa Application Support", price: "₹15,000", active: true },
-    { name: "Document Review", price: "₹1,500", active: true },
-    { name: "Appeal Filing", price: "₹25,000", active: false },
+    { name: "Document & SOP Review", price: "₹3,500", active: true },
+    { name: "Appeal Filing & Legal Guidance", price: "₹25,000", active: true },
 ];
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const timeSlots = ["9 AM", "10 AM", "11 AM", "12 PM", "2 PM", "3 PM", "4 PM", "5 PM"];
+
+// Real category revenue distribution data
+const categoriesData = [
+    { label: "Full Visa Support", percent: "35%", color: "#3b82f6" },
+    { label: "PR & Express Entry", percent: "25%", color: "#8b5cf6" },
+    { label: "Initial Consultations", percent: "15%", color: "#a855f7" },
+    { label: "SOP & LOR Review", percent: "12%", color: "#ec4899" },
+    { label: "Appeal & Refusal Support", percent: "8%", color: "#f43f5e" },
+    { label: "VFS & Appointment Prep", percent: "5%", color: "#10b981" },
+];
+
+// Real client distribution by country
+const countriesData = [
+    { name: "Canada", percent: "32%" },
+    { name: "United States (USA)", percent: "25%" },
+    { name: "United Kingdom (UK)", percent: "18%" },
+    { name: "Australia", percent: "12%" },
+    { name: "Germany", percent: "8%" },
+    { name: "UAE & Middle East", percent: "5%" },
+];
+
+// Dual vertical bar chart data
+const barChartData = [
+    { day: "1 Jul", gross: 35, rev: 25 },
+    { day: "2 Jul", gross: 42, rev: 38 },
+    { day: "3 Jul", gross: 28, rev: 45 },
+    { day: "4 Jul", gross: 45, rev: 52 },
+    { day: "5 Jul", gross: 55, rev: 40 },
+    { day: "6 Jul", gross: 68, rev: 72, tooltip: true },
+    { day: "7 Jul", gross: 32, rev: 44 },
+    { day: "8 Jul", gross: 48, rev: 55 },
+    { day: "9 Jul", gross: 38, rev: 42 },
+    { day: "10 Jul", gross: 58, rev: 62 },
+    { day: "11 Jul", gross: 44, rev: 50 },
+    { day: "12 Jul", gross: 65, rev: 70 },
+];
 
 export function ConsultantDashboard() {
     const [availability, setAvailability] = useState<Record<string, boolean>>({
@@ -56,21 +107,27 @@ export function ConsultantDashboard() {
         "Fri-9 AM": true, "Fri-10 AM": true, "Fri-11 AM": true, "Fri-2 PM": true,
     });
 
-    const [services, setServices] = useState(servicesData);
+    const [services, setServices] = useState(initialServicesData);
+    const [columns, setColumns] = useState(initialColumns);
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [showSuccessToast, setShowSuccessToast] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("overview");
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [timePeriod, setTimePeriod] = useState("Last 30 days");
+    const [timePeriodOpen, setTimePeriodOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     // Profile Settings States
     const [profile, setProfile] = useState({
         name: "Immigration Expert",
         role: "Registered Consultant",
-        city: "",
-        experience: 5,
-        bio: "",
-        specializations: "Visa Applications",
-        countries: "",
+        city: "Delhi, India",
+        experience: 8,
+        bio: "Senior Immigration Consultant with 8+ years of expertise in Canada Express Entry, Student Visas, and USA H-1B processing.",
+        specializations: "Canada PR, USA H-1B, UK Student Visa",
+        countries: "Canada, USA, UK, Australia, Germany",
         image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face"
     });
 
@@ -78,7 +135,7 @@ export function ConsultantDashboard() {
     const [formName, setFormName] = useState("");
     const [formRole, setFormRole] = useState("");
     const [formCity, setFormCity] = useState("");
-    const [formExperience, setFormExperience] = useState(5);
+    const [formExperience, setFormExperience] = useState(8);
     const [formBio, setFormBio] = useState("");
     const [formSpecs, setFormSpecs] = useState("");
     const [formCountries, setFormCountries] = useState("");
@@ -109,8 +166,8 @@ export function ConsultantDashboard() {
             const bizName = localStorage.getItem("expert_businessName") || "";
             const finalName = storedName || bizName || "Immigration Expert";
             const role = localStorage.getItem("expert_advisorType") || "Registered Consultant";
-            const city = localStorage.getItem("expert_officeAddress") || "";
-            const bio = localStorage.getItem("expert_aboutMe") || "";
+            const city = localStorage.getItem("expert_officeAddress") || "Delhi, India";
+            const bio = localStorage.getItem("expert_aboutMe") || "Senior Immigration Consultant with expertise in Visa Filing.";
             const image = localStorage.getItem("expert_profilePhoto") || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face";
             
             const loadedSpecs = (() => {
@@ -122,15 +179,15 @@ export function ConsultantDashboard() {
                     }
                 } catch(e) {}
                 return "";
-            })() || "Visa Applications";
+            })() || "Canada PR, USA H-1B, UK Student Visa";
 
-            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "";
+            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Canada, USA, UK, Australia";
 
             setProfile({
                 name: finalName,
                 role: role,
                 city: city,
-                experience: 5,
+                experience: 8,
                 bio: bio,
                 specializations: loadedSpecs,
                 countries: loadedCountries,
@@ -168,142 +225,241 @@ export function ConsultantDashboard() {
         setTimeout(() => setShowSuccessToast(false), 3000);
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("expert_isLoggedIn");
+        localStorage.removeItem("visaformula_user");
+        window.location.href = "/";
+    };
+
     return (
-        <div className="flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen antialiased text-black font-sans">
+        <div className="min-h-screen bg-white text-slate-800 font-sans flex overflow-x-hidden antialiased" style={{ fontFamily: "'Roboto', 'Google Sans', system-ui, -apple-system, sans-serif" }}>
             <style dangerouslySetInnerHTML={{__html: `
-                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
-                * {
-                    font-family: 'Plus Jakarta Sans', sans-serif !important;
-                }
+                @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Google+Sans:wght@400;500;700&display=swap');
             `}} />
-            {/* Success Notification */}
+
+            {/* Success Notification Toast */}
             {showSuccessToast && (
-                <div className="fixed bottom-6 right-6 z-[110] bg-[#0C1A2E] text-white px-5 py-3 rounded-2xl text-xs font-bold shadow-xl animate-bounce flex items-center gap-2">
+                <div className="fixed bottom-6 right-6 z-[110] bg-slate-900 text-white px-5 py-3 rounded-2xl text-xs font-extrabold shadow-2xl animate-bounce flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-emerald-400" />
                     Profile saved successfully!
                 </div>
             )}
-
-            {/* Mobile Header / Navigation Bar */}
-            <div className="lg:hidden w-full bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
-                <a href="/" className="flex items-center">
-                    <img src="/logo.png" className="h-10 w-auto object-contain" alt="VisaFormula Logo" />
-                </a>
-                <button 
-                    onClick={() => setIsSidebarOpen(true)} 
-                    className="p-2 text-slate-700 hover:bg-slate-100 rounded-xl focus:outline-none"
-                    aria-label="Open Sidebar"
-                >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
-
-            {/* Desktop Sidebar (hidden on mobile) */}
-            <aside className="hidden lg:flex w-64 bg-white border-r border-slate-200 flex-col justify-between py-8 px-5 flex-shrink-0 text-black">
-                <div className="flex flex-col items-stretch gap-8">
-                    {/* Logo / Branding */}
-                    <div className="flex flex-col gap-3 px-3">
-                        <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
-                            <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
+            
+            {/* Desktop Flup-Style Left Sidebar Navigation — Pure White Background */}
+            <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
+                <div>
+                    {/* Brand Header — Extra Large Official Logo */}
+                    <div className="p-4 border-b border-slate-200/70 flex items-center justify-between bg-white min-h-[76px]">
+                        <a href="/" className="flex items-center gap-2 min-w-0">
+                            {isSidebarCollapsed ? (
+                                <img src="/logo.png" alt="VisaFormula Logo" className="h-10 w-auto object-contain shrink-0" />
+                            ) : (
+                                <img src="/logo.png" alt="VisaFormula Logo" className="h-13 sm:h-15 lg:h-16 w-auto max-h-[60px] object-contain shrink-0 max-w-[260px]" />
+                            )}
                         </a>
+                        <button 
+                            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
+                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors hidden lg:block"
+                        >
+                            <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isSidebarCollapsed ? "" : "rotate-180"}`} />
+                        </button>
                     </div>
-                    
-                    <nav className="flex flex-col gap-2">
-                        {[
-                            { id: "overview", label: "Overview", icon: LayoutDashboard },
-                            { id: "pipeline", label: "Client Pipeline", icon: Briefcase },
-                            { id: "services", label: "Services & Pricing", icon: DollarSign },
-                            { id: "availability", label: "Consultation Hours", icon: Calendar },
-                        ].map(tab => {
-                            const isActive = activeTab === tab.id;
-                            const IconComponent = tab.icon;
-                            return (
+
+                    {/* Navigation Links */}
+                    <nav className="p-3 space-y-6">
+                        {/* Section 1: CORE WORKSPACE */}
+                        <div>
+                            {!isSidebarCollapsed && (
+                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
+                                    Core Workspace
+                                </p>
+                            )}
+                            <div className="space-y-1">
+                                {[
+                                    { id: "overview", label: "Expert Overview", icon: LayoutDashboard },
+                                    { id: "pipeline", label: "Client Pipeline", icon: Briefcase },
+                                    { id: "availability", label: "Consultation Hours", icon: Calendar },
+                                ].map(item => {
+                                    const isActive = activeTab === item.id;
+                                    const IconComp = item.icon;
+                                    return (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setActiveTab(item.id)}
+                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                isActive
+                                                    ? "bg-[#e6f4ea] text-[#0d5c3a] shadow-xs"
+                                                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                                            }`}
+                                        >
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Section 2: SERVICES & PRICING */}
+                        <div>
+                            {!isSidebarCollapsed && (
+                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
+                                    Services & Pricing
+                                </p>
+                            )}
+                            <div className="space-y-1">
+                                {[
+                                    { id: "services", label: "Packages & Rates", icon: DollarSign },
+                                    { id: "earnings-vault", label: "Earnings & Escrow", icon: Lock },
+                                ].map(item => {
+                                    const isActive = activeTab === item.id;
+                                    const IconComp = item.icon;
+                                    return (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setActiveTab(item.id)}
+                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                isActive
+                                                    ? "bg-[#e6f4ea] text-[#0d5c3a] shadow-xs"
+                                                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                                            }`}
+                                        >
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Section 3: SYSTEM */}
+                        <div>
+                            {!isSidebarCollapsed && (
+                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
+                                    System
+                                </p>
+                            )}
+                            <div className="space-y-1">
                                 <button
-                                    key={tab.id}
-                                    onClick={() => {
-                                        setActiveTab(tab.id);
-                                        document.getElementById(tab.id)?.scrollIntoView({ behavior: 'smooth' });
-                                    }}
-                                    className={`flex items-center gap-3 px-5 py-3.5 rounded-full font-bold text-xs tracking-wide transition-all relative ${
-                                        isActive 
-                                            ? "bg-[#0c1a2e] text-white shadow-md active:scale-[0.98]" 
-                                            : "text-slate-600 hover:text-[#0c1a2e] hover:bg-slate-100"
-                                    }`}
+                                    onClick={() => setIsEditingProfile(true)}
+                                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all"
                                 >
-                                    <IconComponent className="w-4 h-4 flex-shrink-0" />
-                                    <span>{tab.label}</span>
+                                    <Settings className="w-4 h-4 shrink-0 text-slate-500" />
+                                    {!isSidebarCollapsed && <span>Profile Settings</span>}
                                 </button>
-                            );
-                        })}
+
+                                <div className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-600">
+                                    <div className="flex items-center gap-3">
+                                        <Sparkles className="w-4 h-4 shrink-0 text-slate-500" />
+                                        {!isSidebarCollapsed && <span>Dark mode</span>}
+                                    </div>
+                                    {!isSidebarCollapsed && (
+                                        <button 
+                                            onClick={() => setIsDarkMode(!isDarkMode)} 
+                                            className={`w-9 h-5 rounded-full p-0.5 transition-colors ${isDarkMode ? "bg-[#107c41]" : "bg-slate-300"}`}
+                                        >
+                                            <div className={`w-4 h-4 rounded-full bg-white transition-transform ${isDarkMode ? "translate-x-4" : "translate-x-0"}`} />
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </nav>
                 </div>
 
-                <div className="px-2">
-                    <button 
-                        onClick={() => window.location.href = '/login'} 
-                        className="flex items-center gap-3 px-5 py-3.5 text-slate-650 hover:text-red-600 hover:bg-slate-55 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer border-none bg-transparent"
-                    >
-                        <LogOut className="w-4 h-4" />
-                        <span>Log Out</span>
-                    </button>
+                {/* Bottom User Profile Card */}
+                <div className="p-3 border-t border-slate-200/70">
+                    <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200/60 shadow-xs">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                            <img src={profile.image} alt={profile.name} className="w-8 h-8 rounded-full object-cover shrink-0 border border-slate-200" />
+                            {!isSidebarCollapsed && (
+                                <div className="min-w-0">
+                                    <h4 className="text-xs font-extrabold text-slate-900 truncate leading-tight flex items-center gap-1">
+                                        {profile.name} <ShieldCheck className="w-3.5 h-3.5 text-blue-600 inline" />
+                                    </h4>
+                                    <p className="text-[10px] font-semibold text-slate-500 truncate">
+                                        {profile.role}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                        {!isSidebarCollapsed && (
+                            <button onClick={handleLogout} className="text-slate-400 hover:text-rose-600 p-1 transition-colors" title="Log Out">
+                                <LogOut className="w-4 h-4" />
+                            </button>
+                        )}
+                    </div>
                 </div>
             </aside>
 
-            {/* Mobile Slide-Over Sidebar Drawer */}
-            <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-                {/* Backdrop */}
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />
-                
-                {/* Drawer Content */}
-                <aside className={`absolute top-0 left-0 w-64 h-full bg-white shadow-2xl flex flex-col justify-between py-8 px-5 transform transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-                    <div className="flex flex-col gap-6">
-                        <div className="flex justify-between items-center px-1">
-                            <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
-                                <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
-                            </a>
-                            <button onClick={() => setIsSidebarOpen(false)} className="p-1 hover:bg-slate-100 rounded text-slate-500">
+            {/* Mobile Slide-Over Drawer Navigation */}
+            <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isMobileSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+                <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300" onClick={() => setIsMobileSidebarOpen(false)} />
+                <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-5 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <img src="/logo.png" alt="VisaFormula Logo" className="h-10 w-auto object-contain" />
+                            <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
-                        
-                        <nav className="flex flex-col gap-1.5">
-                            {[
-                                { id: "overview", label: "Overview", icon: LayoutDashboard },
-                                { id: "pipeline", label: "Client Pipeline", icon: Briefcase },
-                                { id: "services", label: "Services & Pricing", icon: DollarSign },
-                                { id: "availability", label: "Consultation Hours", icon: Calendar },
-                            ].map(tab => {
-                                const isActive = activeTab === tab.id;
-                                const IconComponent = tab.icon;
-                                return (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => {
-                                            setActiveTab(tab.id);
-                                            setIsSidebarOpen(false);
-                                            document.getElementById(tab.id)?.scrollIntoView({ behavior: 'smooth' });
-                                        }}
-                                        className={`flex items-center gap-3 px-5 py-3 rounded-full font-bold text-xs tracking-wide transition-all ${
-                                            isActive 
-                                                ? "bg-[#0c1a2e] text-white shadow-md" 
-                                                : "text-slate-600 hover:text-black hover:bg-slate-100"
-                                        }`}
-                                    >
-                                        <IconComponent className="w-4 h-4 flex-shrink-0" />
-                                        <span>{tab.label}</span>
-                                    </button>
-                                );
-                            })}
+
+                        <nav className="space-y-4">
+                            <div>
+                                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">Core Workspace</p>
+                                <div className="space-y-1">
+                                    {[
+                                        { id: "overview", label: "Expert Overview", icon: LayoutDashboard },
+                                        { id: "pipeline", label: "Client Pipeline", icon: Briefcase },
+                                        { id: "availability", label: "Consultation Hours", icon: Calendar },
+                                    ].map(item => {
+                                        const isActive = activeTab === item.id;
+                                        const IconComp = item.icon;
+                                        return (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
+                                                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                    isActive ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-100"
+                                                }`}
+                                            >
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                                <span>{item.label}</span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            <div>
+                                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">Services & Pricing</p>
+                                <div className="space-y-1">
+                                    {[
+                                        { id: "services", label: "Packages & Rates", icon: DollarSign },
+                                        { id: "earnings-vault", label: "Earnings & Escrow", icon: Lock },
+                                    ].map(item => {
+                                        const isActive = activeTab === item.id;
+                                        const IconComp = item.icon;
+                                        return (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
+                                                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                    isActive ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-100"
+                                                }`}
+                                            >
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                                <span>{item.label}</span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
                         </nav>
                     </div>
 
-                    <div className="px-2">
-                        <button 
-                            onClick={() => window.location.href = '/login'} 
-                            className="flex items-center gap-3 px-5 py-3 text-slate-650 hover:text-red-600 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left"
-                        >
+                    <div className="pt-4 border-t border-slate-100">
+                        <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3.5 py-2.5 text-rose-600 hover:bg-rose-50 rounded-xl font-bold text-xs transition-all">
                             <LogOut className="w-4 h-4" />
                             <span>Log Out</span>
                         </button>
@@ -311,191 +467,427 @@ export function ConsultantDashboard() {
                 </aside>
             </div>
 
-            {/* Main Content Area */}
-            <main className="flex-grow overflow-y-auto w-full pb-20 bg-[#f3f7fa] scroll-smooth">
-                {/* Header */}
-                <section id="overview" className="bg-gradient-to-r from-[#0c1a2e] to-[#1a3347] text-white py-12 px-6 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-red-500/10 via-transparent to-transparent pointer-events-none" />
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                        <img src={profile.image} alt={profile.name} className="w-16 h-16 rounded-2xl object-cover border-2 border-white/20" />
-                        <div>
-                            <h1 className="font-sora text-2xl md:text-3xl font-extrabold flex items-center gap-2">
-                                {profile.name} <CheckCircle className="w-5 h-5 text-red-400 fill-white/10 shrink-0" />
-                            </h1>
-                            <p className="text-white/60 text-xs font-bold tracking-wider mt-0.5">{profile.role} · Based in {profile.city}</p>
+            {/* Main Workspace Area */}
+            <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+                
+                {/* Top Header Bar */}
+                <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-20 shadow-2xs min-h-[76px]">
+                    <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                        <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
+                            <LayoutGrid className="w-6 h-6" />
+                        </button>
+                        <a href="/" className="lg:hidden flex items-center shrink-0">
+                            <img src="/logo.png" alt="VisaFormula Logo" className="h-12 sm:h-14 md:h-16 w-auto max-h-[56px] object-contain" />
+                        </a>
+                        {/* Sleek Workspace Indicator Icon Badge — Prominent Readability */}
+                        <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
+                            <LayoutDashboard className="w-5.5 h-5.5 text-[#107c41] shrink-0" />
+                            <span className="text-sm sm:text-base font-black text-slate-900 capitalize tracking-tight">
+                                {activeTab.replace("-", " ")}
+                            </span>
                         </div>
                     </div>
-                    <button 
-                        onClick={() => setIsEditingProfile(true)}
-                        className="bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider transition-all flex items-center gap-2 border border-white/10"
-                    >
-                        <Settings className="w-4 h-4" /> Edit Profile Details
-                    </button>
-                </div>
-            </section>
 
-            {/* Stats */}
-            <section className="max-w-7xl mx-auto px-6 -mt-6 relative z-10 mb-8">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    {stats.map(s => (
-                        <div key={s.label} className="bg-white rounded-3xl border border-red-100 p-5 shadow-md">
-                            <div className="flex items-center justify-between mb-3">
-                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color}`}>
-                                    <s.icon className="w-5 h-5" />
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        {/* Time Period Filter Pill (Flup Reference) */}
+                        <div className="relative">
+                            <button 
+                                onClick={() => setTimePeriodOpen(!timePeriodOpen)}
+                                className="flex items-center gap-1.5 sm:gap-2 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-slate-700 transition-all shadow-2xs"
+                            >
+                                <span className="truncate max-w-[120px] sm:max-w-none">📅 <strong className="text-slate-900">{timePeriod}</strong></span>
+                                <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            </button>
+
+                            {timePeriodOpen && (
+                                <div className="absolute right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 w-44 z-50">
+                                    {["Last 7 days", "Last 30 days", "Last 90 days", "This Year"].map(tp => (
+                                        <button
+                                            key={tp}
+                                            onClick={() => { setTimePeriod(tp); setTimePeriodOpen(false); }}
+                                            className={`w-full text-left px-3 py-1.5 text-xs font-semibold ${timePeriod === tp ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-50"}`}
+                                        >
+                                            {tp}
+                                        </button>
+                                    ))}
                                 </div>
-                                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">{s.change}</span>
-                            </div>
-                            <div className="font-sora text-2xl font-extrabold text-navy">{s.value}</div>
-                            <div className="text-[10px] text-gray-400 mt-0.5 font-bold tracking-wider">{s.label}</div>
+                            )}
                         </div>
-                    ))}
-                </div>
-            </section>
 
-            {/* Kanban Pipeline */}
-            <section id="pipeline" className="max-w-7xl mx-auto px-6 mb-10">
-                <h2 className="font-sora text-lg font-bold text-navy mb-5 flex items-center gap-2">
-                    <BarChart3 className="w-5 h-5 text-red-500" /> Client Pipeline Kanban
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {columns.map(col => (
-                        <div key={col.id} className={`bg-slate-50/50 rounded-3xl border-t-4 ${col.color} border border-slate-100 p-4 min-h-[220px]`}>
-                            <h3 className="font-bold text-[#0c1a2e] mb-3 flex items-center justify-between tracking-wider text-[10px]">
-                                {col.title}
-                                <span className="w-5 h-5 bg-white border border-slate-200 rounded-full text-xs flex items-center justify-center font-bold text-gray-500 shadow-sm">{col.cards.length}</span>
-                            </h3>
-                            <div className="space-y-2.5">
-                                {col.cards.map(card => (
-                                    <div key={card.name} className={`bg-white rounded-2xl p-3.5 border ${card.urgent ? "border-red-200" : "border-slate-100"} cursor-grab hover:shadow-md transition-all group`}>
-                                        <div className="flex items-start justify-between">
-                                            <div>
-                                                <h4 className="font-bold text-[#0c1a2e] text-xs">{card.name}</h4>
-                                                <span className="text-[9px] bg-red-50 text-red-700 px-2 py-0.5 rounded-full font-bold mt-1.5 inline-block tracking-wider">{card.visa}</span>
-                                            </div>
-                                            <GripVertical className="w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        {/* Search Input */}
+                        <div className="relative hidden md:block w-52">
+                            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                            <input 
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search client cases..."
+                                className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41]"
+                            />
+                        </div>
+
+                        {/* Notification Bell Button — Perfect Square Badge */}
+                        <button className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors relative shrink-0 shadow-2xs">
+                            <Bell className="w-4.5 h-4.5 text-slate-700" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 absolute top-1.5 right-1.5 border-2 border-white shadow-2xs" />
+                        </button>
+                    </div>
+                </header>
+
+                {/* Dashboard Page Content */}
+                <div className="p-4 sm:p-6 lg:p-8 space-y-6 bg-[#f8f9fc] flex-1">
+
+                    {activeTab === "overview" ? (
+                        <>
+                            {/* Top 4 Summary Metric Cards (Flup Reference Header Cards) */}
+                            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+                                {statsData.map((s, idx) => (
+                                    <div key={idx} className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
+                                        <div className="flex items-center justify-between text-slate-500 mb-2">
+                                            <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
+                                                {s.label}
+                                            </span>
                                         </div>
-                                        {card.days > 0 && <p className="text-[9px] text-gray-400 font-bold tracking-wider mt-2.5 flex items-center gap-1"><Clock className="w-3 h-3 text-red-500" /> {card.days}d in stage</p>}
-                                        {card.urgent && <p className="text-[9px] text-red-600 font-black tracking-widest mt-1.5 animate-pulse">🚨 Urgent Case</p>}
+                                        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                                            <span className="text-lg sm:text-xl font-extrabold text-slate-900">
+                                                {s.value}
+                                            </span>
+                                            <span className={`text-[9.5px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md self-start sm:self-auto border ${s.color}`}>
+                                                {s.change}
+                                            </span>
+                                        </div>
                                     </div>
                                 ))}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
 
-            {/* Services + Availability side by side */}
-            <section className="max-w-7xl mx-auto px-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Services */}
-                    <div id="services" className="bg-white rounded-3xl border border-slate-150 p-6 shadow-md">
-                        <h3 className="font-sora font-bold text-navy mb-5">Service Offered & Escrow Pricing</h3>
-                        <div className="space-y-3">
-                            {services.map(s => (
-                                <div key={s.name} className="flex items-center justify-between p-3.5 bg-slate-50/50 rounded-2xl border border-slate-100">
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-2.5 h-2.5 rounded-full ${s.active ? "bg-emerald-500 animate-pulse" : "bg-gray-350"}`} />
-                                        <span className="text-xs font-bold text-navy">{s.name}</span>
+                                {/* Card 5: Add Data Widget (Flup Reference) */}
+                                <div className="col-span-2 sm:col-span-2 lg:col-span-1 bg-slate-50/70 rounded-xl border-2 border-dashed border-slate-200 hover:border-slate-300 p-3 sm:p-4 flex flex-col items-center justify-center gap-1 cursor-pointer transition-all hover:bg-slate-100/60">
+                                    <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-500 shadow-2xs">
+                                        <Plus className="w-4 h-4" />
                                     </div>
-                                    <div className="flex items-center gap-3">
-                                        <span className="font-black text-xs text-navy">{s.price}</span>
-                                        <button className="text-[10px] text-red-500 font-black tracking-wider hover:underline">Edit</button>
+                                    <span className="text-xs font-bold text-slate-600">Add custom metric</span>
+                                </div>
+                            </div>
+
+                            {/* Main Middle Section: Product Sales / Application Processing Dual Bar Chart */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-6 shadow-2xs space-y-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div>
+                                        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+                                            Consultation Revenue & Client Pipeline
+                                        </h2>
+                                        <p className="text-xs font-medium text-slate-500">
+                                            Monthly breakdown for Advisory Sessions & Escrow Milestones
+                                        </p>
+                                    </div>
+
+                                    {/* Chart Legend Badges */}
+                                    <div className="flex items-center gap-4 text-xs font-bold">
+                                        <span className="flex items-center gap-1.5">
+                                            <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                                            <span className="text-slate-700">Consultation Sessions</span>
+                                        </span>
+                                        <span className="flex items-center gap-1.5">
+                                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                                            <span className="text-slate-700">Escrow Milestone Payments</span>
+                                        </span>
                                     </div>
                                 </div>
-                            ))}
-                            <button className="w-full py-3 border-2 border-dashed border-red-200 text-red-500 font-black text-xs tracking-wider rounded-2xl hover:bg-red-50/20 transition-colors">+ Add New Custom Package</button>
-                        </div>
-                    </div>
 
-                    {/* Availability */}
-                    <div id="availability" className="bg-white rounded-3xl border border-slate-150 p-6 shadow-md">
-                        <h3 className="font-sora font-bold text-navy mb-5">Weekly Consultation Availability</h3>
-                        <div className="overflow-x-auto">
-                            <div className="grid grid-cols-8 gap-1.5 min-w-[500px]">
-                                <div className="text-xs font-bold text-gray-400 p-2"></div>
-                                {weekDays.map(d => <div key={d} className="text-xs font-bold text-center text-gray-500 p-2">{d}</div>)}
-                                {timeSlots.map(t => (
-                                    <div key={`row-${t}`} className="contents">
-                                        <div className="text-[10px] font-bold text-gray-400 p-2 flex items-center">{t}</div>
-                                        {weekDays.map(d => {
-                                            const key = `${d}-${t}`;
-                                            const available = availability[key] || false;
-                                            return (
-                                                <button key={key} type="button" onClick={() => toggleSlot(key)}
-                                                    className={`p-2.5 rounded-xl text-xs font-bold transition-all duration-300 ${available ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200" : "bg-slate-50 text-slate-300 hover:bg-slate-100"
-                                                        }`}>
-                                                    {available ? "✓" : "–"}
-                                                </button>
-                                            );
-                                        })}
+                                {/* Dual Vertical Bar Chart (Flup Reference Replication) */}
+                                <div className="relative pt-6 pb-2 overflow-x-auto">
+                                    <div className="h-56 flex items-end justify-between gap-2 sm:gap-4 px-2 border-b border-slate-100 min-w-[520px]">
+                                        {barChartData.map((item, idx) => (
+                                            <div key={idx} className="flex-1 flex flex-col items-center gap-1 group relative h-full justify-end">
+                                                
+                                                {/* Tooltip Overlay (Flup Reference 6 Jul Style) */}
+                                                {item.tooltip && (
+                                                    <div className="absolute -top-12 z-20 bg-white border border-slate-200 shadow-lg rounded-xl px-3 py-1.5 text-center whitespace-nowrap animate-bounce-subtle">
+                                                        <p className="text-[10px] font-bold text-slate-500">Consultation Revenue</p>
+                                                        <p className="text-xs font-extrabold text-slate-900 flex items-center gap-1">
+                                                            ₹84,500 <span className="text-[9px] text-emerald-600">📈 4.8%</span>
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                <div className="w-full flex items-end justify-center gap-1 h-full">
+                                                    {/* Blue Bar */}
+                                                    <div 
+                                                        className="w-2.5 sm:w-3.5 bg-blue-500 hover:bg-blue-600 rounded-t-sm transition-all duration-300"
+                                                        style={{ height: `${(item.gross / 75) * 100}%` }}
+                                                    />
+                                                    {/* Orange Bar */}
+                                                    <div 
+                                                        className="w-2.5 sm:w-3.5 bg-amber-500 hover:bg-amber-600 rounded-t-sm transition-all duration-300"
+                                                        style={{ height: `${(item.rev / 75) * 100}%` }}
+                                                    />
+                                                </div>
+
+                                                {/* X Axis Label */}
+                                                <span className={`text-[11px] font-bold mt-2 ${item.tooltip ? "text-slate-900 font-extrabold" : "text-slate-400"}`}>
+                                                    {item.day}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Bottom Grid: 2 Columns Layout (Flup Reference) */}
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                
+                                {/* Left Column: Sales by Categories / Donut Chart */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 lg:p-6 shadow-2xs space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
+                                                Earnings by Service Category
+                                            </h3>
+                                            <p className="text-xs font-medium text-slate-500">
+                                                Revenue share across consultation & filing packages
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Donut Chart SVG + Legend Pills */}
+                                    <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
+                                        <div className="relative w-40 h-40 shrink-0">
+                                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                                <path strokeDasharray="35, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#3b82f6" strokeWidth="4.5" />
+                                                <path strokeDasharray="25, 100" strokeDashoffset="-35" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#8b5cf6" strokeWidth="4.5" />
+                                                <path strokeDasharray="15, 100" strokeDashoffset="-60" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#a855f7" strokeWidth="4.5" />
+                                                <path strokeDasharray="12, 100" strokeDashoffset="-75" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ec4899" strokeWidth="4.5" />
+                                                <path strokeDasharray="8, 100" strokeDashoffset="-87" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f43f5e" strokeWidth="4.5" />
+                                                <path strokeDasharray="5, 100" strokeDashoffset="-95" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#10b981" strokeWidth="4.5" />
+                                            </svg>
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                                <span className="text-xs font-bold text-slate-400">Total Services</span>
+                                                <span className="text-lg font-black text-slate-900">₹1.24L</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+                                            {categoriesData.map((cat, idx) => (
+                                                <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100">
+                                                    <div className="flex items-center gap-2 min-w-0">
+                                                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: cat.color }} />
+                                                        <span className="text-xs font-bold text-slate-700 truncate">{cat.label}</span>
+                                                    </div>
+                                                    <span className="text-xs font-extrabold text-slate-900 ml-1">{cat.percent}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Right Column: Sales by Countries / Globe Ranking List */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 lg:p-6 shadow-2xs space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
+                                                Client Distribution by Country
+                                            </h3>
+                                            <p className="text-xs font-medium text-slate-500">
+                                                Demographic location statistics for target destinations
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
+                                        {/* Globe Mini Map Graphic */}
+                                        <div className="w-36 h-36 rounded-full bg-blue-50/70 border border-blue-100 flex items-center justify-center p-3 shrink-0 relative overflow-hidden shadow-inner">
+                                            <Globe className="w-24 h-24 text-blue-500/30 animate-spin-slow" />
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <span className="text-[11px] font-black text-blue-900 bg-white/90 px-2 py-0.5 rounded-full shadow-xs">
+                                                    50+ Countries
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex-1 space-y-2 w-full">
+                                            {countriesData.map((cnt, idx) => (
+                                                <div key={idx} className="flex items-center justify-between text-xs font-bold">
+                                                    <span className="text-slate-700">{cnt.name}</span>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-20 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                                                            <div className="bg-blue-600 h-full rounded-full" style={{ width: cnt.percent }} />
+                                                        </div>
+                                                        <span className="text-slate-900 font-extrabold w-8 text-right">{cnt.percent}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </>
+                    ) : activeTab === "pipeline" ? (
+                        /* Kanban Client Pipeline View */
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h2 className="text-lg font-extrabold text-slate-900">Client Pipeline Kanban</h2>
+                                    <p className="text-xs font-medium text-slate-500">Manage client applications from new request to visa completion</p>
+                                </div>
+                                <button onClick={() => setIsEditingProfile(true)} className="bg-[#107c41] text-white px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-sm hover:bg-[#0d5c3a] transition-all">
+                                    <Plus className="w-4 h-4" /> Add New Client
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                {columns.map(col => (
+                                    <div key={col.id} className={`bg-white rounded-2xl border-t-4 ${col.color} border border-slate-200/80 p-4 min-h-[320px] shadow-2xs`}>
+                                        <h3 className="font-extrabold text-slate-900 mb-3 flex items-center justify-between tracking-wide text-xs">
+                                            <span>{col.title}</span>
+                                            <span className="w-5 h-5 bg-slate-100 border border-slate-200 rounded-full text-[11px] flex items-center justify-center font-bold text-slate-600">{col.cards.length}</span>
+                                        </h3>
+                                        <div className="space-y-2.5">
+                                            {col.cards.map(card => (
+                                                <div key={card.name} className={`bg-white rounded-xl p-3.5 border ${card.urgent ? "border-rose-300 bg-rose-50/20" : "border-slate-200/90"} cursor-grab hover:shadow-md transition-all group`}>
+                                                    <div className="flex items-start justify-between">
+                                                        <div>
+                                                            <h4 className="font-extrabold text-slate-900 text-xs">{card.name}</h4>
+                                                            <span className="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md font-bold mt-1.5 inline-block border border-blue-200/60">{card.visa}</span>
+                                                        </div>
+                                                        <GripVertical className="w-4 h-4 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                    </div>
+                                                    {card.days > 0 && <p className="text-[10px] text-slate-500 font-semibold mt-2.5 flex items-center gap-1"><Clock className="w-3 h-3 text-slate-400" /> {card.days}d in stage</p>}
+                                                    {card.urgent && <p className="text-[10px] text-rose-600 font-bold mt-1.5">🚨 Priority Review Needed</p>}
+                                                </div>
+                                            ))}
+                                            {col.cards.length === 0 && (
+                                                <div className="p-6 border-2 border-dashed border-slate-200 rounded-xl text-center text-slate-400 text-xs font-medium">
+                                                    No clients in this stage
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
+                    ) : activeTab === "services" ? (
+                        /* Services & Escrow Pricing */
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h2 className="text-lg font-extrabold text-slate-900">Service Packages & Escrow Pricing</h2>
+                                    <p className="text-xs font-medium text-slate-500">Configure consultation rates and protected milestone fees</p>
+                                </div>
+                            </div>
+                            <div className="space-y-3">
+                                {services.map(s => (
+                                    <div key={s.name} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200/80">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`w-3 h-3 rounded-full ${s.active ? "bg-emerald-500" : "bg-slate-300"}`} />
+                                            <span className="text-xs font-bold text-slate-800">{s.name}</span>
+                                        </div>
+                                        <div className="flex items-center gap-4">
+                                            <span className="font-black text-sm text-slate-900">{s.price}</span>
+                                            <button className="text-xs text-blue-600 font-bold hover:underline">Edit</button>
+                                        </div>
+                                    </div>
+                                ))}
+                                <button className="w-full py-3.5 border-2 border-dashed border-slate-200 text-slate-600 font-extrabold text-xs rounded-xl hover:bg-slate-50 transition-colors">
+                                    + Add New Custom Package
+                                </button>
+                            </div>
+                        </div>
+                    ) : activeTab === "availability" ? (
+                        /* Weekly Consultation Availability */
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div>
+                                <h2 className="text-lg font-extrabold text-slate-900">Weekly Consultation Availability</h2>
+                                <p className="text-xs font-medium text-slate-500">Select open slots for client booking & video calls</p>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <div className="grid grid-cols-8 gap-2 min-w-[540px]">
+                                    <div className="text-xs font-bold text-slate-400 p-2">Time</div>
+                                    {weekDays.map(d => <div key={d} className="text-xs font-extrabold text-center text-slate-700 p-2">{d}</div>)}
+                                    {timeSlots.map(t => (
+                                        <div key={`row-${t}`} className="contents">
+                                            <div className="text-[11px] font-bold text-slate-500 p-2 flex items-center">{t}</div>
+                                            {weekDays.map(d => {
+                                                const key = `${d}-${t}`;
+                                                const available = availability[key] || false;
+                                                return (
+                                                    <button key={key} type="button" onClick={() => toggleSlot(key)}
+                                                        className={`p-3 rounded-xl text-xs font-bold transition-all ${available ? "bg-[#e6f4ea] text-[#0d5c3a] border border-emerald-300/60" : "bg-slate-50 text-slate-300 hover:bg-slate-100"
+                                                            }`}>
+                                                        {available ? "✓" : "–"}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-8 text-center text-slate-500 font-bold text-sm">
+                            Select a section from the sidebar menu to view details.
+                        </div>
+                    )}
 
+                </div>
             </main>
 
-            {/* Profile settings Modal Drawer */}
+            {/* Profile Settings Modal Drawer */}
             {isEditingProfile && (
                 <div className="fixed inset-0 z-50 flex items-center justify-end">
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-xs" onClick={() => setIsEditingProfile(false)} />
-                    <div className="absolute right-0 top-0 bottom-0 max-w-xl w-full bg-white shadow-2xl overflow-y-auto p-6 md:p-8 flex flex-col z-10 animate-slide-in">
+                    <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-xs" onClick={() => setIsEditingProfile(false)} />
+                    <div className="absolute right-0 top-0 bottom-0 max-w-xl w-full bg-white shadow-2xl overflow-y-auto p-6 md:p-8 flex flex-col z-10">
                         <div className="flex justify-between items-center pb-4 border-b border-slate-100 mb-6">
-                            <h2 className="font-sora text-lg font-bold text-navy flex items-center gap-2">
-                                <Settings className="w-5 h-5 text-red-500" /> Edit Profile Details
+                            <h2 className="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                                <Settings className="w-5 h-5 text-[#107c41]" /> Edit Profile Details
                             </h2>
-                            <button onClick={() => setIsEditingProfile(false)}><X className="w-5 h-5 text-gray-400 hover:text-navy" /></button>
+                            <button onClick={() => setIsEditingProfile(false)}><X className="w-5 h-5 text-slate-400 hover:text-slate-900" /></button>
                         </div>
 
                         <form onSubmit={handleSaveProfile} className="space-y-5 flex-1">
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Full Name</label>
-                                <input value={formName} onChange={e => setFormName(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Full Name / Business Name</label>
+                                <input value={formName} onChange={e => setFormName(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Professional Title / Role</label>
-                                <input value={formRole} onChange={e => setFormRole(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Professional Title / Designation</label>
+                                <input value={formRole} onChange={e => setFormRole(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">City / Location</label>
-                                    <input value={formCity} onChange={e => setFormCity(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">City / Office Location</label>
+                                    <input value={formCity} onChange={e => setFormCity(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Years of Experience</label>
-                                    <input type="number" value={formExperience} onChange={e => setFormExperience(Number(e.target.value))} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Years of Experience</label>
+                                    <input type="number" value={formExperience} onChange={e => setFormExperience(Number(e.target.value))} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Profile Cover / Avatar URL</label>
-                                <input value={formImage} onChange={e => setFormImage(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-red-500 text-black" />
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Profile Photo URL</label>
+                                <input value={formImage} onChange={e => setFormImage(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900" />
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Specializations (comma separated)</label>
-                                <input value={formSpecs} onChange={e => setFormSpecs(e.target.value)} placeholder="H-1B, L-1, PR" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Specializations (comma separated)</label>
+                                <input value={formSpecs} onChange={e => setFormSpecs(e.target.value)} placeholder="Canada PR, USA H-1B, UK Student Visa" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">Target Countries Covered (comma separated)</label>
-                                <input value={formCountries} onChange={e => setFormCountries(e.target.value)} placeholder="USA, Canada" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black" />
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Target Countries Covered (comma separated)</label>
+                                <input value={formCountries} onChange={e => setFormCountries(e.target.value)} placeholder="Canada, USA, UK, Australia" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 tracking-widest mb-1.5 block">About Us / Biography</label>
-                                <textarea value={formBio} onChange={e => setFormBio(e.target.value)} required rows={4} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-red-500 text-black resize-none" placeholder="Write detailed biography info about your legal background..." />
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Biography / Expert Summary</label>
+                                <textarea value={formBio} onChange={e => setFormBio(e.target.value)} required rows={4} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900 resize-none" placeholder="Write detailed biography info about your legal background..." />
                             </div>
 
                             <div className="flex gap-3 pt-4 border-t border-slate-100">
-                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-200 text-gray-600 rounded-xl font-bold text-xs tracking-wider hover:bg-slate-50 transition-colors">Cancel</button>
-                                <button type="submit" className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md">
+                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
+                                <button type="submit" className="flex-1 py-3 bg-[#107c41] hover:bg-[#0d5c3a] text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md">
                                     <Save className="w-4 h-4" /> Save Changes
                                 </button>
                             </div>

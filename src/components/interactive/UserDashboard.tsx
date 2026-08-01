@@ -541,7 +541,7 @@ export function UserDashboard() {
                             {/* Top 4 Summary Metric Cards (Flup Reference Header Cards — Mobile 2-Column Grid) */}
                             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                                 
-                                {/* Card 1: Total Customers / Active Applications */}
+                                {/* Card 1: Applications */}
                                 <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
                                     <div className="flex items-center justify-between text-slate-500 mb-2">
                                         <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
@@ -550,15 +550,15 @@ export function UserDashboard() {
                                     </div>
                                     <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                                         <span className="text-lg sm:text-xl font-extrabold text-slate-900">
-                                            12 Active
+                                            0 Active
                                         </span>
-                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-emerald-200/60">
-                                            📈 2.5%
+                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-slate-200">
+                                            0%
                                         </span>
                                     </div>
                                 </div>
 
-                                {/* Card 2: Total Revenue / Escrow Vault */}
+                                {/* Card 2: Escrow Vault */}
                                 <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
                                     <div className="flex items-center justify-between text-slate-500 mb-2">
                                         <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
@@ -567,15 +567,15 @@ export function UserDashboard() {
                                     </div>
                                     <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                                         <span className="text-lg sm:text-xl font-extrabold text-slate-900">
-                                            ₹45,200
+                                            ₹0
                                         </span>
-                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-emerald-200/60">
-                                            📈 0.5%
+                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-slate-200">
+                                            ₹0 Escrow
                                         </span>
                                     </div>
                                 </div>
 
-                                {/* Card 3: Total Orders / Consultations */}
+                                {/* Card 3: Consultations */}
                                 <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
                                     <div className="flex items-center justify-between text-slate-500 mb-2">
                                         <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
@@ -584,15 +584,15 @@ export function UserDashboard() {
                                     </div>
                                     <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                                         <span className="text-lg sm:text-xl font-extrabold text-slate-900">
-                                            8 Sessions
+                                            0 Sessions
                                         </span>
-                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-rose-200/60">
-                                            📉 0.2%
+                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-slate-200">
+                                            0 Upcoming
                                         </span>
                                     </div>
                                 </div>
 
-                                {/* Card 4: Total Returns / Saved Consultants */}
+                                {/* Card 4: Saved Consultants */}
                                 <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
                                     <div className="flex items-center justify-between text-slate-500 mb-2">
                                         <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
@@ -601,10 +601,10 @@ export function UserDashboard() {
                                     </div>
                                     <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                                         <span className="text-lg sm:text-xl font-extrabold text-slate-900">
-                                            15 Experts
+                                            0 Experts
                                         </span>
-                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-emerald-200/60">
-                                            📈 0.12%
+                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-slate-200">
+                                            0 Saved
                                         </span>
                                     </div>
                                 </div>

@@ -3,7 +3,7 @@ import {
     DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
     Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
     Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronDown, Bell, Search, Lock, 
-    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image
+    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight
 } from "lucide-react";
 
 const statsData = [
@@ -122,6 +122,21 @@ export function ConsultantDashboard() {
     const [formSpecs, setFormSpecs] = useState("");
     const [formCountries, setFormCountries] = useState("");
     const [formImage, setFormImage] = useState("");
+
+    // Action Modal States for Post an Ad & Special Offer
+    const [isPostingAd, setIsPostingAd] = useState(false);
+    const [isPublishingOffer, setIsPublishingOffer] = useState(false);
+    
+    // Form states for Post an Ad
+    const [adTitle, setAdTitle] = useState("");
+    const [adTargetCountry, setAdTargetCountry] = useState("Canada");
+    const [adAudience, setAdAudience] = useState("Student Visa Applicants");
+    const [adBudget, setAdBudget] = useState("7 Days Featured");
+
+    // Form states for Special Offer
+    const [offerTitle, setOfferTitle] = useState("");
+    const [offerDiscount, setOfferDiscount] = useState("20% OFF");
+    const [offerCode, setOfferCode] = useState("VISA2026");
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -246,6 +261,41 @@ export function ConsultantDashboard() {
         localStorage.setItem("expert_profilePhoto", formImage);
 
         setIsEditingProfile(false);
+        setShowSuccessToast(true);
+        setTimeout(() => setShowSuccessToast(false), 3000);
+    };
+
+    const handlePostAd = (e: React.FormEvent) => {
+        e.preventDefault();
+        const newAd = {
+            id: Date.now(),
+            title: adTitle,
+            targetCountry: adTargetCountry,
+            audience: adAudience,
+            budget: adBudget,
+            createdAt: new Date().toLocaleDateString()
+        };
+        const existing = JSON.parse(localStorage.getItem("expert_activeAds") || "[]");
+        localStorage.setItem("expert_activeAds", JSON.stringify([newAd, ...existing]));
+        setIsPostingAd(false);
+        setAdTitle("");
+        setShowSuccessToast(true);
+        setTimeout(() => setShowSuccessToast(false), 3000);
+    };
+
+    const handlePublishOffer = (e: React.FormEvent) => {
+        e.preventDefault();
+        const newOffer = {
+            id: Date.now(),
+            title: offerTitle,
+            discount: offerDiscount,
+            code: offerCode,
+            createdAt: new Date().toLocaleDateString()
+        };
+        const existing = JSON.parse(localStorage.getItem("expert_specialOffers") || "[]");
+        localStorage.setItem("expert_specialOffers", JSON.stringify([newOffer, ...existing]));
+        setIsPublishingOffer(false);
+        setOfferTitle("");
         setShowSuccessToast(true);
         setTimeout(() => setShowSuccessToast(false), 3000);
     };
@@ -540,7 +590,7 @@ export function ConsultantDashboard() {
                         </div>
 
                         {/* Search Input */}
-                        <div className="relative hidden md:block w-52">
+                        <div className="relative hidden lg:block w-52">
                             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                             <input 
                                 type="text"
@@ -550,6 +600,24 @@ export function ConsultantDashboard() {
                                 className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41]"
                             />
                         </div>
+
+                        {/* Post an Ad Button (Exact Flup Pill Design) */}
+                        <button 
+                            onClick={() => setIsPostingAd(true)} 
+                            className="hidden sm:flex items-center gap-1.5 bg-white border border-slate-200/90 hover:border-slate-300 px-3.5 py-2 rounded-2xl text-xs font-extrabold text-slate-900 transition-all shadow-2xs hover:bg-slate-50 cursor-pointer"
+                        >
+                            <span>Post an Ad</span>
+                            <ArrowUpRight className="w-4 h-4 text-slate-400" />
+                        </button>
+
+                        {/* Special Offer Button (Exact Flup Black Pill Design) */}
+                        <button 
+                            onClick={() => setIsPublishingOffer(true)} 
+                            className="hidden sm:flex items-center gap-1.5 bg-slate-950 hover:bg-black text-white px-4 py-2 rounded-2xl text-xs font-extrabold transition-all shadow-md cursor-pointer border border-slate-800"
+                        >
+                            <span>Special Offer</span>
+                            <Sparkles className="w-4 h-4 text-amber-400 fill-amber-400" />
+                        </button>
 
                         {/* Notification Bell Button — Perfect Square Badge */}
                         <button className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors relative shrink-0 shadow-2xs">
@@ -952,6 +1020,152 @@ export function ConsultantDashboard() {
                                 <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
                                 <button type="submit" className="flex-1 py-3 bg-[#107c41] hover:bg-[#0d5c3a] text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md">
                                     <Save className="w-4 h-4" /> Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Post an Ad Modal */}
+            {isPostingAd && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsPostingAd(false)} />
+                    <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-10 p-6 sm:p-8 space-y-6">
+                        <div className="flex justify-between items-center pb-4 border-b border-slate-100">
+                            <div>
+                                <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                                    📢 Post an Advertisement
+                                </h2>
+                                <p className="text-xs font-medium text-slate-500 mt-0.5">Promote your consultation packages to visa applicants</p>
+                            </div>
+                            <button onClick={() => setIsPostingAd(false)} className="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-900 transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handlePostAd} className="space-y-4">
+                            <div>
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Ad Campaign Title</label>
+                                <input 
+                                    value={adTitle} 
+                                    onChange={e => setAdTitle(e.target.value)} 
+                                    placeholder="e.g. Free Canada PR Assessment for IT Professionals" 
+                                    required 
+                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900" 
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Target Country</label>
+                                    <select 
+                                        value={adTargetCountry} 
+                                        onChange={e => setAdTargetCountry(e.target.value)} 
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                    >
+                                        <option value="Canada">Canada</option>
+                                        <option value="USA">United States (USA)</option>
+                                        <option value="UK">United Kingdom (UK)</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Germany">Germany</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Target Audience</label>
+                                    <select 
+                                        value={adAudience} 
+                                        onChange={e => setAdAudience(e.target.value)} 
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                    >
+                                        <option value="Student Visa Applicants">Student Visa Applicants</option>
+                                        <option value="Work & Job Seekers">Work & Job Seekers</option>
+                                        <option value="PR & Immigration">PR & Immigration</option>
+                                        <option value="Business & Investment">Business & Investment</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Featured Duration & Placement</label>
+                                <select 
+                                    value={adBudget} 
+                                    onChange={e => setAdBudget(e.target.value)} 
+                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                >
+                                    <option value="7 Days Featured Banner">7 Days Featured Banner (Homepage Top)</option>
+                                    <option value="15 Days Category Sponsor">15 Days Category Sponsor</option>
+                                    <option value="30 Days Unlimited Reach">30 Days Unlimited Reach</option>
+                                </select>
+                            </div>
+
+                            <div className="flex gap-3 pt-4 border-t border-slate-100">
+                                <button type="button" onClick={() => setIsPostingAd(false)} className="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
+                                <button type="submit" className="flex-1 py-3 bg-slate-950 hover:bg-black text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md">
+                                    <ArrowUpRight className="w-4 h-4" /> Publish Ad
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Special Offer Modal */}
+            {isPublishingOffer && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsPublishingOffer(false)} />
+                    <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-10 p-6 sm:p-8 space-y-6">
+                        <div className="flex justify-between items-center pb-4 border-b border-slate-100">
+                            <div>
+                                <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                                    <Sparkles className="w-5 h-5 text-amber-500 fill-amber-500" /> Publish Special Offer
+                                </h2>
+                                <p className="text-xs font-medium text-slate-500 mt-0.5">Create a discount promo offer for client bookings</p>
+                            </div>
+                            <button onClick={() => setIsPublishingOffer(false)} className="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-900 transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handlePublishOffer} className="space-y-4">
+                            <div>
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Offer Title</label>
+                                <input 
+                                    value={offerTitle} 
+                                    onChange={e => setOfferTitle(e.target.value)} 
+                                    placeholder="e.g. 20% Discount on First Consultation Booking" 
+                                    required 
+                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900" 
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Discount Badge</label>
+                                    <input 
+                                        value={offerDiscount} 
+                                        onChange={e => setOfferDiscount(e.target.value)} 
+                                        placeholder="e.g. 20% OFF or ₹500 OFF" 
+                                        required 
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900" 
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Promo Code</label>
+                                    <input 
+                                        value={offerCode} 
+                                        onChange={e => setOfferCode(e.target.value)} 
+                                        placeholder="e.g. VISA2026" 
+                                        required 
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900 uppercase font-mono" 
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex gap-3 pt-4 border-t border-slate-100">
+                                <button type="button" onClick={() => setIsPublishingOffer(false)} className="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
+                                <button type="submit" className="flex-1 py-3 bg-[#107c41] hover:bg-[#0d5c3a] text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md">
+                                    <Sparkles className="w-4 h-4 text-amber-300 fill-amber-300" /> Activate Offer
                                 </button>
                             </div>
                         </form>

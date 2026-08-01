@@ -363,11 +363,11 @@ export function ConsultantDashboard() {
                                             onClick={() => setActiveTab(item.id)}
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-[#e6f4ea] text-[#0d5c3a] shadow-xs"
+                                                    ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs"
                                                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                             }`}
                                         >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
                                             {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                                         </button>
                                     );
@@ -395,11 +395,11 @@ export function ConsultantDashboard() {
                                             onClick={() => setActiveTab(item.id)}
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-[#e6f4ea] text-[#0d5c3a] shadow-xs"
+                                                    ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs"
                                                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                             }`}
                                         >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
                                             {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                                         </button>
                                     );
@@ -495,10 +495,10 @@ export function ConsultantDashboard() {
                                                 key={item.id}
                                                 onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
                                                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-100"
+                                                    isActive ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
                                                 }`}
                                             >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
                                                 <span>{item.label}</span>
                                             </button>
                                         );
@@ -520,10 +520,10 @@ export function ConsultantDashboard() {
                                                 key={item.id}
                                                 onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
                                                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-100"
+                                                    isActive ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
                                                 }`}
                                             >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
                                                 <span>{item.label}</span>
                                             </button>
                                         );
@@ -556,7 +556,7 @@ export function ConsultantDashboard() {
                         </a>
                         {/* Sleek Workspace Indicator Icon Badge — Prominent Readability */}
                         <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
-                            <LayoutDashboard className="w-5.5 h-5.5 text-[#107c41] shrink-0" />
+                            <LayoutDashboard className="w-5.5 h-5.5 text-[#2563eb] shrink-0" />
                             <span className="text-sm sm:text-base font-bold text-slate-900 capitalize tracking-tight">
                                 {activeTab.replace("-", " ")}
                             </span>

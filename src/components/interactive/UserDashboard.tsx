@@ -238,16 +238,16 @@ export function UserDashboard() {
                 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Google+Sans:wght@400;500;700&display=swap');
             `}} />
             
-            {/* Flup-Style Left Sidebar Navigation — Pure White Background */}
-            <aside className={`bg-white border-r border-slate-200/80 flex flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
+            {/* Desktop Flup-Style Left Sidebar Navigation — Pure White Background */}
+            <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
                 <div>
-                    {/* Brand Header — Enlarged Official Logo */}
-                    <div className="p-4 border-b border-slate-200/70 flex items-center justify-between bg-white">
+                    {/* Brand Header — Extra Large Official Logo */}
+                    <div className="p-4 border-b border-slate-200/70 flex items-center justify-between bg-white min-h-[72px]">
                         <a href="/" className="flex items-center gap-2 min-w-0">
                             {isSidebarCollapsed ? (
-                                <img src="/logo.png" alt="VisaFormula Logo" className="h-9 w-auto object-contain shrink-0" />
+                                <img src="/logo.png" alt="VisaFormula Logo" className="h-10 w-auto object-contain shrink-0" />
                             ) : (
-                                <img src="/logo.png" alt="VisaFormula Logo" className="h-11 sm:h-12 w-auto object-contain shrink-0 max-w-[210px]" />
+                                <img src="/logo.png" alt="VisaFormula Logo" className="h-12 sm:h-14 lg:h-15 w-auto object-contain shrink-0 max-w-[230px]" />
                             )}
                         </a>
                         <button 
@@ -283,7 +283,7 @@ export function UserDashboard() {
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
                                                     ? "bg-[#e6f4ea] text-[#0d5c3a] shadow-xs"
-                                                    : "text-slate-600 hover:bg-slate-200/60 hover:text-slate-900"
+                                                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                             }`}
                                         >
                                             <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
@@ -316,7 +316,7 @@ export function UserDashboard() {
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
                                                     ? "bg-[#e6f4ea] text-[#0d5c3a] shadow-xs"
-                                                    : "text-slate-600 hover:bg-slate-200/60 hover:text-slate-900"
+                                                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                             }`}
                                         >
                                             <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
@@ -337,7 +337,7 @@ export function UserDashboard() {
                             <div className="space-y-1">
                                 <button
                                     onClick={() => setShowProfileModal(true)}
-                                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs text-slate-600 hover:bg-slate-200/60 hover:text-slate-900 transition-all"
+                                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all"
                                 >
                                     <Settings className="w-4 h-4 shrink-0 text-slate-500" />
                                     {!isSidebarCollapsed && <span>Profile Settings</span>}
@@ -389,29 +389,109 @@ export function UserDashboard() {
                 </div>
             </aside>
 
+            {/* Mobile Slide-Over Drawer Navigation */}
+            <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isMobileSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+                <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300" onClick={() => setIsMobileSidebarOpen(false)} />
+                <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-5 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <img src="/logo.png" alt="VisaFormula Logo" className="h-10 w-auto object-contain" />
+                            <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <nav className="space-y-4">
+                            <div>
+                                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">Core Workspace</p>
+                                <div className="space-y-1">
+                                    {[
+                                        { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+                                        { id: "cases", label: "Active Cases", icon: Briefcase },
+                                        { id: "consultations", label: "Consultations", icon: Calendar },
+                                        { id: "scanned-documents", label: "Document Vault", icon: FileText },
+                                    ].map(item => {
+                                        const isActive = activeTab === item.id;
+                                        const IconComp = item.icon;
+                                        return (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
+                                                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                    isActive ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-100"
+                                                }`}
+                                            >
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                                <span>{item.label}</span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            <div>
+                                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">Services & Escrow</p>
+                                <div className="space-y-1">
+                                    {[
+                                        { id: "escrow-milestones", label: "Escrow Vault", icon: Lock },
+                                        { id: "visa-history", label: "Visa History", icon: BookOpen },
+                                        { id: "favourite-experts", label: "Saved Experts", icon: Bookmark },
+                                    ].map(item => {
+                                        const isActive = activeTab === item.id;
+                                        const IconComp = item.icon;
+                                        return (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
+                                                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                    isActive ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-100"
+                                                }`}
+                                            >
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#0d5c3a]" : "text-slate-500"}`} />
+                                                <span>{item.label}</span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <div className="pt-4 border-t border-slate-100">
+                        <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3.5 py-2.5 text-rose-600 hover:bg-rose-50 rounded-xl font-bold text-xs transition-all">
+                            <LogOut className="w-4 h-4" />
+                            <span>Log Out</span>
+                        </button>
+                    </div>
+                </aside>
+            </div>
+
             {/* Main Workspace Area */}
             <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
                 
                 {/* Top Header Bar */}
-                <header className="bg-white border-b border-slate-200/80 px-6 py-4 flex items-center justify-between gap-4 sticky top-0 z-20 shadow-2xs">
-                    <div className="flex items-center gap-4">
-                        <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
+                <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-3.5 flex items-center justify-between gap-3 sticky top-0 z-20 shadow-2xs">
+                    <div className="flex items-center gap-3 min-w-0">
+                        <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-1.5 text-slate-700 hover:bg-slate-100 rounded-lg">
                             <LayoutGrid className="w-5 h-5" />
                         </button>
-                        <h1 className="text-xl lg:text-2xl font-extrabold text-slate-900 tracking-tight">
+                        <a href="/" className="lg:hidden flex items-center shrink-0">
+                            <img src="/logo.png" alt="VisaFormula Logo" className="h-8 sm:h-9 w-auto object-contain" />
+                        </a>
+                        <h1 className="hidden sm:block text-xl lg:text-2xl font-extrabold text-slate-900 tracking-tight truncate">
                             Dashboard
                         </h1>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                         {/* Time Period Filter Pill (Flup Reference) */}
                         <div className="relative">
                             <button 
                                 onClick={() => setTimePeriodOpen(!timePeriodOpen)}
-                                className="flex items-center gap-2 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 transition-all shadow-2xs"
+                                className="flex items-center gap-1.5 sm:gap-2 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-slate-700 transition-all shadow-2xs"
                             >
-                                <span>📅 Time period: <strong className="text-slate-900">{timePeriod}</strong></span>
-                                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                                <span className="truncate max-w-[120px] sm:max-w-none">📅 <strong className="text-slate-900">{timePeriod}</strong></span>
+                                <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                             </button>
 
                             {timePeriodOpen && (
@@ -442,7 +522,7 @@ export function UserDashboard() {
                         </div>
 
                         {/* Notification Bell */}
-                        <button className="w-8.5 h-8.5 rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors relative">
+                        <button className="w-8.5 h-8.5 rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors relative shrink-0">
                             <Bell className="w-4 h-4" />
                             <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-2 right-2 border border-white" />
                         </button>
@@ -450,83 +530,83 @@ export function UserDashboard() {
                 </header>
 
                 {/* Dashboard Page Content */}
-                <div className="p-6 lg:p-8 space-y-6 bg-[#f8f9fc] flex-1">
+                <div className="p-4 sm:p-6 lg:p-8 space-y-6 bg-[#f8f9fc] flex-1">
 
                     {activeTab === "dashboard" ? (
                         <>
-                            {/* Top 4 Summary Metric Cards (Flup Reference Header Cards) */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                            {/* Top 4 Summary Metric Cards (Flup Reference Header Cards — Mobile 2-Column Grid) */}
+                            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                                 
                                 {/* Card 1: Total Customers / Active Applications */}
-                                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-xs transition-all">
+                                <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
                                     <div className="flex items-center justify-between text-slate-500 mb-2">
-                                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
-                                            👥 Total applications
+                                        <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
+                                            👥 Applications
                                         </span>
                                     </div>
-                                    <div className="flex items-baseline justify-between">
-                                        <span className="text-xl font-extrabold text-slate-900">
+                                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                                        <span className="text-lg sm:text-xl font-extrabold text-slate-900">
                                             12 Active
                                         </span>
-                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center gap-0.5 border border-emerald-200/60">
+                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-emerald-200/60">
                                             📈 2.5%
                                         </span>
                                     </div>
                                 </div>
 
                                 {/* Card 2: Total Revenue / Escrow Vault */}
-                                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-xs transition-all">
+                                <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
                                     <div className="flex items-center justify-between text-slate-500 mb-2">
-                                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
-                                            💵 Total escrow & funds
+                                        <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
+                                            💵 Escrow & Funds
                                         </span>
                                     </div>
-                                    <div className="flex items-baseline justify-between">
-                                        <span className="text-xl font-extrabold text-slate-900">
+                                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                                        <span className="text-lg sm:text-xl font-extrabold text-slate-900">
                                             ₹45,200
                                         </span>
-                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center gap-0.5 border border-emerald-200/60">
+                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-emerald-200/60">
                                             📈 0.5%
                                         </span>
                                     </div>
                                 </div>
 
                                 {/* Card 3: Total Orders / Consultations */}
-                                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-xs transition-all">
+                                <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
                                     <div className="flex items-center justify-between text-slate-500 mb-2">
-                                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+                                        <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
                                             💬 Consultations
                                         </span>
                                     </div>
-                                    <div className="flex items-baseline justify-between">
-                                        <span className="text-xl font-extrabold text-slate-900">
+                                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                                        <span className="text-lg sm:text-xl font-extrabold text-slate-900">
                                             8 Sessions
                                         </span>
-                                        <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md flex items-center gap-0.5 border border-rose-200/60">
+                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-rose-200/60">
                                             📉 0.2%
                                         </span>
                                     </div>
                                 </div>
 
                                 {/* Card 4: Total Returns / Saved Consultants */}
-                                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-xs transition-all">
+                                <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
                                     <div className="flex items-center justify-between text-slate-500 mb-2">
-                                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
-                                            ⭐ Saved experts
+                                        <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
+                                            ⭐ Saved Experts
                                         </span>
                                     </div>
-                                    <div className="flex items-baseline justify-between">
-                                        <span className="text-xl font-extrabold text-slate-900">
+                                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                                        <span className="text-lg sm:text-xl font-extrabold text-slate-900">
                                             15 Experts
                                         </span>
-                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center gap-0.5 border border-emerald-200/60">
+                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-emerald-200/60">
                                             📈 0.12%
                                         </span>
                                     </div>
                                 </div>
 
                                 {/* Card 5: Add Data Widget (Flup Reference) */}
-                                <div className="bg-slate-50/70 rounded-xl border-2 border-dashed border-slate-200 hover:border-slate-300 p-4 flex flex-col items-center justify-center gap-1 cursor-pointer transition-all hover:bg-slate-100/60">
+                                <div className="col-span-2 sm:col-span-2 lg:col-span-1 bg-slate-50/70 rounded-xl border-2 border-dashed border-slate-200 hover:border-slate-300 p-3 sm:p-4 flex flex-col items-center justify-center gap-1 cursor-pointer transition-all hover:bg-slate-100/60">
                                     <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-500 shadow-2xs">
                                         <Plus className="w-4 h-4" />
                                     </div>
@@ -536,10 +616,10 @@ export function UserDashboard() {
                             </div>
 
                             {/* Main Middle Section: Product Sales / Application Processing Dual Bar Chart */}
-                            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-6 shadow-2xs space-y-6">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div>
-                                        <h2 className="text-lg font-extrabold text-slate-900 tracking-tight">
+                                        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
                                             Application Processing & Progress
                                         </h2>
                                         <p className="text-xs font-medium text-slate-500">
@@ -560,9 +640,9 @@ export function UserDashboard() {
                                     </div>
                                 </div>
 
-                                {/* Dual Vertical Bar Chart (Flup Reference Replication) */}
-                                <div className="relative pt-6 pb-2">
-                                    <div className="h-56 flex items-end justify-between gap-2 sm:gap-4 px-2 border-b border-slate-100">
+                                {/* Dual Vertical Bar Chart (Flup Reference Replication — Scrollable on Mobile) */}
+                                <div className="relative pt-6 pb-2 overflow-x-auto">
+                                    <div className="h-56 flex items-end justify-between gap-2 sm:gap-4 px-2 border-b border-slate-100 min-w-[520px]">
                                         {barChartData.map((item, idx) => (
                                             <div key={idx} className="flex-1 flex flex-col items-center gap-1 group relative h-full justify-end">
                                                 

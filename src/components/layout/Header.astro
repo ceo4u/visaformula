@@ -432,48 +432,6 @@ const isHome = pathname === '/' || pathname === '';
         document.addEventListener("DOMContentLoaded", updateHeaderStyle);
         updateHeaderStyle();
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        // Mobile Drawer Toggle
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const closeBtn = document.getElementById('close-icon');
-        const drawer = document.getElementById('mobile-menu-drawer');
-
-        if (menuBtn && drawer) {
-            menuBtn.addEventListener('click', () => {
-                drawer.classList.toggle('hidden');
-                document.getElementById('menu-icon').classList.toggle('hidden');
-                document.getElementById('close-icon').classList.toggle('hidden');
-            });
-        }
-
-        // Mobile Accordion Items
-        const accordions = [
-            { btn: 'mobile-find-expert-btn', drawer: 'mobile-find-expert-drawer', arrow: 'mobile-find-expert-arrow' },
-            { btn: 'mobile-visa-services-btn', drawer: 'mobile-visa-services-drawer', arrow: 'mobile-visa-services-arrow' },
-            { btn: 'mobile-latest-news-btn', drawer: 'mobile-latest-news-drawer', arrow: 'mobile-latest-news-arrow' },
-            { btn: 'mobile-tools-btn', drawer: 'mobile-tools-drawer', arrow: 'mobile-tools-arrow' },
-        ];
-
-        accordions.forEach(({ btn, drawer, arrow }) => {
-            const btnEl = document.getElementById(btn);
-            const drawerEl = document.getElementById(drawer);
-            const arrowEl = document.getElementById(arrow);
-            if (btnEl && drawerEl && arrowEl) {
-                btnEl.addEventListener('click', () => {
-                    const isHidden = drawerEl.classList.contains('hidden');
-                    if (isHidden) {
-                        drawerEl.classList.remove('hidden');
-                        arrowEl.classList.add('rotate-180');
-                    } else {
-                        drawerEl.classList.add('hidden');
-                        arrowEl.classList.remove('rotate-180');
-                    }
-                });
-            }
-        });
-    });
-
     // Dynamic Auth Header Button & Profile Dropdown Updates
     const seekerFirst = localStorage.getItem("seeker_firstName");
     const expertBusiness = localStorage.getItem("expert_businessName");

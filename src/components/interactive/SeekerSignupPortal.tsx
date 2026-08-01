@@ -292,9 +292,8 @@ function SeekerSignupPortalContent() {
         localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
         localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
         if (typeof window !== "undefined") {
-            window.scrollTo({ top: 0, behavior: "instant" });
+            window.location.href = "/dashboard";
         }
-        setSubmitted(true);
     };
 
     if (submitted) {

@@ -3,7 +3,7 @@ import {
     DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
     Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
     Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronDown, Bell, Search, Lock, 
-    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare
+    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image
 } from "lucide-react";
 
 const statsData = [
@@ -125,10 +125,10 @@ export function ConsultantDashboard() {
         role: "Registered Consultant",
         city: "Delhi, India",
         experience: 8,
-        bio: "Senior Immigration Consultant with 8+ years of expertise in Canada Express Entry, Student Visas, and USA H-1B processing.",
+        bio: "Licensed Immigration Consultant providing verified guidance for Student, Work, and PR visas.",
         specializations: "Canada PR, USA H-1B, UK Student Visa",
         countries: "Canada, USA, UK, Australia, Germany",
-        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face"
+        image: ""
     });
 
     // Temp Form States for Modal
@@ -167,8 +167,8 @@ export function ConsultantDashboard() {
             const finalName = storedName || bizName || "Immigration Expert";
             const role = localStorage.getItem("expert_advisorType") || "Registered Consultant";
             const city = localStorage.getItem("expert_officeAddress") || "Delhi, India";
-            const bio = localStorage.getItem("expert_aboutMe") || "Senior Immigration Consultant with expertise in Visa Filing.";
-            const image = localStorage.getItem("expert_profilePhoto") || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face";
+            const bio = localStorage.getItem("expert_aboutMe") || "Licensed Immigration Consultant providing verified guidance for Student, Work, and PR visas.";
+            const image = localStorage.getItem("expert_profilePhoto") || "";
             
             const loadedSpecs = (() => {
                 try {
@@ -208,6 +208,23 @@ export function ConsultantDashboard() {
         setAvailability(prev => ({ ...prev, [key]: !prev[key] }));
     };
 
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                alert("Image file size should be less than 5MB");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                if (typeof reader.result === "string") {
+                    setFormImage(reader.result);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSaveProfile = (e: React.FormEvent) => {
         e.preventDefault();
         setProfile({
@@ -220,6 +237,8 @@ export function ConsultantDashboard() {
             countries: formCountries,
             image: formImage
         });
+        localStorage.setItem("expert_businessName", formName);
+        localStorage.setItem("expert_profilePhoto", formImage);
         setIsEditingProfile(false);
         setShowSuccessToast(true);
         setTimeout(() => setShowSuccessToast(false), 3000);
@@ -865,9 +884,47 @@ export function ConsultantDashboard() {
                                 </div>
                             </div>
 
+                            {/* Profile Photo Upload & Preview Widget */}
                             <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Profile Photo URL</label>
-                                <input value={formImage} onChange={e => setFormImage(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900" />
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">
+                                    Profile Photo
+                                </label>
+                                <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-2xl flex items-center gap-4">
+                                    <div className="relative w-16 h-16 rounded-full overflow-hidden bg-black text-white flex items-center justify-center font-extrabold text-xl shadow-xs shrink-0 border-2 border-white ring-2 ring-slate-200">
+                                        {formImage ? (
+                                            <img src={formImage} alt="Profile Preview" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span>{(formName || "E").charAt(0).toUpperCase()}</span>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col gap-2 flex-1 min-w-0">
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <label 
+                                                htmlFor="expert-photo-file-input" 
+                                                className="cursor-pointer bg-[#107c41] hover:bg-[#0d5c3a] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs flex items-center gap-1.5"
+                                            >
+                                                <Upload className="w-3.5 h-3.5" /> Upload Photo
+                                            </label>
+                                            <input 
+                                                type="file" 
+                                                id="expert-photo-file-input" 
+                                                accept="image/*" 
+                                                onChange={handleImageUpload} 
+                                                className="hidden" 
+                                            />
+                                            {formImage && (
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => setFormImage("")} 
+                                                    className="px-3 py-1.5 border border-slate-200 text-slate-600 hover:text-red-600 hover:border-red-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1 bg-white"
+                                                >
+                                                    <Trash2 className="w-3.5 h-3.5" /> Remove
+                                                </button>
+                                            )}
+                                        </div>
+                                        <p className="text-[11px] text-slate-400 font-medium">PNG, JPG or WEBP (Max 5MB)</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <div>

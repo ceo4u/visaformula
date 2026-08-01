@@ -478,10 +478,12 @@ export function UserDashboard() {
                         <a href="/" className="lg:hidden flex items-center shrink-0">
                             <img src="/logo.png" alt="VisaFormula Logo" className="h-12 sm:h-14 md:h-16 w-auto max-h-[56px] object-contain" />
                         </a>
-                        {/* Sleek Workspace Indicator Icon Badge */}
-                        <div className="hidden lg:flex items-center gap-2 text-slate-500 font-bold text-xs bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl">
-                            <LayoutDashboard className="w-4 h-4 text-[#107c41]" />
-                            <span className="text-slate-800 font-extrabold capitalize">{activeTab.replace("-", " ")}</span>
+                        {/* Sleek Workspace Indicator Icon Badge — Larger & Prominent */}
+                        <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
+                            <LayoutDashboard className="w-5.5 h-5.5 text-[#107c41] shrink-0" />
+                            <span className="text-sm sm:text-base font-black text-slate-900 capitalize tracking-tight">
+                                {activeTab.replace("-", " ")}
+                            </span>
                         </div>
                     </div>
 

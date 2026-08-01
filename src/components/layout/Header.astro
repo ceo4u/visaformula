@@ -143,8 +143,8 @@ const isHome = pathname === '/' || pathname === '';
                 <span>Contact</span>
             </a>
 
-            <!-- Red Vertical Divider (shown only when logged in) -->
-            <div id="nav-logged-in-divider" class="w-[1.5px] h-4 bg-[#ef4444] shrink-0 mx-2 hidden"></div>
+            <!-- Subtle Divider (shown only when logged in) -->
+            <div id="nav-logged-in-divider" class={`w-px h-5 shrink-0 mx-1.5 hidden ${isHome ? 'bg-white/20' : 'bg-slate-200'}`}></div>
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
@@ -158,12 +158,13 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Desktop Profile Dropdown (visible when logged in) -->
             <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta">
-                <button id="nav-profile-trigger" class="flex items-center gap-7 pl-1.5 pr-7 py-1.5 border border-slate-200 hover:border-black rounded-full transition-all focus:outline-none bg-white">
-                    <div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-black text-white shadow-sm" id="nav-profile-avatar-container">
+                <button id="nav-profile-trigger" class={`flex items-center gap-2.5 pl-1.5 pr-3.5 py-1.5 border rounded-full transition-all focus:outline-none shadow-2xs ${isHome ? 'bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-md' : 'bg-slate-50 hover:bg-slate-100 text-slate-900 border-slate-200'}`}>
+                    <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-slate-900 text-white shadow-2xs shrink-0" id="nav-profile-avatar-container">
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                        <span class="font-bold text-sm" id="nav-profile-avatar-letters">U</span>
+                        <span class="font-bold text-xs" id="nav-profile-avatar-letters">U</span>
                     </div>
-                    <ChevronDown class="w-4 h-4 text-slate-500 pr-1.5 shrink-0" />
+                    <span id="nav-profile-pill-name" class="font-bold text-xs max-w-[110px] truncate">My Account</span>
+                    <ChevronDown class={`w-3.5 h-3.5 shrink-0 ${isHome ? 'text-white/70' : 'text-slate-400'}`} />
                 </button>
                 
                 <!-- Dropdown Menu -->
@@ -495,9 +496,11 @@ const isHome = pathname === '/' || pathname === '';
             const avatarLetters = document.getElementById("nav-profile-avatar-letters");
             const avatarImg = document.getElementById("nav-profile-avatar-img");
             const profileName = document.getElementById("nav-profile-name");
+            const pillName = document.getElementById("nav-profile-pill-name");
             const dashboardLink = document.getElementById("nav-profile-dashboard-link");
 
             if (profileName) profileName.textContent = displayName;
+            if (pillName) pillName.textContent = displayName.split(" ")[0];
             if (dashboardLink) dashboardLink.setAttribute("href", dashboardHref);
             
             if (displayPhoto && avatarImg) {

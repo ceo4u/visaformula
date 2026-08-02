@@ -2,7 +2,7 @@
 // src/pages/signup/seeker.astro
 import Layout from '../../layouts/Layout.astro';
 import LandingPage from '../../components/landing/LandingPage';
-import { SeekerSignupPortal } from '../../components/interactive/SeekerSignupPortal';
+import { SignupFlowPortal } from '../../components/interactive/SignupFlowPortal';
 ---
 
 <Layout 
@@ -12,6 +12,6 @@ import { SeekerSignupPortal } from '../../components/interactive/SeekerSignupPor
   <!-- Main Home Page rendered in the background -->
   <LandingPage client:only="react" />
 
-  <!-- Fixed Modal Card Overlay -->
-  <SeekerSignupPortal client:only="react" />
+  <!-- Fixed Seeker Registration Modal Overlay -->
+  <SignupFlowPortal client:only="react" initialMode="seeker" />
 </Layout>

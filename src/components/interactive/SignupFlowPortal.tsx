@@ -1,0 +1,158 @@
+import React, { useState } from "react";
+import { ArrowRight, ArrowLeft, Sparkles, User, Briefcase, X } from "lucide-react";
+import { AuthModalPortalContent } from "./AuthModalPortal";
+
+interface SignupFlowPortalProps {
+    initialMode?: "selection" | "seeker";
+}
+
+export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortalProps) {
+    const [mode, setMode] = useState<"selection" | "seeker">(initialMode);
+
+    return (
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-6 font-sans overflow-y-auto">
+            
+            {/* Inline CSS Animations for Floating Circles & Pulsing Rings */}
+            <style dangerouslySetInnerHTML={{ __html: `
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-8px); }
+                }
+                @keyframes pulse-ring {
+                    0% { transform: scale(1); opacity: 0.4; }
+                    50% { transform: scale(1.08); opacity: 0.15; }
+                    100% { transform: scale(1); opacity: 0.4; }
+                }
+                .circle-float-1 { animation: float 4s ease-in-out infinite; }
+                .circle-float-2 { animation: float 4s ease-in-out infinite 0.5s; }
+                .pulse-ring { animation: pulse-ring 3s ease-in-out infinite; }
+            `}} />
+
+            {/* Top Navigation Header */}
+            <div className="w-full max-w-xl flex items-center justify-between mb-4 px-2">
+                <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/80 hover:text-white transition-colors bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
+                    <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
+                </a>
+                <a href="/">
+                    <img src="/logo-white.png" alt="VisaFormula" className="h-10 sm:h-12 w-auto object-contain" />
+                </a>
+            </div>
+
+            {/* ========================================================================= */}
+            {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") */}
+            {/* ========================================================================= */}
+            {mode === "selection" ? (
+                <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-xl w-full p-6 sm:p-10 text-center space-y-8 animate-fade-up relative overflow-hidden">
+                    
+                    {/* Top Badge */}
+                    <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-4 py-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-[#2563eb]" />
+                        <span className="text-xs font-bold text-slate-800">Join 50,000+ users</span>
+                    </div>
+
+                    {/* Title & Subtitle */}
+                    <div>
+                        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                            I want to join as
+                        </h1>
+                        <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">
+                            Select your role to get started with VisaFormula
+                        </p>
+                    </div>
+
+                    {/* Two Role Choice Circles */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 py-2">
+                        
+                        {/* Seeker Option */}
+                        <div 
+                            onClick={() => setMode("seeker")}
+                            className="group flex flex-col items-center text-center cursor-pointer"
+                        >
+                            <div className="relative circle-float-1">
+                                <div className="absolute inset-[-6px] rounded-full border-2 border-blue-100 pulse-ring" />
+                                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-blue-50/50 to-white border-2 border-blue-200 flex items-center justify-center shadow-md group-hover:scale-105 group-hover:shadow-xl group-hover:border-[#2563eb] transition-all duration-300 relative z-10">
+                                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" className="sm:w-12 sm:h-12">
+                                        <circle cx="12" cy="8" r="3.5" fill="#2563eb" opacity="0.15" />
+                                        <circle cx="12" cy="8" r="3.5" stroke="#2563eb" strokeWidth="1.8" fill="none" />
+                                        <path d="M5 20c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="#2563eb" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+                                        <path d="M16 4l1.5 1.5L16 7" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M17.5 5.5H15" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <span className="mt-4 font-bold text-slate-900 text-base group-hover:text-[#2563eb] transition-colors">
+                                Visa Seeker
+                            </span>
+                            <span className="text-xs text-slate-500 max-w-[170px] mt-0.5 mb-3 font-semibold">
+                                Find, consult & book immigration experts
+                            </span>
+                            <button className="bg-[#2563eb] group-hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm active:scale-[0.97]">
+                                Register as Seeker <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                            </button>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="flex flex-row sm:flex-col items-center gap-2 text-slate-300 font-extrabold text-xs tracking-widest">
+                            <div className="w-10 sm:w-px h-px sm:h-8 bg-slate-200" />
+                            <span className="text-slate-400">OR</span>
+                            <div className="w-10 sm:w-px h-px sm:h-8 bg-slate-200" />
+                        </div>
+
+                        {/* Expert Option */}
+                        <a 
+                            href="/signup/expert"
+                            className="group flex flex-col items-center text-center cursor-pointer"
+                        >
+                            <div className="relative circle-float-2">
+                                <div className="absolute inset-[-6px] rounded-full border-2 border-slate-100 pulse-ring" />
+                                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 flex items-center justify-center shadow-md group-hover:scale-105 group-hover:shadow-xl group-hover:border-black transition-all duration-300 relative z-10">
+                                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" className="sm:w-12 sm:h-12">
+                                        <rect x="5" y="2" width="14" height="20" rx="3" fill="#000" opacity="0.12" />
+                                        <rect x="5" y="2" width="14" height="20" rx="3" stroke="#000" strokeWidth="1.8" fill="none" />
+                                        <circle cx="12" cy="10" r="2.5" stroke="#000" strokeWidth="1.5" fill="none" />
+                                        <path d="M8.5 16c0-1.5 1.6-2.8 3.5-2.8s3.5 1.3 3.5 2.8" stroke="#000" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                                        <circle cx="16" cy="5" r="0.7" fill="#000" />
+                                        <circle cx="16" cy="7.5" r="0.7" fill="#000" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <span className="mt-4 font-bold text-slate-900 text-base group-hover:text-slate-600 transition-colors">
+                                Visa Expert
+                            </span>
+                            <span className="text-xs text-slate-500 max-w-[170px] mt-0.5 mb-3 font-semibold">
+                                Grow your global client consulting practice
+                            </span>
+                            <button className="bg-slate-900 group-hover:bg-black text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm active:scale-[0.97]">
+                                Register as Expert <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                            </button>
+                        </a>
+
+                    </div>
+
+                    <div className="text-xs font-medium text-slate-400 pt-2 border-t border-slate-100">
+                        Already a member? <a href="/login" className="text-[#2563eb] font-bold hover:underline">Log in</a>
+                    </div>
+                </div>
+            ) : (
+                /* ========================================================================= */
+                /* VIEW 2: SEEKER REGISTRATION MODAL FORM */
+                /* ========================================================================= */
+                <div className="w-full flex flex-col items-center">
+                    <button 
+                        onClick={() => setMode("selection")} 
+                        className="mb-3 text-xs font-bold text-white/90 hover:text-white flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full backdrop-blur-md cursor-pointer border border-white/20"
+                    >
+                        &larr; Change Account Role
+                    </button>
+                    <AuthModalPortalContent defaultTab="signup" />
+                </div>
+            )}
+
+            {/* Footer */}
+            <footer className="mt-6 text-center text-xs text-white/60 font-medium">
+                © 2026 VisaFormula. All rights reserved.
+            </footer>
+
+        </div>
+    );
+}

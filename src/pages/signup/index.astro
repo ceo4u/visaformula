@@ -2,16 +2,16 @@
 // src/pages/signup/index.astro
 import Layout from '../../layouts/Layout.astro';
 import LandingPage from '../../components/landing/LandingPage';
-import { SeekerSignupPortal } from '../../components/interactive/SeekerSignupPortal';
+import { SignupFlowPortal } from '../../components/interactive/SignupFlowPortal';
 ---
 
 <Layout 
-  title="Create Account - VisaFormula" 
+  title="Choose Account Type - VisaFormula" 
   description="Register a free VisaFormula account. Select whether to join as a Seeker to find top visa experts, or as an Expert to consult clients and grow your global practice."
 >
   <!-- Main Home Page rendered in the background -->
   <LandingPage client:only="react" />
 
-  <!-- Fixed Modal Card Overlay -->
-  <SeekerSignupPortal client:only="react" />
+  <!-- Fixed Role Selection Modal Overlay -->
+  <SignupFlowPortal client:only="react" initialMode="selection" />
 </Layout>

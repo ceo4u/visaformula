@@ -1,15 +1,17 @@
 ---
 // src/pages/signup/expert.astro
 import Layout from '../../layouts/Layout.astro';
+import LandingPage from '../../components/landing/LandingPage';
 import { ExpertSignupPortal } from '../../components/interactive/ExpertSignupPortal';
 ---
 
 <Layout 
   title="Sign Up as Expert - VisaFormula" 
   description="Register as an immigration expert on VisaFormula to consult clients and grow your global practice."
-  hideHeader={true}
-  hideFooter={true}
 >
-  <!-- Mount client-only React signup expert island -->
+  <!-- Main Home Page rendered in the background -->
+  <LandingPage client:only="react" />
+
+  <!-- Fixed Expert Registration Modal Overlay -->
   <ExpertSignupPortal client:only="react" />
 </Layout>

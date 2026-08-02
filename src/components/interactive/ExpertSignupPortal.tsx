@@ -599,7 +599,7 @@ function ExpertSignupPortalContent() {
   ];
 
   return (
-    <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-sora relative overflow-x-hidden w-full max-w-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div className={step < 3 ? "fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-6 font-sora overflow-y-auto" : "min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-sora relative overflow-x-hidden w-full max-w-full"} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       {googleLoading && (
           <div className="absolute inset-0 bg-white/80 backdrop-blur-md flex flex-col items-center justify-center z-[9999] transition-all duration-300">
               <div className="flex flex-col items-center gap-4">
@@ -639,32 +639,18 @@ function ExpertSignupPortalContent() {
       `}} />
       
       {step < 3 && (
-        <header className="w-full px-4 md:px-8 py-4 flex flex-col md:flex-row items-center justify-between font-sans gap-4 border-b border-slate-100 bg-white md:min-h-[120px] relative">
-          <div className="order-1 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-10">
-            <a href="/">
-              <img src="/logo.png" alt="VisaFormula" className="h-16 md:h-28 w-auto object-contain mx-auto" />
-            </a>
-          </div>
-
-          <div className="order-2 w-full md:w-auto flex justify-between md:justify-start items-center gap-4">
-            <a href="/" className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-xs font-bold text-black hover:bg-slate-50 shadow-sm transition-all shrink-0">
-              <span className="text-sm font-semibold">&larr;</span>
-              <span>Back to Home</span>
-            </a>
-            
-            <div className="text-xs font-semibold text-slate-500 shrink-0 md:hidden">
-              Already a member? <a href="/login" className="text-black font-extrabold hover:underline">Login</a>
-            </div>
-          </div>
-
-          <div className="hidden md:block text-sm font-semibold text-slate-500 shrink-0 order-3">
-            Already a member? <a href="/login" className="text-black font-extrabold hover:underline">Login</a>
-          </div>
-        </header>
+        <div className="w-full max-w-3xl flex items-center justify-between mb-3 px-2">
+          <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/80 hover:text-white transition-colors bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
+            &larr; Back to Home
+          </a>
+          <a href="/">
+            <img src="/logo-white.png" alt="VisaFormula" className="h-10 sm:h-12 w-auto object-contain" />
+          </a>
+        </div>
       )}
 
       {step < 3 ? (
-        <div className="flex-grow flex flex-col justify-start pt-6 pb-28 px-6 max-w-4xl w-full mx-auto">
+        <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-slate-200/80 max-w-3xl w-full mx-auto my-auto flex flex-col justify-start relative overflow-hidden">
           <div className="text-center my-6">
             <h1 className="text-2xl md:text-3xl font-bold text-[#0c1a2e] tracking-tight mb-2 font-jakarta">Register as Expert</h1>
             <p className="text-base text-slate-400 font-medium">Enter your details to initialize your portal</p>

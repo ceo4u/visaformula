@@ -42,7 +42,7 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
             {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") */}
             {/* ========================================================================= */}
             {mode === "selection" ? (
-                <div className="bg-slate-950/40 backdrop-blur-xl border border-white/25 text-white rounded-3xl shadow-[0_16px_48px_rgba(0,0,0,0.4)] max-w-xl w-full p-6 sm:p-10 text-center space-y-8 animate-fade-up relative my-auto max-h-[85vh] overflow-y-auto">
+                <div className="bg-slate-900/60 backdrop-blur-md border border-white/15 text-white rounded-3xl shadow-2xl max-w-xl w-full p-6 sm:p-10 text-center space-y-8 animate-fade-up relative my-auto max-h-[85vh] overflow-y-auto">
                     
                     {/* Top Badge */}
                     <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 shadow-xs">

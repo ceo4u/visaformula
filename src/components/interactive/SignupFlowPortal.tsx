@@ -10,7 +10,7 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
     const [mode, setMode] = useState<"selection" | "seeker">(initialMode);
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar">
             
             {/* Inline CSS Animations for Floating Circles & Pulsing Rings */}
             <style dangerouslySetInnerHTML={{ __html: `
@@ -42,7 +42,7 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
             {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") */}
             {/* ========================================================================= */}
             {mode === "selection" ? (
-                <div className="bg-slate-900/60 backdrop-blur-md border border-white/15 text-white rounded-3xl shadow-2xl max-w-xl w-full p-6 sm:p-10 text-center space-y-8 animate-fade-up relative my-auto max-h-[85vh] overflow-y-auto">
+                <div className="bg-slate-900/60 backdrop-blur-md border border-white/15 text-white rounded-3xl shadow-2xl max-w-xl w-full p-6 sm:p-10 text-center space-y-8 animate-fade-up relative my-auto max-h-[85vh] overflow-y-auto no-scrollbar">
                     
                     {/* Top Badge */}
                     <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 shadow-xs">

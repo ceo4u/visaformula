@@ -323,7 +323,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     };
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar">
             
             {/* Top Navigation & Logo Header */}
             <div className="w-full max-w-2xl flex items-center justify-between mb-3 px-2 shrink-0">
@@ -336,7 +336,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             </div>
 
             {/* Central VisaHQ-Style Modal Dialog Container */}
-            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-2xl w-full max-h-[88vh] overflow-y-auto transition-all duration-300 relative my-auto">
+            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-2xl w-full max-h-[88vh] overflow-y-auto no-scrollbar transition-all duration-300 relative my-auto">
                 
                 {/* Close Button if embedded in modal */}
                 {onClose && (

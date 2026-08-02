@@ -599,7 +599,7 @@ function ExpertSignupPortalContent() {
   ];
 
   return (
-    <div className={step < 3 ? "fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-6 font-sora overflow-y-auto" : "min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-sora relative overflow-x-hidden w-full max-w-full"} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div className={step < 3 ? "fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-6 font-sora overflow-y-auto no-scrollbar" : "min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-sora relative overflow-x-hidden w-full max-w-full"} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       {googleLoading && (
           <div className="absolute inset-0 bg-white/80 backdrop-blur-md flex flex-col items-center justify-center z-[9999] transition-all duration-300">
               <div className="flex flex-col items-center gap-4">
@@ -650,7 +650,7 @@ function ExpertSignupPortalContent() {
       )}
 
       {step < 3 ? (
-        <div className="bg-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-slate-200/80 max-w-3xl w-full mx-auto my-auto flex flex-col justify-start relative max-h-[88vh] overflow-y-auto">
+        <div className="bg-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-slate-200/80 max-w-3xl w-full mx-auto my-auto flex flex-col justify-start relative max-h-[88vh] overflow-y-auto no-scrollbar">
           <div className="text-center mt-1 mb-3">
             <h1 className="text-xl md:text-2xl font-bold text-[#0c1a2e] tracking-tight mb-1 font-jakarta">Register as Expert</h1>
             <p className="text-xs md:text-sm text-slate-400 font-medium">Enter your details to initialize your portal</p>

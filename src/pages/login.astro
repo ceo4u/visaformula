@@ -1,7 +1,7 @@
 ---
 // src/pages/login.astro
 import Layout from '../layouts/Layout.astro';
-import { LoginPortal } from '../components/interactive/LoginPortal';
+import { AuthModalPortal } from '../components/interactive/AuthModalPortal';
 ---
 
 <Layout 
@@ -10,6 +10,6 @@ import { LoginPortal } from '../components/interactive/LoginPortal';
   hideHeader={true}
   hideFooter={true}
 >
-  <!-- Mount client-only React login portal island -->
-  <LoginPortal client:only="react" />
+  <!-- Mount client-only React auth modal portal island matching reference design -->
+  <AuthModalPortal client:only="react" initialTab="login" />
 </Layout>

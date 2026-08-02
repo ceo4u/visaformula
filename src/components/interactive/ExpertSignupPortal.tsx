@@ -639,7 +639,7 @@ function ExpertSignupPortalContent() {
       `}} />
       
       {step < 3 && (
-        <div className="w-full max-w-4xl flex items-center justify-between mb-3 px-2 shrink-0">
+        <div className="w-full max-w-3xl flex items-center justify-between mb-2 px-2 shrink-0">
           <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/80 hover:text-white transition-colors bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
             &larr; Back to Home
           </a>
@@ -650,50 +650,50 @@ function ExpertSignupPortalContent() {
       )}
 
       {step < 3 ? (
-        <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-slate-200/80 max-w-4xl w-full mx-auto my-auto flex flex-col justify-start relative max-h-[88vh] overflow-y-auto">
-          <div className="text-center my-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-[#0c1a2e] tracking-tight mb-2 font-jakarta">Register as Expert</h1>
-            <p className="text-base text-slate-400 font-medium">Enter your details to initialize your portal</p>
+        <div className="bg-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-slate-200/80 max-w-3xl w-full mx-auto my-auto flex flex-col justify-start relative max-h-[88vh] overflow-y-auto">
+          <div className="text-center mt-1 mb-3">
+            <h1 className="text-xl md:text-2xl font-bold text-[#0c1a2e] tracking-tight mb-1 font-jakarta">Register as Expert</h1>
+            <p className="text-xs md:text-sm text-slate-400 font-medium">Enter your details to initialize your portal</p>
           </div>
 
-          <div className="flex items-center justify-center gap-2 md:gap-8 my-8 font-sans max-w-full overflow-x-auto px-2">
+          <div className="flex items-center justify-center gap-2 md:gap-6 my-3 font-sans max-w-full overflow-x-auto px-2">
             <div className="flex items-center gap-2 md:gap-3 shrink-0">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
                 step > 1 ? "bg-emerald-500 text-white" : "bg-[#1C1C1E] text-white shadow-sm"
               }`}>
                 {step > 1 ? "✓" : "1"}
               </div>
-              <span className={`text-xs md:text-sm font-bold whitespace-nowrap ${step === 1 ? "text-black" : "text-slate-400"}`}>
+              <span className={`text-xs font-bold whitespace-nowrap ${step === 1 ? "text-black" : "text-slate-400"}`}>
                 General Details
               </span>
             </div>
             
-            <div className={`h-0.5 w-8 md:w-24 shrink-0 transition-all ${step > 1 ? "bg-emerald-500" : "bg-slate-200"}`}></div>
+            <div className={`h-0.5 w-6 md:w-16 shrink-0 transition-all ${step > 1 ? "bg-emerald-500" : "bg-slate-200"}`}></div>
 
             <div className="flex items-center gap-2 md:gap-3 shrink-0">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all shrink-0 ${
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-all shrink-0 ${
                 step === 2 
                   ? "bg-[#1C1C1E] text-white shadow-sm" 
                   : "border border-slate-200 bg-white text-slate-400"
               }`}>
                 2
               </div>
-              <span className={`text-xs md:text-sm font-bold whitespace-nowrap ${step === 2 ? "text-black" : "text-slate-400"}`}>
+              <span className={`text-xs font-bold whitespace-nowrap ${step === 2 ? "text-black" : "text-slate-400"}`}>
                 Credentials & Service
               </span>
             </div>
           </div>
 
-          <div className="w-full mx-auto transition-all duration-300 font-sans mt-4">
+          <div className="w-full mx-auto transition-all duration-300 font-sans mt-2">
             {step === 1 && (
-              <form onSubmit={handleProceedToPhase2} className="space-y-4">
-                <div className="flex flex-col items-center gap-4 mb-6">
+              <form onSubmit={handleProceedToPhase2} className="space-y-3">
+                <div className="flex flex-col items-center gap-2 mb-3">
                     <button
                         type="button"
                         onClick={handleGoogleSignup}
-                        className="w-full max-w-[280px] h-12 border border-slate-200/80 bg-white hover:bg-slate-50 transition-all text-slate-800 font-extrabold text-xs rounded-xl flex items-center justify-center gap-3 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-95 duration-200 shrink-0 cursor-pointer"
+                        className="w-full max-w-[260px] h-10 border border-slate-200/80 bg-white hover:bg-slate-50 transition-all text-slate-800 font-extrabold text-xs rounded-xl flex items-center justify-center gap-2.5 shadow-xs hover:shadow-sm hover:scale-[1.01] active:scale-95 duration-200 shrink-0 cursor-pointer"
                     >
-                        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
                             <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
@@ -702,9 +702,9 @@ function ExpertSignupPortalContent() {
                         <span>Continue with Google</span>
                     </button>
 
-                    <div className="flex items-center justify-center gap-3 w-full max-w-[280px] my-1">
+                    <div className="flex items-center justify-center gap-3 w-full max-w-[260px]">
                         <div className="h-[1px] bg-slate-200 flex-grow" />
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">— OR —</span>
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">— OR —</span>
                         <div className="h-[1px] bg-slate-200 flex-grow" />
                     </div>
                 </div>

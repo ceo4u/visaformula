@@ -348,35 +348,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     </button>
                 )}
 
-                {/* Top Dual Tabs Switcher (VisaHQ Style) */}
-                <div className="flex border-b border-slate-200 text-center font-bold text-sm bg-slate-50/50">
-                    <button
-                        onClick={() => setActiveTab("login")}
-                        className={`flex-1 py-4 text-center transition-all relative cursor-pointer ${
-                            activeTab === "login"
-                                ? "text-[#2563eb] bg-white font-extrabold"
-                                : "text-slate-500 hover:text-slate-900"
-                        }`}
-                    >
-                        Log in
-                        {activeTab === "login" && (
-                            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2563eb]" />
-                        )}
-                    </button>
-                    <button
-                        onClick={() => setActiveTab("signup")}
-                        className={`flex-1 py-4 text-center transition-all relative cursor-pointer ${
-                            activeTab === "signup"
-                                ? "text-[#2563eb] bg-white font-extrabold"
-                                : "text-slate-500 hover:text-slate-900"
-                        }`}
-                    >
-                        Create account
-                        {activeTab === "signup" && (
-                            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2563eb]" />
-                        )}
-                    </button>
-                </div>
+
 
                 {/* Card Content Body */}
                 <div className="p-6 sm:p-8 space-y-6">

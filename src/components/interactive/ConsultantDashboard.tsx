@@ -46,38 +46,38 @@ const timeSlots = ["9 AM", "10 AM", "11 AM", "12 PM", "2 PM", "3 PM", "4 PM", "5
 
 // Real category revenue distribution data
 const categoriesData = [
-    { label: "Full Visa Support", percent: "35%", color: "#3b82f6" },
-    { label: "PR & Express Entry", percent: "25%", color: "#8b5cf6" },
-    { label: "Initial Consultations", percent: "15%", color: "#a855f7" },
-    { label: "SOP & LOR Review", percent: "12%", color: "#ec4899" },
-    { label: "Appeal & Refusal Support", percent: "8%", color: "#f43f5e" },
-    { label: "VFS & Appointment Prep", percent: "5%", color: "#10b981" },
+    { label: "Full Visa Support", percent: "0%", color: "#3b82f6" },
+    { label: "PR & Express Entry", percent: "0%", color: "#8b5cf6" },
+    { label: "Initial Consultations", percent: "0%", color: "#a855f7" },
+    { label: "SOP & LOR Review", percent: "0%", color: "#ec4899" },
+    { label: "Appeal & Refusal Support", percent: "0%", color: "#f43f5e" },
+    { label: "VFS & Appointment Prep", percent: "0%", color: "#10b981" },
 ];
 
 // Real client distribution by country
 const countriesData = [
-    { name: "Canada", percent: "32%" },
-    { name: "United States (USA)", percent: "25%" },
-    { name: "United Kingdom (UK)", percent: "18%" },
-    { name: "Australia", percent: "12%" },
-    { name: "Germany", percent: "8%" },
-    { name: "UAE & Middle East", percent: "5%" },
+    { name: "Canada", percent: "0%" },
+    { name: "United States (USA)", percent: "0%" },
+    { name: "United Kingdom (UK)", percent: "0%" },
+    { name: "Australia", percent: "0%" },
+    { name: "Germany", percent: "0%" },
+    { name: "UAE & Middle East", percent: "0%" },
 ];
 
 // Dual vertical bar chart data
 const barChartData = [
-    { day: "1 Jul", gross: 35, rev: 25 },
-    { day: "2 Jul", gross: 42, rev: 38 },
-    { day: "3 Jul", gross: 28, rev: 45 },
-    { day: "4 Jul", gross: 45, rev: 52 },
-    { day: "5 Jul", gross: 55, rev: 40 },
-    { day: "6 Jul", gross: 68, rev: 72, tooltip: true },
-    { day: "7 Jul", gross: 32, rev: 44 },
-    { day: "8 Jul", gross: 48, rev: 55 },
-    { day: "9 Jul", gross: 38, rev: 42 },
-    { day: "10 Jul", gross: 58, rev: 62 },
-    { day: "11 Jul", gross: 44, rev: 50 },
-    { day: "12 Jul", gross: 65, rev: 70 },
+    { day: "1 Jul", gross: 0, rev: 0 },
+    { day: "2 Jul", gross: 0, rev: 0 },
+    { day: "3 Jul", gross: 0, rev: 0 },
+    { day: "4 Jul", gross: 0, rev: 0 },
+    { day: "5 Jul", gross: 0, rev: 0 },
+    { day: "6 Jul", gross: 0, rev: 0 },
+    { day: "7 Jul", gross: 0, rev: 0 },
+    { day: "8 Jul", gross: 0, rev: 0 },
+    { day: "9 Jul", gross: 0, rev: 0 },
+    { day: "10 Jul", gross: 0, rev: 0 },
+    { day: "11 Jul", gross: 0, rev: 0 },
+    { day: "12 Jul", gross: 0, rev: 0 },
 ];
 
 export function ConsultantDashboard() {
@@ -738,7 +738,7 @@ export function ConsultantDashboard() {
                                             </svg>
                                             <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                                                 <span className="text-xs font-bold text-slate-400">Total Services</span>
-                                                <span className="text-lg font-black text-slate-900">₹1.24L</span>
+                                                <span className="text-lg font-bold text-slate-900">₹0</span>
                                             </div>
                                         </div>
 
@@ -774,8 +774,8 @@ export function ConsultantDashboard() {
                                         <div className="w-36 h-36 rounded-full bg-blue-50/70 border border-blue-100 flex items-center justify-center p-3 shrink-0 relative overflow-hidden shadow-inner">
                                             <Globe className="w-24 h-24 text-blue-500/30 animate-spin-slow" />
                                             <div className="absolute inset-0 flex items-center justify-center">
-                                                <span className="text-[11px] font-black text-blue-900 bg-white/90 px-2 py-0.5 rounded-full shadow-xs">
-                                                    50+ Countries
+                                                <span className="text-[11px] font-bold text-blue-900 bg-white/90 px-2 py-0.5 rounded-full shadow-xs">
+                                                    0 Active Clients
                                                 </span>
                                             </div>
                                         </div>

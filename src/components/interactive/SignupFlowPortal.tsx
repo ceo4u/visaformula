@@ -10,7 +10,7 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
     const [mode, setMode] = useState<"selection" | "seeker">(initialMode);
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-6 font-sans overflow-y-auto">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto">
             
             {/* Inline CSS Animations for Floating Circles & Pulsing Rings */}
             <style dangerouslySetInnerHTML={{ __html: `
@@ -29,7 +29,7 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
             `}} />
 
             {/* Top Navigation Header */}
-            <div className="w-full max-w-xl flex items-center justify-between mb-4 px-2">
+            <div className="w-full max-w-xl flex items-center justify-between mb-3 px-2 shrink-0">
                 <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/80 hover:text-white transition-colors bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
                     <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
                 </a>
@@ -42,7 +42,7 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
             {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") */}
             {/* ========================================================================= */}
             {mode === "selection" ? (
-                <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-xl w-full p-6 sm:p-10 text-center space-y-8 animate-fade-up relative overflow-hidden">
+                <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-xl w-full p-6 sm:p-10 text-center space-y-8 animate-fade-up relative my-auto max-h-[85vh] overflow-y-auto">
                     
                     {/* Top Badge */}
                     <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-4 py-1.5">

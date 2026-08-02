@@ -650,7 +650,7 @@ function ExpertSignupPortalContent() {
       )}
 
       {step < 3 ? (
-        <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-slate-200/80 max-w-3xl w-full mx-auto my-auto flex flex-col justify-start relative overflow-hidden">
+        <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-slate-200/80 max-w-3xl w-full mx-auto my-auto flex flex-col justify-start relative max-h-[85vh] overflow-y-auto">
           <div className="text-center my-6">
             <h1 className="text-2xl md:text-3xl font-bold text-[#0c1a2e] tracking-tight mb-2 font-jakarta">Register as Expert</h1>
             <p className="text-base text-slate-400 font-medium">Enter your details to initialize your portal</p>

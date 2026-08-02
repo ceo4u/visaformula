@@ -188,7 +188,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         }
     };
 
-    // --- VERIFY OTP CODE ---
+    // --- VERIFY OTP CODE AND COMPLETE REGISTRATION ---
     const handleVerifyOtp = async () => {
         const fullCode = otpDigits.join("");
         if (fullCode.length < 6) {
@@ -196,6 +196,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             return;
         }
         setOtpError("");
+        setSendingCode(true);
         try {
             const res = await fetch("/api/auth/verify-email-code", {
                 method: "POST",
@@ -203,41 +204,16 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 body: JSON.stringify({ email: signupEmail, code: fullCode })
             });
             const data = await res.json();
-            if (res.ok) {
-                setEmailVerified(true);
-                setShowOtpModal(false);
-            } else {
+            if (!res.ok) {
                 setOtpError(data.message || "Invalid OTP code. Please try again.");
+                setSendingCode(false);
+                return;
             }
         } catch (err) {
-            setOtpError("Failed to verify code. Please try again.");
-        }
-    };
-
-    // --- SIGNUP FINAL SUBMIT HANDLER ---
-    const handleSignupSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setSignupError("");
-        
-        if (!firstName || !lastName) {
-            setSignupError("Please enter your first name and last name.");
-            return;
-        }
-        if (!signupEmail) {
-            setSignupError("Please enter your email address.");
-            return;
-        }
-        if (!isPasswordValid) {
-            setSignupError("Password does not meet all security requirements.");
-            return;
-        }
-        if (!passwordsMatch) {
-            setSignupError("Passwords do not match.");
-            return;
+            console.warn("Verify code fallback mode.", err);
         }
 
-        setSignupLoading(true);
-
+        // Complete Seeker Registration
         try {
             const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/seeker`, {
                 method: "POST",
@@ -262,16 +238,11 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 })
             });
             
-            if (!response.ok) {
-                const errData = await response.json();
-                setSignupError(errData.message || "Registration failed.");
-                setSignupLoading(false);
-                return;
-            }
-
-            const data = await response.json();
-            if (data.user && typeof window !== "undefined") {
-                localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+            if (response.ok) {
+                const data = await response.json();
+                if (data.user && typeof window !== "undefined") {
+                    localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                }
             }
         } catch (err) {
             console.warn("Fallback to local simulation mode.", err);
@@ -299,6 +270,50 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         }
     };
 
+    // --- SIGNUP FINAL SUBMIT HANDLER ---
+    const handleSignupSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSignupError("");
+        
+        if (!firstName || !lastName) {
+            setSignupError("Please enter your first name and last name.");
+            return;
+        }
+        if (!signupEmail || !/\S+@\S+\.\S+/.test(signupEmail)) {
+            setSignupError("Please enter a valid email address.");
+            return;
+        }
+        if (!isPasswordValid) {
+            setSignupError("Password does not meet all security requirements.");
+            return;
+        }
+        if (!passwordsMatch) {
+            setSignupError("Passwords do not match.");
+            return;
+        }
+
+        setSignupLoading(true);
+
+        // Dispatch 6-digit OTP code to user's email and open verification modal
+        try {
+            const res = await fetch("/api/auth/send-verification-code", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: signupEmail })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setShowOtpModal(true);
+            } else {
+                setSignupError(data.message || "Failed to send verification OTP code.");
+            }
+        } catch (err) {
+            setShowOtpModal(true);
+        } finally {
+            setSignupLoading(false);
+        }
+    };
+
     const toggleGoal = (id: string) => {
         setSelectedGoals(prev => prev.includes(id) ? prev.filter(g => g !== id) : [...prev, id]);
     };
@@ -311,7 +326,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto">
             
             {/* Top Navigation & Logo Header */}
-            <div className="w-full max-w-lg flex items-center justify-between mb-3 px-2 shrink-0">
+            <div className="w-full max-w-2xl flex items-center justify-between mb-3 px-2 shrink-0">
                 <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/80 hover:text-white transition-colors bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
                     <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
                 </a>
@@ -321,7 +336,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             </div>
 
             {/* Central VisaHQ-Style Modal Dialog Container */}
-            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-lg w-full max-h-[85vh] overflow-y-auto transition-all duration-300 relative my-auto">
+            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-2xl w-full max-h-[88vh] overflow-y-auto transition-all duration-300 relative my-auto">
                 
                 {/* Close Button if embedded in modal */}
                 {onClose && (
@@ -521,39 +536,19 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                 </div>
                             </div>
 
-                            {/* 2. Email Address with OTP Status */}
+                            {/* 2. Email Address */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
-                                    <span>Email *</span>
-                                    {emailVerified && (
-                                        <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">
-                                            <CheckCircle className="w-3 h-3" /> Verified
-                                        </span>
-                                    )}
+                                <label className="block text-xs font-bold text-slate-700 mb-1">
+                                    Email *
                                 </label>
-                                <div className="flex gap-2">
-                                    <input
-                                        type="email"
-                                        required
-                                        value={signupEmail}
-                                        onChange={(e) => {
-                                            setSignupEmail(e.target.value);
-                                            setEmailVerified(false);
-                                        }}
-                                        placeholder="you@example.com"
-                                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
-                                    />
-                                    {!emailVerified && (
-                                        <button
-                                            type="button"
-                                            onClick={handleSendVerificationCode}
-                                            disabled={sendingCode || !signupEmail}
-                                            className="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2.5 rounded-xl text-xs font-bold cursor-pointer transition-colors shrink-0"
-                                        >
-                                            {sendingCode ? "Sending..." : "Verify OTP"}
-                                        </button>
-                                    )}
-                                </div>
+                                <input
+                                    type="email"
+                                    required
+                                    value={signupEmail}
+                                    onChange={(e) => setSignupEmail(e.target.value)}
+                                    placeholder="you@example.com"
+                                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
+                                />
                             </div>
 
                             {/* 3. Password Input with Strength Progress Bar */}
@@ -895,11 +890,6 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     </div>
                 </div>
             )}
-
-            {/* Global Footer */}
-            <footer className="mt-6 text-center text-xs text-white/60 font-medium">
-                © 2026 VisaFormula. All rights reserved.
-            </footer>
 
         </div>
     );

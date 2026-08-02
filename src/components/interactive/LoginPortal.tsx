@@ -248,11 +248,6 @@ function LoginPortalContent() {
 
             </div>
 
-            {/* Global Footer */}
-            <footer className="mt-6 text-center text-xs text-white/60 font-medium">
-                © 2026 VisaFormula. All rights reserved.
-            </footer>
-
         </div>
     );
 }

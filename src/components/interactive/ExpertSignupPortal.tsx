@@ -2624,19 +2624,6 @@ function ExpertSignupPortalContent() {
           )}
         </div>
       )}
-      
-      {step < 3 && (
-        <footer className="bg-white border-t border-slate-100 py-6 px-12 text-xs font-semibold text-slate-500 font-sans mt-10">
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span>Copyright © 2022 VisaFormula Corporates</span>
-            <div className="flex items-center gap-6">
-              <span className="cursor-pointer hover:text-black">Privacy</span>
-              <span className="cursor-pointer hover:text-black">Policy</span>
-            </div>
-          </div>
-        </footer>
-      )}
-      
     </div>
   );
 }

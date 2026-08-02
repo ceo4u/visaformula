@@ -1,15 +1,17 @@
 ---
 // src/pages/signup/seeker.astro
 import Layout from '../../layouts/Layout.astro';
+import LandingPage from '../../components/landing/LandingPage';
 import { SeekerSignupPortal } from '../../components/interactive/SeekerSignupPortal';
 ---
 
 <Layout 
-  title="Register as Seeker" 
+  title="Register as Seeker - VisaFormula" 
   description="Register as a visa seeker on VisaFormula. Setup your immigration goals, passport country, and select target study/work destinations to connect with top verified migration experts."
-  hideHeader={true}
-  hideFooter={true}
 >
-  <!-- Mount client-only React signup seeker island -->
+  <!-- Main Home Page rendered in the background -->
+  <LandingPage client:only="react" />
+
+  <!-- Fixed Modal Card Overlay -->
   <SeekerSignupPortal client:only="react" />
 </Layout>

@@ -308,7 +308,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     };
 
     return (
-        <div className="min-h-screen bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-6 font-sans relative">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-6 font-sans overflow-y-auto">
             
             {/* Top Navigation & Logo Header */}
             <div className="w-full max-w-lg flex items-center justify-between mb-4 px-2">

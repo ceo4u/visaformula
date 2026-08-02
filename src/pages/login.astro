@@ -1,9 +1,7 @@
 ---
 // src/pages/login.astro
-// Login Portal rendered in a popup modal over the live LandingPage
 import Layout from '../layouts/Layout.astro';
-import LandingPage from '../components/landing/LandingPage';
-import { AuthModalPortal } from '../components/interactive/AuthModalPortal';
+import { LoginPortal } from '../components/interactive/LoginPortal';
 ---
 
 <Layout 
@@ -12,17 +10,6 @@ import { AuthModalPortal } from '../components/interactive/AuthModalPortal';
   hideHeader={true}
   hideFooter={true}
 >
-  <div class="relative min-h-screen">
-    
-    <!-- Live Background Homepage -->
-    <div class="pointer-events-none filter blur-[3px] opacity-60 fixed inset-0 z-0 overflow-hidden">
-      <LandingPage client:only="react" />
-    </div>
-
-    <!-- Modal Pop-up Container on Top -->
-    <div class="relative z-[9999] min-h-screen">
-      <AuthModalPortal client:only="react" initialTab="login" />
-    </div>
-
-  </div>
+  <!-- Mount client-only React login portal island -->
+  <LoginPortal client:only="react" />
 </Layout>

@@ -1,28 +1,15 @@
 ---
 // src/pages/signup/seeker.astro
-// Detailed Seeker Signup Portal rendered in a popup modal over the live LandingPage
 import Layout from '../../layouts/Layout.astro';
-import LandingPage from '../../components/landing/LandingPage';
 import { SeekerSignupPortal } from '../../components/interactive/SeekerSignupPortal';
 ---
 
 <Layout 
-  title="Register as Seeker - VisaFormula" 
+  title="Register as Seeker" 
   description="Register as a visa seeker on VisaFormula. Setup your immigration goals, passport country, and select target study/work destinations to connect with top verified migration experts."
   hideHeader={true}
   hideFooter={true}
 >
-  <div class="relative min-h-screen">
-    
-    <!-- Live Background Homepage -->
-    <div class="pointer-events-none filter blur-[3px] opacity-60 fixed inset-0 z-0 overflow-hidden">
-      <LandingPage client:only="react" />
-    </div>
-
-    <!-- Modal Pop-up Container on Top -->
-    <div class="relative z-[9999] min-h-screen bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
-      <SeekerSignupPortal client:only="react" />
-    </div>
-
-  </div>
+  <!-- Mount client-only React signup seeker island -->
+  <SeekerSignupPortal client:only="react" />
 </Layout>

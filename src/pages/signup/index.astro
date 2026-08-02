@@ -1,9 +1,11 @@
 ---
 // src/pages/signup/index.astro
-// Role Selection modal over live LandingPage background
+// Clean, aligned header layout for role selection page
+// Logo placed at top in the header to match Seeker/Expert registration pages
+// =---
 import Layout from '../../layouts/Layout.astro';
-import LandingPage from '../../components/landing/LandingPage';
-import { ArrowRight, Sparkles, X } from 'lucide-react';
+import { ArrowRight, Shield, Star, CheckCircle, Sparkles } from 'lucide-react';
+import airplanePaths from '../../data/clean_airplane.json';
 ---
 
 <Layout 
@@ -12,106 +14,120 @@ import { ArrowRight, Sparkles, X } from 'lucide-react';
   hideHeader={true}
   hideFooter={true}
 >
-  <div class="relative min-h-screen">
-    
-    <!-- Live Background Homepage -->
-    <div class="pointer-events-none filter blur-[3px] opacity-60">
-      <LandingPage client:only="react" />
-    </div>
-
-    <!-- Centered Modal Pop-up over Home Page -->
-    <div class="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-center p-4 overflow-y-auto selection:bg-black selection:text-white">
+  <div class="min-h-screen bg-white flex flex-col justify-between font-sans">
       
-      {/* Central Modal Container */}
-      <div class="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-2xl animate-fade-up">
-        
-        {/* Top Right Close Button */}
-        <a href="/" class="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-all z-20" title="Close & Back to Home">
-          <X class="w-5 h-5" />
-        </a>
+      <!-- CSS animations for high luxury floating circles -->
+      <style is:inline>
+          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+          * {
+              font-family: 'Plus Jakarta Sans', sans-serif !important;
+          }
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+          }
+          @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.08); opacity: 0.15; }
+            100% { transform: scale(1); opacity: 0.4; }
+          }
+          .circle-float-1 { animation: float 4s ease-in-out infinite; }
+          .circle-float-2 { animation: float 4s ease-in-out infinite 0.5s; }
+          .pulse-ring { animation: pulse-ring 3s ease-in-out infinite; }
+      </style>
 
-        <!-- Aligned Logo Header -->
-        <div class="text-center mb-6">
-          <a href="/">
-            <img src="/logo.png" alt="VisaFormula" class="h-20 sm:h-24 w-auto object-contain mx-auto" />
-          </a>
-        </div>
-
-        <!-- Badge -->
-        <div class="flex justify-center mb-4">
-          <div class="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-4 py-1.5 shadow-2xs">
-            <Sparkles class="w-3.5 h-3.5 text-black" />
-            <span class="text-xs font-bold text-slate-800">Join 50,000+ users</span>
+      <!-- Aligned Top Header (Matches seeker/expert registration pages) -->
+      <header class="w-full px-4 md:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4 border-b border-slate-100 bg-white md:min-h-[120px] relative">
+          <div class="order-2 md:order-1 w-full md:w-auto flex justify-between md:justify-start items-center gap-4">
+              <a href="/" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-xs font-bold text-black hover:bg-slate-50 shadow-sm transition-all z-50">
+                  <span class="text-sm font-semibold">&larr;</span>
+                  <span>Back to Home</span>
+              </a>
           </div>
-        </div>
+          <div class="order-1 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-10">
+              <a href="/">
+                  <img src="/logo.png" alt="VisaFormula" class="h-16 md:h-28 w-auto object-contain mx-auto" />
+              </a>
+          </div>
+          <div class="hidden md:block text-sm font-semibold text-slate-500 shrink-0 order-3 w-[150px] text-right">
+              Already a member? <a href="/login" class="text-black font-bold hover:underline">Login</a>
+          </div>
+      </header>
 
-        <!-- Heading -->
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-black mb-2 text-center tracking-tight">
-          I want to join as
-        </h1>
-        <p class="text-slate-400 text-xs sm:text-sm mb-8 sm:mb-10 text-center font-medium">Select your role to get started with VisaFormula</p>
-
-        <!-- Two Options Grid -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-14 mb-6">
-          
-          <!-- Seeker Option -->
-          <a href="/signup/seeker" class="group flex flex-col items-center text-center">
-            <div class="relative">
-              <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-xl group-hover:border-black transition-all duration-300 relative z-10">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" class="sm:w-12 sm:h-12">
-                  <circle cx="12" cy="8" r="3.5" fill="#000" opacity="0.2"></circle>
-                  <circle cx="12" cy="8" r="3.5" stroke="#000" stroke-width="1.8" fill="none"></circle>
-                  <path d="M5 20c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="#000" stroke-width="1.8" stroke-linecap="round" fill="none"></path>
-                  <path d="M16 4l1.5 1.5L16 7" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                  <path d="M17.5 5.5H15" stroke="#000" stroke-width="1.5" stroke-linecap="round"></path>
-                </svg>
-              </div>
-            </div>
-            <span class="mt-4 font-extrabold text-black text-base sm:text-lg group-hover:text-blue-600 transition-colors">Visa Seeker</span>
-            <span class="text-xs text-slate-400 mt-1 mb-4 font-semibold max-w-[200px]">Find, consult & book immigration experts</span>
-            <span class="bg-black hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all active:scale-[0.97] shadow-sm">
-              Register as Seeker <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </span>
-          </a>
-
-          <!-- Divider -->
-          <div class="flex flex-row sm:flex-col items-center gap-2 text-slate-300 font-bold text-xs tracking-widest py-2">
-            <div class="w-10 sm:w-px h-px sm:h-8 bg-slate-200"></div>
-            <span class="text-slate-400 text-[10px]">OR</span>
-            <div class="w-10 sm:w-px h-px sm:h-8 bg-slate-200"></div>
+      <!-- Centered Options Area -->
+      <div class="flex-grow flex flex-col items-center justify-center px-4 py-12">
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-4 py-1.5 mb-6">
+              <Sparkles class="w-3.5 h-3.5 text-black" />
+              <span class="text-xs font-bold text-slate-800">Join 50,000+ users</span>
           </div>
 
-          <!-- Expert Option -->
-          <a href="/signup/expert" class="group flex flex-col items-center text-center">
-            <div class="relative">
-              <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-slate-50 to-white border-2 border-slate-200 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-xl group-hover:border-black transition-all duration-300 relative z-10">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" class="sm:w-12 sm:h-12">
-                  <rect x="5" y="2" width="14" height="20" rx="3" fill="#000" opacity="0.12"></rect>
-                  <rect x="5" y="2" width="14" height="20" rx="3" stroke="#000" stroke-width="1.8" fill="none"></rect>
-                  <circle cx="12" cy="10" r="2.5" stroke="#000" stroke-width="1.5" fill="none"></circle>
-                  <path d="M8.5 16c0-1.5 1.6-2.8 3.5-2.8s3.5 1.3 3.5 2.8" stroke="#000" stroke-width="1.5" stroke-linecap="round" fill="none"></path>
-                  <circle cx="16" cy="5" r="0.7" fill="#000"></circle>
-                  <circle cx="16" cy="7.5" r="0.7" fill="#000"></circle>
-                </svg>
+          <!-- Heading -->
+          <h1 class="font-sora text-3xl sm:text-4xl font-extrabold text-black mb-2 text-center">
+              I want to join as
+          </h1>
+          <p class="text-gray-400 text-sm mb-12 text-center">Select your role to get started with VisaFormula</p>
+
+          <!-- Two Circles -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-20 mb-12">
+              
+              <!-- Seeker Option -->
+              <a href="/signup/seeker" class="group flex flex-col items-center text-center">
+                  <div class="relative circle-float-1">
+                      <div class="absolute inset-[-6px] rounded-full border-2 border-slate-100 pulse-ring"></div>
+                      <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-slate-50 to-white border-2 border-navy/15 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-xl group-hover:border-black transition-all duration-300 relative z-10">
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" class="sm:w-14 sm:h-14">
+                              <circle cx="12" cy="8" r="3.5" fill="#000" opacity="0.2"></circle>
+                              <circle cx="12" cy="8" r="3.5" stroke="#000" stroke-width="1.8" fill="none"></circle>
+                              <path d="M5 20c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="#000" stroke-width="1.8" stroke-linecap="round" fill="none"></path>
+                              <path d="M16 4l1.5 1.5L16 7" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                              <path d="M17.5 5.5H15" stroke="#000" stroke-width="1.5" stroke-linecap="round"></path>
+                          </svg>
+                      </div>
+                  </div>
+                  <span class="mt-5 font-sora font-extrabold text-black text-base sm:text-lg group-hover:text-slate-600 transition-colors">Visa Seeker</span>
+                  <span class="text-xs text-gray-450 mt-1 mb-4 font-semibold">Find, consult & book immigration experts</span>
+                  <span class="bg-black hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all active:scale-[0.97]">
+                      Register as Seeker <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </span>
+              </a>
+
+              <!-- Divider -->
+              <div class="flex flex-row sm:flex-col items-center gap-2 text-gray-300 font-bold text-xs tracking-widest py-4">
+                  <div class="w-12 sm:w-px h-px sm:h-10 bg-gray-200"></div>
+                  <span class="text-gray-400">OR</span>
+                  <div class="w-12 sm:w-px h-px sm:h-10 bg-gray-200"></div>
               </div>
-            </div>
-            <span class="mt-4 font-extrabold text-black text-base sm:text-lg group-hover:text-blue-600 transition-colors">Visa Expert</span>
-            <span class="text-xs text-slate-400 mt-1 mb-4 font-semibold max-w-[200px]">Grow your global client consulting practice</span>
-            <span class="bg-black hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all active:scale-[0.97] shadow-sm">
-              Register as Expert <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </span>
-          </a>
 
-        </div>
+              <!-- Expert Option -->
+              <a href="/signup/expert" class="group flex flex-col items-center text-center">
+                  <div class="relative circle-float-2">
+                      <div class="absolute inset-[-6px] rounded-full border-2 border-slate-100 pulse-ring"></div>
+                      <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-slate-50 to-white border-2 border-navy/15 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-xl group-hover:border-black transition-all duration-300 relative z-10">
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" class="sm:w-14 sm:h-14">
+                              <rect x="5" y="2" width="14" height="20" rx="3" fill="#000" opacity="0.12"></rect>
+                              <rect x="5" y="2" width="14" height="20" rx="3" stroke="#000" stroke-width="1.8" fill="none"></rect>
+                              <circle cx="12" cy="10" r="2.5" stroke="#000" stroke-width="1.5" fill="none"></circle>
+                              <path d="M8.5 16c0-1.5 1.6-2.8 3.5-2.8s3.5 1.3 3.5 2.8" stroke="#000" stroke-width="1.5" stroke-linecap="round" fill="none"></path>
+                              <circle cx="16" cy="5" r="0.7" fill="#000"></circle>
+                              <circle cx="16" cy="7.5" r="0.7" fill="#000"></circle>
+                          </svg>
+                      </div>
+                  </div>
+                  <span class="mt-5 font-sora font-extrabold text-black text-base sm:text-lg group-hover:text-slate-600 transition-colors">Visa Expert</span>
+                  <span class="text-xs text-gray-455 mt-1 mb-4 font-semibold">Grow your global client consulting practice</span>
+                  <span class="bg-black hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all active:scale-[0.97]">
+                      Register as Expert <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </span>
+              </a>
 
-        {/* Footer Subtext */}
-        <div class="mt-6 text-center text-xs text-slate-400 font-semibold border-t border-slate-100 pt-4">
-          Already have an account? <a href="/login" class="text-blue-600 font-bold hover:underline">Log in</a>
-        </div>
-
+          </div>
       </div>
 
-    </div>
+      <!-- Footer -->
+      <footer class="py-6 text-center text-xs text-slate-400 font-medium border-t border-slate-100 bg-white">
+          © 2026 VisaFormula. All rights reserved.
+      </footer>
 
   </div>
 </Layout>

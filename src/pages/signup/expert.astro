@@ -1,8 +1,6 @@
 ---
 // src/pages/signup/expert.astro
-// Detailed Expert Signup Portal rendered in a popup modal over the live LandingPage
 import Layout from '../../layouts/Layout.astro';
-import LandingPage from '../../components/landing/LandingPage';
 import { ExpertSignupPortal } from '../../components/interactive/ExpertSignupPortal';
 ---
 
@@ -12,17 +10,6 @@ import { ExpertSignupPortal } from '../../components/interactive/ExpertSignupPor
   hideHeader={true}
   hideFooter={true}
 >
-  <div class="relative min-h-screen">
-    
-    <!-- Live Background Homepage -->
-    <div class="pointer-events-none filter blur-[3px] opacity-60 fixed inset-0 z-0 overflow-hidden">
-      <LandingPage client:only="react" />
-    </div>
-
-    <!-- Modal Pop-up Container on Top -->
-    <div class="relative z-[9999] min-h-screen bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
-      <ExpertSignupPortal client:only="react" />
-    </div>
-
-  </div>
+  <!-- Mount client-only React signup expert island -->
+  <ExpertSignupPortal client:only="react" />
 </Layout>

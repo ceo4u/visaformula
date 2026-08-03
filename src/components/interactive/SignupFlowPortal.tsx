@@ -29,12 +29,12 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
             `}} />
 
             {/* Top Navigation Header */}
-            <div className="w-full max-w-xl flex items-center justify-between mb-3 px-2 shrink-0">
-                <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 px-3.5 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-md">
-                    <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
+            <div className="w-full max-w-2xl flex items-center justify-between mb-3 px-1 shrink-0 gap-2">
+                <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 px-3 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-md shrink-0">
+                    <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
                 </a>
-                <a href="/">
-                    <img src="/logo-white.png" alt="VisaFormula" className="h-10 sm:h-12 w-auto object-contain drop-shadow-md" />
+                <a href="/" className="shrink-0">
+                    <img src="/logo-white.png" alt="VisaFormula" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none drop-shadow-md" />
                 </a>
             </div>
 

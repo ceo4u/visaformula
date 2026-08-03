@@ -639,12 +639,12 @@ function ExpertSignupPortalContent() {
       `}} />
       
       {step < 3 && (
-        <div className="w-full max-w-3xl flex items-center justify-between mb-2 px-2 shrink-0">
-          <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/80 hover:text-white transition-colors bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
-            &larr; Back to Home
+        <div className="w-full max-w-3xl flex items-center justify-between mb-2 px-1 shrink-0 gap-2">
+          <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 px-3 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-sm shrink-0">
+            &larr; <span className="hidden sm:inline">Back to </span>Home
           </a>
-          <a href="/">
-            <img src="/logo-white.png" alt="VisaFormula" className="h-9 sm:h-12 w-auto object-contain" />
+          <a href="/" className="shrink-0">
+            <img src="/logo-white.png" alt="VisaFormula" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none" />
           </a>
         </div>
       )}

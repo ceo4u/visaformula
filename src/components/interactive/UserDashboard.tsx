@@ -603,147 +603,48 @@ export function UserDashboard() {
 
                             </div>
 
-                            {/* Main Middle Section: Product Sales / Application Processing Dual Bar Chart */}
-                            <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-6 shadow-2xs space-y-6">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            {/* Real Activity & Active Visa Application Center */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
                                     <div>
-                                        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-                                            Application Processing & Progress
+                                        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                                            <span>Active Applications & Case Tracker</span>
+                                            <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
+                                                Live Status
+                                            </span>
                                         </h2>
-                                        <p className="text-xs font-medium text-slate-500">
-                                            Monthly activity breakdown for Student Visas & Work Permits
+                                        <p className="text-xs font-medium text-slate-500 mt-0.5">
+                                            Track your active visa petitions, consultations & document reviews in real time
                                         </p>
                                     </div>
-
-                                    {/* Chart Legend Badges */}
-                                    <div className="flex items-center gap-4 text-xs font-bold">
-                                        <span className="flex items-center gap-1.5">
-                                            <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-                                            <span className="text-slate-700">Student Visas</span>
-                                        </span>
-                                        <span className="flex items-center gap-1.5">
-                                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                                            <span className="text-slate-700">Work Permits</span>
-                                        </span>
-                                    </div>
+                                    <a 
+                                        href="/services/visa-form-filing" 
+                                        className="inline-flex items-center gap-2 bg-[#2563eb] hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 w-fit"
+                                    >
+                                        <Plus className="w-4 h-4" /> Start Visa Application
+                                    </a>
                                 </div>
 
-                                {/* Dual Vertical Bar Chart (Flup Reference Replication — Scrollable on Mobile) */}
-                                <div className="relative pt-6 pb-2 overflow-x-auto">
-                                    <div className="h-56 flex items-end justify-between gap-2 sm:gap-4 px-2 border-b border-slate-100 min-w-[520px]">
-                                        {barChartData.map((item, idx) => (
-                                            <div key={idx} className="flex-1 flex flex-col items-center gap-1 group relative h-full justify-end">
-                                                
-                                                {/* Tooltip Overlay (Flup Reference 6 Jul Style) */}
-                                                {item.tooltip && (
-                                                    <div className="absolute -top-12 z-20 bg-white border border-slate-200 shadow-lg rounded-xl px-3 py-1.5 text-center whitespace-nowrap animate-bounce-subtle">
-                                                        <p className="text-[10px] font-bold text-slate-500">Active Cases</p>
-                                                        <p className="text-xs font-extrabold text-slate-900 flex items-center gap-1">
-                                                            ₹52,187 <span className="text-[9px] text-emerald-600">📈 2.5%</span>
-                                                        </p>
-                                                    </div>
-                                                )}
-
-                                                <div className="w-full flex items-end justify-center gap-1 h-full">
-                                                    {/* Blue Bar */}
-                                                    <div 
-                                                        className="w-2.5 sm:w-3.5 bg-blue-500 hover:bg-blue-600 rounded-t-sm transition-all duration-300"
-                                                        style={{ height: `${(item.gross / 70) * 100}%` }}
-                                                    />
-                                                    {/* Orange Bar */}
-                                                    <div 
-                                                        className="w-2.5 sm:w-3.5 bg-amber-500 hover:bg-amber-600 rounded-t-sm transition-all duration-300"
-                                                        style={{ height: `${(item.rev / 70) * 100}%` }}
-                                                    />
-                                                </div>
-
-                                                {/* X Axis Label */}
-                                                <span className={`text-[11px] font-bold mt-2 ${item.tooltip ? "text-slate-900 font-extrabold" : "text-slate-400"}`}>
-                                                    {item.day}
-                                                </span>
-                                            </div>
-                                        ))}
+                                {/* Clean Empty / Real Activity State Card */}
+                                <div className="bg-slate-50/70 rounded-xl border border-slate-200/70 p-8 text-center space-y-3">
+                                    <div className="w-14 h-14 rounded-full bg-blue-100/70 text-[#2563eb] flex items-center justify-center mx-auto border border-blue-200/60 shadow-2xs">
+                                        <Briefcase className="w-7 h-7" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-sm font-extrabold text-slate-900">No Active Visa Petitions</h3>
+                                        <p className="text-xs font-medium text-slate-500 max-w-md mx-auto mt-1">
+                                            You currently have zero pending visa applications. Select a destination or book a verified expert to begin your immigration process.
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                                        <a href="/find-experts" className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs">
+                                            Find Immigration Expert
+                                        </a>
+                                        <a href="/services/apply-visa" className="bg-[#2563eb] hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
+                                            Explore Country Visas
+                                        </a>
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* Bottom Grid: 2 Column Panels (Flup Reference Donut Chart + Country Sales List) */}
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                
-                                {/* Left Panel: Sales by product category (Donut Chart & Legend Grid) */}
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs flex flex-col justify-between">
-                                    <div className="mb-4">
-                                        <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
-                                            Applications by Product Category
-                                        </h3>
-                                        <p className="text-xs text-slate-500 font-medium">Category distribution overview</p>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
-                                        {/* Legend Grid Pills */}
-                                        <div className="grid grid-cols-2 gap-2 text-[11px]">
-                                            {categoriesData.map((cat, idx) => (
-                                                <div key={idx} className="flex items-center gap-1.5 bg-slate-50 p-1.5 rounded-lg border border-slate-100">
-                                                    <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cat.color }} />
-                                                    <span className="font-bold text-slate-800 truncate">{cat.label.split('/')[1] || cat.label}</span>
-                                                    <span className="text-[10px] font-extrabold text-slate-500 ml-auto">{cat.percent}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        {/* Donut Chart Graphic (Flup Reference SVG) */}
-                                        <div className="relative w-44 h-44 mx-auto flex items-center justify-center">
-                                            <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                                                <path strokeDasharray="25, 100" stroke="#8b5cf6" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path strokeDasharray="17, 100" strokeDashoffset="-25" stroke="#3b82f6" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path strokeDasharray="13, 100" strokeDashoffset="-42" stroke="#a855f7" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path strokeDasharray="12, 100" strokeDashoffset="-55" stroke="#38bdf8" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path strokeDasharray="9, 100" strokeDashoffset="-67" stroke="#ec4899" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                <path strokeDasharray="24, 100" strokeDashoffset="-76" stroke="#10b981" strokeWidth="4.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            </svg>
-                                            <div className="absolute text-center">
-                                                <span className="text-xl font-extrabold text-slate-900">100%</span>
-                                                <span className="text-[10px] font-bold text-slate-400 block uppercase">Total</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Right Panel: Sales by countries (Country Ranking List & Map Graphic) */}
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs flex flex-col justify-between">
-                                    <div className="mb-4">
-                                        <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
-                                            Top Destination Visas by Country
-                                        </h3>
-                                        <p className="text-xs text-slate-500 font-medium">Demographic destination statistics</p>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-                                        {/* Country Percentage Ranking List */}
-                                        <div className="space-y-2.5">
-                                            {countriesData.map((c, idx) => (
-                                                <div key={idx} className="flex items-center justify-between text-xs font-bold border-b border-slate-100 pb-1">
-                                                    <span className="flex items-center gap-2 text-slate-800">
-                                                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                                                        {c.name.split('/')[1] || c.name}
-                                                    </span>
-                                                    <span className="text-slate-900 font-extrabold">{c.percent}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        {/* Stylized Mini Map Graphic */}
-                                        <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-center h-48 relative overflow-hidden">
-                                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-blue-500/10" />
-                                            <div className="text-center z-10 space-y-2">
-                                                <Globe className="w-12 h-12 text-[#107c41] mx-auto animate-pulse-subtle" />
-                                                <span className="text-xs font-extrabold text-slate-800 block">150+ Global Destinations</span>
-                                                <span className="text-[10px] font-bold text-slate-500 block">Worldwide Coverage</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </>
                     ) : (

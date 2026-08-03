@@ -643,160 +643,51 @@ export function ConsultantDashboard() {
                                     </div>
                                     <span className="text-xs font-bold text-slate-600">Add custom metric</span>
                                 </div>
-                            </div>
-
-                            {/* Main Middle Section: Product Sales / Application Processing Dual Bar Chart */}
-                            <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-6 shadow-2xs space-y-6">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                     {/* Real Advisory & Client Booking Activity Center */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
                                     <div>
-                                        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-                                            Consultation Revenue & Client Pipeline
+                                        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                                            <span>Consultation Revenue & Client Pipeline</span>
+                                            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                                                Live Status
+                                            </span>
                                         </h2>
-                                        <p className="text-xs font-medium text-slate-500">
-                                            Monthly breakdown for Advisory Sessions & Escrow Milestones
+                                        <p className="text-xs font-medium text-slate-500 mt-0.5">
+                                            Track incoming client requests, scheduled advisory sessions & escrow payouts
                                         </p>
                                     </div>
-
-                                    {/* Chart Legend Badges */}
-                                    <div className="flex items-center gap-4 text-xs font-bold">
-                                        <span className="flex items-center gap-1.5">
-                                            <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-                                            <span className="text-slate-700">Consultation Sessions</span>
-                                        </span>
-                                        <span className="flex items-center gap-1.5">
-                                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                                            <span className="text-slate-700">Escrow Milestone Payments</span>
-                                        </span>
+                                    <div className="flex items-center gap-2">
+                                        <button 
+                                            onClick={() => setIsPostingAd(true)}
+                                            className="bg-[#2563eb] hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
+                                        >
+                                            Post Special Offer
+                                        </button>
                                     </div>
                                 </div>
 
-                                {/* Dual Vertical Bar Chart (Flup Reference Replication) */}
-                                <div className="relative pt-6 pb-2 overflow-x-auto">
-                                    <div className="h-56 flex items-end justify-between gap-2 sm:gap-4 px-2 border-b border-slate-100 min-w-[520px]">
-                                        {barChartData.map((item, idx) => (
-                                            <div key={idx} className="flex-1 flex flex-col items-center gap-1 group relative h-full justify-end">
-                                                
-                                                {/* Tooltip Overlay (Flup Reference 6 Jul Style) */}
-                                                {item.tooltip && (
-                                                    <div className="absolute -top-12 z-20 bg-white border border-slate-200 shadow-lg rounded-xl px-3 py-1.5 text-center whitespace-nowrap animate-bounce-subtle">
-                                                        <p className="text-[10px] font-bold text-slate-500">Consultation Revenue</p>
-                                                        <p className="text-xs font-extrabold text-slate-900 flex items-center gap-1">
-                                                            ₹84,500 <span className="text-[9px] text-emerald-600">📈 4.8%</span>
-                                                        </p>
-                                                    </div>
-                                                )}
-
-                                                <div className="w-full flex items-end justify-center gap-1 h-full">
-                                                    {/* Blue Bar */}
-                                                    <div 
-                                                        className="w-2.5 sm:w-3.5 bg-blue-500 hover:bg-blue-600 rounded-t-sm transition-all duration-300"
-                                                        style={{ height: `${(item.gross / 75) * 100}%` }}
-                                                    />
-                                                    {/* Orange Bar */}
-                                                    <div 
-                                                        className="w-2.5 sm:w-3.5 bg-amber-500 hover:bg-amber-600 rounded-t-sm transition-all duration-300"
-                                                        style={{ height: `${(item.rev / 75) * 100}%` }}
-                                                    />
-                                                </div>
-
-                                                {/* X Axis Label */}
-                                                <span className={`text-[11px] font-bold mt-2 ${item.tooltip ? "text-slate-900 font-extrabold" : "text-slate-400"}`}>
-                                                    {item.day}
-                                                </span>
-                                            </div>
-                                        ))}
+                                {/* Clean Empty / Real Activity State Card */}
+                                <div className="bg-slate-50/70 rounded-xl border border-slate-200/70 p-8 text-center space-y-3">
+                                    <div className="w-14 h-14 rounded-full bg-emerald-100/70 text-[#107c41] flex items-center justify-center mx-auto border border-emerald-200/60 shadow-2xs">
+                                        <Calendar className="w-7 h-7" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-sm font-extrabold text-slate-900">No Scheduled Consultations Yet</h3>
+                                        <p className="text-xs font-medium text-slate-500 max-w-md mx-auto mt-1">
+                                            When clients book advisory sessions or escrow milestone cases with your profile, your live progress & earnings breakdown will appear here.
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                                        <button 
+                                            onClick={() => setIsPublishingOffer(true)}
+                                            className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                                        >
+                                            Publish Special Deal
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* Bottom Grid: 2 Columns Layout (Flup Reference) */}
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                
-                                {/* Left Column: Sales by Categories / Donut Chart */}
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 lg:p-6 shadow-2xs space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
-                                                Earnings by Service Category
-                                            </h3>
-                                            <p className="text-xs font-medium text-slate-500">
-                                                Revenue share across consultation & filing packages
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {/* Donut Chart SVG + Legend Pills */}
-                                    <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
-                                        <div className="relative w-40 h-40 shrink-0">
-                                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                                                <path strokeDasharray="35, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#3b82f6" strokeWidth="4.5" />
-                                                <path strokeDasharray="25, 100" strokeDashoffset="-35" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#8b5cf6" strokeWidth="4.5" />
-                                                <path strokeDasharray="15, 100" strokeDashoffset="-60" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#a855f7" strokeWidth="4.5" />
-                                                <path strokeDasharray="12, 100" strokeDashoffset="-75" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ec4899" strokeWidth="4.5" />
-                                                <path strokeDasharray="8, 100" strokeDashoffset="-87" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f43f5e" strokeWidth="4.5" />
-                                                <path strokeDasharray="5, 100" strokeDashoffset="-95" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#10b981" strokeWidth="4.5" />
-                                            </svg>
-                                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                                <span className="text-xs font-bold text-slate-400">Total Services</span>
-                                                <span className="text-lg font-bold text-slate-900">₹0</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
-                                            {categoriesData.map((cat, idx) => (
-                                                <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100">
-                                                    <div className="flex items-center gap-2 min-w-0">
-                                                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: cat.color }} />
-                                                        <span className="text-xs font-bold text-slate-700 truncate">{cat.label}</span>
-                                                    </div>
-                                                    <span className="text-xs font-extrabold text-slate-900 ml-1">{cat.percent}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Right Column: Sales by Countries / Globe Ranking List */}
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 lg:p-6 shadow-2xs space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <h3 className="text-base font-extrabold text-slate-900 tracking-tight">
-                                                Client Distribution by Country
-                                            </h3>
-                                            <p className="text-xs font-medium text-slate-500">
-                                                Demographic location statistics for target destinations
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
-                                        {/* Globe Mini Map Graphic */}
-                                        <div className="w-36 h-36 rounded-full bg-blue-50/70 border border-blue-100 flex items-center justify-center p-3 shrink-0 relative overflow-hidden shadow-inner">
-                                            <Globe className="w-24 h-24 text-blue-500/30 animate-spin-slow" />
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <span className="text-[11px] font-bold text-blue-900 bg-white/90 px-2 py-0.5 rounded-full shadow-xs">
-                                                    0 Active Clients
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex-1 space-y-2 w-full">
-                                            {countriesData.map((cnt, idx) => (
-                                                <div key={idx} className="flex items-center justify-between text-xs font-bold">
-                                                    <span className="text-slate-700">{cnt.name}</span>
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-20 bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                                                            <div className="bg-blue-600 h-full rounded-full" style={{ width: cnt.percent }} />
-                                                        </div>
-                                                        <span className="text-slate-900 font-extrabold w-8 text-right">{cnt.percent}</span>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                            </div>                            </div>
                         </>
                     ) : activeTab === "pipeline" ? (
                         /* Kanban Client Pipeline View */

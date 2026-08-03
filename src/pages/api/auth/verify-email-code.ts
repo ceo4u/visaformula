@@ -18,7 +18,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     // ── Validate input ────────────────────────────────────────
     const body = await request.json();
-    const { email, otp } = body;
+    const email = body.email;
+    const otp = body.otp || body.code;
 
     if (!email || !otp) {
       return new Response(JSON.stringify({ status: 'error', message: 'Email and verification code are required.' }), {

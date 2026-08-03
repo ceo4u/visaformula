@@ -12,12 +12,18 @@ function createPoolInstance(forceNoSSL = false) {
     connStr = connStr.replace('sslmode=require', 'sslmode=disable');
     pool = new pg.Pool({
       connectionString: connStr,
-      ssl: false
+      ssl: false,
+      max: 30,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000
     });
   } else {
     pool = new pg.Pool({
       connectionString: connStr,
-      ssl: { rejectUnauthorized: false }
+      ssl: { rejectUnauthorized: false },
+      max: 30,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000
     });
   }
 }

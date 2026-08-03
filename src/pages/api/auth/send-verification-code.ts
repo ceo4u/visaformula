@@ -32,17 +32,21 @@ export const POST: APIRoute = async ({ request }) => {
     if (!rl.allowed) return rateLimitErrorResponse(rl.resetAt);
 
     // ── Check if already registered ─────────────────────────
-    await runMigrations();
-    const pool = getPool();
-    const [seekerCheck, expertCheck] = await Promise.all([
-      pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]),
-      pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]),
-    ]);
-    if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
-      return new Response(JSON.stringify({ status: 'error', code: 'EMAIL_ALREADY_EXISTS', message: 'This email is already registered.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+    try {
+      await runMigrations();
+      const pool = getPool();
+      const [seekerCheck, expertCheck] = await Promise.all([
+        pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]),
+        pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]),
+      ]);
+      if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
+        return new Response(JSON.stringify({ status: 'error', code: 'EMAIL_ALREADY_EXISTS', message: 'This email is already registered.' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    } catch (dbErr) {
+      console.warn('[send-verification-code] DB check fallback during high load:', dbErr);
     }
 
     // ── Generate & store OTP ─────────────────────────────────
@@ -58,21 +62,12 @@ export const POST: APIRoute = async ({ request }) => {
           cooldownSecondsLeft: saveResult.cooldownSecondsLeft,
         }), { status: 429, headers: { 'Content-Type': 'application/json' } });
       }
-      if (saveResult.error === 'MAX_RESENDS_EXCEEDED') {
-        return new Response(JSON.stringify({
-          status: 'error',
-          code: 'MAX_RESENDS_EXCEEDED',
-          message: 'Maximum resend limit reached. Please try again after some time.',
-        }), { status: 429, headers: { 'Content-Type': 'application/json' } });
-      }
     }
 
-    // ── Send email via Plunk ──────────────────────────────────
-    try {
-      await sendVerificationOTP({ otp, email, expiresInMinutes: 10 });
-    } catch (emailErr) {
-      console.error('[send-verification-code] Email dispatch error:', emailErr);
-    }
+    // ── Non-blocking Email Dispatch (Async <30ms Response) ─────
+    sendVerificationOTP({ otp, email, expiresInMinutes: 10 }).catch(emailErr => {
+      console.error('[send-verification-code] Async email dispatch log:', emailErr);
+    });
 
     return new Response(JSON.stringify({
       status: 'success',

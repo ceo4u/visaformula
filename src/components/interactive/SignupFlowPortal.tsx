@@ -10,7 +10,7 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
     const [mode, setMode] = useState<"selection" | "seeker">(initialMode);
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-black/30 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar">
+        <div className="fixed inset-0 z-[9999] bg-slate-950/30 backdrop-blur-[2px] flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar">
             
             {/* Inline CSS Animations for Floating Circles & Pulsing Rings */}
             <style dangerouslySetInnerHTML={{ __html: `
@@ -30,11 +30,11 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
 
             {/* Top Navigation Header */}
             <div className="w-full max-w-xl flex items-center justify-between mb-3 px-2 shrink-0">
-                <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/80 hover:text-white transition-colors bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
+                <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 px-3.5 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-md">
                     <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
                 </a>
                 <a href="/">
-                    <img src="/logo-white.png" alt="VisaFormula" className="h-10 sm:h-12 w-auto object-contain" />
+                    <img src="/logo-white.png" alt="VisaFormula" className="h-10 sm:h-12 w-auto object-contain drop-shadow-md" />
                 </a>
             </div>
 
@@ -42,26 +42,26 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
             {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") */}
             {/* ========================================================================= */}
             {mode === "selection" ? (
-                <div className="bg-white/10 backdrop-blur-xl border border-white/25 text-white rounded-3xl shadow-[0_16px_48px_rgba(0,0,0,0.3)] max-w-xl w-[94vw] sm:w-full p-4 sm:p-10 text-center space-y-6 sm:space-y-8 animate-fade-up relative my-auto max-h-[88vh] overflow-y-auto no-scrollbar">
+                <div className="text-white max-w-2xl w-[94vw] sm:w-full p-2 sm:p-6 text-center space-y-6 sm:space-y-8 animate-fade-up relative my-auto max-h-[90vh] overflow-y-auto no-scrollbar">
                     
                     {/* Top Badge */}
-                    <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3.5 py-1 sm:px-4 sm:py-1.5 shadow-xs">
-                        <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-                        <span className="text-xs font-bold text-white">Join 50,000+ users</span>
+                    <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-4 py-1.5 shadow-lg">
+                        <Sparkles className="w-3.5 h-3.5 text-blue-300" />
+                        <span className="text-xs font-bold text-white tracking-wide">Join 50,000+ users</span>
                     </div>
 
                     {/* Title & Subtitle */}
                     <div>
-                        <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-sm">
+                        <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-lg">
                             I want to join as
                         </h1>
-                        <p className="text-xs sm:text-sm font-semibold text-slate-200 mt-1 drop-shadow-xs">
+                        <p className="text-xs sm:text-base font-semibold text-white/90 mt-1.5 drop-shadow-md">
                             Select your role to get started with VisaFormula
                         </p>
                     </div>
 
                     {/* Two Role Choice Circles */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 py-1">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-14 py-2">
                         
                         {/* Seeker Option */}
                         <div 
@@ -69,33 +69,33 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
                             className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto"
                         >
                             <div className="relative circle-float-1">
-                                <div className="absolute inset-[-6px] rounded-full border-2 border-blue-400/40 pulse-ring" />
-                                <div className="w-22 h-22 sm:w-32 sm:h-32 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/30 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-2xl group-hover:bg-white/20 group-hover:border-blue-400 transition-all duration-300 relative z-10 mx-auto">
-                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="w-9 h-9 sm:w-12 sm:h-12">
-                                        <circle cx="12" cy="8" r="3.5" fill="#3b82f6" opacity="0.3" />
+                                <div className="absolute inset-[-8px] rounded-full border-2 border-blue-400/50 pulse-ring" />
+                                <div className="w-24 h-24 sm:w-34 sm:h-34 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center shadow-2xl group-hover:scale-105 group-hover:bg-white/30 group-hover:border-blue-400 transition-all duration-300 relative z-10 mx-auto">
+                                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" className="w-10 h-10 sm:w-14 sm:h-14">
+                                        <circle cx="12" cy="8" r="3.5" fill="#3b82f6" opacity="0.4" />
                                         <circle cx="12" cy="8" r="3.5" stroke="#ffffff" strokeWidth="2" fill="none" />
                                         <path d="M5 20c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" fill="none" />
-                                        <path d="M16 4l1.5 1.5L16 7" stroke="#60a5fa" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M17.5 5.5H15" stroke="#60a5fa" strokeWidth="1.8" strokeLinecap="round" />
+                                        <path d="M16 4l1.5 1.5L16 7" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M17.5 5.5H15" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" />
                                     </svg>
                                 </div>
                             </div>
-                            <span className="mt-3 font-bold text-white text-base group-hover:text-blue-400 transition-colors drop-shadow-xs">
+                            <span className="mt-4 font-extrabold text-white text-lg group-hover:text-blue-300 transition-colors drop-shadow-lg">
                                 Visa Seeker
                             </span>
-                            <span className="text-xs text-slate-200 max-w-[200px] mt-0.5 mb-2.5 font-semibold drop-shadow-xs">
+                            <span className="text-xs sm:text-sm text-white/90 max-w-[210px] mt-1 mb-3 font-semibold drop-shadow-md">
                                 Find, consult & book immigration experts
                             </span>
-                            <button className="w-full sm:w-auto bg-[#2563eb] hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-[0.97] cursor-pointer">
-                                Register as Seeker <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                            <button className="w-full sm:w-auto bg-[#2563eb] hover:bg-blue-600 text-white px-6 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-xl active:scale-95 cursor-pointer">
+                                Register as Seeker <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </button>
                         </div>
 
                         {/* Divider */}
-                        <div className="flex flex-row sm:flex-col items-center gap-2 text-slate-300 font-extrabold text-xs tracking-widest">
-                            <div className="w-12 sm:w-px h-px sm:h-8 bg-white/20" />
-                            <span className="text-slate-300">OR</span>
-                            <div className="w-12 sm:w-px h-px sm:h-8 bg-white/20" />
+                        <div className="flex flex-row sm:flex-col items-center gap-2 text-white/80 font-black text-xs tracking-widest drop-shadow-md">
+                            <div className="w-12 sm:w-px h-px sm:h-10 bg-white/40 shadow-sm" />
+                            <span className="text-white drop-shadow-md">OR</span>
+                            <div className="w-12 sm:w-px h-px sm:h-10 bg-white/40 shadow-sm" />
                         </div>
 
                         {/* Expert Option */}
@@ -104,33 +104,33 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
                             className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto"
                         >
                             <div className="relative circle-float-2">
-                                <div className="absolute inset-[-6px] rounded-full border-2 border-white/20 pulse-ring" />
-                                <div className="w-22 h-22 sm:w-32 sm:h-32 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/30 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-2xl group-hover:bg-white/20 group-hover:border-white transition-all duration-300 relative z-10 mx-auto">
-                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="w-9 h-9 sm:w-12 sm:h-12">
-                                        <rect x="5" y="2" width="14" height="20" rx="3" fill="#ffffff" opacity="0.2" />
+                                <div className="absolute inset-[-8px] rounded-full border-2 border-white/30 pulse-ring" />
+                                <div className="w-24 h-24 sm:w-34 sm:h-34 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center shadow-2xl group-hover:scale-105 group-hover:bg-white/30 group-hover:border-white transition-all duration-300 relative z-10 mx-auto">
+                                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" className="w-10 h-10 sm:w-14 sm:h-14">
+                                        <rect x="5" y="2" width="14" height="20" rx="3" fill="#ffffff" opacity="0.3" />
                                         <rect x="5" y="2" width="14" height="20" rx="3" stroke="#ffffff" strokeWidth="2" fill="none" />
-                                        <circle cx="12" cy="10" r="2.5" stroke="#ffffff" strokeWidth="1.8" fill="none" />
-                                        <path d="M8.5 16c0-1.5 1.6-2.8 3.5-2.8s3.5 1.3 3.5 2.8" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-                                        <circle cx="16" cy="5" r="0.8" fill="#ffffff" />
-                                        <circle cx="16" cy="7.5" r="0.8" fill="#ffffff" />
+                                        <circle cx="12" cy="10" r="2.5" stroke="#ffffff" strokeWidth="2" fill="none" />
+                                        <path d="M8.5 16c0-1.5 1.6-2.8 3.5-2.8s3.5 1.3 3.5 2.8" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" fill="none" />
+                                        <circle cx="16" cy="5" r="0.9" fill="#ffffff" />
+                                        <circle cx="16" cy="7.5" r="0.9" fill="#ffffff" />
                                     </svg>
                                 </div>
                             </div>
-                            <span className="mt-3 font-bold text-white text-base group-hover:text-slate-200 transition-colors drop-shadow-xs">
+                            <span className="mt-4 font-extrabold text-white text-lg group-hover:text-slate-200 transition-colors drop-shadow-lg">
                                 Visa Expert
                             </span>
-                            <span className="text-xs text-slate-200 max-w-[200px] mt-0.5 mb-2.5 font-semibold drop-shadow-xs">
+                            <span className="text-xs sm:text-sm text-white/90 max-w-[210px] mt-1 mb-3 font-semibold drop-shadow-md">
                                 Grow your global client consulting practice
                             </span>
-                            <button className="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-900 px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-[0.97] cursor-pointer">
-                                Register as Expert <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                            <button className="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-900 px-6 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-xl active:scale-95 cursor-pointer">
+                                Register as Expert <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </button>
                         </a>
 
                     </div>
 
-                    <div className="text-xs font-medium text-slate-200 pt-3 border-t border-white/15">
-                        Already a member? <a href="/login" className="text-blue-300 font-bold hover:underline">Log in</a>
+                    <div className="text-xs sm:text-sm font-semibold text-white/90 pt-4 border-t border-white/20 drop-shadow-md">
+                        Already a member? <a href="/login" className="text-blue-300 font-extrabold hover:underline">Log in</a>
                     </div>
                 </div>
             ) : (

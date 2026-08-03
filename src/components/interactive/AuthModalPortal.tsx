@@ -839,6 +839,13 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                             if (nextInput) nextInput.focus();
                                         }
                                     }}
+                                    onPaste={(e) => {
+                                        const pasteData = e.clipboardData.getData("text").trim();
+                                        if (/^\d{6}$/.test(pasteData)) {
+                                            e.preventDefault();
+                                            setOtpDigits(pasteData.split(""));
+                                        }
+                                    }}
                                     className="w-9 h-11 text-center font-extrabold text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#2563eb] outline-none"
                                 />
                             ))}
@@ -847,18 +854,29 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                         <button
                             type="button"
                             onClick={handleVerifyOtp}
-                            className="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs transition-all shadow-sm cursor-pointer"
+                            disabled={sendingCode}
+                            className="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs transition-all shadow-sm cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
                         >
-                            Confirm Verification
+                            {sendingCode ? "Verifying & Setting up Profile..." : "Confirm Email & Complete Registration"}
                         </button>
                         
-                        <button
-                            type="button"
-                            onClick={() => setShowOtpModal(false)}
-                            className="text-xs font-bold text-slate-400 hover:text-slate-600 cursor-pointer"
-                        >
-                            Cancel
-                        </button>
+                        <div className="flex items-center justify-between text-xs font-semibold pt-1">
+                            <button
+                                type="button"
+                                onClick={handleSendVerificationCode}
+                                disabled={sendingCode}
+                                className="text-[#2563eb] hover:underline cursor-pointer disabled:opacity-50"
+                            >
+                                Resend OTP Code
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setShowOtpModal(false)}
+                                className="text-slate-400 hover:text-slate-600 cursor-pointer"
+                            >
+                                Cancel
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

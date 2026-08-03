@@ -323,20 +323,20 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     };
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-2.5 sm:p-6 font-sans overflow-y-auto no-scrollbar">
             
             {/* Top Navigation & Logo Header */}
-            <div className="w-full max-w-2xl flex items-center justify-between mb-3 px-2 shrink-0">
+            <div className="w-full max-w-2xl flex items-center justify-between mb-2 px-1 shrink-0">
                 <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/80 hover:text-white transition-colors bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
                     <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
                 </a>
                 <a href="/">
-                    <img src="/logo-white.png" alt="VisaFormula" className="h-10 sm:h-12 w-auto object-contain" />
+                    <img src="/logo-white.png" alt="VisaFormula" className="h-9 sm:h-12 w-auto object-contain" />
                 </a>
             </div>
 
             {/* Central VisaHQ-Style Modal Dialog Container */}
-            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-2xl w-[94vw] sm:w-full max-h-[88vh] overflow-y-auto no-scrollbar transition-all duration-300 relative my-auto">
+            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-2xl w-[95vw] sm:w-full max-h-[85vh] sm:max-h-[88vh] overflow-y-auto no-scrollbar transition-all duration-300 relative my-auto">
                 
                 {/* Close Button if embedded in modal */}
                 {onClose && (
@@ -478,8 +478,8 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                 </div>
                             )}
 
-                            {/* 1. First & Last Name (Two Column Row - VisaHQ Match) */}
-                            <div className="grid grid-cols-2 gap-3">
+                            {/* 1. First & Last Name (Two Column Row) */}
+                            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                                 <div>
                                     <label className="block text-xs font-bold text-slate-700 mb-1">
                                         First name *
@@ -490,7 +490,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                         value={firstName}
                                         onChange={(e) => setFirstName(e.target.value)}
                                         placeholder="First name"
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
+                                        className="w-full h-11 sm:h-10 px-3.5 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all text-slate-900 bg-slate-50/30"
                                     />
                                 </div>
                                 <div>
@@ -503,7 +503,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}
                                         placeholder="Last name"
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
+                                        className="w-full h-11 sm:h-10 px-3.5 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all text-slate-900 bg-slate-50/30"
                                     />
                                 </div>
                             </div>
@@ -519,7 +519,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     value={signupEmail}
                                     onChange={(e) => setSignupEmail(e.target.value)}
                                     placeholder="you@example.com"
-                                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
+                                    className="w-full h-11 sm:h-10 px-3.5 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all text-slate-900 bg-slate-50/30"
                                 />
                             </div>
 
@@ -535,7 +535,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                         value={signupPassword}
                                         onChange={(e) => setSignupPassword(e.target.value)}
                                         placeholder="Create password"
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all pr-10"
+                                        className="w-full h-11 sm:h-10 px-3.5 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all text-slate-900 bg-slate-50/30 pr-10"
                                     />
                                     <button
                                         type="button"
@@ -546,7 +546,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     </button>
                                 </div>
 
-                                {/* Password Strength Bar (VisaHQ Style) */}
+                                {/* Password Strength Bar */}
                                 {signupPassword && (
                                     <div className="mt-2 space-y-1">
                                         <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
@@ -572,7 +572,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         placeholder="Repeat your password"
-                                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all pr-10"
+                                        className="w-full h-11 sm:h-10 px-3.5 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-all text-slate-900 bg-slate-50/30 pr-10"
                                     />
                                     <button
                                         type="button"
@@ -629,7 +629,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                                 type="text"
                                                 value={countryCode}
                                                 onChange={(e) => setCountryCode(e.target.value)}
-                                                className="w-16 px-2 py-2 rounded-xl border border-slate-300 text-xs font-bold text-center bg-slate-50"
+                                                className="w-16 h-11 sm:h-10 px-2 rounded-xl border border-slate-300 text-sm sm:text-xs font-bold text-center bg-slate-100 text-slate-900"
                                             />
                                             <input
                                                 type="tel"
@@ -637,7 +637,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                                 value={phone}
                                                 onChange={(e) => setPhone(e.target.value)}
                                                 placeholder="98765 43210"
-                                                className="flex-1 px-3 py-2 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#2563eb]"
+                                                className="flex-1 h-11 sm:h-10 px-3.5 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:ring-2 focus:ring-[#2563eb] text-slate-900 bg-slate-50/30"
                                             />
                                         </div>
                                     </div>
@@ -648,7 +648,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                         <select
                                             value={countryOfCitizenship}
                                             onChange={(e) => setCountryOfCitizenship(e.target.value)}
-                                            className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white"
+                                            className="w-full h-11 sm:h-10 px-3 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white text-slate-900"
                                         >
                                             {countryOptions.map(c => <option key={c} value={c}>{c}</option>)}
                                         </select>
@@ -664,7 +664,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                         <select
                                             value={residentOf}
                                             onChange={(e) => setResidentOf(e.target.value)}
-                                            className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white"
+                                            className="w-full h-11 sm:h-10 px-3 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white text-slate-900"
                                         >
                                             {countryOptions.map(c => <option key={c} value={c}>{c}</option>)}
                                         </select>
@@ -676,7 +676,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                         <select
                                             value={currentVisaStatus}
                                             onChange={(e) => setCurrentVisaStatus(e.target.value)}
-                                            className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white"
+                                            className="w-full h-11 sm:h-10 px-3 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white text-slate-900"
                                         >
                                             {visaStatusOptions.map(v => <option key={v} value={v}>{v}</option>)}
                                         </select>
@@ -694,28 +694,28 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                             value={addressArea}
                                             onChange={(e) => setAddressArea(e.target.value)}
                                             placeholder="Area / Street"
-                                            className="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium"
+                                            className="h-10 px-3 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium text-slate-900 bg-slate-50/30"
                                         />
                                         <input
                                             type="text"
                                             value={addressCity}
                                             onChange={(e) => setAddressCity(e.target.value)}
                                             placeholder="City"
-                                            className="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium"
+                                            className="h-10 px-3 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium text-slate-900 bg-slate-50/30"
                                         />
                                         <input
                                             type="text"
                                             value={addressState}
                                             onChange={(e) => setAddressState(e.target.value)}
                                             placeholder="State"
-                                            className="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium"
+                                            className="h-10 px-3 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium text-slate-900 bg-slate-50/30"
                                         />
                                         <input
                                             type="text"
                                             value={addressZip}
                                             onChange={(e) => setAddressZip(e.target.value)}
                                             placeholder="PIN / ZIP Code"
-                                            className="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium"
+                                            className="h-10 px-3 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium text-slate-900 bg-slate-50/30"
                                         />
                                     </div>
                                 </div>

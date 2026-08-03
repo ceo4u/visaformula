@@ -42,17 +42,17 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
             {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") */}
             {/* ========================================================================= */}
             {mode === "selection" ? (
-                <div className="bg-slate-900/60 backdrop-blur-md border border-white/15 text-white rounded-3xl shadow-2xl max-w-xl w-full p-6 sm:p-10 text-center space-y-8 animate-fade-up relative my-auto max-h-[85vh] overflow-y-auto no-scrollbar">
+                <div className="bg-slate-900/60 backdrop-blur-md border border-white/15 text-white rounded-3xl shadow-2xl max-w-xl w-[94vw] sm:w-full p-4 sm:p-10 text-center space-y-6 sm:space-y-8 animate-fade-up relative my-auto max-h-[88vh] overflow-y-auto no-scrollbar">
                     
                     {/* Top Badge */}
-                    <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 shadow-xs">
+                    <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3.5 py-1 sm:px-4 sm:py-1.5 shadow-xs">
                         <Sparkles className="w-3.5 h-3.5 text-blue-400" />
                         <span className="text-xs font-bold text-white">Join 50,000+ users</span>
                     </div>
 
                     {/* Title & Subtitle */}
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-sm">
+                        <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-sm">
                             I want to join as
                         </h1>
                         <p className="text-xs sm:text-sm font-semibold text-slate-200 mt-1 drop-shadow-xs">
@@ -61,17 +61,17 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
                     </div>
 
                     {/* Two Role Choice Circles */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 py-2">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 py-1">
                         
                         {/* Seeker Option */}
                         <div 
                             onClick={() => setMode("seeker")}
-                            className="group flex flex-col items-center text-center cursor-pointer"
+                            className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto"
                         >
                             <div className="relative circle-float-1">
                                 <div className="absolute inset-[-6px] rounded-full border-2 border-blue-400/40 pulse-ring" />
-                                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/30 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-2xl group-hover:bg-white/20 group-hover:border-blue-400 transition-all duration-300 relative z-10">
-                                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" className="sm:w-12 sm:h-12">
+                                <div className="w-22 h-22 sm:w-32 sm:h-32 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/30 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-2xl group-hover:bg-white/20 group-hover:border-blue-400 transition-all duration-300 relative z-10 mx-auto">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="w-9 h-9 sm:w-12 sm:h-12">
                                         <circle cx="12" cy="8" r="3.5" fill="#3b82f6" opacity="0.3" />
                                         <circle cx="12" cy="8" r="3.5" stroke="#ffffff" strokeWidth="2" fill="none" />
                                         <path d="M5 20c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" fill="none" />
@@ -80,33 +80,33 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
                                     </svg>
                                 </div>
                             </div>
-                            <span className="mt-4 font-bold text-white text-base group-hover:text-blue-400 transition-colors drop-shadow-xs">
+                            <span className="mt-3 font-bold text-white text-base group-hover:text-blue-400 transition-colors drop-shadow-xs">
                                 Visa Seeker
                             </span>
-                            <span className="text-xs text-slate-200 max-w-[170px] mt-0.5 mb-3 font-semibold drop-shadow-xs">
+                            <span className="text-xs text-slate-200 max-w-[200px] mt-0.5 mb-2.5 font-semibold drop-shadow-xs">
                                 Find, consult & book immigration experts
                             </span>
-                            <button className="bg-[#2563eb] hover:bg-blue-600 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-md active:scale-[0.97] cursor-pointer">
+                            <button className="w-full sm:w-auto bg-[#2563eb] hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-[0.97] cursor-pointer">
                                 Register as Seeker <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                             </button>
                         </div>
 
                         {/* Divider */}
                         <div className="flex flex-row sm:flex-col items-center gap-2 text-slate-300 font-extrabold text-xs tracking-widest">
-                            <div className="w-10 sm:w-px h-px sm:h-8 bg-white/20" />
+                            <div className="w-12 sm:w-px h-px sm:h-8 bg-white/20" />
                             <span className="text-slate-300">OR</span>
-                            <div className="w-10 sm:w-px h-px sm:h-8 bg-white/20" />
+                            <div className="w-12 sm:w-px h-px sm:h-8 bg-white/20" />
                         </div>
 
                         {/* Expert Option */}
                         <a 
                             href="/signup/expert"
-                            className="group flex flex-col items-center text-center cursor-pointer"
+                            className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto"
                         >
                             <div className="relative circle-float-2">
                                 <div className="absolute inset-[-6px] rounded-full border-2 border-white/20 pulse-ring" />
-                                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/30 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-2xl group-hover:bg-white/20 group-hover:border-white transition-all duration-300 relative z-10">
-                                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" className="sm:w-12 sm:h-12">
+                                <div className="w-22 h-22 sm:w-32 sm:h-32 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/30 flex items-center justify-center shadow-lg group-hover:scale-105 group-hover:shadow-2xl group-hover:bg-white/20 group-hover:border-white transition-all duration-300 relative z-10 mx-auto">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="w-9 h-9 sm:w-12 sm:h-12">
                                         <rect x="5" y="2" width="14" height="20" rx="3" fill="#ffffff" opacity="0.2" />
                                         <rect x="5" y="2" width="14" height="20" rx="3" stroke="#ffffff" strokeWidth="2" fill="none" />
                                         <circle cx="12" cy="10" r="2.5" stroke="#ffffff" strokeWidth="1.8" fill="none" />
@@ -116,13 +116,13 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
                                     </svg>
                                 </div>
                             </div>
-                            <span className="mt-4 font-bold text-white text-base group-hover:text-slate-200 transition-colors drop-shadow-xs">
+                            <span className="mt-3 font-bold text-white text-base group-hover:text-slate-200 transition-colors drop-shadow-xs">
                                 Visa Expert
                             </span>
-                            <span className="text-xs text-slate-200 max-w-[170px] mt-0.5 mb-3 font-semibold drop-shadow-xs">
+                            <span className="text-xs text-slate-200 max-w-[200px] mt-0.5 mb-2.5 font-semibold drop-shadow-xs">
                                 Grow your global client consulting practice
                             </span>
-                            <button className="bg-white hover:bg-slate-100 text-slate-900 px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-md active:scale-[0.97] cursor-pointer">
+                            <button className="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-900 px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-[0.97] cursor-pointer">
                                 Register as Expert <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                             </button>
                         </a>

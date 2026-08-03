@@ -79,10 +79,10 @@ function LoginPortalContent() {
     };
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-4 font-sans overflow-y-auto">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar">
             
             {/* Top Back Button */}
-            <div className="w-full max-w-md flex items-center justify-between mb-4 px-1">
+            <div className="w-full max-w-md flex items-center justify-between mb-3 px-1 shrink-0">
                 <a href="/" className="flex items-center gap-2 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
                     <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
                 </a>
@@ -92,16 +92,16 @@ function LoginPortalContent() {
             </div>
 
             {/* Main Clean White Login Box (Exact Screenshot Replica) */}
-            <div className="bg-white rounded-[32px] p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200/80 space-y-6 text-slate-900 relative animate-fade-up">
+            <div className="bg-white rounded-[32px] p-5 sm:p-8 max-w-md w-[94vw] sm:w-full shadow-2xl border border-slate-200/80 space-y-5 sm:space-y-6 text-slate-900 relative animate-fade-up max-h-[88vh] overflow-y-auto no-scrollbar my-auto">
                 
                 {/* Logo Centered */}
-                <div className="flex justify-center pt-2">
-                    <img src="/logo.png" alt="VisaFormula" className="h-16 sm:h-20 w-auto object-contain" />
+                <div className="flex justify-center pt-1">
+                    <img src="/logo.png" alt="VisaFormula" className="h-14 sm:h-20 w-auto object-contain" />
                 </div>
 
                 {/* Title */}
-                <div className="text-center space-y-2">
-                    <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                <div className="text-center space-y-1.5">
+                    <h1 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">
                         Sign in to get started with VisaFormula
                     </h1>
                     {/* Step indicator dots */}
@@ -139,7 +139,7 @@ function LoginPortalContent() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="john@example.com"
-                                    className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                                    className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-sm sm:text-xs font-medium focus:outline-none focus:ring-2 focus:ring-black transition-all"
                                 />
                             </div>
                         </div>
@@ -177,7 +177,7 @@ function LoginPortalContent() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Enter your password"
-                                    className="w-full pl-10 pr-10 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                                    className="w-full pl-10 pr-10 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-sm sm:text-xs font-medium focus:outline-none focus:ring-2 focus:ring-black transition-all"
                                 />
                                 <button
                                     type="button"

@@ -109,7 +109,7 @@ export function DesktopHomeSection() {
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-[#111827] leading-[1.15]">
                   Your Journey Abroad <br />
-                  Starts <span className="bg-gradient-to-r from-[#00a896] via-[#028090] to-[#05668d] bg-clip-text text-transparent">Here</span>
+                  Starts <span className="text-[#00a896]">Here</span>
                 </h1>
                 <p className="text-[#374151] text-xs sm:text-sm font-normal leading-[1.6]">
                   Find visa information, explore your options <br />
@@ -122,7 +122,7 @@ export function DesktopHomeSection() {
               <div className="flex flex-wrap gap-3.5 text-xs font-medium text-slate-700 pt-1">
                 {/* Badge 1: Trusted Verified Consultants */}
                 <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#99f6e4]/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#00a896] to-[#028090] text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -133,7 +133,7 @@ export function DesktopHomeSection() {
 
                 {/* Badge 2: Accurate Visa Information */}
                 <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#99f6e4]/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#00a896] to-[#028090] text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <FileText className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -144,7 +144,7 @@ export function DesktopHomeSection() {
 
                 {/* Badge 3: Millions of users Every Month */}
                 <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#99f6e4]/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#00a896] to-[#028090] text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <Users className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -158,7 +158,7 @@ export function DesktopHomeSection() {
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <a 
                   href="/services/apply-visa" 
-                  className="bg-gradient-to-r from-[#00a896] via-[#028090] to-[#05668d] hover:from-[#028090] hover:to-[#05668d] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-md shadow-teal-500/20 transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
+                  className="bg-[#00a896] hover:bg-[#028090] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-md shadow-teal-500/20 transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
                 >
                   <span>Find My Visa Path</span>
                   <ArrowRight className="w-4 h-4" />
@@ -208,7 +208,7 @@ export function DesktopHomeSection() {
                   <p className="text-[12px] font-medium text-slate-500">Your Application Readiness</p>
                   <a 
                     href="/services/apply-visa" 
-                    className="mt-3 block w-full bg-gradient-to-r from-[#00a896] via-[#028090] to-[#05668d] hover:from-[#028090] hover:to-[#05668d] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-md shadow-teal-500/15 transition-all active:scale-95 cursor-pointer"
+                    className="mt-3 block w-full bg-[#00a896] hover:bg-[#028090] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-md shadow-teal-500/15 transition-all active:scale-95 cursor-pointer"
                   >
                     Check Now - It's Free
                   </a>

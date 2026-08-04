@@ -157,7 +157,7 @@ export function DesktopHomeSection() {
           </div>
 
           {/* Left Hero Content */}
-          <div className="relative z-10 p-6 sm:p-10 max-w-[560px] space-y-6">
+          <div className="relative z-10 pt-10 pb-10 pr-6 sm:pr-10 pl-0 max-w-[600px] space-y-6">
             <div className="space-y-3">
               <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-gray-900 leading-[1.15] tracking-tight">
                 Your Journey<br />

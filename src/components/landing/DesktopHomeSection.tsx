@@ -70,11 +70,19 @@ export function DesktopHomeSection() {
             </a>
           </div>
 
-          {/* Right Ad Placeholder (728x90) */}
-          <div className="md:col-span-1 border-2 border-dashed border-slate-300 bg-white/80 rounded-xl min-h-[90px] flex flex-col items-center justify-center text-slate-400 p-2 text-center shadow-2xs">
-            <span className="text-xs font-bold text-slate-500 tracking-wider">YOUR AD HERE</span>
-            <span className="text-[10px] font-semibold text-slate-400">728 x 90</span>
-          </div>
+          {/* Top Luxury Banner Ad (728x90) */}
+          <a href="/find-experts" className="md:col-span-1 relative rounded-xl overflow-hidden shadow-sm group min-h-[90px] block border border-amber-300/40">
+            <img 
+              src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80" 
+              alt="Luxury Resort & Villa Ad" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-900/50 to-transparent p-3 flex flex-col justify-center text-white">
+              <span className="bg-amber-400 text-slate-950 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider w-fit">LUXURY RESIDENCY</span>
+              <h4 className="text-xs font-black tracking-tight text-white mt-0.5">Golden Visa & Villa Concierge</h4>
+              <span className="text-[9px] text-amber-200 font-semibold">Fast-track PR in Europe & Caribbean →</span>
+            </div>
+          </a>
 
         </div>
 
@@ -768,11 +776,22 @@ export function DesktopHomeSection() {
           {/* ========================================================================= */}
           <div className="lg:col-span-3 space-y-5">
             
-            {/* Sidebar Item 1: Ad Box 1 (300 x 250) */}
-            <div className="border-2 border-dashed border-slate-300 bg-white/70 rounded-2xl min-h-[200px] flex flex-col items-center justify-center text-slate-400 p-4 text-center shadow-2xs">
-              <span className="text-xs font-bold text-slate-500 tracking-wider">YOUR AD HERE</span>
-              <span className="text-[10px] font-semibold text-slate-400">300 x 250</span>
-            </div>
+            {/* Sidebar Item 1: Luxury Ad Banner 1 (300 x 250) */}
+            <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden min-h-[205px] block group shadow-md border border-amber-400/30">
+              <img 
+                src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&auto=format&fit=crop&q=80" 
+                alt="Luxury Real Estate & PR Residency Ad" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 absolute inset-0"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4 flex flex-col justify-end text-white space-y-1">
+                <span className="bg-amber-400 text-slate-950 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider w-fit">SPONSORED AD</span>
+                <h4 className="text-xs font-black text-white leading-tight">Europe Golden Passport & Luxury Estate</h4>
+                <p className="text-[10px] text-slate-200 font-medium">Invest & gain permanent residency in 90 days.</p>
+                <span className="text-[11px] font-extrabold text-amber-300 pt-0.5 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                  Learn More →
+                </span>
+              </div>
+            </a>
 
             {/* Sidebar Item 2: Are you a Consultant? Banner Card */}
             <div className="bg-[#00a896] text-white rounded-2xl p-5 shadow-sm overflow-hidden relative flex flex-col justify-between min-h-[175px]">
@@ -804,11 +823,22 @@ export function DesktopHomeSection() {
               </div>
             </div>
 
-            {/* Sidebar Item 3: Ad Box 2 (300 x 250) */}
-            <div className="border-2 border-dashed border-slate-300 bg-white/70 rounded-2xl min-h-[200px] flex flex-col items-center justify-center text-slate-400 p-4 text-center shadow-2xs">
-              <span className="text-xs font-bold text-slate-500 tracking-wider">YOUR AD HERE</span>
-              <span className="text-[10px] font-semibold text-slate-400">300 x 250</span>
-            </div>
+            {/* Sidebar Item 3: Luxury Ad Banner 2 (300 x 250) */}
+            <a href="/tours" className="relative rounded-2xl overflow-hidden min-h-[205px] block group shadow-md border border-cyan-400/30">
+              <img 
+                src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80" 
+                alt="First Class Business Flight Ad" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 absolute inset-0"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent p-4 flex flex-col justify-end text-white space-y-1">
+                <span className="bg-cyan-400 text-slate-950 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider w-fit">SPONSORED AD</span>
+                <h4 className="text-xs font-black text-white leading-tight">Fly First Class World-Wide</h4>
+                <p className="text-[10px] text-cyan-100 font-medium">Exclusive corporate & VIP flight deals for expats.</p>
+                <span className="text-[11px] font-extrabold text-cyan-300 pt-0.5 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                  Book VIP Flight →
+                </span>
+              </div>
+            </a>
 
             {/* Sidebar Item 4: Get Your DREAM VISA Banner */}
             <div className="relative bg-gradient-to-br from-[#0b2545] via-[#0f2d57] to-[#1e3a8a] text-white rounded-2xl p-5 shadow-md overflow-hidden min-h-[205px] flex flex-col justify-between border border-blue-900/40">

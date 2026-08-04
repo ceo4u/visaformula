@@ -101,7 +101,7 @@ export function DesktopHomeSection() {
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-[#111827] leading-[1.15]">
                   Your Journey Abroad <br />
-                  Starts <span className="bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] bg-clip-text text-transparent">Here</span>
+                  Starts <span className="bg-gradient-to-r from-[#3b82f6] to-[#2563eb] bg-clip-text text-transparent">Here</span>
                 </h1>
                 <p className="text-[#374151] text-xs sm:text-sm font-normal leading-[1.6]">
                   Find visa information, explore your options <br />
@@ -113,8 +113,8 @@ export function DesktopHomeSection() {
               {/* 3 Feature Badges */}
               <div className="flex flex-wrap gap-3.5 text-xs font-medium text-slate-700 pt-1">
                 {/* Badge 1: Trusted Verified Consultants */}
-                <div className="flex items-center gap-2.5 bg-[#f0f7ff] border border-[#dbeafe] px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#2563eb] to-[#1d4ed8] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/70 px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#3b82f6] to-[#2563eb] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -124,8 +124,8 @@ export function DesktopHomeSection() {
                 </div>
 
                 {/* Badge 2: Accurate Visa Information */}
-                <div className="flex items-center gap-2.5 bg-[#f0f7ff] border border-[#dbeafe] px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#2563eb] to-[#1d4ed8] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/70 px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#3b82f6] to-[#2563eb] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <FileText className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -135,8 +135,8 @@ export function DesktopHomeSection() {
                 </div>
 
                 {/* Badge 3: Millions of users Every Month */}
-                <div className="flex items-center gap-2.5 bg-[#f0f7ff] border border-[#dbeafe] px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#2563eb] to-[#1d4ed8] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/70 px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#3b82f6] to-[#2563eb] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <Users className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -150,7 +150,7 @@ export function DesktopHomeSection() {
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <a 
                   href="/services/apply-visa" 
-                  className="bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] hover:from-[#1d4ed8] hover:to-[#1e40af] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-md shadow-blue-500/20 transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
+                  className="bg-gradient-to-r from-[#3b82f6] to-[#2563eb] hover:from-[#2563eb] hover:to-[#1d4ed8] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-md shadow-blue-400/25 transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
                 >
                   <span>Find My Visa Path</span>
                   <ArrowRight className="w-4 h-4" />
@@ -182,7 +182,7 @@ export function DesktopHomeSection() {
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
                     <path
-                      className="text-[#2563eb] stroke-current"
+                      className="text-[#3b82f6] stroke-current"
                       strokeDasharray="72, 100"
                       strokeWidth="3.2"
                       strokeLinecap="round"
@@ -200,7 +200,7 @@ export function DesktopHomeSection() {
                   <p className="text-[12px] font-medium text-slate-500">Your Application Readiness</p>
                   <a 
                     href="/services/apply-visa" 
-                    className="mt-3 block w-full bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] hover:from-[#1d4ed8] hover:to-[#1e40af] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-md shadow-blue-500/15 transition-all active:scale-95 cursor-pointer"
+                    className="mt-3 block w-full bg-gradient-to-r from-[#3b82f6] to-[#2563eb] hover:from-[#2563eb] hover:to-[#1d4ed8] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-md shadow-blue-400/20 transition-all active:scale-95 cursor-pointer"
                   >
                     Check Now - It's Free
                   </a>
@@ -775,15 +775,15 @@ export function DesktopHomeSection() {
             </div>
 
             {/* Sidebar Item 2: Are you a Consultant? Banner Card */}
-            <div className="bg-gradient-to-br from-[#1e40af] via-[#2563eb] to-[#1d4ed8] text-white rounded-2xl p-5 shadow-md shadow-blue-500/15 overflow-hidden relative flex flex-col justify-between min-h-[175px] border border-blue-400/20">
+            <div className="bg-gradient-to-br from-[#3b82f6] via-[#2563eb] to-[#1d4ed8] text-white rounded-2xl p-5 shadow-md shadow-blue-400/20 overflow-hidden relative flex flex-col justify-between min-h-[175px] border border-blue-300/30">
               <div className="space-y-1.5 relative z-10 max-w-[165px]">
-                <span className="bg-white/20 backdrop-blur-xs text-white font-extrabold text-[9px] uppercase px-2 py-0.5 rounded-md tracking-wider">
+                <span className="bg-white/25 backdrop-blur-xs text-white font-extrabold text-[9px] uppercase px-2 py-0.5 rounded-md tracking-wider">
                   Partner with Us
                 </span>
                 <h3 className="text-sm font-extrabold tracking-tight text-white leading-snug pt-0.5">
                   Are you a Consultant?
                 </h3>
-                <p className="text-[11px] font-medium text-blue-100/90 leading-normal">
+                <p className="text-[11px] font-medium text-blue-100 leading-normal">
                   Get discovered by thousands of people looking for visa help.
                 </p>
               </div>
@@ -791,7 +791,7 @@ export function DesktopHomeSection() {
               <div className="pt-3 relative z-10">
                 <a 
                   href="/register-provider" 
-                  className="inline-block bg-white text-[#1e40af] hover:bg-blue-50 font-extrabold text-xs px-4 py-2 rounded-xl shadow-md transition-all hover:scale-105 active:scale-95"
+                  className="inline-block bg-white text-[#2563eb] hover:bg-blue-50 font-extrabold text-xs px-4 py-2 rounded-xl shadow-md transition-all hover:scale-105 active:scale-95"
                 >
                   Join VisaFormula
                 </a>
@@ -814,14 +814,14 @@ export function DesktopHomeSection() {
             </div>
 
             {/* Sidebar Item 4: Get Your DREAM VISA Banner */}
-            <div className="relative bg-gradient-to-br from-[#0b2545] via-[#0f2d57] to-[#1e3a8a] text-white rounded-2xl p-5 shadow-lg overflow-hidden min-h-[205px] flex flex-col justify-between border border-blue-900/50">
+            <div className="relative bg-gradient-to-br from-[#1e3a8a] via-[#2563eb] to-[#3b82f6] text-white rounded-2xl p-5 shadow-lg overflow-hidden min-h-[205px] flex flex-col justify-between border border-blue-400/30">
               <div className="relative z-10 space-y-1">
-                <span className="bg-blue-500/20 text-blue-300 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded-md tracking-wider border border-blue-400/20">
+                <span className="bg-white/20 text-blue-100 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded-md tracking-wider border border-white/20">
                   Global Mobility
                 </span>
                 <h3 className="text-sm font-extrabold tracking-tight text-white uppercase leading-snug pt-1">
                   Get Your <br />
-                  <span className="bg-gradient-to-r from-blue-300 to-indigo-200 bg-clip-text text-transparent text-base font-black">DREAM VISA</span> <br />
+                  <span className="text-blue-200 text-base font-black">DREAM VISA</span> <br />
                   with the Right Guidance
                 </h3>
               </div>
@@ -829,7 +829,7 @@ export function DesktopHomeSection() {
               <div className="pt-2 relative z-10">
                 <a 
                   href="/find-experts" 
-                  className="inline-block bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] hover:from-[#1d4ed8] hover:to-[#1e40af] text-white font-extrabold text-xs px-4 py-2 rounded-xl shadow-md transition-all hover:scale-105 active:scale-95"
+                  className="inline-block bg-white text-[#2563eb] hover:bg-blue-50 font-extrabold text-xs px-4 py-2 rounded-xl shadow-md transition-all hover:scale-105 active:scale-95"
                 >
                   Find an Expert
                 </a>
@@ -846,13 +846,13 @@ export function DesktopHomeSection() {
             </div>
 
             {/* Sidebar Item 5: Stay Updated Newsletter Card */}
-            <div className="bg-gradient-to-br from-[#0f172a] via-[#1e1b4b] to-[#1e3a8a] text-white rounded-2xl p-5 shadow-lg border border-indigo-900/40 space-y-3 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#1e293b] via-[#2563eb] to-[#3b82f6] text-white rounded-2xl p-5 shadow-lg border border-blue-400/30 space-y-3 relative overflow-hidden">
               <div className="space-y-1 relative z-10">
                 <h3 className="text-sm font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                  <Mail className="w-4 h-4 text-blue-300" />
+                  <Mail className="w-4 h-4 text-blue-200" />
                   <span>Stay Updated</span>
                 </h3>
-                <p className="text-[11px] font-medium text-blue-200/80 leading-normal">
+                <p className="text-[11px] font-medium text-blue-100 leading-normal">
                   Get the latest visa updates and immigration news directly in your inbox.
                 </p>
               </div>
@@ -864,11 +864,11 @@ export function DesktopHomeSection() {
                   onChange={(e) => setNewsletterEmail(e.target.value)}
                   placeholder="Enter your email" 
                   required
-                  className="w-full bg-white/10 text-white placeholder:text-blue-200/60 text-xs font-semibold px-3.5 py-2.5 rounded-xl outline-none border border-white/15 focus:border-blue-400 focus:bg-white/15 transition-all backdrop-blur-md"
+                  className="w-full bg-white/15 text-white placeholder:text-blue-100/70 text-xs font-semibold px-3.5 py-2.5 rounded-xl outline-none border border-white/20 focus:border-white focus:bg-white/25 transition-all backdrop-blur-md"
                 />
                 <button 
                   type="submit"
-                  className="w-full bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] hover:from-[#1d4ed8] hover:to-[#1e40af] text-white font-extrabold text-xs py-2.5 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer"
+                  className="w-full bg-slate-950 hover:bg-black text-white font-extrabold text-xs py-2.5 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer"
                 >
                   {newsletterSuccess ? 'Subscribed ✓' : 'Subscribe Now'}
                 </button>
@@ -887,7 +887,7 @@ export function DesktopHomeSection() {
         {/* ========================================================================= */}
         {/* 5. BOTTOM WIDE BANNER: APPLY FOR INTERNATIONAL EDUCATION LOANS */}
         {/* ========================================================================= */}
-        <div className="relative bg-[#0d5294] text-white rounded-2xl p-6 sm:p-7 shadow-md overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="relative bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] text-white rounded-2xl p-6 sm:p-7 shadow-md overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
             <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white">
               Apply for International Education Loans

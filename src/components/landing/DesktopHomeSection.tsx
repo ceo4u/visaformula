@@ -1,20 +1,18 @@
+'use client';
 import React, { useState } from 'react';
-import { 
-  Search, ShieldCheck, FileText, Users, ArrowRight, CheckCircle2, 
-  MapPin, Star, Calculator, Clock, Compass, AlertCircle, Sparkles, 
-  Send, Mail, ChevronRight, Filter, ChevronDown, Check, Building2, Briefcase, GraduationCap, Plane, Home as HomeIcon, X, Globe
+import {
+  Search, ShieldCheck, FileText, Users, ArrowRight, CheckCircle2,
+  MapPin, Star, Calculator, Clock, Compass, AlertCircle, ChevronRight,
+  GraduationCap, Briefcase, Plane, Globe, Building2, BookOpen,
+  MessageSquare, CreditCard, User, Download, Check
 } from 'lucide-react';
-import { AuthModalPortalContent } from '../interactive/AuthModalPortal';
 
 export function DesktopHomeSection() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedPurpose, setSelectedPurpose] = useState('');
   const [selectedVisaType, setSelectedVisaType] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
-  const [activeClassifiedTab, setActiveClassifiedTab] = useState('All');
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [newsletterSuccess, setNewsletterSuccess] = useState(false);
+  const [activeTab, setActiveTab] = useState('All');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,1059 +20,498 @@ export function DesktopHomeSection() {
     window.location.href = `/find-experts?q=${encodeURIComponent(query)}`;
   };
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newsletterEmail) {
-      setNewsletterSuccess(true);
-      setTimeout(() => {
-        setNewsletterEmail('');
-        setNewsletterSuccess(false);
-      }, 3000);
-    }
-  };
+  const classifiedTabs = ['All', 'Jobs', 'Accommodation', 'Business', 'Study Abroad'];
+
+  const classifieds = [
+    {
+      badge: 'Jobs Abroad',
+      badgeColor: 'bg-purple-600',
+      img: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=400&auto=format&fit=crop&q=80',
+      title: 'Caregiver Jobs in Canada',
+      location: 'Toronto, Canada',
+      time: '2 hours ago',
+      price: 'FREE',
+      priceColor: 'text-green-600',
+    },
+    {
+      badge: 'Accommodation',
+      badgeColor: 'bg-blue-500',
+      img: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&auto=format&fit=crop&q=80',
+      title: 'Shared Room Near Humber College',
+      location: 'Toronto, Canada',
+      time: '5 hours ago',
+      price: '$650 CAD / Month',
+      priceColor: 'text-slate-800',
+    },
+    {
+      badge: 'Study Abroad',
+      badgeColor: 'bg-pink-500',
+      img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&auto=format&fit=crop&q=80',
+      title: 'Study in Canada 2025 Intake Open',
+      location: '3 Apply Now',
+      time: '',
+      price: 'FREE',
+      priceColor: 'text-green-600',
+      cta: 'Apply Now',
+    },
+    {
+      badge: 'Business Opportunity',
+      badgeColor: 'bg-teal-500',
+      img: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&auto=format&fit=crop&q=80',
+      title: 'Visa Consultancy Business for Sale',
+      location: 'Apply @Deco',
+      time: '1 day ago',
+      price: '12,00,000',
+      priceColor: 'text-slate-800',
+    },
+    {
+      badge: 'Jobs Abroad',
+      badgeColor: 'bg-purple-600',
+      img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop&q=80',
+      title: 'Hotel Front Desk Staff in UK',
+      location: 'London, UK',
+      time: '2 days ago',
+      price: 'FREE',
+      priceColor: 'text-green-600',
+    },
+  ];
+
+  const destinations = [
+    { flag: 'ca', name: 'Canada', href: '/visa-guide/canada' },
+    { flag: 'gb', name: 'UK', href: '/visa-guide/uk' },
+    { flag: 'us', name: 'USA', href: '/visa-guide/usa' },
+    { flag: 'au', name: 'Australia', href: '/visa-guide/australia' },
+    { flag: 'de', name: 'Germany', href: '/visa-guide/germany' },
+    { flag: 'nz', name: 'New Zealand', href: '/visa-guide/new-zealand' },
+    { flag: 'ae', name: 'UAE', href: '/visa-guide/uae' },
+  ];
 
   return (
-    <div className="w-full bg-[#f3f4f6] text-[#111827] font-['Plus_Jakarta_Sans',sans-serif] pb-16 antialiased selection:bg-[#2563eb]/20 selection:text-[#2563eb]">
+    <div className="w-full bg-[#f3f4f6] text-[#111827] pb-12 antialiased">
       <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-        .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        .hp-font { font-family: 'Inter', sans-serif !important; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}} />
 
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pt-4 font-jakarta">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-5 lg:px-6 space-y-4 pt-4 hp-font">
 
-        {/* ========================================================================= */}
-        {/* 1. TOP HEADER AD BANNERS ROW */}
-        {/* ========================================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-          
-          {/* Left Ad Banner: Canada Study Promo */}
-          <div className="md:col-span-2 relative bg-[#0b2545] text-white rounded-xl p-4 overflow-hidden shadow-sm flex items-center justify-between min-h-[90px] border border-[#1e3a8a]/30">
-            <img 
-              src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=800&auto=format&fit=crop&q=80" 
-              alt="Canada CN Tower Skyline" 
-              className="absolute inset-0 w-full h-full object-cover opacity-25 mix-blend-overlay"
+        {/* ======================================================= */}
+        {/* 1. TOP FLIGHT AD BANNER */}
+        {/* ======================================================= */}
+        <div className="relative rounded-xl overflow-hidden bg-[#1a237e] flex items-center justify-between px-6 py-4 min-h-[90px] shadow-md">
+          {/* Background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1a237e] via-[#283593] to-[#1565c0]" />
+          <div className="absolute inset-0 opacity-20">
+            <img
+              src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=60"
+              alt=""
+              className="w-full h-full object-cover"
             />
-            <div className="relative z-10 space-y-1">
-              <span className="bg-[#1e40af] text-blue-200 font-extrabold text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full inline-block">
-                STUDY IN CANADA
-              </span>
-              <h3 className="text-sm sm:text-base font-extrabold tracking-tight text-white drop-shadow-sm">
-                Build your future in top ranked universities
-              </h3>
-            </div>
-            <a 
-              href="/universities?country=canada" 
-              className="relative z-10 shrink-0 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold text-xs px-4 py-2 rounded-lg backdrop-blur-md transition-all hover:scale-105"
+          </div>
+
+          {/* Left text */}
+          <div className="relative z-10 space-y-0.5">
+            <p className="text-blue-200 text-[11px] font-medium uppercase tracking-widest">✈ Sponsored</p>
+            <h3 className="text-white font-extrabold text-xl leading-tight">Fly High with Your Dreams</h3>
+            <p className="text-blue-200 text-sm">Best Deals on Flight Tickets</p>
+          </div>
+
+          {/* Center: airplane image */}
+          <div className="relative z-10 flex-1 flex justify-center">
+            <img
+              src="https://images.unsplash.com/photo-1569629743817-70d8db6c323b?w=400&auto=format&fit=crop&q=80"
+              alt="Airplane"
+              className="h-16 w-auto object-contain drop-shadow-xl"
+            />
+          </div>
+
+          {/* Book Now button */}
+          <div className="relative z-10 flex items-center gap-6">
+            <a
+              href="#"
+              className="bg-white text-[#1a237e] font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-blue-50 transition-colors shadow-md whitespace-nowrap"
             >
-              Learn More
+              Book Now
             </a>
-          </div>
-
-          {/* Top Luxury Banner Ad (728x90 Size Matched) */}
-          <a href="/find-experts" className="md:col-span-1 relative rounded-xl overflow-hidden shadow-sm group min-h-[90px] h-full block border border-amber-300/40">
-            <img 
-              src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80" 
-              alt="Luxury Golden Visa Ad" 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 absolute inset-0"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/60 to-transparent p-3 flex flex-col justify-center text-white z-10">
-              <span className="bg-amber-400 text-slate-950 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider w-fit">GOLDEN VISA</span>
-              <h4 className="text-xs font-black tracking-tight text-white mt-0.5 leading-tight">Europe & Caribbean PR Concierge</h4>
-              <span className="text-[9.5px] text-amber-200 font-bold mt-0.5 flex items-center gap-1 group-hover:translate-x-1 transition-transform">Get Fast-Track Visa →</span>
+            <div className="text-right">
+              <p className="text-blue-200 text-[11px] font-semibold uppercase tracking-wide">UP TO</p>
+              <p className="text-white font-black text-3xl leading-none">20% OFF</p>
+              <p className="text-blue-200 text-[11px] font-medium">On International Flights</p>
             </div>
-          </a>
-
-        </div>
-
-        {/* ========================================================================= */}
-        {/* 2. MAIN HERO SECTION BANNER MATCHING USER REFERENCE IMAGE 100% */}
-        {/* ========================================================================= */}
-        <div className="relative rounded-2xl overflow-hidden bg-white text-slate-900 p-6 sm:p-10 shadow-sm border border-slate-200/80 min-h-[420px] flex items-center">
-          
-          {/* Background Airport Departure Window with Suitcase, Hat, Passport & Airplane */}
-          <div className="absolute inset-y-0 right-0 w-full sm:w-[65%] overflow-hidden pointer-events-none">
-            <img 
-              src="https://images.unsplash.com/photo-1542296332-2e4473faf563?w=1600&auto=format&fit=crop&q=80" 
-              alt="Airport Departure Lounge Window view with Airplane, Suitcase & Passport" 
-              className="w-full h-full object-cover object-right"
-            />
-            {/* Smooth left gradient overlay transitioning image to white */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent w-[55%]" />
-          </div>
-
-          <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            {/* Left Hero Content */}
-            <div className="lg:col-span-8 space-y-6">
-              <div className="space-y-3 max-w-lg">
-                <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-[#111827] leading-[1.15]">
-                  Your Journey Abroad <br />
-                  Starts <span className="text-[#2563eb]">Here</span>
-                </h1>
-                <p className="text-[#374151] text-xs sm:text-sm font-normal leading-[1.6]">
-                  Find visa information, explore your options <br />
-                  and connect with trusted immigration <br />
-                  professionals.
-                </p>
-              </div>
-
-              {/* 3 Feature Badges */}
-              <div className="flex flex-wrap gap-3.5 text-xs font-medium text-slate-700 pt-1">
-                {/* Badge 1: Trusted Verified Consultants */}
-                <div className="flex items-center gap-2.5 bg-white/95 border border-slate-200/90 px-3.5 py-2 rounded-xl shadow-xs backdrop-blur-xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#0c1a2e] text-white flex items-center justify-center shrink-0 shadow-xs">
-                    <ShieldCheck className="w-4 h-4" />
-                  </div>
-                  <div className="text-[10px] leading-tight">
-                    <span className="font-semibold block text-slate-900 text-[11px]">Trusted</span>
-                    <span className="font-normal text-slate-500">Verified Consultants</span>
-                  </div>
-                </div>
-
-                {/* Badge 2: Accurate Visa Information */}
-                <div className="flex items-center gap-2.5 bg-white/95 border border-slate-200/90 px-3.5 py-2 rounded-xl shadow-xs backdrop-blur-xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#0c1a2e] text-white flex items-center justify-center shrink-0 shadow-xs">
-                    <FileText className="w-4 h-4" />
-                  </div>
-                  <div className="text-[10px] leading-tight">
-                    <span className="font-semibold block text-slate-900 text-[11px]">Accurate</span>
-                    <span className="font-normal text-slate-500">Visa Information</span>
-                  </div>
-                </div>
-
-                {/* Badge 3: Millions of users Every Month */}
-                <div className="flex items-center gap-2.5 bg-white/95 border border-slate-200/90 px-3.5 py-2 rounded-xl shadow-xs backdrop-blur-xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#0c1a2e] text-white flex items-center justify-center shrink-0 shadow-xs">
-                    <Users className="w-4 h-4" />
-                  </div>
-                  <div className="text-[10px] leading-tight">
-                    <span className="font-semibold block text-slate-900 text-[11px]">Millions of users</span>
-                    <span className="font-normal text-slate-500">Every Month</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 2 CTA Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <a 
-                  href="/services/apply-visa" 
-                  className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-md shadow-blue-500/20 transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
-                >
-                  <span>Find My Visa Path</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-                <a 
-                  href="/find-experts" 
-                  className="bg-white hover:bg-slate-50 text-[#111827] border border-slate-300 font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all flex items-center gap-2.5 shadow-2xs hover:scale-105"
-                >
-                  <span>Find a Consultant</span>
-                  <ArrowRight className="w-4 h-4 text-slate-900" />
-                </a>
-              </div>
-            </div>
-
-            {/* Right Interactive Readiness Score Card */}
-            <div className="lg:col-span-4 flex justify-center lg:justify-end">
-              <div className="bg-white text-slate-900 rounded-2xl p-6 shadow-xl border border-slate-100 text-center w-full max-w-[270px] space-y-4">
-                <h3 className="text-[14px] font-bold text-slate-900">
-                  Free Visa Readiness Check
-                </h3>
-
-                {/* Circular Gauge Ring (72/100) */}
-                <div className="relative w-32 h-32 mx-auto flex items-center justify-center">
-                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                    <path
-                      className="text-slate-100 stroke-current"
-                      strokeWidth="3.2"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                    <path
-                      className="text-[#00a896] stroke-current"
-                      strokeDasharray="72, 100"
-                      strokeWidth="3.2"
-                      strokeLinecap="round"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                  </svg>
-                  <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-[32px] font-bold text-[#111827] leading-none">72</span>
-                    <span className="text-[11px] font-normal text-slate-400 mt-0.5">/100</span>
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-[12px] font-medium text-slate-500">Your Application Readiness</p>
-                  <a 
-                    href="/services/apply-visa" 
-                    className="mt-3 block w-full bg-[#00a896] hover:bg-[#028090] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-md shadow-teal-500/15 transition-all active:scale-95 cursor-pointer"
-                  >
-                    Check Now - It's Free
-                  </a>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
 
-        {/* ========================================================================= */}
-        {/* 3. FIND VISA INFORMATION & CONSULTANTS SEARCH FILTER WIDGET */}
-        {/* ========================================================================= */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
-          <h2 className="text-sm sm:text-base font-extrabold text-[#111827] tracking-tight">
-            Find Visa Information & Consultants
-          </h2>
+        {/* ======================================================= */}
+        {/* 2. HERO SECTION */}
+        {/* ======================================================= */}
+        <div className="relative rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 min-h-[340px] flex items-center">
+          {/* Right background image */}
+          <div className="absolute inset-y-0 right-0 w-[55%] pointer-events-none overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=900&auto=format&fit=crop&q=80"
+              alt="Woman traveler with luggage at city"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent w-[45%]" />
+          </div>
 
-          <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-center">
-            {/* 1. Country Dropdown */}
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-600">I want to go to</label>
-              <select 
-                value={selectedCountry}
-                onChange={(e) => setSelectedCountry(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
-              >
-                <option value="">Select Country</option>
-                <option value="Canada">Canada 🇨🇦</option>
-                <option value="UK">United Kingdom 🇬🇧</option>
-                <option value="USA">United States 🇺🇸</option>
-                <option value="Australia">Australia 🇦🇺</option>
-                <option value="Germany">Germany 🇩🇪</option>
-                <option value="New Zealand">New Zealand 🇳🇿</option>
-              </select>
+          {/* Left content */}
+          <div className="relative z-10 px-8 py-10 max-w-[520px] space-y-5">
+            <div className="space-y-2">
+              <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
+                Your Journey<br />
+                Abroad <span className="text-[#00a896]">Starts Here</span>
+              </h1>
+              <p className="text-gray-500 text-[15px] leading-relaxed">
+                Find the right visa information, trusted<br />
+                consultants &amp; everything you need<br />
+                for your journey.
+              </p>
             </div>
 
-            {/* 2. Purpose Dropdown */}
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-600">I am going for</label>
-              <select 
-                value={selectedPurpose}
-                onChange={(e) => setSelectedPurpose(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="/services/apply-visa"
+                className="bg-[#00a896] hover:bg-[#009485] text-white font-semibold text-sm px-6 py-3 rounded-lg shadow-md transition-all hover:scale-105"
               >
-                <option value="">Select Purpose</option>
-                <option value="Study">Higher Education / Study</option>
-                <option value="Work">Employment / Work</option>
-                <option value="Visit">Tourism / Visit</option>
-                <option value="PR">Permanent Residency</option>
-                <option value="Business">Business / Investment</option>
-              </select>
+                Find Visa Help
+              </a>
+              <a
+                href="/find-experts"
+                className="bg-white hover:bg-gray-50 text-gray-800 font-semibold text-sm px-6 py-3 rounded-lg border border-gray-300 transition-all hover:scale-105"
+              >
+                Find a Consultant
+              </a>
             </div>
 
-            {/* 3. Visa Type Dropdown */}
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-600">Visa Type</label>
-              <select 
-                value={selectedVisaType}
-                onChange={(e) => setSelectedVisaType(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
-              >
-                <option value="">Select Visa Type</option>
-                <option value="Student Visa">Student Visa</option>
-                <option value="Work Permit">Work Permit</option>
-                <option value="Tourist Visa">Tourist / Visitor Visa</option>
-                <option value="Express Entry">PR / Express Entry</option>
-                <option value="Digital Nomad">Digital Nomad Visa</option>
-              </select>
+            {/* Trust badges */}
+            <div className="flex flex-wrap gap-x-6 gap-y-3 pt-1">
+              {[
+                { icon: <ShieldCheck className="w-5 h-5" />, label: 'Trusted', sub: 'Consultants' },
+                { icon: <FileText className="w-5 h-5" />, label: 'Accurate', sub: 'Information' },
+                { icon: <Users className="w-5 h-5" />, label: 'Millions of', sub: 'Users' },
+                { icon: <CheckCircle2 className="w-5 h-5" />, label: 'Secure &', sub: 'Reliable' },
+              ].map((b, i) => (
+                <div key={i} className="flex flex-col items-center text-center gap-1">
+                  <div className="text-[#00a896]">{b.icon}</div>
+                  <p className="text-[11px] text-gray-600 leading-tight font-medium">{b.label}<br />{b.sub}</p>
+                </div>
+              ))}
             </div>
+          </div>
+        </div>
 
-            {/* 4. Location Dropdown */}
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-600">My Location</label>
-              <select 
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
-              >
-                <option value="">Select City</option>
-                <option value="Mumbai">Mumbai, India</option>
-                <option value="Delhi">Delhi, India</option>
-                <option value="Bangalore">Bangalore, India</option>
-                <option value="Hyderabad">Hyderabad, India</option>
-                <option value="Punjab">Punjab, India</option>
-                <option value="London">London, UK</option>
-                <option value="Toronto">Toronto, Canada</option>
-              </select>
-            </div>
+        {/* ======================================================= */}
+        {/* 3. SEARCH BAR + IELTS SIDEBAR */}
+        {/* ======================================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
 
-            {/* Search Button */}
-            <div className="pt-5 sm:pt-4">
-              <button 
+          {/* Search Form */}
+          <div className="lg:col-span-3 bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
+            <h2 className="text-[15px] font-bold text-gray-900">Find Visa Information &amp; Consultants</h2>
+
+            <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-gray-500">I want to go to</label>
+                <select
+                  value={selectedCountry}
+                  onChange={(e) => setSelectedCountry(e.target.value)}
+                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00a896] transition-colors"
+                >
+                  <option value="">Select Country</option>
+                  <option value="Canada">Canada 🇨🇦</option>
+                  <option value="UK">United Kingdom 🇬🇧</option>
+                  <option value="USA">United States 🇺🇸</option>
+                  <option value="Australia">Australia 🇦🇺</option>
+                  <option value="Germany">Germany 🇩🇪</option>
+                  <option value="New Zealand">New Zealand 🇳🇿</option>
+                  <option value="UAE">UAE 🇦🇪</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-gray-500">I am going for</label>
+                <select
+                  value={selectedPurpose}
+                  onChange={(e) => setSelectedPurpose(e.target.value)}
+                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00a896] transition-colors"
+                >
+                  <option value="">Select Purpose</option>
+                  <option value="Study">Higher Education / Study</option>
+                  <option value="Work">Employment / Work</option>
+                  <option value="Visit">Tourism / Visit</option>
+                  <option value="PR">Permanent Residency</option>
+                  <option value="Business">Business / Investment</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-gray-500">Visa Type</label>
+                <select
+                  value={selectedVisaType}
+                  onChange={(e) => setSelectedVisaType(e.target.value)}
+                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00a896] transition-colors"
+                >
+                  <option value="">Select Visa Type</option>
+                  <option value="Student Visa">Student Visa</option>
+                  <option value="Work Permit">Work Permit</option>
+                  <option value="Tourist Visa">Tourist / Visitor Visa</option>
+                  <option value="Express Entry">PR / Express Entry</option>
+                  <option value="Digital Nomad">Digital Nomad Visa</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-gray-500">My Location</label>
+                <select
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00a896] transition-colors"
+                >
+                  <option value="">Select City</option>
+                  <option value="Mumbai">Mumbai, India</option>
+                  <option value="Delhi">Delhi, India</option>
+                  <option value="Bangalore">Bangalore, India</option>
+                  <option value="Hyderabad">Hyderabad, India</option>
+                  <option value="Punjab">Punjab, India</option>
+                </select>
+              </div>
+
+              <button
                 type="submit"
-                className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                className="w-full bg-[#00a896] hover:bg-[#009485] text-white font-bold text-sm px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shadow-md"
               >
                 <Search className="w-4 h-4" />
-                <span>Search</span>
+                Search
               </button>
-            </div>
-          </form>
+            </form>
+          </div>
 
-          {/* Popular Searches Pills */}
-          <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-            <span className="font-bold text-slate-600">Popular Searches:</span>
-            <a href="/find-experts?q=Canada+Study+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">Canada Study Visa</a>
-            <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=UK+Visitor+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">UK Visitor Visa</a>
-            <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=Australia+PR" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">Australia PR</a>
-            <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=USA+Tourist+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">USA Tourist Visa</a>
-            <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=Schengen+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">Schengen Visa</a>
+          {/* IELTS Sidebar Ad */}
+          <div className="lg:col-span-1">
+            <a href="/ielts" className="relative bg-[#e8f4fd] border border-blue-200 rounded-2xl overflow-hidden flex flex-col items-center p-4 shadow-sm hover:shadow-md transition-shadow group block">
+              <p className="text-[11px] font-bold text-blue-400 uppercase tracking-widest mb-1">Sponsored</p>
+              <h4 className="text-[17px] font-extrabold text-gray-900 text-center leading-tight">IELTS<br /><span className="text-[#1a73e8]">Made Easy</span></h4>
+              <p className="text-gray-500 text-xs text-center mt-1 mb-3">Achieve your dream score!</p>
+              <div className="relative w-full h-28 rounded-xl overflow-hidden mb-3">
+                <img
+                  src="https://images.unsplash.com/photo-1580894894513-541e068a3e2b?w=400&auto=format&fit=crop&q=80"
+                  alt="IELTS coaching"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <span className="bg-[#1a73e8] text-white font-bold text-sm px-5 py-2 rounded-lg w-full text-center">
+                Book Now
+              </span>
+            </a>
           </div>
         </div>
 
-        {/* ========================================================================= */}
-        {/* 4. MAIN BODY GRID: 2 COLUMNS (LEFT 75%, RIGHT SIDEBAR 25%) */}
-        {/* ========================================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          
-          {/* ========================================================================= */}
-          {/* LEFT MAIN CONTENT COLUMN (LG:COL-SPAN-9) */}
-          {/* ========================================================================= */}
-          <div className="lg:col-span-9 space-y-8">
-            
-            {/* SECTION 4A: FREE TOOLS & RESOURCES (6 CARDS) */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-[15px] font-bold text-gray-900">Free Tools & Resources</h2>
-                <a href="/migration-tools" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
-                  View all Tools <ChevronRight className="w-3.5 h-3.5" />
-                </a>
+        {/* ======================================================= */}
+        {/* 4. POPULAR DESTINATIONS */}
+        {/* ======================================================= */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-[15px] font-bold text-gray-900">Popular Destinations</h2>
+            <a href="/visa-guide" className="text-[13px] font-medium text-[#1a73e8] flex items-center gap-0.5 hover:underline">
+              View All Countries <ChevronRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          <div className="flex items-start justify-between gap-2 overflow-x-auto no-scrollbar pb-1">
+            {destinations.map((d) => (
+              <a
+                key={d.name}
+                href={d.href}
+                className="flex flex-col items-center gap-2 min-w-[70px] hover:-translate-y-1 transition-transform group"
+              >
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-100 shadow-sm group-hover:border-[#00a896] transition-colors">
+                  <img
+                    src={`https://flagcdn.com/w80/${d.flag}.png`}
+                    alt={d.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="text-[12px] font-medium text-gray-700 text-center">{d.name}</span>
+              </a>
+            ))}
+            {/* More */}
+            <a href="/visa-guide" className="flex flex-col items-center gap-2 min-w-[70px] hover:-translate-y-1 transition-transform group">
+              <div className="w-14 h-14 rounded-full border-2 border-gray-200 flex items-center justify-center text-gray-400 group-hover:border-[#1a73e8] group-hover:text-[#1a73e8] transition-colors bg-gray-50">
+                <span className="text-[22px] leading-none">···</span>
               </div>
+              <span className="text-[12px] font-medium text-gray-700 text-center">More</span>
+            </a>
+          </div>
+        </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                {/* 1. Visa Readiness Check */}
-                <a href="/services/apply-visa" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Visa Readiness Check</h3>
-                </a>
+        {/* ======================================================= */}
+        {/* 5. FEATURED CLASSIFIEDS */}
+        {/* ======================================================= */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-[15px] font-bold text-gray-900">Featured Classifieds</h2>
+            <a href="/classifieds" className="text-[13px] font-medium text-[#1a73e8] flex items-center gap-0.5 hover:underline">
+              View All <ChevronRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
 
-                {/* 2. Document Checklist */}
-                <a href="/services/visa-documentation" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Document Checklist</h3>
-                </a>
+          {/* Filter tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+            {classifiedTabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all shrink-0 cursor-pointer ${
+                  activeTab === tab
+                    ? 'bg-[#111827] text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
 
-                {/* 3. Visa Cost Calculator */}
-                <a href="/migration-tools" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
-                    <Calculator className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Visa Cost Calculator</h3>
-                </a>
-
-                {/* 4. Processing Time Checker */}
-                <a href="/migration-tools" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Processing Time Checker</h3>
-                </a>
-
-                {/* 5. Visa Path Finder */}
-                <a href="/services/apply-visa" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
-                    <Compass className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Visa Path Finder</h3>
-                </a>
-
-                {/* 6. Refusal Reasons Guide */}
-                <a href="/support" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
-                    <AlertCircle className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Refusal Reasons Guide</h3>
-                </a>
-              </div>
-            </div>
-
-            {/* SECTION 4B: POPULAR DESTINATIONS (7 FLAG CARDS) */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-[15px] font-bold text-gray-900">Popular Destinations</h2>
-                <a href="/visa-guide" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
-                  View all Countries <ChevronRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
-                {/* 1. Canada */}
-                <a href="/visa-guide/canada" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
-                    <img src="https://flagcdn.com/w80/ca.png" alt="Canada Flag" className="w-full h-full object-cover rounded-full" />
-                  </div>
-                  <div>
-                    <h3 className="text-[12px] font-semibold text-gray-900">Canada</h3>
-                    <p className="text-[10px] text-gray-500">Study, Work, PR</p>
-                  </div>
-                </a>
-
-                {/* 2. UK */}
-                <a href="/visa-guide/uk" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
-                    <img src="https://flagcdn.com/w80/gb.png" alt="UK Flag" className="w-full h-full object-cover rounded-full" />
-                  </div>
-                  <div>
-                    <h3 className="text-[12px] font-semibold text-gray-900">UK</h3>
-                    <p className="text-[10px] text-gray-500">Study, Work, Visit</p>
-                  </div>
-                </a>
-
-                {/* 3. USA */}
-                <a href="/visa-guide/usa" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
-                    <img src="https://flagcdn.com/w80/us.png" alt="USA Flag" className="w-full h-full object-cover rounded-full" />
-                  </div>
-                  <div>
-                    <h3 className="text-[12px] font-semibold text-gray-900">USA</h3>
-                    <p className="text-[10px] text-gray-500">Study, Work, Visit</p>
-                  </div>
-                </a>
-
-                {/* 4. Australia */}
-                <a href="/visa-guide/australia" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
-                    <img src="https://flagcdn.com/w80/au.png" alt="Australia Flag" className="w-full h-full object-cover rounded-full" />
-                  </div>
-                  <div>
-                    <h3 className="text-[12px] font-semibold text-gray-900">Australia</h3>
-                    <p className="text-[10px] text-gray-500">Study, Work, PR</p>
-                  </div>
-                </a>
-
-                {/* 5. Germany */}
-                <a href="/visa-guide/germany" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
-                    <img src="https://flagcdn.com/w80/de.png" alt="Germany Flag" className="w-full h-full object-cover rounded-full" />
-                  </div>
-                  <div>
-                    <h3 className="text-[12px] font-semibold text-gray-900">Germany</h3>
-                    <p className="text-[10px] text-gray-500">Study, Work</p>
-                  </div>
-                </a>
-
-                {/* 6. New Zealand */}
-                <a href="/visa-guide/new-zealand" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
-                    <img src="https://flagcdn.com/w80/nz.png" alt="New Zealand Flag" className="w-full h-full object-cover rounded-full" />
-                  </div>
-                  <div>
-                    <h3 className="text-[12px] font-semibold text-gray-900">New Zealand</h3>
-                    <p className="text-[10px] text-gray-500">Study, Work, PR</p>
-                  </div>
-                </a>
-
-                {/* 7. More Countries */}
-                <a href="/visa-guide" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-white text-gray-400 flex items-center justify-center shadow-sm border border-gray-200 group-hover:border-[#1a73e8] group-hover:text-[#1a73e8] transition-all">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-[12px] font-semibold text-gray-900">More Countries</h3>
-                    <p className="text-[10px] text-[#1a73e8] font-medium">Explore Now</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-            {/* SECTION 4C: FEATURED VISA PACKAGES & DEALS */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-[15px] font-bold text-gray-900">Featured Visa Packages & Deals</h2>
-                  <span className="bg-red-100 text-red-600 text-[10px] font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                    🔥 Hot Deals
+          {/* Classifieds Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {classifieds.map((item, i) => (
+              <a
+                key={i}
+                href="/classifieds"
+                className="group bg-gray-50 border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all"
+              >
+                <div className="relative h-28 overflow-hidden">
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <span className={`absolute top-2 left-2 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ${item.badgeColor}`}>
+                    {item.badge}
                   </span>
                 </div>
-                <a href="/services/apply-visa" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
-                  View all Deals <ChevronRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              {/* Classified Filter Tabs */}
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-xs">
-                {['All Deals', 'Student Visa', 'PR Express Entry', 'Work Permits', 'Schengen & Europe', 'Business Visa'].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveClassifiedTab(tab)}
-                    className={`px-3.5 py-1.5 rounded-full font-bold transition-all shrink-0 cursor-pointer ${
-                      activeClassifiedTab === tab
-                        ? 'bg-[#00a896] text-white shadow-sm'
-                        : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-
-              {/* 3 Featured Deal Cards (1:1 Exact Match with User Screenshot) */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
-                {/* 1. Australia Student Visa Package */}
-                <a href="/services/apply-visa" className="relative rounded-[24px] overflow-hidden p-5 h-[345px] flex flex-col justify-between group/deal cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 bg-[#050914] border border-white/5">
-                  {/* Right Aligned Landmark Photo */}
-                  <img 
-                    src="https://images.unsplash.com/photo-1523428096881-5bd79d04300f?q=80&w=800&auto=format&fit=crop" 
-                    alt="Australia Student Visa Package" 
-                    className="absolute right-0 top-0 h-full w-[85%] object-cover object-right group-hover/deal:scale-105 transition-transform duration-700 opacity-95" 
-                  />
-                  {/* Left to Right Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#050914] via-[#050914]/90 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050914] via-transparent to-[#050914]/30" />
-
-                  {/* Top Pill Badge */}
-                  <div className="relative z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-md bg-[#420a10]/90 border border-red-500/20 shadow-md">
-                      <span className="text-sm">🔥</span> Hot Deal
-                    </span>
+                <div className="p-2.5 space-y-1">
+                  <h3 className="text-[12px] font-semibold text-gray-900 leading-tight line-clamp-2">{item.title}</h3>
+                  <p className="text-[10px] text-gray-400">{item.location}</p>
+                  <div className="flex items-center justify-between">
+                    {item.time && <span className="text-[10px] text-gray-400">{item.time}</span>}
+                    {item.cta && <span className="text-[10px] font-bold text-[#00a896]">{item.cta}</span>}
+                    <span className={`text-[11px] font-bold ${item.priceColor}`}>{item.price}</span>
                   </div>
-
-                  {/* Content Area */}
-                  <div className="relative z-10 space-y-3">
-                    <div>
-                      <h3 className="text-[22px] font-bold text-white leading-[1.2] tracking-tight group-hover/deal:text-blue-300 transition-colors max-w-[210px]">
-                        Australia <br />
-                        Student Visa <br />
-                        Package
-                      </h3>
-                      <p className="text-[13.5px] text-slate-300 font-normal leading-snug mt-2">
-                        Visa + SOP + <br />
-                        Documentation
-                      </p>
-                    </div>
-
-                    {/* Star Rating */}
-                    <div className="flex items-center gap-1.5 text-xs">
-                      <div className="flex items-center text-[#f59e0b] gap-0.5">
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                      </div>
-                      <span className="font-bold text-white ml-1 text-sm">4.9</span>
-                      <span className="text-slate-300 text-xs">(128)</span>
-                    </div>
-
-                    {/* Price & Circular White Button */}
-                    <div className="flex items-end justify-between pt-1">
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="text-[25px] font-bold text-white tracking-tight">₹24,999</span>
-                        <span className="text-xs text-slate-400 font-normal line-through">₹29,999</span>
-                      </div>
-                      <div className="w-11 h-11 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-lg shrink-0 group-hover/deal:scale-110 transition-transform">
-                        <ChevronRight className="w-5 h-5 text-[#2563eb] stroke-[2.5]" />
-                      </div>
-                    </div>
-                  </div>
-                </a>
-
-                {/* 2. Canada PR Express Entry */}
-                <a href="/services/apply-visa" className="relative rounded-[24px] overflow-hidden p-5 h-[345px] flex flex-col justify-between group/deal cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 bg-[#050914] border border-white/5">
-                  {/* Right Aligned Landmark Photo */}
-                  <img 
-                    src="https://images.unsplash.com/photo-1517935703635-27c7078861d6?q=80&w=800&auto=format&fit=crop" 
-                    alt="Canada PR Express Entry" 
-                    className="absolute right-0 top-0 h-full w-[85%] object-cover object-right group-hover/deal:scale-105 transition-transform duration-700 opacity-95" 
-                  />
-                  {/* Left to Right Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#050914] via-[#050914]/90 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050914] via-transparent to-[#050914]/30" />
-
-                  {/* Top Pill Badge */}
-                  <div className="relative z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-md bg-[#1a222e]/90 border border-slate-700/60 shadow-md">
-                      <span className="text-amber-400 text-sm font-bold">⚡</span> Limited Time
-                    </span>
-                  </div>
-
-                  {/* Content Area */}
-                  <div className="relative z-10 space-y-3">
-                    <div>
-                      <h3 className="text-[22px] font-bold text-white leading-[1.2] tracking-tight group-hover/deal:text-blue-300 transition-colors max-w-[210px]">
-                        Canada PR <br />
-                        Express <br />
-                        Entry
-                      </h3>
-                      <p className="text-[13.5px] text-slate-300 font-normal leading-snug mt-2">
-                        Fast-track your <br />
-                        PR process
-                      </p>
-                    </div>
-
-                    {/* Star Rating */}
-                    <div className="flex items-center gap-1.5 text-xs">
-                      <div className="flex items-center text-[#f59e0b] gap-0.5">
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                      </div>
-                      <span className="font-bold text-white ml-1 text-sm">4.8</span>
-                      <span className="text-slate-300 text-xs">(96)</span>
-                    </div>
-
-                    {/* Price & Circular White Button */}
-                    <div className="flex items-end justify-between pt-1">
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="text-[25px] font-bold text-white tracking-tight">₹49,999</span>
-                        <span className="text-xs text-slate-400 font-normal line-through">₹59,999</span>
-                      </div>
-                      <div className="w-11 h-11 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-lg shrink-0 group-hover/deal:scale-110 transition-transform">
-                        <ChevronRight className="w-5 h-5 text-[#2563eb] stroke-[2.5]" />
-                      </div>
-                    </div>
-                  </div>
-                </a>
-
-                {/* 3. UK Skilled Worker Visa */}
-                <a href="/services/apply-visa" className="relative rounded-[24px] overflow-hidden p-5 h-[345px] flex flex-col justify-between group/deal cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 bg-[#050914] border border-white/5">
-                  {/* Right Aligned Landmark Photo */}
-                  <img 
-                    src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=800&auto=format&fit=crop" 
-                    alt="UK Skilled Worker Visa" 
-                    className="absolute right-0 top-0 h-full w-[85%] object-cover object-right group-hover/deal:scale-105 transition-transform duration-700 opacity-95" 
-                  />
-                  {/* Left to Right Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#050914] via-[#050914]/90 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050914] via-transparent to-[#050914]/30" />
-
-                  {/* Top Pill Badge */}
-                  <div className="relative z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-md bg-[#380b22]/90 border border-rose-500/20 shadow-md">
-                      <span className="text-rose-400 text-sm font-bold">🎯</span> Best Value
-                    </span>
-                  </div>
-
-                  {/* Content Area */}
-                  <div className="relative z-10 space-y-3">
-                    <div>
-                      <h3 className="text-[22px] font-bold text-white leading-[1.2] tracking-tight group-hover/deal:text-blue-300 transition-colors max-w-[210px]">
-                        UK Skilled <br />
-                        Worker Visa <br />
-                        &nbsp;
-                      </h3>
-                      <p className="text-[13.5px] text-slate-300 font-normal leading-snug mt-2">
-                        End-to-end <br />
-                        assistance
-                      </p>
-                    </div>
-
-                    {/* Star Rating */}
-                    <div className="flex items-center gap-1.5 text-xs">
-                      <div className="flex items-center text-[#f59e0b] gap-0.5">
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                      </div>
-                      <span className="font-bold text-white ml-1 text-sm">4.7</span>
-                      <span className="text-slate-300 text-xs">(74)</span>
-                    </div>
-
-                    {/* Price & Circular White Button */}
-                    <div className="flex items-end justify-between pt-1">
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="text-[25px] font-bold text-white tracking-tight">₹38,999</span>
-                        <span className="text-xs text-slate-400 font-normal line-through">₹44,999</span>
-                      </div>
-                      <div className="w-11 h-11 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-lg shrink-0 group-hover/deal:scale-110 transition-transform">
-                        <ChevronRight className="w-5 h-5 text-[#2563eb] stroke-[2.5]" />
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-            {/* SECTION 4D: FEATURED CONSULTANTS */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-[15px] font-bold text-gray-900">Featured Consultants</h2>
-                <a href="/find-experts" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
-                  View all Consultants <ChevronRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {/* 1. GlobalWay Immigration */}
-                <div className="bg-gray-50 rounded-xl border border-gray-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-gray-100">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-600 to-red-500 flex items-center justify-center text-white font-bold text-xs">
-                      G
-                    </div>
-                    <span className="font-semibold text-xs text-gray-900">GlobalWay <span className="font-normal text-gray-500">Immigration</span></span>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-semibold text-gray-900">GlobalWay Immigration</h3>
-                    <p className="text-[10px] text-gray-500 flex items-center justify-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-gray-400" /> Hyderabad, India
-                    </p>
-                  </div>
-                  <div className="text-[10px] font-medium text-amber-500 flex items-center justify-center gap-1">
-                    <span>4.9</span>
-                    <span>⭐⭐⭐⭐⭐</span>
-                    <span className="text-gray-400">(128)</span>
-                  </div>
-                  <p className="text-[10px] text-gray-500">Canada, UK, Australia</p>
-                  <p className="text-[10px] font-medium text-[#00a896]">👥 1200+ Clients</p>
-                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-medium text-xs py-2 rounded-xl transition-all duration-200 text-center">
-                    View Profile
-                  </a>
                 </div>
-
-                {/* 2. MapleVisa Solutions */}
-                <div className="bg-gray-50 rounded-xl border border-gray-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-gray-100">
-                    <span className="text-red-600 text-base">🍁</span>
-                    <span className="font-semibold text-xs text-gray-900">MapleVisa <span className="font-normal text-gray-500">Solutions</span></span>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-semibold text-gray-900">MapleVisa Solutions</h3>
-                    <p className="text-[10px] text-gray-500 flex items-center justify-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-gray-400" /> Bangalore, India
-                    </p>
-                  </div>
-                  <div className="text-[10px] font-medium text-amber-500 flex items-center justify-center gap-1">
-                    <span>4.8</span>
-                    <span>⭐⭐⭐⭐⭐</span>
-                    <span className="text-gray-400">(95)</span>
-                  </div>
-                  <p className="text-[10px] text-gray-500">Canada, USA, UK</p>
-                  <p className="text-[10px] font-medium text-[#00a896]">👥 850+ Clients</p>
-                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-medium text-xs py-2 rounded-xl transition-all duration-200 text-center">
-                    View Profile
-                  </a>
-                </div>
-
-                {/* 3. FuturePath Advisors */}
-                <div className="bg-gray-50 rounded-xl border border-gray-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-gray-100">
-                    <Compass className="w-5 h-5 text-[#00a896]" />
-                    <span className="font-semibold text-xs text-gray-900">FuturePath <span className="font-normal text-gray-500">Advisors</span></span>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-semibold text-gray-900">FuturePath Advisors</h3>
-                    <p className="text-[10px] text-gray-500 flex items-center justify-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-gray-400" /> Delhi, India
-                    </p>
-                  </div>
-                  <div className="text-[10px] font-medium text-amber-500 flex items-center justify-center gap-1">
-                    <span>4.9</span>
-                    <span>⭐⭐⭐⭐⭐</span>
-                    <span className="text-gray-400">(110)</span>
-                  </div>
-                  <p className="text-[10px] text-gray-500">Australia, NZ, Canada</p>
-                  <p className="text-[10px] font-medium text-[#00a896]">👥 950+ Clients</p>
-                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-medium text-xs py-2 rounded-xl transition-all duration-200 text-center">
-                    View Profile
-                  </a>
-                </div>
-
-                {/* 4. VisaExperts Global */}
-                <div className="bg-gray-50 rounded-xl border border-gray-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-gray-100">
-                    <Plane className="w-5 h-5 text-[#00a896]" />
-                    <span className="font-semibold text-xs text-gray-900">VisaExperts <span className="font-normal text-gray-500">Global</span></span>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-semibold text-gray-900">VisaExperts Global</h3>
-                    <p className="text-[10px] text-gray-500 flex items-center justify-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-gray-400" /> Mumbai, India
-                    </p>
-                  </div>
-                  <div className="text-[10px] font-medium text-amber-500 flex items-center justify-center gap-1">
-                    <span>4.7</span>
-                    <span>⭐⭐⭐⭐⭐</span>
-                    <span className="text-gray-400">(76)</span>
-                  </div>
-                  <p className="text-[10px] text-gray-500">USA, UK, Schengen</p>
-                  <p className="text-[10px] font-medium text-[#00a896]">👥 700+ Clients</p>
-                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-medium text-xs py-2 rounded-xl transition-all duration-200 text-center">
-                    View Profile
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION 4E: LATEST FROM KNOWLEDGE CENTER */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-[15px] font-bold text-gray-900">Latest from Knowledge Center</h2>
-                <a href="/visa-guide" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
-                  View all Articles <ChevronRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {/* 1. Canada Study Visa */}
-                <a href="/visa-guide/canada/student" className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all group">
-                  <div className="h-28 overflow-hidden relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=500&auto=format&fit=crop&q=80" 
-                      alt="Canada Flag Skyline" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-semibold text-gray-900 group-hover:text-[#1a73e8] transition-colors leading-snug">
-                      Canada Study Visa Requirements 2026
-                    </h3>
-                    <p className="text-[10px] text-gray-400">Updated: Aug 1, 2026</p>
-                  </div>
-                </a>
-
-                {/* 2. UK Visitor Visa */}
-                <a href="/visa-guide/uk/tourist" className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all group">
-                  <div className="h-28 overflow-hidden relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&auto=format&fit=crop&q=80" 
-                      alt="UK Big Ben" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-semibold text-gray-900 group-hover:text-[#1a73e8] transition-colors leading-snug">
-                      UK Visitor Visa Complete Guide
-                    </h3>
-                    <p className="text-[10px] text-gray-400">Updated: Aug 1, 2026</p>
-                  </div>
-                </a>
-
-                {/* 3. Australia PR Process */}
-                <a href="/visa-guide/australia/pr" className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all group">
-                  <div className="h-28 overflow-hidden relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&auto=format&fit=crop&q=80" 
-                      alt="Australia Opera House" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-semibold text-gray-900 group-hover:text-[#1a73e8] transition-colors leading-snug">
-                      Australia PR Process Step by Step
-                    </h3>
-                    <p className="text-[10px] text-gray-400">Updated: Jul 31, 2026</p>
-                  </div>
-                </a>
-
-                {/* 4. Top 10 Reasons for Visa Refusal */}
-                <a href="/support" className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all group">
-                  <div className="h-28 overflow-hidden relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=500&auto=format&fit=crop&q=80" 
-                      alt="Passport Documents" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-semibold text-gray-900 group-hover:text-[#1a73e8] transition-colors leading-snug">
-                      Top 10 Reasons for Visa Refusal
-                    </h3>
-                    <p className="text-[10px] text-gray-400">Updated: Jul 30, 2026</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-
+              </a>
+            ))}
           </div>
-
-          {/* ========================================================================= */}
-          {/* RIGHT SIDEBAR COLUMN (LG:COL-SPAN-3) */}
-          {/* ========================================================================= */}
-          <div className="lg:col-span-3 space-y-5">
-            
-            {/* Sidebar Item 1: Luxury Ad Banner 1 (300 x 250) */}
-            <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden min-h-[205px] block group shadow-md border border-amber-400/30">
-              <img 
-                src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&auto=format&fit=crop&q=80" 
-                alt="Luxury Real Estate & PR Residency Ad" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 absolute inset-0"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4 flex flex-col justify-end text-white space-y-1">
-                <span className="bg-amber-400 text-slate-950 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider w-fit">SPONSORED AD</span>
-                <h4 className="text-xs font-black text-white leading-tight">Europe Golden Passport & Luxury Estate</h4>
-                <p className="text-[10px] text-slate-200 font-medium">Invest & gain permanent residency in 90 days.</p>
-                <span className="text-[11px] font-extrabold text-amber-300 pt-0.5 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                  Learn More →
-                </span>
-              </div>
-            </a>
-
-            {/* Sidebar Item 2: Are you a Consultant? Banner Card */}
-            <div className="bg-[#00a896] text-white rounded-2xl p-5 shadow-sm overflow-hidden relative flex flex-col justify-between min-h-[175px]">
-              <div className="space-y-1.5 relative z-10 max-w-[165px]">
-                <h3 className="text-sm font-extrabold tracking-tight text-white leading-snug">
-                  Are you a Consultant?
-                </h3>
-                <p className="text-[11px] font-medium text-teal-50 leading-normal opacity-95">
-                  Get discovered by thousands of people looking for visa help.
-                </p>
-              </div>
-
-              <div className="pt-3 relative z-10">
-                <a 
-                  href="/register-provider" 
-                  className="inline-block bg-white text-[#00a896] hover:bg-teal-50 font-extrabold text-xs px-4 py-2 rounded-xl shadow-sm transition-all hover:scale-105 active:scale-95"
-                >
-                  Join VisaFormula
-                </a>
-              </div>
-
-              {/* Businessman illustration matching reference image */}
-              <div className="absolute bottom-0 right-1 w-24 h-36 opacity-95 pointer-events-none">
-                <img 
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&auto=format&fit=crop&q=80" 
-                  alt="Businessman Consultant" 
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-            </div>
-
-            {/* Sidebar Item 3: Luxury Ad Banner 2 (300 x 250) */}
-            <a href="/tours" className="relative rounded-2xl overflow-hidden min-h-[205px] block group shadow-md border border-cyan-400/30">
-              <img 
-                src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80" 
-                alt="First Class Business Flight Ad" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 absolute inset-0"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent p-4 flex flex-col justify-end text-white space-y-1">
-                <span className="bg-cyan-400 text-slate-950 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider w-fit">SPONSORED AD</span>
-                <h4 className="text-xs font-black text-white leading-tight">Fly First Class World-Wide</h4>
-                <p className="text-[10px] text-cyan-100 font-medium">Exclusive corporate & VIP flight deals for expats.</p>
-                <span className="text-[11px] font-extrabold text-cyan-300 pt-0.5 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                  Book VIP Flight →
-                </span>
-              </div>
-            </a>
-
-            {/* Sidebar Item 4: Get Your DREAM VISA Banner */}
-            <div className="relative bg-gradient-to-br from-[#0b2545] via-[#0f2d57] to-[#1e3a8a] text-white rounded-2xl p-5 shadow-md overflow-hidden min-h-[205px] flex flex-col justify-between border border-blue-900/40">
-              <div className="relative z-10 space-y-1">
-                <h3 className="text-sm font-extrabold tracking-tight text-white uppercase leading-snug">
-                  Get Your <br />
-                  <span className="text-[#00b4d8] text-base font-black">DREAM VISA</span> <br />
-                  with the Right Guidance
-                </h3>
-              </div>
-              
-              <div className="pt-2 relative z-10">
-                <a 
-                  href="/find-experts" 
-                  className="inline-block bg-white hover:bg-slate-100 text-[#0b2545] font-extrabold text-xs px-3.5 py-2 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95 whitespace-nowrap cursor-pointer"
-                >
-                  Find an Expert
-                </a>
-              </div>
-
-              {/* Passenger Airplane in sky graphic matching reference image */}
-              <div className="absolute bottom-0 right-0 w-36 h-28 opacity-85 pointer-events-none">
-                <img 
-                  src="https://images.unsplash.com/photo-1542296332-2e4473faf563?w=500&auto=format&fit=crop&q=80" 
-                  alt="Commercial Passenger Airplane taking off" 
-                  className="w-full h-full object-cover object-bottom"
-                />
-              </div>
-            </div>
-
-            {/* Sidebar Item 5: Stay Updated Newsletter Card */}
-            <div className="bg-[#00a896] text-white rounded-2xl p-5 shadow-sm space-y-3 relative overflow-hidden">
-              <div className="space-y-1 relative z-10">
-                <h3 className="text-sm font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                  <span>Stay Updated</span>
-                </h3>
-                <p className="text-[11px] font-medium text-teal-50 leading-normal opacity-95">
-                  Get the latest visa updates and immigration news.
-                </p>
-              </div>
-
-              <form onSubmit={handleNewsletterSubmit} className="space-y-2 pt-1 relative z-10">
-                <input 
-                  type="email" 
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  placeholder="Enter your email" 
-                  required
-                  className="w-full bg-white text-slate-900 placeholder:text-slate-400 text-xs font-semibold px-3.5 py-2 rounded-lg outline-none border border-slate-200 focus:border-slate-400 transition-all"
-                />
-                <button 
-                  type="submit"
-                  className="w-full bg-black hover:bg-slate-900 text-white font-extrabold text-xs py-2 rounded-lg transition-all shadow-sm active:scale-95 cursor-pointer"
-                >
-                  {newsletterSuccess ? 'Subscribed ✓' : 'Subscribe'}
-                </button>
-              </form>
-
-              {/* Envelope graphic matching reference image */}
-              <div className="absolute bottom-2 right-2 w-12 h-12 opacity-40 pointer-events-none">
-                <span className="text-3xl">📩</span>
-              </div>
-            </div>
-
-          </div>
-
         </div>
 
-        {/* ========================================================================= */}
-        {/* 5. BOTTOM WIDE BANNER: APPLY FOR INTERNATIONAL EDUCATION LOANS */}
-        {/* ========================================================================= */}
-        <div className="relative bg-[#0d5294] text-white rounded-2xl p-6 sm:p-7 shadow-md overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 max-w-2xl">
-            <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-              Apply for International Education Loans
-            </h2>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-blue-100">
-              <span>• Low Interest Rates</span>
-              <span>• Quick Approval</span>
-              <span>• 100% Online Process</span>
+        {/* ======================================================= */}
+        {/* 6. CTA ROW: VISA READINESS + DOCUMENT CHECKLIST */}
+        {/* ======================================================= */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          {/* Left: Visa Readiness */}
+          <div className="bg-[#00a896] rounded-2xl p-6 flex items-center justify-between shadow-md overflow-hidden relative">
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
+            </div>
+            <div className="relative z-10 space-y-2 max-w-[210px]">
+              <h3 className="text-white font-extrabold text-[17px] leading-snug">Check Your Visa Readiness in Just 2 Minutes</h3>
+              <p className="text-teal-100 text-[12px]">Get your free score now!</p>
+              <a
+                href="/services/apply-visa"
+                className="inline-block bg-white text-[#00a896] font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-teal-50 transition-colors shadow-md"
+              >
+                Check Now
+              </a>
+            </div>
+            {/* Circular gauge */}
+            <div className="relative z-10 w-28 h-28 flex-shrink-0">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                <path
+                  className="text-white/20 stroke-current"
+                  strokeWidth="3.2"
+                  fill="none"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  className="text-white stroke-current"
+                  strokeDasharray="72, 100"
+                  strokeWidth="3.2"
+                  strokeLinecap="round"
+                  fill="none"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-white font-black text-3xl leading-none">72</span>
+                <span className="text-white/70 text-[11px]">/100</span>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 shrink-0">
-            <a 
-              href="/services/financial-proof" 
-              className="bg-[#fbc02d] hover:bg-yellow-400 text-slate-950 font-black text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
-            >
-              Check Eligibility
-            </a>
-            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/40 shadow-sm hidden sm:block">
-              <img 
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80" 
-                alt="Student Loan Avatar" 
-                className="w-full h-full object-cover" 
-              />
+          {/* Right: Download Checklist */}
+          <div className="bg-white rounded-2xl p-6 flex items-center justify-between shadow-sm border border-gray-100 overflow-hidden relative">
+            <div className="space-y-2">
+              <h3 className="text-gray-900 font-extrabold text-[17px] leading-snug">Download Free<br />Visa Document Checklist</h3>
+              <p className="text-gray-500 text-[12px]">Country-wise checklist for a hassle-free application.</p>
+              <a
+                href="/services/visa-documentation"
+                className="inline-flex items-center gap-2 bg-[#00a896] text-white font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-[#009485] transition-colors shadow-md"
+              >
+                <Download className="w-4 h-4" />
+                Download Now
+              </a>
             </div>
+            {/* Illustration */}
+            <div className="w-28 h-28 flex-shrink-0 flex items-center justify-center">
+              <div className="relative">
+                <div className="w-20 h-24 bg-blue-50 border-2 border-blue-200 rounded-lg flex flex-col items-center justify-center gap-1.5 p-2">
+                  <FileText className="w-8 h-8 text-[#00a896]" />
+                  {[1,2,3].map(j => (
+                    <div key={j} className="flex items-center gap-1 w-full">
+                      <Check className="w-2.5 h-2.5 text-green-500 flex-shrink-0" />
+                      <div className="h-1.5 bg-gray-200 rounded flex-1" />
+                    </div>
+                  ))}
+                </div>
+                <div className="absolute -top-2 -right-2 w-7 h-7 bg-orange-400 rounded-full flex items-center justify-center shadow">
+                  <Download className="w-3.5 h-3.5 text-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ======================================================= */}
+        {/* 7. FOOTER STATS BAR */}
+        {/* ======================================================= */}
+        <div className="bg-white rounded-2xl px-6 py-4 shadow-sm border border-gray-100">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            {[
+              { icon: <ShieldCheck className="w-5 h-5 text-[#00a896]" />, label: 'Verified & Trusted', sub: 'Consultants' },
+              { icon: <Globe className="w-5 h-5 text-[#00a896]" />, label: 'Wide Range of', sub: 'Visa Services' },
+              { icon: <FileText className="w-5 h-5 text-[#00a896]" />, label: 'Updated Visa', sub: 'Information' },
+              { icon: <CheckCircle2 className="w-5 h-5 text-[#00a896]" />, label: 'Secure & Reliable', sub: 'Platform' },
+              { icon: <Clock className="w-5 h-5 text-[#00a896]" />, label: '24/7 Support &', sub: 'Guidance' },
+            ].map((s, i) => (
+              <div key={i} className="flex items-center gap-2.5 flex-1 min-w-[140px]">
+                <div className="w-9 h-9 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0">
+                  {s.icon}
+                </div>
+                <div>
+                  <p className="text-[12px] font-semibold text-gray-800">{s.label}</p>
+                  <p className="text-[11px] text-gray-500">{s.sub}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
       </div>
-
-      {/* Auth Modal Portal trigger if needed */}
-      {showAuthModal && (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3">
-          <div className="relative w-full max-w-lg">
-            <button 
-              onClick={() => setShowAuthModal(false)}
-              className="absolute top-2 right-2 z-[10000] w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold"
-            >
-              ✕
-            </button>
-            <AuthModalPortalContent defaultTab="signup" onClose={() => setShowAuthModal(false)} />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -643,7 +643,9 @@ export function ConsultantDashboard() {
                                     </div>
                                     <span className="text-xs font-bold text-slate-600">Add custom metric</span>
                                 </div>
-                                     {/* Real Advisory & Client Booking Activity Center */}
+                            </div>
+
+                            {/* Real Advisory & Client Booking Activity Center */}
                             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-6">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
                                     <div>
@@ -687,7 +689,7 @@ export function ConsultantDashboard() {
                                         </button>
                                     </div>
                                 </div>
-                            </div>                            </div>
+                            </div>
                         </>
                     ) : activeTab === "pipeline" ? (
                         /* Kanban Client Pipeline View */

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   Search, ShieldCheck, FileText, Users, ArrowRight, CheckCircle2, 
   MapPin, Star, Calculator, Clock, Compass, AlertCircle, Sparkles, 
-  Send, Mail, ChevronRight, Filter, ChevronDown, Check, Building2, Briefcase, GraduationCap, Plane, Home as HomeIcon, X
+  Send, Mail, ChevronRight, Filter, ChevronDown, Check, Building2, Briefcase, GraduationCap, Plane, Home as HomeIcon, X, Globe
 } from 'lucide-react';
 import { AuthModalPortalContent } from '../interactive/AuthModalPortal';
 

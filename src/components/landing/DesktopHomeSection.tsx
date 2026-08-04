@@ -853,9 +853,9 @@ export function DesktopHomeSection() {
               <div className="pt-2 relative z-10">
                 <a 
                   href="/find-experts" 
-                  className="inline-flex items-center gap-1.5 bg-white hover:bg-slate-100 text-[#0b2545] font-extrabold text-xs px-4.5 py-2.5 rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                  className="inline-block bg-white hover:bg-slate-100 text-[#0b2545] font-extrabold text-xs px-3.5 py-2 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95 whitespace-nowrap cursor-pointer"
                 >
-                  <span>Find an Expert</span>
+                  Find an Expert
                 </a>
               </div>
 

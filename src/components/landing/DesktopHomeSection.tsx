@@ -488,15 +488,15 @@ export function DesktopHomeSection() {
             </div>
 
             {/* SECTION 4C: FEATURED VISA PACKAGES & DEALS */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Featured Visa Packages & Deals</h2>
-                  <span className="bg-red-100 text-red-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                  <h2 className="text-[15px] font-bold text-gray-900">Featured Visa Packages & Deals</h2>
+                  <span className="bg-red-100 text-red-600 text-[10px] font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     🔥 Hot Deals
                   </span>
                 </div>
-                <a href="/services/apply-visa" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                <a href="/services/apply-visa" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
                   View all Deals <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -700,109 +700,109 @@ export function DesktopHomeSection() {
             </div>
 
             {/* SECTION 4D: FEATURED CONSULTANTS */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Featured Consultants</h2>
-                <a href="/find-experts" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-[15px] font-bold text-gray-900">Featured Consultants</h2>
+                <a href="/find-experts" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
                   View all Consultants <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {/* 1. GlobalWay Immigration */}
-                <div className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-slate-100">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-600 to-red-500 flex items-center justify-center text-white font-black text-xs">
+                <div className="bg-gray-50 rounded-xl border border-gray-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
+                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-gray-100">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-600 to-red-500 flex items-center justify-center text-white font-bold text-xs">
                       G
                     </div>
-                    <span className="font-extrabold text-xs text-slate-900">GlobalWay <span className="font-semibold text-slate-500">Immigration</span></span>
+                    <span className="font-semibold text-xs text-gray-900">GlobalWay <span className="font-normal text-gray-500">Immigration</span></span>
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">GlobalWay Immigration</h3>
-                    <p className="text-[10px] font-semibold text-slate-500 flex items-center justify-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-slate-400" /> Hyderabad, India
+                    <h3 className="text-xs font-semibold text-gray-900">GlobalWay Immigration</h3>
+                    <p className="text-[10px] text-gray-500 flex items-center justify-center gap-1 mt-0.5">
+                      <MapPin className="w-3 h-3 text-gray-400" /> Hyderabad, India
                     </p>
                   </div>
-                  <div className="text-[10px] font-bold text-amber-500 flex items-center justify-center gap-1">
+                  <div className="text-[10px] font-medium text-amber-500 flex items-center justify-center gap-1">
                     <span>4.9</span>
                     <span>⭐⭐⭐⭐⭐</span>
-                    <span className="text-slate-400">(128)</span>
+                    <span className="text-gray-400">(128)</span>
                   </div>
-                  <p className="text-[10px] font-semibold text-slate-500">Canada, UK, Australia</p>
-                  <p className="text-[10px] font-bold text-[#00a896]">👥 1200+ Clients</p>
-                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-bold text-xs py-2 rounded-xl transition-all duration-200 shadow-2xs text-center">
+                  <p className="text-[10px] text-gray-500">Canada, UK, Australia</p>
+                  <p className="text-[10px] font-medium text-[#00a896]">👥 1200+ Clients</p>
+                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-medium text-xs py-2 rounded-xl transition-all duration-200 text-center">
                     View Profile
                   </a>
                 </div>
 
                 {/* 2. MapleVisa Solutions */}
-                <div className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-slate-100">
+                <div className="bg-gray-50 rounded-xl border border-gray-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
+                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-gray-100">
                     <span className="text-red-600 text-base">🍁</span>
-                    <span className="font-extrabold text-xs text-slate-900">MapleVisa <span className="font-semibold text-slate-500">Solutions</span></span>
+                    <span className="font-semibold text-xs text-gray-900">MapleVisa <span className="font-normal text-gray-500">Solutions</span></span>
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">MapleVisa Solutions</h3>
-                    <p className="text-[10px] font-semibold text-slate-500 flex items-center justify-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-slate-400" /> Bangalore, India
+                    <h3 className="text-xs font-semibold text-gray-900">MapleVisa Solutions</h3>
+                    <p className="text-[10px] text-gray-500 flex items-center justify-center gap-1 mt-0.5">
+                      <MapPin className="w-3 h-3 text-gray-400" /> Bangalore, India
                     </p>
                   </div>
-                  <div className="text-[10px] font-bold text-amber-500 flex items-center justify-center gap-1">
+                  <div className="text-[10px] font-medium text-amber-500 flex items-center justify-center gap-1">
                     <span>4.8</span>
                     <span>⭐⭐⭐⭐⭐</span>
-                    <span className="text-slate-400">(95)</span>
+                    <span className="text-gray-400">(95)</span>
                   </div>
-                  <p className="text-[10px] font-semibold text-slate-500">Canada, USA, UK</p>
-                  <p className="text-[10px] font-bold text-[#00a896]">👥 850+ Clients</p>
-                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-bold text-xs py-2 rounded-xl transition-all duration-200 shadow-2xs text-center">
+                  <p className="text-[10px] text-gray-500">Canada, USA, UK</p>
+                  <p className="text-[10px] font-medium text-[#00a896]">👥 850+ Clients</p>
+                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-medium text-xs py-2 rounded-xl transition-all duration-200 text-center">
                     View Profile
                   </a>
                 </div>
 
                 {/* 3. FuturePath Advisors */}
-                <div className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-slate-100">
+                <div className="bg-gray-50 rounded-xl border border-gray-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
+                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-gray-100">
                     <Compass className="w-5 h-5 text-[#00a896]" />
-                    <span className="font-extrabold text-xs text-slate-900">FuturePath <span className="font-semibold text-slate-500">Advisors</span></span>
+                    <span className="font-semibold text-xs text-gray-900">FuturePath <span className="font-normal text-gray-500">Advisors</span></span>
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">FuturePath Advisors</h3>
-                    <p className="text-[10px] font-semibold text-slate-500 flex items-center justify-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-slate-400" /> Delhi, India
+                    <h3 className="text-xs font-semibold text-gray-900">FuturePath Advisors</h3>
+                    <p className="text-[10px] text-gray-500 flex items-center justify-center gap-1 mt-0.5">
+                      <MapPin className="w-3 h-3 text-gray-400" /> Delhi, India
                     </p>
                   </div>
-                  <div className="text-[10px] font-bold text-amber-500 flex items-center justify-center gap-1">
+                  <div className="text-[10px] font-medium text-amber-500 flex items-center justify-center gap-1">
                     <span>4.9</span>
                     <span>⭐⭐⭐⭐⭐</span>
-                    <span className="text-slate-400">(110)</span>
+                    <span className="text-gray-400">(110)</span>
                   </div>
-                  <p className="text-[10px] font-semibold text-slate-500">Australia, NZ, Canada</p>
-                  <p className="text-[10px] font-bold text-[#00a896]">👥 950+ Clients</p>
-                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-bold text-xs py-2 rounded-xl transition-all duration-200 shadow-2xs text-center">
+                  <p className="text-[10px] text-gray-500">Australia, NZ, Canada</p>
+                  <p className="text-[10px] font-medium text-[#00a896]">👥 950+ Clients</p>
+                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-medium text-xs py-2 rounded-xl transition-all duration-200 text-center">
                     View Profile
                   </a>
                 </div>
 
                 {/* 4. VisaExperts Global */}
-                <div className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-slate-100">
+                <div className="bg-gray-50 rounded-xl border border-gray-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
+                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-gray-100">
                     <Plane className="w-5 h-5 text-[#00a896]" />
-                    <span className="font-extrabold text-xs text-slate-900">VisaExperts <span className="font-semibold text-slate-500">Global</span></span>
+                    <span className="font-semibold text-xs text-gray-900">VisaExperts <span className="font-normal text-gray-500">Global</span></span>
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">VisaExperts Global</h3>
-                    <p className="text-[10px] font-semibold text-slate-500 flex items-center justify-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-slate-400" /> Mumbai, India
+                    <h3 className="text-xs font-semibold text-gray-900">VisaExperts Global</h3>
+                    <p className="text-[10px] text-gray-500 flex items-center justify-center gap-1 mt-0.5">
+                      <MapPin className="w-3 h-3 text-gray-400" /> Mumbai, India
                     </p>
                   </div>
-                  <div className="text-[10px] font-bold text-amber-500 flex items-center justify-center gap-1">
+                  <div className="text-[10px] font-medium text-amber-500 flex items-center justify-center gap-1">
                     <span>4.7</span>
                     <span>⭐⭐⭐⭐⭐</span>
-                    <span className="text-slate-400">(76)</span>
+                    <span className="text-gray-400">(76)</span>
                   </div>
-                  <p className="text-[10px] font-semibold text-slate-500">USA, UK, Schengen</p>
-                  <p className="text-[10px] font-bold text-[#00a896]">👥 700+ Clients</p>
-                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-bold text-xs py-2 rounded-xl transition-all duration-200 shadow-2xs text-center">
+                  <p className="text-[10px] text-gray-500">USA, UK, Schengen</p>
+                  <p className="text-[10px] font-medium text-[#00a896]">👥 700+ Clients</p>
+                  <a href="/find-experts" className="block w-full bg-white hover:bg-[#00a896] text-[#00a896] hover:text-white border border-[#00a896] font-medium text-xs py-2 rounded-xl transition-all duration-200 text-center">
                     View Profile
                   </a>
                 </div>
@@ -810,17 +810,17 @@ export function DesktopHomeSection() {
             </div>
 
             {/* SECTION 4E: LATEST FROM KNOWLEDGE CENTER */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Latest from Knowledge Center</h2>
-                <a href="/visa-guide" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-[15px] font-bold text-gray-900">Latest from Knowledge Center</h2>
+                <a href="/visa-guide" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
                   View all Articles <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {/* 1. Canada Study Visa */}
-                <a href="/visa-guide/canada/student" className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md transition-all group">
+                <a href="/visa-guide/canada/student" className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all group">
                   <div className="h-28 overflow-hidden relative">
                     <img 
                       src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=500&auto=format&fit=crop&q=80" 
@@ -829,15 +829,15 @@ export function DesktopHomeSection() {
                     />
                   </div>
                   <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#00a896] transition-colors leading-snug">
+                    <h3 className="text-xs font-semibold text-gray-900 group-hover:text-[#1a73e8] transition-colors leading-snug">
                       Canada Study Visa Requirements 2026
                     </h3>
-                    <p className="text-[10px] font-semibold text-slate-400">Updated: Aug 1, 2026</p>
+                    <p className="text-[10px] text-gray-400">Updated: Aug 1, 2026</p>
                   </div>
                 </a>
 
                 {/* 2. UK Visitor Visa */}
-                <a href="/visa-guide/uk/tourist" className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md transition-all group">
+                <a href="/visa-guide/uk/tourist" className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all group">
                   <div className="h-28 overflow-hidden relative">
                     <img 
                       src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&auto=format&fit=crop&q=80" 
@@ -846,15 +846,15 @@ export function DesktopHomeSection() {
                     />
                   </div>
                   <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#00a896] transition-colors leading-snug">
+                    <h3 className="text-xs font-semibold text-gray-900 group-hover:text-[#1a73e8] transition-colors leading-snug">
                       UK Visitor Visa Complete Guide
                     </h3>
-                    <p className="text-[10px] font-semibold text-slate-400">Updated: Aug 1, 2026</p>
+                    <p className="text-[10px] text-gray-400">Updated: Aug 1, 2026</p>
                   </div>
                 </a>
 
                 {/* 3. Australia PR Process */}
-                <a href="/visa-guide/australia/pr" className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md transition-all group">
+                <a href="/visa-guide/australia/pr" className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all group">
                   <div className="h-28 overflow-hidden relative">
                     <img 
                       src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&auto=format&fit=crop&q=80" 
@@ -863,15 +863,15 @@ export function DesktopHomeSection() {
                     />
                   </div>
                   <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#00a896] transition-colors leading-snug">
+                    <h3 className="text-xs font-semibold text-gray-900 group-hover:text-[#1a73e8] transition-colors leading-snug">
                       Australia PR Process Step by Step
                     </h3>
-                    <p className="text-[10px] font-semibold text-slate-400">Updated: Jul 31, 2026</p>
+                    <p className="text-[10px] text-gray-400">Updated: Jul 31, 2026</p>
                   </div>
                 </a>
 
                 {/* 4. Top 10 Reasons for Visa Refusal */}
-                <a href="/support" className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md transition-all group">
+                <a href="/support" className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all group">
                   <div className="h-28 overflow-hidden relative">
                     <img 
                       src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=500&auto=format&fit=crop&q=80" 
@@ -880,10 +880,10 @@ export function DesktopHomeSection() {
                     />
                   </div>
                   <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#00a896] transition-colors leading-snug">
+                    <h3 className="text-xs font-semibold text-gray-900 group-hover:text-[#1a73e8] transition-colors leading-snug">
                       Top 10 Reasons for Visa Refusal
                     </h3>
-                    <p className="text-[10px] font-semibold text-slate-400">Updated: Jul 30, 2026</p>
+                    <p className="text-[10px] text-gray-400">Updated: Jul 30, 2026</p>
                   </div>
                 </a>
               </div>

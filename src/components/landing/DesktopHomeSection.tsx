@@ -95,7 +95,7 @@ export function DesktopHomeSection() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}} />
 
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-5 lg:px-6 space-y-5 pt-4 hp-font">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-5 pt-4 hp-font">
 
         {/* ======================================================= */}
         {/* 1. TOP SPONSORED FLIGHT AD BANNER */}

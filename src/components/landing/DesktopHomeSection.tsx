@@ -336,7 +336,67 @@ export function DesktopHomeSection() {
           {/* ========================================================================= */}
           <div className="lg:col-span-9 space-y-8">
             
-            {/* SECTION 4A: POPULAR DESTINATIONS (7 FLAG CARDS) */}
+            {/* SECTION 4A: FREE TOOLS & RESOURCES (6 CARDS) */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Free Tools & Resources</h2>
+                <a href="/migration-tools" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                  View all Tools <ChevronRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                {/* 1. Visa Readiness Check */}
+                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Readiness Check</h3>
+                </a>
+
+                {/* 2. Document Checklist */}
+                <a href="/services/visa-documentation" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                    <FileText className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Document Checklist</h3>
+                </a>
+
+                {/* 3. Visa Cost Calculator */}
+                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                    <Calculator className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Cost Calculator</h3>
+                </a>
+
+                {/* 4. Processing Time Checker */}
+                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                    <Clock className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Processing Time Checker</h3>
+                </a>
+
+                {/* 5. Visa Path Finder */}
+                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                    <Compass className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Path Finder</h3>
+                </a>
+
+                {/* 6. Refusal Reasons Guide */}
+                <a href="/support" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                    <AlertCircle className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Refusal Reasons Guide</h3>
+                </a>
+              </div>
+            </div>
+
+            {/* SECTION 4B: POPULAR DESTINATIONS (7 FLAG CARDS) */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                 <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Popular Destinations</h2>
@@ -421,66 +481,6 @@ export function DesktopHomeSection() {
                     <h3 className="text-xs font-extrabold text-slate-900">More Countries</h3>
                     <p className="text-[10px] font-semibold text-[#00a896]">Explore Now</p>
                   </div>
-                </a>
-              </div>
-            </div>
-
-            {/* SECTION 4B: FREE TOOLS & RESOURCES (6 CARDS) */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Free Tools & Resources</h2>
-                <a href="/migration-tools" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
-                  View all Tools <ChevronRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                {/* 1. Visa Readiness Check */}
-                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Readiness Check</h3>
-                </a>
-
-                {/* 2. Document Checklist */}
-                <a href="/services/visa-documentation" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Document Checklist</h3>
-                </a>
-
-                {/* 3. Visa Cost Calculator */}
-                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
-                    <Calculator className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Cost Calculator</h3>
-                </a>
-
-                {/* 4. Processing Time Checker */}
-                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Processing Time Checker</h3>
-                </a>
-
-                {/* 5. Visa Path Finder */}
-                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
-                    <Compass className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Path Finder</h3>
-                </a>
-
-                {/* 6. Refusal Reasons Guide */}
-                <a href="/support" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
-                    <AlertCircle className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Refusal Reasons Guide</h3>
                 </a>
               </div>
             </div>

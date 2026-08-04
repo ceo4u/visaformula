@@ -516,215 +516,180 @@ export function DesktopHomeSection() {
                 ))}
               </div>
 
-              {/* 4 Featured Deal Cards (1:1 Match with User Screenshot) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* 3 Featured Deal Cards (1:1 Exact Match with User Screenshot) */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
                 {/* 1. Australia Student Visa Package */}
-                <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden p-4 h-[285px] flex flex-col justify-between group/deal cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-white/10 bg-slate-950">
+                <a href="/services/apply-visa" className="relative rounded-[24px] overflow-hidden p-5 h-[345px] flex flex-col justify-between group/deal cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 bg-[#050914] border border-white/5">
+                  {/* Right Aligned Landmark Photo */}
                   <img 
-                    src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=600&auto=format&fit=crop" 
+                    src="https://images.unsplash.com/photo-1523428096881-5bd79d04300f?q=80&w=800&auto=format&fit=crop" 
                     alt="Australia Student Visa Package" 
-                    className="absolute inset-0 w-full h-full object-cover group-hover/deal:scale-105 transition-transform duration-700 opacity-80" 
+                    className="absolute right-0 top-0 h-full w-[85%] object-cover object-right group-hover/deal:scale-105 transition-transform duration-700 opacity-95" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#060c18] via-[#081226]/85 to-[#0b1a36]/50" />
+                  {/* Left to Right Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#050914] via-[#050914]/90 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050914] via-transparent to-[#050914]/30" />
 
-                  {/* Top Badge */}
+                  {/* Top Pill Badge */}
                   <div className="relative z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold text-white backdrop-blur-md bg-red-600/90 border border-red-400/30 shadow-md">
-                      🔥 Hot Deal
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-md bg-[#420a10]/90 border border-red-500/20 shadow-md">
+                      <span className="text-sm">🔥</span> Hot Deal
                     </span>
                   </div>
 
-                  {/* Bottom Info */}
-                  <div className="relative z-10 space-y-2.5">
+                  {/* Content Area */}
+                  <div className="relative z-10 space-y-3">
                     <div>
-                      <h3 className="text-base font-extrabold text-white leading-snug group-hover/deal:text-blue-300 transition-colors">
-                        Australia Student Visa Package
+                      <h3 className="text-[22px] font-bold text-white leading-[1.2] tracking-tight group-hover/deal:text-blue-300 transition-colors max-w-[210px]">
+                        Australia <br />
+                        Student Visa <br />
+                        Package
                       </h3>
-                      <p className="text-[11px] text-slate-300 font-medium mt-0.5">
-                        Visa + SOP + Documentation
+                      <p className="text-[13.5px] text-slate-300 font-normal leading-snug mt-2">
+                        Visa + SOP + <br />
+                        Documentation
                       </p>
                     </div>
 
-                    {/* Rating */}
-                    <div className="flex items-center gap-1.5 text-[11px]">
-                      <div className="flex items-center text-amber-400 gap-0.5">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    {/* Star Rating */}
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <div className="flex items-center text-[#f59e0b] gap-0.5">
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
                       </div>
-                      <span className="font-bold text-white ml-0.5">4.9</span>
-                      <span className="text-slate-400">(128)</span>
+                      <span className="font-bold text-white ml-1 text-sm">4.9</span>
+                      <span className="text-slate-300 text-xs">(128)</span>
                     </div>
 
-                    {/* Price & Action Button */}
+                    {/* Price & Circular White Button */}
                     <div className="flex items-end justify-between pt-1">
                       <div className="flex items-baseline gap-1.5">
-                        <span className="text-lg font-black text-white tracking-tight">₹24,999</span>
-                        <span className="text-xs text-slate-400 line-through font-semibold">₹29,999</span>
+                        <span className="text-[25px] font-bold text-white tracking-tight">₹24,999</span>
+                        <span className="text-xs text-slate-400 font-normal line-through">₹29,999</span>
                       </div>
-                      <div className="w-9 h-9 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-md group-hover/deal:bg-[#2563eb] group-hover/deal:text-white transition-all transform group-hover/deal:scale-110">
-                        <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+                      <div className="w-11 h-11 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-lg shrink-0 group-hover/deal:scale-110 transition-transform">
+                        <ChevronRight className="w-5 h-5 text-[#2563eb] stroke-[2.5]" />
                       </div>
                     </div>
                   </div>
                 </a>
 
                 {/* 2. Canada PR Express Entry */}
-                <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden p-4 h-[285px] flex flex-col justify-between group/deal cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-white/10 bg-slate-950">
+                <a href="/services/apply-visa" className="relative rounded-[24px] overflow-hidden p-5 h-[345px] flex flex-col justify-between group/deal cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 bg-[#050914] border border-white/5">
+                  {/* Right Aligned Landmark Photo */}
                   <img 
-                    src="https://images.unsplash.com/photo-1517935703635-27c7078861d6?q=80&w=600&auto=format&fit=crop" 
+                    src="https://images.unsplash.com/photo-1517935703635-27c7078861d6?q=80&w=800&auto=format&fit=crop" 
                     alt="Canada PR Express Entry" 
-                    className="absolute inset-0 w-full h-full object-cover group-hover/deal:scale-105 transition-transform duration-700 opacity-80" 
+                    className="absolute right-0 top-0 h-full w-[85%] object-cover object-right group-hover/deal:scale-105 transition-transform duration-700 opacity-95" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#060c18] via-[#081226]/85 to-[#0b1a36]/50" />
+                  {/* Left to Right Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#050914] via-[#050914]/90 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050914] via-transparent to-[#050914]/30" />
 
-                  {/* Top Badge */}
+                  {/* Top Pill Badge */}
                   <div className="relative z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold text-white backdrop-blur-md bg-amber-600/90 border border-amber-400/30 shadow-md">
-                      ⚡ Limited Time
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-md bg-[#1a222e]/90 border border-slate-700/60 shadow-md">
+                      <span className="text-amber-400 text-sm font-bold">⚡</span> Limited Time
                     </span>
                   </div>
 
-                  {/* Bottom Info */}
-                  <div className="relative z-10 space-y-2.5">
+                  {/* Content Area */}
+                  <div className="relative z-10 space-y-3">
                     <div>
-                      <h3 className="text-base font-extrabold text-white leading-snug group-hover/deal:text-blue-300 transition-colors">
-                        Canada PR Express Entry
+                      <h3 className="text-[22px] font-bold text-white leading-[1.2] tracking-tight group-hover/deal:text-blue-300 transition-colors max-w-[210px]">
+                        Canada PR <br />
+                        Express <br />
+                        Entry
                       </h3>
-                      <p className="text-[11px] text-slate-300 font-medium mt-0.5">
-                        Fast-track your PR process
+                      <p className="text-[13.5px] text-slate-300 font-normal leading-snug mt-2">
+                        Fast-track your <br />
+                        PR process
                       </p>
                     </div>
 
-                    {/* Rating */}
-                    <div className="flex items-center gap-1.5 text-[11px]">
-                      <div className="flex items-center text-amber-400 gap-0.5">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    {/* Star Rating */}
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <div className="flex items-center text-[#f59e0b] gap-0.5">
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
                       </div>
-                      <span className="font-bold text-white ml-0.5">4.8</span>
-                      <span className="text-slate-400">(96)</span>
+                      <span className="font-bold text-white ml-1 text-sm">4.8</span>
+                      <span className="text-slate-300 text-xs">(96)</span>
                     </div>
 
-                    {/* Price & Action Button */}
+                    {/* Price & Circular White Button */}
                     <div className="flex items-end justify-between pt-1">
                       <div className="flex items-baseline gap-1.5">
-                        <span className="text-lg font-black text-white tracking-tight">₹49,999</span>
-                        <span className="text-xs text-slate-400 line-through font-semibold">₹59,999</span>
+                        <span className="text-[25px] font-bold text-white tracking-tight">₹49,999</span>
+                        <span className="text-xs text-slate-400 font-normal line-through">₹59,999</span>
                       </div>
-                      <div className="w-9 h-9 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-md group-hover/deal:bg-[#2563eb] group-hover/deal:text-white transition-all transform group-hover/deal:scale-110">
-                        <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+                      <div className="w-11 h-11 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-lg shrink-0 group-hover/deal:scale-110 transition-transform">
+                        <ChevronRight className="w-5 h-5 text-[#2563eb] stroke-[2.5]" />
                       </div>
                     </div>
                   </div>
                 </a>
 
                 {/* 3. UK Skilled Worker Visa */}
-                <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden p-4 h-[285px] flex flex-col justify-between group/deal cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-white/10 bg-slate-950">
+                <a href="/services/apply-visa" className="relative rounded-[24px] overflow-hidden p-5 h-[345px] flex flex-col justify-between group/deal cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 bg-[#050914] border border-white/5">
+                  {/* Right Aligned Landmark Photo */}
                   <img 
-                    src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=600&auto=format&fit=crop" 
+                    src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=800&auto=format&fit=crop" 
                     alt="UK Skilled Worker Visa" 
-                    className="absolute inset-0 w-full h-full object-cover group-hover/deal:scale-105 transition-transform duration-700 opacity-80" 
+                    className="absolute right-0 top-0 h-full w-[85%] object-cover object-right group-hover/deal:scale-105 transition-transform duration-700 opacity-95" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#060c18] via-[#081226]/85 to-[#0b1a36]/50" />
+                  {/* Left to Right Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#050914] via-[#050914]/90 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050914] via-transparent to-[#050914]/30" />
 
-                  {/* Top Badge */}
+                  {/* Top Pill Badge */}
                   <div className="relative z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold text-white backdrop-blur-md bg-rose-600/90 border border-rose-400/30 shadow-md">
-                      🎯 Best Value
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-md bg-[#380b22]/90 border border-rose-500/20 shadow-md">
+                      <span className="text-rose-400 text-sm font-bold">🎯</span> Best Value
                     </span>
                   </div>
 
-                  {/* Bottom Info */}
-                  <div className="relative z-10 space-y-2.5">
+                  {/* Content Area */}
+                  <div className="relative z-10 space-y-3">
                     <div>
-                      <h3 className="text-base font-extrabold text-white leading-snug group-hover/deal:text-blue-300 transition-colors">
-                        UK Skilled Worker Visa
+                      <h3 className="text-[22px] font-bold text-white leading-[1.2] tracking-tight group-hover/deal:text-blue-300 transition-colors max-w-[210px]">
+                        UK Skilled <br />
+                        Worker Visa <br />
+                        &nbsp;
                       </h3>
-                      <p className="text-[11px] text-slate-300 font-medium mt-0.5">
-                        End-to-end assistance
+                      <p className="text-[13.5px] text-slate-300 font-normal leading-snug mt-2">
+                        End-to-end <br />
+                        assistance
                       </p>
                     </div>
 
-                    {/* Rating */}
-                    <div className="flex items-center gap-1.5 text-[11px]">
-                      <div className="flex items-center text-amber-400 gap-0.5">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    {/* Star Rating */}
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <div className="flex items-center text-[#f59e0b] gap-0.5">
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                        <Star className="w-3.5 h-3.5 fill-[#f59e0b] text-[#f59e0b]" />
                       </div>
-                      <span className="font-bold text-white ml-0.5">4.7</span>
-                      <span className="text-slate-400">(74)</span>
+                      <span className="font-bold text-white ml-1 text-sm">4.7</span>
+                      <span className="text-slate-300 text-xs">(74)</span>
                     </div>
 
-                    {/* Price & Action Button */}
+                    {/* Price & Circular White Button */}
                     <div className="flex items-end justify-between pt-1">
                       <div className="flex items-baseline gap-1.5">
-                        <span className="text-lg font-black text-white tracking-tight">₹38,999</span>
-                        <span className="text-xs text-slate-400 line-through font-semibold">₹44,999</span>
+                        <span className="text-[25px] font-bold text-white tracking-tight">₹38,999</span>
+                        <span className="text-xs text-slate-400 font-normal line-through">₹44,999</span>
                       </div>
-                      <div className="w-9 h-9 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-md group-hover/deal:bg-[#2563eb] group-hover/deal:text-white transition-all transform group-hover/deal:scale-110">
-                        <ChevronRight className="w-5 h-5 stroke-[2.5]" />
-                      </div>
-                    </div>
-                  </div>
-                </a>
-
-                {/* 4. Europe Schengen & Golden Visa */}
-                <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden p-4 h-[285px] flex flex-col justify-between group/deal cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-white/10 bg-slate-950">
-                  <img 
-                    src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=600&auto=format&fit=crop" 
-                    alt="Europe Schengen & Golden Visa" 
-                    className="absolute inset-0 w-full h-full object-cover group-hover/deal:scale-105 transition-transform duration-700 opacity-80" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#060c18] via-[#081226]/85 to-[#0b1a36]/50" />
-
-                  {/* Top Badge */}
-                  <div className="relative z-10">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold text-white backdrop-blur-md bg-blue-600/90 border border-blue-400/30 shadow-md">
-                      ⭐ Most Popular
-                    </span>
-                  </div>
-
-                  {/* Bottom Info */}
-                  <div className="relative z-10 space-y-2.5">
-                    <div>
-                      <h3 className="text-base font-extrabold text-white leading-snug group-hover/deal:text-blue-300 transition-colors">
-                        Europe Schengen & Golden Visa
-                      </h3>
-                      <p className="text-[11px] text-slate-300 font-medium mt-0.5">
-                        Multi-country travel pass
-                      </p>
-                    </div>
-
-                    {/* Rating */}
-                    <div className="flex items-center gap-1.5 text-[11px]">
-                      <div className="flex items-center text-amber-400 gap-0.5">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                      </div>
-                      <span className="font-bold text-white ml-0.5">5.0</span>
-                      <span className="text-slate-400">(210)</span>
-                    </div>
-
-                    {/* Price & Action Button */}
-                    <div className="flex items-end justify-between pt-1">
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="text-lg font-black text-white tracking-tight">₹34,999</span>
-                        <span className="text-xs text-slate-400 line-through font-semibold">₹39,999</span>
-                      </div>
-                      <div className="w-9 h-9 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-md group-hover/deal:bg-[#2563eb] group-hover/deal:text-white transition-all transform group-hover/deal:scale-110">
-                        <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+                      <div className="w-11 h-11 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-lg shrink-0 group-hover/deal:scale-110 transition-transform">
+                        <ChevronRight className="w-5 h-5 text-[#2563eb] stroke-[2.5]" />
                       </div>
                     </div>
                   </div>

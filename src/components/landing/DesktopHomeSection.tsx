@@ -150,7 +150,7 @@ export function DesktopHomeSection() {
           {/* LEFT: Hero text content */}
           <div className="relative z-10 px-8 sm:px-12 py-10 max-w-[530px] space-y-5">
             <div className="space-y-2">
-              <h1 className="text-4xl sm:text-[44px] font-extrabold text-gray-900 leading-[1.12] tracking-tight">
+              <h1 className="text-4xl sm:text-[44px] font-bold text-gray-900 leading-[1.12] tracking-tight">
                 Your Journey<br />
                 Abroad <span style={{ color: '#00a896' }}>Starts Here</span>
               </h1>

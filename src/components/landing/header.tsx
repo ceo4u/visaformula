@@ -1,60 +1,37 @@
 'use client'
 
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, X, MessageSquare } from 'lucide-react'
 import { useState } from 'react'
 
-// Top row nav items
-const supportingBusinessItems = [
-  { title: 'Register as a Consultant', href: '/register-provider' },
-  { title: 'Consultant Dashboard', href: '/consultant/dashboard' },
-  { title: 'Verification Guidelines', href: '/verification-guidelines' },
-  { title: 'Escrow Protected Payments', href: '/escrow' },
-  { title: 'Anti-Fraud Policy', href: '/anti-fraud-policy' },
-  { title: 'Cricket Tours', href: '/cricket-tours' },
-]
-
-const ourServicesItems = [
-  { title: 'Find Verified Experts', href: '/find-experts' },
-  { title: 'Visa Documentation Filing', href: '/visa-documentation' },
-  { title: 'Apply Visa Online', href: '/apply-visa' },
-  { title: 'Visa Guides', href: '/visa-guide' },
-  { title: 'Success Stories', href: '/success-stories' },
-  { title: 'Support / Helpdesk', href: '/support' },
-]
-
-const immigrationAssistItems = [
-  { title: 'Migration Agents & Lawyers', href: '/emergency' },
-  { title: 'Migration Visa', href: '/migration-visa' },
-]
-
-// Category (bottom row) nav items
-const studentVisaItems = [
-  { title: 'Find Consultants', href: '/find-experts?category=student' },
-  { title: 'Find Universities', href: '/universities' },
-  { title: 'Admissions by Country', href: '/admissions' },
-  { title: 'Funding Assistance', href: '/funding' },
-  { title: 'Language Coaching & Training', href: '/training' },
-]
-
-const jobVisaItems = [
+// Dropdown item data
+const findConsultantsItems = [
+  { title: 'Student Visa Consultants', href: '/find-experts?category=student' },
   { title: 'Work Permit Consultants', href: '/find-experts?category=work' },
-  { title: 'Find Jobs', href: '/jobs' },
-  { title: 'Digital Nomad', href: '/digital-nomad' },
-]
-
-const visitVisaItems = [
   { title: 'Tourist Visa Consultants', href: '/find-experts?category=tourist' },
-  { title: 'Cricket Tours', href: '/cricket-tours' },
-  { title: 'Construction Job Tours', href: '/construction-jobs' },
-  { title: 'Apply Online', href: '/apply-visa' },
-  { title: 'Visa Guides', href: '/visa-guide' },
+  { title: 'PR & Migration Experts', href: '/find-experts?category=pr' },
+  { title: 'All Verified Lawyers & Agents', href: '/find-experts' },
 ]
 
-const migrationVisaItems = [
-  { title: 'Skilled Migration', href: '/find-experts?category=pr' },
-  { title: 'Residency Visa', href: '/find-experts?category=residency' },
-  { title: 'Visa Appeal Experts', href: '/find-experts?category=appeal' },
-  { title: 'Find Migration Experts', href: '/find-experts?category=migration' },
+const visaServicesItems = [
+  { title: 'Visa Documentation Filing', href: '/services/visa-documentation' },
+  { title: 'Apply Visa Online', href: '/services/apply-visa' },
+  { title: 'IELTS & Language Prep', href: '/services/ielts-prep' },
+  { title: 'Financial Proof & Loans', href: '/services/financial-proof' },
+  { title: 'VFS & Embassy Booking', href: '/vfs-booking' },
+]
+
+const latestNewsItems = [
+  { title: 'Canada Study Visa Updates 2026', href: '/visa-guide/canada/student' },
+  { title: 'UK Skilled Worker Visa Rules', href: '/visa-guide/uk/work' },
+  { title: 'Australia Express PR Guidelines', href: '/visa-guide/australia/pr' },
+  { title: 'Latest Immigration News', href: '/visa-guide' },
+]
+
+const aiToolsItems = [
+  { title: 'Visa Readiness Checker', href: '/services/apply-visa' },
+  { title: 'Document Checklist AI', href: '/services/visa-documentation' },
+  { title: 'Visa Cost Calculator', href: '/migration-tools' },
+  { title: 'AI Assistant', href: '/ai-assistant' },
 ]
 
 function DropdownMenu({ label, items, align = 'left' }: {
@@ -69,18 +46,18 @@ function DropdownMenu({ label, items, align = 'left' }: {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <button className="flex items-center gap-1 text-[15px] font-semibold text-[#0c1a2e] hover:text-[#359FC2] transition-colors whitespace-nowrap">
+      <button className="flex items-center gap-1 text-[14px] font-bold text-slate-800 hover:text-[#2563eb] transition-colors whitespace-nowrap py-2 cursor-pointer">
         {label}
-        <ChevronDown size={14} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown size={14} className={`transition-transform duration-200 text-slate-500 ${open ? 'rotate-180 text-[#2563eb]' : ''}`} />
       </button>
       {open && (
-        <div className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} pt-2 z-50`}>
-          <div className="bg-white rounded-xl border border-slate-100 shadow-xl p-2 min-w-[220px]">
+        <div className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} pt-1 z-50`}>
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-xl p-2 min-w-[230px] animate-fade-up">
             {items.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#359FC2] hover:bg-slate-50 transition-all"
+                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:text-[#2563eb] hover:bg-blue-50/70 transition-all"
               >
                 {item.title}
               </a>
@@ -100,147 +77,80 @@ export function Header() {
     setOpenMobileSection(prev => prev === section ? null : section)
   }
 
-  const allMobileSections = [
-    { label: 'Supporting Businesses', items: supportingBusinessItems },
-    { label: 'Immigration Assistance', items: immigrationAssistItems },
-    { label: 'Our Services', items: ourServicesItems },
-    { label: 'Student Visa', items: studentVisaItems },
-    { label: 'Job Visas', items: jobVisaItems },
-    { label: 'Visit Visas', items: visitVisaItems },
-    { label: 'Migration Visas', items: migrationVisaItems },
-  ]
-
   return (
-    <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
-      {/* Top Row */}
-      <div className="border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 xl:px-8 flex items-center justify-between h-16">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-200/80 shadow-2xs">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
 
-          {/* Logo */}
-          <a href="/" className="flex items-center shrink-0">
-            <img
-              src="/logo.png"
-              alt="VisaFormula Logo"
-              className="h-18 w-auto object-contain"
-            />
+        {/* Logo */}
+        <a href="/" className="flex items-center shrink-0">
+          <img
+            src="/logo.png"
+            alt="VisaFormula Logo"
+            className="h-9 sm:h-10 w-auto object-contain"
+          />
+        </a>
+
+        {/* Desktop Central Nav Items */}
+        <nav className="hidden lg:flex items-center gap-7">
+          <DropdownMenu label="Find Consultants" items={findConsultantsItems} />
+          
+          <a href="/services/apply-visa" className="text-[14px] font-bold text-slate-800 hover:text-[#2563eb] transition-colors whitespace-nowrap py-2">
+            Self Apply
           </a>
 
-          {/* Desktop Top Nav */}
-          <nav className="hidden xl:flex items-center gap-8">
-            <a href="/self-apply" className="text-[15px] font-semibold text-[#0c1a2e] hover:text-[#359FC2] transition-colors whitespace-nowrap">
-              Self Apply
-            </a>
-            <DropdownMenu label="Supporting Businesses" items={supportingBusinessItems} />
-            <DropdownMenu label="Immigration Assistance" items={immigrationAssistItems} />
-            <DropdownMenu label="Our Services" items={ourServicesItems} align="right" />
-            <a href="/support" className="text-[15px] font-semibold text-[#0c1a2e] hover:text-[#359FC2] transition-colors whitespace-nowrap">
-              Contact
-            </a>
-          </nav>
+          <DropdownMenu label="Visa Services" items={visaServicesItems} />
+          <DropdownMenu label="Latest News & offers" items={latestNewsItems} />
+          <DropdownMenu label="AI Tools" items={aiToolsItems} align="right" />
+        </nav>
 
-          {/* Auth Buttons */}
-          <div className="hidden xl:flex items-center gap-3">
-            <a
-              href="/login"
-              className="text-[14px] font-bold text-[#0c1a2e] border border-gray-200 hover:border-black px-4 py-2.5 rounded-xl transition-all"
-            >
-              Log In
-            </a>
-            <a
-              href="/signup"
-              className="bg-black hover:bg-slate-900 text-white font-bold text-[14px] px-4 py-2.5 rounded-xl transition-all"
-            >
-              Sign Up
-            </a>
-          </div>
-
-          {/* Hamburger (mobile/tablet) */}
-          <button
-            className="xl:hidden p-2 text-[#0c1a2e] hover:text-[#359FC2]"
-            onClick={() => setMenuOpen(!menuOpen)}
+        {/* Right Actions (Contact, Log In, Sign Up) */}
+        <div className="hidden lg:flex items-center gap-4">
+          <a 
+            href="/support" 
+            className="flex items-center gap-1.5 text-[14px] font-bold text-slate-800 hover:text-[#2563eb] transition-colors"
           >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </div>
+            <MessageSquare size={16} className="text-slate-700" />
+            <span>Contact</span>
+          </a>
 
-      {/* Bottom Category Row (Desktop) */}
-      <div className="hidden xl:block border-b border-gray-100 bg-white">
-        <div className="max-w-7xl mx-auto px-4 xl:px-8 flex items-center justify-center gap-10 h-12">
-          <DropdownMenu label="Student Visa" items={studentVisaItems} />
-          <DropdownMenu label="Job Visas" items={jobVisaItems} />
-          <DropdownMenu label="Visit Visas" items={visitVisaItems} />
-          <DropdownMenu label="Migration Visas" items={migrationVisaItems} align="right" />
           <a
-            href="/tools"
-            className="text-[15px] font-semibold text-[#0c1a2e] hover:text-[#359FC2] transition-colors whitespace-nowrap"
+            href="/login"
+            className="text-[13px] font-bold text-[#2563eb] border border-[#2563eb]/60 hover:bg-blue-50 px-4 py-2 rounded-xl transition-all shadow-2xs"
           >
-            Migration Tools & Calculators
+            Log in
+          </a>
+
+          <a
+            href="/signup"
+            className="bg-[#2563eb] hover:bg-blue-700 text-white font-bold text-[13px] px-5 py-2.5 rounded-xl transition-all shadow-sm active:scale-95"
+          >
+            Sign Up
           </a>
         </div>
+
+        {/* Hamburger (Mobile / Tablet) */}
+        <button
+          className="lg:hidden p-2 text-slate-800 hover:text-[#2563eb] cursor-pointer"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
 
       {/* Mobile Drawer */}
       {menuOpen && (
-        <div className="xl:hidden bg-white border-t border-gray-100 shadow-xl max-h-[85vh] overflow-y-auto">
-          <div className="p-4 space-y-1">
-            <a
-              href="/self-apply"
-              className="block px-3 py-2.5 text-sm font-semibold text-[#0c1a2e] hover:text-[#359FC2] hover:bg-slate-50 rounded-lg"
-              onClick={() => setMenuOpen(false)}
-            >
-              Self Apply
-            </a>
-            {allMobileSections.map((section) => (
-              <div key={section.label}>
-                <button
-                  onClick={() => toggleSection(section.label)}
-                  className="flex items-center justify-between w-full px-3 py-2.5 text-sm font-semibold text-[#0c1a2e] hover:bg-slate-50 rounded-lg"
-                >
-                  {section.label}
-                  <ChevronDown
-                    size={16}
-                    className={`text-gray-400 transition-transform ${openMobileSection === section.label ? 'rotate-180' : ''}`}
-                  />
-                </button>
-                {openMobileSection === section.label && (
-                  <div className="ml-3 mt-1 border-l-2 border-[#359FC2]/20 pl-3 space-y-1">
-                    {section.items.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        className="block px-2 py-2 text-sm font-medium text-slate-600 hover:text-[#359FC2] hover:bg-slate-50 rounded-lg"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        {item.title}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-            <a
-              href="/support"
-              className="block px-3 py-2.5 text-sm font-semibold text-[#0c1a2e] hover:text-[#359FC2] hover:bg-slate-50 rounded-lg"
-              onClick={() => setMenuOpen(false)}
-            >
-              Contact
-            </a>
+        <div className="lg:hidden bg-white border-t border-slate-200 shadow-xl max-h-[85vh] overflow-y-auto">
+          <div className="p-4 space-y-2 text-xs font-bold">
+            <a href="/find-experts" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Find Consultants</a>
+            <a href="/services/apply-visa" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Self Apply</a>
+            <a href="/services/visa-documentation" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Visa Services</a>
+            <a href="/visa-guide" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Latest News & offers</a>
+            <a href="/migration-tools" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">AI Tools</a>
+            <a href="/support" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Contact</a>
 
-            {/* Auth buttons in mobile */}
-            <div className="flex gap-3 px-3 pt-3 border-t border-gray-100 mt-2">
-              <a
-                href="/login"
-                className="flex-1 text-center py-2.5 text-sm font-bold text-[#0c1a2e] border border-gray-200 rounded-xl"
-              >
-                Log In
-              </a>
-              <a
-                href="/signup"
-                className="flex-1 text-center py-2.5 text-sm font-bold text-white bg-black rounded-xl"
-              >
-                Sign Up
-              </a>
+            <div className="flex gap-3 px-1 pt-3 border-t border-slate-100 mt-2">
+              <a href="/login" className="flex-1 text-center py-2.5 text-xs font-bold text-[#2563eb] border border-[#2563eb] rounded-xl">Log in</a>
+              <a href="/signup" className="flex-1 text-center py-2.5 text-xs font-bold text-white bg-[#2563eb] rounded-xl">Sign Up</a>
             </div>
           </div>
         </div>

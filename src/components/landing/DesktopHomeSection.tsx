@@ -40,7 +40,7 @@ export function DesktopHomeSection() {
         .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }
       `}} />
 
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pt-4 font-jakarta">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pt-6 sm:pt-8 font-jakarta">
 
         {/* ========================================================================= */}
         {/* 1. TOP HEADER AD BANNERS ROW */}

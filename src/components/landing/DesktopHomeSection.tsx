@@ -25,8 +25,8 @@ export function DesktopHomeSection() {
   const classifieds = [
     {
       badge: 'Jobs Abroad',
-      badgeBg: 'bg-[#7c3aed]', // purple
-      img: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=400&auto=format&fit=crop&q=80',
+      badgeBg: 'bg-[#6366f1]', // sleek indigo
+      img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
       title: 'Caregiver Jobs in Canada',
       location: 'Toronto, Canada',
       time: '2 hours ago',
@@ -36,7 +36,7 @@ export function DesktopHomeSection() {
     {
       badge: 'Accommodation',
       badgeBg: 'bg-[#2563eb]', // blue
-      img: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&auto=format&fit=crop&q=80',
+      img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
       title: 'Shared Room Near Humber College',
       location: 'Toronto, Canada',
       time: '5 hours ago',
@@ -45,8 +45,8 @@ export function DesktopHomeSection() {
     },
     {
       badge: 'Study Abroad',
-      badgeBg: 'bg-[#7c3aed]', // purple
-      img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&auto=format&fit=crop&q=80',
+      badgeBg: 'bg-[#8b5cf6]', // violet
+      img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800&auto=format&fit=crop',
       title: 'Study in Canada 2025 Intake Open',
       location: '3 Apply Now',
       applyLink: 'Apply Now',
@@ -56,8 +56,8 @@ export function DesktopHomeSection() {
     },
     {
       badge: 'Business Opportunity',
-      badgeBg: 'bg-[#2563eb]', // blue
-      img: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&auto=format&fit=crop&q=80',
+      badgeBg: 'bg-[#0284c7]', // sky blue
+      img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
       title: 'Visa Consultancy Business for Sale',
       location: 'Apply @Deco',
       time: '1 day ago',
@@ -66,8 +66,8 @@ export function DesktopHomeSection() {
     },
     {
       badge: 'Jobs Abroad',
-      badgeBg: 'bg-[#7c3aed]', // purple
-      img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop&q=80',
+      badgeBg: 'bg-[#6366f1]', // indigo
+      img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop',
       title: 'Hotel Front Desk Staff in UK',
       location: 'London, UK',
       time: '2 days ago',
@@ -404,21 +404,22 @@ export function DesktopHomeSection() {
               <a
                 key={idx}
                 href="/classifieds"
-                className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between"
+                className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-2xs hover:shadow-lg transition-all group flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative h-28 overflow-hidden">
+                  <div className="relative h-36 overflow-hidden bg-gray-100">
                     <img
                       src={item.img}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <span className={`absolute top-2 left-2 text-white text-[9.5px] font-bold px-2 py-0.5 rounded-full shadow-2xs ${item.badgeBg}`}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+                    <span className={`absolute top-2.5 left-2.5 text-white text-[9.5px] font-bold px-2.5 py-1 rounded-full shadow-md backdrop-blur-xs ${item.badgeBg}`}>
                       {item.badge}
                     </span>
                   </div>
 
-                  <div className="p-3 space-y-1">
+                  <div className="p-3.5 space-y-1">
                     <h3 className="text-xs font-extrabold text-gray-900 leading-snug line-clamp-2 group-hover:text-[#00a896] transition-colors">
                       {item.title}
                     </h3>
@@ -426,7 +427,7 @@ export function DesktopHomeSection() {
                   </div>
                 </div>
 
-                <div className="px-3 pb-3 pt-1 flex items-center justify-between border-t border-gray-50 mt-1">
+                <div className="px-3.5 pb-3.5 pt-1.5 flex items-center justify-between border-t border-gray-50 mt-1">
                   {item.time ? (
                     <span className="text-[10px] text-gray-400 font-medium">{item.time}</span>
                   ) : item.applyLink ? (

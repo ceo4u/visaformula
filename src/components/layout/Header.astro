@@ -387,45 +387,14 @@ const isHome = pathname === '/' || pathname === '';
     const contactBtnEl = document.getElementById("contact-btn");
     const navContainer = document.querySelector("#main-header nav");
 
-    if (isHomePage && headerEl) {
+    if (headerEl) {
         const updateHeaderStyle = () => {
-            const scrolled = window.scrollY > 10;
-            const drawerIsOpen = mobileMenuDrawer && !mobileMenuDrawer.classList.contains('hidden');
-            if (scrolled || drawerIsOpen) {
-                // 100% Solid Pure White Header on scroll or open drawer
-                headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 scrolled-header bg-white shadow-sm border-b border-slate-200/80 text-slate-800";
-                if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
-                if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/50 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
-                if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none";
-                if (mobileMenuBtn) mobileMenuBtn.style.color = "#0c1a2e";
-                if (navContainer) {
-                    navContainer.querySelectorAll("button, a").forEach((el) => {
-                        if (!el.closest(".absolute")) {
-                            el.style.color = "#0c1a2e";
-                        }
-                    });
-                    navContainer.querySelectorAll("svg").forEach((svg) => {
-                        svg.style.color = "#0c1a2e";
-                    });
-                }
-            } else {
-                // Completely transparent header over top of hero skyline
-                headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-none text-white";
-                if (logoImgEl) logoImgEl.setAttribute("src", "/logo-white.png");
-                if (loginBtnEl) loginBtnEl.className = "text-white border-white/80 hover:bg-white/10 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
-                if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-white hover:text-cyan-300 transition-colors focus:outline-none";
-                if (mobileMenuBtn) mobileMenuBtn.style.color = "white";
-                if (navContainer) {
-                    navContainer.querySelectorAll("button, a").forEach((el) => {
-                        if (!el.closest(".absolute")) {
-                            el.style.color = "";
-                        }
-                    });
-                    navContainer.querySelectorAll("svg").forEach((svg) => {
-                        svg.style.color = "";
-                    });
-                }
-            }
+            // Always 100% Solid Pure White Header
+            headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 scrolled-header bg-white shadow-2xs border-b border-slate-200/80 text-slate-800";
+            if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png");
+            if (loginBtnEl) loginBtnEl.className = "text-[#2563eb] border-[#2563eb] hover:bg-blue-50/50 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
+            if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#2563eb] transition-colors focus:outline-none";
+            if (mobileMenuBtn) mobileMenuBtn.style.color = "#0c1a2e";
         };
 
         window.addEventListener("scroll", updateHeaderStyle, { passive: true });

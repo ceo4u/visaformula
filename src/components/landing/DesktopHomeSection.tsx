@@ -136,15 +136,15 @@ export function DesktopHomeSection() {
         {/* 2. HERO — woman with luggage + city skyline photo */}
         {/* ======================================================= */}
         <div className="relative rounded-3xl overflow-hidden bg-white shadow-sm min-h-[360px] flex items-center">
-          {/* RIGHT: Hero image — woman with luggage at modern city skyline */}
-          <div className="absolute inset-y-0 right-0 w-[60%] pointer-events-none overflow-hidden">
+          {/* RIGHT: Hero image — exact user photo: woman with hat, backpack, luggage, city, plane */}
+          <div className="absolute inset-y-0 right-0 w-[62%] pointer-events-none overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1400&auto=format&fit=crop&q=85"
-              alt="Woman traveler with luggage at city"
-              className="w-full h-full object-cover object-center"
+              src="/hero-traveler.png"
+              alt="Woman traveler with hat, backpack and luggage at city skyline with airplane"
+              className="w-full h-full object-cover object-left"
             />
-            {/* gradient fade so text is readable */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent" style={{ width: '55%' }} />
+            {/* soft fade from white on left so text stays readable */}
+            <div className="absolute inset-y-0 left-0 w-[45%] bg-gradient-to-r from-white to-transparent" />
           </div>
 
           {/* LEFT: Hero text content */}

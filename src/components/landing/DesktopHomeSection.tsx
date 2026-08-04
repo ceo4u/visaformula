@@ -337,149 +337,151 @@ export function DesktopHomeSection() {
           <div className="lg:col-span-9 space-y-8">
             
             {/* SECTION 4A: FREE TOOLS & RESOURCES (6 CARDS) */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Free Tools & Resources</h2>
-                <a href="/migration-tools" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-[15px] font-bold text-gray-900">Free Tools & Resources</h2>
+                <a href="/migration-tools" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
                   View all Tools <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                 {/* 1. Visa Readiness Check */}
-                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                <a href="/services/apply-visa" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Readiness Check</h3>
+                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Visa Readiness Check</h3>
                 </a>
 
                 {/* 2. Document Checklist */}
-                <a href="/services/visa-documentation" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                <a href="/services/visa-documentation" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
                     <FileText className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Document Checklist</h3>
+                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Document Checklist</h3>
                 </a>
 
                 {/* 3. Visa Cost Calculator */}
-                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                <a href="/migration-tools" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
                     <Calculator className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Cost Calculator</h3>
+                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Visa Cost Calculator</h3>
                 </a>
 
                 {/* 4. Processing Time Checker */}
-                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                <a href="/migration-tools" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
                     <Clock className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Processing Time Checker</h3>
+                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Processing Time Checker</h3>
                 </a>
 
                 {/* 5. Visa Path Finder */}
-                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                <a href="/services/apply-visa" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
                     <Compass className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Path Finder</h3>
+                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Visa Path Finder</h3>
                 </a>
 
                 {/* 6. Refusal Reasons Guide */}
-                <a href="/support" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896] group">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-[#b2f5ea] transition-all">
+                <a href="/support" className="bg-gray-50 rounded-xl border border-gray-200 p-4 text-center space-y-3 hover:shadow-md transition-all hover:border-[#00a896] group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-white text-[#00a896] group-hover:bg-[#00a896] group-hover:text-white flex items-center justify-center border border-gray-200 shadow-sm transition-all">
                     <AlertCircle className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Refusal Reasons Guide</h3>
+                  <h3 className="text-[11px] font-medium text-gray-700 leading-tight">Refusal Reasons Guide</h3>
                 </a>
               </div>
             </div>
 
             {/* SECTION 4B: POPULAR DESTINATIONS (7 FLAG CARDS) */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Popular Destinations</h2>
-                <a href="/visa-guide" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-[15px] font-bold text-gray-900">Popular Destinations</h2>
+                <a href="/visa-guide" className="text-[13px] font-medium text-[#1a73e8] hover:underline flex items-center gap-0.5">
                   View all Countries <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
                 {/* 1. Canada */}
-                <a href="/visa-guide/canada" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                <a href="/visa-guide/canada" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
                     <img src="https://flagcdn.com/w80/ca.png" alt="Canada Flag" className="w-full h-full object-cover rounded-full" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">Canada</h3>
-                    <p className="text-[10px] font-semibold text-slate-500">Study, Work, PR</p>
+                    <h3 className="text-[12px] font-semibold text-gray-900">Canada</h3>
+                    <p className="text-[10px] text-gray-500">Study, Work, PR</p>
                   </div>
                 </a>
 
                 {/* 2. UK */}
-                <a href="/visa-guide/uk" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                <a href="/visa-guide/uk" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
                     <img src="https://flagcdn.com/w80/gb.png" alt="UK Flag" className="w-full h-full object-cover rounded-full" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">UK</h3>
-                    <p className="text-[10px] font-semibold text-slate-500">Study, Work, Visit</p>
+                    <h3 className="text-[12px] font-semibold text-gray-900">UK</h3>
+                    <p className="text-[10px] text-gray-500">Study, Work, Visit</p>
                   </div>
                 </a>
 
                 {/* 3. USA */}
-                <a href="/visa-guide/usa" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                <a href="/visa-guide/usa" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
                     <img src="https://flagcdn.com/w80/us.png" alt="USA Flag" className="w-full h-full object-cover rounded-full" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">USA</h3>
-                    <p className="text-[10px] font-semibold text-slate-500">Study, Work, Visit</p>
+                    <h3 className="text-[12px] font-semibold text-gray-900">USA</h3>
+                    <p className="text-[10px] text-gray-500">Study, Work, Visit</p>
                   </div>
                 </a>
 
                 {/* 4. Australia */}
-                <a href="/visa-guide/australia" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                <a href="/visa-guide/australia" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
                     <img src="https://flagcdn.com/w80/au.png" alt="Australia Flag" className="w-full h-full object-cover rounded-full" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">Australia</h3>
-                    <p className="text-[10px] font-semibold text-slate-500">Study, Work, PR</p>
+                    <h3 className="text-[12px] font-semibold text-gray-900">Australia</h3>
+                    <p className="text-[10px] text-gray-500">Study, Work, PR</p>
                   </div>
                 </a>
 
                 {/* 5. Germany */}
-                <a href="/visa-guide/germany" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                <a href="/visa-guide/germany" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
                     <img src="https://flagcdn.com/w80/de.png" alt="Germany Flag" className="w-full h-full object-cover rounded-full" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">Germany</h3>
-                    <p className="text-[10px] font-semibold text-slate-500">Study, Work</p>
+                    <h3 className="text-[12px] font-semibold text-gray-900">Germany</h3>
+                    <p className="text-[10px] text-gray-500">Study, Work</p>
                   </div>
                 </a>
 
                 {/* 6. New Zealand */}
-                <a href="/visa-guide/new-zealand" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                <a href="/visa-guide/new-zealand" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-200 overflow-hidden group-hover:scale-110 transition-transform">
                     <img src="https://flagcdn.com/w80/nz.png" alt="New Zealand Flag" className="w-full h-full object-cover rounded-full" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">New Zealand</h3>
-                    <p className="text-[10px] font-semibold text-slate-500">Study, Work, PR</p>
+                    <h3 className="text-[12px] font-semibold text-gray-900">New Zealand</h3>
+                    <p className="text-[10px] text-gray-500">Study, Work, PR</p>
                   </div>
                 </a>
 
                 {/* 7. More Countries */}
-                <a href="/visa-guide" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-[#e6fffa] text-[#00a896] flex items-center justify-center shadow-2xs border border-[#b2f5ea] group-hover:bg-[#00a896] group-hover:text-white transition-all">
-                    <Globe className="w-5 h-5" />
+                <a href="/visa-guide" className="bg-gray-50 rounded-xl border border-gray-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-white text-gray-400 flex items-center justify-center shadow-sm border border-gray-200 group-hover:border-[#1a73e8] group-hover:text-[#1a73e8] transition-all">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                   </div>
                   <div>
-                    <h3 className="text-xs font-extrabold text-slate-900">More Countries</h3>
-                    <p className="text-[10px] font-semibold text-[#00a896]">Explore Now</p>
+                    <h3 className="text-[12px] font-semibold text-gray-900">More Countries</h3>
+                    <p className="text-[10px] text-[#1a73e8] font-medium">Explore Now</p>
                   </div>
                 </a>
               </div>

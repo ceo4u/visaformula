@@ -121,8 +121,8 @@ export function DesktopHomeSection() {
               {/* 3 Feature Badges */}
               <div className="flex flex-wrap gap-3.5 text-xs font-medium text-slate-700 pt-1">
                 {/* Badge 1: Trusted Verified Consultants */}
-                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#2563eb] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="flex items-center gap-2.5 bg-white/95 border border-slate-200/90 px-3.5 py-2 rounded-xl shadow-xs backdrop-blur-xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#0c1a2e] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -132,8 +132,8 @@ export function DesktopHomeSection() {
                 </div>
 
                 {/* Badge 2: Accurate Visa Information */}
-                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#2563eb] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="flex items-center gap-2.5 bg-white/95 border border-slate-200/90 px-3.5 py-2 rounded-xl shadow-xs backdrop-blur-xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#0c1a2e] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <FileText className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -143,8 +143,8 @@ export function DesktopHomeSection() {
                 </div>
 
                 {/* Badge 3: Millions of users Every Month */}
-                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#2563eb] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="flex items-center gap-2.5 bg-white/95 border border-slate-200/90 px-3.5 py-2 rounded-xl shadow-xs backdrop-blur-xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#0c1a2e] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <Users className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -190,7 +190,7 @@ export function DesktopHomeSection() {
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
                     <path
-                      className="text-[#2563eb] stroke-current"
+                      className="text-[#00a896] stroke-current"
                       strokeDasharray="72, 100"
                       strokeWidth="3.2"
                       strokeLinecap="round"
@@ -208,7 +208,7 @@ export function DesktopHomeSection() {
                   <p className="text-[12px] font-medium text-slate-500">Your Application Readiness</p>
                   <a 
                     href="/services/apply-visa" 
-                    className="mt-3 block w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-md shadow-blue-500/20 transition-all active:scale-95 cursor-pointer"
+                    className="mt-3 block w-full bg-[#00a896] hover:bg-[#028090] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-md shadow-teal-500/15 transition-all active:scale-95 cursor-pointer"
                   >
                     Check Now - It's Free
                   </a>

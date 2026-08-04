@@ -40,7 +40,7 @@ export function DesktopHomeSection() {
         .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }
       `}} />
 
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pt-6 sm:pt-8 font-jakarta">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pt-4 font-jakarta">
 
         {/* ========================================================================= */}
         {/* 1. TOP HEADER AD BANNERS ROW */}
@@ -79,76 +79,96 @@ export function DesktopHomeSection() {
         </div>
 
         {/* ========================================================================= */}
-        {/* 2. MAIN HERO SECTION BANNER WITH AIRPLANE & SCORE CARD */}
+        {/* 2. MAIN HERO SECTION BANNER MATCHING USER REFERENCE IMAGE 100% */}
         {/* ========================================================================= */}
-        <div className="relative rounded-2xl overflow-hidden bg-white text-slate-900 p-6 sm:p-10 shadow-sm border border-slate-200/80 min-h-[380px] flex items-center">
-          {/* Background Airport Window View */}
-          <img 
-            src="https://images.unsplash.com/photo-1542296332-2e4473faf563?w=1600&auto=format&fit=crop&q=80" 
-            alt="Journey Abroad Airport Lounge Window" 
-            className="absolute inset-0 w-full h-full object-cover opacity-15"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/40" />
+        <div className="relative rounded-2xl overflow-hidden bg-white text-slate-900 p-6 sm:p-10 shadow-sm border border-slate-200/80 min-h-[420px] flex items-center">
+          
+          {/* Background Airport Departure Window with Suitcase, Hat, Passport & Airplane */}
+          <div className="absolute inset-y-0 right-0 w-full sm:w-[65%] overflow-hidden pointer-events-none">
+            <img 
+              src="https://images.unsplash.com/photo-1542296332-2e4473faf563?w=1600&auto=format&fit=crop&q=80" 
+              alt="Airport Departure Lounge Window view with Airplane, Suitcase & Passport" 
+              className="w-full h-full object-cover object-right"
+            />
+            {/* Smooth left gradient overlay transitioning image to white */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent w-[55%]" />
+          </div>
 
           <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             {/* Left Hero Content */}
             <div className="lg:col-span-8 space-y-6">
-              <div className="space-y-3">
-                <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black tracking-tight text-[#111827] leading-[1.15]">
+              <div className="space-y-3 max-w-lg">
+                <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#111827] leading-[1.15]">
                   Your Journey Abroad <br />
                   Starts <span className="text-[#00a896]">Here</span>
                 </h1>
-                <p className="text-slate-600 text-sm sm:text-base max-w-xl font-medium leading-relaxed">
-                  Find visa information, explore your options and connect with trusted immigration professionals.
+                <p className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed">
+                  Find visa information, explore your options <br />
+                  and connect with trusted immigration <br />
+                  professionals.
                 </p>
               </div>
 
               {/* 3 Feature Badges */}
-              <div className="flex flex-wrap gap-3 text-xs font-semibold text-slate-700 pt-1">
-                <div className="flex items-center gap-2 bg-slate-50/90 border border-slate-200/90 px-3 py-1.5 rounded-lg shadow-2xs">
-                  <div className="w-5 h-5 rounded-md bg-[#00a896]/10 text-[#00a896] flex items-center justify-center">
-                    <ShieldCheck className="w-3.5 h-3.5" />
+              <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-700 pt-1">
+                {/* Badge 1: Trusted Verified Consultants */}
+                <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#ccf0ec] px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-bold text-slate-800">Trusted Verified Consultants</span>
+                  <div className="text-[10px] font-semibold text-slate-700 leading-tight">
+                    <span className="font-extrabold block text-slate-900">Trusted</span>
+                    <span>Verified Consultants</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 bg-slate-50/90 border border-slate-200/90 px-3 py-1.5 rounded-lg shadow-2xs">
-                  <div className="w-5 h-5 rounded-md bg-[#00a896]/10 text-[#00a896] flex items-center justify-center">
-                    <FileText className="w-3.5 h-3.5" />
+
+                {/* Badge 2: Accurate Visa Information */}
+                <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#ccf0ec] px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0">
+                    <FileText className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-bold text-slate-800">Accurate Visa Information</span>
+                  <div className="text-[10px] font-semibold text-slate-700 leading-tight">
+                    <span className="font-extrabold block text-slate-900">Accurate</span>
+                    <span>Visa Information</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 bg-slate-50/90 border border-slate-200/90 px-3 py-1.5 rounded-lg shadow-2xs">
-                  <div className="w-5 h-5 rounded-md bg-[#00a896]/10 text-[#00a896] flex items-center justify-center">
-                    <Users className="w-3.5 h-3.5" />
+
+                {/* Badge 3: Millions of users Every Month */}
+                <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#ccf0ec] px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0">
+                    <Users className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-bold text-slate-800">Millions of users Every Month</span>
+                  <div className="text-[10px] font-semibold text-slate-700 leading-tight">
+                    <span className="font-extrabold block text-slate-900">Millions of users</span>
+                    <span>Every Month</span>
+                  </div>
                 </div>
               </div>
 
-              {/* CTA Action Buttons */}
+              {/* 2 CTA Action Buttons */}
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <a 
                   href="/services/apply-visa" 
-                  className="bg-[#00a896] hover:bg-[#008080] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
+                  className="bg-[#00a896] hover:bg-[#008080] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition-all flex items-center gap-3 hover:scale-105 active:scale-95"
                 >
                   <span>Find My Visa Path</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
                 <a 
                   href="/find-experts" 
-                  className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all flex items-center gap-2.5 shadow-2xs hover:scale-105"
+                  className="bg-white hover:bg-slate-50 text-[#111827] border border-slate-300 font-bold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all flex items-center gap-3 shadow-2xs hover:scale-105"
                 >
                   <span>Find a Consultant</span>
-                  <ArrowRight className="w-4 h-4 text-slate-500" />
+                  <ArrowRight className="w-4 h-4 text-slate-900" />
                 </a>
               </div>
             </div>
 
             {/* Right Interactive Readiness Score Card */}
             <div className="lg:col-span-4 flex justify-center lg:justify-end">
-              <div className="bg-white text-slate-900 rounded-2xl p-6 shadow-xl border border-slate-200/80 text-center w-full max-w-xs space-y-4">
-                <h3 className="text-sm font-extrabold text-[#111827]">
+              <div className="bg-white text-slate-900 rounded-2xl p-6 shadow-xl border border-slate-200/80 text-center w-full max-w-[270px] space-y-4">
+                <h3 className="text-xs font-bold text-[#111827]">
                   Free Visa Readiness Check
                 </h3>
 
@@ -177,10 +197,10 @@ export function DesktopHomeSection() {
                 </div>
 
                 <div>
-                  <p className="text-xs font-semibold text-slate-500">Your Application Readiness</p>
+                  <p className="text-[11px] font-semibold text-slate-500">Your Application Readiness</p>
                   <a 
                     href="/services/apply-visa" 
-                    className="mt-3 block w-full bg-[#00a896] hover:bg-[#008080] text-white font-extrabold text-xs py-2.5 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
+                    className="mt-3 block w-full bg-[#00a896] hover:bg-[#008080] text-white font-bold text-xs py-2.5 rounded-xl shadow-sm transition-all active:scale-95 cursor-pointer"
                   >
                     Check Now - It's Free
                   </a>

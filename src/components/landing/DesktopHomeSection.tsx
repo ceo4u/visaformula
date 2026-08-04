@@ -511,71 +511,131 @@ export function DesktopHomeSection() {
                 ))}
               </div>
 
-              {/* 4 Classified Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {/* 4 Premium Photo Classified Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Caregiver Jobs in Canada */}
-                <div className="bg-white rounded-xl border border-slate-200 p-3.5 flex flex-col justify-between space-y-3 hover:shadow-md transition-all">
+                <a href="/jobs" className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group/card flex flex-col justify-between">
                   <div>
-                    <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded-md">
-                      Jobs Abroad
-                    </span>
-                    <h3 className="text-xs font-extrabold text-slate-900 mt-2 leading-snug">
-                      Caregiver Jobs in Canada
-                    </h3>
+                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
+                      <img 
+                        src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600&auto=format&fit=crop" 
+                        alt="Caregiver Jobs in Canada" 
+                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                      <span className="absolute top-2.5 left-2.5 backdrop-blur-md bg-emerald-600/90 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-400/30 shadow-sm">
+                        Jobs Abroad
+                      </span>
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px] font-bold">
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-emerald-400" /> Toronto, Canada</span>
+                        <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px]">$3,800/mo</span>
+                      </div>
+                    </div>
+                    <div className="p-3.5">
+                      <h3 className="text-xs font-extrabold text-slate-900 group-hover/card:text-[#00a896] transition-colors leading-snug line-clamp-2">
+                        Caregiver & Healthcare Jobs in Canada
+                      </h3>
+                      <p className="text-[11px] font-medium text-slate-500 mt-1 line-clamp-1">LMIA approved positions available immediately</p>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-[10px] font-semibold text-slate-500 pt-2 border-t border-slate-100">
-                    <span>Toronto, Canada</span>
+                  <div className="px-3.5 pb-3 pt-2 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-100">
+                    <span className="text-emerald-600 font-extrabold">Verified Sponsor</span>
                     <span>2 hours ago</span>
                   </div>
-                </div>
+                </a>
 
                 {/* 2. Shared Room Near Humber College */}
-                <div className="bg-white rounded-xl border border-slate-200 p-3.5 flex flex-col justify-between space-y-3 hover:shadow-md transition-all">
+                <a href="/jobs" className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group/card flex flex-col justify-between">
                   <div>
-                    <span className="bg-indigo-100 text-indigo-800 text-[10px] font-extrabold px-2 py-0.5 rounded-md">
-                      Accommodation
-                    </span>
-                    <h3 className="text-xs font-extrabold text-slate-900 mt-2 leading-snug">
-                      Shared Room Near Humber College
-                    </h3>
+                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
+                      <img 
+                        src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=600&auto=format&fit=crop" 
+                        alt="Luxury Suite Near Humber College" 
+                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                      <span className="absolute top-2.5 left-2.5 backdrop-blur-md bg-indigo-600/90 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-indigo-400/30 shadow-sm">
+                        Accommodation
+                      </span>
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px] font-bold">
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-indigo-400" /> Toronto, Canada</span>
+                        <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px]">$650/mo</span>
+                      </div>
+                    </div>
+                    <div className="p-3.5">
+                      <h3 className="text-xs font-extrabold text-slate-900 group-hover/card:text-[#00a896] transition-colors leading-snug line-clamp-2">
+                        Shared Luxury Suite Near Humber College
+                      </h3>
+                      <p className="text-[11px] font-medium text-slate-500 mt-1 line-clamp-1">Fully furnished, high-speed WiFi included</p>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-[10px] font-semibold text-slate-500 pt-2 border-t border-slate-100">
-                    <span>Toronto, Canada</span>
+                  <div className="px-3.5 pb-3 pt-2 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-100">
+                    <span className="text-indigo-600 font-extrabold">Student Housing</span>
                     <span>5 hours ago</span>
                   </div>
-                </div>
+                </a>
 
                 {/* 3. Masters in Australia 2026 Intake */}
-                <div className="bg-white rounded-xl border border-slate-200 p-3.5 flex flex-col justify-between space-y-3 hover:shadow-md transition-all">
+                <a href="/jobs" className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group/card flex flex-col justify-between">
                   <div>
-                    <span className="bg-pink-100 text-pink-800 text-[10px] font-extrabold px-2 py-0.5 rounded-md">
-                      Study Abroad
-                    </span>
-                    <h3 className="text-xs font-extrabold text-slate-900 mt-2 leading-snug">
-                      Masters in Australia 2026 Intake
-                    </h3>
+                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
+                      <img 
+                        src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=600&auto=format&fit=crop" 
+                        alt="Masters in Australia" 
+                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                      <span className="absolute top-2.5 left-2.5 backdrop-blur-md bg-pink-600/90 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-pink-400/30 shadow-sm">
+                        Study Abroad
+                      </span>
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px] font-bold">
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-pink-400" /> Sydney, Australia</span>
+                        <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px]">Scholarships</span>
+                      </div>
+                    </div>
+                    <div className="p-3.5">
+                      <h3 className="text-xs font-extrabold text-slate-900 group-hover/card:text-[#00a896] transition-colors leading-snug line-clamp-2">
+                        Masters in Australia 2026 Direct Intake
+                      </h3>
+                      <p className="text-[11px] font-medium text-slate-500 mt-1 line-clamp-1">Post-study work visa up to 4 years</p>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-[10px] font-semibold text-slate-500 pt-2 border-t border-slate-100">
-                    <span className="text-slate-600">Apply Now</span>
+                  <div className="px-3.5 pb-3 pt-2 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-100">
+                    <span className="text-pink-600 font-extrabold">Top Universities</span>
                     <span>1 day ago</span>
                   </div>
-                </div>
+                </a>
 
                 {/* 4. Start Your Own Visa Consultancy */}
-                <div className="bg-white rounded-xl border border-slate-200 p-3.5 flex flex-col justify-between space-y-3 hover:shadow-md transition-all">
+                <a href="/jobs" className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group/card flex flex-col justify-between">
                   <div>
-                    <span className="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded-md">
-                      Business
-                    </span>
-                    <h3 className="text-xs font-extrabold text-slate-900 mt-2 leading-snug">
-                      Start Your Own Visa Consultancy
-                    </h3>
+                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
+                      <img 
+                        src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=600&auto=format&fit=crop" 
+                        alt="Start Your Own Visa Consultancy" 
+                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                      <span className="absolute top-2.5 left-2.5 backdrop-blur-md bg-amber-600/90 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-amber-400/30 shadow-sm">
+                        Business
+                      </span>
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px] font-bold">
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-amber-400" /> Global Franchise</span>
+                        <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px]">High ROI</span>
+                      </div>
+                    </div>
+                    <div className="p-3.5">
+                      <h3 className="text-xs font-extrabold text-slate-900 group-hover/card:text-[#00a896] transition-colors leading-snug line-clamp-2">
+                        Start Your Own Visa & Immigration Franchise
+                      </h3>
+                      <p className="text-[11px] font-medium text-slate-500 mt-1 line-clamp-1">Complete CRM, leads & portal setup</p>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-[10px] font-semibold text-slate-500 pt-2 border-t border-slate-100">
-                    <span>High Profit Business</span>
+                  <div className="px-3.5 pb-3 pt-2 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-100">
+                    <span className="text-amber-600 font-extrabold">Franchise Partner</span>
                     <span>2 days ago</span>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
 

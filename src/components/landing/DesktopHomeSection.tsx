@@ -571,8 +571,11 @@ export function DesktopHomeSection() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {/* 1. GlobalWay Immigration */}
                 <div className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="w-12 h-12 mx-auto rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center font-black text-blue-900 text-xs tracking-tight">
-                    GlobalWay
+                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-slate-100">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-600 to-red-500 flex items-center justify-center text-white font-black text-xs">
+                      G
+                    </div>
+                    <span className="font-extrabold text-xs text-slate-900">GlobalWay <span className="font-semibold text-slate-500">Immigration</span></span>
                   </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">GlobalWay Immigration</h3>
@@ -594,8 +597,9 @@ export function DesktopHomeSection() {
 
                 {/* 2. MapleVisa Solutions */}
                 <div className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="w-12 h-12 mx-auto rounded-xl bg-red-50 border border-red-100 flex items-center justify-center font-black text-red-900 text-xs tracking-tight">
-                    MapleVisa
+                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-slate-100">
+                    <span className="text-red-600 text-base">🍁</span>
+                    <span className="font-extrabold text-xs text-slate-900">MapleVisa <span className="font-semibold text-slate-500">Solutions</span></span>
                   </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">MapleVisa Solutions</h3>
@@ -606,7 +610,7 @@ export function DesktopHomeSection() {
                   <div className="text-[10px] font-bold text-amber-500 flex items-center justify-center gap-1">
                     <span>4.8</span>
                     <span>⭐⭐⭐⭐⭐</span>
-                    <span className="text-slate-400">(96)</span>
+                    <span className="text-slate-400">(95)</span>
                   </div>
                   <p className="text-[10px] font-semibold text-slate-500">Canada, USA, UK</p>
                   <p className="text-[10px] font-bold text-[#00a896]">👥 850+ Clients</p>
@@ -617,8 +621,9 @@ export function DesktopHomeSection() {
 
                 {/* 3. FuturePath Advisors */}
                 <div className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="w-12 h-12 mx-auto rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center font-black text-emerald-900 text-xs tracking-tight">
-                    FuturePath
+                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-slate-100">
+                    <Compass className="w-5 h-5 text-emerald-600" />
+                    <span className="font-extrabold text-xs text-slate-900">FuturePath <span className="font-semibold text-slate-500">Advisors</span></span>
                   </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">FuturePath Advisors</h3>
@@ -640,8 +645,9 @@ export function DesktopHomeSection() {
 
                 {/* 4. VisaExperts Global */}
                 <div className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
-                  <div className="w-12 h-12 mx-auto rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center font-black text-indigo-900 text-xs tracking-tight">
-                    VisaExperts
+                  <div className="flex items-center justify-center gap-2 pb-1 border-b border-slate-100">
+                    <Plane className="w-5 h-5 text-blue-600" />
+                    <span className="font-extrabold text-xs text-slate-900">VisaExperts <span className="font-semibold text-slate-500">Global</span></span>
                   </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">VisaExperts Global</h3>
@@ -757,8 +763,8 @@ export function DesktopHomeSection() {
             </div>
 
             {/* Sidebar Item 2: Are you a Consultant? Banner Card */}
-            <div className="bg-[#0d9488] text-white rounded-2xl p-5 shadow-sm overflow-hidden relative flex flex-col justify-between min-h-[160px]">
-              <div className="space-y-1.5 relative z-10 max-w-[170px]">
+            <div className="bg-[#00a896] text-white rounded-2xl p-5 shadow-sm overflow-hidden relative flex flex-col justify-between min-h-[170px]">
+              <div className="space-y-1.5 relative z-10 max-w-[160px]">
                 <h3 className="text-sm font-extrabold tracking-tight text-white leading-snug">
                   Are you a Consultant?
                 </h3>
@@ -770,18 +776,18 @@ export function DesktopHomeSection() {
               <div className="pt-2 relative z-10">
                 <a 
                   href="/register-provider" 
-                  className="inline-block bg-white text-[#0d9488] hover:bg-teal-50 font-extrabold text-xs px-3.5 py-2 rounded-lg shadow-sm transition-all hover:scale-105"
+                  className="inline-block bg-white text-[#00a896] hover:bg-teal-50 font-extrabold text-xs px-3.5 py-2 rounded-lg shadow-sm transition-all hover:scale-105"
                 >
                   Join VisaFormula
                 </a>
               </div>
 
-              {/* Businessman illustration placeholder */}
-              <div className="absolute bottom-1 right-2 w-20 h-28 opacity-90 pointer-events-none">
+              {/* Businessman illustration matching reference image */}
+              <div className="absolute bottom-0 right-1 w-24 h-36 opacity-95 pointer-events-none">
                 <img 
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&auto=format&fit=crop&q=80" 
-                  alt="Consultant illustration" 
-                  className="w-full h-full object-cover object-top rounded-full border-2 border-white/30"
+                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&auto=format&fit=crop&q=80" 
+                  alt="Businessman Consultant" 
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
             </div>
@@ -793,26 +799,31 @@ export function DesktopHomeSection() {
             </div>
 
             {/* Sidebar Item 4: Get Your DREAM VISA Banner */}
-            <div className="relative bg-[#0a192f] text-white rounded-2xl p-5 shadow-md overflow-hidden min-h-[170px] flex flex-col justify-between">
-              <img 
-                src="https://images.unsplash.com/photo-1542296332-2e4473faf563?w=500&auto=format&fit=crop&q=80" 
-                alt="Airplane in clouds" 
-                className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity"
-              />
+            <div className="relative bg-gradient-to-b from-[#0b2545] via-[#0f2d57] to-[#1e3a8a] text-white rounded-2xl p-5 shadow-md overflow-hidden min-h-[200px] flex flex-col justify-between">
               <div className="relative z-10 space-y-1">
                 <h3 className="text-sm font-extrabold tracking-tight text-white uppercase leading-snug">
                   Get Your <br />
-                  <span className="text-teal-400 font-black">DREAM VISA</span> <br />
+                  <span className="text-[#00a896] text-base font-black">DREAM VISA</span> <br />
                   with the Right Guidance
                 </h3>
               </div>
+              
               <div className="pt-2 relative z-10">
                 <a 
                   href="/find-experts" 
-                  className="inline-block bg-[#00a896] hover:bg-[#008080] text-white font-extrabold text-xs px-3.5 py-2 rounded-lg shadow-sm transition-all"
+                  className="inline-block bg-[#00a896] hover:bg-[#008080] text-white font-extrabold text-xs px-4 py-2 rounded-lg shadow-sm transition-all"
                 >
                   Find an Expert
                 </a>
+              </div>
+
+              {/* Passenger Airplane in sky graphic matching reference image */}
+              <div className="absolute bottom-0 right-0 w-36 h-28 opacity-85 pointer-events-none">
+                <img 
+                  src="https://images.unsplash.com/photo-1542296332-2e4473faf563?w=500&auto=format&fit=crop&q=80" 
+                  alt="Commercial Passenger Airplane taking off" 
+                  className="w-full h-full object-cover object-bottom"
+                />
               </div>
             </div>
 
@@ -828,7 +839,7 @@ export function DesktopHomeSection() {
                 </p>
               </div>
 
-              <form onSubmit={handleNewsletterSubmit} className="space-y-2 pt-1">
+              <form onSubmit={handleNewsletterSubmit} className="space-y-2 pt-1 relative z-10">
                 <input 
                   type="email" 
                   value={newsletterEmail}
@@ -844,6 +855,11 @@ export function DesktopHomeSection() {
                   {newsletterSuccess ? 'Subscribed ✓' : 'Subscribe'}
                 </button>
               </form>
+
+              {/* Envelope graphic matching reference image */}
+              <div className="absolute bottom-2 right-2 w-12 h-12 opacity-80 pointer-events-none">
+                <span className="text-3xl">📩</span>
+              </div>
             </div>
 
           </div>

@@ -485,18 +485,23 @@ export function DesktopHomeSection() {
               </div>
             </div>
 
-            {/* SECTION 4C: CLASSIFIEDS */}
+            {/* SECTION 4C: FEATURED VISA PACKAGES & DEALS */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Classifieds</h2>
-                <a href="/jobs" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
-                  View all Classifieds <ChevronRight className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Featured Visa Packages & Deals</h2>
+                  <span className="bg-red-100 text-red-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                    🔥 Hot Deals
+                  </span>
+                </div>
+                <a href="/services/apply-visa" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                  View all Deals <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
 
               {/* Classified Filter Tabs */}
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-xs">
-                {['All', 'Jobs Abroad', 'Accommodation', 'Study Abroad', 'Business Opportunities', 'Buy & Sell', 'Others'].map((tab) => (
+                {['All Deals', 'Student Visa', 'PR Express Entry', 'Work Permits', 'Schengen & Europe', 'Business Visa'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveClassifiedTab(tab)}
@@ -511,129 +516,217 @@ export function DesktopHomeSection() {
                 ))}
               </div>
 
-              {/* 4 Premium Photo Classified Cards */}
+              {/* 4 Featured Deal Cards (1:1 Match with User Screenshot) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* 1. Caregiver Jobs in Canada */}
-                <a href="/jobs" className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group/card flex flex-col justify-between">
-                  <div>
-                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
-                      <img 
-                        src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600&auto=format&fit=crop" 
-                        alt="Caregiver Jobs in Canada" 
-                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500" 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
-                      <span className="absolute top-2.5 left-2.5 backdrop-blur-md bg-emerald-600/90 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-400/30 shadow-sm">
-                        Jobs Abroad
-                      </span>
-                      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px] font-bold">
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-emerald-400" /> Toronto, Canada</span>
-                        <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px]">$3,800/mo</span>
+                {/* 1. Australia Student Visa Package */}
+                <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden p-4 h-[285px] flex flex-col justify-between group/deal cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-white/10 bg-slate-950">
+                  <img 
+                    src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=600&auto=format&fit=crop" 
+                    alt="Australia Student Visa Package" 
+                    className="absolute inset-0 w-full h-full object-cover group-hover/deal:scale-105 transition-transform duration-700 opacity-80" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060c18] via-[#081226]/85 to-[#0b1a36]/50" />
+
+                  {/* Top Badge */}
+                  <div className="relative z-10">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold text-white backdrop-blur-md bg-red-600/90 border border-red-400/30 shadow-md">
+                      🔥 Hot Deal
+                    </span>
+                  </div>
+
+                  {/* Bottom Info */}
+                  <div className="relative z-10 space-y-2.5">
+                    <div>
+                      <h3 className="text-base font-extrabold text-white leading-snug group-hover/deal:text-blue-300 transition-colors">
+                        Australia Student Visa Package
+                      </h3>
+                      <p className="text-[11px] text-slate-300 font-medium mt-0.5">
+                        Visa + SOP + Documentation
+                      </p>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-1.5 text-[11px]">
+                      <div className="flex items-center text-amber-400 gap-0.5">
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      </div>
+                      <span className="font-bold text-white ml-0.5">4.9</span>
+                      <span className="text-slate-400">(128)</span>
+                    </div>
+
+                    {/* Price & Action Button */}
+                    <div className="flex items-end justify-between pt-1">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-lg font-black text-white tracking-tight">₹24,999</span>
+                        <span className="text-xs text-slate-400 line-through font-semibold">₹29,999</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-md group-hover/deal:bg-[#2563eb] group-hover/deal:text-white transition-all transform group-hover/deal:scale-110">
+                        <ChevronRight className="w-5 h-5 stroke-[2.5]" />
                       </div>
                     </div>
-                    <div className="p-3.5">
-                      <h3 className="text-xs font-extrabold text-slate-900 group-hover/card:text-[#00a896] transition-colors leading-snug line-clamp-2">
-                        Caregiver & Healthcare Jobs in Canada
-                      </h3>
-                      <p className="text-[11px] font-medium text-slate-500 mt-1 line-clamp-1">LMIA approved positions available immediately</p>
-                    </div>
-                  </div>
-                  <div className="px-3.5 pb-3 pt-2 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-100">
-                    <span className="text-emerald-600 font-extrabold">Verified Sponsor</span>
-                    <span>2 hours ago</span>
                   </div>
                 </a>
 
-                {/* 2. Shared Room Near Humber College */}
-                <a href="/jobs" className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group/card flex flex-col justify-between">
-                  <div>
-                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
-                      <img 
-                        src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=600&auto=format&fit=crop" 
-                        alt="Luxury Suite Near Humber College" 
-                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500" 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
-                      <span className="absolute top-2.5 left-2.5 backdrop-blur-md bg-indigo-600/90 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-indigo-400/30 shadow-sm">
-                        Accommodation
-                      </span>
-                      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px] font-bold">
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-indigo-400" /> Toronto, Canada</span>
-                        <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px]">$650/mo</span>
+                {/* 2. Canada PR Express Entry */}
+                <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden p-4 h-[285px] flex flex-col justify-between group/deal cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-white/10 bg-slate-950">
+                  <img 
+                    src="https://images.unsplash.com/photo-1517935703635-27c7078861d6?q=80&w=600&auto=format&fit=crop" 
+                    alt="Canada PR Express Entry" 
+                    className="absolute inset-0 w-full h-full object-cover group-hover/deal:scale-105 transition-transform duration-700 opacity-80" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060c18] via-[#081226]/85 to-[#0b1a36]/50" />
+
+                  {/* Top Badge */}
+                  <div className="relative z-10">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold text-white backdrop-blur-md bg-amber-600/90 border border-amber-400/30 shadow-md">
+                      ⚡ Limited Time
+                    </span>
+                  </div>
+
+                  {/* Bottom Info */}
+                  <div className="relative z-10 space-y-2.5">
+                    <div>
+                      <h3 className="text-base font-extrabold text-white leading-snug group-hover/deal:text-blue-300 transition-colors">
+                        Canada PR Express Entry
+                      </h3>
+                      <p className="text-[11px] text-slate-300 font-medium mt-0.5">
+                        Fast-track your PR process
+                      </p>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-1.5 text-[11px]">
+                      <div className="flex items-center text-amber-400 gap-0.5">
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      </div>
+                      <span className="font-bold text-white ml-0.5">4.8</span>
+                      <span className="text-slate-400">(96)</span>
+                    </div>
+
+                    {/* Price & Action Button */}
+                    <div className="flex items-end justify-between pt-1">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-lg font-black text-white tracking-tight">₹49,999</span>
+                        <span className="text-xs text-slate-400 line-through font-semibold">₹59,999</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-md group-hover/deal:bg-[#2563eb] group-hover/deal:text-white transition-all transform group-hover/deal:scale-110">
+                        <ChevronRight className="w-5 h-5 stroke-[2.5]" />
                       </div>
                     </div>
-                    <div className="p-3.5">
-                      <h3 className="text-xs font-extrabold text-slate-900 group-hover/card:text-[#00a896] transition-colors leading-snug line-clamp-2">
-                        Shared Luxury Suite Near Humber College
-                      </h3>
-                      <p className="text-[11px] font-medium text-slate-500 mt-1 line-clamp-1">Fully furnished, high-speed WiFi included</p>
-                    </div>
-                  </div>
-                  <div className="px-3.5 pb-3 pt-2 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-100">
-                    <span className="text-indigo-600 font-extrabold">Student Housing</span>
-                    <span>5 hours ago</span>
                   </div>
                 </a>
 
-                {/* 3. Masters in Australia 2026 Intake */}
-                <a href="/jobs" className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group/card flex flex-col justify-between">
-                  <div>
-                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
-                      <img 
-                        src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=600&auto=format&fit=crop" 
-                        alt="Masters in Australia" 
-                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500" 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
-                      <span className="absolute top-2.5 left-2.5 backdrop-blur-md bg-pink-600/90 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-pink-400/30 shadow-sm">
-                        Study Abroad
-                      </span>
-                      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px] font-bold">
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-pink-400" /> Sydney, Australia</span>
-                        <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px]">Scholarships</span>
+                {/* 3. UK Skilled Worker Visa */}
+                <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden p-4 h-[285px] flex flex-col justify-between group/deal cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-white/10 bg-slate-950">
+                  <img 
+                    src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=600&auto=format&fit=crop" 
+                    alt="UK Skilled Worker Visa" 
+                    className="absolute inset-0 w-full h-full object-cover group-hover/deal:scale-105 transition-transform duration-700 opacity-80" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060c18] via-[#081226]/85 to-[#0b1a36]/50" />
+
+                  {/* Top Badge */}
+                  <div className="relative z-10">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold text-white backdrop-blur-md bg-rose-600/90 border border-rose-400/30 shadow-md">
+                      🎯 Best Value
+                    </span>
+                  </div>
+
+                  {/* Bottom Info */}
+                  <div className="relative z-10 space-y-2.5">
+                    <div>
+                      <h3 className="text-base font-extrabold text-white leading-snug group-hover/deal:text-blue-300 transition-colors">
+                        UK Skilled Worker Visa
+                      </h3>
+                      <p className="text-[11px] text-slate-300 font-medium mt-0.5">
+                        End-to-end assistance
+                      </p>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-1.5 text-[11px]">
+                      <div className="flex items-center text-amber-400 gap-0.5">
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      </div>
+                      <span className="font-bold text-white ml-0.5">4.7</span>
+                      <span className="text-slate-400">(74)</span>
+                    </div>
+
+                    {/* Price & Action Button */}
+                    <div className="flex items-end justify-between pt-1">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-lg font-black text-white tracking-tight">₹38,999</span>
+                        <span className="text-xs text-slate-400 line-through font-semibold">₹44,999</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-md group-hover/deal:bg-[#2563eb] group-hover/deal:text-white transition-all transform group-hover/deal:scale-110">
+                        <ChevronRight className="w-5 h-5 stroke-[2.5]" />
                       </div>
                     </div>
-                    <div className="p-3.5">
-                      <h3 className="text-xs font-extrabold text-slate-900 group-hover/card:text-[#00a896] transition-colors leading-snug line-clamp-2">
-                        Masters in Australia 2026 Direct Intake
-                      </h3>
-                      <p className="text-[11px] font-medium text-slate-500 mt-1 line-clamp-1">Post-study work visa up to 4 years</p>
-                    </div>
-                  </div>
-                  <div className="px-3.5 pb-3 pt-2 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-100">
-                    <span className="text-pink-600 font-extrabold">Top Universities</span>
-                    <span>1 day ago</span>
                   </div>
                 </a>
 
-                {/* 4. Start Your Own Visa Consultancy */}
-                <a href="/jobs" className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group/card flex flex-col justify-between">
-                  <div>
-                    <div className="relative h-36 w-full overflow-hidden bg-slate-900">
-                      <img 
-                        src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=600&auto=format&fit=crop" 
-                        alt="Start Your Own Visa Consultancy" 
-                        className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500" 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
-                      <span className="absolute top-2.5 left-2.5 backdrop-blur-md bg-amber-600/90 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-amber-400/30 shadow-sm">
-                        Business
-                      </span>
-                      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white text-[11px] font-bold">
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-amber-400" /> Global Franchise</span>
-                        <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px]">High ROI</span>
+                {/* 4. Europe Schengen & Golden Visa */}
+                <a href="/services/apply-visa" className="relative rounded-2xl overflow-hidden p-4 h-[285px] flex flex-col justify-between group/deal cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-white/10 bg-slate-950">
+                  <img 
+                    src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=600&auto=format&fit=crop" 
+                    alt="Europe Schengen & Golden Visa" 
+                    className="absolute inset-0 w-full h-full object-cover group-hover/deal:scale-105 transition-transform duration-700 opacity-80" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060c18] via-[#081226]/85 to-[#0b1a36]/50" />
+
+                  {/* Top Badge */}
+                  <div className="relative z-10">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold text-white backdrop-blur-md bg-blue-600/90 border border-blue-400/30 shadow-md">
+                      ⭐ Most Popular
+                    </span>
+                  </div>
+
+                  {/* Bottom Info */}
+                  <div className="relative z-10 space-y-2.5">
+                    <div>
+                      <h3 className="text-base font-extrabold text-white leading-snug group-hover/deal:text-blue-300 transition-colors">
+                        Europe Schengen & Golden Visa
+                      </h3>
+                      <p className="text-[11px] text-slate-300 font-medium mt-0.5">
+                        Multi-country travel pass
+                      </p>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-1.5 text-[11px]">
+                      <div className="flex items-center text-amber-400 gap-0.5">
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      </div>
+                      <span className="font-bold text-white ml-0.5">5.0</span>
+                      <span className="text-slate-400">(210)</span>
+                    </div>
+
+                    {/* Price & Action Button */}
+                    <div className="flex items-end justify-between pt-1">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-lg font-black text-white tracking-tight">₹34,999</span>
+                        <span className="text-xs text-slate-400 line-through font-semibold">₹39,999</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-white text-[#2563eb] flex items-center justify-center shadow-md group-hover/deal:bg-[#2563eb] group-hover/deal:text-white transition-all transform group-hover/deal:scale-110">
+                        <ChevronRight className="w-5 h-5 stroke-[2.5]" />
                       </div>
                     </div>
-                    <div className="p-3.5">
-                      <h3 className="text-xs font-extrabold text-slate-900 group-hover/card:text-[#00a896] transition-colors leading-snug line-clamp-2">
-                        Start Your Own Visa & Immigration Franchise
-                      </h3>
-                      <p className="text-[11px] font-medium text-slate-500 mt-1 line-clamp-1">Complete CRM, leads & portal setup</p>
-                    </div>
-                  </div>
-                  <div className="px-3.5 pb-3 pt-2 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-100">
-                    <span className="text-amber-600 font-extrabold">Franchise Partner</span>
-                    <span>2 days ago</span>
                   </div>
                 </a>
               </div>

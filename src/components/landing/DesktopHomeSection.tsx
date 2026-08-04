@@ -95,12 +95,12 @@ export function DesktopHomeSection() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}} />
 
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-5 lg:px-6 space-y-4 pt-4 hp-font">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-5 lg:px-6 space-y-5 pt-4 hp-font">
 
         {/* ======================================================= */}
         {/* 1. TOP SPONSORED FLIGHT AD BANNER */}
         {/* ======================================================= */}
-        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-[#1c3570] via-[#2b4890] to-[#3a5ba0] flex items-center justify-between px-6 py-3.5 min-h-[84px] shadow-md border border-blue-900/30 text-white">
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-[#1c3570] via-[#2b4890] to-[#3a5ba0] flex items-center justify-between px-6 py-4 min-h-[90px] shadow-md border border-blue-900/30 text-white">
           {/* Left Text Info */}
           <div className="relative z-10 flex items-center gap-3">
             <div>
@@ -209,22 +209,22 @@ export function DesktopHomeSection() {
         {/* ======================================================= */}
         {/* 3. MAIN BODY ROW: SEARCH + POPULAR DESTINATIONS (LEFT) & IELTS AD (RIGHT) */}
         {/* ======================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
           {/* LEFT 9 COLUMNS (Search Form + Popular Destinations) */}
-          <div className="lg:col-span-9 space-y-4 flex flex-col justify-between">
+          <div className="lg:col-span-9 space-y-5">
 
             {/* 3A. SEARCH FORM */}
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-3">
-              <h2 className="text-sm sm:text-base font-bold text-gray-900">Find Visa Information &amp; Consultants</h2>
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-4">
+              <h2 className="text-base sm:text-lg font-bold text-gray-900">Find Visa Information &amp; Consultants</h2>
 
-              <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
-                <div className="space-y-1">
-                  <label className="text-[11px] font-medium text-gray-500">I want to go to</label>
+              <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 items-end">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-600">I want to go to</label>
                   <select
                     value={selectedCountry}
                     onChange={(e) => setSelectedCountry(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors"
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors shadow-2xs"
                   >
                     <option value="">Select Country</option>
                     <option value="Canada">Canada 🇨🇦</option>
@@ -237,12 +237,12 @@ export function DesktopHomeSection() {
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[11px] font-medium text-gray-500">I am going for</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-600">I am going for</label>
                   <select
                     value={selectedPurpose}
                     onChange={(e) => setSelectedPurpose(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors"
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors shadow-2xs"
                   >
                     <option value="">Select Purpose</option>
                     <option value="Study">Higher Education / Study</option>
@@ -253,12 +253,12 @@ export function DesktopHomeSection() {
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[11px] font-medium text-gray-500">Visa Type</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-600">Visa Type</label>
                   <select
                     value={selectedVisaType}
                     onChange={(e) => setSelectedVisaType(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors"
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors shadow-2xs"
                   >
                     <option value="">Select Visa Type</option>
                     <option value="Student Visa">Student Visa</option>
@@ -269,12 +269,12 @@ export function DesktopHomeSection() {
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[11px] font-medium text-gray-500">My Location</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-600">My Location</label>
                   <select
                     value={selectedCity}
                     onChange={(e) => setSelectedCity(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors"
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-3 text-xs sm:text-sm font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors shadow-2xs"
                   >
                     <option value="">Select City</option>
                     <option value="Mumbai">Mumbai, India</option>
@@ -288,7 +288,7 @@ export function DesktopHomeSection() {
                 <div>
                   <button
                     type="submit"
-                    className="w-full bg-[#00a896] hover:bg-[#009485] text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shadow-md shadow-teal-500/15"
+                    className="w-full bg-[#00a896] hover:bg-[#009485] text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shadow-md shadow-teal-500/20"
                   >
                     <Search className="w-4 h-4" />
                     <span>Search</span>
@@ -298,52 +298,52 @@ export function DesktopHomeSection() {
             </div>
 
             {/* 3B. POPULAR DESTINATIONS */}
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-3">
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-sm sm:text-base font-bold text-gray-900">Popular Destinations</h2>
-                <a href="/visa-guide" className="text-xs font-semibold text-[#1a73e8] hover:underline flex items-center gap-0.5">
+                <h2 className="text-base sm:text-lg font-bold text-gray-900">Popular Destinations</h2>
+                <a href="/visa-guide" className="text-xs sm:text-sm font-semibold text-[#1a73e8] hover:underline flex items-center gap-0.5">
                   View All Countries &gt;
                 </a>
               </div>
 
-              <div className="grid grid-cols-4 sm:grid-cols-8 gap-2.5">
+              <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
                 {destinations.map((d) => (
                   <a
                     key={d.name}
                     href={d.href}
-                    className="bg-white rounded-2xl border border-gray-100 p-2.5 flex flex-col items-center justify-center text-center gap-1.5 hover:shadow-md hover:border-[#00a896] transition-all group"
+                    className="bg-white rounded-2xl border border-gray-100 p-3.5 flex flex-col items-center justify-center text-center gap-2 hover:shadow-md hover:border-[#00a896] transition-all group"
                   >
-                    <div className="w-10 h-10 rounded-full overflow-hidden shadow-2xs border border-gray-100 flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden shadow-2xs border border-gray-100 flex-shrink-0 group-hover:scale-105 transition-transform">
                       <img
                         src={`https://flagcdn.com/w80/${d.flag}.png`}
                         alt={d.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <span className="text-[11px] font-bold text-gray-800 leading-tight">{d.name}</span>
+                    <span className="text-xs font-bold text-gray-800 leading-tight">{d.name}</span>
                   </a>
                 ))}
                 {/* More Button */}
                 <a
                   href="/visa-guide"
-                  className="bg-white rounded-2xl border border-gray-100 p-2.5 flex flex-col items-center justify-center text-center gap-1.5 hover:shadow-md hover:border-[#1a73e8] transition-all group"
+                  className="bg-white rounded-2xl border border-gray-100 p-3.5 flex flex-col items-center justify-center text-center gap-2 hover:shadow-md hover:border-[#1a73e8] transition-all group"
                 >
-                  <div className="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 group-hover:text-[#1a73e8] transition-colors">
-                    <span className="text-base font-bold leading-none">···</span>
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 group-hover:text-[#1a73e8] transition-colors">
+                    <span className="text-lg font-bold leading-none">···</span>
                   </div>
-                  <span className="text-[11px] font-bold text-gray-800 leading-tight">More</span>
+                  <span className="text-xs font-bold text-gray-800 leading-tight">More</span>
                 </a>
               </div>
             </div>
 
           </div>
 
-          {/* RIGHT 3 COLUMNS (IELTS SPONSORED AD CARD - SPANS FULL HEIGHT OF SEARCH + DESTINATIONS) */}
-          <div className="lg:col-span-3 flex">
-            <div className="bg-[#eef7ff] border border-blue-100 rounded-3xl p-5 shadow-sm flex flex-col justify-between items-center text-center w-full relative overflow-hidden group">
-              <div className="space-y-1 relative z-10 w-full">
+          {/* RIGHT 3 COLUMNS (IELTS SPONSORED AD CARD - HIGHER PADDING AND MATCHED HEIGHT) */}
+          <div className="lg:col-span-3 flex h-full">
+            <div className="bg-[#eef7ff] border border-blue-100 rounded-3xl p-6 shadow-sm flex flex-col justify-between items-center text-center w-full relative overflow-hidden group min-h-[380px]">
+              <div className="space-y-1.5 relative z-10 w-full">
                 <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">SPONSORED</p>
-                <h3 className="text-lg font-black text-gray-900 leading-tight">
+                <h3 className="text-xl font-black text-gray-900 leading-tight">
                   IELTS<br />
                   <span className="text-[#1a73e8]">Made Easy</span>
                 </h3>
@@ -351,17 +351,17 @@ export function DesktopHomeSection() {
               </div>
 
               {/* Book Now Button */}
-              <div className="w-full my-3 relative z-10">
+              <div className="w-full my-4 relative z-10">
                 <a
                   href="/ielts"
-                  className="block w-full bg-[#1a73e8] hover:bg-blue-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition-all"
+                  className="block w-full bg-[#1a73e8] hover:bg-blue-700 text-white font-bold text-xs sm:text-sm py-3 rounded-xl shadow-md transition-all"
                 >
                   Book Now
                 </a>
               </div>
 
               {/* Student Photo */}
-              <div className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden shadow-2xs">
+              <div className="relative w-full h-48 sm:h-56 rounded-2xl overflow-hidden shadow-2xs">
                 <img
                   src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=500&auto=format&fit=crop&q=80"
                   alt="Student with books smiling"
@@ -387,7 +387,7 @@ export function DesktopHomeSection() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer ${
                   activeTab === tab
                     ? 'bg-[#00a896] text-white shadow-sm'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -399,7 +399,7 @@ export function DesktopHomeSection() {
           </div>
 
           {/* 5 Classified Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {classifieds.map((item, idx) => (
               <a
                 key={idx}

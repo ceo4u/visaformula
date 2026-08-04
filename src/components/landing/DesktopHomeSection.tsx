@@ -4,7 +4,7 @@ import {
   Search, ShieldCheck, FileText, Users, ArrowRight, CheckCircle2,
   MapPin, Star, Calculator, Clock, Compass, AlertCircle, ChevronRight,
   GraduationCap, Briefcase, Plane, Globe, Building2, BookOpen,
-  MessageSquare, CreditCard, User, Download, Check
+  MessageSquare, CreditCard, User, Download, Check, Sparkles
 } from 'lucide-react';
 
 export function DesktopHomeSection() {
@@ -25,54 +25,54 @@ export function DesktopHomeSection() {
   const classifieds = [
     {
       badge: 'Jobs Abroad',
-      badgeColor: 'bg-purple-600',
+      badgeBg: 'bg-[#7c3aed]', // purple
       img: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=400&auto=format&fit=crop&q=80',
       title: 'Caregiver Jobs in Canada',
       location: 'Toronto, Canada',
       time: '2 hours ago',
       price: 'FREE',
-      priceColor: 'text-green-600',
+      priceColor: 'text-[#00a896]',
     },
     {
       badge: 'Accommodation',
-      badgeColor: 'bg-blue-500',
+      badgeBg: 'bg-[#2563eb]', // blue
       img: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&auto=format&fit=crop&q=80',
       title: 'Shared Room Near Humber College',
       location: 'Toronto, Canada',
       time: '5 hours ago',
       price: '$650 CAD / Month',
-      priceColor: 'text-slate-800',
+      priceColor: 'text-gray-900',
     },
     {
       badge: 'Study Abroad',
-      badgeColor: 'bg-pink-500',
+      badgeBg: 'bg-[#7c3aed]', // purple
       img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&auto=format&fit=crop&q=80',
       title: 'Study in Canada 2025 Intake Open',
       location: '3 Apply Now',
+      applyLink: 'Apply Now',
       time: '',
       price: 'FREE',
-      priceColor: 'text-green-600',
-      cta: 'Apply Now',
+      priceColor: 'text-[#00a896]',
     },
     {
       badge: 'Business Opportunity',
-      badgeColor: 'bg-teal-500',
+      badgeBg: 'bg-[#2563eb]', // blue
       img: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&auto=format&fit=crop&q=80',
       title: 'Visa Consultancy Business for Sale',
       location: 'Apply @Deco',
       time: '1 day ago',
       price: '12,00,000',
-      priceColor: 'text-slate-800',
+      priceColor: 'text-gray-900',
     },
     {
       badge: 'Jobs Abroad',
-      badgeColor: 'bg-purple-600',
+      badgeBg: 'bg-[#7c3aed]', // purple
       img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop&q=80',
       title: 'Hotel Front Desk Staff in UK',
       location: 'London, UK',
       time: '2 days ago',
       price: 'FREE',
-      priceColor: 'text-green-600',
+      priceColor: 'text-[#00a896]',
     },
   ];
 
@@ -89,56 +89,54 @@ export function DesktopHomeSection() {
   return (
     <div className="w-full bg-[#f3f4f6] text-[#111827] pb-12 antialiased">
       <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        .hp-font { font-family: 'Inter', sans-serif !important; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+        .hp-font { font-family: 'Plus Jakarta Sans', sans-serif !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}} />
 
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-5 lg:px-6 space-y-4 pt-4 hp-font">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-5 lg:px-6 space-y-4 pt-4 hp-font">
 
         {/* ======================================================= */}
-        {/* 1. TOP FLIGHT AD BANNER */}
+        {/* 1. TOP SPONSORED FLIGHT AD BANNER */}
         {/* ======================================================= */}
-        <div className="relative rounded-xl overflow-hidden bg-[#1a237e] flex items-center justify-between px-6 py-4 min-h-[90px] shadow-md">
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1a237e] via-[#283593] to-[#1565c0]" />
-          <div className="absolute inset-0 opacity-20">
-            <img
-              src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=60"
-              alt=""
-              className="w-full h-full object-cover"
-            />
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-[#1c3570] via-[#2b4890] to-[#3a5ba0] flex items-center justify-between px-6 py-3.5 min-h-[84px] shadow-md border border-blue-900/30 text-white">
+          {/* Left Text Info */}
+          <div className="relative z-10 flex items-center gap-3">
+            <div>
+              <p className="text-[10px] font-bold text-blue-200 tracking-wider uppercase flex items-center gap-1">
+                <span>✈</span> SPONSORED
+              </p>
+              <h3 className="text-white font-extrabold text-lg sm:text-xl leading-tight mt-0.5">
+                Fly High with Your Dreams
+              </h3>
+              <p className="text-blue-200 text-xs font-medium">Best Deals on Flight Tickets</p>
+            </div>
           </div>
 
-          {/* Left text */}
-          <div className="relative z-10 space-y-0.5">
-            <p className="text-blue-200 text-[11px] font-medium uppercase tracking-widest">✈ Sponsored</p>
-            <h3 className="text-white font-extrabold text-xl leading-tight">Fly High with Your Dreams</h3>
-            <p className="text-blue-200 text-sm">Best Deals on Flight Tickets</p>
+          {/* Center Airplane Thumbnail */}
+          <div className="relative z-10 hidden md:flex items-center justify-center">
+            <div className="w-24 h-14 rounded-lg overflow-hidden border border-white/20 shadow-inner bg-blue-950/40 p-0.5">
+              <img
+                src="https://images.unsplash.com/photo-1542296332-2e4473faf563?w=400&auto=format&fit=crop&q=80"
+                alt="Airplane flying in blue sky"
+                className="w-full h-full object-cover rounded-md"
+              />
+            </div>
           </div>
 
-          {/* Center: airplane image */}
-          <div className="relative z-10 flex-1 flex justify-center">
-            <img
-              src="https://images.unsplash.com/photo-1569629743817-70d8db6c323b?w=400&auto=format&fit=crop&q=80"
-              alt="Airplane"
-              className="h-16 w-auto object-contain drop-shadow-xl"
-            />
-          </div>
-
-          {/* Book Now button */}
-          <div className="relative z-10 flex items-center gap-6">
+          {/* Right Action & Offer */}
+          <div className="relative z-10 flex items-center gap-5">
             <a
               href="#"
-              className="bg-white text-[#1a237e] font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-blue-50 transition-colors shadow-md whitespace-nowrap"
+              className="bg-white text-[#1c3570] hover:bg-blue-50 font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-md transition-all whitespace-nowrap active:scale-95"
             >
               Book Now
             </a>
             <div className="text-right">
-              <p className="text-blue-200 text-[11px] font-semibold uppercase tracking-wide">UP TO</p>
-              <p className="text-white font-black text-3xl leading-none">20% OFF</p>
-              <p className="text-blue-200 text-[11px] font-medium">On International Flights</p>
+              <p className="text-blue-200 text-[10px] font-bold tracking-wider uppercase">UP TO</p>
+              <p className="text-white font-black text-2xl sm:text-3xl leading-none tracking-tight">20% OFF</p>
+              <p className="text-blue-200 text-[10px] font-semibold">On International Flights</p>
             </div>
           </div>
         </div>
@@ -146,28 +144,27 @@ export function DesktopHomeSection() {
         {/* ======================================================= */}
         {/* 2. HERO SECTION */}
         {/* ======================================================= */}
-        <div className="relative rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 min-h-[340px] flex items-center">
-          {/* Right background image */}
-          <div className="absolute inset-y-0 right-0 w-[55%] pointer-events-none overflow-hidden">
+        <div className="relative rounded-3xl overflow-hidden bg-white shadow-sm border border-gray-100 min-h-[380px] flex items-center">
+          {/* Right Background Image (Paris / Eiffel Tower view) */}
+          <div className="absolute inset-y-0 right-0 w-full sm:w-[62%] pointer-events-none overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=900&auto=format&fit=crop&q=80"
-              alt="Woman traveler with luggage at city"
-              className="w-full h-full object-cover object-center"
+              src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1400&auto=format&fit=crop&q=80"
+              alt="Eiffel Tower skyline view"
+              className="w-full h-full object-cover object-right sm:object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent w-[45%]" />
+            {/* Soft Gradient Fade from Left */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent w-[50%]" />
           </div>
 
-          {/* Left content */}
-          <div className="relative z-10 px-8 py-10 max-w-[520px] space-y-5">
-            <div className="space-y-2">
-              <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
+          {/* Left Hero Content */}
+          <div className="relative z-10 p-6 sm:p-10 max-w-[560px] space-y-6">
+            <div className="space-y-3">
+              <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-gray-900 leading-[1.15] tracking-tight">
                 Your Journey<br />
                 Abroad <span className="text-[#00a896]">Starts Here</span>
               </h1>
-              <p className="text-gray-500 text-[15px] leading-relaxed">
-                Find the right visa information, trusted<br />
-                consultants &amp; everything you need<br />
-                for your journey.
+              <p className="text-gray-500 text-xs sm:text-sm font-medium leading-relaxed max-w-md">
+                Find the right visa information, trusted consultants &amp; everything you need for your journey.
               </p>
             </div>
 
@@ -175,29 +172,34 @@ export function DesktopHomeSection() {
             <div className="flex flex-wrap items-center gap-3">
               <a
                 href="/services/apply-visa"
-                className="bg-[#00a896] hover:bg-[#009485] text-white font-semibold text-sm px-6 py-3 rounded-lg shadow-md transition-all hover:scale-105"
+                className="bg-[#00a896] hover:bg-[#009485] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md shadow-teal-500/20 transition-all hover:scale-[1.02] active:scale-95"
               >
                 Find Visa Help
               </a>
               <a
                 href="/find-experts"
-                className="bg-white hover:bg-gray-50 text-gray-800 font-semibold text-sm px-6 py-3 rounded-lg border border-gray-300 transition-all hover:scale-105"
+                className="bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 font-bold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all hover:scale-[1.02] shadow-2xs"
               >
                 Find a Consultant
               </a>
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-wrap gap-x-6 gap-y-3 pt-1">
+            {/* 4 Feature Icons */}
+            <div className="grid grid-cols-4 gap-2 pt-2 border-t border-gray-100/80 max-w-md">
               {[
-                { icon: <ShieldCheck className="w-5 h-5" />, label: 'Trusted', sub: 'Consultants' },
-                { icon: <FileText className="w-5 h-5" />, label: 'Accurate', sub: 'Information' },
-                { icon: <Users className="w-5 h-5" />, label: 'Millions of', sub: 'Users' },
-                { icon: <CheckCircle2 className="w-5 h-5" />, label: 'Secure &', sub: 'Reliable' },
-              ].map((b, i) => (
-                <div key={i} className="flex flex-col items-center text-center gap-1">
-                  <div className="text-[#00a896]">{b.icon}</div>
-                  <p className="text-[11px] text-gray-600 leading-tight font-medium">{b.label}<br />{b.sub}</p>
+                { icon: <ShieldCheck className="w-5 h-5 text-[#00a896]" />, title: 'Trusted', sub: 'Consultants' },
+                { icon: <FileText className="w-5 h-5 text-[#00a896]" />, title: 'Accurate', sub: 'Information' },
+                { icon: <Users className="w-5 h-5 text-[#00a896]" />, title: 'Millions of', sub: 'Users' },
+                { icon: <CheckCircle2 className="w-5 h-5 text-[#00a896]" />, title: 'Secure &', sub: 'Reliable' },
+              ].map((item, idx) => (
+                <div key={idx} className="flex flex-col items-center text-center space-y-1">
+                  <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center">
+                    {item.icon}
+                  </div>
+                  <p className="text-[10px] font-bold text-gray-800 leading-tight">
+                    {item.title}<br />
+                    <span className="font-normal text-gray-500">{item.sub}</span>
+                  </p>
                 </div>
               ))}
             </div>
@@ -205,169 +207,189 @@ export function DesktopHomeSection() {
         </div>
 
         {/* ======================================================= */}
-        {/* 3. SEARCH BAR + IELTS SIDEBAR */}
+        {/* 3. MAIN BODY ROW: SEARCH + POPULAR DESTINATIONS (LEFT) & IELTS AD (RIGHT) */}
         {/* ======================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
 
-          {/* Search Form */}
-          <div className="lg:col-span-3 bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
-            <h2 className="text-[15px] font-bold text-gray-900">Find Visa Information &amp; Consultants</h2>
+          {/* LEFT 9 COLUMNS (Search Form + Popular Destinations) */}
+          <div className="lg:col-span-9 space-y-4 flex flex-col justify-between">
 
-            <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-gray-500">I want to go to</label>
-                <select
-                  value={selectedCountry}
-                  onChange={(e) => setSelectedCountry(e.target.value)}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00a896] transition-colors"
-                >
-                  <option value="">Select Country</option>
-                  <option value="Canada">Canada 🇨🇦</option>
-                  <option value="UK">United Kingdom 🇬🇧</option>
-                  <option value="USA">United States 🇺🇸</option>
-                  <option value="Australia">Australia 🇦🇺</option>
-                  <option value="Germany">Germany 🇩🇪</option>
-                  <option value="New Zealand">New Zealand 🇳🇿</option>
-                  <option value="UAE">UAE 🇦🇪</option>
-                </select>
+            {/* 3A. SEARCH FORM */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-3">
+              <h2 className="text-sm sm:text-base font-bold text-gray-900">Find Visa Information &amp; Consultants</h2>
+
+              <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-gray-500">I want to go to</label>
+                  <select
+                    value={selectedCountry}
+                    onChange={(e) => setSelectedCountry(e.target.value)}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors"
+                  >
+                    <option value="">Select Country</option>
+                    <option value="Canada">Canada 🇨🇦</option>
+                    <option value="UK">United Kingdom 🇬🇧</option>
+                    <option value="USA">United States 🇺🇸</option>
+                    <option value="Australia">Australia 🇦🇺</option>
+                    <option value="Germany">Germany 🇩🇪</option>
+                    <option value="New Zealand">New Zealand 🇳🇿</option>
+                    <option value="UAE">UAE 🇦🇪</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-gray-500">I am going for</label>
+                  <select
+                    value={selectedPurpose}
+                    onChange={(e) => setSelectedPurpose(e.target.value)}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors"
+                  >
+                    <option value="">Select Purpose</option>
+                    <option value="Study">Higher Education / Study</option>
+                    <option value="Work">Employment / Work</option>
+                    <option value="Visit">Tourism / Visit</option>
+                    <option value="PR">Permanent Residency</option>
+                    <option value="Business">Business / Investment</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-gray-500">Visa Type</label>
+                  <select
+                    value={selectedVisaType}
+                    onChange={(e) => setSelectedVisaType(e.target.value)}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors"
+                  >
+                    <option value="">Select Visa Type</option>
+                    <option value="Student Visa">Student Visa</option>
+                    <option value="Work Permit">Work Permit</option>
+                    <option value="Tourist Visa">Tourist / Visitor Visa</option>
+                    <option value="Express Entry">PR / Express Entry</option>
+                    <option value="Digital Nomad">Digital Nomad Visa</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-gray-500">My Location</label>
+                  <select
+                    value={selectedCity}
+                    onChange={(e) => setSelectedCity(e.target.value)}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896] transition-colors"
+                  >
+                    <option value="">Select City</option>
+                    <option value="Mumbai">Mumbai, India</option>
+                    <option value="Delhi">Delhi, India</option>
+                    <option value="Bangalore">Bangalore, India</option>
+                    <option value="Hyderabad">Hyderabad, India</option>
+                    <option value="Punjab">Punjab, India</option>
+                  </select>
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    className="w-full bg-[#00a896] hover:bg-[#009485] text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shadow-md shadow-teal-500/15"
+                  >
+                    <Search className="w-4 h-4" />
+                    <span>Search</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* 3B. POPULAR DESTINATIONS */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-3">
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm sm:text-base font-bold text-gray-900">Popular Destinations</h2>
+                <a href="/visa-guide" className="text-xs font-semibold text-[#1a73e8] hover:underline flex items-center gap-0.5">
+                  View All Countries &gt;
+                </a>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-gray-500">I am going for</label>
-                <select
-                  value={selectedPurpose}
-                  onChange={(e) => setSelectedPurpose(e.target.value)}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00a896] transition-colors"
+              <div className="grid grid-cols-4 sm:grid-cols-8 gap-2.5">
+                {destinations.map((d) => (
+                  <a
+                    key={d.name}
+                    href={d.href}
+                    className="bg-white rounded-2xl border border-gray-100 p-2.5 flex flex-col items-center justify-center text-center gap-1.5 hover:shadow-md hover:border-[#00a896] transition-all group"
+                  >
+                    <div className="w-10 h-10 rounded-full overflow-hidden shadow-2xs border border-gray-100 flex-shrink-0 group-hover:scale-105 transition-transform">
+                      <img
+                        src={`https://flagcdn.com/w80/${d.flag}.png`}
+                        alt={d.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <span className="text-[11px] font-bold text-gray-800 leading-tight">{d.name}</span>
+                  </a>
+                ))}
+                {/* More Button */}
+                <a
+                  href="/visa-guide"
+                  className="bg-white rounded-2xl border border-gray-100 p-2.5 flex flex-col items-center justify-center text-center gap-1.5 hover:shadow-md hover:border-[#1a73e8] transition-all group"
                 >
-                  <option value="">Select Purpose</option>
-                  <option value="Study">Higher Education / Study</option>
-                  <option value="Work">Employment / Work</option>
-                  <option value="Visit">Tourism / Visit</option>
-                  <option value="PR">Permanent Residency</option>
-                  <option value="Business">Business / Investment</option>
-                </select>
+                  <div className="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 group-hover:text-[#1a73e8] transition-colors">
+                    <span className="text-base font-bold leading-none">···</span>
+                  </div>
+                  <span className="text-[11px] font-bold text-gray-800 leading-tight">More</span>
+                </a>
               </div>
+            </div>
 
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-gray-500">Visa Type</label>
-                <select
-                  value={selectedVisaType}
-                  onChange={(e) => setSelectedVisaType(e.target.value)}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00a896] transition-colors"
-                >
-                  <option value="">Select Visa Type</option>
-                  <option value="Student Visa">Student Visa</option>
-                  <option value="Work Permit">Work Permit</option>
-                  <option value="Tourist Visa">Tourist / Visitor Visa</option>
-                  <option value="Express Entry">PR / Express Entry</option>
-                  <option value="Digital Nomad">Digital Nomad Visa</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-gray-500">My Location</label>
-                <select
-                  value={selectedCity}
-                  onChange={(e) => setSelectedCity(e.target.value)}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00a896] transition-colors"
-                >
-                  <option value="">Select City</option>
-                  <option value="Mumbai">Mumbai, India</option>
-                  <option value="Delhi">Delhi, India</option>
-                  <option value="Bangalore">Bangalore, India</option>
-                  <option value="Hyderabad">Hyderabad, India</option>
-                  <option value="Punjab">Punjab, India</option>
-                </select>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#00a896] hover:bg-[#009485] text-white font-bold text-sm px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shadow-md"
-              >
-                <Search className="w-4 h-4" />
-                Search
-              </button>
-            </form>
           </div>
 
-          {/* IELTS Sidebar Ad */}
-          <div className="lg:col-span-1">
-            <a href="/ielts" className="relative bg-[#e8f4fd] border border-blue-200 rounded-2xl overflow-hidden flex flex-col items-center p-4 shadow-sm hover:shadow-md transition-shadow group block">
-              <p className="text-[11px] font-bold text-blue-400 uppercase tracking-widest mb-1">Sponsored</p>
-              <h4 className="text-[17px] font-extrabold text-gray-900 text-center leading-tight">IELTS<br /><span className="text-[#1a73e8]">Made Easy</span></h4>
-              <p className="text-gray-500 text-xs text-center mt-1 mb-3">Achieve your dream score!</p>
-              <div className="relative w-full h-28 rounded-xl overflow-hidden mb-3">
+          {/* RIGHT 3 COLUMNS (IELTS SPONSORED AD CARD - SPANS FULL HEIGHT OF SEARCH + DESTINATIONS) */}
+          <div className="lg:col-span-3 flex">
+            <div className="bg-[#eef7ff] border border-blue-100 rounded-3xl p-5 shadow-sm flex flex-col justify-between items-center text-center w-full relative overflow-hidden group">
+              <div className="space-y-1 relative z-10 w-full">
+                <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">SPONSORED</p>
+                <h3 className="text-lg font-black text-gray-900 leading-tight">
+                  IELTS<br />
+                  <span className="text-[#1a73e8]">Made Easy</span>
+                </h3>
+                <p className="text-xs text-gray-500 font-medium">Achieve your dream score!</p>
+              </div>
+
+              {/* Book Now Button */}
+              <div className="w-full my-3 relative z-10">
+                <a
+                  href="/ielts"
+                  className="block w-full bg-[#1a73e8] hover:bg-blue-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition-all"
+                >
+                  Book Now
+                </a>
+              </div>
+
+              {/* Student Photo */}
+              <div className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden shadow-2xs">
                 <img
-                  src="https://images.unsplash.com/photo-1580894894513-541e068a3e2b?w=400&auto=format&fit=crop&q=80"
-                  alt="IELTS coaching"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=500&auto=format&fit=crop&q=80"
+                  alt="Student with books smiling"
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <span className="bg-[#1a73e8] text-white font-bold text-sm px-5 py-2 rounded-lg w-full text-center">
-                Book Now
-              </span>
-            </a>
+            </div>
           </div>
+
         </div>
 
         {/* ======================================================= */}
-        {/* 4. POPULAR DESTINATIONS */}
+        {/* 4. FEATURED CLASSIFIEDS */}
         {/* ======================================================= */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[15px] font-bold text-gray-900">Popular Destinations</h2>
-            <a href="/visa-guide" className="text-[13px] font-medium text-[#1a73e8] flex items-center gap-0.5 hover:underline">
-              View All Countries <ChevronRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-
-          <div className="flex items-start justify-between gap-2 overflow-x-auto no-scrollbar pb-1">
-            {destinations.map((d) => (
-              <a
-                key={d.name}
-                href={d.href}
-                className="flex flex-col items-center gap-2 min-w-[70px] hover:-translate-y-1 transition-transform group"
-              >
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-100 shadow-sm group-hover:border-[#00a896] transition-colors">
-                  <img
-                    src={`https://flagcdn.com/w80/${d.flag}.png`}
-                    alt={d.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span className="text-[12px] font-medium text-gray-700 text-center">{d.name}</span>
-              </a>
-            ))}
-            {/* More */}
-            <a href="/visa-guide" className="flex flex-col items-center gap-2 min-w-[70px] hover:-translate-y-1 transition-transform group">
-              <div className="w-14 h-14 rounded-full border-2 border-gray-200 flex items-center justify-center text-gray-400 group-hover:border-[#1a73e8] group-hover:text-[#1a73e8] transition-colors bg-gray-50">
-                <span className="text-[22px] leading-none">···</span>
-              </div>
-              <span className="text-[12px] font-medium text-gray-700 text-center">More</span>
-            </a>
-          </div>
-        </div>
-
-        {/* ======================================================= */}
-        {/* 5. FEATURED CLASSIFIEDS */}
-        {/* ======================================================= */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-[15px] font-bold text-gray-900">Featured Classifieds</h2>
-            <a href="/classifieds" className="text-[13px] font-medium text-[#1a73e8] flex items-center gap-0.5 hover:underline">
-              View All <ChevronRight className="w-3.5 h-3.5" />
-            </a>
+            <h2 className="text-sm sm:text-base font-bold text-gray-900">Featured Classifieds</h2>
           </div>
 
-          {/* Filter tabs */}
+          {/* Filter Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             {classifiedTabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all shrink-0 cursor-pointer ${
+                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer ${
                   activeTab === tab
-                    ? 'bg-[#111827] text-white'
+                    ? 'bg-[#00a896] text-white shadow-sm'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -376,32 +398,44 @@ export function DesktopHomeSection() {
             ))}
           </div>
 
-          {/* Classifieds Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {classifieds.map((item, i) => (
+          {/* 5 Classified Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+            {classifieds.map((item, idx) => (
               <a
-                key={i}
+                key={idx}
                 href="/classifieds"
-                className="group bg-gray-50 border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all"
+                className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between"
               >
-                <div className="relative h-28 overflow-hidden">
-                  <img
-                    src={item.img}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <span className={`absolute top-2 left-2 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ${item.badgeColor}`}>
-                    {item.badge}
-                  </span>
-                </div>
-                <div className="p-2.5 space-y-1">
-                  <h3 className="text-[12px] font-semibold text-gray-900 leading-tight line-clamp-2">{item.title}</h3>
-                  <p className="text-[10px] text-gray-400">{item.location}</p>
-                  <div className="flex items-center justify-between">
-                    {item.time && <span className="text-[10px] text-gray-400">{item.time}</span>}
-                    {item.cta && <span className="text-[10px] font-bold text-[#00a896]">{item.cta}</span>}
-                    <span className={`text-[11px] font-bold ${item.priceColor}`}>{item.price}</span>
+                <div>
+                  <div className="relative h-28 overflow-hidden">
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <span className={`absolute top-2 left-2 text-white text-[9.5px] font-bold px-2 py-0.5 rounded-full shadow-2xs ${item.badgeBg}`}>
+                      {item.badge}
+                    </span>
                   </div>
+
+                  <div className="p-3 space-y-1">
+                    <h3 className="text-xs font-extrabold text-gray-900 leading-snug line-clamp-2 group-hover:text-[#00a896] transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-[10.5px] text-gray-400 font-medium">{item.location}</p>
+                  </div>
+                </div>
+
+                <div className="px-3 pb-3 pt-1 flex items-center justify-between border-t border-gray-50 mt-1">
+                  {item.time ? (
+                    <span className="text-[10px] text-gray-400 font-medium">{item.time}</span>
+                  ) : item.applyLink ? (
+                    <span className="text-[10px] font-bold text-[#00a896]">{item.applyLink}</span>
+                  ) : <span />}
+
+                  <span className={`text-xs font-black ${item.priceColor}`}>
+                    {item.price}
+                  </span>
                 </div>
               </a>
             ))}
@@ -409,102 +443,106 @@ export function DesktopHomeSection() {
         </div>
 
         {/* ======================================================= */}
-        {/* 6. CTA ROW: VISA READINESS + DOCUMENT CHECKLIST */}
+        {/* 5. BOTTOM CTA ROW: VISA READINESS + DOCUMENT CHECKLIST */}
         {/* ======================================================= */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          {/* Left: Visa Readiness */}
-          <div className="bg-[#00a896] rounded-2xl p-6 flex items-center justify-between shadow-md overflow-hidden relative">
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
-            </div>
-            <div className="relative z-10 space-y-2 max-w-[210px]">
-              <h3 className="text-white font-extrabold text-[17px] leading-snug">Check Your Visa Readiness in Just 2 Minutes</h3>
-              <p className="text-teal-100 text-[12px]">Get your free score now!</p>
+          {/* Left CTA: Visa Readiness */}
+          <div className="bg-[#00a896] rounded-3xl p-6 flex items-center justify-between shadow-md text-white relative overflow-hidden">
+            <div className="space-y-3 max-w-[230px] relative z-10">
+              <h3 className="font-extrabold text-lg sm:text-xl leading-tight">
+                Check Your Visa Readiness<br />in Just 2 Minutes
+              </h3>
+              <p className="text-teal-100 text-xs font-medium">Get your free score now!</p>
               <a
                 href="/services/apply-visa"
-                className="inline-block bg-white text-[#00a896] font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-teal-50 transition-colors shadow-md"
+                className="inline-block bg-white text-[#00a896] hover:bg-teal-50 font-bold text-xs px-5 py-2.5 rounded-xl shadow-sm transition-all"
               >
                 Check Now
               </a>
             </div>
-            {/* Circular gauge */}
-            <div className="relative z-10 w-28 h-28 flex-shrink-0">
+
+            {/* Circular Readiness Gauge */}
+            <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 flex items-center justify-center">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                 <path
-                  className="text-white/20 stroke-current"
-                  strokeWidth="3.2"
+                  className="text-teal-700/40 stroke-current"
+                  strokeWidth="3.5"
                   fill="none"
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
                 <path
                   className="text-white stroke-current"
                   strokeDasharray="72, 100"
-                  strokeWidth="3.2"
+                  strokeWidth="3.5"
                   strokeLinecap="round"
                   fill="none"
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
               </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-white font-black text-3xl leading-none">72</span>
-                <span className="text-white/70 text-[11px]">/100</span>
+              <div className="absolute flex flex-col items-center justify-center text-center">
+                <span className="text-2xl sm:text-3xl font-black leading-none text-white">72</span>
+                <span className="text-[10px] text-teal-100 font-semibold">/100</span>
               </div>
             </div>
           </div>
 
-          {/* Right: Download Checklist */}
-          <div className="bg-white rounded-2xl p-6 flex items-center justify-between shadow-sm border border-gray-100 overflow-hidden relative">
-            <div className="space-y-2">
-              <h3 className="text-gray-900 font-extrabold text-[17px] leading-snug">Download Free<br />Visa Document Checklist</h3>
-              <p className="text-gray-500 text-[12px]">Country-wise checklist for a hassle-free application.</p>
+          {/* Right CTA: Download Checklist */}
+          <div className="bg-[#eef8f6] border border-teal-100 rounded-3xl p-6 flex items-center justify-between shadow-2xs relative overflow-hidden">
+            <div className="space-y-3 max-w-[240px] relative z-10">
+              <h3 className="font-extrabold text-lg sm:text-xl text-gray-900 leading-tight">
+                Download Free<br />Visa Document Checklist
+              </h3>
+              <p className="text-gray-500 text-xs font-medium">Country-wise checklist for a hassle-free application.</p>
               <a
                 href="/services/visa-documentation"
-                className="inline-flex items-center gap-2 bg-[#00a896] text-white font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-[#009485] transition-colors shadow-md"
+                className="inline-flex items-center gap-2 bg-[#00a896] hover:bg-[#009485] text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md shadow-teal-500/15 transition-all"
               >
                 <Download className="w-4 h-4" />
-                Download Now
+                <span>Download Now</span>
               </a>
             </div>
-            {/* Illustration */}
-            <div className="w-28 h-28 flex-shrink-0 flex items-center justify-center">
-              <div className="relative">
-                <div className="w-20 h-24 bg-blue-50 border-2 border-blue-200 rounded-lg flex flex-col items-center justify-center gap-1.5 p-2">
-                  <FileText className="w-8 h-8 text-[#00a896]" />
-                  {[1,2,3].map(j => (
-                    <div key={j} className="flex items-center gap-1 w-full">
-                      <Check className="w-2.5 h-2.5 text-green-500 flex-shrink-0" />
-                      <div className="h-1.5 bg-gray-200 rounded flex-1" />
-                    </div>
-                  ))}
+
+            {/* Checklist Clipboard Illustration */}
+            <div className="relative z-10 w-24 h-24 flex-shrink-0 flex items-center justify-center">
+              <div className="w-20 h-24 bg-white border border-teal-200 rounded-2xl shadow-sm p-3 flex flex-col justify-between">
+                <div className="flex items-center gap-1 border-b border-gray-100 pb-1.5">
+                  <div className="w-3 h-3 rounded-full bg-teal-500 flex items-center justify-center text-[8px] text-white font-bold">✓</div>
+                  <div className="h-1.5 bg-gray-200 rounded w-full" />
                 </div>
-                <div className="absolute -top-2 -right-2 w-7 h-7 bg-orange-400 rounded-full flex items-center justify-center shadow">
-                  <Download className="w-3.5 h-3.5 text-white" />
+                <div className="flex items-center gap-1 border-b border-gray-100 pb-1.5">
+                  <div className="w-3 h-3 rounded-full bg-amber-500 flex items-center justify-center text-[8px] text-white font-bold">✓</div>
+                  <div className="h-1.5 bg-gray-200 rounded w-full" />
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded-full bg-teal-500 flex items-center justify-center text-[8px] text-white font-bold">✓</div>
+                  <div className="h-1.5 bg-gray-200 rounded w-full" />
                 </div>
               </div>
             </div>
           </div>
+
         </div>
 
         {/* ======================================================= */}
-        {/* 7. FOOTER STATS BAR */}
+        {/* 6. FOOTER TRUST STATS BAR */}
         {/* ======================================================= */}
         <div className="bg-white rounded-2xl px-6 py-4 shadow-sm border border-gray-100">
           <div className="flex flex-wrap items-center justify-between gap-4">
             {[
-              { icon: <ShieldCheck className="w-5 h-5 text-[#00a896]" />, label: 'Verified & Trusted', sub: 'Consultants' },
-              { icon: <Globe className="w-5 h-5 text-[#00a896]" />, label: 'Wide Range of', sub: 'Visa Services' },
-              { icon: <FileText className="w-5 h-5 text-[#00a896]" />, label: 'Updated Visa', sub: 'Information' },
-              { icon: <CheckCircle2 className="w-5 h-5 text-[#00a896]" />, label: 'Secure & Reliable', sub: 'Platform' },
-              { icon: <Clock className="w-5 h-5 text-[#00a896]" />, label: '24/7 Support &', sub: 'Guidance' },
-            ].map((s, i) => (
-              <div key={i} className="flex items-center gap-2.5 flex-1 min-w-[140px]">
-                <div className="w-9 h-9 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0">
-                  {s.icon}
+              { icon: <ShieldCheck className="w-5 h-5 text-[#00a896]" />, title: 'Verified & Trusted', sub: 'Consultants' },
+              { icon: <Globe className="w-5 h-5 text-[#00a896]" />, title: 'Wide Range of', sub: 'Visa Services' },
+              { icon: <FileText className="w-5 h-5 text-[#00a896]" />, title: 'Updated Visa', sub: 'Information' },
+              { icon: <CheckCircle2 className="w-5 h-5 text-[#00a896]" />, title: 'Secure & Reliable', sub: 'Platform' },
+              { icon: <Clock className="w-5 h-5 text-[#00a896]" />, title: '24/7 Support &', sub: 'Guidance' },
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-3 flex-1 min-w-[150px]">
+                <div className="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0">
+                  {item.icon}
                 </div>
                 <div>
-                  <p className="text-[12px] font-semibold text-gray-800">{s.label}</p>
-                  <p className="text-[11px] text-gray-500">{s.sub}</p>
+                  <p className="text-xs font-bold text-gray-800 leading-tight">{item.title}</p>
+                  <p className="text-[11px] text-gray-500 font-medium">{item.sub}</p>
                 </div>
               </div>
             ))}

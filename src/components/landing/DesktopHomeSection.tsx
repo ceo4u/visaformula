@@ -104,7 +104,7 @@ export function DesktopHomeSection() {
           {/* Left */}
           <div className="relative z-10">
             <p className="text-[10px] font-bold text-blue-200 tracking-wider uppercase mb-0.5">✈ SPONSORED</p>
-            <h3 className="text-white font-extrabold text-xl leading-tight">Fly High with Your Dreams</h3>
+            <h3 className="text-white font-bold text-xl leading-tight">Fly High with Your Dreams</h3>
             <p className="text-blue-200 text-xs font-medium mt-0.5">Best Deals on Flight Tickets</p>
           </div>
 

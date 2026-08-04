@@ -234,7 +234,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedCountry}
                 onChange={(e) => setSelectedCountry(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
               >
                 <option value="">Select Country</option>
                 <option value="Canada">Canada 🇨🇦</option>
@@ -252,7 +252,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedPurpose}
                 onChange={(e) => setSelectedPurpose(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
               >
                 <option value="">Select Purpose</option>
                 <option value="Study">Higher Education / Study</option>
@@ -269,7 +269,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedVisaType}
                 onChange={(e) => setSelectedVisaType(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
               >
                 <option value="">Select Visa Type</option>
                 <option value="Student Visa">Student Visa</option>
@@ -286,7 +286,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
               >
                 <option value="">Select City</option>
                 <option value="Mumbai">Mumbai, India</option>
@@ -303,7 +303,7 @@ export function DesktopHomeSection() {
             <div className="pt-5 sm:pt-4">
               <button 
                 type="submit"
-                className="w-full bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] hover:from-[#1d4ed8] hover:to-[#1e40af] text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                className="w-full bg-[#00a896] hover:bg-[#028090] text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-teal-500/20 transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
               >
                 <Search className="w-4 h-4" />
                 <span>Search</span>
@@ -314,15 +314,15 @@ export function DesktopHomeSection() {
           {/* Popular Searches Pills */}
           <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
             <span className="font-bold text-slate-600">Popular Searches:</span>
-            <a href="/find-experts?q=Canada+Study+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">Canada Study Visa</a>
+            <a href="/find-experts?q=Canada+Study+Visa" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">Canada Study Visa</a>
             <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=UK+Visitor+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">UK Visitor Visa</a>
+            <a href="/find-experts?q=UK+Visitor+Visa" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">UK Visitor Visa</a>
             <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=Australia+PR" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">Australia PR</a>
+            <a href="/find-experts?q=Australia+PR" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">Australia PR</a>
             <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=USA+Tourist+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">USA Tourist Visa</a>
+            <a href="/find-experts?q=USA+Tourist+Visa" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">USA Tourist Visa</a>
             <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=Schengen+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">Schengen Visa</a>
+            <a href="/find-experts?q=Schengen+Visa" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">Schengen Visa</a>
           </div>
         </div>
 

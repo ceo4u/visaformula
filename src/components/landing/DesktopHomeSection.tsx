@@ -339,8 +339,10 @@ export function DesktopHomeSection() {
 
               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
                 {/* 1. Canada */}
-                <a href="/visa-guide/canada" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center text-2xl shadow-2xs border border-slate-100">🇨🇦</div>
+                <a href="/visa-guide/canada" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                    <img src="https://flagcdn.com/w80/ca.png" alt="Canada Flag" className="w-full h-full object-cover rounded-full" />
+                  </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">Canada</h3>
                     <p className="text-[10px] font-semibold text-slate-500">Study, Work, PR</p>
@@ -348,8 +350,10 @@ export function DesktopHomeSection() {
                 </a>
 
                 {/* 2. UK */}
-                <a href="/visa-guide/uk" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center text-2xl shadow-2xs border border-slate-100">🇬🇧</div>
+                <a href="/visa-guide/uk" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                    <img src="https://flagcdn.com/w80/gb.png" alt="UK Flag" className="w-full h-full object-cover rounded-full" />
+                  </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">UK</h3>
                     <p className="text-[10px] font-semibold text-slate-500">Study, Work, Visit</p>
@@ -357,8 +361,10 @@ export function DesktopHomeSection() {
                 </a>
 
                 {/* 3. USA */}
-                <a href="/visa-guide/usa" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center text-2xl shadow-2xs border border-slate-100">🇺🇸</div>
+                <a href="/visa-guide/usa" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                    <img src="https://flagcdn.com/w80/us.png" alt="USA Flag" className="w-full h-full object-cover rounded-full" />
+                  </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">USA</h3>
                     <p className="text-[10px] font-semibold text-slate-500">Study, Work, Visit</p>
@@ -366,8 +372,10 @@ export function DesktopHomeSection() {
                 </a>
 
                 {/* 4. Australia */}
-                <a href="/visa-guide/australia" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center text-2xl shadow-2xs border border-slate-100">🇦🇺</div>
+                <a href="/visa-guide/australia" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                    <img src="https://flagcdn.com/w80/au.png" alt="Australia Flag" className="w-full h-full object-cover rounded-full" />
+                  </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">Australia</h3>
                     <p className="text-[10px] font-semibold text-slate-500">Study, Work, PR</p>
@@ -375,8 +383,10 @@ export function DesktopHomeSection() {
                 </a>
 
                 {/* 5. Germany */}
-                <a href="/visa-guide/germany" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center text-2xl shadow-2xs border border-slate-100">🇩🇪</div>
+                <a href="/visa-guide/germany" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                    <img src="https://flagcdn.com/w80/de.png" alt="Germany Flag" className="w-full h-full object-cover rounded-full" />
+                  </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">Germany</h3>
                     <p className="text-[10px] font-semibold text-slate-500">Study, Work</p>
@@ -384,8 +394,10 @@ export function DesktopHomeSection() {
                 </a>
 
                 {/* 6. New Zealand */}
-                <a href="/visa-guide/new-zealand" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center text-2xl shadow-2xs border border-slate-100">🇳🇿</div>
+                <a href="/visa-guide/new-zealand" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-50 flex items-center justify-center shadow-2xs border border-slate-100 overflow-hidden p-0.5 group-hover:scale-110 transition-transform">
+                    <img src="https://flagcdn.com/w80/nz.png" alt="New Zealand Flag" className="w-full h-full object-cover rounded-full" />
+                  </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">New Zealand</h3>
                     <p className="text-[10px] font-semibold text-slate-500">Study, Work, PR</p>
@@ -393,9 +405,9 @@ export function DesktopHomeSection() {
                 </a>
 
                 {/* 7. More Countries */}
-                <a href="/visa-guide" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1">
-                  <div className="w-11 h-11 mx-auto rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-lg font-bold border border-slate-200">
-                    <X className="w-5 h-5 text-slate-400" />
+                <a href="/visa-guide" className="bg-white rounded-xl border border-slate-200 p-3 text-center space-y-2 hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className="w-11 h-11 mx-auto rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shadow-2xs border border-blue-100 group-hover:scale-110 transition-transform">
+                    <Globe className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">More Countries</h3>

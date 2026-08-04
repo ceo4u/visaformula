@@ -109,7 +109,7 @@ export function DesktopHomeSection() {
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-[#111827] leading-[1.15]">
                   Your Journey Abroad <br />
-                  Starts <span className="text-[#00a896]">Here</span>
+                  Starts <span className="text-[#2563eb]">Here</span>
                 </h1>
                 <p className="text-[#374151] text-xs sm:text-sm font-normal leading-[1.6]">
                   Find visa information, explore your options <br />
@@ -121,8 +121,8 @@ export function DesktopHomeSection() {
               {/* 3 Feature Badges */}
               <div className="flex flex-wrap gap-3.5 text-xs font-medium text-slate-700 pt-1">
                 {/* Badge 1: Trusted Verified Consultants */}
-                <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#99f6e4]/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/80 px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#2563eb] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -132,8 +132,8 @@ export function DesktopHomeSection() {
                 </div>
 
                 {/* Badge 2: Accurate Visa Information */}
-                <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#99f6e4]/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/80 px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#2563eb] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <FileText className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -143,8 +143,8 @@ export function DesktopHomeSection() {
                 </div>
 
                 {/* Badge 3: Millions of users Every Month */}
-                <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#99f6e4]/80 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/80 px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#2563eb] text-white flex items-center justify-center shrink-0 shadow-xs">
                     <Users className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -158,7 +158,7 @@ export function DesktopHomeSection() {
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <a 
                   href="/services/apply-visa" 
-                  className="bg-[#00a896] hover:bg-[#028090] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-md shadow-teal-500/20 transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
+                  className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-md shadow-blue-500/20 transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
                 >
                   <span>Find My Visa Path</span>
                   <ArrowRight className="w-4 h-4" />
@@ -190,7 +190,7 @@ export function DesktopHomeSection() {
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
                     <path
-                      className="text-[#00a896] stroke-current"
+                      className="text-[#2563eb] stroke-current"
                       strokeDasharray="72, 100"
                       strokeWidth="3.2"
                       strokeLinecap="round"
@@ -208,7 +208,7 @@ export function DesktopHomeSection() {
                   <p className="text-[12px] font-medium text-slate-500">Your Application Readiness</p>
                   <a 
                     href="/services/apply-visa" 
-                    className="mt-3 block w-full bg-[#00a896] hover:bg-[#028090] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-md shadow-teal-500/15 transition-all active:scale-95 cursor-pointer"
+                    className="mt-3 block w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-md shadow-blue-500/20 transition-all active:scale-95 cursor-pointer"
                   >
                     Check Now - It's Free
                   </a>
@@ -234,7 +234,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedCountry}
                 onChange={(e) => setSelectedCountry(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
               >
                 <option value="">Select Country</option>
                 <option value="Canada">Canada 🇨🇦</option>
@@ -252,7 +252,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedPurpose}
                 onChange={(e) => setSelectedPurpose(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
               >
                 <option value="">Select Purpose</option>
                 <option value="Study">Higher Education / Study</option>
@@ -269,7 +269,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedVisaType}
                 onChange={(e) => setSelectedVisaType(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
               >
                 <option value="">Select Visa Type</option>
                 <option value="Student Visa">Student Visa</option>
@@ -286,7 +286,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
               >
                 <option value="">Select City</option>
                 <option value="Mumbai">Mumbai, India</option>
@@ -303,7 +303,7 @@ export function DesktopHomeSection() {
             <div className="pt-5 sm:pt-4">
               <button 
                 type="submit"
-                className="w-full bg-[#00a896] hover:bg-[#028090] text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-teal-500/20 transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
               >
                 <Search className="w-4 h-4" />
                 <span>Search</span>
@@ -314,15 +314,15 @@ export function DesktopHomeSection() {
           {/* Popular Searches Pills */}
           <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
             <span className="font-bold text-slate-600">Popular Searches:</span>
-            <a href="/find-experts?q=Canada+Study+Visa" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">Canada Study Visa</a>
+            <a href="/find-experts?q=Canada+Study+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">Canada Study Visa</a>
             <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=UK+Visitor+Visa" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">UK Visitor Visa</a>
+            <a href="/find-experts?q=UK+Visitor+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">UK Visitor Visa</a>
             <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=Australia+PR" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">Australia PR</a>
+            <a href="/find-experts?q=Australia+PR" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">Australia PR</a>
             <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=USA+Tourist+Visa" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">USA Tourist Visa</a>
+            <a href="/find-experts?q=USA+Tourist+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">USA Tourist Visa</a>
             <span className="text-slate-300">•</span>
-            <a href="/find-experts?q=Schengen+Visa" className="text-[#00a896] hover:text-[#028090] font-semibold hover:underline">Schengen Visa</a>
+            <a href="/find-experts?q=Schengen+Visa" className="text-[#2563eb] hover:text-[#1d4ed8] font-semibold hover:underline">Schengen Visa</a>
           </div>
         </div>
 

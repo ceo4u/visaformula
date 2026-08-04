@@ -159,7 +159,7 @@ const isHome = pathname === '/' || pathname === '';
             <!-- Desktop Profile Dropdown (visible when logged in) -->
             <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta">
                 <button id="nav-profile-trigger" class="flex items-center gap-2.5 pl-1.5 pr-3.5 py-1.5 border rounded-full transition-all focus:outline-none shadow-2xs bg-slate-50 hover:bg-slate-100 text-slate-900 border-slate-200">
-                    <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-slate-900 text-white shadow-2xs shrink-0" id="nav-profile-avatar-container">
+                    <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#2563eb] text-white shadow-2xs shrink-0" id="nav-profile-avatar-container">
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                         <span class="font-bold text-xs" id="nav-profile-avatar-letters">U</span>
                     </div>
@@ -192,9 +192,9 @@ const isHome = pathname === '/' || pathname === '';
             <a href="/signup" id="mobile-top-signup-btn" class="bg-[#2563eb] hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 shadow-sm">
                 Sign Up
             </a>
-            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 rounded-full border border-slate-300 bg-black text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm">
+            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 rounded-full border border-slate-300 bg-[#2563eb] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm">
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                <span class="font-black text-xs text-white bg-black w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">D</span>
+                <span class="font-black text-xs text-white bg-[#2563eb] w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">D</span>
             </a>
             <button id="mobile-menu-btn" class={`p-2 rounded-xl transition-colors flex items-center justify-center focus:outline-none ${isHome ? 'text-white' : 'text-slate-800'}`}>
                 <span id="menu-icon" class="block">

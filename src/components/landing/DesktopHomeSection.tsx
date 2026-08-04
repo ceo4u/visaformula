@@ -99,11 +99,11 @@ export function DesktopHomeSection() {
             {/* Left Hero Content */}
             <div className="lg:col-span-8 space-y-6">
               <div className="space-y-3 max-w-lg">
-                <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#111827] leading-[1.15]">
+                <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-[#111827] leading-[1.15]">
                   Your Journey Abroad <br />
                   Starts <span className="text-[#00a896]">Here</span>
                 </h1>
-                <p className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed">
+                <p className="text-[#374151] text-xs sm:text-sm font-normal leading-[1.6]">
                   Find visa information, explore your options <br />
                   and connect with trusted immigration <br />
                   professionals.
@@ -111,37 +111,37 @@ export function DesktopHomeSection() {
               </div>
 
               {/* 3 Feature Badges */}
-              <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-700 pt-1">
+              <div className="flex flex-wrap gap-3.5 text-xs font-medium text-slate-700 pt-1">
                 {/* Badge 1: Trusted Verified Consultants */}
-                <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#ccf0ec] px-3.5 py-2 rounded-xl shadow-2xs">
+                <div className="flex items-center gap-2.5 bg-[#e6f7f5]/80 border border-[#b2e8e0]/60 px-3.5 py-2 rounded-xl shadow-2xs">
                   <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
-                  <div className="text-[10px] font-semibold text-slate-700 leading-tight">
-                    <span className="font-extrabold block text-slate-900">Trusted</span>
-                    <span>Verified Consultants</span>
+                  <div className="text-[10px] leading-tight">
+                    <span className="font-semibold block text-slate-900 text-[11px]">Trusted</span>
+                    <span className="font-normal text-slate-500">Verified Consultants</span>
                   </div>
                 </div>
 
                 {/* Badge 2: Accurate Visa Information */}
-                <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#ccf0ec] px-3.5 py-2 rounded-xl shadow-2xs">
+                <div className="flex items-center gap-2.5 bg-[#e6f7f5]/80 border border-[#b2e8e0]/60 px-3.5 py-2 rounded-xl shadow-2xs">
                   <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0">
                     <FileText className="w-4 h-4" />
                   </div>
-                  <div className="text-[10px] font-semibold text-slate-700 leading-tight">
-                    <span className="font-extrabold block text-slate-900">Accurate</span>
-                    <span>Visa Information</span>
+                  <div className="text-[10px] leading-tight">
+                    <span className="font-semibold block text-slate-900 text-[11px]">Accurate</span>
+                    <span className="font-normal text-slate-500">Visa Information</span>
                   </div>
                 </div>
 
                 {/* Badge 3: Millions of users Every Month */}
-                <div className="flex items-center gap-2.5 bg-[#f0fdfa] border border-[#ccf0ec] px-3.5 py-2 rounded-xl shadow-2xs">
+                <div className="flex items-center gap-2.5 bg-[#e6f7f5]/80 border border-[#b2e8e0]/60 px-3.5 py-2 rounded-xl shadow-2xs">
                   <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0">
                     <Users className="w-4 h-4" />
                   </div>
-                  <div className="text-[10px] font-semibold text-slate-700 leading-tight">
-                    <span className="font-extrabold block text-slate-900">Millions of users</span>
-                    <span>Every Month</span>
+                  <div className="text-[10px] leading-tight">
+                    <span className="font-semibold block text-slate-900 text-[11px]">Millions of users</span>
+                    <span className="font-normal text-slate-500">Every Month</span>
                   </div>
                 </div>
               </div>
@@ -150,14 +150,14 @@ export function DesktopHomeSection() {
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <a 
                   href="/services/apply-visa" 
-                  className="bg-[#00a896] hover:bg-[#008080] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition-all flex items-center gap-3 hover:scale-105 active:scale-95"
+                  className="bg-[#00a896] hover:bg-[#008f80] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-sm transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
                 >
                   <span>Find My Visa Path</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
                 <a 
                   href="/find-experts" 
-                  className="bg-white hover:bg-slate-50 text-[#111827] border border-slate-300 font-bold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all flex items-center gap-3 shadow-2xs hover:scale-105"
+                  className="bg-white hover:bg-slate-50 text-[#111827] border border-slate-300 font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all flex items-center gap-2.5 shadow-2xs hover:scale-105"
                 >
                   <span>Find a Consultant</span>
                   <ArrowRight className="w-4 h-4 text-slate-900" />
@@ -167,8 +167,8 @@ export function DesktopHomeSection() {
 
             {/* Right Interactive Readiness Score Card */}
             <div className="lg:col-span-4 flex justify-center lg:justify-end">
-              <div className="bg-white text-slate-900 rounded-2xl p-6 shadow-xl border border-slate-200/80 text-center w-full max-w-[270px] space-y-4">
-                <h3 className="text-xs font-bold text-[#111827]">
+              <div className="bg-white text-slate-900 rounded-2xl p-6 shadow-xl border border-slate-100 text-center w-full max-w-[270px] space-y-4">
+                <h3 className="text-[14px] font-bold text-slate-900">
                   Free Visa Readiness Check
                 </h3>
 
@@ -191,16 +191,16 @@ export function DesktopHomeSection() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-3xl font-black text-slate-900 leading-none">72</span>
-                    <span className="text-[10px] font-bold text-slate-400 mt-0.5">/100</span>
+                    <span className="text-[32px] font-bold text-[#111827] leading-none">72</span>
+                    <span className="text-[11px] font-normal text-slate-400 mt-0.5">/100</span>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-[11px] font-semibold text-slate-500">Your Application Readiness</p>
+                  <p className="text-[12px] font-medium text-slate-500">Your Application Readiness</p>
                   <a 
                     href="/services/apply-visa" 
-                    className="mt-3 block w-full bg-[#00a896] hover:bg-[#008080] text-white font-bold text-xs py-2.5 rounded-xl shadow-sm transition-all active:scale-95 cursor-pointer"
+                    className="mt-3 block w-full bg-[#00a896] hover:bg-[#008f80] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-xs transition-all active:scale-95 cursor-pointer"
                   >
                     Check Now - It's Free
                   </a>

@@ -34,7 +34,7 @@ export function DesktopHomeSection() {
   };
 
   return (
-    <div className="w-full bg-[#f3f4f6] text-[#111827] font-['Plus_Jakarta_Sans',sans-serif] pb-16 antialiased selection:bg-[#00a896]/20 selection:text-[#00a896]">
+    <div className="w-full bg-[#f3f4f6] text-[#111827] font-['Plus_Jakarta_Sans',sans-serif] pb-16 antialiased selection:bg-[#2563eb]/20 selection:text-[#2563eb]">
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
         .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }
@@ -101,7 +101,7 @@ export function DesktopHomeSection() {
               <div className="space-y-3 max-w-lg">
                 <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-[#111827] leading-[1.15]">
                   Your Journey Abroad <br />
-                  Starts <span className="text-[#00a896]">Here</span>
+                  Starts <span className="text-[#2563eb]">Here</span>
                 </h1>
                 <p className="text-[#374151] text-xs sm:text-sm font-normal leading-[1.6]">
                   Find visa information, explore your options <br />
@@ -113,8 +113,8 @@ export function DesktopHomeSection() {
               {/* 3 Feature Badges */}
               <div className="flex flex-wrap gap-3.5 text-xs font-medium text-slate-700 pt-1">
                 {/* Badge 1: Trusted Verified Consultants */}
-                <div className="flex items-center gap-2.5 bg-[#e6f7f5]/80 border border-[#b2e8e0]/60 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/80 px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#2563eb] text-white flex items-center justify-center shrink-0">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -124,8 +124,8 @@ export function DesktopHomeSection() {
                 </div>
 
                 {/* Badge 2: Accurate Visa Information */}
-                <div className="flex items-center gap-2.5 bg-[#e6f7f5]/80 border border-[#b2e8e0]/60 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/80 px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#2563eb] text-white flex items-center justify-center shrink-0">
                     <FileText className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -135,8 +135,8 @@ export function DesktopHomeSection() {
                 </div>
 
                 {/* Badge 3: Millions of users Every Month */}
-                <div className="flex items-center gap-2.5 bg-[#e6f7f5]/80 border border-[#b2e8e0]/60 px-3.5 py-2 rounded-xl shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-[#00a896] text-white flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-2.5 bg-[#eff6ff] border border-[#bfdbfe]/80 px-3.5 py-2 rounded-xl shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-[#2563eb] text-white flex items-center justify-center shrink-0">
                     <Users className="w-4 h-4" />
                   </div>
                   <div className="text-[10px] leading-tight">
@@ -150,7 +150,7 @@ export function DesktopHomeSection() {
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <a 
                   href="/services/apply-visa" 
-                  className="bg-[#00a896] hover:bg-[#008f80] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-sm transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
+                  className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-sm transition-all flex items-center gap-2.5 hover:scale-105 active:scale-95"
                 >
                   <span>Find My Visa Path</span>
                   <ArrowRight className="w-4 h-4" />
@@ -182,7 +182,7 @@ export function DesktopHomeSection() {
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
                     <path
-                      className="text-[#00a896] stroke-current"
+                      className="text-[#2563eb] stroke-current"
                       strokeDasharray="72, 100"
                       strokeWidth="3.2"
                       strokeLinecap="round"
@@ -200,7 +200,7 @@ export function DesktopHomeSection() {
                   <p className="text-[12px] font-medium text-slate-500">Your Application Readiness</p>
                   <a 
                     href="/services/apply-visa" 
-                    className="mt-3 block w-full bg-[#00a896] hover:bg-[#008f80] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-xs transition-all active:scale-95 cursor-pointer"
+                    className="mt-3 block w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold text-[13px] py-2.5 rounded-xl shadow-xs transition-all active:scale-95 cursor-pointer"
                   >
                     Check Now - It's Free
                   </a>
@@ -226,7 +226,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedCountry}
                 onChange={(e) => setSelectedCountry(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
               >
                 <option value="">Select Country</option>
                 <option value="Canada">Canada 🇨🇦</option>
@@ -244,7 +244,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedPurpose}
                 onChange={(e) => setSelectedPurpose(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
               >
                 <option value="">Select Purpose</option>
                 <option value="Study">Higher Education / Study</option>
@@ -261,7 +261,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedVisaType}
                 onChange={(e) => setSelectedVisaType(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
               >
                 <option value="">Select Visa Type</option>
                 <option value="Student Visa">Student Visa</option>
@@ -278,7 +278,7 @@ export function DesktopHomeSection() {
               <select 
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] transition-colors"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#2563eb] transition-colors"
               >
                 <option value="">Select City</option>
                 <option value="Mumbai">Mumbai, India</option>
@@ -295,7 +295,7 @@ export function DesktopHomeSection() {
             <div className="pt-5 sm:pt-4">
               <button 
                 type="submit"
-                className="w-full bg-[#00a896] hover:bg-[#008080] text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                className="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
               >
                 <Search className="w-4 h-4" />
                 <span>Search</span>
@@ -332,7 +332,7 @@ export function DesktopHomeSection() {
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                 <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Popular Destinations</h2>
-                <a href="/visa-guide" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                <a href="/visa-guide" className="text-xs font-bold text-[#2563eb] hover:underline flex items-center gap-1">
                   View all Countries <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -399,7 +399,7 @@ export function DesktopHomeSection() {
                   </div>
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900">More Countries</h3>
-                    <p className="text-[10px] font-semibold text-[#00a896]">Explore Now</p>
+                    <p className="text-[10px] font-semibold text-[#2563eb]">Explore Now</p>
                   </div>
                 </a>
               </div>
@@ -409,55 +409,55 @@ export function DesktopHomeSection() {
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                 <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Free Tools & Resources</h2>
-                <a href="/migration-tools" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                <a href="/migration-tools" className="text-xs font-bold text-[#2563eb] hover:underline flex items-center gap-1">
                   View all Tools <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                 {/* 1. Visa Readiness Check */}
-                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896]">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#00a896]/10 text-[#00a896] flex items-center justify-center border border-[#00a896]/20">
+                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#2563eb]">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center border border-blue-100">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Readiness Check</h3>
                 </a>
 
                 {/* 2. Document Checklist */}
-                <a href="/services/visa-documentation" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896]">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#00a896]/10 text-[#00a896] flex items-center justify-center border border-[#00a896]/20">
+                <a href="/services/visa-documentation" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#2563eb]">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center border border-blue-100">
                     <FileText className="w-5 h-5" />
                   </div>
                   <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Document Checklist</h3>
                 </a>
 
                 {/* 3. Visa Cost Calculator */}
-                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896]">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#00a896]/10 text-[#00a896] flex items-center justify-center border border-[#00a896]/20">
+                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#2563eb]">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center border border-blue-100">
                     <Calculator className="w-5 h-5" />
                   </div>
                   <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Cost Calculator</h3>
                 </a>
 
                 {/* 4. Processing Time Checker */}
-                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896]">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#00a896]/10 text-[#00a896] flex items-center justify-center border border-[#00a896]/20">
+                <a href="/migration-tools" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#2563eb]">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center border border-blue-100">
                     <Clock className="w-5 h-5" />
                   </div>
                   <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Processing Time Checker</h3>
                 </a>
 
                 {/* 5. Visa Path Finder */}
-                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896]">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#00a896]/10 text-[#00a896] flex items-center justify-center border border-[#00a896]/20">
+                <a href="/services/apply-visa" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#2563eb]">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center border border-blue-100">
                     <Compass className="w-5 h-5" />
                   </div>
                   <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Visa Path Finder</h3>
                 </a>
 
                 {/* 6. Refusal Reasons Guide */}
-                <a href="/support" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#00a896]">
-                  <div className="w-9 h-9 mx-auto rounded-full bg-[#00a896]/10 text-[#00a896] flex items-center justify-center border border-[#00a896]/20">
+                <a href="/support" className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2 hover:shadow-md transition-all hover:border-[#2563eb]">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center border border-blue-100">
                     <AlertCircle className="w-5 h-5" />
                   </div>
                   <h3 className="text-xs font-extrabold text-slate-900 leading-tight">Refusal Reasons Guide</h3>
@@ -469,7 +469,7 @@ export function DesktopHomeSection() {
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                 <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Classifieds</h2>
-                <a href="/jobs" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                <a href="/jobs" className="text-xs font-bold text-[#2563eb] hover:underline flex items-center gap-1">
                   View all Classifieds <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -482,7 +482,7 @@ export function DesktopHomeSection() {
                     onClick={() => setActiveClassifiedTab(tab)}
                     className={`px-3 py-1 rounded-full font-bold transition-all shrink-0 cursor-pointer ${
                       activeClassifiedTab === tab
-                        ? 'bg-[#00a896] text-white shadow-xs'
+                        ? 'bg-[#2563eb] text-white shadow-xs'
                         : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                     }`}
                   >
@@ -563,7 +563,7 @@ export function DesktopHomeSection() {
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                 <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Featured Consultants</h2>
-                <a href="/find-experts" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                <a href="/find-experts" className="text-xs font-bold text-[#2563eb] hover:underline flex items-center gap-1">
                   View all Consultants <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -589,8 +589,8 @@ export function DesktopHomeSection() {
                     <span className="text-slate-400">(128)</span>
                   </div>
                   <p className="text-[10px] font-semibold text-slate-500">Canada, UK, Australia</p>
-                  <p className="text-[10px] font-bold text-[#00a896]">👥 1200+ Clients</p>
-                  <a href="/find-experts" className="block w-full border border-[#00a896] text-[#00a896] hover:bg-[#00a896]/10 font-bold text-xs py-1.5 rounded-lg transition-colors">
+                  <p className="text-[10px] font-bold text-[#2563eb]">👥 1200+ Clients</p>
+                  <a href="/find-experts" className="block w-full border border-[#2563eb] text-[#2563eb] hover:bg-blue-50 font-bold text-xs py-1.5 rounded-lg transition-colors">
                     View Profile
                   </a>
                 </div>
@@ -613,8 +613,8 @@ export function DesktopHomeSection() {
                     <span className="text-slate-400">(95)</span>
                   </div>
                   <p className="text-[10px] font-semibold text-slate-500">Canada, USA, UK</p>
-                  <p className="text-[10px] font-bold text-[#00a896]">👥 850+ Clients</p>
-                  <a href="/find-experts" className="block w-full border border-[#00a896] text-[#00a896] hover:bg-[#00a896]/10 font-bold text-xs py-1.5 rounded-lg transition-colors">
+                  <p className="text-[10px] font-bold text-[#2563eb]">👥 850+ Clients</p>
+                  <a href="/find-experts" className="block w-full border border-[#2563eb] text-[#2563eb] hover:bg-blue-50 font-bold text-xs py-1.5 rounded-lg transition-colors">
                     View Profile
                   </a>
                 </div>
@@ -622,7 +622,7 @@ export function DesktopHomeSection() {
                 {/* 3. FuturePath Advisors */}
                 <div className="bg-white rounded-xl border border-slate-200 p-3.5 text-center space-y-2.5 hover:shadow-md transition-all">
                   <div className="flex items-center justify-center gap-2 pb-1 border-b border-slate-100">
-                    <Compass className="w-5 h-5 text-emerald-600" />
+                    <Compass className="w-5 h-5 text-blue-600" />
                     <span className="font-extrabold text-xs text-slate-900">FuturePath <span className="font-semibold text-slate-500">Advisors</span></span>
                   </div>
                   <div>
@@ -637,8 +637,8 @@ export function DesktopHomeSection() {
                     <span className="text-slate-400">(110)</span>
                   </div>
                   <p className="text-[10px] font-semibold text-slate-500">Australia, NZ, Canada</p>
-                  <p className="text-[10px] font-bold text-[#00a896]">👥 950+ Clients</p>
-                  <a href="/find-experts" className="block w-full border border-[#00a896] text-[#00a896] hover:bg-[#00a896]/10 font-bold text-xs py-1.5 rounded-lg transition-colors">
+                  <p className="text-[10px] font-bold text-[#2563eb]">👥 950+ Clients</p>
+                  <a href="/find-experts" className="block w-full border border-[#2563eb] text-[#2563eb] hover:bg-blue-50 font-bold text-xs py-1.5 rounded-lg transition-colors">
                     View Profile
                   </a>
                 </div>
@@ -661,8 +661,8 @@ export function DesktopHomeSection() {
                     <span className="text-slate-400">(76)</span>
                   </div>
                   <p className="text-[10px] font-semibold text-slate-500">USA, UK, Schengen</p>
-                  <p className="text-[10px] font-bold text-[#00a896]">👥 700+ Clients</p>
-                  <a href="/find-experts" className="block w-full border border-[#00a896] text-[#00a896] hover:bg-[#00a896]/10 font-bold text-xs py-1.5 rounded-lg transition-colors">
+                  <p className="text-[10px] font-bold text-[#2563eb]">👥 700+ Clients</p>
+                  <a href="/find-experts" className="block w-full border border-[#2563eb] text-[#2563eb] hover:bg-blue-50 font-bold text-xs py-1.5 rounded-lg transition-colors">
                     View Profile
                   </a>
                 </div>
@@ -673,7 +673,7 @@ export function DesktopHomeSection() {
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                 <h2 className="text-base font-extrabold text-[#111827] tracking-tight">Latest from Knowledge Center</h2>
-                <a href="/visa-guide" className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                <a href="/visa-guide" className="text-xs font-bold text-[#2563eb] hover:underline flex items-center gap-1">
                   View all Articles <ChevronRight className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -689,7 +689,7 @@ export function DesktopHomeSection() {
                     />
                   </div>
                   <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#00a896] transition-colors leading-snug">
+                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#2563eb] transition-colors leading-snug">
                       Canada Study Visa Requirements 2026
                     </h3>
                     <p className="text-[10px] font-semibold text-slate-400">Updated: Aug 1, 2026</p>
@@ -706,7 +706,7 @@ export function DesktopHomeSection() {
                     />
                   </div>
                   <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#00a896] transition-colors leading-snug">
+                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#2563eb] transition-colors leading-snug">
                       UK Visitor Visa Complete Guide
                     </h3>
                     <p className="text-[10px] font-semibold text-slate-400">Updated: Aug 1, 2026</p>
@@ -723,7 +723,7 @@ export function DesktopHomeSection() {
                     />
                   </div>
                   <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#00a896] transition-colors leading-snug">
+                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#2563eb] transition-colors leading-snug">
                       Australia PR Process Step by Step
                     </h3>
                     <p className="text-[10px] font-semibold text-slate-400">Updated: Jul 31, 2026</p>
@@ -740,7 +740,7 @@ export function DesktopHomeSection() {
                     />
                   </div>
                   <div className="p-3 space-y-1">
-                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#00a896] transition-colors leading-snug">
+                    <h3 className="text-xs font-extrabold text-slate-900 group-hover:text-[#2563eb] transition-colors leading-snug">
                       Top 10 Reasons for Visa Refusal
                     </h3>
                     <p className="text-[10px] font-semibold text-slate-400">Updated: Jul 30, 2026</p>
@@ -763,12 +763,12 @@ export function DesktopHomeSection() {
             </div>
 
             {/* Sidebar Item 2: Are you a Consultant? Banner Card */}
-            <div className="bg-[#00a896] text-white rounded-2xl p-5 shadow-sm overflow-hidden relative flex flex-col justify-between min-h-[170px]">
+            <div className="bg-[#2563eb] text-white rounded-2xl p-5 shadow-sm overflow-hidden relative flex flex-col justify-between min-h-[170px]">
               <div className="space-y-1.5 relative z-10 max-w-[160px]">
                 <h3 className="text-sm font-extrabold tracking-tight text-white leading-snug">
                   Are you a Consultant?
                 </h3>
-                <p className="text-[11px] font-medium text-teal-100 leading-normal">
+                <p className="text-[11px] font-medium text-blue-100 leading-normal">
                   Get discovered by thousands of people looking for visa help.
                 </p>
               </div>
@@ -776,7 +776,7 @@ export function DesktopHomeSection() {
               <div className="pt-2 relative z-10">
                 <a 
                   href="/register-provider" 
-                  className="inline-block bg-white text-[#00a896] hover:bg-teal-50 font-extrabold text-xs px-3.5 py-2 rounded-lg shadow-sm transition-all hover:scale-105"
+                  className="inline-block bg-white text-[#2563eb] hover:bg-blue-50 font-extrabold text-xs px-3.5 py-2 rounded-lg shadow-sm transition-all hover:scale-105"
                 >
                   Join VisaFormula
                 </a>
@@ -803,7 +803,7 @@ export function DesktopHomeSection() {
               <div className="relative z-10 space-y-1">
                 <h3 className="text-sm font-extrabold tracking-tight text-white uppercase leading-snug">
                   Get Your <br />
-                  <span className="text-[#00a896] text-base font-black">DREAM VISA</span> <br />
+                  <span className="text-blue-300 text-base font-black">DREAM VISA</span> <br />
                   with the Right Guidance
                 </h3>
               </div>
@@ -811,7 +811,7 @@ export function DesktopHomeSection() {
               <div className="pt-2 relative z-10">
                 <a 
                   href="/find-experts" 
-                  className="inline-block bg-[#00a896] hover:bg-[#008080] text-white font-extrabold text-xs px-4 py-2 rounded-lg shadow-sm transition-all"
+                  className="inline-block bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-extrabold text-xs px-4 py-2 rounded-lg shadow-sm transition-all"
                 >
                   Find an Expert
                 </a>
@@ -828,13 +828,13 @@ export function DesktopHomeSection() {
             </div>
 
             {/* Sidebar Item 5: Stay Updated Newsletter Card */}
-            <div className="bg-[#00a896] text-white rounded-2xl p-5 shadow-sm space-y-3 relative overflow-hidden">
+            <div className="bg-[#2563eb] text-white rounded-2xl p-5 shadow-sm space-y-3 relative overflow-hidden">
               <div className="space-y-1">
                 <h3 className="text-sm font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                  <Mail className="w-4 h-4 text-teal-100" />
+                  <Mail className="w-4 h-4 text-blue-100" />
                   <span>Stay Updated</span>
                 </h3>
-                <p className="text-[11px] font-medium text-teal-100 leading-normal">
+                <p className="text-[11px] font-medium text-blue-100 leading-normal">
                   Get the latest visa updates and immigration news.
                 </p>
               </div>

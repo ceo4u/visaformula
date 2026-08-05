@@ -86,7 +86,7 @@ export function MobileHomeSection() {
             {/* Left: text */}
             <div className="flex-1 p-4 pr-2 flex flex-col justify-center space-y-3 z-10">
               <div>
-                <h1 className="text-[26px] font-extrabold text-[#0c1a2e] leading-[1.15] tracking-tight">
+                <h1 className="text-[26px] font-bold text-[#0c1a2e] leading-[1.15] tracking-tight">
                   Your Journey<br />Abroad{' '}
                   <span style={{ color: '#00a896' }}>Starts<br />Here</span>
                 </h1>

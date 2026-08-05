@@ -5,7 +5,6 @@ import {
   Clock, ChevronRight, Globe, Download, ChevronDown
 } from 'lucide-react';
 import { trackAdClick, handleAdClickWithAuth } from '../../utils/trackAdClick';
-import { AdClickAnalyticsViewer } from '../analytics/AdClickAnalyticsViewer';
 
 interface CustomSelectProps {
   label: string;
@@ -511,7 +510,6 @@ export function DesktopHomeSection() {
         </div>
 
       </div>
-      <AdClickAnalyticsViewer />
     </div>
   );
 }

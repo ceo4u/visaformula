@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import {
-  Search, Home as HomeIcon, Bell, Menu, ChevronRight, Plus,
+  Search, Home as HomeIcon, ChevronRight, Plus,
   MessageSquare, User, ShieldCheck, FileText, DollarSign,
   Activity, MapPin
 } from 'lucide-react';
@@ -75,21 +75,7 @@ export function MobileHomeSection() {
         .mob-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}} />
 
-      {/* ── Mobile Header ── */}
-      <header className="bg-white border-b border-gray-100 px-4 py-2.5 flex items-center justify-between sticky top-0 z-40 shadow-sm">
-        <a href="/" className="flex items-center">
-          <img src="/logo.png" alt="VisaFormula" className="h-10 w-auto object-contain" />
-        </a>
-        <div className="flex items-center gap-3">
-          <a href="/signup" className="relative p-2">
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
-          </a>
-          <button className="p-2">
-            <Menu className="w-5 h-5 text-gray-600" />
-          </button>
-        </div>
-      </header>
+
 
       {/* ── Scrollable Content ── */}
       <div className="flex-1 overflow-y-auto">

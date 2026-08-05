@@ -231,6 +231,28 @@ export async function runMigrations() {
   `);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_ads_category ON ads (category);`);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_ads_expert_email ON ads (expert_email);`);
+
+  // 10. Ad Click Analytics Table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS ad_click_analytics (
+      id SERIAL PRIMARY KEY,
+      ad_id VARCHAR(255),
+      ad_title VARCHAR(255) NOT NULL,
+      ad_type VARCHAR(50) NOT NULL,
+      category VARCHAR(100),
+      destination VARCHAR(100),
+      target_url TEXT,
+      user_email VARCHAR(255),
+      user_name VARCHAR(255),
+      user_role VARCHAR(50),
+      device VARCHAR(50),
+      page_url TEXT,
+      ip_address VARCHAR(100),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_ad_click_ad_type ON ad_click_analytics (ad_type);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_ad_click_user_email ON ad_click_analytics (user_email);`);
   })();
   return migrationsPromise;
 }

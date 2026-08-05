@@ -26,7 +26,7 @@ const tools = [
 
 const classifieds = [
   {
-    badge: 'Jobs Abroad', badgeColor: '#6366f1',
+    badge: 'Jobs Abroad', badgeColor: '#00a896',
     img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=200&auto=format&fit=crop',
     title: 'Caregiver Jobs in Canada',
     location: 'Toronto, Canada',
@@ -34,7 +34,7 @@ const classifieds = [
     price: 'FREE', priceColor: '#00a896',
   },
   {
-    badge: 'Accommodation', badgeColor: '#2563eb',
+    badge: 'Accommodation', badgeColor: '#059669',
     img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=200&auto=format&fit=crop',
     title: 'Shared Room Near Humber College',
     location: 'Toronto, Canada',
@@ -42,7 +42,7 @@ const classifieds = [
     price: '$650 CAD / Month', priceColor: '#111827',
   },
   {
-    badge: 'Study Abroad', badgeColor: '#8b5cf6',
+    badge: 'Study Abroad', badgeColor: '#0d9488',
     img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=200&auto=format&fit=crop',
     title: 'Study in Canada 2025 Intake Open',
     location: '3 Apply Now',
@@ -50,7 +50,7 @@ const classifieds = [
     price: 'FREE', priceColor: '#00a896',
   },
   {
-    badge: 'Business', badgeColor: '#0284c7',
+    badge: 'Business', badgeColor: '#d97706',
     img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=200&auto=format&fit=crop',
     title: 'Visa Consultancy Business for Sale',
     location: 'Apply @Deco',

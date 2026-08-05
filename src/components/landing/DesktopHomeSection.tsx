@@ -87,7 +87,7 @@ export function DesktopHomeSection() {
   const classifieds = [
     {
       badge: 'Jobs Abroad',
-      badgeBg: 'bg-[#6366f1]',
+      badgeBg: 'bg-[#00a896]',
       img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
       title: 'Caregiver Jobs in Canada',
       location: 'Toronto, Canada',
@@ -97,7 +97,7 @@ export function DesktopHomeSection() {
     },
     {
       badge: 'Accommodation',
-      badgeBg: 'bg-[#2563eb]',
+      badgeBg: 'bg-[#059669]',
       img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
       title: 'Shared Room Near Humber College',
       location: 'Toronto, Canada',
@@ -107,7 +107,7 @@ export function DesktopHomeSection() {
     },
     {
       badge: 'Study Abroad',
-      badgeBg: 'bg-[#8b5cf6]',
+      badgeBg: 'bg-[#0d9488]',
       img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800&auto=format&fit=crop',
       title: 'Study in Canada 2025 Intake Open',
       location: '3 Apply Now',
@@ -118,7 +118,7 @@ export function DesktopHomeSection() {
     },
     {
       badge: 'Business Opportunity',
-      badgeBg: 'bg-[#0284c7]',
+      badgeBg: 'bg-[#d97706]',
       img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
       title: 'Visa Consultancy Business for Sale',
       location: 'Apply @Deco',
@@ -128,7 +128,7 @@ export function DesktopHomeSection() {
     },
     {
       badge: 'Jobs Abroad',
-      badgeBg: 'bg-[#6366f1]',
+      badgeBg: 'bg-[#00a896]',
       img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop',
       title: 'Hotel Front Desk Staff in UK',
       location: 'London, UK',

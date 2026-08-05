@@ -6,7 +6,7 @@ export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const { email, name, uid, role } = await request.json();
+    const { email, name, businessName, uid, role } = await request.json();
     if (!email || !role) {
       return new Response(JSON.stringify({ status: 'error', message: 'Email and role selection are required.' }), {
         status: 400,
@@ -18,9 +18,14 @@ export const POST: APIRoute = async ({ request }) => {
     const pool = getPool();
 
     let user: any = null;
-    const names = (name || 'Google User').split(' ');
-    const firstName = names[0];
+    const names = (name || 'Google User').trim().split(' ');
+    const firstName = names[0] || 'User';
     const lastName = names.slice(1).join(' ') || '';
+
+    // If explicit businessName is provided, use it; otherwise use full name
+    const finalBusinessName = (businessName && businessName.trim()) 
+      ? businessName.trim() 
+      : `${firstName} ${lastName}`.trim();
 
     // 1. Register based on selected role
     if (role === 'expert') {
@@ -29,7 +34,7 @@ export const POST: APIRoute = async ({ request }) => {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
         RETURNING *;
       `, [
-        name || 'Immigration Expert',
+        finalBusinessName,
         email,
         '', // No password hash for OAuth
         '',

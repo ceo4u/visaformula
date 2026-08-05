@@ -243,15 +243,29 @@ function ExpertSignupPortalContent() {
       try {
           const res = await signInWithGoogle();
           
-          // If user is brand new (needs_role), immediately auto-register them as an Expert!
+          // If user is brand new (needs_role), set First Name & Last Name from Google name, and do NOT force Gmail name as Business Name!
           if (res && res.status === 'needs_role') {
               setGoogleLoadingText("Initializing your expert profile...");
+              const nameParts = (res.name || '').trim().split(' ');
+              const gFirstName = nameParts[0] || '';
+              const gLastName = nameParts.slice(1).join(' ') || '';
+
+              if (gFirstName) {
+                setFirstName(gFirstName);
+                localStorage.setItem("expert_firstName", gFirstName);
+              }
+              if (gLastName) {
+                setLastName(gLastName);
+                localStorage.setItem("expert_lastName", gLastName);
+              }
+
               const response = await fetch("/api/auth/google/register", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
                       email: res.email,
                       name: res.name,
+                      businessName: businessName || `${gFirstName} ${gLastName}`.trim(),
                       uid: res.uid,
                       role: 'expert'
                   })
@@ -263,7 +277,7 @@ function ExpertSignupPortalContent() {
                       localStorage.setItem("visaformula_user", JSON.stringify(data.user));
                       if (data.user && data.user.rawUser) {
                           const raw = data.user.rawUser;
-                          localStorage.setItem("expert_businessName", raw.business_name || "Expert");
+                          localStorage.setItem("expert_businessName", raw.business_name || `${gFirstName} ${gLastName}`.trim());
                           localStorage.setItem("expert_email", raw.email);
                           localStorage.setItem("expert_isLoggedIn", "true");
                       }

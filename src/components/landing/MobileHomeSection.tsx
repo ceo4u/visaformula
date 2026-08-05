@@ -50,7 +50,7 @@ const classifieds = [
     price: 'FREE', priceColor: '#00a896',
   },
   {
-    badge: 'Business', badgeColor: '#d97706',
+    badge: 'Business', badgeColor: '#0c1a2e',
     img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=200&auto=format&fit=crop',
     title: 'Visa Consultancy Business for Sale',
     location: 'Apply @Deco',

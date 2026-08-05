@@ -147,20 +147,21 @@ export function MobileHomeSection() {
         </div>
 
         {/* ── 3. Explore Top Destinations ── */}
-        <div className="mt-4 px-3">
-          <div className="flex items-center justify-between mb-3">
+        <div className="mx-3 mt-3 bg-white rounded-2xl shadow-sm p-4">
+          <div className="flex items-center justify-between mb-3.5">
             <h2 className="text-[15px] font-extrabold text-[#0c1a2e]">Explore Top Destinations</h2>
-            <a href="/visa-guide" className="flex items-center gap-0.5 text-[12px] font-semibold" style={{ color: '#00a896' }}>
-              View All <ChevronRight className="w-3.5 h-3.5" />
+            <a href="/visa-guide" className="text-[12px] font-semibold text-[#1a73e8]">
+              View All
             </a>
           </div>
-          <div className="flex gap-4 overflow-x-auto mob-scrollbar pb-1">
-            {destinations.map(d => (
-              <a key={d.name} href={d.href} className="flex flex-col items-center gap-1.5 shrink-0">
-                <div className="w-[52px] h-[52px] rounded-full overflow-hidden border-2 border-gray-100 shadow-sm active:scale-95 transition-transform">
+          {/* 5 flags evenly spaced — full width */}
+          <div className="flex justify-between items-start">
+            {destinations.slice(0, 5).map(d => (
+              <a key={d.name} href={d.href} className="flex flex-col items-center gap-1.5 group">
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-100 shadow-sm group-active:scale-95 transition-transform">
                   <img src={`https://flagcdn.com/w80/${d.flag}.png`} alt={d.name} className="w-full h-full object-cover" />
                 </div>
-                <span className="text-[11px] font-semibold text-gray-700 text-center whitespace-nowrap">{d.name}</span>
+                <span className="text-[11px] font-semibold text-gray-700 text-center">{d.name}</span>
               </a>
             ))}
           </div>

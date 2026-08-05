@@ -555,7 +555,7 @@ export function ConsultantDashboard() {
                             <LayoutGrid className="w-6 h-6" />
                         </button>
                         <a href="/" className="lg:hidden flex items-center shrink-0">
-                            <img src="/logo.png" alt="VisaFormula Logo" className="h-11 sm:h-12 w-auto max-h-[46px] object-contain animate-premium-fade" />
+                            <img src="/logo.png" alt="VisaFormula Logo" className="h-13 sm:h-15 w-auto max-h-[56px] object-contain animate-premium-fade scale-105" />
                         </a>
                         {/* Sleek Workspace Indicator Icon Badge — Prominent Readability */}
                         <div className="hidden lg:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">

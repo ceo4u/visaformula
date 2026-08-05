@@ -1,9 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Search, Home as HomeIcon, ChevronRight, Plus,
   MessageSquare, User, ShieldCheck, FileText, DollarSign,
-  Activity, MapPin
+  Activity, MapPin, ChevronDown
 } from 'lucide-react';
 
 const destinations = [
@@ -60,9 +60,83 @@ const classifieds = [
 
 const classifiedTabs = ['All', 'Jobs', 'Accommodation', 'Business', 'Study Abroad'];
 
+interface CustomSelectProps {
+  label: string;
+  value: string;
+  placeholder: string;
+  options: string[];
+  isOpen: boolean;
+  onToggle: () => void;
+  onSelect: (val: string) => void;
+}
+
+function CustomSelect({ label, value, placeholder, options, isOpen, onToggle, onSelect }: CustomSelectProps) {
+  return (
+    <div className="space-y-1 relative text-left">
+      <label className="text-[10.5px] font-bold text-gray-500 block truncate">{label}</label>
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); onToggle(); }}
+        className={`w-full bg-white border rounded-xl px-2.5 py-2 text-xs font-semibold text-gray-800 outline-none flex items-center justify-between gap-1 transition-all select-none h-[38px] ${
+          isOpen ? "border-[#00a896] ring-1 ring-[#00a896]/20" : "border-gray-200 hover:border-gray-300"
+        }`}
+      >
+        <span className="truncate text-[11.5px]">{value || placeholder}</span>
+        <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 shrink-0 ${isOpen ? "rotate-180 text-gray-900" : ""}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-[calc(100%+4px)] left-0 w-full bg-white rounded-xl shadow-xl border border-gray-200/90 py-1 z-50 max-h-44 overflow-y-auto animate-premium-fade">
+          {options.map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => onSelect(opt)}
+              className={`w-full text-left px-3 py-2 text-[11.5px] transition-colors font-semibold ${
+                value === opt 
+                  ? 'bg-slate-950 text-white font-bold' 
+                  : 'text-gray-700 hover:bg-slate-50'
+              }`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function MobileHomeSection() {
   const [activeTab, setActiveTab] = useState('All');
   const [activeNav, setActiveNav] = useState('home');
+
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedPurpose, setSelectedPurpose] = useState('');
+  const [selectedVisaType, setSelectedVisaType] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
+
+  const [countryOpen, setCountryOpen] = useState(false);
+  const [purposeOpen, setPurposeOpen] = useState(false);
+  const [visaTypeOpen, setVisaTypeOpen] = useState(false);
+  const [cityOpen, setCityOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClose = () => {
+      setCountryOpen(false);
+      setPurposeOpen(false);
+      setVisaTypeOpen(false);
+      setCityOpen(false);
+    };
+    window.addEventListener('click', handleClose);
+    return () => window.removeEventListener('click', handleClose);
+  }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const query = [selectedCountry, selectedPurpose, selectedVisaType, selectedCity].filter(Boolean).join(' ');
+    window.location.href = `/find-experts?q=${encodeURIComponent(query)}`;
+  };
 
   return (
     <div
@@ -84,9 +158,9 @@ export function MobileHomeSection() {
         <div className="mx-3 mt-3 bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="relative flex items-stretch min-h-[200px]">
             {/* Left: text */}
-            <div className="flex-1 p-4 pr-2 flex flex-col justify-center space-y-3 z-10">
+            <div className="flex-1 p-4 pt-5 pr-2 flex flex-col justify-center space-y-3 z-10">
               <div>
-                <h1 className="text-[26px] font-bold text-[#0c1a2e] leading-[1.15] tracking-tight">
+                <h1 className="text-[23px] xs:text-[25px] sm:text-[27px] font-bold text-[#0c1a2e] leading-[1.15] tracking-tight">
                   Your Journey<br />Abroad{' '}
                   <span style={{ color: '#00a896' }}>Starts<br />Here</span>
                 </h1>
@@ -118,6 +192,59 @@ export function MobileHomeSection() {
               <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white to-transparent" />
             </div>
           </div>
+        </div>
+
+        {/* ── 1B. Search Visa Information & Consultants Card ── */}
+        <div className="mx-3 mt-3 bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
+          <h2 className="text-sm font-extrabold text-[#0c1a2e] tracking-tight">Find Visa Information &amp; Consultants</h2>
+          <form onSubmit={handleSearch} className="space-y-2.5">
+            <div className="grid grid-cols-2 gap-2">
+              <CustomSelect 
+                label="I want to go to" 
+                value={selectedCountry} 
+                placeholder="Select Country" 
+                options={['Canada', 'United Kingdom', 'United States', 'Australia', 'Germany', 'New Zealand', 'UAE']} 
+                isOpen={countryOpen}
+                onToggle={() => { setCountryOpen(!countryOpen); setPurposeOpen(false); setVisaTypeOpen(false); setCityOpen(false); }}
+                onSelect={(val) => { setSelectedCountry(val); setCountryOpen(false); }}
+              />
+              <CustomSelect 
+                label="I am going for" 
+                value={selectedPurpose} 
+                placeholder="Select Purpose" 
+                options={['Higher Education / Study', 'Employment / Work', 'Tourism / Visit', 'Permanent Residency', 'Business / Investment']} 
+                isOpen={purposeOpen}
+                onToggle={() => { setPurposeOpen(!purposeOpen); setCountryOpen(false); setVisaTypeOpen(false); setCityOpen(false); }}
+                onSelect={(val) => { setSelectedPurpose(val); setPurposeOpen(false); }}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <CustomSelect 
+                label="Visa Type" 
+                value={selectedVisaType} 
+                placeholder="Select Visa Type" 
+                options={['Student Visa', 'Work Permit', 'Tourist / Visitor Visa', 'PR / Express Entry']} 
+                isOpen={visaTypeOpen}
+                onToggle={() => { setVisaTypeOpen(!visaTypeOpen); setCountryOpen(false); setPurposeOpen(false); setCityOpen(false); }}
+                onSelect={(val) => { setSelectedVisaType(val); setVisaTypeOpen(false); }}
+              />
+              <CustomSelect 
+                label="My Location" 
+                value={selectedCity} 
+                placeholder="Select City" 
+                options={['Mumbai, India', 'Delhi, India', 'Bangalore, India', 'Hyderabad, India', 'Punjab, India']} 
+                isOpen={cityOpen}
+                onToggle={() => { setCityOpen(!cityOpen); setCountryOpen(false); setPurposeOpen(false); setVisaTypeOpen(false); }}
+                onSelect={(val) => { setSelectedCity(val); setCityOpen(false); }}
+              />
+            </div>
+
+            <button type="submit"
+              className="w-full bg-[#00a896] hover:bg-[#009485] text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm mt-1">
+              <Search className="w-4 h-4" /> Search
+            </button>
+          </form>
         </div>
 
         {/* ── 2. Dreaming of Studying in Canada Banner ── */}

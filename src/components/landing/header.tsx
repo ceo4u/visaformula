@@ -84,7 +84,7 @@ export function Header() {
         {/* Logo */}
         <a href="/" className="flex items-center shrink-0">
           <img
-            src="/logo.png"
+            src="/logo.png?v=3"
             alt="VisaFormula Logo"
             className="h-9 sm:h-10 lg:h-11 max-h-[46px] w-auto object-contain"
           />

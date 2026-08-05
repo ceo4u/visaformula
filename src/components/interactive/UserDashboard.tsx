@@ -288,13 +288,13 @@ export function UserDashboard() {
             {/* Desktop Flup-Style Left Sidebar Navigation — Pure White Background */}
             <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
                 <div>
-                    {/* Brand Header — Extra Large Official Logo */}
-                    <div className="p-4 border-b border-slate-200/70 flex items-center justify-between bg-white min-h-[76px]">
+                    {/* Brand Header — Official Logo */}
+                    <div className="p-3.5 border-b border-slate-200/70 flex items-center justify-between bg-white min-h-[60px]">
                         <a href="/" className="flex items-center gap-2 min-w-0">
                             {isSidebarCollapsed ? (
-                                <img src="/logo.png" alt="VisaFormula Logo" className="h-10 w-auto object-contain shrink-0" />
+                                <img src="/logo.png" alt="VisaFormula Logo" className="h-7 w-auto object-contain shrink-0" />
                             ) : (
-                                <img src="/logo.png" alt="VisaFormula Logo" className="h-13 sm:h-15 lg:h-16 w-auto max-h-[60px] object-contain shrink-0 max-w-[260px]" />
+                                <img src="/logo.png" alt="VisaFormula Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain shrink-0 max-w-[180px]" />
                             )}
                         </a>
                         <button 

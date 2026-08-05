@@ -121,25 +121,28 @@ export function MobileHomeSection() {
         </div>
 
         {/* ── 2. Dreaming of Studying in Canada Banner ── */}
-        <div className="mx-3 mt-3 rounded-2xl overflow-hidden shadow-sm"
-          style={{ background: 'linear-gradient(135deg, #3730a3 0%, #4f46e5 50%, #7c3aed 100%)' }}>
-          <div className="flex items-center justify-between p-4">
-            <div className="flex-1 space-y-2 pr-2">
-              <h3 className="text-white font-extrabold text-[15px] leading-snug">
-                Dreaming of<br />Studying in Canada?
-              </h3>
-              <a href="/visa-guide/canada"
-                className="inline-block bg-[#00a896] hover:bg-[#009485] text-white text-[11px] font-bold px-4 py-1.5 rounded-lg shadow transition-all">
-                Learn More
-              </a>
-            </div>
-            <div className="w-[90px] h-[80px] rounded-xl overflow-hidden shrink-0 shadow-lg border-2 border-white/20">
-              <img
-                src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=400&auto=format&fit=crop&q=80"
-                alt="Toronto Canada"
-                className="w-full h-full object-cover"
-              />
-            </div>
+        <div className="mx-3 mt-3 rounded-2xl overflow-hidden shadow-sm relative min-h-[80px]"
+          style={{ background: 'linear-gradient(135deg, #2d1b6b 0%, #4f46e5 60%, #7c3aed 100%)' }}>
+          {/* Right: full-bleed city photo with gradient fade */}
+          <div className="absolute inset-y-0 right-0 w-[55%]">
+            <img
+              src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=600&auto=format&fit=crop&q=85"
+              alt="Toronto Canada skyline"
+              className="w-full h-full object-cover object-center"
+            />
+            {/* fade from left so text stays readable */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#3730a3] via-[#4f46e5]/60 to-transparent" />
+          </div>
+
+          {/* Left: text + button */}
+          <div className="relative z-10 p-4 max-w-[55%]">
+            <h3 className="text-white font-extrabold text-[15px] leading-snug">
+              Dreaming of<br />Studying in Canada?
+            </h3>
+            <a href="/visa-guide/canada"
+              className="inline-block mt-2.5 bg-white text-[#3730a3] text-[11px] font-bold px-4 py-1.5 rounded-lg shadow transition-all">
+              Learn More
+            </a>
           </div>
         </div>
 

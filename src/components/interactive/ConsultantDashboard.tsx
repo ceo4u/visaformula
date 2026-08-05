@@ -99,6 +99,7 @@ export function ConsultantDashboard() {
     const [timePeriod, setTimePeriod] = useState("Last 30 days");
     const [timePeriodOpen, setTimePeriodOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [isProfileIncomplete, setIsProfileIncomplete] = useState(false);
 
     // Profile Settings States
     const [profile, setProfile] = useState({
@@ -207,6 +208,16 @@ export function ConsultantDashboard() {
             setFormSpecs(loadedSpecs);
             setFormCountries(loadedCountries);
             setFormImage(image);
+
+            // Check if profile details are incomplete (missing office address or specializations)
+            const hasNoAddress = !localStorage.getItem("expert_officeAddress");
+            const hasNoSpecs = !localStorage.getItem("expert_expertiseTags");
+            const hasDefaultName = finalName === "Immigration Expert" || finalName === "Expert";
+            
+            if (hasNoAddress || hasNoSpecs || hasDefaultName) {
+                setIsProfileIncomplete(true);
+                setIsEditingProfile(true); // Auto-prompt they update details
+            }
         }
     }, []);
 
@@ -259,6 +270,7 @@ export function ConsultantDashboard() {
         localStorage.setItem("expert_countriesExpertise", formCountries);
         localStorage.setItem("expert_profilePhoto", formImage);
 
+        setIsProfileIncomplete(false);
         setIsEditingProfile(false);
         setShowSuccessToast(true);
         setTimeout(() => setShowSuccessToast(false), 3000);
@@ -517,7 +529,14 @@ export function ConsultantDashboard() {
                         </nav>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-100">
+                    <div className="pt-4 border-t border-slate-100 space-y-1.5">
+                        <button 
+                            onClick={() => { setIsEditingProfile(true); setIsMobileSidebarOpen(false); }} 
+                            className="w-full flex items-center gap-3 px-3.5 py-2.5 text-slate-700 hover:bg-slate-100 rounded-xl font-bold text-xs transition-all"
+                        >
+                            <Settings className="w-4 h-4 text-slate-500" />
+                            <span>Profile Settings</span>
+                        </button>
                         <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3.5 py-2.5 text-rose-600 hover:bg-rose-50 rounded-xl font-bold text-xs transition-all">
                             <LogOut className="w-4 h-4" />
                             <span>Log Out</span>
@@ -530,16 +549,16 @@ export function ConsultantDashboard() {
             <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
                 
                 {/* Top Header Bar */}
-                <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-20 shadow-2xs min-h-[76px]">
-                    <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                <header className="bg-white border-b border-slate-200/80 px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2 sticky top-0 z-20 shadow-2xs overflow-hidden">
+                    <div className="flex items-center gap-2 min-w-0">
                         <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
                             <LayoutGrid className="w-6 h-6" />
                         </button>
                         <a href="/" className="lg:hidden flex items-center shrink-0">
-                            <img src="/logo.png" alt="VisaFormula Logo" className="h-12 sm:h-14 md:h-16 w-auto max-h-[56px] object-contain" />
+                            <img src="/logo.png" alt="VisaFormula Logo" className="h-11 sm:h-12 w-auto max-h-[46px] object-contain animate-premium-fade" />
                         </a>
                         {/* Sleek Workspace Indicator Icon Badge — Prominent Readability */}
-                        <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
+                        <div className="hidden lg:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
                             <LayoutDashboard className="w-5.5 h-5.5 text-[#2563eb] shrink-0" />
                             <span className="text-sm sm:text-base font-bold text-slate-900 capitalize tracking-tight">
                                 {activeTab.replace("-", " ")}
@@ -547,15 +566,15 @@ export function ConsultantDashboard() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
                         {/* Time Period Filter Pill (Flup Reference) */}
                         <div className="relative">
                             <button 
                                 onClick={() => setTimePeriodOpen(!timePeriodOpen)}
-                                className="flex items-center gap-1.5 sm:gap-2 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-slate-700 transition-all shadow-2xs"
+                                className="flex items-center gap-1 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-2 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold text-slate-700 transition-all shadow-2xs"
                             >
-                                <span className="truncate max-w-[120px] sm:max-w-none">📅 <strong className="text-slate-900">{timePeriod}</strong></span>
-                                <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                                <span className="truncate max-w-[90px] sm:max-w-none">📅 <strong className="text-slate-900">{timePeriod}</strong></span>
+                                <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
                             </button>
 
                             {timePeriodOpen && (
@@ -588,7 +607,7 @@ export function ConsultantDashboard() {
                         {/* Post an Ad Button (Exact Flup Pill Design) */}
                         <button 
                             onClick={() => setIsPostingAd(true)} 
-                            className="hidden sm:flex items-center gap-1.5 bg-white border border-slate-200/90 hover:border-slate-300 px-3.5 py-2 rounded-2xl text-xs font-extrabold text-slate-900 transition-all shadow-2xs hover:bg-slate-50 cursor-pointer"
+                            className="hidden lg:flex items-center gap-1.5 bg-white border border-slate-200/90 hover:border-slate-300 px-3.5 py-2 rounded-2xl text-xs font-extrabold text-slate-900 transition-all shadow-2xs hover:bg-slate-50 cursor-pointer"
                         >
                             <span>Post an Ad</span>
                             <ArrowUpRight className="w-4 h-4 text-slate-400" />
@@ -597,7 +616,7 @@ export function ConsultantDashboard() {
                         {/* Special Offer Button (Exact Flup Black Pill Design) */}
                         <button 
                             onClick={() => setIsPublishingOffer(true)} 
-                            className="hidden sm:flex items-center gap-1.5 bg-slate-950 hover:bg-black text-white px-4 py-2 rounded-2xl text-xs font-extrabold transition-all shadow-md cursor-pointer border border-slate-800"
+                            className="hidden lg:flex items-center gap-1.5 bg-slate-950 hover:bg-black text-white px-4 py-2 rounded-2xl text-xs font-extrabold transition-all shadow-md cursor-pointer border border-slate-800"
                         >
                             <span>Special Offer</span>
                             <Sparkles className="w-4 h-4 text-amber-400 fill-amber-400" />
@@ -612,21 +631,40 @@ export function ConsultantDashboard() {
                 </header>
 
                 {/* Dashboard Page Content */}
-                <div className="p-4 sm:p-6 lg:p-8 space-y-6 bg-[#f8f9fc] flex-1">
+                <div className="p-3 sm:p-5 lg:p-8 space-y-4 sm:space-y-6 bg-[#f8f9fc] flex-1 overflow-x-hidden">
 
                     {activeTab === "overview" ? (
                         <>
+                            {isProfileIncomplete && (
+                                <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs animate-premium-fade">
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 shrink-0">
+                                            ⚠️
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-extrabold text-amber-900 leading-tight">Complete your profile details</h4>
+                                            <p className="text-xs font-semibold text-amber-700 mt-0.5">Please add your Business Name, Office Address/Location, and Expertise to get verified by clients.</p>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        onClick={() => setIsEditingProfile(true)}
+                                        className="bg-amber-800 hover:bg-amber-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs self-start sm:self-auto shrink-0"
+                                    >
+                                        Complete Profile
+                                    </button>
+                                </div>
+                            )}
                             {/* Top 4 Summary Metric Cards (Flup Reference Header Cards) */}
-                            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+                            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-4 w-full">
                                 {statsData.map((s, idx) => (
-                                    <div key={idx} className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
+                                    <div key={idx} className="bg-white rounded-xl border border-slate-200/80 p-3 sm:p-4 shadow-2xs hover:shadow-xs transition-all min-w-0 overflow-hidden">
                                         <div className="flex items-center justify-between text-slate-500 mb-2">
                                             <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
                                                 {s.label}
                                             </span>
                                         </div>
                                         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                                            <span className="text-lg sm:text-xl font-extrabold text-slate-900">
+                                            <span className="text-base sm:text-xl font-extrabold text-slate-900">
                                                 {s.value}
                                             </span>
                                             <span className={`text-[9.5px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md self-start sm:self-auto border ${s.color}`}>

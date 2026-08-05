@@ -68,7 +68,7 @@ export function TalkToUs() {
     <>
       {/* Modal */}
       {open && (
-        <div className="fixed bottom-[88px] md:bottom-24 right-4 sm:right-6 w-[340px] sm:w-[370px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden z-50 flex flex-col font-sans" style={{ maxHeight: "560px" }}>
+        <div className="fixed bottom-24 right-4 sm:right-6 w-[340px] sm:w-[370px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden z-50 flex flex-col font-sans" style={{ maxHeight: "560px" }}>
           
           {/* Options View */}
           {view === "options" && (
@@ -188,7 +188,7 @@ export function TalkToUs() {
       )}
 
       {/* FAB Button */}
-      <button onClick={() => { setOpen(!open); setView("options"); }} className="fixed bottom-20 md:bottom-5 right-4 sm:right-6 z-50 flex items-center gap-2.5 bg-black text-white font-bold px-4 py-3 sm:px-5 sm:py-3.5 rounded-full shadow-2xl hover:bg-slate-900 transition-all active:scale-[0.98] group border border-slate-800">
+      <button onClick={() => { setOpen(!open); setView("options"); }} className="fixed bottom-5 right-4 sm:right-6 z-50 flex items-center gap-2.5 bg-black text-white font-bold px-5 py-3.5 rounded-full shadow-2xl hover:bg-slate-900 transition-all active:scale-[0.98] group border border-slate-800">
         <span className="relative">
           {open ? <X className="w-5 h-5" /> : <MessageSquare className="w-5 h-5" />}
           {!open && <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-black animate-pulse" />}

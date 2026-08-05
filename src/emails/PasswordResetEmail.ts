@@ -74,7 +74,7 @@ export function generatePasswordResetEmailHtml(data: {
                 Need help? Contact <a href="mailto:support@visaformula.com" style="color: #3b82f6; text-decoration: none; font-weight: 600;">support@visaformula.com</a>
               </p>
               <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                © ${new Date().getFullYear()} Logiqall Technologies. All rights reserved.
+                © ${new Date().getFullYear()} Visa Formula. All rights reserved.
               </p>
             </td>
           </tr>

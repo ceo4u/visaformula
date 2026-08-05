@@ -3,7 +3,7 @@ import {
     Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
     ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
-    Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid
+    Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save
 } from "lucide-react";
 
 const destinationsList = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
@@ -774,133 +774,132 @@ export function UserDashboard() {
 
             {/* Edit Profile Modal */}
             {showProfileModal && (
-                <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-6">
-                        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                            <h3 className="text-base font-extrabold text-slate-900">Update Profile Details</h3>
-                            <button onClick={() => setShowProfileModal(false)} className="text-slate-400 hover:text-slate-700">
-                                <X className="w-5 h-5" />
-                            </button>
+                <div className="fixed inset-0 z-50 flex items-center justify-end">
+                    <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-xs" onClick={() => setShowProfileModal(false)} />
+                    <div className="absolute right-0 top-0 bottom-0 max-w-xl w-full bg-white shadow-2xl overflow-y-auto p-6 md:p-8 flex flex-col z-10 animate-premium-fade">
+                        <div className="flex justify-between items-center pb-4 border-b border-slate-100 mb-6">
+                            <h2 className="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                                <Settings className="w-5 h-5 text-[#00a896]" /> Edit Profile Details
+                            </h2>
+                            <button onClick={() => setShowProfileModal(false)}><X className="w-5 h-5 text-slate-400 hover:text-slate-900" /></button>
                         </div>
 
-                        <form onSubmit={handleSaveProfileModal} className="space-y-4 text-xs">
-                            <div className="grid grid-cols-2 gap-3.5">
+                        <form onSubmit={handleSaveProfileModal} className="space-y-5 flex-1 text-xs">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="font-bold text-slate-700 block mb-1">First Name</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">First Name</label>
                                     <input 
                                         type="text"
                                         value={modalFirstName}
                                         onChange={(e) => setModalFirstName(e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900 animate-premium-fade"
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="font-bold text-slate-700 block mb-1">Last Name</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Last Name</label>
                                     <input 
                                         type="text"
                                         value={modalLastName}
                                         onChange={(e) => setModalLastName(e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900 animate-premium-fade"
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                     />
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3.5">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="font-bold text-slate-700 block mb-1">Phone Number</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Phone Number</label>
                                     <input 
                                         type="text"
                                         value={modalPhone}
                                         onChange={(e) => setModalPhone(e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="font-bold text-slate-700 block mb-1">Current Residence</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Current Residence</label>
                                     <input 
                                         type="text"
                                         value={modalResidentOf}
                                         onChange={(e) => setModalResidentOf(e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                         required
                                     />
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3.5">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="font-bold text-slate-700 block mb-1">Passport / Citizenship</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Passport / Citizenship</label>
                                     <input 
                                         type="text"
                                         value={modalPassportCountry}
                                         onChange={(e) => setModalPassportCountry(e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="font-bold text-slate-700 block mb-1">Visa Goals (e.g. Student, PR)</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Visa Goals (e.g. Student, PR)</label>
                                     <input 
                                         type="text"
                                         value={modalGoals}
                                         onChange={(e) => setModalGoals(e.target.value)}
                                         placeholder="Student, Work, PR"
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="font-bold text-slate-700 block mb-1">Target Destinations (comma separated)</label>
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Target Destinations (comma separated)</label>
                                 <input 
                                     type="text"
                                     value={modalDestinations}
                                     onChange={(e) => setModalDestinations(e.target.value)}
                                     placeholder="Canada, UK, USA"
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                     required
                                 />
                             </div>
 
-                            <div className="grid grid-cols-3 gap-2.5">
+                            <div className="grid grid-cols-3 gap-4">
                                 <div>
-                                    <label className="font-bold text-slate-700 block mb-1">City</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">City</label>
                                     <input 
                                         type="text"
                                         value={modalCity}
                                         onChange={(e) => setModalCity(e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                     />
                                 </div>
                                 <div>
-                                    <label className="font-bold text-slate-700 block mb-1">State</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">State</label>
                                     <input 
                                         type="text"
                                         value={modalState}
                                         onChange={(e) => setModalState(e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                     />
                                 </div>
                                 <div>
-                                    <label className="font-bold text-slate-700 block mb-1">Zip Code</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Zip Code</label>
                                     <input 
                                         type="text"
                                         value={modalZip}
                                         onChange={(e) => setModalZip(e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
                                     />
                                 </div>
                             </div>
 
-                            <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-                                <button type="button" onClick={() => setShowProfileModal(false)} className="px-4 py-2 border border-slate-200 rounded-xl font-bold text-slate-600 hover:bg-slate-50">
-                                    Cancel
-                                </button>
-                                <button type="submit" className="px-4 py-2 bg-[#00a896] hover:bg-[#009485] text-white rounded-xl font-bold transition-all shadow-sm">
-                                    Save Changes
+                            <div className="flex gap-3 pt-6 border-t border-slate-100">
+                                <button type="button" onClick={() => setShowProfileModal(false)} className="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
+                                <button type="submit" className="flex-1 py-3 bg-[#00a896] hover:bg-[#009485] text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md">
+                                    <Save className="w-4 h-4" /> Save Changes
                                 </button>
                             </div>
                         </form>

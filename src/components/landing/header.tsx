@@ -46,9 +46,9 @@ function DropdownMenu({ label, items, align = 'left' }: {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <button className="flex items-center gap-1 text-[14px] font-bold text-slate-800 hover:text-[#2563eb] transition-colors whitespace-nowrap py-2 cursor-pointer">
+      <button className="flex items-center gap-1 text-[14px] font-bold text-slate-800 hover:text-[#00a896] transition-colors whitespace-nowrap py-2 cursor-pointer">
         {label}
-        <ChevronDown size={14} className={`transition-transform duration-200 text-slate-500 ${open ? 'rotate-180 text-[#2563eb]' : ''}`} />
+        <ChevronDown size={14} className={`transition-transform duration-200 text-slate-500 ${open ? 'rotate-180 text-[#00a896]' : ''}`} />
       </button>
       {open && (
         <div className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} pt-1 z-50`}>
@@ -57,7 +57,7 @@ function DropdownMenu({ label, items, align = 'left' }: {
               <a
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:text-[#2563eb] hover:bg-blue-50/70 transition-all"
+                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:text-[#00a896] hover:bg-teal-50/70 transition-all"
               >
                 {item.title}
               </a>
@@ -86,7 +86,7 @@ export function Header() {
           <img
             src="/logo.png"
             alt="VisaFormula Logo"
-            className="h-9 sm:h-10 w-auto object-contain"
+            className="h-10 sm:h-12 lg:h-14 max-h-[56px] w-auto object-contain"
           />
         </a>
 
@@ -94,7 +94,7 @@ export function Header() {
         <nav className="hidden lg:flex items-center gap-7">
           <DropdownMenu label="Find Consultants" items={findConsultantsItems} />
           
-          <a href="/services/apply-visa" className="text-[14px] font-bold text-slate-800 hover:text-[#2563eb] transition-colors whitespace-nowrap py-2">
+          <a href="/services/apply-visa" className="text-[14px] font-bold text-slate-800 hover:text-[#00a896] transition-colors whitespace-nowrap py-2">
             Self Apply
           </a>
 
@@ -107,7 +107,7 @@ export function Header() {
         <div className="hidden lg:flex items-center gap-4">
           <a 
             href="/support" 
-            className="flex items-center gap-1.5 text-[14px] font-bold text-slate-800 hover:text-[#2563eb] transition-colors"
+            className="flex items-center gap-1.5 text-[14px] font-bold text-slate-800 hover:text-[#00a896] transition-colors"
           >
             <MessageSquare size={16} className="text-slate-700" />
             <span>Contact</span>
@@ -115,14 +115,14 @@ export function Header() {
 
           <a
             href="/login"
-            className="text-[13px] font-bold text-[#2563eb] border border-[#2563eb]/60 hover:bg-blue-50 px-4 py-2 rounded-xl transition-all shadow-2xs"
+            className="text-[13px] font-bold text-[#00a896] border border-[#00a896]/60 hover:bg-teal-50 px-4 py-2 rounded-xl transition-all shadow-2xs"
           >
             Log in
           </a>
 
           <a
             href="/signup"
-            className="bg-[#2563eb] hover:bg-blue-700 text-white font-bold text-[13px] px-5 py-2.5 rounded-xl transition-all shadow-sm active:scale-95"
+            className="bg-[#00a896] hover:bg-[#009485] text-white font-bold text-[13px] px-5 py-2.5 rounded-xl transition-all shadow-sm active:scale-95"
           >
             Sign Up
           </a>
@@ -130,7 +130,7 @@ export function Header() {
 
         {/* Hamburger (Mobile / Tablet) */}
         <button
-          className="lg:hidden p-2 text-slate-800 hover:text-[#2563eb] cursor-pointer"
+          className="lg:hidden p-2 text-slate-800 hover:text-[#00a896] cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -141,16 +141,16 @@ export function Header() {
       {menuOpen && (
         <div className="lg:hidden bg-white border-t border-slate-200 shadow-xl max-h-[85vh] overflow-y-auto">
           <div className="p-4 space-y-2 text-xs font-bold">
-            <a href="/find-experts" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Find Consultants</a>
-            <a href="/services/apply-visa" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Self Apply</a>
-            <a href="/services/visa-documentation" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Visa Services</a>
-            <a href="/visa-guide" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Latest News & offers</a>
-            <a href="/migration-tools" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">AI Tools</a>
-            <a href="/support" className="block px-3 py-2.5 text-slate-800 hover:text-[#2563eb] rounded-lg">Contact</a>
+            <a href="/find-experts" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Find Consultants</a>
+            <a href="/services/apply-visa" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Self Apply</a>
+            <a href="/services/visa-documentation" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Visa Services</a>
+            <a href="/visa-guide" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Latest News & offers</a>
+            <a href="/migration-tools" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">AI Tools</a>
+            <a href="/support" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Contact</a>
 
             <div className="flex gap-3 px-1 pt-3 border-t border-slate-100 mt-2">
-              <a href="/login" className="flex-1 text-center py-2.5 text-xs font-bold text-[#2563eb] border border-[#2563eb] rounded-xl">Log in</a>
-              <a href="/signup" className="flex-1 text-center py-2.5 text-xs font-bold text-white bg-[#2563eb] rounded-xl">Sign Up</a>
+              <a href="/login" className="flex-1 text-center py-2.5 text-xs font-bold text-[#00a896] border border-[#00a896] rounded-xl">Log in</a>
+              <a href="/signup" className="flex-1 text-center py-2.5 text-xs font-bold text-white bg-[#00a896] rounded-xl">Sign Up</a>
             </div>
           </div>
         </div>

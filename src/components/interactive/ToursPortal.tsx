@@ -421,10 +421,7 @@ export function ToursPortal() {
                                 Dream Holidays. Visas Sorted.
                             </h1>
 
-                            {/* Bright Green Accent Highlight */}
-                            <p className="text-[#00FF66] font-serif text-2xl md:text-3xl font-bold mb-8 tracking-wide drop-shadow-md">
-                                in exactly 10 minutes
-                            </p>
+
 
                             {/* 3-Column Metadata Row */}
                             <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
@@ -520,10 +517,7 @@ export function ToursPortal() {
                                 Live the Game. Visas Sorted.
                             </h1>
 
-                            {/* Bright Green Accent Highlight */}
-                            <p className="text-[#00FF66] font-serif text-2xl md:text-3xl font-bold mb-8 tracking-wide drop-shadow-md">
-                                in exactly 10 minutes
-                            </p>
+
 
                             {/* 3-Column Metadata Row */}
                             <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
@@ -628,10 +622,7 @@ export function ToursPortal() {
                                 Sail the World. Ports & Visas Sorted.
                             </h1>
 
-                            {/* Bright Green Accent Highlight */}
-                            <p className="text-[#00FF66] font-serif text-2xl md:text-3xl font-bold mb-8 tracking-wide drop-shadow-md">
-                                in exactly 10 minutes
-                            </p>
+
 
                             {/* 3-Column Metadata Row */}
                             <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
@@ -734,10 +725,7 @@ export function ToursPortal() {
                                 See the Show. Visas Sorted.
                             </h1>
 
-                            {/* Bright Green Accent Highlight */}
-                            <p className="text-[#00FF66] font-serif text-2xl md:text-3xl font-bold mb-8 tracking-wide drop-shadow-md">
-                                in exactly 10 minutes
-                            </p>
+
 
                             {/* 3-Column Metadata Row */}
                             <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">

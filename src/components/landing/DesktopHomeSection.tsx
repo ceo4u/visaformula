@@ -1,9 +1,56 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Search, ShieldCheck, FileText, Users, CheckCircle2,
-  Clock, ChevronRight, Globe, Download
+  Clock, ChevronRight, Globe, Download, ChevronDown
 } from 'lucide-react';
+
+interface CustomSelectProps {
+  label: string;
+  value: string;
+  placeholder: string;
+  options: string[];
+  isOpen: boolean;
+  onToggle: () => void;
+  onSelect: (val: string) => void;
+}
+
+function CustomSelect({ label, value, placeholder, options, isOpen, onToggle, onSelect }: CustomSelectProps) {
+  return (
+    <div className="space-y-1 relative text-left">
+      <label className="text-[11px] font-bold text-gray-500 block">{label}</label>
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); onToggle(); }}
+        className={`w-full bg-white border rounded-xl px-3 py-2 text-xs font-semibold text-gray-800 outline-none flex items-center justify-between gap-1.5 transition-all select-none h-[38px] ${
+          isOpen ? "border-[#00a896] ring-1 ring-[#00a896]/20" : "border-gray-200 hover:border-gray-300"
+        }`}
+      >
+        <span className="truncate">{value || placeholder}</span>
+        <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 shrink-0 ${isOpen ? "rotate-180 text-gray-900" : ""}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-[calc(100%+4px)] left-0 w-full bg-white rounded-xl shadow-xl border border-gray-200/90 py-1.5 z-50 max-h-48 overflow-y-auto animate-premium-fade">
+          {options.map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => onSelect(opt)}
+              className={`w-full text-left px-3.5 py-2 text-xs transition-colors font-semibold ${
+                value === opt 
+                  ? 'bg-slate-950 text-white font-bold' 
+                  : 'text-gray-700 hover:bg-slate-50'
+              }`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function DesktopHomeSection() {
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -11,6 +58,22 @@ export function DesktopHomeSection() {
   const [selectedVisaType, setSelectedVisaType] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [activeTab, setActiveTab] = useState('All');
+
+  const [countryOpen, setCountryOpen] = useState(false);
+  const [purposeOpen, setPurposeOpen] = useState(false);
+  const [visaTypeOpen, setVisaTypeOpen] = useState(false);
+  const [cityOpen, setCityOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClose = () => {
+      setCountryOpen(false);
+      setPurposeOpen(false);
+      setVisaTypeOpen(false);
+      setCityOpen(false);
+    };
+    window.addEventListener('click', handleClose);
+    return () => window.removeEventListener('click', handleClose);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -204,45 +267,48 @@ export function DesktopHomeSection() {
             <div className="bg-white rounded-2xl px-6 py-5 shadow-sm border border-gray-100 space-y-3">
               <h2 className="text-base font-bold text-gray-900">Find Visa Information &amp; Consultants</h2>
               <form onSubmit={handleSearch} className="grid grid-cols-2 lg:grid-cols-5 gap-3 items-end">
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-gray-500">I want to go to</label>
-                  <select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896]">
-                    <option value="">Select Country</option>
-                    <option>Canada 🇨🇦</option><option>United Kingdom 🇬🇧</option>
-                    <option>United States 🇺🇸</option><option>Australia 🇦🇺</option>
-                    <option>Germany 🇩🇪</option><option>New Zealand 🇳🇿</option><option>UAE 🇦🇪</option>
-                  </select>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-gray-500">I am going for</label>
-                  <select value={selectedPurpose} onChange={e => setSelectedPurpose(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896]">
-                    <option value="">Select Purpose</option>
-                    <option>Higher Education / Study</option><option>Employment / Work</option>
-                    <option>Tourism / Visit</option><option>Permanent Residency</option><option>Business / Investment</option>
-                  </select>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-gray-500">Visa Type</label>
-                  <select value={selectedVisaType} onChange={e => setSelectedVisaType(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896]">
-                    <option value="">Select Visa Type</option>
-                    <option>Student Visa</option><option>Work Permit</option>
-                    <option>Tourist / Visitor Visa</option><option>PR / Express Entry</option>
-                  </select>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-gray-500">My Location</label>
-                  <select value={selectedCity} onChange={e => setSelectedCity(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896]">
-                    <option value="">Select City</option>
-                    <option>Mumbai, India</option><option>Delhi, India</option>
-                    <option>Bangalore, India</option><option>Hyderabad, India</option><option>Punjab, India</option>
-                  </select>
-                </div>
+                <CustomSelect 
+                  label="I want to go to" 
+                  value={selectedCountry} 
+                  placeholder="Select Country" 
+                  options={['Canada', 'United Kingdom', 'United States', 'Australia', 'Germany', 'New Zealand', 'UAE']} 
+                  isOpen={countryOpen}
+                  onToggle={() => { setCountryOpen(!countryOpen); setPurposeOpen(false); setVisaTypeOpen(false); setCityOpen(false); }}
+                  onSelect={(val) => { setSelectedCountry(val); setCountryOpen(false); }}
+                />
+
+                <CustomSelect 
+                  label="I am going for" 
+                  value={selectedPurpose} 
+                  placeholder="Select Purpose" 
+                  options={['Higher Education / Study', 'Employment / Work', 'Tourism / Visit', 'Permanent Residency', 'Business / Investment']} 
+                  isOpen={purposeOpen}
+                  onToggle={() => { setPurposeOpen(!purposeOpen); setCountryOpen(false); setVisaTypeOpen(false); setCityOpen(false); }}
+                  onSelect={(val) => { setSelectedPurpose(val); setPurposeOpen(false); }}
+                />
+
+                <CustomSelect 
+                  label="Visa Type" 
+                  value={selectedVisaType} 
+                  placeholder="Select Visa Type" 
+                  options={['Student Visa', 'Work Permit', 'Tourist / Visitor Visa', 'PR / Express Entry']} 
+                  isOpen={visaTypeOpen}
+                  onToggle={() => { setVisaTypeOpen(!visaTypeOpen); setCountryOpen(false); setPurposeOpen(false); setCityOpen(false); }}
+                  onSelect={(val) => { setSelectedVisaType(val); setVisaTypeOpen(false); }}
+                />
+
+                <CustomSelect 
+                  label="My Location" 
+                  value={selectedCity} 
+                  placeholder="Select City" 
+                  options={['Mumbai, India', 'Delhi, India', 'Bangalore, India', 'Hyderabad, India', 'Punjab, India']} 
+                  isOpen={cityOpen}
+                  onToggle={() => { setCityOpen(!cityOpen); setCountryOpen(false); setPurposeOpen(false); setVisaTypeOpen(false); }}
+                  onSelect={(val) => { setSelectedCity(val); setCityOpen(false); }}
+                />
+
                 <button type="submit"
-                  className="w-full bg-[#00a896] hover:bg-[#009485] text-white font-bold text-sm px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+                  className="w-full bg-[#00a896] hover:bg-[#009485] text-white font-bold text-sm px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md h-[38px] self-end mt-1">
                   <Search className="w-4 h-4" /> Search
                 </button>
               </form>

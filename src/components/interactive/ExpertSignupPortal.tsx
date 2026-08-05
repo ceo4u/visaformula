@@ -343,7 +343,14 @@ function ExpertSignupPortalContent() {
   const handleProceedToPhase2 = (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError("");
-    if (!firstName || !lastName || !businessName || !contactNumber || !email || !password) {
+    let finalBiz = businessName;
+    if (consultantType === "Freelancer") {
+      finalBiz = `${firstName} ${lastName}`.trim() || "Freelancer";
+      // We set the state so it is correctly synced
+      setBusinessName(finalBiz);
+    }
+
+    if (!firstName || !lastName || !finalBiz || !contactNumber || !email || !password) {
       setValidationError("Please fill in all required fields.");
       return;
     }
@@ -761,16 +768,18 @@ function ExpertSignupPortalContent() {
                     </div>
                   </div>
 
-                  <div className="col-span-2 md:col-span-1">
-                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Business / Agency Name *</label>
-                    <input 
-                      required
-                      value={businessName} 
-                      onChange={(e) => setBusinessName(e.target.value)} 
-                      placeholder="Business or Consultancy Name" 
-                      className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
-                    />
-                  </div>
+                  {consultantType !== "Freelancer" && (
+                    <div className="col-span-2 md:col-span-1 animate-premium-fade">
+                      <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Business / Agency Name *</label>
+                      <input 
+                        required
+                        value={businessName} 
+                        onChange={(e) => setBusinessName(e.target.value)} 
+                        placeholder="Business or Consultancy Name" 
+                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
+                      />
+                    </div>
+                  )}
 
                   {/* 3. Email Address */}
                   <div className="col-span-2 space-y-1">

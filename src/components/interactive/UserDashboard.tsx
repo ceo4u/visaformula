@@ -294,11 +294,11 @@ export function UserDashboard() {
                                             onClick={() => setActiveTab(item.id)}
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs"
+                                                    ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs"
                                                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                             }`}
                                         >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
                                             {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                                         </button>
                                     );
@@ -327,11 +327,11 @@ export function UserDashboard() {
                                             onClick={() => setActiveTab(item.id)}
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs"
+                                                    ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs"
                                                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                             }`}
                                         >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
                                             {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                                         </button>
                                     );
@@ -415,10 +415,10 @@ export function UserDashboard() {
                                                 key={item.id}
                                                 onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
                                                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
+                                                    isActive ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
                                                 }`}
                                             >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
                                                 <span>{item.label}</span>
                                             </button>
                                         );
@@ -441,10 +441,10 @@ export function UserDashboard() {
                                                 key={item.id}
                                                 onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
                                                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
+                                                    isActive ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
                                                 }`}
                                             >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
                                                 <span>{item.label}</span>
                                             </button>
                                         );
@@ -484,7 +484,7 @@ export function UserDashboard() {
                         </a>
                         {/* Sleek Workspace Indicator Icon Badge — Larger & Prominent */}
                         <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
-                            <LayoutDashboard className="w-5.5 h-5.5 text-[#2563eb] shrink-0" />
+                            <LayoutDashboard className="w-5.5 h-5.5 text-[#00a896] shrink-0" />
                             <span className="text-sm sm:text-base font-bold text-slate-900 capitalize tracking-tight">
                                 {activeTab.replace("-", " ")}
                             </span>
@@ -648,7 +648,7 @@ export function UserDashboard() {
                                     <div>
                                         <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
                                             <span>Active Applications & Case Tracker</span>
-                                            <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
+                                            <span className="text-xs font-bold text-[#00a896] bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200/80">
                                                 Live Status
                                             </span>
                                         </h2>
@@ -658,7 +658,7 @@ export function UserDashboard() {
                                     </div>
                                     <a 
                                         href="/services/visa-form-filing" 
-                                        className="inline-flex items-center gap-2 bg-[#2563eb] hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 w-fit"
+                                        className="inline-flex items-center gap-2 bg-[#00a896] hover:bg-[#009485] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 w-fit"
                                     >
                                         <Plus className="w-4 h-4" /> Start Visa Application
                                     </a>
@@ -666,7 +666,7 @@ export function UserDashboard() {
 
                                 {/* Clean Empty / Real Activity State Card */}
                                 <div className="bg-slate-50/70 rounded-xl border border-slate-200/70 p-8 text-center space-y-3">
-                                    <div className="w-14 h-14 rounded-full bg-blue-100/70 text-[#2563eb] flex items-center justify-center mx-auto border border-blue-200/60 shadow-2xs">
+                                    <div className="w-14 h-14 rounded-full bg-teal-100/70 text-[#00a896] flex items-center justify-center mx-auto border border-teal-200/60 shadow-2xs">
                                         <Briefcase className="w-7 h-7" />
                                     </div>
                                     <div>
@@ -679,7 +679,7 @@ export function UserDashboard() {
                                         <a href="/find-experts" className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs">
                                             Find Immigration Expert
                                         </a>
-                                        <a href="/services/apply-visa" className="bg-[#2563eb] hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
+                                        <a href="/services/apply-visa" className="bg-[#00a896] hover:bg-[#009485] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
                                             Explore Country Visas
                                         </a>
                                     </div>

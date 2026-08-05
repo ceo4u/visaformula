@@ -28,7 +28,7 @@ interface Column {
 }
 
 const initialColumns: Column[] = [
-    { id: "new", title: "New Requests", color: "border-blue-400", cards: [] },
+    { id: "new", title: "New Requests", color: "border-teal-400", cards: [] },
     { id: "waiting", title: "Waiting on Client", color: "border-amber-400", cards: [] },
     { id: "processing", title: "Processing & Filing", color: "border-indigo-400", cards: [] },
     { id: "completed", title: "Completed & Approved", color: "border-emerald-400", cards: [] },
@@ -374,11 +374,11 @@ export function ConsultantDashboard() {
                                             onClick={() => setActiveTab(item.id)}
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs"
+                                                    ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs"
                                                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                             }`}
                                         >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
                                             {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                                         </button>
                                     );
@@ -406,11 +406,11 @@ export function ConsultantDashboard() {
                                             onClick={() => setActiveTab(item.id)}
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs"
+                                                    ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs"
                                                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                             }`}
                                         >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
+                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
                                             {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                                         </button>
                                     );
@@ -446,7 +446,7 @@ export function ConsultantDashboard() {
                             {!isSidebarCollapsed && (
                                 <div className="min-w-0">
                                     <h4 className="text-xs font-extrabold text-slate-900 truncate leading-tight flex items-center gap-1">
-                                        {profile.name} <ShieldCheck className="w-3.5 h-3.5 text-blue-600 inline" />
+                                        {profile.name} <ShieldCheck className="w-3.5 h-3.5 text-[#00a896] inline" />
                                     </h4>
                                     <p className="text-[10px] font-semibold text-slate-500 truncate">
                                         {profile.role}
@@ -491,10 +491,10 @@ export function ConsultantDashboard() {
                                                 key={item.id}
                                                 onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
                                                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
+                                                    isActive ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
                                                 }`}
                                             >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
                                                 <span>{item.label}</span>
                                             </button>
                                         );
@@ -516,10 +516,10 @@ export function ConsultantDashboard() {
                                                 key={item.id}
                                                 onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
                                                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-blue-50/90 text-[#2563eb] border border-blue-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
+                                                    isActive ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
                                                 }`}
                                             >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#2563eb]" : "text-slate-500"}`} />
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
                                                 <span>{item.label}</span>
                                             </button>
                                         );
@@ -559,7 +559,7 @@ export function ConsultantDashboard() {
                         </a>
                         {/* Sleek Workspace Indicator Icon Badge — Prominent Readability */}
                         <div className="hidden lg:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
-                            <LayoutDashboard className="w-5.5 h-5.5 text-[#2563eb] shrink-0" />
+                            <LayoutDashboard className="w-5.5 h-5.5 text-[#00a896] shrink-0" />
                             <span className="text-sm sm:text-base font-bold text-slate-900 capitalize tracking-tight">
                                 {activeTab.replace("-", " ")}
                             </span>
@@ -700,7 +700,7 @@ export function ConsultantDashboard() {
                                     <div className="flex items-center gap-2">
                                         <button 
                                             onClick={() => setIsPostingAd(true)}
-                                            className="bg-[#2563eb] hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
+                                            className="bg-[#00a896] hover:bg-[#009485] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
                                         >
                                             Post Special Offer
                                         </button>
@@ -755,7 +755,7 @@ export function ConsultantDashboard() {
                                                     <div className="flex items-start justify-between">
                                                         <div>
                                                             <h4 className="font-extrabold text-slate-900 text-xs">{card.name}</h4>
-                                                            <span className="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md font-bold mt-1.5 inline-block border border-blue-200/60">{card.visa}</span>
+                                                            <span className="text-[10px] bg-teal-50 text-[#00a896] px-2 py-0.5 rounded-md font-bold mt-1.5 inline-block border border-teal-200/60">{card.visa}</span>
                                                         </div>
                                                         <GripVertical className="w-4 h-4 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                                                     </div>
@@ -791,7 +791,7 @@ export function ConsultantDashboard() {
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <span className="font-black text-sm text-slate-900">{s.price}</span>
-                                            <button className="text-xs text-blue-600 font-bold hover:underline">Edit</button>
+                                            <button className="text-xs text-[#00a896] font-bold hover:underline">Edit</button>
                                         </div>
                                     </div>
                                 ))}

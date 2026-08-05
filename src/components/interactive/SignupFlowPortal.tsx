@@ -10,7 +10,7 @@ export function SignupFlowPortal({ initialMode = "selection" }: SignupFlowPortal
     const [mode, setMode] = useState<"selection" | "seeker">(initialMode);
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-slate-950/90 backdrop-blur-xl flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar">
+        <div className="fixed inset-0 z-[9999] bg-black/50 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar">
             
             {/* Inline CSS Animations for Floating Circles & Pulsing Rings */}
             <style dangerouslySetInnerHTML={{ __html: `

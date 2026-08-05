@@ -126,13 +126,32 @@ export function UserDashboard() {
 
         try {
             const savedGoals = localStorage.getItem("seeker_goals");
-            if (savedGoals) setSelectedGoals(JSON.parse(savedGoals));
+            if (savedGoals) {
+                setSelectedGoals(JSON.parse(savedGoals));
+                try {
+                    const parsed = JSON.parse(savedGoals);
+                    if (Array.isArray(parsed)) setModalGoals(parsed.join(", "));
+                } catch(e) {}
+            }
 
             const savedDests = localStorage.getItem("seeker_destinations");
-            if (savedDests) setSelectedDests(JSON.parse(savedDests));
+            if (savedDests) {
+                setSelectedDests(JSON.parse(savedDests));
+                try {
+                    const parsed = JSON.parse(savedDests);
+                    if (Array.isArray(parsed)) setModalDestinations(parsed.join(", "));
+                } catch(e) {}
+            }
         } catch (e) {
             console.error(e);
         }
+
+        const savedCity = localStorage.getItem("seeker_city") || "";
+        const savedState = localStorage.getItem("seeker_state") || "";
+        const savedZip = localStorage.getItem("seeker_zip") || "";
+        setModalCity(savedCity);
+        setModalState(savedState);
+        setModalZip(savedZip);
 
         // Check if Seeker profile is incomplete (missing phone, citizen country or resident country)
         const hasNoPhone = !localStorage.getItem("seeker_phone");
@@ -153,6 +172,11 @@ export function UserDashboard() {
     const [modalResidentOf, setModalResidentOf] = useState("");
     const [modalLookingFor, setModalLookingFor] = useState("");
     const [countryCode, setCountryCode] = useState("+91");
+    const [modalGoals, setModalGoals] = useState("");
+    const [modalDestinations, setModalDestinations] = useState("");
+    const [modalCity, setModalCity] = useState("");
+    const [modalState, setModalState] = useState("");
+    const [modalZip, setModalZip] = useState("");
 
     const toggleDocStatus = (id: number) => {
         setDocuments(prev => prev.map(d => {
@@ -177,6 +201,11 @@ export function UserDashboard() {
         setCountryOfCitizenship(modalPassportCountry);
         setResidentOf(modalResidentOf);
 
+        const goalsArr = modalGoals.split(",").map(g => g.trim()).filter(Boolean);
+        const destsArr = modalDestinations.split(",").map(d => d.trim()).filter(Boolean);
+        setSelectedGoals(goalsArr);
+        setSelectedDests(destsArr);
+
         localStorage.setItem("seeker_firstName", modalFirstName);
         localStorage.setItem("seeker_lastName", modalLastName);
         localStorage.setItem("seeker_phone", countryCode + " " + modalPhone);
@@ -184,6 +213,12 @@ export function UserDashboard() {
         localStorage.setItem("seeker_country_of_citizenship", modalPassportCountry);
         localStorage.setItem("seeker_resident_of", modalResidentOf);
         if (modalLookingFor) localStorage.setItem("seeker_looking_for", modalLookingFor);
+        
+        localStorage.setItem("seeker_goals", JSON.stringify(goalsArr));
+        localStorage.setItem("seeker_destinations", JSON.stringify(destsArr));
+        localStorage.setItem("seeker_city", modalCity);
+        localStorage.setItem("seeker_state", modalState);
+        localStorage.setItem("seeker_zip", modalZip);
 
         setIsProfileIncomplete(false);
         setShowProfileModal(false);
@@ -749,52 +784,122 @@ export function UserDashboard() {
                         </div>
 
                         <form onSubmit={handleSaveProfileModal} className="space-y-4 text-xs">
+                            <div className="grid grid-cols-2 gap-3.5">
+                                <div>
+                                    <label className="font-bold text-slate-700 block mb-1">First Name</label>
+                                    <input 
+                                        type="text"
+                                        value={modalFirstName}
+                                        onChange={(e) => setModalFirstName(e.target.value)}
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900 animate-premium-fade"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-slate-700 block mb-1">Last Name</label>
+                                    <input 
+                                        type="text"
+                                        value={modalLastName}
+                                        onChange={(e) => setModalLastName(e.target.value)}
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900 animate-premium-fade"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3.5">
+                                <div>
+                                    <label className="font-bold text-slate-700 block mb-1">Phone Number</label>
+                                    <input 
+                                        type="text"
+                                        value={modalPhone}
+                                        onChange={(e) => setModalPhone(e.target.value)}
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-slate-700 block mb-1">Current Residence</label>
+                                    <input 
+                                        type="text"
+                                        value={modalResidentOf}
+                                        onChange={(e) => setModalResidentOf(e.target.value)}
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3.5">
+                                <div>
+                                    <label className="font-bold text-slate-700 block mb-1">Passport / Citizenship</label>
+                                    <input 
+                                        type="text"
+                                        value={modalPassportCountry}
+                                        onChange={(e) => setModalPassportCountry(e.target.value)}
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-slate-700 block mb-1">Visa Goals (e.g. Student, PR)</label>
+                                    <input 
+                                        type="text"
+                                        value={modalGoals}
+                                        onChange={(e) => setModalGoals(e.target.value)}
+                                        placeholder="Student, Work, PR"
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
                             <div>
-                                <label className="font-bold text-slate-700 block mb-1">First Name</label>
+                                <label className="font-bold text-slate-700 block mb-1">Target Destinations (comma separated)</label>
                                 <input 
                                     type="text"
-                                    value={modalFirstName}
-                                    onChange={(e) => setModalFirstName(e.target.value)}
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41]"
+                                    value={modalDestinations}
+                                    onChange={(e) => setModalDestinations(e.target.value)}
+                                    placeholder="Canada, UK, USA"
+                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
                                     required
                                 />
                             </div>
 
-                            <div>
-                                <label className="font-bold text-slate-700 block mb-1">Last Name</label>
-                                <input 
-                                    type="text"
-                                    value={modalLastName}
-                                    onChange={(e) => setModalLastName(e.target.value)}
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41]"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="font-bold text-slate-700 block mb-1">Phone Number</label>
-                                <input 
-                                    type="text"
-                                    value={modalPhone}
-                                    onChange={(e) => setModalPhone(e.target.value)}
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41]"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="font-bold text-slate-700 block mb-1">Passport Country</label>
-                                <input 
-                                    type="text"
-                                    value={modalPassportCountry}
-                                    onChange={(e) => setModalPassportCountry(e.target.value)}
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41]"
-                                />
+                            <div className="grid grid-cols-3 gap-2.5">
+                                <div>
+                                    <label className="font-bold text-slate-700 block mb-1">City</label>
+                                    <input 
+                                        type="text"
+                                        value={modalCity}
+                                        onChange={(e) => setModalCity(e.target.value)}
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-slate-700 block mb-1">State</label>
+                                    <input 
+                                        type="text"
+                                        value={modalState}
+                                        onChange={(e) => setModalState(e.target.value)}
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="font-bold text-slate-700 block mb-1">Zip Code</label>
+                                    <input 
+                                        type="text"
+                                        value={modalZip}
+                                        onChange={(e) => setModalZip(e.target.value)}
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl font-semibold outline-none focus:border-[#107c41] text-slate-900"
+                                    />
+                                </div>
                             </div>
 
                             <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
                                 <button type="button" onClick={() => setShowProfileModal(false)} className="px-4 py-2 border border-slate-200 rounded-xl font-bold text-slate-600 hover:bg-slate-50">
                                     Cancel
                                 </button>
-                                <button type="submit" className="px-4 py-2 bg-[#107c41] hover:bg-[#0d5c3a] text-white rounded-xl font-bold transition-all">
+                                <button type="submit" className="px-4 py-2 bg-[#00a896] hover:bg-[#009485] text-white rounded-xl font-bold transition-all shadow-sm">
                                     Save Changes
                                 </button>
                             </div>

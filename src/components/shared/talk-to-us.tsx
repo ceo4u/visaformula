@@ -68,7 +68,7 @@ export function TalkToUs() {
     <>
       {/* Modal */}
       {open && (
-        <div className="fixed bottom-24 right-4 sm:right-6 w-[340px] sm:w-[370px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden z-50 flex flex-col font-sans" style={{ maxHeight: "560px" }}>
+        <div className="fixed bottom-[144px] sm:bottom-24 right-4 sm:right-6 w-[320px] sm:w-[370px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden z-50 flex flex-col font-sans" style={{ maxHeight: "560px" }}>
           
           {/* Options View */}
           {view === "options" && (
@@ -107,66 +107,81 @@ export function TalkToUs() {
             <>
               <div className="bg-black p-4 flex items-center gap-3">
                 <button onClick={() => setView("options")} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><ArrowLeft className="w-4 h-4" /></button>
-                <div className="w-9 h-9 bg-slate-800 rounded-full flex items-center justify-center"><Bot className="w-4 h-4 text-white" /></div>
+                <div className="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center text-white shrink-0"><Bot className="w-4 h-4 text-white" /></div>
                 <div className="flex-1">
-                  <div className="font-bold text-white text-sm">VisaFormula AI + Expert</div>
-                  <div className="flex items-center gap-1.5 text-slate-300 text-xs"><span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />Expert joining in ~2 min</div>
+                  <div className="font-sora font-bold text-white text-xs">VisaFormula Assistant</div>
+                  <div className="text-emerald-400 text-[10px] flex items-center gap-1"><span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />Online · Instant</div>
                 </div>
                 <button onClick={() => setOpen(false)} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><X className="w-4 h-4" /></button>
               </div>
 
-              <div ref={bodyRef} className="flex-grow p-3 overflow-y-auto bg-slate-50 flex flex-col gap-2" style={{ maxHeight: "350px" }}>
+              <div ref={bodyRef} className="p-3.5 overflow-y-auto flex-1 flex flex-col gap-3 bg-slate-50">
                 {msgs.map((m, i) => (
                   <div key={i} className={`flex flex-col ${m.role === "user" ? "items-end" : "items-start"}`}>
-                    <div className={`max-w-[85%] px-3.5 py-2.5 text-xs leading-relaxed whitespace-pre-line ${m.role === "user" ? "bg-black text-white rounded-2xl rounded-br-sm" : "bg-white border border-slate-200 text-black rounded-2xl rounded-bl-sm shadow-sm"}`}>
-                      {m.text}
+                    <div className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${m.role === "user" ? "bg-black text-white font-medium rounded-br-none" : "bg-white text-slate-800 shadow-sm border border-slate-100 rounded-bl-none"}`}>
+                      {m.text.split("\n").map((line, j) => (
+                        <p key={j} className={j > 0 ? "mt-1" : ""}>{line}</p>
+                      ))}
                     </div>
-                    {m.quickReplies && m.role === "ai" && i === msgs.length - 1 && (
-                      <div className="flex flex-wrap gap-1.5 mt-1.5 max-w-full">
-                        {m.quickReplies.map((qr, qi) => (
-                          <button key={qi} onClick={() => sendMsg(qr)} className="text-[11px] font-bold px-2.5 py-1.5 bg-white border border-slate-300 text-slate-800 rounded-xl hover:bg-slate-100 transition-all">{qr}</button>
+                    {m.quickReplies && m.quickReplies.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-2 max-w-[90%]">
+                        {m.quickReplies.map((qr, k) => (
+                          <button key={k} onClick={() => sendMsg(qr)} className="bg-white hover:bg-black hover:text-white text-slate-700 text-[11px] font-semibold px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs transition-all text-left">
+                            {qr}
+                          </button>
                         ))}
                       </div>
                     )}
                   </div>
                 ))}
                 {typing && (
-                  <div className="flex items-start gap-2">
-                    <div className="bg-white border border-slate-250 rounded-2xl rounded-bl-sm px-3.5 py-2.5 shadow-sm flex items-center gap-1">
-                      {[0, 1, 2].map(i => <span key={i} className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />)}
+                  <div className="flex items-start">
+                    <div className="bg-white rounded-2xl p-3 shadow-sm border border-slate-100 rounded-bl-none flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" />
+                      <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.2s]" />
+                      <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.4s]" />
                     </div>
                   </div>
                 )}
               </div>
 
-              <div className="p-2.5 border-t border-slate-200 bg-white flex gap-2">
-                <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && input.trim()) sendMsg(input.trim()); }} placeholder="Type your question…" className="flex-1 px-3 py-2 border border-slate-200 rounded-full text-xs outline-none focus:border-black bg-slate-50 font-medium text-black" />
-                <button onClick={() => { if (input.trim()) sendMsg(input.trim()); }} className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white shrink-0 hover:bg-slate-900 transition-all"><Send className="w-3.5 h-3.5" /></button>
+              <div className="p-2.5 bg-white border-t border-slate-100 flex items-center gap-2">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && input.trim() && sendMsg(input.trim())}
+                  placeholder="Type a message..."
+                  className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-black font-medium"
+                />
+                <button
+                  onClick={() => input.trim() && sendMsg(input.trim())}
+                  disabled={!input.trim()}
+                  className="w-8 h-8 bg-black disabled:bg-slate-200 text-white disabled:text-slate-400 rounded-xl flex items-center justify-center transition-all shrink-0 cursor-pointer"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
               </div>
             </>
           )}
 
-          {/* Call / Email View */}
+          {/* Call View */}
           {view === "call" && (
             <>
               <div className="bg-black p-4 flex items-center gap-3">
                 <button onClick={() => setView("options")} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><ArrowLeft className="w-4 h-4" /></button>
-                <div className="font-bold text-white text-sm flex-1">Contact Us</div>
+                <div className="flex-1">
+                  <div className="font-sora font-bold text-white text-sm">Direct Contact</div>
+                  <div className="text-slate-300 text-xs">Reach out directly</div>
+                </div>
                 <button onClick={() => setOpen(false)} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><X className="w-4 h-4" /></button>
               </div>
-              <div className="p-5 flex flex-col gap-4">
-                <a 
-                  href={whatsappUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl p-4 flex items-center justify-between shadow-md transition-all font-bold text-sm cursor-pointer"
-                >
+              <div className="p-4 space-y-3">
+                <a href={whatsappUrl} target="_blank" rel="noreferrer" className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl p-4 flex items-center justify-between transition-all shadow-md">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-emerald-500/80 rounded-xl flex items-center justify-center text-white">
-                      <MessageCircle className="w-6 h-6 text-white" />
-                    </div>
+                    <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><MessageCircle className="w-5 h-5 text-white" /></div>
                     <div>
-                      <div className="text-white font-extrabold text-sm">Chat on WhatsApp</div>
+                      <div className="font-bold text-sm">WhatsApp Direct</div>
                       <div className="text-emerald-100 text-xs font-medium">+91 766 1989 366 · Instant Reply</div>
                     </div>
                   </div>
@@ -187,15 +202,17 @@ export function TalkToUs() {
         </div>
       )}
 
-      {/* FAB Button */}
-      <button onClick={() => { setOpen(!open); setView("options"); }} className="fixed bottom-5 right-4 sm:right-6 z-50 flex items-center gap-2.5 bg-black text-white font-bold px-5 py-3.5 rounded-full shadow-2xl hover:bg-slate-900 transition-all active:scale-[0.98] group border border-slate-800">
-        <span className="relative">
-          {open ? <X className="w-5 h-5" /> : <MessageSquare className="w-5 h-5" />}
-          {!open && <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-black animate-pulse" />}
+      {/* FAB Button - Clean Icon-Only Floating Button */}
+      <button
+        onClick={() => { setOpen(!open); setView("options"); }}
+        aria-label="Talk to Us"
+        className="fixed bottom-[84px] sm:bottom-6 right-4 sm:right-6 z-50 w-12 h-12 rounded-full bg-[#0c1a2e] text-white shadow-xl hover:bg-black transition-all active:scale-[0.95] flex items-center justify-center border border-slate-700/60 cursor-pointer"
+      >
+        <span className="relative flex items-center justify-center">
+          {open ? <X className="w-5 h-5 text-white" /> : <MessageSquare className="w-5 h-5 text-white" />}
+          {!open && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-[#0c1a2e] animate-pulse" />}
         </span>
-        <span className="text-sm font-semibold">{open ? "Close" : "Talk to Us"}</span>
       </button>
     </>
   );
 }
-

@@ -189,7 +189,7 @@ export async function sendLoginAlert(data: LoginAlertEmailData): Promise<EmailRe
           </div>
         </div>
         <div style="background:#0d0d0d;border-top:1px solid #222;padding:20px 32px;text-align:center;">
-          <p style="margin:0;font-size:12px;color:#374151;">© ${new Date().getFullYear()} Visa Formula. All rights reserved.</p>
+          <p style="margin:0;font-size:12px;color:#374151;">© ${new Date().getFullYear()} Logiqall Technologies. All rights reserved.</p>
         </div>
       </div>
     </body>

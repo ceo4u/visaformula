@@ -12,7 +12,10 @@
     "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "push:origin": "node scripts/push-remotes.js origin",
+    "push:logiqall": "node scripts/push-remotes.js logiqall",
+    "push:all": "node scripts/push-remotes.js all"
   },
   "dependencies": {
     "@astrojs/node": "^8.3.4",

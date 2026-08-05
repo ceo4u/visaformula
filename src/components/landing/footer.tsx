@@ -125,7 +125,7 @@ export function Footer() {
 
         {/* Bottom copyright */}
         <div className="border-t border-gray-700 pt-5 text-center">
-          <p className="text-xs text-gray-500">© 2024 VisaFormula. All rights reserved.</p>
+          <p className="text-xs text-gray-500">© {new Date().getFullYear()} Logiqall Technologies. All rights reserved.</p>
         </div>
       </div>
     </footer>

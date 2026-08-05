@@ -113,8 +113,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                             
                             <!-- Footer Details -->
                             <p style="color: #9ca3af; font-size: 12px; line-height: 18px; margin: 16px 0 0 0; text-align: center;">
-                                &copy; 2026 Visa Formula. The Global Immigration Platform.<br/>
-                                All rights reserved.
+                                &copy; {new Date().getFullYear()} Logiqall Technologies. All rights reserved.
                             </p>
                         </td>
                     </tr>

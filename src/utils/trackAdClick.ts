@@ -8,6 +8,23 @@ export interface AdClickPayload {
   targetUrl?: string;
 }
 
+export function isUserLoggedIn(): boolean {
+  if (typeof window === 'undefined') return false;
+  const seekerEmail = localStorage.getItem('seeker_email');
+  const seekerFirst = localStorage.getItem('seeker_firstName');
+  const expertEmail = localStorage.getItem('expert_email');
+  const expertBusiness = localStorage.getItem('expert_businessName');
+  const userStr = localStorage.getItem('visaformula_user');
+
+  return Boolean(
+    seekerEmail ||
+    seekerFirst ||
+    expertEmail ||
+    expertBusiness ||
+    (userStr && userStr !== 'null')
+  );
+}
+
 export async function trackAdClick(payload: AdClickPayload) {
   try {
     if (typeof window === 'undefined') return;
@@ -63,7 +80,6 @@ export async function trackAdClick(payload: AdClickPayload) {
     const existingLogsStr = localStorage.getItem('vf_ad_click_logs');
     const existingLogs = existingLogsStr ? JSON.parse(existingLogsStr) : [];
     existingLogs.unshift(clickEvent);
-    // Keep last 100 click events in LocalStorage for quick admin viewing
     localStorage.setItem('vf_ad_click_logs', JSON.stringify(existingLogs.slice(0, 100)));
 
     // 4. Send to backend analytics API endpoint (beacon/fetch)
@@ -79,5 +95,17 @@ export async function trackAdClick(payload: AdClickPayload) {
     }
   } catch (err) {
     console.error('Error tracking ad click:', err);
+  }
+}
+
+export function handleAdClickWithAuth(e: React.MouseEvent, payload: AdClickPayload) {
+  // Always track the click attempt
+  trackAdClick(payload);
+
+  // Check if user is logged in
+  if (!isUserLoggedIn()) {
+    e.preventDefault();
+    // Redirect non-registered users directly to the Signup role selection page
+    window.location.href = `/signup?redirect=${encodeURIComponent(payload.targetUrl || '/classifieds')}`;
   }
 }

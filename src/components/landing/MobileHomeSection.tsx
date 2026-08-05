@@ -5,7 +5,7 @@ import {
   MessageSquare, User, ShieldCheck, FileText, DollarSign,
   Activity, MapPin
 } from 'lucide-react';
-import { trackAdClick } from '../../utils/trackAdClick';
+import { trackAdClick, handleAdClickWithAuth } from '../../utils/trackAdClick';
 
 const destinations = [
   { flag: 'ca', name: 'Canada', href: '/visa-guide/canada' },

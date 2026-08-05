@@ -858,8 +858,21 @@ export function ConsultantDashboard() {
                             </div>
 
                             <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Professional Title / Designation</label>
-                                <input value={formRole} onChange={e => setFormRole(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Type of Business</label>
+                                <select
+                                    value={formRole}
+                                    onChange={e => setFormRole(e.target.value)}
+                                    required
+                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900 cursor-pointer"
+                                >
+                                    <option value="">Select Type of Business</option>
+                                    <option value="Freelancer">Freelancer / Individual Consultant</option>
+                                    <option value="Immigration Consultancy Firm">Immigration Consultancy Firm</option>
+                                    <option value="Law Firm / Legal Practice">Law Firm / Legal Practice</option>
+                                    <option value="Education & Student Agency">Education & Student Agency</option>
+                                    <option value="Recruitment & Manpower Agency">Recruitment & Manpower Agency</option>
+                                    <option value="Travel & Tour Agency">Travel & Tour Agency</option>
+                                </select>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">

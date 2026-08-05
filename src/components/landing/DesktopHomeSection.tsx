@@ -4,7 +4,7 @@ import {
   Search, ShieldCheck, FileText, Users, CheckCircle2,
   Clock, ChevronRight, Globe, Download, ChevronDown
 } from 'lucide-react';
-import { trackAdClick } from '../../utils/trackAdClick';
+import { trackAdClick, handleAdClickWithAuth } from '../../utils/trackAdClick';
 import { AdClickAnalyticsViewer } from '../analytics/AdClickAnalyticsViewer';
 
 interface CustomSelectProps {
@@ -391,7 +391,7 @@ export function DesktopHomeSection() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {classifieds.map((item, idx) => (
               <a key={idx} href="/classifieds"
-                onClick={() => trackAdClick({
+                onClick={(e) => handleAdClickWithAuth(e, {
                   adId: `classified_desk_${idx}_${item.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
                   adTitle: item.title,
                   adType: 'classified',

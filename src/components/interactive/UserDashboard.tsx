@@ -24,19 +24,20 @@ export function UserDashboard() {
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
 
-    const [firstName, setFirstName] = useState("Seeker");
+    const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
-    const [passportCountry, setPassportCountry] = useState("India");
-    const [countryOfCitizenship, setCountryOfCitizenship] = useState("India");
-    const [residentOf, setResidentOf] = useState("India");
+    const [passportCountry, setPassportCountry] = useState("");
+    const [countryOfCitizenship, setCountryOfCitizenship] = useState("");
+    const [residentOf, setResidentOf] = useState("");
     const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
     const [selectedDests, setSelectedDests] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [activeTab, setActiveTab] = useState("dashboard");
     const [timePeriod, setTimePeriod] = useState("Last 30 days");
     const [timePeriodOpen, setTimePeriodOpen] = useState(false);
+    const [isProfileIncomplete, setIsProfileIncomplete] = useState(false);
 
     const [scannedDocs, setScannedDocs] = useState(initialScannedDocuments);
     const [favouriteExperts, setFavouriteExperts] = useState(initialSavedExperts);
@@ -132,6 +133,17 @@ export function UserDashboard() {
         } catch (e) {
             console.error(e);
         }
+
+        // Check if Seeker profile is incomplete (missing phone, citizen country or resident country)
+        const hasNoPhone = !localStorage.getItem("seeker_phone");
+        const hasNoCitizenship = !localStorage.getItem("seeker_country_of_citizenship") && !localStorage.getItem("seeker_passportCountry");
+        const hasNoResidence = !localStorage.getItem("seeker_resident_of");
+        const hasDefaultName = !savedFirst || savedFirst === "Seeker";
+
+        if (hasNoPhone || hasNoCitizenship || hasNoResidence || hasDefaultName) {
+            setIsProfileIncomplete(true);
+            setShowProfileModal(true); // Auto-prompt Seeker to complete details
+        }
     }, []);
 
     const [modalFirstName, setModalFirstName] = useState("");
@@ -173,6 +185,7 @@ export function UserDashboard() {
         localStorage.setItem("seeker_resident_of", modalResidentOf);
         if (modalLookingFor) localStorage.setItem("seeker_looking_for", modalLookingFor);
 
+        setIsProfileIncomplete(false);
         setShowProfileModal(false);
     };
 
@@ -351,7 +364,7 @@ export function UserDashboard() {
                     <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200/60 shadow-xs">
                         <div className="flex items-center gap-2.5 min-w-0">
                             <div className="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center font-extrabold text-xs shrink-0">
-                                {(firstName || "S").charAt(0).toUpperCase()}
+                                {(firstName || "U").charAt(0).toUpperCase()}
                             </div>
                             {!isSidebarCollapsed && (
                                 <div className="min-w-0">
@@ -441,7 +454,14 @@ export function UserDashboard() {
                         </nav>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-100">
+                    <div className="pt-4 border-t border-slate-100 space-y-1.5">
+                        <button 
+                            onClick={() => { setShowProfileModal(true); setIsMobileSidebarOpen(false); }} 
+                            className="w-full flex items-center gap-3 px-3.5 py-2.5 text-slate-700 hover:bg-slate-100 rounded-xl font-bold text-xs transition-all"
+                        >
+                            <Settings className="w-4 h-4 text-slate-500" />
+                            <span>Profile Settings</span>
+                        </button>
                         <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3.5 py-2.5 text-rose-600 hover:bg-rose-50 rounded-xl font-bold text-xs transition-all">
                             <LogOut className="w-4 h-4" />
                             <span>Log Out</span>
@@ -454,13 +474,13 @@ export function UserDashboard() {
             <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
                 
                 {/* Top Header Bar — Ultra Clean Modern Layout */}
-                <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-20 shadow-2xs min-h-[76px]">
-                    <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                <header className="bg-white border-b border-slate-200/80 px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2 sticky top-0 z-20 shadow-2xs overflow-hidden">
+                    <div className="flex items-center gap-2 min-w-0">
                         <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
                             <LayoutGrid className="w-6 h-6" />
                         </button>
                         <a href="/" className="lg:hidden flex items-center shrink-0">
-                            <img src="/logo.png" alt="VisaFormula Logo" className="h-12 sm:h-14 md:h-16 w-auto max-h-[56px] object-contain" />
+                            <img src="/logo.png" alt="VisaFormula Logo" className="h-11 sm:h-12 w-auto max-h-[46px] object-contain animate-premium-fade" />
                         </a>
                         {/* Sleek Workspace Indicator Icon Badge — Larger & Prominent */}
                         <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
@@ -471,15 +491,15 @@ export function UserDashboard() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
                         {/* Time Period Filter Pill (Flup Reference) */}
                         <div className="relative">
                             <button 
                                 onClick={() => setTimePeriodOpen(!timePeriodOpen)}
-                                className="flex items-center gap-1.5 sm:gap-2 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-slate-700 transition-all shadow-2xs"
+                                className="flex items-center gap-1 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-2 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold text-slate-700 transition-all shadow-2xs"
                             >
-                                <span className="truncate max-w-[120px] sm:max-w-none">📅 <strong className="text-slate-900">{timePeriod}</strong></span>
-                                <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                                <span className="truncate max-w-[90px] sm:max-w-none">📅 <strong className="text-slate-900">{timePeriod}</strong></span>
+                                <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
                             </button>
 
                             {timePeriodOpen && (
@@ -518,12 +538,31 @@ export function UserDashboard() {
                 </header>
 
                 {/* Dashboard Page Content */}
-                <div className="p-4 sm:p-6 lg:p-8 space-y-6 bg-[#f8f9fc] flex-1">
+                <div className="p-3 sm:p-5 lg:p-8 space-y-4 sm:space-y-6 bg-[#f8f9fc] flex-1 overflow-x-hidden">
 
                     {activeTab === "dashboard" ? (
                         <>
+                            {isProfileIncomplete && (
+                                <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs animate-premium-fade w-full">
+                                    <div className="flex items-start gap-3">
+                                        <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 shrink-0">
+                                            ⚠️
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-extrabold text-amber-900 leading-tight">Complete your profile details</h4>
+                                            <p className="text-xs font-semibold text-amber-700 mt-0.5">Please add your phone number, citizenship country, and resident country to use all platform features.</p>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        onClick={() => setShowProfileModal(true)}
+                                        className="bg-amber-800 hover:bg-amber-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs self-start sm:self-auto shrink-0"
+                                    >
+                                        Complete Profile
+                                    </button>
+                                </div>
+                            )}
                             {/* Top 4 Summary Metric Cards (Flup Reference Header Cards — Mobile 2-Column Grid) */}
-                            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+                            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-4 w-full">
                                 
                                 {/* Card 1: Applications */}
                                 <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">

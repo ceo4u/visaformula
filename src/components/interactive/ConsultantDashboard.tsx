@@ -103,13 +103,13 @@ export function ConsultantDashboard() {
 
     // Profile Settings States
     const [profile, setProfile] = useState({
-        name: "Immigration Expert",
-        role: "Registered Consultant",
-        city: "Delhi, India",
-        experience: 8,
-        bio: "Licensed Immigration Consultant providing verified guidance for Student, Work, and PR visas.",
-        specializations: "Canada PR, USA H-1B, UK Student Visa",
-        countries: "Canada, USA, UK, Australia, Germany",
+        name: "",
+        role: "",
+        city: "",
+        experience: 0,
+        bio: "",
+        specializations: "",
+        countries: "",
         image: ""
     });
 
@@ -161,10 +161,10 @@ export function ConsultantDashboard() {
             const lastName = localStorage.getItem("expert_lastName") || "";
             const storedName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "";
             const bizName = localStorage.getItem("expert_businessName") || "";
-            const finalName = storedName || bizName || "Immigration Expert";
-            const role = localStorage.getItem("expert_advisorType") || "Registered Consultant";
-            const city = localStorage.getItem("expert_officeAddress") || "Delhi, India";
-            const bio = localStorage.getItem("expert_aboutMe") || "Licensed Immigration Consultant providing verified guidance for Student, Work, and PR visas.";
+            const finalName = storedName || bizName || "";
+            const role = localStorage.getItem("expert_advisorType") || "";
+            const city = localStorage.getItem("expert_officeAddress") || "";
+            const bio = localStorage.getItem("expert_aboutMe") || "";
             const image = localStorage.getItem("expert_profilePhoto") || "";
             
             const loadedSpecs = (() => {
@@ -176,10 +176,10 @@ export function ConsultantDashboard() {
                     }
                 } catch(e) {}
                 return "";
-            })() || "Canada PR, USA H-1B, UK Student Visa";
+            })() || "";
 
-            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Canada, USA, UK, Australia";
-            const expYears = Number(localStorage.getItem("expert_yearsExperience")) || 8;
+            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "";
+            const expYears = Number(localStorage.getItem("expert_yearsExperience")) || 0;
 
             // Load saved availability slots if any
             try {

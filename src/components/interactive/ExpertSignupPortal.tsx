@@ -336,6 +336,65 @@ function ExpertSignupPortalContent() {
   const [escrowAccepted, setEscrowAccepted] = useState(true);
   const [subscribeUpdates, setSubscribeUpdates] = useState("Yes");
 
+  // --- Auto-Save Registration Draft in LocalStorage ---
+  const [draftRestored, setDraftRestored] = useState(false);
+
+  useEffect(() => {
+    try {
+      const savedDraft = localStorage.getItem("vf_expert_signup_draft");
+      const isLoggedIn = localStorage.getItem("expert_isLoggedIn");
+      if (savedDraft && isLoggedIn !== "true") {
+        const d = JSON.parse(savedDraft);
+        if (d.step && d.step <= 2) setStep(d.step);
+        if (d.firstName) setFirstName(d.firstName);
+        if (d.lastName) setLastName(d.lastName);
+        if (d.businessName) setBusinessName(d.businessName);
+        if (d.email) setEmail(d.email);
+        if (d.contactNumber) setContactNumber(d.contactNumber);
+        if (d.consultantType) setConsultantType(d.consultantType);
+        if (d.addressArea) setAddressArea(d.addressArea);
+        if (d.addressCity) setAddressCity(d.addressCity);
+        if (d.addressState) setAddressState(d.addressState);
+        if (d.addressCountry) setAddressCountry(d.addressCountry);
+        if (d.addressZip) setAddressZip(d.addressZip);
+        if (d.govRegNumber) setGovRegNumber(d.govRegNumber);
+        if (Array.isArray(d.expertiseTags) && d.expertiseTags.length > 0) setExpertiseTags(d.expertiseTags);
+        if (d.countriesExpertise) setCountriesExpertise(d.countriesExpertise);
+        setDraftRestored(true);
+      }
+    } catch (e) {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (step < 3) {
+        const draftObj = {
+          step,
+          firstName,
+          lastName,
+          businessName,
+          email,
+          contactNumber,
+          consultantType,
+          addressArea,
+          addressCity,
+          addressState,
+          addressCountry,
+          addressZip,
+          govRegNumber,
+          expertiseTags,
+          countriesExpertise,
+        };
+        localStorage.setItem("vf_expert_signup_draft", JSON.stringify(draftObj));
+      }
+    } catch (e) {}
+  }, [step, firstName, lastName, businessName, email, contactNumber, consultantType, addressArea, addressCity, addressState, addressCountry, addressZip, govRegNumber, expertiseTags, countriesExpertise]);
+
+  const clearDraft = () => {
+    localStorage.removeItem("vf_expert_signup_draft");
+    setDraftRestored(false);
+  };
+
 
   // --- Tag Helpers ---
   const addTag = () => {
@@ -659,6 +718,17 @@ function ExpertSignupPortalContent() {
         }
       `}} />
       
+      {draftRestored && step < 3 && (
+        <div className="w-full max-w-3xl mb-2 bg-[#00a896] text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-lg border border-teal-400 flex items-center justify-between backdrop-blur-md animate-fade-in">
+          <div className="flex items-center gap-2">
+            <span>✨ Restored your registration progress! You can continue right where you left off.</span>
+          </div>
+          <button onClick={clearDraft} className="text-white/80 hover:text-white underline font-semibold text-[11px] cursor-pointer">
+            Start Fresh
+          </button>
+        </div>
+      )}
+
       {step < 3 && (
         <div className="w-full max-w-3xl flex items-center justify-between mb-2 px-1 shrink-0 gap-2">
           <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 px-3 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-sm shrink-0">
@@ -1035,67 +1105,67 @@ function ExpertSignupPortalContent() {
                 </div>
 
                 {/* 1. Office / Practice Location Address */}
-                <div className="bg-white border border-slate-150 rounded-xl p-6 shadow-sm space-y-3">
-                  <label className="text-sm font-bold text-slate-800 block uppercase tracking-wider">Office / Practice Location Address *</label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
+                  <label className="text-xs sm:text-sm font-extrabold text-slate-900 block uppercase tracking-wider">Office / Practice Location Address *</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Area */}
-                    <div className="col-span-2">
-                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">Area / Locality / Street Address *</label>
+                    <div className="col-span-1 sm:col-span-2">
+                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">Area / Locality / Street Address *</label>
                       <input 
                         type="text"
                         required
                         value={addressArea} 
                         onChange={(e) => updateFullAddress(e.target.value, addressCity, addressState, addressCountry, addressZip)} 
                         placeholder="e.g. Suite 402, MG Road, Landmark Building" 
-                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
                       />
                     </div>
                     {/* City or District or Town */}
                     <div className="col-span-1">
-                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">City / District / Town *</label>
+                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">City / District / Town *</label>
                       <input 
                         type="text"
                         required
                         value={addressCity} 
                         onChange={(e) => updateFullAddress(addressArea, e.target.value, addressState, addressCountry, addressZip)} 
                         placeholder="e.g. Mumbai / New Delhi" 
-                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
                       />
                     </div>
                     {/* State */}
                     <div className="col-span-1">
-                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">State / Province *</label>
+                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">State / Province *</label>
                       <input 
                         type="text"
                         required
                         value={addressState} 
                         onChange={(e) => updateFullAddress(addressArea, addressCity, e.target.value, addressCountry, addressZip)} 
                         placeholder="e.g. Maharashtra" 
-                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
                       />
                     </div>
                     {/* Country */}
                     <div className="col-span-1">
-                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">Country *</label>
+                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">Country *</label>
                       <input 
                         type="text"
                         required
                         value={addressCountry} 
                         onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, e.target.value, addressZip)} 
                         placeholder="e.g. India" 
-                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
                       />
                     </div>
                     {/* Zip code */}
                     <div className="col-span-1">
-                      <label className="text-[11px] font-bold text-slate-600 mb-1 block">ZIP / Postal Code *</label>
+                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">ZIP / Postal Code *</label>
                       <input 
                         type="text"
                         required
                         value={addressZip} 
                         onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, addressCountry, e.target.value)} 
                         placeholder="e.g. 400001" 
-                        className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm outline-none focus:border-black text-black placeholder:text-slate-400 shadow-sm"
+                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
                       />
                     </div>
                   </div>
@@ -1241,14 +1311,45 @@ function ExpertSignupPortalContent() {
                       </div>
                     )}
 
-                    <div className="col-span-2 md:col-span-1">
-                      <input 
-                        value={countriesExpertise}
-                        onChange={(e) => setCountriesExpertise(e.target.value)}
-                        placeholder="Countries of Expertise (e.g. Canada, UK)" 
-                        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                      />
+                    <div className="col-span-2 space-y-4">
+                      {/* Countries of Expertise Dropdown & Input */}
+                      <div>
+                        <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block mb-1.5">Countries of Expertise *</label>
+                        <select
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val) {
+                              const currentList = countriesExpertise ? countriesExpertise.split(",").map(c => c.trim()).filter(Boolean) : [];
+                              if (!currentList.includes(val)) {
+                                const newList = [...currentList, val];
+                                setCountriesExpertise(newList.join(", "));
+                              }
+                            }
+                            e.target.value = "";
+                          }}
+                          className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 outline-none focus:border-black shadow-2xs cursor-pointer mb-2"
+                        >
+                          <option value="">+ Select Country from Dropdown</option>
+                          <option value="Canada">Canada</option>
+                          <option value="United Kingdom">United Kingdom</option>
+                          <option value="United States">United States</option>
+                          <option value="Australia">Australia</option>
+                          <option value="Germany">Germany</option>
+                          <option value="New Zealand">New Zealand</option>
+                          <option value="UAE / Dubai">UAE / Dubai</option>
+                          <option value="Schengen Countries">Schengen Countries</option>
+                          <option value="Singapore">Singapore</option>
+                          <option value="Ireland">Ireland</option>
+                          <option value="Worldwide">Worldwide / All Countries</option>
+                        </select>
+
+                        <input 
+                          value={countriesExpertise}
+                          onChange={(e) => setCountriesExpertise(e.target.value)}
+                          placeholder="Selected Countries (e.g. Canada, UK, USA)" 
+                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm font-medium text-slate-900 outline-none focus:border-black shadow-2xs"
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -2054,10 +2155,10 @@ function ExpertSignupPortalContent() {
 
                   <div className="space-y-3 col-span-1 md:col-span-2 pt-2 border-t border-slate-100">
                     <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">Practice / Office Location Address</label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {/* Area */}
-                      <div className="col-span-2">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">Area / Locality / Street Address</label>
+                      <div className="col-span-1 sm:col-span-2">
+                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">Area / Locality / Street Address</label>
                         <input 
                           type="text"
                           value={addressArea} 
@@ -2068,7 +2169,7 @@ function ExpertSignupPortalContent() {
                       </div>
                       {/* City or District or Town */}
                       <div className="col-span-1">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">City / District / Town</label>
+                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">City / District / Town</label>
                         <input 
                           type="text"
                           value={addressCity} 
@@ -2079,7 +2180,7 @@ function ExpertSignupPortalContent() {
                       </div>
                       {/* State */}
                       <div className="col-span-1">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">State / Province</label>
+                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">State / Province</label>
                         <input 
                           type="text"
                           value={addressState} 
@@ -2090,7 +2191,7 @@ function ExpertSignupPortalContent() {
                       </div>
                       {/* Country */}
                       <div className="col-span-1">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">Country</label>
+                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">Country</label>
                         <input 
                           type="text"
                           value={addressCountry} 
@@ -2101,7 +2202,7 @@ function ExpertSignupPortalContent() {
                       </div>
                       {/* ZIP Code */}
                       <div className="col-span-1">
-                        <label className="text-[11px] font-bold text-slate-600 mb-1 block">ZIP / Postal Code</label>
+                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">ZIP / Postal Code</label>
                         <input 
                           type="text"
                           value={addressZip} 
@@ -2180,55 +2281,55 @@ function ExpertSignupPortalContent() {
                       </div>
                       <div className="space-y-3 md:col-span-2 pt-2 border-t border-slate-100">
                         <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">Office / Practice Address Details</label>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <div className="col-span-2">
-                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">Area / Locality / Street Address</label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="col-span-1 sm:col-span-2">
+                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Area / Locality / Street Address</label>
                             <input 
                               type="text"
                               value={addressArea}
                               onChange={(e) => updateFullAddress(e.target.value, addressCity, addressState, addressCountry, addressZip)}
                               placeholder="e.g. Suite 402, MG Road, Landmark Building"
-                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
                             />
                           </div>
                           <div className="col-span-1">
-                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">City / District / Town</label>
+                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">City / District / Town</label>
                             <input 
                               type="text"
                               value={addressCity}
                               onChange={(e) => updateFullAddress(addressArea, e.target.value, addressState, addressCountry, addressZip)}
                               placeholder="e.g. Mumbai / New Delhi"
-                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
                             />
                           </div>
                           <div className="col-span-1">
-                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">State / Province</label>
+                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">State / Province</label>
                             <input 
                               type="text"
                               value={addressState}
                               onChange={(e) => updateFullAddress(addressArea, addressCity, e.target.value, addressCountry, addressZip)}
                               placeholder="e.g. Maharashtra"
-                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
                             />
                           </div>
                           <div className="col-span-1">
-                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">Country</label>
+                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Country</label>
                             <input 
                               type="text"
                               value={addressCountry}
                               onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, e.target.value, addressZip)}
                               placeholder="e.g. India"
-                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
                             />
                           </div>
                           <div className="col-span-1">
-                            <label className="text-[11px] font-bold text-slate-600 mb-1 block">ZIP / Postal Code</label>
+                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">ZIP / Postal Code</label>
                             <input 
                               type="text"
                               value={addressZip}
                               onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, addressCountry, e.target.value)}
                               placeholder="e.g. 400001"
-                              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-black"
+                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
                             />
                           </div>
                         </div>

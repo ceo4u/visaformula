@@ -67,11 +67,13 @@ export function MobileHomeSection() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedPurpose, setSelectedPurpose] = useState('');
+  const [selectedVisaType, setSelectedVisaType] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const terms = [searchQuery, selectedCountry, selectedCategory].filter(Boolean);
+    const terms = [selectedCountry, selectedPurpose, selectedVisaType, selectedCity].filter(Boolean);
     const query = terms.join(' ');
     window.location.href = `/find-experts?q=${encodeURIComponent(query)}`;
   };
@@ -130,73 +132,94 @@ export function MobileHomeSection() {
           </div>
         </div>
 
-        {/* ── Mobile Interactive Search Card ── */}
-        <div className="mx-3 mt-3 bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
-          <div className="flex items-center gap-2 mb-3">
+        {/* ── Mobile Interactive Structured Search Card ── */}
+        <div className="mx-3 mt-3 bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+          <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-teal-50 flex items-center justify-center text-[#00a896] shrink-0">
               <Search className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-extrabold text-[#0c1a2e] leading-tight">Find Consultants & Services</h2>
-              <p className="text-[11px] text-gray-500 font-semibold">Search by name, country, or visa type</p>
+              <h2 className="text-sm font-extrabold text-[#0c1a2e] leading-tight">Find Visa Information &amp; Consultants</h2>
+              <p className="text-[11px] text-gray-500 font-semibold">Select your destination, purpose &amp; location</p>
             </div>
           </div>
 
           <form onSubmit={handleSearchSubmit} className="space-y-2.5">
-            {/* Text Search Input */}
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search consultants, visas, services..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-xs font-semibold text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
-              />
+            {/* 1. Country */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">I want to go to</label>
+              <select
+                value={selectedCountry}
+                onChange={(e) => setSelectedCountry(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="">Select Country</option>
+                <option value="Canada">Canada</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="United States">United States</option>
+                <option value="Australia">Australia</option>
+                <option value="Germany">Germany</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="UAE">UAE</option>
+              </select>
             </div>
 
-            {/* Quick Filters */}
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Destination</label>
-                <select
-                  value={selectedCountry}
-                  onChange={(e) => setSelectedCountry(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896]"
-                >
-                  <option value="">All Countries</option>
-                  <option value="Canada">Canada</option>
-                  <option value="UK">United Kingdom</option>
-                  <option value="USA">USA</option>
-                  <option value="Australia">Australia</option>
-                  <option value="Germany">Germany</option>
-                  <option value="UAE">UAE</option>
-                  <option value="New Zealand">New Zealand</option>
-                </select>
-              </div>
+            {/* 2. Purpose */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">I am going for</label>
+              <select
+                value={selectedPurpose}
+                onChange={(e) => setSelectedPurpose(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="">Select Purpose</option>
+                <option value="Higher Education / Study">Higher Education / Study</option>
+                <option value="Employment / Work">Employment / Work</option>
+                <option value="Tourism / Visit">Tourism / Visit</option>
+                <option value="Permanent Residency">Permanent Residency</option>
+                <option value="Business / Investment">Business / Investment</option>
+              </select>
+            </div>
 
-              <div>
-                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Category</label>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-gray-800 outline-none focus:border-[#00a896]"
-                >
-                  <option value="">All Categories</option>
-                  <option value="Student Visa">Student Visa</option>
-                  <option value="Work & Job">Work & Job Visa</option>
-                  <option value="PR & Migration">PR & Migration</option>
-                  <option value="Migration Agent">Lawyer & Agent</option>
-                </select>
-              </div>
+            {/* 3. Visa Type */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Visa Type</label>
+              <select
+                value={selectedVisaType}
+                onChange={(e) => setSelectedVisaType(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="">Select Visa Type</option>
+                <option value="Student Visa">Student Visa</option>
+                <option value="Work Permit">Work Permit</option>
+                <option value="Tourist / Visitor Visa">Tourist / Visitor Visa</option>
+                <option value="PR / Express Entry">PR / Express Entry</option>
+              </select>
+            </div>
+
+            {/* 4. Location */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">My Location</label>
+              <select
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="">Select City</option>
+                <option value="Mumbai, India">Mumbai, India</option>
+                <option value="Delhi, India">Delhi, India</option>
+                <option value="Bangalore, India">Bangalore, India</option>
+                <option value="Hyderabad, India">Hyderabad, India</option>
+                <option value="Punjab, India">Punjab, India</option>
+              </select>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-[#00a896] hover:bg-[#009485] text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99] cursor-pointer mt-1"
+              className="w-full bg-[#00a896] hover:bg-[#009485] text-white text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99] cursor-pointer mt-2"
             >
-              <Search className="w-3.5 h-3.5" />
+              <Search className="w-4 h-4" />
               <span>Search Consultants</span>
             </button>
           </form>

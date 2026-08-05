@@ -4,6 +4,8 @@ import {
   Search, ShieldCheck, FileText, Users, CheckCircle2,
   Clock, ChevronRight, Globe, Download, ChevronDown
 } from 'lucide-react';
+import { trackAdClick } from '../../utils/trackAdClick';
+import { AdClickAnalyticsViewer } from '../analytics/AdClickAnalyticsViewer';
 
 interface CustomSelectProps {
   label: string;
@@ -389,6 +391,13 @@ export function DesktopHomeSection() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {classifieds.map((item, idx) => (
               <a key={idx} href="/classifieds"
+                onClick={() => trackAdClick({
+                  adId: `classified_desk_${idx}_${item.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+                  adTitle: item.title,
+                  adType: 'classified',
+                  category: item.badge,
+                  targetUrl: '/classifieds'
+                })}
                 className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all group flex flex-col">
                 <div className="relative h-36 overflow-hidden bg-gray-100 shrink-0">
                   <img src={item.img} alt={item.title}
@@ -502,6 +511,7 @@ export function DesktopHomeSection() {
         </div>
 
       </div>
+      <AdClickAnalyticsViewer />
     </div>
   );
 }

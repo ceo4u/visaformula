@@ -5,6 +5,7 @@ import {
   MessageSquare, User, ShieldCheck, FileText, DollarSign,
   Activity, MapPin
 } from 'lucide-react';
+import { trackAdClick } from '../../utils/trackAdClick';
 
 const destinations = [
   { flag: 'ca', name: 'Canada', href: '/visa-guide/canada' },
@@ -221,6 +222,14 @@ export function MobileHomeSection() {
               Dreaming of<br />Studying in Canada?
             </h3>
             <a href="/visa-guide/canada"
+              onClick={() => trackAdClick({
+                adId: 'sponsored_banner_canada_mob',
+                adTitle: 'Dreaming of Studying in Canada?',
+                adType: 'sponsored',
+                category: 'Study Abroad',
+                destination: 'Canada',
+                targetUrl: '/visa-guide/canada'
+              })}
               className="inline-block mt-2.5 bg-white text-[#3730a3] text-[11px] font-bold px-4 py-1.5 rounded-lg shadow transition-all">
               Learn More
             </a>
@@ -291,7 +300,15 @@ export function MobileHomeSection() {
           {/* Classified List Cards */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden divide-y divide-gray-50">
             {classifieds.map((item, idx) => (
-              <a key={idx} href="/classifieds" className="flex gap-3 p-3 active:bg-gray-50 transition-colors">
+              <a key={idx} href="/classifieds"
+                onClick={() => trackAdClick({
+                  adId: `classified_mob_${idx}_${item.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+                  adTitle: item.title,
+                  adType: 'classified',
+                  category: item.badge,
+                  targetUrl: '/classifieds'
+                })}
+                className="flex gap-3 p-3 active:bg-gray-50 transition-colors">
                 {/* Thumbnail */}
                 <div className="relative w-[68px] h-[68px] rounded-xl overflow-hidden shrink-0 bg-gray-100">
                   <img src={item.img} alt={item.title}

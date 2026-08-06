@@ -26,19 +26,6 @@ function ExpertSignupPortalContent() {
   const [businessName, setBusinessName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [consultantType, setConsultantType] = useState("Freelancer");
-  
-  // Security Captcha States
-  const [captchaNum1, setCaptchaNum1] = useState(5);
-  const [captchaNum2, setCaptchaNum2] = useState(3);
-  const [captchaAnswer, setCaptchaAnswer] = useState("");
-  const [captchaVerified, setCaptchaVerified] = useState(false);
-
-  const refreshCaptcha = () => {
-    setCaptchaNum1(Math.floor(Math.random() * 9) + 1);
-    setCaptchaNum2(Math.floor(Math.random() * 9) + 1);
-    setCaptchaAnswer("");
-    setCaptchaVerified(false);
-  };
 
   // Granular Address States
   const [addressArea, setAddressArea] = useState("");
@@ -430,11 +417,6 @@ function ExpertSignupPortalContent() {
       finalBiz = `${firstName} ${lastName}`.trim() || "Freelancer";
       // We set the state so it is correctly synced
       setBusinessName(finalBiz);
-    }
-
-    if (!captchaVerified) {
-      setValidationError("Please solve the Security Captcha verification to proceed.");
-      return;
     }
 
     if (!firstName || !lastName || !finalBiz || !contactNumber || !email || !password) {
@@ -1061,49 +1043,6 @@ function ExpertSignupPortalContent() {
                         className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#00a896] focus:ring-2 focus:ring-[#00a896]/20 transition-all duration-150 shadow-2xs"
                       />
                     </div>
-                  </div>
-                </div>
-
-                {/* Security Captcha Verification Widget */}
-                <div className="bg-slate-50 border border-slate-200 p-3.5 rounded-xl space-y-2 text-left mt-4 shadow-2xs">
-                  <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                      <Shield className="w-3.5 h-3.5 text-[#00a896]" /> Security Captcha Verification *
-                    </label>
-                    <button 
-                      type="button" 
-                      onClick={refreshCaptcha} 
-                      className="text-[10px] font-bold text-[#00a896] hover:underline cursor-pointer"
-                    >
-                      🔄 Refresh Code
-                    </button>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="bg-slate-900 text-white font-mono font-bold text-sm tracking-widest px-3 py-2 rounded-lg select-none shadow-inner border border-slate-700">
-                      {captchaNum1} + {captchaNum2} = ?
-                    </div>
-                    <input
-                      type="text"
-                      required
-                      value={captchaAnswer}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setCaptchaAnswer(val);
-                        if (parseInt(val, 10) === captchaNum1 + captchaNum2) {
-                          setCaptchaVerified(true);
-                          setValidationError("");
-                        } else {
-                          setCaptchaVerified(false);
-                        }
-                      }}
-                      placeholder="Answer"
-                      className="w-24 px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-center focus:outline-none focus:ring-2 focus:ring-[#00a896] bg-white"
-                    />
-                    {captchaVerified && (
-                      <span className="text-xs font-extrabold text-emerald-600 flex items-center gap-1 bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-200">
-                        ✓ Verified
-                      </span>
-                    )}
                   </div>
                 </div>
 

@@ -373,7 +373,7 @@ export function MobileHomeSection() {
                 {/* Text */}
                 <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5 space-y-1">
                   <div className="flex items-start justify-between gap-1">
-                    <h3 className="text-[13px] font-extrabold text-gray-900 leading-snug line-clamp-2">{item.title}</h3>
+                    <h3 className="text-[13px] font-bold text-slate-800 leading-snug line-clamp-2">{item.title}</h3>
                     {item.country && (
                       <span className="shrink-0 bg-teal-50 text-[#00a896] border border-teal-200 text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">
                         [{item.country}]

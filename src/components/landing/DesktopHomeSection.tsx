@@ -425,7 +425,7 @@ export function DesktopHomeSection() {
                   <div>
                     {/* TITLE + COUNTRY OF DESTINATION */}
                     <div className="flex items-start justify-between gap-1">
-                      <h3 className="text-xs font-black text-gray-900 leading-snug line-clamp-2 group-hover:text-[#00a896] transition-colors">
+                      <h3 className="text-xs font-bold text-slate-800 leading-snug line-clamp-2 group-hover:text-[#00a896] transition-colors">
                         {item.title}
                       </h3>
                       {item.country && (

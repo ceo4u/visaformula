@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Search, ShieldCheck, FileText, Users, CheckCircle2,
-  Clock, ChevronRight, Globe, Download, ChevronDown
+  Clock, ChevronRight, Globe, Download, ChevronDown, User
 } from 'lucide-react';
 import { trackAdClick, handleAdClickWithAuth } from '../../utils/trackAdClick';
 

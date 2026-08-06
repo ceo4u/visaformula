@@ -291,12 +291,8 @@ export function ConsultantDashboard() {
             {/* Top Fixed Header Navbar */}
             <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-2xs">
                 <div className="flex items-center gap-3">
-                    <a href="/" className="flex items-center gap-2.5">
-                        <img src="/logo.png" alt="VisaFormula Logo" className="h-8 w-auto object-contain" />
-                        <div className="hidden sm:block border-l border-slate-200 pl-3">
-                            <span className="text-xs font-black tracking-tight text-slate-900 block leading-none">VisaFormula</span>
-                            <span className="text-[10px] font-bold text-slate-500 block mt-0.5">Consultant Panel</span>
-                        </div>
+                    <a href="/" className="flex items-center">
+                        <img src="/logo.png" alt="VisaFormula Logo" className="h-8 sm:h-9 max-h-[36px] w-auto object-contain" />
                     </a>
                     
                     <button 

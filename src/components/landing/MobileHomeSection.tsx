@@ -29,6 +29,9 @@ const classifieds = [
     badge: 'Jobs Abroad', badgeColor: '#00a896',
     img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=200&auto=format&fit=crop',
     title: 'Caregiver Jobs in Canada',
+    country: 'Canada',
+    category: 'Jobs Abroad',
+    postedBy: 'Apex Visa Consultancy',
     location: 'Toronto, Canada',
     time: '2 hours ago',
     price: 'FREE', priceColor: '#00a896',
@@ -37,6 +40,9 @@ const classifieds = [
     badge: 'Accommodation', badgeColor: '#059669',
     img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=200&auto=format&fit=crop',
     title: 'Shared Room Near Humber College',
+    country: 'Canada',
+    category: 'Accommodation',
+    postedBy: 'Canada Student Hub',
     location: 'Toronto, Canada',
     time: '5 hours ago',
     price: '$650 CAD / Month', priceColor: '#111827',
@@ -45,21 +51,38 @@ const classifieds = [
     badge: 'Study Abroad', badgeColor: '#0d9488',
     img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=200&auto=format&fit=crop',
     title: 'Study in Canada 2025 Intake Open',
-    location: '3 Apply Now',
-    time: '',
+    country: 'Canada',
+    category: 'Study Abroad',
+    postedBy: 'Canam Overseas Experts',
+    location: 'Canada',
+    time: 'Just Now',
     price: 'FREE', priceColor: '#00a896',
   },
   {
     badge: 'Business', badgeColor: '#0c1a2e',
     img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=200&auto=format&fit=crop',
     title: 'Visa Consultancy Business for Sale',
-    location: 'Apply @Deco',
+    country: 'UAE',
+    category: 'Business',
+    postedBy: 'Global Business Advisors',
+    location: 'Dubai, UAE',
     time: '1 day ago',
     price: '12,00,000', priceColor: '#111827',
   },
+  {
+    badge: 'Visa Appeals', badgeColor: '#7c3aed',
+    img: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=200&auto=format&fit=crop',
+    title: 'UK & Australia Refusal Visa Appeals',
+    country: 'UK / Australia',
+    category: 'Visa Appeals',
+    postedBy: 'Immigration Law Partners',
+    location: 'London / Remote',
+    time: '3 hours ago',
+    price: 'Free Consultation', priceColor: '#00a896',
+  },
 ];
 
-const classifiedTabs = ['All', 'Jobs', 'Accommodation', 'Business', 'Study Abroad'];
+const classifiedTabs = ['All', 'Jobs', 'Accommodation', 'Business', 'Study Abroad', 'Visa Appeals'];
 
 export function MobileHomeSection() {
   const [activeTab, setActiveTab] = useState('All');
@@ -348,14 +371,29 @@ export function MobileHomeSection() {
                 </div>
 
                 {/* Text */}
-                <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-                  <h3 className="text-[13px] font-extrabold text-gray-900 leading-snug line-clamp-2">{item.title}</h3>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <MapPin className="w-3 h-3 text-gray-400 shrink-0" />
-                    <span className="text-[11px] text-gray-400 truncate">{item.location}</span>
+                <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5 space-y-1">
+                  <div className="flex items-start justify-between gap-1">
+                    <h3 className="text-[13px] font-extrabold text-gray-900 leading-snug line-clamp-2">{item.title}</h3>
+                    {item.country && (
+                      <span className="shrink-0 bg-teal-50 text-[#00a896] border border-teal-200 text-[9px] font-extrabold px-1.5 py-0.5 rounded-md">
+                        [{item.country}]
+                      </span>
+                    )}
                   </div>
-                  <div className="flex items-center justify-between mt-1">
-                    <span className="text-[10px] text-gray-400">{item.time}</span>
+                  
+                  <div className="flex items-center gap-1">
+                    <span className="text-[9.5px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-md border border-slate-200/60">
+                      Category: {item.category || item.badge}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-[10.5px] text-slate-700 font-bold">
+                    <User className="w-3 h-3 text-[#00a896] shrink-0" />
+                    <span className="truncate">POSTED BY: <strong className="text-slate-900 font-black">{item.postedBy || 'Verified Expert'}</strong></span>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+                    <span className="text-[10px] text-gray-400">{item.time || 'Active Listing'}</span>
                     <span className="text-[12px] font-extrabold" style={{ color: item.priceColor }}>{item.price}</span>
                   </div>
                 </div>

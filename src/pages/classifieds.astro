@@ -1,0 +1,167 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { Tag, MapPin, User, Search, Filter, ShieldCheck, ArrowRight } from 'lucide-react';
+
+const classifieds = [
+  {
+    title: 'Caregiver Jobs in Canada',
+    country: 'Canada',
+    category: 'Jobs Abroad',
+    postedBy: 'Apex Visa Consultancy',
+    location: 'Toronto, Canada',
+    time: '2 hours ago',
+    price: 'FREE',
+    img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
+    description: 'Direct hiring assistance for experienced caregivers & nurses looking for work permits in Canada.'
+  },
+  {
+    title: 'Shared Room Near Humber College',
+    country: 'Canada',
+    category: 'Accommodation',
+    postedBy: 'Canada Student Hub',
+    location: 'Toronto, Canada',
+    time: '5 hours ago',
+    price: '$650 CAD / Month',
+    img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
+    description: 'Fully furnished student accommodation available near Humber College campus with all utilities included.'
+  },
+  {
+    title: 'Study in Canada 2025 Intake Open',
+    country: 'Canada',
+    category: 'Study Abroad',
+    postedBy: 'Canam Overseas Experts',
+    location: 'Canada',
+    time: 'Just Now',
+    price: 'FREE',
+    img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800&auto=format&fit=crop',
+    description: 'Fast-track application processing for May & Sept 2025 intake in top Canadian DLIs.'
+  },
+  {
+    title: 'Visa Consultancy Business for Sale',
+    country: 'UAE',
+    category: 'Business',
+    postedBy: 'Global Business Advisors',
+    location: 'Dubai, UAE',
+    time: '1 day ago',
+    price: '12,00,000',
+    img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
+    description: 'Established immigration consultancy business for sale with active client lead database.'
+  },
+  {
+    title: 'UK & Australia Refusal Visa Appeals',
+    country: 'UK / Australia',
+    category: 'Visa Appeals',
+    postedBy: 'Immigration Law Partners',
+    location: 'London / Remote',
+    time: '3 hours ago',
+    price: 'Free Consultation',
+    img: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=800&auto=format&fit=crop',
+    description: 'Expert legal support for challenging UK Section 214/221 and Australian visa refusal decisions.'
+  },
+  {
+    title: 'Digital Nomad Visa Assistance',
+    country: 'Spain / Portugal',
+    category: 'Digital Nomad',
+    postedBy: 'Remote Life Mobility',
+    location: 'Europe',
+    time: '4 hours ago',
+    price: 'EUR 499',
+    img: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop',
+    description: 'Complete documentation & tax setup for Spanish & Portuguese Digital Nomad residency visas.'
+  }
+];
+---
+
+<Layout title="Featured Classifieds & Offers | VisaFormula">
+  <Header />
+
+  <main class="bg-[#f8fafc] min-h-screen py-10 font-plus-jakarta">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      {/* Header Banner */}
+      <div class="bg-gradient-to-r from-[#0c1a2e] to-[#1e293b] rounded-3xl p-8 md:p-10 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="space-y-3 max-w-2xl">
+          <div class="inline-flex items-center gap-2 bg-[#00a896]/20 border border-[#00a896]/40 px-3.5 py-1 rounded-full text-xs font-bold text-[#00a896]">
+            <ShieldCheck class="w-4 h-4" /> Verified Offers & Services
+          </div>
+          <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">
+            Featured Classifieds &amp; Direct Offers
+          </h1>
+          <p class="text-slate-300 text-sm md:text-base font-medium">
+            Explore active visa opportunities, job postings, student accommodation, and business sales posted directly by verified immigration experts.
+          </p>
+        </div>
+        <a href="/signup/expert" class="bg-[#00a896] hover:bg-[#008f80] text-white px-6 py-3.5 rounded-2xl text-xs font-black shadow-lg hover:shadow-xl transition-all shrink-0 flex items-center gap-2">
+          Post Your Classified Ad &rarr;
+        </a>
+      </div>
+
+      {/* Classifieds Wireframe Grid */}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {classifieds.map(item => (
+          <div class="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col justify-between">
+            <div>
+              {/* Image & Badge */}
+              <div class="relative h-48 overflow-hidden bg-slate-100">
+                <img src={item.img} alt={item.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <span class="absolute top-3 left-3 bg-[#0c1a2e] text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-wider">
+                  {item.category}
+                </span>
+                {item.country && (
+                  <span class="absolute top-3 right-3 bg-white/95 text-[#00a896] text-[11px] font-black px-2.5 py-1 rounded-lg shadow-md border border-teal-200">
+                    [{item.country}]
+                  </span>
+                )}
+              </div>
+
+              {/* Card Details (User Spec Wireframe Box) */}
+              <div class="p-6 space-y-3">
+                <h2 class="text-lg font-black text-slate-900 group-hover:text-[#00a896] transition-colors leading-snug">
+                  {item.title}
+                </h2>
+
+                <p class="text-xs text-slate-500 font-medium line-clamp-2 leading-relaxed">
+                  {item.description}
+                </p>
+
+                {/* Wireframe Metadata */}
+                <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-150 space-y-2 text-xs">
+                  <div class="flex items-center justify-between font-bold text-slate-700">
+                    <span class="text-slate-400 uppercase text-[10px] tracking-wider font-extrabold">DESTINATION:</span>
+                    <span class="text-[#00a896] font-black">{item.country}</span>
+                  </div>
+
+                  <div class="flex items-center justify-between font-bold text-slate-700">
+                    <span class="text-slate-400 uppercase text-[10px] tracking-wider font-extrabold">CATEGORY:</span>
+                    <span class="text-slate-900 font-extrabold">{item.category}</span>
+                  </div>
+
+                  <div class="flex items-center justify-between font-bold text-slate-700 border-t border-slate-200/60 pt-2">
+                    <span class="text-slate-400 uppercase text-[10px] tracking-wider font-extrabold">POSTED BY:</span>
+                    <span class="text-slate-900 font-black flex items-center gap-1">
+                      <User class="w-3 h-3 text-[#00a896]" />
+                      {item.postedBy}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Action */}
+            <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-100 mt-2">
+              <span class="text-xs font-bold text-slate-400">{item.time}</span>
+              <a href="/support" class="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1 shadow-sm transition-all">
+                Contact Expert &rarr;
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

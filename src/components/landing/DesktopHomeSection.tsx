@@ -82,7 +82,7 @@ export function DesktopHomeSection() {
     window.location.href = `/find-experts?q=${encodeURIComponent(query)}`;
   };
 
-  const classifiedTabs = ['All', 'Jobs', 'Accommodation', 'Business', 'Study Abroad'];
+  const classifiedTabs = ['All', 'Jobs', 'Accommodation', 'Business', 'Study Abroad', 'Visa Appeals'];
 
   const classifieds = [
     {
@@ -90,6 +90,9 @@ export function DesktopHomeSection() {
       badgeBg: 'bg-[#00a896]',
       img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
       title: 'Caregiver Jobs in Canada',
+      country: 'Canada',
+      category: 'Jobs Abroad',
+      postedBy: 'Apex Visa Consultancy',
       location: 'Toronto, Canada',
       time: '2 hours ago',
       price: 'FREE',
@@ -100,6 +103,9 @@ export function DesktopHomeSection() {
       badgeBg: 'bg-[#059669]',
       img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
       title: 'Shared Room Near Humber College',
+      country: 'Canada',
+      category: 'Accommodation',
+      postedBy: 'Canada Student Hub',
       location: 'Toronto, Canada',
       time: '5 hours ago',
       price: '$650 CAD / Month',
@@ -110,30 +116,39 @@ export function DesktopHomeSection() {
       badgeBg: 'bg-[#0d9488]',
       img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800&auto=format&fit=crop',
       title: 'Study in Canada 2025 Intake Open',
-      location: '3 Apply Now',
+      country: 'Canada',
+      category: 'Study Abroad',
+      postedBy: 'Canam Overseas Experts',
+      location: 'Canada',
       applyLink: 'Apply Now',
-      time: '',
+      time: 'Just Now',
       price: 'FREE',
       priceColor: 'text-[#00a896]',
     },
     {
-      badge: 'Business Opportunity',
+      badge: 'Business',
       badgeBg: 'bg-[#0c1a2e]',
       img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
       title: 'Visa Consultancy Business for Sale',
-      location: 'Apply @Deco',
+      country: 'UAE',
+      category: 'Business',
+      postedBy: 'Global Business Advisors',
+      location: 'Dubai, UAE',
       time: '1 day ago',
       price: '12,00,000',
       priceColor: 'text-gray-900',
     },
     {
-      badge: 'Jobs Abroad',
-      badgeBg: 'bg-[#00a896]',
-      img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop',
-      title: 'Hotel Front Desk Staff in UK',
-      location: 'London, UK',
-      time: '2 days ago',
-      price: 'FREE',
+      badge: 'Visa Appeals',
+      badgeBg: 'bg-[#7c3aed]',
+      img: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=800&auto=format&fit=crop',
+      title: 'UK & Australia Refusal Visa Appeals',
+      country: 'UK / Australia',
+      category: 'Visa Appeals',
+      postedBy: 'Immigration Law Partners',
+      location: 'London / Remote',
+      time: '3 hours ago',
+      price: 'Consultation Free',
       priceColor: 'text-[#00a896]',
     },
   ];
@@ -406,21 +421,37 @@ export function DesktopHomeSection() {
                     {item.badge}
                   </span>
                 </div>
-                <div className="p-3 space-y-0.5 flex-1 flex flex-col justify-between">
+                <div className="p-3.5 space-y-1.5 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-[11px] font-extrabold text-gray-900 leading-snug line-clamp-2 group-hover:text-[#00a896] transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-[10px] text-gray-400 font-medium mt-0.5">{item.location}</p>
+                    {/* TITLE + COUNTRY OF DESTINATION */}
+                    <div className="flex items-start justify-between gap-1">
+                      <h3 className="text-xs font-black text-gray-900 leading-snug line-clamp-2 group-hover:text-[#00a896] transition-colors">
+                        {item.title}
+                      </h3>
+                      {item.country && (
+                        <span className="shrink-0 bg-teal-50 border border-teal-200 text-[#00a896] text-[9.5px] font-extrabold px-1.5 py-0.5 rounded-md">
+                          [{item.country}]
+                        </span>
+                      )}
+                    </div>
+
+                    {/* CATEGORY */}
+                    <div className="mt-1.5 flex items-center gap-1.5">
+                      <span className="text-[9.5px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/60">
+                        Category: {item.category || item.badge}
+                      </span>
+                    </div>
+
+                    {/* POSTED BY: EXPERT NAME */}
+                    <div className="mt-2 flex items-center gap-1 text-[10.5px] font-bold text-slate-700">
+                      <User className="w-3 h-3 text-[#00a896] shrink-0" />
+                      <span className="truncate">POSTED BY: <strong className="text-slate-900 font-black">{item.postedBy || 'Verified Expert'}</strong></span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between border-t border-gray-50 pt-1.5 mt-1.5">
-                    {item.time
-                      ? <span className="text-[9.5px] text-gray-400">{item.time}</span>
-                      : item.applyLink
-                        ? <span className="text-[9.5px] font-bold text-[#00a896]">{item.applyLink}</span>
-                        : <span />
-                    }
-                    <span className={`text-[10.5px] font-black ${item.priceColor}`}>{item.price}</span>
+
+                  <div className="flex items-center justify-between border-t border-gray-100 pt-2 mt-2">
+                    <span className="text-[10px] text-gray-400 font-medium">{item.time || 'Active Listing'}</span>
+                    <span className="text-xs font-black text-[#00a896]">{item.price}</span>
                   </div>
                 </div>
               </a>

@@ -18,20 +18,16 @@ export function SignupFlowPortal() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#f4f6f9] font-sora flex flex-col items-center justify-center p-4 sm:p-6 relative selection:bg-[#00a896] selection:text-white">
-            
-            {/* Background Frosted Glass Layer */}
-            <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-md z-0 pointer-events-none" />
-
-            <div className="relative z-10 w-full flex flex-col items-center justify-center min-h-[90vh]">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sora overflow-y-auto no-scrollbar selection:bg-[#00a896] selection:text-white">
+            <div className="relative z-10 w-full max-w-2xl flex flex-col items-center justify-center my-auto py-4">
                 
                 {/* Top Navigation Header */}
-                <div className="w-full max-w-2xl flex items-center justify-between mb-4 px-1 shrink-0 gap-2">
-                    <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors bg-white/90 hover:bg-white px-3.5 py-1.5 rounded-full border border-slate-200 shadow-sm shrink-0">
+                <div className="w-full max-w-2xl flex items-center justify-between mb-3 px-1 shrink-0 gap-2">
+                    <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 px-3 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-sm shrink-0">
                         <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
                     </a>
                     <a href="/" className="shrink-0">
-                        <img src="/logo.png" alt="VisaFormula" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
+                        <img src="/logo-white.png" alt="VisaFormula" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
                     </a>
                 </div>
 
@@ -137,7 +133,7 @@ export function SignupFlowPortal() {
                     <div className="w-full flex flex-col items-center">
                         <button 
                             onClick={() => setMode("selection")} 
-                            className="mb-3 text-xs font-bold text-slate-700 hover:text-slate-900 flex items-center gap-1.5 bg-white/90 hover:bg-white px-3.5 py-1.5 rounded-full backdrop-blur-md cursor-pointer border border-slate-200 shadow-sm"
+                            className="mb-3 text-xs font-bold text-white/90 hover:text-white flex items-center gap-1.5 bg-white/15 hover:bg-white/25 px-3.5 py-1.5 rounded-full backdrop-blur-md cursor-pointer border border-white/25 shadow-sm"
                         >
                             &larr; Change Account Role
                         </button>

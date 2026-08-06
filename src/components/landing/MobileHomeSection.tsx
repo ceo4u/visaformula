@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   Search, Home as HomeIcon, ChevronRight, Plus,
   MessageSquare, User, ShieldCheck, FileText, DollarSign,
-  Activity, MapPin, Globe
+  Activity, MapPin, Globe, ChevronDown
 } from 'lucide-react';
 import { trackAdClick, handleAdClickWithAuth } from '../../utils/trackAdClick';
 

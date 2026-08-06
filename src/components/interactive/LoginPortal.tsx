@@ -96,7 +96,7 @@ function LoginPortalContent() {
                 
                 {/* Logo Centered */}
                 <div className="flex justify-center pt-1">
-                    <img src="/logo.png" alt="VisaFormula" className="h-14 sm:h-20 w-auto object-contain" />
+                    <img src="/logo.png" alt="VisaFormula" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
                 </div>
 
                 {/* Title */}

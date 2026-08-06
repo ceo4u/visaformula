@@ -80,7 +80,7 @@ export function MobileHomeSection() {
 
   return (
     <div
-      className="lg:hidden flex flex-col bg-[#f3f4f6] min-h-screen"
+      className="lg:hidden flex flex-col bg-[#f3f4f6] min-h-screen w-full max-w-full overflow-x-hidden box-border"
       style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", paddingBottom: '80px' }}
     >
       <style dangerouslySetInnerHTML={{ __html: `
@@ -90,137 +90,159 @@ export function MobileHomeSection() {
       `}} />
 
       {/* ── Scrollable Content ── */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto w-full max-w-full">
 
-        {/* ── 1. Hero Card ── */}
-        <div className="mx-3 mt-3 bg-white rounded-2xl shadow-sm overflow-hidden">
-          <div className="relative flex items-stretch min-h-[200px]">
+        {/* ── 1. Fluid Responsive Hero Card (Android Edge-Safe) ── */}
+        <div className="mx-3 mt-3 bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100 max-w-[calc(100vw-24px)]">
+          <div className="relative flex flex-col sm:flex-row items-stretch min-h-[190px]">
             {/* Left: text */}
-            <div className="flex-1 p-4 pr-2 flex flex-col justify-center space-y-3 z-10">
+            <div className="flex-1 p-4 flex flex-col justify-center space-y-3 z-10">
               <div>
-                <h1 className="text-[26px] font-bold text-[#0c1a2e] leading-[1.15] tracking-tight">
-                  Your Journey<br />Abroad{' '}
-                  <span style={{ color: '#00a896' }}>Starts<br />Here</span>
+                <h1 className="text-2xl font-black text-[#0c1a2e] leading-tight tracking-tight">
+                  Your Journey Abroad <span style={{ color: '#00a896' }}>Starts Here</span>
                 </h1>
-                <p className="text-gray-500 text-[11px] leading-relaxed mt-2">
+                <p className="text-gray-500 text-xs leading-relaxed mt-1.5 font-medium">
                   Find the right visa information, trusted consultants &amp; everything you need for your journey.
                 </p>
               </div>
               {/* Buttons */}
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col sm:flex-row gap-2 pt-1">
                 <a href="/services/apply-visa"
-                  className="flex items-center justify-center gap-2 text-white text-[13px] font-bold py-2.5 px-4 rounded-xl shadow-sm"
+                  className="flex items-center justify-center gap-2 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm active:scale-95 transition-all"
                   style={{ backgroundColor: '#00a896' }}>
                   <Search className="w-4 h-4" /> Find Visa Help
                 </a>
                 <a href="/find-experts"
-                  className="flex items-center justify-center gap-2 text-gray-800 text-[13px] font-bold py-2.5 px-4 rounded-xl border border-gray-300 bg-white">
-                  <User className="w-4 h-4 text-gray-600" /> Find a Consultant
+                  className="flex items-center justify-center gap-2 text-slate-800 text-xs font-bold py-2.5 px-4 rounded-xl border border-slate-300 bg-white active:scale-95 transition-all">
+                  <User className="w-4 h-4 text-slate-600" /> Find a Consultant
                 </a>
               </div>
             </div>
 
             {/* Right: hero image */}
-            <div className="w-[45%] shrink-0 relative overflow-hidden rounded-r-2xl">
+            <div className="w-full sm:w-[40%] h-40 sm:h-auto shrink-0 relative overflow-hidden rounded-b-2xl sm:rounded-r-2xl sm:rounded-bl-none">
               <img
                 src="/hero-traveler.png"
                 alt="Woman traveler with luggage at city"
-                className="absolute inset-0 w-full h-full object-cover object-left"
+                className="w-full h-full object-cover object-center"
               />
-              <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white to-transparent" />
             </div>
           </div>
         </div>
 
-        {/* ── Mobile Interactive Structured Search Card ── */}
-        <div className="mx-3 mt-3 bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-teal-50 flex items-center justify-center text-[#00a896] shrink-0">
+        {/* ── 2. Mobile Advance Search Box (Matches Desktop Search Card) ── */}
+        <div className="mx-3 mt-3 bg-[#0B1527] rounded-2xl p-4 shadow-xl border border-slate-800 max-w-[calc(100vw-24px)] space-y-3">
+          <div className="flex items-center gap-2.5 pb-2 border-b border-slate-800">
+            <div className="w-8 h-8 rounded-xl bg-teal-500/20 flex items-center justify-center text-[#00a896] shrink-0 border border-[#00a896]/30">
               <Search className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-extrabold text-[#0c1a2e] leading-tight">Find Visa Information &amp; Consultants</h2>
-              <p className="text-[11px] text-gray-500 font-semibold">Select your destination, purpose &amp; location</p>
+              <h2 className="text-sm font-extrabold text-white leading-tight">Find Visa Experts &amp; Services</h2>
+              <p className="text-[11px] text-slate-400 font-medium">Search by keyword, country, location or category</p>
             </div>
           </div>
 
-          <form onSubmit={handleSearchSubmit} className="space-y-2.5">
-            {/* 1. Country */}
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">I want to go to</label>
-              <select
-                value={selectedCountry}
-                onChange={(e) => setSelectedCountry(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
-              >
-                <option value="">Select Country</option>
-                <option value="Canada">Canada</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="United States">United States</option>
-                <option value="Australia">Australia</option>
-                <option value="Germany">Germany</option>
-                <option value="New Zealand">New Zealand</option>
-                <option value="UAE">UAE</option>
-              </select>
+          <form onSubmit={handleSearchSubmit} className="space-y-3">
+            {/* 1. What are you looking for? (Search Input) */}
+            <div className="bg-white rounded-xl border border-slate-200 px-3.5 py-2.5 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-[#00a896] shrink-0">
+                <FileText className="w-4 h-4" />
+              </div>
+              <div className="flex-1 flex flex-col justify-center min-w-0">
+                <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
+                  What are you looking for?
+                </label>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="e.g. USA Student Visa, Consultant"
+                  className="w-full text-xs font-bold text-slate-900 placeholder:text-slate-400 outline-none bg-transparent"
+                />
+              </div>
             </div>
 
-            {/* 2. Purpose */}
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">I am going for</label>
-              <select
-                value={selectedPurpose}
-                onChange={(e) => setSelectedPurpose(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
-              >
-                <option value="">Select Purpose</option>
-                <option value="Higher Education / Study">Higher Education / Study</option>
-                <option value="Employment / Work">Employment / Work</option>
-                <option value="Tourism / Visit">Tourism / Visit</option>
-                <option value="Permanent Residency">Permanent Residency</option>
-                <option value="Business / Investment">Business / Investment</option>
-              </select>
+            {/* 2. Country */}
+            <div className="bg-white rounded-xl border border-slate-200 px-3.5 py-2.5 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-[#00a896] shrink-0">
+                <Globe className="w-4 h-4" />
+              </div>
+              <div className="flex-1 flex flex-col justify-center min-w-0">
+                <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
+                  Country
+                </label>
+                <select
+                  value={selectedCountry}
+                  onChange={(e) => setSelectedCountry(e.target.value)}
+                  className="w-full text-xs font-bold text-slate-900 outline-none bg-transparent cursor-pointer"
+                >
+                  <option value="">Select Country</option>
+                  <option value="Canada">Canada</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="United States">United States</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Germany">Germany</option>
+                  <option value="New Zealand">New Zealand</option>
+                  <option value="UAE">UAE</option>
+                </select>
+              </div>
             </div>
 
-            {/* 3. Visa Type */}
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Visa Type</label>
-              <select
-                value={selectedVisaType}
-                onChange={(e) => setSelectedVisaType(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
-              >
-                <option value="">Select Visa Type</option>
-                <option value="Student Visa">Student Visa</option>
-                <option value="Work Permit">Work Permit</option>
-                <option value="Tourist / Visitor Visa">Tourist / Visitor Visa</option>
-                <option value="PR / Express Entry">PR / Express Entry</option>
-              </select>
+            {/* 3. Location */}
+            <div className="bg-white rounded-xl border border-slate-200 px-3.5 py-2.5 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-[#00a896] shrink-0">
+                <MapPin className="w-4 h-4" />
+              </div>
+              <div className="flex-1 flex flex-col justify-center min-w-0">
+                <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
+                  Location
+                </label>
+                <select
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  className="w-full text-xs font-bold text-slate-900 outline-none bg-transparent cursor-pointer"
+                >
+                  <option value="">Select Location</option>
+                  <option value="Hyderabad">Hyderabad</option>
+                  <option value="Mumbai">Mumbai</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Bangalore">Bangalore</option>
+                  <option value="Chennai">Chennai</option>
+                  <option value="Remote">Remote</option>
+                </select>
+              </div>
             </div>
 
-            {/* 4. Location */}
-            <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">My Location</label>
-              <select
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
-              >
-                <option value="">Select City</option>
-                <option value="Mumbai, India">Mumbai, India</option>
-                <option value="Delhi, India">Delhi, India</option>
-                <option value="Bangalore, India">Bangalore, India</option>
-                <option value="Hyderabad, India">Hyderabad, India</option>
-                <option value="Punjab, India">Punjab, India</option>
-              </select>
+            {/* 4. Category */}
+            <div className="bg-white rounded-xl border border-slate-200 px-3.5 py-2.5 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-[#00a896] shrink-0">
+                <Activity className="w-4 h-4" />
+              </div>
+              <div className="flex-1 flex flex-col justify-center min-w-0">
+                <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
+                  Category
+                </label>
+                <select
+                  value={selectedPurpose}
+                  onChange={(e) => setSelectedPurpose(e.target.value)}
+                  className="w-full text-xs font-bold text-slate-900 outline-none bg-transparent cursor-pointer"
+                >
+                  <option value="">Select Category</option>
+                  <option value="Student Visa">Student Visa</option>
+                  <option value="Work Permit">Work Permit</option>
+                  <option value="Visitor / Tourist Visa">Visitor / Tourist Visa</option>
+                  <option value="Permanent Residence">Permanent Residence</option>
+                  <option value="Business Visa">Business Visa</option>
+                </select>
+              </div>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-[#00a896] hover:bg-[#009485] text-white text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99] cursor-pointer mt-2"
+              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer mt-1"
             >
-              <Search className="w-4 h-4" />
-              <span>Search Consultants</span>
+              <Search className="w-4 h-4" /> Search Consultants &amp; Visas
             </button>
           </form>
         </div>

@@ -360,12 +360,12 @@ export function MobileHomeSection() {
                 })}
                 className="flex gap-3 p-3 active:bg-gray-50 transition-colors">
                 {/* Thumbnail */}
-                <div className="relative w-[68px] h-[68px] rounded-xl overflow-hidden shrink-0 bg-gray-100">
+                <div className="relative w-[72px] h-[72px] rounded-xl overflow-hidden shrink-0 bg-gray-100 border border-slate-100">
                   <img src={item.img} alt={item.title}
                     className="w-full h-full object-cover" />
                   <span
-                    className="absolute top-1 left-1 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-md"
-                    style={{ backgroundColor: item.badgeColor }}>
+                    className="absolute top-1 left-1 text-white text-[8px] font-black px-1.5 py-0.5 rounded-md shadow-xs whitespace-nowrap truncate max-w-[64px] leading-none"
+                    style={{ backgroundColor: item.badgeColor || '#00a896' }}>
                     {item.badge}
                   </span>
                 </div>

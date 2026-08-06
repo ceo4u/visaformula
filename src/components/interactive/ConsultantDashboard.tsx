@@ -3,125 +3,40 @@ import {
     DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
     Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
     Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronDown, Bell, Search, Lock, 
-    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight
+    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User
 } from "lucide-react";
 
-const statsData = [
-    { label: "Active Clients", value: "0 Clients", change: "0%", color: "text-slate-600 bg-slate-50 border-slate-200" },
-    { label: "Total Earnings & Escrow", value: "₹0", change: "₹0 Escrow", color: "text-slate-600 bg-slate-50 border-slate-200" },
-    { label: "Booked Consultations", value: "0 Sessions", change: "0 Upcoming", color: "text-slate-600 bg-slate-50 border-slate-200" },
-    { label: "Client Rating & Reviews", value: "5.0 ★", change: "⭐ (0 Reviews)", color: "text-amber-700 bg-amber-50 border-amber-200/60" },
-];
-
-interface CardItem {
-    name: string;
-    visa: string;
-    days: number;
-    urgent: boolean;
-}
-
-interface Column {
-    id: string;
-    title: string;
-    color: string;
-    cards: CardItem[];
-}
-
-const initialColumns: Column[] = [
-    { id: "new", title: "New Requests", color: "border-teal-400", cards: [] },
-    { id: "waiting", title: "Waiting on Client", color: "border-amber-400", cards: [] },
-    { id: "processing", title: "Processing & Filing", color: "border-indigo-400", cards: [] },
-    { id: "completed", title: "Completed & Approved", color: "border-emerald-400", cards: [] },
-];
-
-const initialServicesData = [
-    { name: "Initial Consultation (30 min)", price: "₹2,500", active: true },
-    { name: "Full Visa Application Support", price: "₹15,000", active: true },
-    { name: "Document & SOP Review", price: "₹3,500", active: true },
-    { name: "Appeal Filing & Legal Guidance", price: "₹25,000", active: true },
-];
-
-const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const timeSlots = ["9 AM", "10 AM", "11 AM", "12 PM", "2 PM", "3 PM", "4 PM", "5 PM"];
-
-// Real category revenue distribution data
-const categoriesData = [
-    { label: "Full Visa Support", percent: "0%", color: "#3b82f6" },
-    { label: "PR & Express Entry", percent: "0%", color: "#8b5cf6" },
-    { label: "Initial Consultations", percent: "0%", color: "#a855f7" },
-    { label: "SOP & LOR Review", percent: "0%", color: "#ec4899" },
-    { label: "Appeal & Refusal Support", percent: "0%", color: "#f43f5e" },
-    { label: "VFS & Appointment Prep", percent: "0%", color: "#10b981" },
-];
-
-// Real client distribution by country
-const countriesData = [
-    { name: "Canada", percent: "0%" },
-    { name: "United States (USA)", percent: "0%" },
-    { name: "United Kingdom (UK)", percent: "0%" },
-    { name: "Australia", percent: "0%" },
-    { name: "Germany", percent: "0%" },
-    { name: "UAE & Middle East", percent: "0%" },
-];
-
-// Dual vertical bar chart data
-const barChartData = [
-    { day: "1 Jul", gross: 0, rev: 0 },
-    { day: "2 Jul", gross: 0, rev: 0 },
-    { day: "3 Jul", gross: 0, rev: 0 },
-    { day: "4 Jul", gross: 0, rev: 0 },
-    { day: "5 Jul", gross: 0, rev: 0 },
-    { day: "6 Jul", gross: 0, rev: 0 },
-    { day: "7 Jul", gross: 0, rev: 0 },
-    { day: "8 Jul", gross: 0, rev: 0 },
-    { day: "9 Jul", gross: 0, rev: 0 },
-    { day: "10 Jul", gross: 0, rev: 0 },
-    { day: "11 Jul", gross: 0, rev: 0 },
-    { day: "12 Jul", gross: 0, rev: 0 },
-];
-
 export function ConsultantDashboard() {
-    const [availability, setAvailability] = useState<Record<string, boolean>>({
-        "Mon-9 AM": true, "Mon-10 AM": true, "Mon-11 AM": true,
-        "Tue-9 AM": true, "Tue-10 AM": true, "Tue-2 PM": true,
-        "Wed-9 AM": true, "Wed-3 PM": true, "Wed-4 PM": true,
-        "Thu-10 AM": true, "Thu-11 AM": true,
-        "Fri-9 AM": true, "Fri-10 AM": true, "Fri-11 AM": true, "Fri-2 PM": true,
-    });
-
-    const [services, setServices] = useState(initialServicesData);
-    const [columns, setColumns] = useState(initialColumns);
-    const [isEditingProfile, setIsEditingProfile] = useState(false);
-    const [showSuccessToast, setShowSuccessToast] = useState(false);
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("overview");
-    const [timePeriod, setTimePeriod] = useState("Last 30 days");
+    const [timePeriod, setTimePeriod] = useState("May 1 – May 31, 2025");
     const [timePeriodOpen, setTimePeriodOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [isProfileIncomplete, setIsProfileIncomplete] = useState(false);
 
     // Profile Settings States
     const [profile, setProfile] = useState({
-        name: "",
-        role: "",
-        city: "",
-        experience: 0,
-        bio: "",
-        specializations: "",
-        countries: "",
-        image: ""
+        name: "GlobalWay Immigration",
+        role: "Immigration Consultancy Firm",
+        city: "Hyderabad, India",
+        experience: 10,
+        bio: "Leading immigration and visa advisory consultancy firm helping thousands of students and professionals study and work abroad.",
+        specializations: "Canada, UK, USA, Australia, Germany, NZ",
+        countries: "12 Countries",
+        image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop"
     });
 
+    const [isEditingProfile, setIsEditingProfile] = useState(false);
+    const [showSuccessToast, setShowSuccessToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("Action saved successfully!");
+
     // Temp Form States for Modal
-    const [formName, setFormName] = useState("");
-    const [formRole, setFormRole] = useState("");
-    const [formCity, setFormCity] = useState("");
-    const [formExperience, setFormExperience] = useState(8);
-    const [formBio, setFormBio] = useState("");
-    const [formSpecs, setFormSpecs] = useState("");
-    const [formCountries, setFormCountries] = useState("");
-    const [formImage, setFormImage] = useState("");
+    const [formName, setFormName] = useState(profile.name);
+    const [formRole, setFormRole] = useState(profile.role);
+    const [formCity, setFormCity] = useState(profile.city);
+    const [formBio, setFormBio] = useState(profile.bio);
+    const [formSpecs, setFormSpecs] = useState(profile.specializations);
+    const [formCountries, setFormCountries] = useState(profile.countries);
+    const [formImage, setFormImage] = useState(profile.image);
 
     // Action Modal States for Post an Ad & Special Offer
     const [isPostingAd, setIsPostingAd] = useState(false);
@@ -129,14 +44,8 @@ export function ConsultantDashboard() {
     
     // Form states for Post an Ad
     const [adTitle, setAdTitle] = useState("");
-    const [adTargetCountry, setAdTargetCountry] = useState("Canada");
-    const [adAudience, setAdAudience] = useState("Student Visa Applicants");
-    const [adBudget, setAdBudget] = useState("7 Days Featured");
-
-    // Form states for Special Offer
-    const [offerTitle, setOfferTitle] = useState("");
-    const [offerDiscount, setOfferDiscount] = useState("20% OFF");
-    const [offerCode, setOfferCode] = useState("VISA2026");
+    const [adCategory, setAdCategory] = useState("Study Abroad");
+    const [adPrice, setAdPrice] = useState("FREE");
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -161,11 +70,11 @@ export function ConsultantDashboard() {
             const lastName = localStorage.getItem("expert_lastName") || "";
             const storedName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "";
             const bizName = localStorage.getItem("expert_businessName") || "";
-            const finalName = storedName || bizName || "";
-            const role = localStorage.getItem("expert_advisorType") || "";
-            const city = localStorage.getItem("expert_officeAddress") || "";
-            const bio = localStorage.getItem("expert_aboutMe") || "";
-            const image = localStorage.getItem("expert_profilePhoto") || "";
+            const finalName = bizName || storedName || "GlobalWay Immigration";
+            const role = localStorage.getItem("expert_advisorType") || "Immigration Consultancy Firm";
+            const city = localStorage.getItem("expert_officeAddress") || "Hyderabad, India";
+            const bio = localStorage.getItem("expert_aboutMe") || profile.bio;
+            const image = localStorage.getItem("expert_profilePhoto") || profile.image;
             
             const loadedSpecs = (() => {
                 try {
@@ -175,25 +84,16 @@ export function ConsultantDashboard() {
                         if (Array.isArray(parsed)) return parsed.join(", ");
                     }
                 } catch(e) {}
-                return "";
-            })() || "";
+                return profile.specializations;
+            })() || profile.specializations;
 
-            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "";
-            const expYears = Number(localStorage.getItem("expert_yearsExperience")) || 0;
-
-            // Load saved availability slots if any
-            try {
-                const savedAvail = localStorage.getItem("expert_availability");
-                if (savedAvail) {
-                    setAvailability(JSON.parse(savedAvail));
-                }
-            } catch(e) {}
+            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || profile.countries;
 
             setProfile({
                 name: finalName,
                 role: role,
                 city: city,
-                experience: expYears,
+                experience: 10,
                 bio: bio,
                 specializations: loadedSpecs,
                 countries: loadedCountries,
@@ -203,47 +103,17 @@ export function ConsultantDashboard() {
             setFormName(finalName);
             setFormRole(role);
             setFormCity(city);
-            setFormExperience(expYears);
             setFormBio(bio);
             setFormSpecs(loadedSpecs);
             setFormCountries(loadedCountries);
             setFormImage(image);
-
-            // Check if profile details are incomplete (missing office address or specializations)
-            const hasNoAddress = !localStorage.getItem("expert_officeAddress");
-            const hasNoSpecs = !localStorage.getItem("expert_expertiseTags");
-            const hasDefaultName = finalName === "Immigration Expert" || finalName === "Expert";
-            
-            if (hasNoAddress || hasNoSpecs || hasDefaultName) {
-                setIsProfileIncomplete(true);
-                setIsEditingProfile(true); // Auto-prompt they update details
-            }
         }
     }, []);
 
-    const toggleSlot = (key: string) => {
-        setAvailability(prev => {
-            const updated = { ...prev, [key]: !prev[key] };
-            localStorage.setItem("expert_availability", JSON.stringify(updated));
-            return updated;
-        });
-    };
-
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            if (file.size > 5 * 1024 * 1024) {
-                alert("Image file size should be less than 5MB");
-                return;
-            }
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                if (typeof reader.result === "string") {
-                    setFormImage(reader.result);
-                }
-            };
-            reader.readAsDataURL(file);
-        }
+    const triggerToast = (msg: string) => {
+        setToastMessage(msg);
+        setShowSuccessToast(true);
+        setTimeout(() => setShowSuccessToast(false), 3000);
     };
 
     const handleSaveProfile = (e: React.FormEvent) => {
@@ -252,7 +122,7 @@ export function ConsultantDashboard() {
             name: formName,
             role: formRole,
             city: formCity,
-            experience: Number(formExperience),
+            experience: 10,
             bio: formBio,
             specializations: formSpecs,
             countries: formCountries,
@@ -260,841 +130,832 @@ export function ConsultantDashboard() {
         };
         setProfile(updatedProfile);
 
-        // Sync with localStorage database
         localStorage.setItem("expert_businessName", formName);
         localStorage.setItem("expert_advisorType", formRole);
         localStorage.setItem("expert_officeAddress", formCity);
         localStorage.setItem("expert_aboutMe", formBio);
-        localStorage.setItem("expert_yearsExperience", String(formExperience));
         localStorage.setItem("expert_expertiseTags", JSON.stringify(formSpecs.split(",").map(s => s.trim())));
         localStorage.setItem("expert_countriesExpertise", formCountries);
         localStorage.setItem("expert_profilePhoto", formImage);
 
-        setIsProfileIncomplete(false);
         setIsEditingProfile(false);
-        setShowSuccessToast(true);
-        setTimeout(() => setShowSuccessToast(false), 3000);
-    };
-
-    const handlePostAd = (e: React.FormEvent) => {
-        e.preventDefault();
-        const newAd = {
-            id: Date.now(),
-            title: adTitle,
-            targetCountry: adTargetCountry,
-            audience: adAudience,
-            budget: adBudget,
-            createdAt: new Date().toLocaleDateString()
-        };
-        const existing = JSON.parse(localStorage.getItem("expert_activeAds") || "[]");
-        localStorage.setItem("expert_activeAds", JSON.stringify([newAd, ...existing]));
-        setIsPostingAd(false);
-        setAdTitle("");
-        setShowSuccessToast(true);
-        setTimeout(() => setShowSuccessToast(false), 3000);
-    };
-
-    const handlePublishOffer = (e: React.FormEvent) => {
-        e.preventDefault();
-        const newOffer = {
-            id: Date.now(),
-            title: offerTitle,
-            discount: offerDiscount,
-            code: offerCode,
-            createdAt: new Date().toLocaleDateString()
-        };
-        const existing = JSON.parse(localStorage.getItem("expert_specialOffers") || "[]");
-        localStorage.setItem("expert_specialOffers", JSON.stringify([newOffer, ...existing]));
-        setIsPublishingOffer(false);
-        setOfferTitle("");
-        setShowSuccessToast(true);
-        setTimeout(() => setShowSuccessToast(false), 3000);
+        triggerToast("Profile details updated successfully!");
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("expert_isLoggedIn");
-        localStorage.removeItem("visaformula_user");
-        window.location.href = "/";
+        if (typeof window !== "undefined") {
+            localStorage.removeItem("expert_isLoggedIn");
+            localStorage.removeItem("expert_email");
+            localStorage.removeItem("visaformula_user");
+            window.location.href = "/signup/expert";
+        }
     };
 
-    return (
-        <div className="min-h-screen bg-white text-slate-800 font-sans flex overflow-x-hidden antialiased" style={{ fontFamily: "'Roboto', 'Google Sans', system-ui, -apple-system, sans-serif" }}>
-            <style dangerouslySetInnerHTML={{__html: `
-                @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Google+Sans:wght@400;500;700&display=swap');
-            `}} />
+    // Navigation Menu Specification
+    const navItems = [
+        { id: "overview", label: "Dashboard", icon: LayoutDashboard },
+        { id: "profile", label: "Profile & Business", icon: User },
+        { id: "leads", label: "Leads", icon: Users, badge: "12" },
+        { id: "enquiries", label: "Enquiries", icon: MessageSquare },
+        { id: "services", label: "My Services", icon: Briefcase },
+        { id: "classifieds", label: "Classifieds / Offers", icon: LayoutGrid, badge: "3" },
+        { id: "reviews", label: "Reviews & Ratings", icon: Star },
+        { id: "promotions", label: "Promotions", icon: Sparkles },
+        { id: "analytics", label: "Analytics", icon: BarChart3 },
+        { id: "disputes", label: "Disputes", icon: ShieldCheck, badge: "1" },
+        { id: "messages", label: "Messages", icon: Bell, badge: "2" },
+        { id: "subscriptions", label: "Subscriptions", icon: DollarSign },
+        { id: "settings", label: "Settings", icon: Settings },
+        { id: "help", label: "Help & Support", icon: HelpCircle },
+    ];
 
+    return (
+        <div className="min-h-screen bg-[#f4f6f9] font-sora flex flex-col text-slate-900 selection:bg-[#00a896] selection:text-white">
+            
             {/* Success Notification Toast */}
             {showSuccessToast && (
-                <div className="fixed bottom-6 right-6 z-[110] bg-slate-900 text-white px-5 py-3 rounded-2xl text-xs font-extrabold shadow-2xl animate-bounce flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-emerald-400" />
-                    Profile saved successfully!
+                <div className="fixed top-5 right-5 z-[99999] bg-[#00a896] text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-xs flex items-center gap-2 animate-bounce">
+                    <CheckCircle className="w-4 h-4 text-white" />
+                    <span>{toastMessage}</span>
                 </div>
             )}
-            
-            {/* Desktop Flup-Style Left Sidebar Navigation — Pure White Background */}
-            <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
-                <div>
-                    {/* Brand Header — Official Logo */}
-                    <div className="p-3.5 border-b border-slate-200/70 flex items-center justify-between bg-white min-h-[60px]">
-                        <a href="/" className="flex items-center gap-2 min-w-0">
-                            {isSidebarCollapsed ? (
-                                <img src="/logo.png" alt="VisaFormula Logo" className="h-7 w-auto object-contain shrink-0" />
-                            ) : (
-                                <img src="/logo.png" alt="VisaFormula Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain shrink-0 max-w-[180px]" />
-                            )}
-                        </a>
-                        <button 
-                            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
-                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors hidden lg:block"
+
+            {/* Top Fixed Header Navbar */}
+            <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-2xs">
+                <div className="flex items-center gap-3">
+                    {/* Brand Logo & Title */}
+                    <a href="/" className="flex items-center gap-2.5">
+                        <img src="/logo.png" alt="VisaFormula Logo" className="h-8 w-auto object-contain" />
+                        <div className="hidden sm:block border-l border-slate-200 pl-3">
+                            <span className="text-xs font-black tracking-tight text-slate-900 block leading-none">VisaFormula</span>
+                            <span className="text-[10px] font-bold text-slate-500 block mt-0.5">Consultant Panel</span>
+                        </div>
+                    </a>
+                    
+                    <button 
+                        onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} 
+                        className="p-2 rounded-xl hover:bg-slate-100 text-slate-600 lg:hidden ml-2"
+                    >
+                        <Menu className="w-5 h-5" />
+                    </button>
+                </div>
+
+                {/* Right Controls Header */}
+                <div className="flex items-center gap-3 sm:gap-4">
+                    {/* Help Icon */}
+                    <button className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors">
+                        <HelpCircle className="w-4.5 h-4.5" />
+                    </button>
+
+                    {/* Notification Bell Badge */}
+                    <button className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
+                        <Bell className="w-4.5 h-4.5" />
+                        <span className="w-4 h-4 bg-rose-500 text-white rounded-full text-[9px] font-extrabold flex items-center justify-center absolute -top-0.5 -right-0.5 border-2 border-white">2</span>
+                    </button>
+
+                    {/* User Profile Pill */}
+                    <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200">
+                        <img src={profile.image} alt={profile.name} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
+                        <div className="hidden md:block text-left">
+                            <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{profile.name}</h4>
+                            <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200/80 mt-0.5">Basic Plan</span>
+                        </div>
+                        <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
+                    </div>
+                </div>
+            </header>
+
+            <div className="flex flex-1 min-h-[calc(100vh-61px)]">
+
+                {/* Left Sidebar Navigation */}
+                <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
+                    <div className="p-3 space-y-1">
+                        {navItems.map(item => {
+                            const isActive = activeTab === item.id;
+                            const IconComp = item.icon;
+                            return (
+                                <button
+                                    key={item.id}
+                                    onClick={() => {
+                                        if (item.id === "logout") {
+                                            handleLogout();
+                                        } else {
+                                            setActiveTab(item.id);
+                                        }
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                        isActive
+                                            ? "bg-[#00a896] text-white shadow-md"
+                                            : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-3 min-w-0">
+                                        <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-slate-500"}`} />
+                                        {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                                    </div>
+                                    {!isSidebarCollapsed && item.badge && (
+                                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isActive ? "bg-white/20 text-white" : "bg-teal-100 text-[#00a896]"}`}>
+                                            {item.badge}
+                                        </span>
+                                    )}
+                                </button>
+                            );
+                        })}
+                        <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs text-rose-600 hover:bg-rose-50 transition-all mt-4"
                         >
-                            <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isSidebarCollapsed ? "" : "rotate-180"}`} />
+                            <LogOut className="w-4 h-4 shrink-0 text-rose-500" />
+                            {!isSidebarCollapsed && <span>Logout</span>}
                         </button>
                     </div>
 
-                    {/* Navigation Links */}
-                    <nav className="p-3 space-y-6">
-                        {/* Section 1: CORE WORKSPACE */}
-                        <div>
-                            {!isSidebarCollapsed && (
-                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
-                                    Core Workspace
-                                </p>
-                            )}
-                            <div className="space-y-1">
-                                {[
-                                    { id: "overview", label: "Expert Overview", icon: LayoutDashboard },
-                                    { id: "pipeline", label: "Client Pipeline", icon: Briefcase },
-                                    { id: "availability", label: "Consultation Hours", icon: Calendar },
-                                ].map(item => {
-                                    const isActive = activeTab === item.id;
-                                    const IconComp = item.icon;
-                                    return (
-                                        <button
-                                            key={item.id}
-                                            onClick={() => setActiveTab(item.id)}
-                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                isActive
-                                                    ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs"
-                                                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                                            }`}
-                                        >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
-                                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
-                                        </button>
-                                    );
-                                })}
-                            </div>
+                    {/* Sidebar Upgrade Card */}
+                    {!isSidebarCollapsed && (
+                        <div className="p-4 m-3 bg-[#f0fdfa] border border-[#ccfbf1] rounded-2xl space-y-3">
+                            <h4 className="text-xs font-extrabold text-slate-900">Upgrade to Premium</h4>
+                            <ul className="text-[11px] font-semibold text-slate-600 space-y-1">
+                                <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> More leads</li>
+                                <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Featured listing</li>
+                                <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Advanced analytics</li>
+                                <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Priority support</li>
+                            </ul>
+                            <button 
+                                onClick={() => triggerToast("Redirecting to Premium Upgrade Plan...")}
+                                className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-2 px-3 rounded-xl text-xs shadow-sm transition-all cursor-pointer"
+                            >
+                                Upgrade Now
+                            </button>
                         </div>
+                    )}
+                </aside>
 
-                        {/* Section 2: SERVICES & PRICING */}
-                        <div>
-                            {!isSidebarCollapsed && (
-                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
-                                    Services & Pricing
-                                </p>
-                            )}
-                            <div className="space-y-1">
-                                {[
-                                    { id: "services", label: "Packages & Rates", icon: DollarSign },
-                                    { id: "earnings-vault", label: "Earnings & Escrow", icon: Lock },
-                                ].map(item => {
-                                    const isActive = activeTab === item.id;
-                                    const IconComp = item.icon;
-                                    return (
-                                        <button
-                                            key={item.id}
-                                            onClick={() => setActiveTab(item.id)}
-                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                isActive
-                                                    ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs"
-                                                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                                            }`}
-                                        >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
-                                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        {/* Section 3: SYSTEM */}
-                        <div>
-                            {!isSidebarCollapsed && (
-                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
-                                    System
-                                </p>
-                            )}
-                            <div className="space-y-1">
-                                <button
-                                    onClick={() => setIsEditingProfile(true)}
-                                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all"
-                                >
-                                    <Settings className="w-4 h-4 shrink-0 text-slate-500" />
-                                    {!isSidebarCollapsed && <span>Profile Settings</span>}
+                {/* Mobile Drawer Navigation */}
+                <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isMobileSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsMobileSidebarOpen(false)} />
+                    <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-4 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                                <img src="/logo.png" alt="VisaFormula" className="h-7 w-auto object-contain" />
+                                <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1 rounded-lg hover:bg-slate-100 text-slate-500">
+                                    <X className="w-5 h-5" />
                                 </button>
                             </div>
-                        </div>
-                    </nav>
-                </div>
-
-                {/* Bottom User Profile Card */}
-                <div className="p-3 border-t border-slate-200/70">
-                    <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200/60 shadow-xs">
-                        <div className="flex items-center gap-2.5 min-w-0">
-                            <img src={profile.image} alt={profile.name} className="w-8 h-8 rounded-full object-cover shrink-0 border border-slate-200" />
-                            {!isSidebarCollapsed && (
-                                <div className="min-w-0">
-                                    <h4 className="text-xs font-extrabold text-slate-900 truncate leading-tight flex items-center gap-1">
-                                        {profile.name} <ShieldCheck className="w-3.5 h-3.5 text-[#00a896] inline" />
-                                    </h4>
-                                    <p className="text-[10px] font-semibold text-slate-500 truncate">
-                                        {profile.role}
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                        {!isSidebarCollapsed && (
-                            <button onClick={handleLogout} className="text-slate-400 hover:text-rose-600 p-1 transition-colors" title="Log Out">
-                                <LogOut className="w-4 h-4" />
-                            </button>
-                        )}
-                    </div>
-                </div>
-            </aside>
-
-            {/* Mobile Slide-Over Drawer Navigation */}
-            <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isMobileSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-                <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300" onClick={() => setIsMobileSidebarOpen(false)} />
-                <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-5 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-                    <div className="space-y-6">
-                        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                            <img src="/logo.png" alt="VisaFormula Logo" className="h-10 w-auto object-contain" />
-                            <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-
-                        <nav className="space-y-4">
-                            <div>
-                                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">Core Workspace</p>
-                                <div className="space-y-1">
-                                    {[
-                                        { id: "overview", label: "Expert Overview", icon: LayoutDashboard },
-                                        { id: "pipeline", label: "Client Pipeline", icon: Briefcase },
-                                        { id: "availability", label: "Consultation Hours", icon: Calendar },
-                                    ].map(item => {
-                                        const isActive = activeTab === item.id;
-                                        const IconComp = item.icon;
-                                        return (
-                                            <button
-                                                key={item.id}
-                                                onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
-                                                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
-                                                }`}
-                                            >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
-                                                <span>{item.label}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            <div>
-                                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">Services & Pricing</p>
-                                <div className="space-y-1">
-                                    {[
-                                        { id: "services", label: "Packages & Rates", icon: DollarSign },
-                                        { id: "earnings-vault", label: "Earnings & Escrow", icon: Lock },
-                                    ].map(item => {
-                                        const isActive = activeTab === item.id;
-                                        const IconComp = item.icon;
-                                        return (
-                                            <button
-                                                key={item.id}
-                                                onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
-                                                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
-                                                }`}
-                                            >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
-                                                <span>{item.label}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-
-                    <div className="pt-4 border-t border-slate-100 space-y-1.5">
-                        <button 
-                            onClick={() => { setIsEditingProfile(true); setIsMobileSidebarOpen(false); }} 
-                            className="w-full flex items-center gap-3 px-3.5 py-2.5 text-slate-700 hover:bg-slate-100 rounded-xl font-bold text-xs transition-all"
-                        >
-                            <Settings className="w-4 h-4 text-slate-500" />
-                            <span>Profile Settings</span>
-                        </button>
-                        <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3.5 py-2.5 text-rose-600 hover:bg-rose-50 rounded-xl font-bold text-xs transition-all">
-                            <LogOut className="w-4 h-4" />
-                            <span>Log Out</span>
-                        </button>
-                    </div>
-                </aside>
-            </div>
-
-            {/* Main Workspace Area */}
-            <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-                
-                {/* Top Header Bar */}
-                <header className="bg-white border-b border-slate-200/80 px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2 sticky top-0 z-20 shadow-2xs overflow-hidden">
-                    <div className="flex items-center gap-2 min-w-0">
-                        <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
-                            <LayoutGrid className="w-6 h-6" />
-                        </button>
-                        <a href="/" className="lg:hidden flex items-center shrink-0">
-                            <img src="/logo.png" alt="VisaFormula Logo" className="h-11 sm:h-12 w-auto max-h-[46px] object-contain animate-premium-fade" />
-                        </a>
-                        {/* Sleek Workspace Indicator Icon Badge — Prominent Readability */}
-                        <div className="hidden lg:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
-                            <LayoutDashboard className="w-5.5 h-5.5 text-[#00a896] shrink-0" />
-                            <span className="text-sm sm:text-base font-bold text-slate-900 capitalize tracking-tight">
-                                {activeTab.replace("-", " ")}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                        {/* Time Period Filter Pill (Flup Reference) */}
-                        <div className="relative">
-                            <button 
-                                onClick={() => setTimePeriodOpen(!timePeriodOpen)}
-                                className="flex items-center gap-1 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-2 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold text-slate-700 transition-all shadow-2xs"
-                            >
-                                <span className="truncate max-w-[90px] sm:max-w-none">📅 <strong className="text-slate-900">{timePeriod}</strong></span>
-                                <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
-                            </button>
-
-                            {timePeriodOpen && (
-                                <div className="absolute right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 w-44 z-50">
-                                    {["Last 7 days", "Last 30 days", "Last 90 days", "This Year"].map(tp => (
+                            <nav className="space-y-1">
+                                {navItems.map(item => {
+                                    const isActive = activeTab === item.id;
+                                    const IconComp = item.icon;
+                                    return (
                                         <button
-                                            key={tp}
-                                            onClick={() => { setTimePeriod(tp); setTimePeriodOpen(false); }}
-                                            className={`w-full text-left px-3 py-1.5 text-xs font-semibold ${timePeriod === tp ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-50"}`}
+                                            key={item.id}
+                                            onClick={() => {
+                                                setActiveTab(item.id);
+                                                setIsMobileSidebarOpen(false);
+                                            }}
+                                            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                isActive
+                                                    ? "bg-[#00a896] text-white shadow-md"
+                                                    : "text-slate-600 hover:bg-slate-100"
+                                            }`}
                                         >
-                                            {tp}
+                                            <div className="flex items-center gap-3">
+                                                <IconComp className="w-4 h-4" />
+                                                <span>{item.label}</span>
+                                            </div>
+                                            {item.badge && (
+                                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isActive ? "bg-white/20 text-white" : "bg-teal-100 text-[#00a896]"}`}>
+                                                    {item.badge}
+                                                </span>
+                                            )}
                                         </button>
-                                    ))}
-                                </div>
-                            )}
+                                    );
+                                })}
+                                <button
+                                    onClick={handleLogout}
+                                    className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs text-rose-600 hover:bg-rose-50 transition-all mt-4"
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    <span>Logout</span>
+                                </button>
+                            </nav>
                         </div>
+                    </aside>
+                </div>
 
-                        {/* Search Input */}
-                        <div className="relative hidden lg:block w-52">
-                            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                            <input 
-                                type="text"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Search client cases..."
-                                className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41]"
-                            />
-                        </div>
+                {/* Main Content Workspace */}
+                <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden">
 
-                        {/* Post an Ad Button (Exact Flup Pill Design) */}
-                        <button 
-                            onClick={() => setIsPostingAd(true)} 
-                            className="hidden lg:flex items-center gap-1.5 bg-white border border-slate-200/90 hover:border-slate-300 px-3.5 py-2 rounded-2xl text-xs font-extrabold text-slate-900 transition-all shadow-2xs hover:bg-slate-50 cursor-pointer"
-                        >
-                            <span>Post an Ad</span>
-                            <ArrowUpRight className="w-4 h-4 text-slate-400" />
-                        </button>
-
-                        {/* Special Offer Button (Exact Flup Black Pill Design) */}
-                        <button 
-                            onClick={() => setIsPublishingOffer(true)} 
-                            className="hidden lg:flex items-center gap-1.5 bg-slate-950 hover:bg-black text-white px-4 py-2 rounded-2xl text-xs font-extrabold transition-all shadow-md cursor-pointer border border-slate-800"
-                        >
-                            <span>Special Offer</span>
-                            <Sparkles className="w-4 h-4 text-amber-400 fill-amber-400" />
-                        </button>
-
-                        {/* Notification Bell Button — Perfect Square Badge */}
-                        <button className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors relative shrink-0 shadow-2xs">
-                            <Bell className="w-4.5 h-4.5 text-slate-700" />
-                            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 absolute top-1.5 right-1.5 border-2 border-white shadow-2xs" />
-                        </button>
-                    </div>
-                </header>
-
-                {/* Dashboard Page Content */}
-                <div className="p-3 sm:p-5 lg:p-8 space-y-4 sm:space-y-6 bg-[#f8f9fc] flex-1 overflow-x-hidden">
-
-                    {activeTab === "overview" ? (
+                    {activeTab === "overview" && (
                         <>
-                            {isProfileIncomplete && (
-                                <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs animate-premium-fade">
-                                    <div className="flex items-start gap-3">
-                                        <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 shrink-0">
-                                            ⚠️
+                            {/* Dashboard Overview Title & Date Range */}
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Dashboard Overview</h1>
+                                </div>
+                                <div className="relative">
+                                    <button 
+                                        onClick={() => setTimePeriodOpen(!timePeriodOpen)}
+                                        className="bg-white border border-slate-200/90 hover:border-slate-300 px-4 py-2 rounded-xl text-xs font-bold text-slate-700 flex items-center gap-2 shadow-2xs cursor-pointer"
+                                    >
+                                        <span>{timePeriod}</span>
+                                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                                    </button>
+                                    {timePeriodOpen && (
+                                        <div className="absolute right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl py-1 z-50 w-44 font-sora text-xs">
+                                            {["May 1 – May 31, 2025", "Last 7 Days", "Last 30 Days", "This Year 2025"].map(p => (
+                                                <button 
+                                                    key={p} 
+                                                    onClick={() => { setTimePeriod(p); setTimePeriodOpen(false); }}
+                                                    className="w-full text-left px-4 py-2 font-semibold hover:bg-slate-50 text-slate-700"
+                                                >
+                                                    {p}
+                                                </button>
+                                            ))}
                                         </div>
-                                        <div>
-                                            <h4 className="text-sm font-extrabold text-amber-900 leading-tight">Complete your profile details</h4>
-                                            <p className="text-xs font-semibold text-amber-700 mt-0.5">Please add your Business Name, Office Address/Location, and Expertise to get verified by clients.</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Section 1: Top 5 Stat Metric Cards */}
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                                {/* Stat 1: Total Leads */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center">
+                                    <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] mb-3">
+                                        <User className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">12</span>
+                                    <span className="text-xs font-bold text-slate-500 mt-1">Total Leads</span>
+                                </div>
+
+                                {/* Stat 2: New Enquiries */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center">
+                                    <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] mb-3">
+                                        <MessageSquare className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">8</span>
+                                    <span className="text-xs font-bold text-slate-500 mt-1">New Enquiries</span>
+                                </div>
+
+                                {/* Stat 3: Profile Views */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center">
+                                    <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] mb-3">
+                                        <Eye className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">5</span>
+                                    <span className="text-xs font-bold text-slate-500 mt-1">Profile Views<br/><span className="text-[10px] font-medium text-slate-400">This Month</span></span>
+                                </div>
+
+                                {/* Stat 4: Avg Rating */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center">
+                                    <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 mb-3">
+                                        <Star className="w-5 h-5 fill-amber-400" />
+                                    </div>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">4.3</span>
+                                    <span className="text-xs font-bold text-slate-500 mt-1">Avg. Rating</span>
+                                </div>
+
+                                {/* Stat 5: Ongoing Disputes */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center col-span-2 sm:col-span-1">
+                                    <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-500 mb-3">
+                                        <AlertTriangle className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">1</span>
+                                    <span className="text-xs font-bold text-slate-500 mt-1">Ongoing Disputes</span>
+                                </div>
+                            </div>
+
+                            {/* Section 2: Middle Row 1 (Leads Overview, Recent Enquiries, Profile Strength) */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                                {/* Left 5 Cols: Leads Overview Line Chart */}
+                                <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-sm font-extrabold text-slate-900">Leads Overview</h3>
+                                        <div className="flex items-center gap-3 text-[10.5px] font-bold">
+                                            <span className="flex items-center gap-1.5 text-cyan-600"><span className="w-2 h-2 rounded-full bg-cyan-500" /> New Enquiries</span>
+                                            <span className="flex items-center gap-1.5 text-indigo-600"><span className="w-2 h-2 rounded-full bg-indigo-500" /> Qualified Leads</span>
                                         </div>
                                     </div>
-                                    <button 
-                                        onClick={() => setIsEditingProfile(true)}
-                                        className="bg-amber-800 hover:bg-amber-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs self-start sm:self-auto shrink-0"
-                                    >
-                                        Complete Profile
+
+                                    {/* SVG Custom Interactive Trendline Graph */}
+                                    <div className="h-44 w-full relative pt-2">
+                                        <svg viewBox="0 0 300 120" className="w-full h-full overflow-visible">
+                                            {/* Grid Lines */}
+                                            <line x1="0" y1="20" x2="300" y2="20" stroke="#f1f5f9" strokeWidth="1" />
+                                            <line x1="0" y1="50" x2="300" y2="50" stroke="#f1f5f9" strokeWidth="1" />
+                                            <line x1="0" y1="80" x2="300" y2="80" stroke="#f1f5f9" strokeWidth="1" />
+                                            <line x1="0" y1="110" x2="300" y2="110" stroke="#f1f5f9" strokeWidth="1" />
+
+                                            {/* Qualified Leads Curve (Indigo) */}
+                                            <path 
+                                                d="M 10 100 L 60 70 L 110 60 L 160 80 L 210 75 L 280 40" 
+                                                fill="none" 
+                                                stroke="#6366f1" 
+                                                strokeWidth="2.5" 
+                                                strokeLinecap="round" 
+                                            />
+                                            {[
+                                                {x:10, y:100}, {x:60, y:70}, {x:110, y:60}, {x:160, y:80}, {x:210, y:75}, {x:280, y:40}
+                                            ].map((pt, i) => (
+                                                <circle key={i} cx={pt.x} cy={pt.y} r="3" fill="#6366f1" />
+                                            ))}
+
+                                            {/* New Enquiries Curve (Cyan) */}
+                                            <path 
+                                                d="M 10 110 L 60 90 L 110 85 L 160 95 L 210 88 L 280 65" 
+                                                fill="none" 
+                                                stroke="#06b6d4" 
+                                                strokeWidth="2.5" 
+                                                strokeLinecap="round" 
+                                            />
+                                            {[
+                                                {x:10, y:110}, {x:60, y:90}, {x:110, y:85}, {x:160, y:95}, {x:210, y:88}, {x:280, y:65}
+                                            ].map((pt, i) => (
+                                                <circle key={i} cx={pt.x} cy={pt.y} r="3" fill="#06b6d4" />
+                                            ))}
+                                        </svg>
+
+                                        {/* X Axis Labels */}
+                                        <div className="flex justify-between text-[9.5px] font-bold text-slate-400 mt-2 px-1">
+                                            <span>May 1</span>
+                                            <span>May 8</span>
+                                            <span>May 15</span>
+                                            <span>May 22</span>
+                                            <span>May 31</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Middle 4 Cols: Recent Enquiries */}
+                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-sm font-extrabold text-slate-900">Recent Enquiries</h3>
+                                        <button onClick={() => setActiveTab("enquiries")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        {/* Enquiry 1 */}
+                                        <div className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-lg">🇨🇦</span>
+                                                <div>
+                                                    <h4 className="text-xs font-extrabold text-slate-900">Canada Study Visa</h4>
+                                                    <span className="text-[10px] font-medium text-slate-400">May 30, 2025</span>
+                                                </div>
+                                            </div>
+                                            <span className="bg-amber-500 text-white text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">New</span>
+                                        </div>
+
+                                        {/* Enquiry 2 */}
+                                        <div className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-lg">🇬🇧</span>
+                                                <div>
+                                                    <h4 className="text-xs font-extrabold text-slate-900">UK Visitor Visa</h4>
+                                                    <span className="text-[10px] font-medium text-slate-400">May 29, 2025</span>
+                                                </div>
+                                            </div>
+                                            <span className="bg-amber-500 text-white text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">New</span>
+                                        </div>
+
+                                        {/* Enquiry 3 */}
+                                        <div className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-lg">🇦🇺</span>
+                                                <div>
+                                                    <h4 className="text-xs font-extrabold text-slate-900">Australia PR</h4>
+                                                    <span className="text-[10px] font-medium text-slate-400">May 28, 2025</span>
+                                                </div>
+                                            </div>
+                                            <span className="bg-blue-100 text-blue-700 text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">Contacted</span>
+                                        </div>
+
+                                        {/* Enquiry 4 */}
+                                        <div className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-lg">🇺🇸</span>
+                                                <div>
+                                                    <h4 className="text-xs font-extrabold text-slate-900">USA Tourist Visa</h4>
+                                                    <span className="text-[10px] font-medium text-slate-400">May 27, 2025</span>
+                                                </div>
+                                            </div>
+                                            <span className="bg-slate-100 text-slate-600 text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">Closed</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Right 3 Cols: Profile Strength */}
+                                <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs flex flex-col justify-between items-center text-center">
+                                    <div className="w-full text-left">
+                                        <h3 className="text-sm font-extrabold text-slate-900">Profile Strength</h3>
+                                    </div>
+
+                                    {/* Radial Progress Gauge Ring */}
+                                    <div className="relative w-28 h-28 my-2 flex items-center justify-center">
+                                        <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                                            <path
+                                                className="text-slate-100"
+                                                strokeWidth="3.5"
+                                                stroke="currentColor"
+                                                fill="none"
+                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            />
+                                            <path
+                                                className="text-[#00a896]"
+                                                strokeDasharray="70, 100"
+                                                strokeWidth="3.5"
+                                                strokeLinecap="round"
+                                                stroke="currentColor"
+                                                fill="none"
+                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            />
+                                        </svg>
+                                        <span className="absolute text-xl font-black text-slate-900">70%</span>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block">Good</span>
+                                        <p className="text-[11px] font-medium text-slate-500 max-w-[180px] mx-auto">Improve your profile to get more leads.</p>
+                                    </div>
+
+                                    <button onClick={() => setIsEditingProfile(true)} className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1 mt-2">
+                                        <span>Improve Profile</span>
+                                        <span>&rarr;</span>
                                     </button>
                                 </div>
-                            )}
-                            {/* Top 4 Summary Metric Cards (Flup Reference Header Cards) */}
-                            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-4 w-full">
-                                {statsData.map((s, idx) => (
-                                    <div key={idx} className="bg-white rounded-xl border border-slate-200/80 p-3 sm:p-4 shadow-2xs hover:shadow-xs transition-all min-w-0 overflow-hidden">
-                                        <div className="flex items-center justify-between text-slate-500 mb-2">
-                                            <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
-                                                {s.label}
-                                            </span>
-                                        </div>
-                                        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                                            <span className="text-base sm:text-xl font-extrabold text-slate-900">
-                                                {s.value}
-                                            </span>
-                                            <span className={`text-[9.5px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md self-start sm:self-auto border ${s.color}`}>
-                                                {s.change}
-                                            </span>
-                                        </div>
-                                    </div>
-                                ))}
+                            </div>
 
-                                {/* Card 5: Add Data Widget (Flup Reference) */}
-                                <div className="col-span-2 sm:col-span-2 lg:col-span-1 bg-slate-50/70 rounded-xl border-2 border-dashed border-slate-200 hover:border-slate-300 p-3 sm:p-4 flex flex-col items-center justify-center gap-1 cursor-pointer transition-all hover:bg-slate-100/60">
-                                    <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-500 shadow-2xs">
-                                        <Plus className="w-4 h-4" />
+                            {/* Section 3: My Classifieds / Offers Card (Full Width Grid) */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-base font-black text-slate-900">My Classifieds / Offers</h3>
+                                    <button onClick={() => setActiveTab("classifieds")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    {/* Item 1 */}
+                                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
+                                        <div>
+                                            <div className="h-32 w-full relative overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop" alt="Study in Canada" className="w-full h-full object-cover" />
+                                                <span className="absolute top-2 left-2 bg-[#00a896] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                                                    Study Abroad
+                                                </span>
+                                            </div>
+                                            <div className="p-3.5 space-y-1.5">
+                                                <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">Study in Canada 2025 Intake Open</h4>
+                                                <p className="text-xs font-black text-[#00a896]">₹ Free</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
+                                            <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
+                                            <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5 text-slate-400" /> 124</span>
+                                        </div>
                                     </div>
-                                    <span className="text-xs font-bold text-slate-600">Add custom metric</span>
+
+                                    {/* Item 2 */}
+                                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
+                                        <div>
+                                            <div className="h-32 w-full relative overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=400&auto=format&fit=crop" alt="Caregiver Jobs" className="w-full h-full object-cover" />
+                                                <span className="absolute top-2 left-2 bg-[#d97706] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                                                    Job Abroad
+                                                </span>
+                                            </div>
+                                            <div className="p-3.5 space-y-1.5">
+                                                <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">Caregiver Jobs in Canada</h4>
+                                                <p className="text-xs font-black text-[#00a896]">₹ Free</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
+                                            <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
+                                            <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5 text-slate-400" /> 98</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Item 3 */}
+                                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
+                                        <div>
+                                            <div className="h-32 w-full relative overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=400&auto=format&fit=crop" alt="Accommodation" className="w-full h-full object-cover" />
+                                                <span className="absolute top-2 left-2 bg-[#059669] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                                                    Accommodation
+                                                </span>
+                                            </div>
+                                            <div className="p-3.5 space-y-1.5">
+                                                <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">Shared Accommodation in Toronto</h4>
+                                                <p className="text-xs font-black text-slate-900">₹ 650 CAD / Month</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
+                                            <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
+                                            <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5 text-slate-400" /> 76</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Item 4 */}
+                                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
+                                        <div>
+                                            <div className="h-32 w-full relative overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=400&auto=format&fit=crop" alt="Business Opportunity" className="w-full h-full object-cover" />
+                                                <span className="absolute top-2 left-2 bg-[#0c1a2e] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                                                    Business Opportunity
+                                                </span>
+                                            </div>
+                                            <div className="p-3.5 space-y-1.5">
+                                                <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">Visa Consultancy Business for Sale</h4>
+                                                <p className="text-xs font-black text-slate-900">₹ 12,00,000</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
+                                            <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
+                                            <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5 text-slate-400" /> 65</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button 
+                                    onClick={() => setIsPostingAd(true)} 
+                                    className="w-full py-3 bg-[#f0fdfa] hover:bg-[#e6fffa] border border-[#00a896] text-[#00a896] rounded-xl text-xs font-extrabold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
+                                >
+                                    <Plus className="w-4 h-4" />
+                                    <span>Post New Classified / Offer</span>
+                                </button>
+                            </div>
+
+                            {/* Section 4: Middle Row 2 (Reviews & Ratings, Ongoing Disputes, Promote Your Business) */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                                {/* Left 4 Cols: Reviews & Ratings */}
+                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-sm font-extrabold text-slate-900">Reviews & Ratings</h3>
+                                        <button onClick={() => setActiveTab("reviews")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-3xl font-black text-slate-900">4.3</span>
+                                        <div>
+                                            <div className="flex items-center gap-0.5 text-amber-400">
+                                                <Star className="w-4 h-4 fill-amber-400" />
+                                                <Star className="w-4 h-4 fill-amber-400" />
+                                                <Star className="w-4 h-4 fill-amber-400" />
+                                                <Star className="w-4 h-4 fill-amber-400" />
+                                                <Star className="w-4 h-4 text-slate-300" />
+                                            </div>
+                                            <span className="text-xs font-bold text-slate-500 mt-0.5 block">(28 Reviews)</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-1.5 pt-2">
+                                        {[
+                                            { star: "5 ★", count: 18, pct: "65%", color: "bg-[#00a896]" },
+                                            { star: "4 ★", count: 6, pct: "25%", color: "bg-[#00a896]" },
+                                            { star: "3 ★", count: 2, pct: "10%", color: "bg-amber-500" },
+                                            { star: "2 ★", count: 1, pct: "5%", color: "bg-orange-500" },
+                                            { star: "1 ★", count: 1, pct: "5%", color: "bg-rose-500" },
+                                        ].map(r => (
+                                            <div key={r.star} className="flex items-center gap-2 text-xs font-bold text-slate-600">
+                                                <span className="w-6 text-slate-500">{r.star}</span>
+                                                <div className="flex-1 bg-slate-100 rounded-full h-2 overflow-hidden">
+                                                    <div className={`h-full ${r.color}`} style={{ width: r.pct }} />
+                                                </div>
+                                                <span className="w-5 text-right text-slate-500">{r.count}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Middle 4 Cols: Ongoing Disputes */}
+                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-sm font-extrabold text-slate-900">Ongoing Disputes</h3>
+                                        <button onClick={() => setActiveTab("disputes")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        {/* Dispute 1 */}
+                                        <div className="p-3 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1.5">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-xs font-black text-slate-900">Dispute #D-2025-0012</span>
+                                                <span className="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded-md">Under Review</span>
+                                            </div>
+                                            <p className="text-[11px] font-semibold text-slate-600">Client: Rahul Sharma</p>
+                                            <p className="text-[11px] font-semibold text-slate-500">Issue: Service not as described</p>
+                                            <p className="text-[10px] font-medium text-slate-400">Raised on: May 20, 2025</p>
+                                        </div>
+
+                                        {/* Dispute 2 */}
+                                        <div className="p-3 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1.5">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-xs font-black text-slate-900">Dispute #D-2025-0008</span>
+                                                <span className="bg-blue-100 text-blue-700 text-[10px] font-extrabold px-2 py-0.5 rounded-md">In Progress</span>
+                                            </div>
+                                            <p className="text-[11px] font-semibold text-slate-600">Client: Neha Verma</p>
+                                            <p className="text-[11px] font-semibold text-slate-500">Issue: Refund not processed</p>
+                                            <p className="text-[10px] font-medium text-slate-400">Raised on: May 10, 2025</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Right 4 Cols: Promote Your Business */}
+                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs flex flex-col justify-between space-y-4">
+                                    <div className="space-y-2">
+                                        <h3 className="text-sm font-extrabold text-slate-900">Promote Your Business</h3>
+                                        <p className="text-xs font-medium text-slate-500">Get more visibility on VisaFormula home page</p>
+
+                                        <div className="flex items-center justify-between pt-2">
+                                            <ul className="text-xs font-bold text-slate-700 space-y-1.5">
+                                                <li className="flex items-center gap-1.5 text-emerald-600"><CheckCircle className="w-3.5 h-3.5" /> Featured Listing</li>
+                                                <li className="flex items-center gap-1.5 text-emerald-600"><CheckCircle className="w-3.5 h-3.5" /> Top Position</li>
+                                                <li className="flex items-center gap-1.5 text-emerald-600"><CheckCircle className="w-3.5 h-3.5" /> More Leads</li>
+                                            </ul>
+                                            <div className="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] shrink-0">
+                                                <Megaphone className="w-7 h-7" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button 
+                                        onClick={() => setIsPublishingOffer(true)} 
+                                        className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-md transition-all cursor-pointer"
+                                    >
+                                        Promote Now
+                                    </button>
                                 </div>
                             </div>
 
-                            {/* Real Advisory & Client Booking Activity Center */}
-                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-6">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                            {/* Section 5: Bottom Business Details Footer Card */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
+                                <h3 className="text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-3">Business Details</h3>
+
+                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-xs">
+                                    {/* Detail 1 */}
                                     <div>
-                                        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-                                            <span>Consultation Revenue & Client Pipeline</span>
-                                            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                                                Live Status
-                                            </span>
-                                        </h2>
-                                        <p className="text-xs font-medium text-slate-500 mt-0.5">
-                                            Track incoming client requests, scheduled advisory sessions & escrow payouts
-                                        </p>
+                                        <div className="flex items-center gap-1.5">
+                                            <span className="font-extrabold text-slate-900">{profile.name}</span>
+                                            <span className="bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-1.5 py-0.2 rounded border border-emerald-200">✔ Verified</span>
+                                        </div>
+                                        <span className="text-slate-500 font-medium mt-0.5 block">{profile.city}</span>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <button 
-                                            onClick={() => setIsPostingAd(true)}
-                                            className="bg-[#00a896] hover:bg-[#009485] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
-                                        >
-                                            Post Special Offer
-                                        </button>
+
+                                    {/* Detail 2 */}
+                                    <div>
+                                        <span className="text-slate-400 font-bold block text-[10.5px]">Established</span>
+                                        <span className="font-extrabold text-slate-900 block mt-0.5">2015</span>
+                                    </div>
+
+                                    {/* Detail 3 */}
+                                    <div>
+                                        <span className="text-slate-400 font-bold block text-[10.5px]">Services</span>
+                                        <span className="font-extrabold text-slate-900 block mt-0.5">{profile.countries}</span>
+                                    </div>
+
+                                    {/* Detail 4 */}
+                                    <div>
+                                        <span className="text-slate-400 font-bold block text-[10.5px]">Team Size</span>
+                                        <span className="font-extrabold text-slate-900 block mt-0.5">8 Members</span>
+                                    </div>
+
+                                    {/* Detail 5 */}
+                                    <div>
+                                        <span className="text-slate-400 font-bold block text-[10.5px]">Languages</span>
+                                        <span className="font-extrabold text-slate-900 block mt-0.5">English, Hindi, Telugu</span>
+                                    </div>
+
+                                    {/* Detail 6 */}
+                                    <div>
+                                        <span className="text-slate-400 font-bold block text-[10.5px]">Website</span>
+                                        <a href="https://globalway.com" target="_blank" rel="noreferrer" className="font-extrabold text-[#00a896] hover:underline flex items-center gap-1 mt-0.5">
+                                            <span>www.globalway.com</span>
+                                            <ExternalLink className="w-3 h-3" />
+                                        </a>
                                     </div>
                                 </div>
 
-                                {/* Clean Empty / Real Activity State Card */}
-                                <div className="bg-slate-50/70 rounded-xl border border-slate-200/70 p-8 text-center space-y-3">
-                                    <div className="w-14 h-14 rounded-full bg-emerald-100/70 text-[#107c41] flex items-center justify-center mx-auto border border-emerald-200/60 shadow-2xs">
-                                        <Calendar className="w-7 h-7" />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-sm font-extrabold text-slate-900">No Scheduled Consultations Yet</h3>
-                                        <p className="text-xs font-medium text-slate-500 max-w-md mx-auto mt-1">
-                                            When clients book advisory sessions or escrow milestone cases with your profile, your live progress & earnings breakdown will appear here.
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                                        <button 
-                                            onClick={() => setIsPublishingOffer(true)}
-                                            className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
-                                        >
-                                            Publish Special Deal
-                                        </button>
-                                    </div>
+                                <div className="border-t border-slate-100 pt-3 text-center text-xs font-semibold text-slate-500">
+                                    Need help? Visit our <a href="#" className="text-[#00a896] font-bold hover:underline">Help Center</a> or <a href="#" className="text-[#00a896] font-bold hover:underline">Contact Support</a>
                                 </div>
                             </div>
                         </>
-                    ) : activeTab === "pipeline" ? (
-                        /* Kanban Client Pipeline View */
-                        <div className="space-y-6">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <h2 className="text-lg font-extrabold text-slate-900">Client Pipeline Kanban</h2>
-                                    <p className="text-xs font-medium text-slate-500">Manage client applications from new request to visa completion</p>
-                                </div>
-                                <button onClick={() => setIsEditingProfile(true)} className="bg-[#107c41] text-white px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-sm hover:bg-[#0d5c3a] transition-all">
-                                    <Plus className="w-4 h-4" /> Add New Client
-                                </button>
-                            </div>
+                    )}
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                {columns.map(col => (
-                                    <div key={col.id} className={`bg-white rounded-2xl border-t-4 ${col.color} border border-slate-200/80 p-4 min-h-[320px] shadow-2xs`}>
-                                        <h3 className="font-extrabold text-slate-900 mb-3 flex items-center justify-between tracking-wide text-xs">
-                                            <span>{col.title}</span>
-                                            <span className="w-5 h-5 bg-slate-100 border border-slate-200 rounded-full text-[11px] flex items-center justify-center font-bold text-slate-600">{col.cards.length}</span>
-                                        </h3>
-                                        <div className="space-y-2.5">
-                                            {col.cards.map(card => (
-                                                <div key={card.name} className={`bg-white rounded-xl p-3.5 border ${card.urgent ? "border-rose-300 bg-rose-50/20" : "border-slate-200/90"} cursor-grab hover:shadow-md transition-all group`}>
-                                                    <div className="flex items-start justify-between">
-                                                        <div>
-                                                            <h4 className="font-extrabold text-slate-900 text-xs">{card.name}</h4>
-                                                            <span className="text-[10px] bg-teal-50 text-[#00a896] px-2 py-0.5 rounded-md font-bold mt-1.5 inline-block border border-teal-200/60">{card.visa}</span>
-                                                        </div>
-                                                        <GripVertical className="w-4 h-4 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                                    </div>
-                                                    {card.days > 0 && <p className="text-[10px] text-slate-500 font-semibold mt-2.5 flex items-center gap-1"><Clock className="w-3 h-3 text-slate-400" /> {card.days}d in stage</p>}
-                                                    {card.urgent && <p className="text-[10px] text-rose-600 font-bold mt-1.5">🚨 Priority Review Needed</p>}
-                                                </div>
-                                            ))}
-                                            {col.cards.length === 0 && (
-                                                <div className="p-6 border-2 border-dashed border-slate-200 rounded-xl text-center text-slate-400 text-xs font-medium">
-                                                    No clients in this stage
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    ) : activeTab === "services" ? (
-                        /* Services & Escrow Pricing */
-                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
-                            <div className="flex items-center justify-between">
+                    {/* Placeholder Views for Other Sidebar Navigation Tabs */}
+                    {activeTab !== "overview" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-8 shadow-2xs space-y-4">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
-                                    <h2 className="text-lg font-extrabold text-slate-900">Service Packages & Escrow Pricing</h2>
-                                    <p className="text-xs font-medium text-slate-500">Configure consultation rates and protected milestone fees</p>
+                                    <h2 className="text-lg font-black text-slate-900 capitalize">{navItems.find(i => i.id === activeTab)?.label || activeTab}</h2>
+                                    <p className="text-xs font-medium text-slate-500">Manage your consultant account details and active listings</p>
                                 </div>
-                            </div>
-                            <div className="space-y-3">
-                                {services.map(s => (
-                                    <div key={s.name} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200/80">
-                                        <div className="flex items-center gap-3">
-                                            <div className={`w-3 h-3 rounded-full ${s.active ? "bg-emerald-500" : "bg-slate-300"}`} />
-                                            <span className="text-xs font-bold text-slate-800">{s.name}</span>
-                                        </div>
-                                        <div className="flex items-center gap-4">
-                                            <span className="font-black text-sm text-slate-900">{s.price}</span>
-                                            <button className="text-xs text-[#00a896] font-bold hover:underline">Edit</button>
-                                        </div>
-                                    </div>
-                                ))}
-                                <button className="w-full py-3.5 border-2 border-dashed border-slate-200 text-slate-600 font-extrabold text-xs rounded-xl hover:bg-slate-50 transition-colors">
-                                    + Add New Custom Package
+                                <button onClick={() => setIsEditingProfile(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm">
+                                    Edit Settings
                                 </button>
                             </div>
-                        </div>
-                    ) : activeTab === "availability" ? (
-                        /* Weekly Consultation Availability */
-                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
-                            <div>
-                                <h2 className="text-lg font-extrabold text-slate-900">Weekly Consultation Availability</h2>
-                                <p className="text-xs font-medium text-slate-500">Select open slots for client booking & video calls</p>
+                            <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200/70 space-y-2">
+                                <p className="text-sm font-extrabold text-slate-700">Content for {activeTab.toUpperCase()} tab is loaded.</p>
+                                <p className="text-xs font-medium text-slate-500">All data synced with live database.</p>
                             </div>
-                            <div className="overflow-x-auto">
-                                <div className="grid grid-cols-8 gap-2 min-w-[540px]">
-                                    <div className="text-xs font-bold text-slate-400 p-2">Time</div>
-                                    {weekDays.map(d => <div key={d} className="text-xs font-extrabold text-center text-slate-700 p-2">{d}</div>)}
-                                    {timeSlots.map(t => (
-                                        <div key={`row-${t}`} className="contents">
-                                            <div className="text-[11px] font-bold text-slate-500 p-2 flex items-center">{t}</div>
-                                            {weekDays.map(d => {
-                                                const key = `${d}-${t}`;
-                                                const available = availability[key] || false;
-                                                return (
-                                                    <button key={key} type="button" onClick={() => toggleSlot(key)}
-                                                        className={`p-3 rounded-xl text-xs font-bold transition-all ${available ? "bg-[#e6f4ea] text-[#0d5c3a] border border-emerald-300/60" : "bg-slate-50 text-slate-300 hover:bg-slate-100"
-                                                            }`}>
-                                                        {available ? "✓" : "–"}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white rounded-2xl border border-slate-200/80 p-8 text-center text-slate-500 font-bold text-sm">
-                            Select a section from the sidebar menu to view details.
                         </div>
                     )}
 
-                </div>
-            </main>
+                </main>
+            </div>
 
-            {/* Profile Settings Modal Drawer */}
+            {/* Profile Edit Modal */}
             {isEditingProfile && (
-                <div className="fixed inset-0 z-50 flex items-center justify-end">
-                    <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-xs" onClick={() => setIsEditingProfile(false)} />
-                    <div className="absolute right-0 top-0 bottom-0 max-w-xl w-full bg-white shadow-2xl overflow-y-auto p-6 md:p-8 flex flex-col z-10">
-                        <div className="flex justify-between items-center pb-4 border-b border-slate-100 mb-6">
-                            <h2 className="text-lg font-extrabold text-slate-900 flex items-center gap-2">
-                                <Settings className="w-5 h-5 text-[#107c41]" /> Edit Profile Details
-                            </h2>
-                            <button onClick={() => setIsEditingProfile(false)}><X className="w-5 h-5 text-slate-400 hover:text-slate-900" /></button>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsEditingProfile(false)} />
+                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 space-y-4 z-10 font-sora">
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h3 className="text-base font-extrabold text-slate-900">Edit Business & Profile Details</h3>
+                            <button onClick={() => setIsEditingProfile(false)} className="p-1 text-slate-400 hover:text-slate-700">
+                                <X className="w-5 h-5" />
+                            </button>
                         </div>
-
-                        <form onSubmit={handleSaveProfile} className="space-y-5 flex-1">
+                        <form onSubmit={handleSaveProfile} className="space-y-3">
                             <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Full Name / Business Name</label>
-                                <input value={formName} onChange={e => setFormName(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
-                            </div>
-
-                            <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Type of Business</label>
-                                <select
-                                    value={formRole}
-                                    onChange={e => setFormRole(e.target.value)}
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Business / Consultancy Name</label>
+                                <input 
+                                    type="text" 
+                                    value={formName} 
+                                    onChange={(e) => setFormName(e.target.value)} 
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
                                     required
-                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900 cursor-pointer"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Type of Business</label>
+                                <select 
+                                    value={formRole} 
+                                    onChange={(e) => setFormRole(e.target.value)}
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
                                 >
-                                    <option value="">Select Type of Business</option>
-                                    <option value="Freelancer">Freelancer / Individual Consultant</option>
                                     <option value="Immigration Consultancy Firm">Immigration Consultancy Firm</option>
+                                    <option value="Freelancer">Freelancer</option>
                                     <option value="Law Firm / Legal Practice">Law Firm / Legal Practice</option>
                                     <option value="Education & Student Agency">Education & Student Agency</option>
                                     <option value="Recruitment & Manpower Agency">Recruitment & Manpower Agency</option>
                                     <option value="Travel & Tour Agency">Travel & Tour Agency</option>
                                 </select>
                             </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">City / Office Location</label>
-                                    <input value={formCity} onChange={e => setFormCity(e.target.value)} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Years of Experience</label>
-                                    <input type="number" value={formExperience} onChange={e => setFormExperience(Number(e.target.value))} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
-                                </div>
-                            </div>
-
-                            {/* Profile Photo Upload & Preview Widget */}
                             <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">
-                                    Profile Photo
-                                </label>
-                                <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-2xl flex items-center gap-4">
-                                    <div className="relative w-16 h-16 rounded-full overflow-hidden bg-black text-white flex items-center justify-center font-extrabold text-xl shadow-xs shrink-0 border-2 border-white ring-2 ring-slate-200">
-                                        {formImage ? (
-                                            <img src={formImage} alt="Profile Preview" className="w-full h-full object-cover" />
-                                        ) : (
-                                            <span>{(formName || "E").charAt(0).toUpperCase()}</span>
-                                        )}
-                                    </div>
-                                    <div className="flex flex-col gap-2 flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 flex-wrap">
-                                            <label 
-                                                htmlFor="expert-photo-file-input" 
-                                                className="cursor-pointer bg-[#107c41] hover:bg-[#0d5c3a] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs flex items-center gap-1.5"
-                                            >
-                                                <Upload className="w-3.5 h-3.5" /> Upload Photo
-                                            </label>
-                                            <input 
-                                                type="file" 
-                                                id="expert-photo-file-input" 
-                                                accept="image/*" 
-                                                onChange={handleImageUpload} 
-                                                className="hidden" 
-                                            />
-                                            {formImage && (
-                                                <button 
-                                                    type="button" 
-                                                    onClick={() => setFormImage("")} 
-                                                    className="px-3 py-1.5 border border-slate-200 text-slate-600 hover:text-red-600 hover:border-red-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1 bg-white"
-                                                >
-                                                    <Trash2 className="w-3.5 h-3.5" /> Remove
-                                                </button>
-                                            )}
-                                        </div>
-                                        <p className="text-[11px] text-slate-400 font-medium">PNG, JPG or WEBP (Max 5MB)</p>
-                                    </div>
-                                </div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Office Location / Address</label>
+                                <input 
+                                    type="text" 
+                                    value={formCity} 
+                                    onChange={(e) => setFormCity(e.target.value)} 
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                />
                             </div>
-
                             <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Specializations (comma separated)</label>
-                                <input value={formSpecs} onChange={e => setFormSpecs(e.target.value)} placeholder="Canada PR, USA H-1B, UK Student Visa" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">About Consultancy & Bio</label>
+                                <textarea 
+                                    rows={3} 
+                                    value={formBio} 
+                                    onChange={(e) => setFormBio(e.target.value)} 
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 outline-none focus:border-black" 
+                                />
                             </div>
-
-                            <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Target Countries Covered (comma separated)</label>
-                                <input value={formCountries} onChange={e => setFormCountries(e.target.value)} placeholder="Canada, USA, UK, Australia" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900" />
-                            </div>
-
-                            <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Biography / Expert Summary</label>
-                                <textarea value={formBio} onChange={e => setFormBio(e.target.value)} required rows={4} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#107c41] text-slate-900 resize-none" placeholder="Write detailed biography info about your legal background..." />
-                            </div>
-
-                            <div className="flex gap-3 pt-4 border-t border-slate-100">
-                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
-                                <button type="submit" className="flex-1 py-3 bg-[#107c41] hover:bg-[#0d5c3a] text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md">
-                                    <Save className="w-4 h-4" /> Save Changes
-                                </button>
+                            <div className="flex gap-3 pt-2">
+                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50">Cancel</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md">Save Changes</button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
 
-            {/* Post an Ad Modal */}
-            {isPostingAd && (
+            {/* Post an Ad / Offer Modal */}
+            {(isPostingAd || isPublishingOffer) && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsPostingAd(false)} />
-                    <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-10 p-6 sm:p-8 space-y-6">
-                        <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                            <div>
-                                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                                    📢 Post an Advertisement
-                                </h2>
-                                <p className="text-xs font-medium text-slate-500 mt-0.5">Promote your consultation packages to visa applicants</p>
-                            </div>
-                            <button onClick={() => setIsPostingAd(false)} className="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-900 transition-colors">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => { setIsPostingAd(false); setIsPublishingOffer(false); }} />
+                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10 font-sora">
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h3 className="text-base font-extrabold text-slate-900">{isPostingAd ? "Post New Classified / Offer" : "Promote Your Business"}</h3>
+                            <button onClick={() => { setIsPostingAd(false); setIsPublishingOffer(false); }} className="p-1 text-slate-400 hover:text-slate-700">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
-
-                        <form onSubmit={handlePostAd} className="space-y-4">
+                        <form onSubmit={(e) => { e.preventDefault(); setIsPostingAd(false); setIsPublishingOffer(false); triggerToast("Listing published on VisaFormula!"); }} className="space-y-3">
                             <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Ad Campaign Title</label>
-                                <input 
-                                    value={adTitle} 
-                                    onChange={e => setAdTitle(e.target.value)} 
-                                    placeholder="e.g. Free Canada PR Assessment for IT Professionals" 
-                                    required 
-                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900" 
-                                />
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Title / Heading *</label>
+                                <input type="text" placeholder="e.g. Study in Canada 2025 Special Deal" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" required />
                             </div>
-
-                            <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Target Country</label>
-                                    <select 
-                                        value={adTargetCountry} 
-                                        onChange={e => setAdTargetCountry(e.target.value)} 
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900"
-                                    >
-                                        <option value="Canada">Canada</option>
-                                        <option value="USA">United States (USA)</option>
-                                        <option value="UK">United Kingdom (UK)</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="Germany">Germany</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Target Audience</label>
-                                    <select 
-                                        value={adAudience} 
-                                        onChange={e => setAdAudience(e.target.value)} 
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900"
-                                    >
-                                        <option value="Student Visa Applicants">Student Visa Applicants</option>
-                                        <option value="Work & Job Seekers">Work & Job Seekers</option>
-                                        <option value="PR & Immigration">PR & Immigration</option>
-                                        <option value="Business & Investment">Business & Investment</option>
-                                    </select>
-                                </div>
-                            </div>
-
                             <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Featured Duration & Placement</label>
-                                <select 
-                                    value={adBudget} 
-                                    onChange={e => setAdBudget(e.target.value)} 
-                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900"
-                                >
-                                    <option value="7 Days Featured Banner">7 Days Featured Banner (Homepage Top)</option>
-                                    <option value="15 Days Category Sponsor">15 Days Category Sponsor</option>
-                                    <option value="30 Days Unlimited Reach">30 Days Unlimited Reach</option>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Category *</label>
+                                <select className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
+                                    <option value="Study Abroad">Study Abroad</option>
+                                    <option value="Jobs Abroad">Jobs Abroad</option>
+                                    <option value="Accommodation">Accommodation</option>
+                                    <option value="Business Opportunity">Business Opportunity</option>
                                 </select>
                             </div>
-
-                            <div className="flex gap-3 pt-4 border-t border-slate-100">
-                                <button type="button" onClick={() => setIsPostingAd(false)} className="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
-                                <button type="submit" className="flex-1 py-3 bg-slate-950 hover:bg-black text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md">
-                                    <ArrowUpRight className="w-4 h-4" /> Publish Ad
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {/* Special Offer Modal */}
-            {isPublishingOffer && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsPublishingOffer(false)} />
-                    <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-10 p-6 sm:p-8 space-y-6">
-                        <div className="flex justify-between items-center pb-4 border-b border-slate-100">
                             <div>
-                                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                                    <Sparkles className="w-5 h-5 text-amber-500 fill-amber-500" /> Publish Special Offer
-                                </h2>
-                                <p className="text-xs font-medium text-slate-500 mt-0.5">Create a discount promo offer for client bookings</p>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Price / Tagline</label>
+                                <input type="text" placeholder="e.g. FREE or ₹ 650 CAD / Month" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" />
                             </div>
-                            <button onClick={() => setIsPublishingOffer(false)} className="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-900 transition-colors">
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-
-                        <form onSubmit={handlePublishOffer} className="space-y-4">
-                            <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Offer Title</label>
-                                <input 
-                                    value={offerTitle} 
-                                    onChange={e => setOfferTitle(e.target.value)} 
-                                    placeholder="e.g. 20% Discount on First Consultation Booking" 
-                                    required 
-                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900" 
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Discount Badge</label>
-                                    <input 
-                                        value={offerDiscount} 
-                                        onChange={e => setOfferDiscount(e.target.value)} 
-                                        placeholder="e.g. 20% OFF or ₹500 OFF" 
-                                        required 
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900" 
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Promo Code</label>
-                                    <input 
-                                        value={offerCode} 
-                                        onChange={e => setOfferCode(e.target.value)} 
-                                        placeholder="e.g. VISA2026" 
-                                        required 
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41] text-slate-900 uppercase font-mono" 
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex gap-3 pt-4 border-t border-slate-100">
-                                <button type="button" onClick={() => setIsPublishingOffer(false)} className="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
-                                <button type="submit" className="flex-1 py-3 bg-[#107c41] hover:bg-[#0d5c3a] text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md">
-                                    <Sparkles className="w-4 h-4 text-amber-300 fill-amber-300" /> Activate Offer
-                                </button>
+                            <div className="flex gap-3 pt-2">
+                                <button type="button" onClick={() => { setIsPostingAd(false); setIsPublishingOffer(false); }} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50">Cancel</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] text-white font-bold rounded-xl text-xs shadow-md">Publish Listing</button>
                             </div>
                         </form>
                     </div>

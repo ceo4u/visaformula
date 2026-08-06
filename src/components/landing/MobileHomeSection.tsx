@@ -85,7 +85,7 @@ export function MobileHomeSection() {
   return (
     <div
       className="flex flex-col bg-[#f3f4f6] min-h-screen w-full max-w-full overflow-x-hidden box-border"
-      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", paddingBottom: '80px' }}
+      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", paddingBottom: '16px' }}
     >
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
@@ -346,55 +346,6 @@ export function MobileHomeSection() {
         {/* ── 6. Bottom Spacer ── */}
         <div className="h-4" />
       </div>
-
-      {/* ── Fixed Bottom Navigation Bar (Matches User Screenshot) ── */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-50 shadow-lg"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-        <div className="flex items-center justify-around px-2 py-2">
-          {/* Home */}
-          <a href="/"
-            onClick={() => setActiveNav('home')}
-            className="flex flex-col items-center gap-0.5 py-1 px-3">
-            <HomeIcon className={`w-5 h-5 ${activeNav === 'home' ? 'text-[#00a896]' : 'text-gray-400'}`} />
-            <span className={`text-[10px] font-semibold ${activeNav === 'home' ? 'text-[#00a896]' : 'text-gray-400'}`}>Home</span>
-          </a>
-
-          {/* Search */}
-          <a href="/find-experts"
-            onClick={() => setActiveNav('search')}
-            className="flex flex-col items-center gap-0.5 py-1 px-3">
-            <Search className={`w-5 h-5 ${activeNav === 'search' ? 'text-[#00a896]' : 'text-gray-400'}`} />
-            <span className={`text-[10px] font-semibold ${activeNav === 'search' ? 'text-[#00a896]' : 'text-gray-400'}`}>Search</span>
-          </a>
-
-          {/* Post (Center green button) */}
-          <a href="/classifieds"
-            onClick={() => setActiveNav('post')}
-            className="flex flex-col items-center gap-0.5 -mt-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white"
-              style={{ backgroundColor: '#00a896' }}>
-              <Plus className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-[10px] font-semibold text-gray-400 mt-0.5">Post</span>
-          </a>
-
-          {/* Messages */}
-          <a href="/support"
-            onClick={() => setActiveNav('messages')}
-            className="flex flex-col items-center gap-0.5 py-1 px-3">
-            <MessageSquare className={`w-5 h-5 ${activeNav === 'messages' ? 'text-[#00a896]' : 'text-gray-400'}`} />
-            <span className={`text-[10px] font-semibold ${activeNav === 'messages' ? 'text-[#00a896]' : 'text-gray-400'}`}>Messages</span>
-          </a>
-
-          {/* Profile */}
-          <a href="/signup"
-            onClick={() => setActiveNav('profile')}
-            className="flex flex-col items-center gap-0.5 py-1 px-3">
-            <User className={`w-5 h-5 ${activeNav === 'profile' ? 'text-[#00a896]' : 'text-gray-400'}`} />
-            <span className={`text-[10px] font-semibold ${activeNav === 'profile' ? 'text-[#00a896]' : 'text-gray-400'}`}>Profile</span>
-          </a>
-        </div>
-      </nav>
     </div>
   );
 }

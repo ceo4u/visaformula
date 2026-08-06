@@ -75,6 +75,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     const [sendingCode, setSendingCode] = useState(false);
     const [signupError, setSignupError] = useState("");
     const [signupLoading, setSignupLoading] = useState(false);
+    const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
 
     // Google SSO States
     const [googleLoading, setGoogleLoading] = useState(false);
@@ -247,7 +248,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             console.warn("Fallback to local simulation mode.", err);
         }
 
-        // Save locally for instant client persistence and ALWAYS navigate to Seeker Dashboard
+        // Save locally for instant client persistence and navigate with Registration Successful notification
         if (typeof window !== "undefined") {
             const seekerUser = {
                 uid: `seeker_${Date.now()}`,
@@ -271,8 +272,10 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             localStorage.setItem("seeker_goals", JSON.stringify(selectedGoals));
             localStorage.setItem("seeker_destinations", JSON.stringify(selectedDests));
 
-            // Direct redirect to Seeker Dashboard
-            window.location.href = "/dashboard";
+            setIsRegistrationSuccess(true);
+            setTimeout(() => {
+                window.location.href = "/dashboard";
+            }, 1500);
         }
     };
 
@@ -809,23 +812,40 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 </div>
             </div>
 
-            {/* OTP Verification Modal Overlay */}
+            {/* OTP Verification / Registration Success Modal Overlay */}
             {showOtpModal && (
                 <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 z-[9999]">
                     <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center space-y-4 shadow-2xl border border-slate-200">
-                        <div className="w-12 h-12 rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center mx-auto border border-blue-100">
-                            <Mail className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-bold text-slate-900">Verify Email Address</h3>
-                            <p className="text-xs text-slate-500 mt-1 font-medium">
-                                Enter the 6-digit code sent to <span className="font-bold text-slate-800">{signupEmail}</span>
-                            </p>
-                        </div>
+                        {isRegistrationSuccess ? (
+                            <div className="py-6 space-y-4 animate-fade-up">
+                                <div className="w-16 h-16 rounded-full bg-teal-50 border-2 border-[#00a896] text-[#00a896] flex items-center justify-center mx-auto shadow-md">
+                                    <CheckCircle className="w-10 h-10 animate-bounce text-[#00a896]" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-black text-slate-900">Registration Successful! 🎉</h3>
+                                    <p className="text-xs text-slate-500 mt-1 font-semibold">
+                                        Welcome to VisaFormula! Redirecting to your dashboard...
+                                    </p>
+                                </div>
+                                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden mt-2">
+                                    <div className="bg-[#00a896] h-full animate-pulse w-full"></div>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="w-12 h-12 rounded-full bg-teal-50 text-[#00a896] flex items-center justify-center mx-auto border border-teal-100">
+                                    <Mail className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-slate-900">Verify Email Address</h3>
+                                    <p className="text-xs text-slate-500 mt-1 font-medium">
+                                        Enter the 6-digit code sent to <span className="font-bold text-slate-800">{signupEmail}</span>
+                                    </p>
+                                </div>
 
-                        {otpError && (
-                            <p className="text-xs font-bold text-red-600 bg-red-50 p-2 rounded-lg">{otpError}</p>
-                        )}
+                                {otpError && (
+                                    <p className="text-xs font-bold text-red-600 bg-red-50 p-2 rounded-lg">{otpError}</p>
+                                )}
 
                         <div className="flex justify-center gap-2">
                             {otpDigits.map((digit, index) => (
@@ -883,6 +903,8 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                 Cancel
                             </button>
                         </div>
+                            </>
+                        )}
                     </div>
                 </div>
             )}

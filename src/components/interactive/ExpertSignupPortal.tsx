@@ -14,6 +14,7 @@ import checkmarkPaths from "../../data/clean_checkmark.json";
 
 function ExpertSignupPortalContent() {
   const [step, setStep] = useState(1); // 1: Initial Reg, 2: Profile Complete, 3: Dashboard View
+  const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
   
   // Tab states for Dashboard
   const [activeTab, setActiveTab] = useState("dashboard"); // dashboard, profile, inquiries, cases, upgrade, photos
@@ -536,10 +537,16 @@ function ExpertSignupPortalContent() {
       }));
       
       window.scrollTo({ top: 0, behavior: "instant" });
-      if (typeof window !== "undefined" && window.location.pathname.includes("/signup")) {
-        window.location.href = "/consultant/dashboard";
-        return;
-      }
+      setIsRegistrationSuccess(true);
+      setTimeout(() => {
+        if (typeof window !== "undefined" && window.location.pathname.includes("/signup")) {
+          window.location.href = "/consultant/dashboard";
+        } else {
+          setIsRegistrationSuccess(false);
+          setStep(3);
+        }
+      }, 1500);
+      return;
     }
 
     // Launch Step 3 (Live Dashboard)
@@ -1548,6 +1555,24 @@ function ExpertSignupPortalContent() {
         </div>
       ) : (
         <div className="flex-grow flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen text-[#111111] antialiased animate-premium-fade font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>
+          {isRegistrationSuccess && (
+            <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 z-[99999]">
+              <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center space-y-5 shadow-2xl border border-slate-200 animate-fade-up">
+                <div className="w-20 h-20 rounded-full bg-teal-50 border-4 border-[#00a896] text-[#00a896] flex items-center justify-center mx-auto shadow-lg">
+                  <CheckCircle className="w-12 h-12 animate-bounce text-[#00a896]" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-slate-900">Registration Successful! 🎉</h3>
+                  <p className="text-sm text-slate-600 mt-2 font-medium">
+                    Your consultant account has been registered successfully. Redirecting to your live dashboard...
+                  </p>
+                </div>
+                <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden mt-4">
+                  <div className="bg-[#00a896] h-full animate-pulse w-full"></div>
+                </div>
+              </div>
+            </div>
+          )}
           <style dangerouslySetInnerHTML={{__html: `
             .font-roboto, .font-roboto * {
                 font-family: 'Roboto', sans-serif !important;

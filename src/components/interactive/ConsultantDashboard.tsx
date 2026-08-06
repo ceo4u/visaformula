@@ -134,13 +134,13 @@ export function ConsultantDashboard() {
             setFormCountries(loadedCountries);
             setFormImage(image);
 
-            const hasIncompleteDetails = !localStorage.getItem("expert_officeAddress") || 
-                                         city === "Location Not Specified" || 
-                                         !localStorage.getItem("expert_aboutMe") || 
-                                         !localStorage.getItem("expert_profilePhoto") ||
-                                         finalName === "Immigration Expert";
+            // Check if Expert profile is incomplete based on registration starting details
+            const hasBizName = Boolean(localStorage.getItem("expert_businessName") || localStorage.getItem("expert_firstName"));
+            const hasOfficeAddress = Boolean(localStorage.getItem("expert_officeAddress")) && localStorage.getItem("expert_officeAddress") !== "Location Not Specified";
+            const hasPhone = Boolean(localStorage.getItem("expert_phone"));
+            const hasCountries = Boolean(localStorage.getItem("expert_countriesExpertise"));
 
-            setIsProfileIncomplete(hasIncompleteDetails);
+            setIsProfileIncomplete(!hasBizName || !hasOfficeAddress || !hasPhone || !hasCountries);
 
             // Load real Classified Ads from localStorage
             try {
@@ -314,15 +314,6 @@ export function ConsultantDashboard() {
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-4">
-                    {isProfileIncomplete && (
-                        <button 
-                            onClick={() => setIsEditingProfile(true)}
-                            className="hidden sm:flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300/80 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
-                        >
-                            <span>⚠️ Complete Profile</span>
-                        </button>
-                    )}
-
                     <button onClick={() => setActiveTab("help")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors">
                         <HelpCircle className="w-4.5 h-4.5" />
                     </button>

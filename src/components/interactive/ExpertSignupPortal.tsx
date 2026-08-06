@@ -1263,16 +1263,20 @@ function ExpertSignupPortalContent() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {(consultantType === "Freelancer" || consultantType === "Registered consultancy") ? (
                       <div className="col-span-2 space-y-3">
-                        <label className="text-xs font-bold text-slate-800 block uppercase tracking-wider">Expert in (Select all that apply)*</label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div>
+                          <label className="text-xs font-black text-slate-900 block uppercase tracking-wider">FIELD OF EXPERTISE / STUDY *</label>
+                          <span className="text-[11px] text-slate-500 font-semibold block mt-0.5">Select one or more:</span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                           {[
-                            "Study visa",
-                            "Travel visa",
-                            "Job visa",
-                            "Visa filing assistance",
-                            "Visa appointment",
-                            "Tourist visa",
-                            "PR migration visas"
+                            "VISIT",
+                            "WORK",
+                            "VISA APPEALS",
+                            "DIGITAL NOMAD",
+                            "PR / MIGRATION",
+                            "STUDY",
+                            "BUSINESS / INVESTMENT",
+                            "VISA FILING ASSISTANCE"
                           ].map(service => {
                             const isChecked = expertiseTags.includes(service);
                             return (
@@ -1286,10 +1290,14 @@ function ExpertSignupPortalContent() {
                                     setExpertiseTags([...expertiseTags, service]);
                                   }
                                 }}
-                                className={`flex items-center justify-between p-3.5 rounded-xl border text-xs font-bold transition-all text-left ${isChecked ? "bg-black border-black text-white" : "bg-white border-slate-200 text-slate-700 hover:border-slate-350"}`}
+                                className={`flex items-center justify-between p-3.5 rounded-xl border text-xs font-black transition-all text-left cursor-pointer ${
+                                  isChecked 
+                                    ? "bg-[#00a896] border-[#00a896] text-white shadow-sm scale-[1.01]" 
+                                    : "bg-white border-slate-200 text-slate-700 hover:border-slate-350"
+                                }`}
                               >
                                 <span>{service}</span>
-                                <span className={`w-4 h-4 rounded-full flex items-center justify-center border text-[9px] ${isChecked ? "bg-white border-white text-black" : "border-slate-300 text-transparent"}`}>✓</span>
+                                <span className={`w-4 h-4 rounded-full flex items-center justify-center border text-[9px] ${isChecked ? "bg-white border-white text-[#00a896]" : "border-slate-300 text-transparent"}`}>✓</span>
                               </button>
                             );
                           })}

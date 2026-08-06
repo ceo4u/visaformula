@@ -896,7 +896,7 @@ function ExpertSignupPortalContent() {
                           <span className="text-amber-600 font-bold">⚠️</span>
                           <span>{emailErrorMsg}</span>
                         </div>
-                        <a href="/login" className="px-3 py-1.5 bg-[#1a73e8] text-white rounded-lg text-xs font-medium shrink-0 hover:bg-[#1557b0] transition-colors shadow-xs">
+                        <a href="/login" className="px-3 py-1.5 bg-[#00a896] text-white rounded-lg text-xs font-medium shrink-0 hover:bg-[#008f80] transition-colors shadow-xs">
                           Log In &rarr;
                         </a>
                       </div>
@@ -924,7 +924,7 @@ function ExpertSignupPortalContent() {
                           value={password} 
                           onChange={(e) => setPassword(e.target.value)} 
                           placeholder="Password" 
-                          className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs pr-10"
+                          className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#00a896] focus:ring-2 focus:ring-[#00a896]/20 transition-all duration-150 shadow-2xs pr-10"
                         />
                         <button 
                           type="button" 
@@ -942,7 +942,7 @@ function ExpertSignupPortalContent() {
                           value={confirmPassword} 
                           onChange={(e) => setConfirmPassword(e.target.value)} 
                           placeholder="Confirm" 
-                          className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs pr-10"
+                          className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#00a896] focus:ring-2 focus:ring-[#00a896]/20 transition-all duration-150 shadow-2xs pr-10"
                         />
                         <button 
                           type="button" 
@@ -964,7 +964,7 @@ function ExpertSignupPortalContent() {
                         <button
                           type="button"
                           onClick={() => setCountryCodeOpen(!countryCodeOpen)}
-                          className="px-3 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 text-[#202124] shadow-2xs shrink-0 cursor-pointer flex items-center justify-between gap-1 h-[46px] font-medium"
+                          className="px-3 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] outline-none focus:border-[#00a896] focus:ring-2 focus:ring-[#00a896]/20 text-[#202124] shadow-2xs shrink-0 cursor-pointer flex items-center justify-between gap-1 h-[46px] font-medium"
                         >
                           <span>{countryCode}</span>
                           <svg className={`w-3.5 h-3.5 text-[#5f6368] transition-transform ${countryCodeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
@@ -999,7 +999,7 @@ function ExpertSignupPortalContent() {
                         value={contactNumber} 
                         onChange={(e) => setContactNumber(e.target.value)} 
                         placeholder="e.g. 99999 99999" 
-                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
+                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#00a896] focus:ring-2 focus:ring-[#00a896]/20 transition-all duration-150 shadow-2xs"
                       />
                     </div>
                   </div>
@@ -1014,7 +1014,7 @@ function ExpertSignupPortalContent() {
                 <div className="pt-6 flex justify-end">
                   <button 
                     type="submit"
-                    className="bg-[#1a73e8] hover:bg-[#1557b0] text-white px-8 py-3 rounded-lg text-[14px] font-medium tracking-wide transition-all shadow-sm active:scale-98 cursor-pointer flex items-center gap-2"
+                    className="bg-[#00a896] hover:bg-[#008f80] text-white px-8 py-3 rounded-lg text-[14px] font-medium tracking-wide transition-all shadow-sm active:scale-98 cursor-pointer flex items-center gap-2"
                   >
                     <span>Proceed to Location & Expertise Details</span>
                     <span>&rarr;</span>

@@ -454,7 +454,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                             <button
                                 type="submit"
                                 disabled={loginLoading}
-                                className="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm transition-all cursor-pointer shadow-md active:scale-[0.99] flex items-center justify-center gap-2"
+                                className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm transition-all cursor-pointer shadow-md active:scale-[0.99] flex items-center justify-center gap-2"
                             >
                                 {loginLoading ? "Authenticating..." : "Log in"} <ArrowRight className="w-4 h-4" />
                             </button>
@@ -778,7 +778,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                             <button
                                 type="submit"
                                 disabled={signupLoading}
-                                className="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm transition-all cursor-pointer shadow-md active:scale-[0.99] flex items-center justify-center gap-2 mt-4"
+                                className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm transition-all cursor-pointer shadow-md active:scale-[0.99] flex items-center justify-center gap-2 mt-4"
                             >
                                 {signupLoading ? "Creating account..." : "Create account"} <ArrowRight className="w-4 h-4" />
                             </button>
@@ -861,7 +861,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                             type="button"
                             onClick={handleVerifyOtp}
                             disabled={sendingCode}
-                            className="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs transition-all shadow-sm cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+                            className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-3 rounded-xl text-xs transition-all shadow-sm cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
                         >
                             {sendingCode ? "Verifying & Setting up Profile..." : "Confirm Email & Complete Registration"}
                         </button>

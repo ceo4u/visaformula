@@ -748,7 +748,17 @@ function ExpertSignupPortalContent() {
       )}
 
       {step < 3 ? (
-        <div className="bg-white rounded-3xl p-4 sm:p-7 shadow-2xl border border-slate-200/80 max-w-3xl w-[95vw] sm:w-full mx-auto my-auto flex flex-col justify-start relative max-h-[85vh] sm:max-h-[88vh] overflow-y-auto no-scrollbar">
+        <div className="bg-white rounded-3xl p-4 sm:p-7 shadow-2xl border border-slate-200/80 max-w-3xl w-[95vw] sm:w-full mx-auto my-auto flex flex-col justify-start relative max-h-[85vh] sm:max-h-[88vh] overflow-y-auto">
+          {/* Top-Right X Close Button */}
+          <button 
+            type="button"
+            onClick={() => window.location.href = "/"}
+            title="Close and return to homepage"
+            className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-all cursor-pointer shadow-2xs border border-slate-200 z-30"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          
           <div className="text-center mt-1 mb-3">
             <h1 className="text-xl md:text-2xl font-bold text-[#0c1a2e] tracking-tight mb-1 font-jakarta">Register as Expert</h1>
             <p className="text-xs md:text-sm text-slate-400 font-medium">Enter your details to initialize your portal</p>

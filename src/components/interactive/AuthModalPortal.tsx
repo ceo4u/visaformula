@@ -345,17 +345,19 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             </div>
 
             {/* Central VisaHQ-Style Modal Dialog Container */}
-            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-2xl w-[95vw] sm:w-full max-h-[85vh] sm:max-h-[88vh] overflow-y-auto no-scrollbar transition-all duration-300 relative my-auto">
+            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 max-w-2xl w-[95vw] sm:w-full max-h-[85vh] sm:max-h-[88vh] overflow-y-auto transition-all duration-300 relative my-auto">
                 
-                {/* Close Button if embedded in modal */}
-                {onClose && (
-                    <button 
-                        onClick={onClose} 
-                        className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-1.5 rounded-full hover:bg-slate-100 transition-colors z-20"
-                    >
-                        <X className="w-5 h-5" />
-                    </button>
-                )}
+                {/* Always Rendered Close Button */}
+                <button 
+                    onClick={() => {
+                        if (onClose) onClose();
+                        else window.location.href = "/";
+                    }} 
+                    title="Close and return to homepage"
+                    className="absolute top-4 right-4 sm:top-5 sm:right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-all cursor-pointer shadow-2xs border border-slate-200 z-30"
+                >
+                    <X className="w-5 h-5" />
+                </button>
 
 
 

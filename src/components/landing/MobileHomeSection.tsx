@@ -148,36 +148,16 @@ export function MobileHomeSection() {
           </div>
 
           <form onSubmit={handleSearchSubmit} className="space-y-3">
-            {/* 1. Keyword Input + Your Location Selector on Right */}
-            <div className="flex gap-2 items-center">
-              <div className="relative flex-1 min-w-0 flex items-center">
-                <Search className="w-4 h-4 text-gray-400 absolute left-3 pointer-events-none" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search consultants, visas..."
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2.5 text-xs font-medium text-gray-900 placeholder:text-gray-400 outline-none focus:border-[#00a896] focus:bg-white transition-all"
-                />
-              </div>
-
-              {/* Your Location Option on Right */}
-              <div className="relative shrink-0 flex items-center">
-                <MapPin className="w-3.5 h-3.5 text-[#00a896] absolute left-2.5 pointer-events-none" />
-                <select
-                  value={selectedCity}
-                  onChange={(e) => setSelectedCity(e.target.value)}
-                  className="bg-slate-50 border border-slate-200 rounded-xl pl-7 pr-3 py-2.5 text-xs font-bold text-gray-800 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer max-w-[130px] truncate"
-                >
-                  <option value="">Your Location</option>
-                  <option value="Hyderabad">Hyderabad</option>
-                  <option value="Mumbai">Mumbai</option>
-                  <option value="Delhi">Delhi</option>
-                  <option value="Bangalore">Bangalore</option>
-                  <option value="Chennai">Chennai</option>
-                  <option value="Remote">Remote</option>
-                </select>
-              </div>
+            {/* 1. Keyword Input */}
+            <div className="relative flex items-center">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3.5 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search consultants, visas, services..."
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3.5 py-3 text-xs font-medium text-gray-900 placeholder:text-gray-400 outline-none focus:border-[#00a896] focus:bg-white transition-all"
+              />
             </div>
 
             {/* 2. Destination & Category Side-by-Side */}
@@ -187,7 +167,7 @@ export function MobileHomeSection() {
                 <select
                   value={selectedCountry}
                   onChange={(e) => setSelectedCountry(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2.5 text-xs font-bold text-gray-800 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer truncate"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold text-gray-800 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer truncate"
                 >
                   <option value="">All Countries</option>
                   <option value="Canada">Canada</option>
@@ -205,7 +185,7 @@ export function MobileHomeSection() {
                 <select
                   value={selectedPurpose}
                   onChange={(e) => setSelectedPurpose(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2.5 text-xs font-bold text-gray-800 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer truncate"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold text-gray-800 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer truncate"
                 >
                   <option value="">All Categories</option>
                   <option value="Student Visa">Student Visa</option>
@@ -217,10 +197,31 @@ export function MobileHomeSection() {
               </div>
             </div>
 
+            {/* 3. My Location Filter */}
+            <div>
+              <label className="block text-[10px] font-extrabold text-gray-400 uppercase tracking-wider mb-1">LOCATION</label>
+              <div className="relative flex items-center">
+                <MapPin className="w-3.5 h-3.5 text-[#00a896] absolute left-3 pointer-events-none" />
+                <select
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2.5 text-xs font-bold text-gray-800 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer truncate"
+                >
+                  <option value="">All Locations / Cities</option>
+                  <option value="Hyderabad">Hyderabad</option>
+                  <option value="Mumbai">Mumbai</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Bangalore">Bangalore</option>
+                  <option value="Chennai">Chennai</option>
+                  <option value="Remote">Remote</option>
+                </select>
+              </div>
+            </div>
+
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] cursor-pointer mt-1"
+              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] cursor-pointer mt-1"
             >
               <Search className="w-4 h-4" />
               <span>Search Consultants</span>

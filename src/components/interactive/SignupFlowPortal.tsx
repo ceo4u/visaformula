@@ -73,9 +73,9 @@ export function SignupFlowPortal() {
                                         </svg>
                                     </div>
                                 </div>
-                                <span className="mt-4 font-bold text-slate-900 text-lg group-hover:text-[#00a896] transition-colors">
+                                <h2 className="mt-4 text-lg font-semibold tracking-tight text-slate-900 group-hover:text-[#00a896] transition-colors">
                                     Visa Seeker
-                                </span>
+                                </h2>
                                 <span className="text-xs text-slate-500 max-w-[200px] mt-1 mb-4 font-medium leading-relaxed">
                                     Find, consult &amp; book immigration experts
                                 </span>
@@ -109,9 +109,9 @@ export function SignupFlowPortal() {
                                         </svg>
                                     </div>
                                 </div>
-                                <span className="mt-4 font-bold text-slate-900 text-lg group-hover:text-[#0c1a2e] transition-colors">
+                                <h2 className="mt-4 text-lg font-semibold tracking-tight text-slate-900 group-hover:text-[#0c1a2e] transition-colors">
                                     Visa Expert
-                                </span>
+                                </h2>
                                 <span className="text-xs text-slate-500 max-w-[200px] mt-1 mb-4 font-medium leading-relaxed">
                                     Grow your global client consulting practice
                                 </span>

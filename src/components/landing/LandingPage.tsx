@@ -9,8 +9,10 @@ export default function LandingPage() {
       <div className="hidden lg:block">
         <DesktopHomeSection />
       </div>
-      {/* Mobile: shown on screens smaller than lg (phones + small tablets) */}
-      <MobileHomeSection />
+      {/* Mobile: shown on screens smaller than lg */}
+      <div className="block lg:hidden">
+        <MobileHomeSection />
+      </div>
     </div>
   );
 }

@@ -80,7 +80,7 @@ export function MobileHomeSection() {
 
   return (
     <div
-      className="lg:hidden flex flex-col bg-[#f3f4f6] min-h-screen w-full max-w-full overflow-x-hidden box-border"
+      className="flex flex-col bg-[#f3f4f6] min-h-screen w-full max-w-full overflow-x-hidden box-border"
       style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", paddingBottom: '80px' }}
     >
       <style dangerouslySetInnerHTML={{ __html: `

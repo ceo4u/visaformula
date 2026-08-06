@@ -92,7 +92,7 @@ export function Header() {
 
         {/* Desktop Central Nav Items */}
         <nav className="hidden lg:flex items-center gap-7">
-          <DropdownMenu label="Find Consultants" items={findConsultantsItems} />
+          <DropdownMenu label="Find Experts" items={findConsultantsItems} />
           
           <a href="/services/apply-visa" className="text-[14px] font-bold text-slate-800 hover:text-[#00a896] transition-colors whitespace-nowrap py-2">
             Self Apply
@@ -141,7 +141,7 @@ export function Header() {
       {menuOpen && (
         <div className="lg:hidden bg-white border-t border-slate-200 shadow-xl max-h-[85vh] overflow-y-auto">
           <div className="p-4 space-y-2 text-xs font-bold">
-            <a href="/find-experts" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Find Consultants</a>
+            <a href="/find-experts" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Find Experts</a>
             <a href="/services/apply-visa" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Self Apply</a>
             <a href="/services/visa-documentation" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Visa Services</a>
             <a href="/visa-guide" className="block px-3 py-2.5 text-slate-800 hover:text-[#00a896] rounded-lg">Latest News & offers</a>

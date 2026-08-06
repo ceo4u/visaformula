@@ -3,23 +3,15 @@ import {
     Clock, CheckCircle, Lock, Calendar, BookOpen, Bookmark, AlertTriangle,
     ArrowRight, ArrowLeft, Bell, FileText, Star, Shield, TrendingUp, ChevronRight,
     Search, Plus, LayoutDashboard, MessageSquare, Settings, HelpCircle, Briefcase,
-    Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save
+    Video, User, LogOut, CheckSquare, Sparkles, X, ChevronDown, Filter, MapPin, Globe, LayoutGrid, Save, Menu, ChevronLeft, Edit2
 } from "lucide-react";
 
 const destinationsList = ["Canada", "USA", "UK", "Australia", "New Zealand", "Germany", "Ireland", "Singapore", "UAE", "France"];
 
-const initialBookings: any[] = [];
-const initialSavedExperts: any[] = [];
-const initialNotifications: any[] = [];
-const initialScannedDocuments: any[] = [];
-const initialPreviousVisas: any[] = [];
-const initialDisputes: any[] = [];
-const initialEscrowPayments: any[] = [];
-const initialVisasProcessing: any[] = [];
-
 export function UserDashboard() {
     const [ieltsScore, setIeltsScore] = useState({ L: 7.5, R: 7.0, W: 6.5, S: 7.0 });
     const overallBand = ((ieltsScore.L + ieltsScore.R + ieltsScore.W + ieltsScore.S) / 4).toFixed(1);
+    
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
@@ -38,13 +30,14 @@ export function UserDashboard() {
     const [timePeriod, setTimePeriod] = useState("Last 30 days");
     const [timePeriodOpen, setTimePeriodOpen] = useState(false);
     const [isProfileIncomplete, setIsProfileIncomplete] = useState(false);
+    const [profilePhoto, setProfilePhoto] = useState("");
 
-    const [scannedDocs, setScannedDocs] = useState(initialScannedDocuments);
-    const [favouriteExperts, setFavouriteExperts] = useState(initialSavedExperts);
-    const [previousVisas, setPreviousVisas] = useState(initialPreviousVisas);
-    const [activeDisputes, setActiveDisputes] = useState(initialDisputes);
-    const [escrowPaymentsState, setEscrowPaymentsState] = useState(initialEscrowPayments);
-    const [visasProcessingState, setVisasProcessingState] = useState(initialVisasProcessing);
+    const [scannedDocs, setScannedDocs] = useState<any[]>([]);
+    const [favouriteExperts, setFavouriteExperts] = useState<any[]>([]);
+    const [previousVisas, setPreviousVisas] = useState<any[]>([]);
+    const [activeDisputes, setActiveDisputes] = useState<any[]>([]);
+    const [escrowPaymentsState, setEscrowPaymentsState] = useState<any[]>([]);
+    const [visasProcessingState, setVisasProcessingState] = useState<any[]>([]);
 
     const [documents, setDocuments] = useState([
         { id: 1, label: "Passport Scan Copy", status: "uploaded", icon: "✅", bg: "bg-emerald-50 text-emerald-700 border-emerald-200", studentOnly: false },
@@ -71,97 +64,89 @@ export function UserDashboard() {
                     }
                 } catch(e) {}
             }
-        }
 
-        const savedFirst = localStorage.getItem("seeker_firstName");
-        if (savedFirst) {
-            setFirstName(savedFirst);
-            setModalFirstName(savedFirst);
-        }
-        
-        const savedLast = localStorage.getItem("seeker_lastName");
-        if (savedLast) {
-            setLastName(savedLast);
-            setModalLastName(savedLast);
-        }
-
-        const savedPhone = localStorage.getItem("seeker_phone");
-        if (savedPhone) {
-            setPhone(savedPhone);
-            const match = savedPhone.match(/^(\+\d+)\s*(.*)$/);
-            if (match) {
-                setCountryCode(match[1]);
-                setModalPhone(match[2]);
-            } else {
-                setModalPhone(savedPhone);
+            const savedFirst = localStorage.getItem("seeker_firstName");
+            if (savedFirst) {
+                setFirstName(savedFirst);
+                setModalFirstName(savedFirst);
             }
-        }
+            
+            const savedLast = localStorage.getItem("seeker_lastName");
+            if (savedLast) {
+                setLastName(savedLast);
+                setModalLastName(savedLast);
+            }
 
-        const savedEmail = localStorage.getItem("seeker_email");
-        if (savedEmail) setEmail(savedEmail);
+            const savedPhone = localStorage.getItem("seeker_phone");
+            if (savedPhone) {
+                setPhone(savedPhone);
+                const match = savedPhone.match(/^(\+\d+)\s*(.*)$/);
+                if (match) {
+                    setCountryCode(match[1]);
+                    setModalPhone(match[2]);
+                } else {
+                    setModalPhone(savedPhone);
+                }
+            }
 
-        const savedCountry = localStorage.getItem("seeker_passportCountry");
-        if (savedCountry) {
-            setPassportCountry(savedCountry);
-            setCountryOfCitizenship(savedCountry);
-            setModalPassportCountry(savedCountry);
-        }
+            const savedEmail = localStorage.getItem("seeker_email");
+            if (savedEmail) setEmail(savedEmail);
 
-        const savedCitizenship = localStorage.getItem("seeker_country_of_citizenship");
-        if (savedCitizenship) {
-            setCountryOfCitizenship(savedCitizenship);
-            setModalPassportCountry(savedCitizenship);
-        }
+            const savedCountry = localStorage.getItem("seeker_passportCountry");
+            if (savedCountry) {
+                setPassportCountry(savedCountry);
+                setCountryOfCitizenship(savedCountry);
+                setModalPassportCountry(savedCountry);
+            }
 
-        const savedResidence = localStorage.getItem("seeker_resident_of");
-        if (savedResidence) {
-            setResidentOf(savedResidence);
-            setModalResidentOf(savedResidence);
-        }
+            const savedCitizenship = localStorage.getItem("seeker_country_of_citizenship");
+            if (savedCitizenship) {
+                setCountryOfCitizenship(savedCitizenship);
+                setModalPassportCountry(savedCitizenship);
+            }
 
-        const savedLookingFor = localStorage.getItem("seeker_looking_for");
-        if (savedLookingFor) {
-            setModalLookingFor(savedLookingFor);
-        }
+            const savedResidence = localStorage.getItem("seeker_resident_of");
+            if (savedResidence) {
+                setResidentOf(savedResidence);
+                setModalResidentOf(savedResidence);
+            }
 
-        try {
-            const savedGoals = localStorage.getItem("seeker_goals");
-            if (savedGoals) {
-                setSelectedGoals(JSON.parse(savedGoals));
-                try {
+            const savedPhoto = localStorage.getItem("seeker_profilePhoto") || localStorage.getItem("seeker_profilePhotoUrl") || "";
+            setProfilePhoto(savedPhoto);
+            setModalPhoto(savedPhoto);
+
+            try {
+                const savedGoals = localStorage.getItem("seeker_goals");
+                if (savedGoals) {
                     const parsed = JSON.parse(savedGoals);
+                    setSelectedGoals(parsed);
                     if (Array.isArray(parsed)) setModalGoals(parsed.join(", "));
-                } catch(e) {}
-            }
+                }
 
-            const savedDests = localStorage.getItem("seeker_destinations");
-            if (savedDests) {
-                setSelectedDests(JSON.parse(savedDests));
-                try {
+                const savedDests = localStorage.getItem("seeker_destinations");
+                if (savedDests) {
                     const parsed = JSON.parse(savedDests);
+                    setSelectedDests(parsed);
                     if (Array.isArray(parsed)) setModalDestinations(parsed.join(", "));
-                } catch(e) {}
+                }
+            } catch (e) {}
+
+            const savedCity = localStorage.getItem("seeker_city") || "";
+            const savedState = localStorage.getItem("seeker_state") || "";
+            const savedZip = localStorage.getItem("seeker_zip") || "";
+            setModalCity(savedCity);
+            setModalState(savedState);
+            setModalZip(savedZip);
+
+            // Check if Seeker profile is incomplete
+            const hasNoPhone = !localStorage.getItem("seeker_phone");
+            const hasNoCitizenship = !localStorage.getItem("seeker_country_of_citizenship") && !localStorage.getItem("seeker_passportCountry");
+            const hasNoResidence = !localStorage.getItem("seeker_resident_of");
+            const hasDefaultName = !savedFirst || savedFirst === "Seeker";
+
+            if (hasNoPhone || hasNoCitizenship || hasNoResidence || hasDefaultName) {
+                setIsProfileIncomplete(true);
             }
-        } catch (e) {
-            console.error(e);
-        }
-
-        const savedCity = localStorage.getItem("seeker_city") || "";
-        const savedState = localStorage.getItem("seeker_state") || "";
-        const savedZip = localStorage.getItem("seeker_zip") || "";
-        setModalCity(savedCity);
-        setModalState(savedState);
-        setModalZip(savedZip);
-
-        // Check if Seeker profile is incomplete (missing phone, citizen country or resident country)
-        const hasNoPhone = !localStorage.getItem("seeker_phone");
-        const hasNoCitizenship = !localStorage.getItem("seeker_country_of_citizenship") && !localStorage.getItem("seeker_passportCountry");
-        const hasNoResidence = !localStorage.getItem("seeker_resident_of");
-        const hasDefaultName = !savedFirst || savedFirst === "Seeker";
-
-        if (hasNoPhone || hasNoCitizenship || hasNoResidence || hasDefaultName) {
-            setIsProfileIncomplete(true);
-            setShowProfileModal(true); // Auto-prompt Seeker to complete details
         }
     }, []);
 
@@ -177,6 +162,7 @@ export function UserDashboard() {
     const [modalCity, setModalCity] = useState("");
     const [modalState, setModalState] = useState("");
     const [modalZip, setModalZip] = useState("");
+    const [modalPhoto, setModalPhoto] = useState("");
 
     const toggleDocStatus = (id: number) => {
         setDocuments(prev => prev.map(d => {
@@ -200,6 +186,7 @@ export function UserDashboard() {
         setPhone(countryCode + " " + modalPhone);
         setCountryOfCitizenship(modalPassportCountry);
         setResidentOf(modalResidentOf);
+        setProfilePhoto(modalPhoto);
 
         const goalsArr = modalGoals.split(",").map(g => g.trim()).filter(Boolean);
         const destsArr = modalDestinations.split(",").map(d => d.trim()).filter(Boolean);
@@ -219,6 +206,7 @@ export function UserDashboard() {
         localStorage.setItem("seeker_city", modalCity);
         localStorage.setItem("seeker_state", modalState);
         localStorage.setItem("seeker_zip", modalZip);
+        localStorage.setItem("seeker_profilePhoto", modalPhoto);
 
         setIsProfileIncomplete(false);
         setShowProfileModal(false);
@@ -237,670 +225,535 @@ export function UserDashboard() {
         window.location.href = "/";
     };
 
-    // Real sales & application categories data
-    const categoriesData = [
-        { label: "Student Visas", percent: "25%", color: "#8b5cf6" },
-        { label: "Work Permits", percent: "17%", color: "#3b82f6" },
-        { label: "Tourist Visas", percent: "13%", color: "#a855f7" },
-        { label: "PR & Migration", percent: "12%", color: "#38bdf8" },
-        { label: "Consultations", percent: "9%", color: "#ec4899" },
-        { label: "SOP Review", percent: "8%", color: "#f43f5e" },
-        { label: "VFS Booking", percent: "6%", color: "#f97316" },
-        { label: "IELTS Prep", percent: "5%", color: "#eab308" },
-        { label: "Tour Packages", percent: "3%", color: "#10b981" },
-        { label: "Escrow Vault", percent: "2%", color: "#22c55e" },
+    const navItems = [
+        { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard },
+        { id: "cases", label: "Active Visa Cases", icon: Briefcase },
+        { id: "consultations", label: "Bookings & Sessions", icon: Calendar },
+        { id: "scanned-documents", label: "Document Vault", icon: FileText },
+        { id: "favourite-experts", label: "Saved Experts", icon: Bookmark },
+        { id: "escrow-milestones", label: "Escrow Vault", icon: Lock },
+        { id: "visa-history", label: "Visa History", icon: BookOpen },
+        { id: "profile", label: "Profile & Settings", icon: User },
     ];
 
-    // Real destination country breakdown statistics
-    const countriesData = [
-        { name: "Canada", percent: "28%" },
-        { name: "United States (USA)", percent: "22%" },
-        { name: "United Kingdom (UK)", percent: "16%" },
-        { name: "Australia", percent: "12%" },
-        { name: "Germany", percent: "9%" },
-        { name: "New Zealand", percent: "6%" },
-        { name: "Ireland", percent: "4%" },
-        { name: "UAE", percent: "3%" },
-    ];
-
-    // Flup Dual Bar Chart mock data
-    const barChartData = [
-        { day: "1 Jul", gross: 27, rev: 37 },
-        { day: "2 Jul", gross: 31, rev: 45 },
-        { day: "3 Jul", gross: 20, rev: 52 },
-        { day: "4 Jul", gross: 33, rev: 43 },
-        { day: "5 Jul", gross: 50, rev: 38 },
-        { day: "6 Jul", gross: 60, rev: 63, tooltip: true },
-        { day: "7 Jul", gross: 22, rev: 34 },
-        { day: "8 Jul", gross: 33, rev: 42 },
-        { day: "9 Jul", gross: 21, rev: 32 },
-        { day: "10 Jul", gross: 45, rev: 47 },
-        { day: "11 Jul", gross: 33, rev: 45 },
-        { day: "12 Jul", gross: 52, rev: 55 },
-    ];
+    const fullName = `${firstName} ${lastName}`.trim() || "Visa Seeker";
 
     return (
-        <div className="min-h-screen bg-white text-slate-800 font-sans flex overflow-x-hidden antialiased" style={{ fontFamily: "'Roboto', 'Google Sans', system-ui, -apple-system, sans-serif" }}>
-            <style dangerouslySetInnerHTML={{__html: `
-                @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Google+Sans:wght@400;500;700&display=swap');
-            `}} />
+        <div className="min-h-screen bg-[#f8fafc] font-sora flex flex-col text-slate-800 antialiased selection:bg-[#00a896] selection:text-white">
             
-            {/* Desktop Flup-Style Left Sidebar Navigation — Pure White Background */}
-            <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
-                <div>
-                    {/* Brand Header — Official Logo */}
-                    <div className="p-3.5 border-b border-slate-200/70 flex items-center justify-between bg-white min-h-[60px]">
-                        <a href="/" className="flex items-center gap-2 min-w-0">
-                            {isSidebarCollapsed ? (
-                                <img src="/logo.png" alt="VisaFormula Logo" className="h-7 w-auto object-contain shrink-0" />
-                            ) : (
-                                <img src="/logo.png" alt="VisaFormula Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain shrink-0 max-w-[180px]" />
-                            )}
-                        </a>
+            {/* Top Fixed Navigation Header */}
+            <header className="bg-white border-b border-slate-200/80 shadow-2xs h-16 sticky top-0 z-40 flex items-center justify-between px-4 sm:px-6">
+                <div className="flex items-center gap-3">
+                    <button 
+                        onClick={() => setIsMobileSidebarOpen(true)}
+                        className="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
+                    >
+                        <Menu className="w-5 h-5" />
+                    </button>
+                    <a href="/" className="flex items-center gap-2">
+                        <img src="/logo.png" alt="VisaFormula" className="h-8 sm:h-9 max-h-[36px] w-auto object-contain" />
+                    </a>
+                </div>
+
+                <div className="flex items-center gap-3 sm:gap-4">
+                    {isProfileIncomplete && (
                         <button 
-                            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
-                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors hidden lg:block"
+                            onClick={() => setShowProfileModal(true)}
+                            className="hidden sm:flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300/80 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
                         >
-                            <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isSidebarCollapsed ? "" : "rotate-180"}`} />
+                            <span>⚠️ Complete Profile</span>
                         </button>
-                    </div>
+                    )}
 
-                    {/* Navigation Links */}
-                    <nav className="p-3 space-y-6">
-                        {/* Section 1: CORE */}
-                        <div>
-                            {!isSidebarCollapsed && (
-                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
-                                    Core Workspace
-                                </p>
-                            )}
-                            <div className="space-y-1">
-                                {[
-                                    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-                                    { id: "cases", label: "Active Cases", icon: Briefcase },
-                                    { id: "consultations", label: "Consultations", icon: Calendar },
-                                    { id: "scanned-documents", label: "Document Vault", icon: FileText },
-                                ].map(item => {
-                                    const isActive = activeTab === item.id;
-                                    const IconComp = item.icon;
-                                    return (
-                                        <button
-                                            key={item.id}
-                                            onClick={() => setActiveTab(item.id)}
-                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                isActive
-                                                    ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs"
-                                                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                                            }`}
-                                        >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
-                                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
+                    <a href="/find-experts" className="hidden sm:flex items-center gap-1.5 bg-[#00a896] hover:bg-[#008f80] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm">
+                        <Plus className="w-3.5 h-3.5" /> Book Consultation
+                    </a>
 
-                        {/* Section 2: SERVICES & PAYMENTS */}
-                        <div>
-                            {!isSidebarCollapsed && (
-                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
-                                    Services & Escrow
-                                </p>
-                            )}
-                            <div className="space-y-1">
-                                {[
-                                    { id: "escrow-milestones", label: "Escrow Vault", icon: Lock },
-                                    { id: "visa-history", label: "Visa History", icon: BookOpen },
-                                    { id: "favourite-experts", label: "Saved Experts", icon: Bookmark },
-                                ].map(item => {
-                                    const isActive = activeTab === item.id;
-                                    const IconComp = item.icon;
-                                    return (
-                                        <button
-                                            key={item.id}
-                                            onClick={() => setActiveTab(item.id)}
-                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                isActive
-                                                    ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs"
-                                                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                                            }`}
-                                        >
-                                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
-                                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
+                    <button onClick={() => setActiveTab("consultations")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
+                        <Bell className="w-4.5 h-4.5" />
+                    </button>
 
-                        {/* Section 3: SYSTEM */}
-                        <div>
-                            {!isSidebarCollapsed && (
-                                <p className="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">
-                                    System
-                                </p>
-                            )}
-                            <div className="space-y-1">
-                                <button
-                                    onClick={() => setShowProfileModal(true)}
-                                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all"
-                                >
-                                    <Settings className="w-4 h-4 shrink-0 text-slate-500" />
-                                    {!isSidebarCollapsed && <span>Profile Settings</span>}
-                                </button>
+                    <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200 cursor-pointer" onClick={() => setActiveTab("profile")}>
+                        {profilePhoto && !profilePhoto.includes("unsplash.com") ? (
+                            <img src={profilePhoto} alt={fullName} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
+                        ) : (
+                            <div className="w-9 h-9 rounded-full bg-[#00a896] text-white text-sm font-black flex items-center justify-center border border-teal-200 shrink-0 shadow-2xs">
+                                {(fullName || "S").charAt(0).toUpperCase()}
                             </div>
-                        </div>
-                    </nav>
-                </div>
-
-                {/* Bottom User Profile Card */}
-                <div className="p-3 border-t border-slate-200/70">
-                    <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200/60 shadow-xs">
-                        <div className="flex items-center gap-2.5 min-w-0">
-                            <div className="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center font-extrabold text-xs shrink-0">
-                                {(firstName || "U").charAt(0).toUpperCase()}
-                            </div>
-                            {!isSidebarCollapsed && (
-                                <div className="min-w-0">
-                                    <h4 className="text-xs font-extrabold text-slate-900 truncate leading-tight">
-                                        {firstName} {lastName}
-                                    </h4>
-                                    <p className="text-[10px] font-semibold text-slate-500 truncate">
-                                        Seeker / Client
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                        {!isSidebarCollapsed && (
-                            <button onClick={handleLogout} className="text-slate-400 hover:text-rose-600 p-1 transition-colors" title="Log Out">
-                                <LogOut className="w-4 h-4" />
-                            </button>
                         )}
+                        <div className="hidden md:block text-left">
+                            <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{fullName}</h4>
+                            <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200/80 mt-0.5">Visa Seeker</span>
+                        </div>
+                        <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
                     </div>
                 </div>
-            </aside>
+            </header>
 
-            {/* Mobile Slide-Over Drawer Navigation */}
-            <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isMobileSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-                <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300" onClick={() => setIsMobileSidebarOpen(false)} />
-                <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-5 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-                    <div className="space-y-6">
-                        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                            <img src="/logo.png" alt="VisaFormula Logo" className="h-10 w-auto object-contain" />
-                            <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-
-                        <nav className="space-y-4">
-                            <div>
-                                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">Core Workspace</p>
-                                <div className="space-y-1">
-                                    {[
-                                        { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-                                        { id: "cases", label: "Active Cases", icon: Briefcase },
-                                        { id: "consultations", label: "Consultations", icon: Calendar },
-                                        { id: "scanned-documents", label: "Document Vault", icon: FileText },
-                                    ].map(item => {
-                                        const isActive = activeTab === item.id;
-                                        const IconComp = item.icon;
-                                        return (
-                                            <button
-                                                key={item.id}
-                                                onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
-                                                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
-                                                }`}
-                                            >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
-                                                <span>{item.label}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            <div>
-                                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2">Services & Escrow</p>
-                                <div className="space-y-1">
-                                    {[
-                                        { id: "escrow-milestones", label: "Escrow Vault", icon: Lock },
-                                        { id: "visa-history", label: "Visa History", icon: BookOpen },
-                                        { id: "favourite-experts", label: "Saved Experts", icon: Bookmark },
-                                    ].map(item => {
-                                        const isActive = activeTab === item.id;
-                                        const IconComp = item.icon;
-                                        return (
-                                            <button
-                                                key={item.id}
-                                                onClick={() => { setActiveTab(item.id); setIsMobileSidebarOpen(false); }}
-                                                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                                                    isActive ? "bg-teal-50/90 text-[#00a896] border border-teal-200/80 shadow-2xs" : "text-slate-700 hover:bg-slate-100"
-                                                }`}
-                                            >
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-[#00a896]" : "text-slate-500"}`} />
-                                                <span>{item.label}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
+            <div className="flex-1 flex min-h-[calc(100vh-4rem)]">
+                
+                {/* Desktop Collapsible Left Sidebar */}
+                <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
+                    <div className="p-3.5 space-y-4">
+                        <nav className="space-y-1">
+                            {navItems.map(item => {
+                                const isActive = activeTab === item.id;
+                                const IconComp = item.icon;
+                                return (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => setActiveTab(item.id)}
+                                        className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                            isActive
+                                                ? "bg-[#00a896] text-white shadow-md"
+                                                : "text-slate-600 hover:bg-slate-100"
+                                        }`}
+                                    >
+                                        <IconComp className={`w-4.5 h-4.5 shrink-0 ${isActive ? "text-white" : "text-slate-500"}`} />
+                                        {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                                    </button>
+                                );
+                            })}
                         </nav>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-100 space-y-1.5">
-                        <button 
-                            onClick={() => { setShowProfileModal(true); setIsMobileSidebarOpen(false); }} 
-                            className="w-full flex items-center gap-3 px-3.5 py-2.5 text-slate-700 hover:bg-slate-100 rounded-xl font-bold text-xs transition-all"
+                    <div className="p-3 border-t border-slate-100 space-y-2">
+                        <button
+                            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition-colors"
                         >
-                            <Settings className="w-4 h-4 text-slate-500" />
-                            <span>Profile Settings</span>
+                            {!isSidebarCollapsed && <span>Collapse Sidebar</span>}
+                            <ChevronLeft className={`w-4 h-4 transition-transform ${isSidebarCollapsed ? "rotate-180" : ""}`} />
                         </button>
-                        <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3.5 py-2.5 text-rose-600 hover:bg-rose-50 rounded-xl font-bold text-xs transition-all">
-                            <LogOut className="w-4 h-4" />
-                            <span>Log Out</span>
+
+                        <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs text-rose-600 hover:bg-rose-50 transition-all"
+                        >
+                            <LogOut className="w-4.5 h-4.5 shrink-0" />
+                            {!isSidebarCollapsed && <span>Logout</span>}
                         </button>
                     </div>
                 </aside>
-            </div>
 
-            {/* Main Workspace Area */}
-            <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-                
-                {/* Top Header Bar — Ultra Clean Modern Layout */}
-                <header className="bg-white border-b border-slate-200/80 px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2 sticky top-0 z-20 shadow-2xs overflow-hidden">
-                    <div className="flex items-center gap-2 min-w-0">
-                        <button onClick={() => setIsMobileSidebarOpen(true)} className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
-                            <LayoutGrid className="w-6 h-6" />
-                        </button>
-                        <a href="/" className="lg:hidden flex items-center shrink-0">
-                            <img src="/logo.png" alt="VisaFormula Logo" className="h-11 sm:h-12 w-auto max-h-[46px] object-contain animate-premium-fade" />
-                        </a>
-                        {/* Sleek Workspace Indicator Icon Badge — Larger & Prominent */}
-                        <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 px-4 py-2 rounded-2xl shadow-2xs">
-                            <LayoutDashboard className="w-5.5 h-5.5 text-[#00a896] shrink-0" />
-                            <span className="text-sm sm:text-base font-bold text-slate-900 capitalize tracking-tight">
-                                {activeTab.replace("-", " ")}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                        {/* Time Period Filter Pill (Flup Reference) */}
-                        <div className="relative">
-                            <button 
-                                onClick={() => setTimePeriodOpen(!timePeriodOpen)}
-                                className="flex items-center gap-1 bg-slate-50 border border-slate-200/90 hover:border-slate-300 px-2 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold text-slate-700 transition-all shadow-2xs"
-                            >
-                                <span className="truncate max-w-[90px] sm:max-w-none">📅 <strong className="text-slate-900">{timePeriod}</strong></span>
-                                <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
-                            </button>
-
-                            {timePeriodOpen && (
-                                <div className="absolute right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 w-44 z-50">
-                                    {["Last 7 days", "Last 30 days", "Last 90 days", "This Year"].map(tp => (
+                {/* Mobile Drawer Navigation */}
+                <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isMobileSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsMobileSidebarOpen(false)} />
+                    <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-4 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                                <img src="/logo.png" alt="VisaFormula" className="h-7 w-auto object-contain" />
+                                <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1 rounded-lg hover:bg-slate-100 text-slate-500">
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+                            <nav className="space-y-1">
+                                {navItems.map(item => {
+                                    const isActive = activeTab === item.id;
+                                    const IconComp = item.icon;
+                                    return (
                                         <button
-                                            key={tp}
-                                            onClick={() => { setTimePeriod(tp); setTimePeriodOpen(false); }}
-                                            className={`w-full text-left px-3 py-1.5 text-xs font-semibold ${timePeriod === tp ? "bg-[#e6f4ea] text-[#0d5c3a]" : "text-slate-700 hover:bg-slate-50"}`}
+                                            key={item.id}
+                                            onClick={() => {
+                                                setActiveTab(item.id);
+                                                setIsMobileSidebarOpen(false);
+                                            }}
+                                            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                isActive
+                                                    ? "bg-[#00a896] text-white shadow-md"
+                                                    : "text-slate-600 hover:bg-slate-100"
+                                            }`}
                                         >
-                                            {tp}
+                                            <IconComp className="w-4 h-4" />
+                                            <span>{item.label}</span>
                                         </button>
-                                    ))}
-                                </div>
-                            )}
+                                    );
+                                })}
+                            </nav>
                         </div>
 
-                        {/* Search Input */}
-                        <div className="relative hidden md:block w-52">
-                            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                            <input 
-                                type="text"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Search workspace..."
-                                className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold outline-none focus:border-[#107c41]"
-                            />
-                        </div>
-
-                        {/* Notification Bell Button — Perfect Square Badge */}
-                        <button className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors relative shrink-0 shadow-2xs">
-                            <Bell className="w-4.5 h-4.5 text-slate-700" />
-                            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 absolute top-1.5 right-1.5 border-2 border-white shadow-2xs" />
+                        <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs text-rose-600 hover:bg-rose-50 transition-all mt-4"
+                        >
+                            <LogOut className="w-4 h-4" />
+                            <span>Logout</span>
                         </button>
-                    </div>
-                </header>
+                    </aside>
+                </div>
 
-                {/* Dashboard Page Content */}
-                <div className="p-3 sm:p-5 lg:p-8 space-y-4 sm:space-y-6 bg-[#f8f9fc] flex-1 overflow-x-hidden">
+                {/* Main Content Workspace */}
+                <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden">
 
-                    {activeTab === "dashboard" ? (
-                        <>
-                            {isProfileIncomplete && (
-                                <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs animate-premium-fade w-full">
-                                    <div className="flex items-start gap-3">
-                                        <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 shrink-0">
-                                            ⚠️
-                                        </div>
-                                        <div>
-                                            <h4 className="text-sm font-extrabold text-amber-900 leading-tight">Complete your profile details</h4>
-                                            <p className="text-xs font-semibold text-amber-700 mt-0.5">Please add your phone number, citizenship country, and resident country to use all platform features.</p>
-                                        </div>
-                                    </div>
-                                    <button 
-                                        onClick={() => setShowProfileModal(true)}
-                                        className="bg-amber-800 hover:bg-amber-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs self-start sm:self-auto shrink-0"
-                                    >
-                                        Complete Profile
-                                    </button>
+                    {/* Incomplete Profile Alert Banner */}
+                    {isProfileIncomplete && (
+                        <div className="bg-amber-50 border border-amber-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs w-full animate-fade-up">
+                            <div className="flex items-start gap-3.5">
+                                <div className="w-10 h-10 rounded-2xl bg-amber-100/90 flex items-center justify-center text-amber-800 shrink-0 font-black text-lg border border-amber-200">
+                                    ⚠️
                                 </div>
-                            )}
-                            {/* Top 4 Summary Metric Cards (Flup Reference Header Cards — Mobile 2-Column Grid) */}
-                            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-4 w-full">
-                                
-                                {/* Card 1: Applications */}
-                                <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
-                                    <div className="flex items-center justify-between text-slate-500 mb-2">
-                                        <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
-                                            👥 Applications
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                                        <span className="text-lg sm:text-xl font-extrabold text-slate-900">
-                                            0 Active
-                                        </span>
-                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-slate-200">
-                                            0%
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Card 2: Escrow Vault */}
-                                <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
-                                    <div className="flex items-center justify-between text-slate-500 mb-2">
-                                        <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
-                                            💵 Escrow & Funds
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                                        <span className="text-lg sm:text-xl font-extrabold text-slate-900">
-                                            ₹0
-                                        </span>
-                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-slate-200">
-                                            ₹0 Escrow
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Card 3: Consultations */}
-                                <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
-                                    <div className="flex items-center justify-between text-slate-500 mb-2">
-                                        <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
-                                            💬 Consultations
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                                        <span className="text-lg sm:text-xl font-extrabold text-slate-900">
-                                            0 Sessions
-                                        </span>
-                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-slate-200">
-                                            0 Upcoming
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Card 4: Saved Consultants */}
-                                <div className="bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all">
-                                    <div className="flex items-center justify-between text-slate-500 mb-2">
-                                        <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 flex items-center gap-1 truncate">
-                                            ⭐ Saved Experts
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                                        <span className="text-lg sm:text-xl font-extrabold text-slate-900">
-                                            0 Experts
-                                        </span>
-                                        <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded-md self-start sm:self-auto border border-slate-200">
-                                            0 Saved
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Card 5: Add Data Widget (Flup Reference) */}
-                                <div className="col-span-2 sm:col-span-2 lg:col-span-1 bg-slate-50/70 rounded-xl border-2 border-dashed border-slate-200 hover:border-slate-300 p-3 sm:p-4 flex flex-col items-center justify-center gap-1 cursor-pointer transition-all hover:bg-slate-100/60">
-                                    <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-500 shadow-2xs">
-                                        <Plus className="w-4 h-4" />
-                                    </div>
-                                    <span className="text-xs font-bold text-slate-600">Add custom data</span>
-                                </div>
-
-                            </div>
-
-                            {/* Real Activity & Active Visa Application Center */}
-                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-6">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                                    <div>
-                                        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-                                            <span>Active Applications & Case Tracker</span>
-                                            <span className="text-xs font-bold text-[#00a896] bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200/80">
-                                                Live Status
-                                            </span>
-                                        </h2>
-                                        <p className="text-xs font-medium text-slate-500 mt-0.5">
-                                            Track your active visa petitions, consultations & document reviews in real time
-                                        </p>
-                                    </div>
-                                    <a 
-                                        href="/services/visa-form-filing" 
-                                        className="inline-flex items-center gap-2 bg-[#00a896] hover:bg-[#009485] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 w-fit"
-                                    >
-                                        <Plus className="w-4 h-4" /> Start Visa Application
-                                    </a>
-                                </div>
-
-                                {/* Clean Empty / Real Activity State Card */}
-                                <div className="bg-slate-50/70 rounded-xl border border-slate-200/70 p-8 text-center space-y-3">
-                                    <div className="w-14 h-14 rounded-full bg-teal-100/70 text-[#00a896] flex items-center justify-center mx-auto border border-teal-200/60 shadow-2xs">
-                                        <Briefcase className="w-7 h-7" />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-sm font-extrabold text-slate-900">No Active Visa Petitions</h3>
-                                        <p className="text-xs font-medium text-slate-500 max-w-md mx-auto mt-1">
-                                            You currently have zero pending visa applications. Select a destination or book a verified expert to begin your immigration process.
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                                        <a href="/find-experts" className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs">
-                                            Find Immigration Expert
-                                        </a>
-                                        <a href="/services/apply-visa" className="bg-[#00a896] hover:bg-[#009485] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
-                                            Explore Country Visas
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        /* Other Tab Views (Profile, Cases, Consultations, Documents, etc.) */
-                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs">
-                            {activeTab === "profile" && (
-                                <div className="space-y-6">
-                                    <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                                        <div>
-                                            <h2 className="text-xl font-extrabold text-slate-900">Profile & Passport Information</h2>
-                                            <p className="text-xs text-slate-500 font-semibold">Manage your personal visa application identity</p>
-                                        </div>
-                                        <button onClick={() => setShowProfileModal(true)} className="bg-[#107c41] hover:bg-[#0d5c3a] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs">
-                                            Edit Profile
-                                        </button>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
-                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/70 space-y-2">
-                                            <span className="text-slate-400 font-bold block uppercase text-[10px]">Full Name</span>
-                                            <span className="text-slate-900 font-extrabold text-sm block">{firstName} {lastName}</span>
-                                        </div>
-                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/70 space-y-2">
-                                            <span className="text-slate-400 font-bold block uppercase text-[10px]">Contact Phone</span>
-                                            <span className="text-slate-900 font-extrabold text-sm block">{phone || "Not specified"}</span>
-                                        </div>
-                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/70 space-y-2">
-                                            <span className="text-slate-400 font-bold block uppercase text-[10px]">Passport Country</span>
-                                            <span className="text-slate-900 font-extrabold text-sm block">{countryOfCitizenship || "India"}</span>
-                                        </div>
-                                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/70 space-y-2">
-                                            <span className="text-slate-400 font-bold block uppercase text-[10px]">Current Residence</span>
-                                            <span className="text-slate-900 font-extrabold text-sm block">{residentOf || "India"}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {activeTab !== "profile" && (
-                                <div className="py-12 text-center space-y-3">
-                                    <Briefcase className="w-12 h-12 text-slate-400 mx-auto" />
-                                    <h3 className="text-base font-extrabold text-slate-900 capitalize">{activeTab.replace('-', ' ')} Portal</h3>
-                                    <p className="text-xs text-slate-500 font-semibold max-w-sm mx-auto">
-                                        All active {activeTab.replace('-', ' ')} records are synchronized with your verified immigration advisor.
+                                <div>
+                                    <h4 className="text-sm font-extrabold text-amber-950 leading-tight">Complete your seeker profile details</h4>
+                                    <p className="text-xs font-semibold text-amber-800 mt-1 leading-relaxed">
+                                        Please add your phone number, citizenship country, and target visa goals to receive personalized consultant matches.
                                     </p>
                                 </div>
-                            )}
+                            </div>
+                            <button 
+                                onClick={() => setShowProfileModal(true)}
+                                className="bg-amber-800 hover:bg-amber-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
+                            >
+                                <span>Complete Profile</span>
+                                <ChevronRight className="w-4 h-4" />
+                            </button>
                         </div>
                     )}
 
-                </div>
-            </main>
+                    {/* 1. TAB: OVERVIEW */}
+                    {activeTab === "dashboard" && (
+                        <>
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Welcome back, {firstName || "Seeker"}! 👋</h1>
+                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Track your visa applications, consultations, and document readiness</p>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <a href="/find-experts" className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5">
+                                        <Search className="w-3.5 h-3.5" /> Find Expert
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Stat Summary Cards */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
+                                    <div>
+                                        <span className="text-xs font-bold text-slate-400 block">Document Vault</span>
+                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{uploadedCount} / {visibleDocuments.length}</span>
+                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block">Verified Documents</span>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-2xl bg-teal-50 text-[#00a896] flex items-center justify-center font-bold">
+                                        <FileText className="w-6 h-6" />
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
+                                    <div>
+                                        <span className="text-xs font-bold text-slate-400 block">IELTS Band Score</span>
+                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{overallBand}</span>
+                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block">Overall Score</span>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center font-bold">
+                                        <BookOpen className="w-6 h-6" />
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
+                                    <div>
+                                        <span className="text-xs font-bold text-slate-400 block">Active Cases</span>
+                                        <span className="text-2xl font-black text-slate-900 mt-1 block">{visasProcessingState.length}</span>
+                                        <span className="text-[11px] font-bold text-slate-500 mt-1 inline-block">Under Review</span>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                                        <Briefcase className="w-6 h-6" />
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex items-center justify-between">
+                                    <div>
+                                        <span className="text-xs font-bold text-slate-400 block">Escrow Balance</span>
+                                        <span className="text-2xl font-black text-slate-900 mt-1 block">₹0</span>
+                                        <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-block">100% Protected</span>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                                        <Lock className="w-6 h-6" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Section: IELTS Score Breakdown & Document Readiness */}
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                
+                                {/* Left 2 Cols: Document Vault Checklist */}
+                                <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h3 className="text-base font-extrabold text-slate-900">Document Readiness Checklist</h3>
+                                            <p className="text-xs text-slate-500 font-medium mt-0.5">Click any document to update its current status</p>
+                                        </div>
+                                        <button onClick={() => setActiveTab("scanned-documents")} className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                                            View Vault <ChevronRight className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-2.5">
+                                        {visibleDocuments.map(doc => (
+                                            <div 
+                                                key={doc.id}
+                                                onClick={() => toggleDocStatus(doc.id)}
+                                                className="flex items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100/80 rounded-2xl border border-slate-200/60 cursor-pointer transition-all"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-lg">{doc.icon}</span>
+                                                    <span className="text-xs font-extrabold text-slate-900">{doc.label}</span>
+                                                </div>
+                                                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${doc.bg} capitalize`}>
+                                                    {doc.status}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Right Col: IELTS Score Band Card */}
+                                <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-base font-extrabold text-slate-900">IELTS Band Calculator</h3>
+                                        <span className="bg-teal-50 text-[#00a896] text-xs font-black px-2.5 py-1 rounded-full border border-teal-200">
+                                            Overall: {overallBand}
+                                        </span>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-3 pt-2">
+                                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
+                                            <span className="text-[10px] font-bold text-slate-400 block uppercase">Listening</span>
+                                            <input 
+                                                type="number" 
+                                                step="0.5" 
+                                                min="0" 
+                                                max="9" 
+                                                value={ieltsScore.L}
+                                                onChange={e => setIeltsScore({...ieltsScore, L: parseFloat(e.target.value) || 0})}
+                                                className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
+                                            />
+                                        </div>
+
+                                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
+                                            <span className="text-[10px] font-bold text-slate-400 block uppercase">Reading</span>
+                                            <input 
+                                                type="number" 
+                                                step="0.5" 
+                                                min="0" 
+                                                max="9" 
+                                                value={ieltsScore.R}
+                                                onChange={e => setIeltsScore({...ieltsScore, R: parseFloat(e.target.value) || 0})}
+                                                className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
+                                            />
+                                        </div>
+
+                                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
+                                            <span className="text-[10px] font-bold text-slate-400 block uppercase">Writing</span>
+                                            <input 
+                                                type="number" 
+                                                step="0.5" 
+                                                min="0" 
+                                                max="9" 
+                                                value={ieltsScore.W}
+                                                onChange={e => setIeltsScore({...ieltsScore, W: parseFloat(e.target.value) || 0})}
+                                                className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
+                                            />
+                                        </div>
+
+                                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60 text-center">
+                                            <span className="text-[10px] font-bold text-slate-400 block uppercase">Speaking</span>
+                                            <input 
+                                                type="number" 
+                                                step="0.5" 
+                                                min="0" 
+                                                max="9" 
+                                                value={ieltsScore.S}
+                                                onChange={e => setIeltsScore({...ieltsScore, S: parseFloat(e.target.value) || 0})}
+                                                className="w-full text-center text-lg font-black text-slate-900 bg-transparent outline-none mt-0.5"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <a href="/training/ielts" className="w-full bg-[#00a896] hover:bg-[#008f80] text-white py-2.5 rounded-xl text-xs font-bold text-center block shadow-sm">
+                                        Practice IELTS Tests →
+                                    </a>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {/* 2. TAB: PROFILE & SETTINGS */}
+                    {activeTab === "profile" && (
+                        <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-black text-slate-900">Personal & Visa Profile</h2>
+                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Manage your personal details, citizenship, and destination preferences</p>
+                                </div>
+                                <button onClick={() => setShowProfileModal(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5">
+                                    <Edit2 className="w-3.5 h-3.5" /> Edit Details
+                                </button>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row gap-6 items-start">
+                                {profilePhoto && !profilePhoto.includes("unsplash.com") ? (
+                                    <img src={profilePhoto} alt={fullName} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
+                                ) : (
+                                    <div className="w-24 h-24 rounded-2xl bg-[#00a896] text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
+                                        {(fullName || "S").charAt(0).toUpperCase()}
+                                    </div>
+                                )}
+                                <div className="space-y-2 flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <h3 className="text-lg font-black text-slate-900">{fullName}</h3>
+                                        <span className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-teal-200">Verified Seeker</span>
+                                    </div>
+                                    <p className="text-xs font-bold text-[#00a896]">{email} • {phone || "Phone not added"}</p>
+                                    <p className="text-xs text-slate-600 font-medium">Passport Origin: <span className="font-extrabold text-slate-900">{countryOfCitizenship || "India"}</span> | Residence: <span className="font-extrabold text-slate-900">{residentOf || "India"}</span></p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100 text-xs">
+                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
+                                    <span className="font-bold text-slate-500 block">Visa Goals:</span>
+                                    <span className="font-black text-slate-900 block">{selectedGoals.join(", ") || "Student, Work, PR"}</span>
+                                </div>
+                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
+                                    <span className="font-bold text-slate-500 block">Target Destinations:</span>
+                                    <span className="font-black text-slate-900 block">{selectedDests.join(", ") || "Canada, UK, USA, Australia"}</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* OTHER TABS */}
+                    {activeTab !== "dashboard" && activeTab !== "profile" && (
+                        <div className="bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm text-center space-y-4">
+                            <Briefcase className="w-12 h-12 text-[#00a896] mx-auto" />
+                            <h3 className="text-lg font-black text-slate-900 capitalize">{activeTab.replace('-', ' ')} Portal</h3>
+                            <p className="text-xs font-medium text-slate-500 max-w-md mx-auto">
+                                All your active {activeTab.replace('-', ' ')} records are synchronized in real-time with your assigned immigration consultant.
+                            </p>
+                            <a href="/find-experts" className="inline-block bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md">
+                                Connect with Expert →
+                            </a>
+                        </div>
+                    )}
+
+                </main>
+            </div>
 
             {/* Edit Profile Modal */}
             {showProfileModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-end">
-                    <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-xs" onClick={() => setShowProfileModal(false)} />
-                    <div className="absolute right-0 top-0 bottom-0 max-w-xl w-full bg-white shadow-2xl overflow-y-auto p-6 md:p-8 flex flex-col z-10 animate-premium-fade">
-                        <div className="flex justify-between items-center pb-4 border-b border-slate-100 mb-6">
-                            <h2 className="text-lg font-extrabold text-slate-900 flex items-center gap-2">
-                                <Settings className="w-5 h-5 text-[#00a896]" /> Edit Profile Details
-                            </h2>
-                            <button onClick={() => setShowProfileModal(false)}><X className="w-5 h-5 text-slate-400 hover:text-slate-900" /></button>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setShowProfileModal(false)} />
+                    <div className="relative z-10 w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-200/90 p-6 sm:p-8 space-y-5 animate-fade-up max-h-[90vh] overflow-y-auto no-scrollbar">
+                        <div className="flex justify-between items-center pb-3 border-b border-slate-100">
+                            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                                <Settings className="w-4 h-4 text-[#00a896]" /> Edit Seeker Profile Details
+                            </h3>
+                            <button onClick={() => setShowProfileModal(false)} className="p-1 text-slate-400 hover:text-slate-700">
+                                <X className="w-5 h-5" />
+                            </button>
                         </div>
-
-                        <form onSubmit={handleSaveProfileModal} className="space-y-5 flex-1 text-xs">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">First Name</label>
-                                    <input 
-                                        type="text"
-                                        value={modalFirstName}
-                                        onChange={(e) => setModalFirstName(e.target.value)}
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Last Name</label>
-                                    <input 
-                                        type="text"
-                                        value={modalLastName}
-                                        onChange={(e) => setModalLastName(e.target.value)}
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Phone Number</label>
-                                    <input 
-                                        type="text"
-                                        value={modalPhone}
-                                        onChange={(e) => setModalPhone(e.target.value)}
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Current Residence</label>
-                                    <input 
-                                        type="text"
-                                        value={modalResidentOf}
-                                        onChange={(e) => setModalResidentOf(e.target.value)}
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Passport / Citizenship</label>
-                                    <input 
-                                        type="text"
-                                        value={modalPassportCountry}
-                                        onChange={(e) => setModalPassportCountry(e.target.value)}
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Visa Goals (e.g. Student, PR)</label>
-                                    <input 
-                                        type="text"
-                                        value={modalGoals}
-                                        onChange={(e) => setModalGoals(e.target.value)}
-                                        placeholder="Student, Work, PR"
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
-                                        required
-                                    />
-                                </div>
-                            </div>
-
+                        
+                        <form onSubmit={handleSaveProfileModal} className="space-y-4 text-xs">
                             <div>
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Target Destinations (comma separated)</label>
-                                <input 
-                                    type="text"
-                                    value={modalDestinations}
-                                    onChange={(e) => setModalDestinations(e.target.value)}
-                                    placeholder="Canada, UK, USA"
-                                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
-                                    required
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-3 gap-4">
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">City</label>
+                                <label className="text-xs font-bold text-slate-700 mb-1.5 block">Profile Photo</label>
+                                <div className="flex items-center gap-3">
+                                    {modalPhoto && !modalPhoto.includes("unsplash.com") ? (
+                                        <img src={modalPhoto} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
+                                    ) : (
+                                        <div className="w-12 h-12 rounded-xl bg-[#00a896] text-white text-lg font-black flex items-center justify-center border border-teal-200 shrink-0">
+                                            {(modalFirstName || "S").charAt(0).toUpperCase()}
+                                        </div>
+                                    )}
                                     <input 
-                                        type="text"
-                                        value={modalCity}
-                                        onChange={(e) => setModalCity(e.target.value)}
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">State</label>
-                                    <input 
-                                        type="text"
-                                        value={modalState}
-                                        onChange={(e) => setModalState(e.target.value)}
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 block">Zip Code</label>
-                                    <input 
-                                        type="text"
-                                        value={modalZip}
-                                        onChange={(e) => setModalZip(e.target.value)}
-                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold outline-none focus:border-[#00a896] text-slate-900"
+                                        type="file" 
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => {
+                                                    if (typeof reader.result === "string") {
+                                                        setModalPhoto(reader.result);
+                                                    }
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }}
+                                        className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-700 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-teal-50 file:text-[#00a896] cursor-pointer" 
                                     />
                                 </div>
                             </div>
 
-                            <div className="flex gap-3 pt-6 border-t border-slate-100">
-                                <button type="button" onClick={() => setShowProfileModal(false)} className="flex-1 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
-                                <button type="submit" className="flex-1 py-3 bg-[#00a896] hover:bg-[#009485] text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md">
-                                    <Save className="w-4 h-4" /> Save Changes
-                                </button>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">First Name</label>
+                                    <input 
+                                        type="text" 
+                                        value={modalFirstName} 
+                                        onChange={(e) => setModalFirstName(e.target.value)} 
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Last Name</label>
+                                    <input 
+                                        type="text" 
+                                        value={modalLastName} 
+                                        onChange={(e) => setModalLastName(e.target.value)} 
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Phone Number</label>
+                                    <input 
+                                        type="text" 
+                                        value={modalPhone} 
+                                        onChange={(e) => setModalPhone(e.target.value)} 
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Current Residence</label>
+                                    <input 
+                                        type="text" 
+                                        value={modalResidentOf} 
+                                        onChange={(e) => setModalResidentOf(e.target.value)} 
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Passport Citizenship</label>
+                                    <input 
+                                        type="text" 
+                                        value={modalPassportCountry} 
+                                        onChange={(e) => setModalPassportCountry(e.target.value)} 
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Target Destinations</label>
+                                    <input 
+                                        type="text" 
+                                        value={modalDestinations} 
+                                        onChange={(e) => setModalDestinations(e.target.value)} 
+                                        placeholder="Canada, UK, USA"
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex gap-3 pt-3">
+                                <button type="button" onClick={() => setShowProfileModal(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-xl font-bold text-xs shadow-md transition-colors">Save Details</button>
                             </div>
                         </form>
                     </div>

@@ -284,7 +284,7 @@ export function DesktopHomeSection() {
               <h2 className="text-base font-bold text-gray-900">Find Visa Information &amp; Consultants</h2>
               <form onSubmit={handleSearch} className="grid grid-cols-2 lg:grid-cols-5 gap-3 items-end">
                 <CustomSelect 
-                  label="I want to go to" 
+                  label="Destination" 
                   value={selectedCountry} 
                   placeholder="Select Country" 
                   options={['Canada', 'United Kingdom', 'United States', 'Australia', 'Germany', 'New Zealand', 'UAE']} 
@@ -314,7 +314,7 @@ export function DesktopHomeSection() {
                 />
 
                 <CustomSelect 
-                  label="My Location" 
+                  label="Near" 
                   value={selectedCity} 
                   placeholder="Select City" 
                   options={['Mumbai, India', 'Delhi, India', 'Bangalore, India', 'Hyderabad, India', 'Punjab, India']} 

@@ -101,7 +101,7 @@ function LoginPortalContent() {
 
                 {/* Title */}
                 <div className="text-center space-y-1.5">
-                    <h1 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">
+                    <h1 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight max-w-[280px] sm:max-w-xs mx-auto">
                         Sign in to get started with VisaFormula
                     </h1>
                     {/* Step indicator dots */}

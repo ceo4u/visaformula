@@ -22,7 +22,7 @@ export function ConsultantDashboard() {
         bio: "Licensed immigration & visa consultant helping clients with study, work, and migration visas.",
         specializations: "Canada, UK, USA, Australia",
         countries: "Worldwide",
-        image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop"
+        image: ""
     });
 
     const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -98,7 +98,7 @@ export function ConsultantDashboard() {
             const role = localStorage.getItem("expert_advisorType") || "Registered Consultant";
             const city = localStorage.getItem("expert_officeAddress") || "Location Not Specified";
             const bio = localStorage.getItem("expert_aboutMe") || "Licensed immigration & visa consultant helping clients with study, work, and migration visas.";
-            const image = localStorage.getItem("expert_profilePhoto") || profile.image;
+            const image = localStorage.getItem("expert_profilePhoto") || localStorage.getItem("expert_profilePhotoUrl") || "";
             
             const loadedSpecs = (() => {
                 try {
@@ -313,7 +313,13 @@ export function ConsultantDashboard() {
                     </button>
 
                     <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200 cursor-pointer" onClick={() => setActiveTab("profile")}>
-                        <img src={profile.image} alt={profile.name} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
+                        {profile.image && !profile.image.includes("unsplash.com") ? (
+                            <img src={profile.image} alt={profile.name} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
+                        ) : (
+                            <div className="w-9 h-9 rounded-full bg-[#00a896] text-white text-sm font-black flex items-center justify-center border border-teal-200 shrink-0 shadow-2xs">
+                                {(profile.name || "E").charAt(0).toUpperCase()}
+                            </div>
+                        )}
                         <div className="hidden md:block text-left">
                             <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{profile.name}</h4>
                             <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200/80 mt-0.5">Basic Plan</span>
@@ -685,7 +691,13 @@ export function ConsultantDashboard() {
                             </div>
 
                             <div className="flex flex-col md:flex-row gap-6 items-start">
-                                <img src={profile.image} alt={profile.name} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
+                                {profile.image && !profile.image.includes("unsplash.com") ? (
+                                    <img src={profile.image} alt={profile.name} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
+                                ) : (
+                                    <div className="w-24 h-24 rounded-2xl bg-[#00a896] text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
+                                        {(profile.name || "E").charAt(0).toUpperCase()}
+                                    </div>
+                                )}
                                 <div className="space-y-2 flex-1">
                                     <div className="flex items-center gap-2">
                                         <h3 className="text-lg font-black text-slate-900">{profile.name}</h3>
@@ -1196,6 +1208,35 @@ export function ConsultantDashboard() {
                             </button>
                         </div>
                         <form onSubmit={handleSaveProfile} className="space-y-3">
+                            <div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Profile Photo / Business Logo</label>
+                                <div className="flex items-center gap-3">
+                                    {formImage && !formImage.includes("unsplash.com") ? (
+                                        <img src={formImage} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
+                                    ) : (
+                                        <div className="w-12 h-12 rounded-xl bg-[#00a896] text-white text-lg font-black flex items-center justify-center border border-teal-200 shrink-0">
+                                            {(formName || "E").charAt(0).toUpperCase()}
+                                        </div>
+                                    )}
+                                    <input 
+                                        type="file" 
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => {
+                                                    if (typeof reader.result === "string") {
+                                                        setFormImage(reader.result);
+                                                    }
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }}
+                                        className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-700 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-teal-50 file:text-[#00a896] cursor-pointer" 
+                                    />
+                                </div>
+                            </div>
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block">Business / Consultancy Name</label>
                                 <input 

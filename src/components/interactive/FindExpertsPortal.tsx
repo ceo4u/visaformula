@@ -30,42 +30,58 @@ export function FindExpertsPortal() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const name = localStorage.getItem("expert_businessName");
-            const isLoggedIn = localStorage.getItem("expert_isLoggedIn") === "true";
-            const advisorType = (localStorage.getItem("expert_advisorType") || "").toLowerCase().trim();
-            
-            // Only profiles registered as "Registered consultancy" are visible in the public Find Experts directory
-            const isRegisteredConsultancy = advisorType.includes("registered consultancy");
+            let registeredList: any[] = [];
+            try {
+                const storedAll = localStorage.getItem("visaformula_all_experts");
+                if (storedAll) {
+                    const parsed = JSON.parse(storedAll);
+                    if (Array.isArray(parsed)) registeredList = parsed;
+                }
+            } catch(e) {}
 
-            if (isLoggedIn && name && isRegisteredConsultancy && name.toLowerCase() !== "soul") {
-                let tagsArray = ["Express Entry", "PNP"];
+            const bizName = localStorage.getItem("expert_businessName") || "";
+            const firstName = localStorage.getItem("expert_firstName") || "";
+            const lastName = localStorage.getItem("expert_lastName") || "";
+            const fullName = bizName || (`${firstName} ${lastName}`).trim();
+            const isLoggedIn = localStorage.getItem("expert_isLoggedIn") === "true";
+            const advisorType = localStorage.getItem("expert_advisorType") || "Registered Consultant";
+
+            // List ANY type of registered expert who completed basic profile details
+            if (isLoggedIn && fullName) {
+                let tagsArray = ["Study Visa", "Work Permit", "PR Migration"];
                 try {
                     const savedTags = localStorage.getItem("expert_expertiseTags");
-                    if (savedTags) tagsArray = JSON.parse(savedTags);
+                    if (savedTags) {
+                        const parsed = JSON.parse(savedTags);
+                        if (Array.isArray(parsed) && parsed.length > 0) tagsArray = parsed;
+                    }
                 } catch(e) {}
                 
-                const localExpert = {
-                    id: 7,
-                    name: name,
+                const loggedInExpert = {
+                    id: "logged-in-expert",
+                    name: fullName,
                     category: "pr",
-                    role: localStorage.getItem("expert_advisorType") || "Registered Consultancy",
+                    role: advisorType,
                     rating: 5.0,
                     reviews: 1,
-                    price: 1800,
+                    price: 1500,
                     city: localStorage.getItem("expert_officeAddress") || "Remote",
-                    countries: (localStorage.getItem("expert_countriesExpertise") || "Canada").split(",").map((c: string) => c.trim()),
-                    experience: 12,
+                    countries: (localStorage.getItem("expert_countriesExpertise") || "Canada, UK, USA, Australia").split(",").map((c: string) => c.trim()),
+                    experience: 5,
                     isRemote: true,
                     isAvailableToday: true,
                     isEmergency: false,
                     tags: tagsArray,
-                    image: localStorage.getItem("expert_profilePhoto") || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face"
+                    image: localStorage.getItem("expert_profilePhoto") || localStorage.getItem("expert_profilePhotoUrl") || ""
                 };
-                
-                setExperts([localExpert, ...allExperts]);
-            } else {
-                setExperts(allExperts);
+
+                const alreadyInList = registeredList.some(e => e.name?.toLowerCase() === fullName.toLowerCase());
+                if (!alreadyInList) {
+                    registeredList = [loggedInExpert, ...registeredList];
+                }
             }
+
+            setExperts([...registeredList, ...allExperts]);
         }
     }, []);
 
@@ -91,113 +107,148 @@ export function FindExpertsPortal() {
                 setSelectedCountry(countryQuery);
             }
             
-            // Handle general search text query
             const textQuery = params.get("query");
             if (textQuery) {
                 setSearchText(textQuery);
             }
 
-            // Handle location query
-            const locQuery = params.get("location");
-            if (locQuery) {
-                const matchCity = cityFilters.find(c => c.toLowerCase() === locQuery.toLowerCase());
-                if (matchCity) {
-                    setCity(matchCity);
-                } else {
-                    const formattedCity = locQuery.charAt(0).toUpperCase() + locQuery.slice(1).toLowerCase();
-                    setCity(formattedCity);
-                }
+            const cityQuery = params.get("city");
+            if (cityQuery) {
+                const matchCity = cityFilters.find(c => c.toLowerCase() === cityQuery.toLowerCase());
+                if (matchCity) setCity(matchCity);
             }
         }
     }, []);
 
-    const filtered = experts.filter(e => {
-        if (category !== "All" && !e.tags.some(t => t.toLowerCase().includes(category.toLowerCase().replace(" visa", "").replace(" permit", "").replace("local ", "")))) {
-            if (category === "Student Visa" && e.category !== "student") return false;
-            if (category === "Work Permit" && e.category !== "work") return false;
-            if (category === "PR" && e.category !== "pr") return false;
+    // Filter Logic
+    const filtered = experts.filter(expert => {
+        if (category !== "All") {
+            if (category === "Student Visa" && expert.category !== "student") return false;
+            if (category === "Work Permit" && expert.category !== "work") return false;
+            if (category === "PR" && expert.category !== "pr") return false;
+            if (category === "Local Expert" && expert.isRemote) return false;
         }
+
+        if (city !== "All Cities") {
+            if (city === "Remote" && !expert.isRemote) return false;
+            if (city !== "Remote" && expert.city.toLowerCase() !== city.toLowerCase()) return false;
+        }
+
+        if (rating !== "Any") {
+            if (rating === "4★+" && expert.rating < 4.0) return false;
+            if (rating === "4.5★+" && expert.rating < 4.5) return false;
+            if (rating === "Top Rated" && expert.rating < 4.8) return false;
+        }
+
+        if (avail !== "Anytime") {
+            if (avail === "Today" && !expert.isAvailableToday) return false;
+            if (avail === "Emergency 24/7" && !expert.isEmergency) return false;
+        }
+
         if (selectedCountry !== "All") {
-            const countryLower = selectedCountry.toLowerCase();
-            if (countryLower === "schengen" || countryLower === "europe") {
-                const schengenCountries = ["germany", "france", "schengen", "italy", "spain", "europe"];
-                if (!e.countries.some(c => schengenCountries.includes(c.toLowerCase()))) return false;
-            } else {
-                if (!e.countries.some(c => c.toLowerCase() === countryLower)) return false;
-            }
+            const hasCountry = expert.countries.some(c => c.toLowerCase().includes(selectedCountry.toLowerCase()));
+            if (!hasCountry) return false;
         }
-        if (city !== "All Cities" && city !== "Remote" && e.city !== city) return false;
-        if (city === "Remote" && !e.isRemote) return false;
-        if (rating === "4★+" && e.rating < 4) return false;
-        if (rating === "4.5★+" && e.rating < 4.5) return false;
-        if (rating === "Top Rated" && e.rating < 4.8) return false;
-        if (avail === "Today" && !e.isAvailableToday) return false;
-        if (avail === "Emergency 24/7" && !e.isEmergency) return false;
-        if (searchText && !e.name.toLowerCase().includes(searchText.toLowerCase()) && !e.tags.some(t => t.toLowerCase().includes(searchText.toLowerCase()))) return false;
+
+        if (searchText.trim() !== "") {
+            const query = searchText.toLowerCase();
+            const matchName = expert.name.toLowerCase().includes(query);
+            const matchRole = expert.role.toLowerCase().includes(query);
+            const matchCity = expert.city.toLowerCase().includes(query);
+            const matchTag = expert.tags.some(t => t.toLowerCase().includes(query));
+            const matchCountry = expert.countries.some(c => c.toLowerCase().includes(query));
+            if (!matchName && !matchRole && !matchCity && !matchTag && !matchCountry) return false;
+        }
+
         return true;
     });
 
+    // Sorting Logic
     const sorted = [...filtered].sort((a, b) => {
+        if (sortBy === "rating") return b.rating - a.rating;
         if (sortBy === "price-low") return a.price - b.price;
         if (sortBy === "price-high") return b.price - a.price;
-        if (sortBy === "rating") return b.rating - a.rating;
-        return b.reviews - a.reviews; // recommended
+        return 0;
     });
-
-    const handleBooking = (id: number) => {
-        window.location.href = `/payment/EXPERT-SECURE-${id}`;
-    };
 
     const FilterSidebar = () => (
         <div className="space-y-6">
-            {/* Category */}
             <div>
-                <h3 className="text-xs font-black text-gray-400 tracking-widest mb-2.5">Category</h3>
-                <div className="flex flex-wrap gap-2">
-                    {categoryFilters.map(c => (
-                        <button key={c} onClick={() => setCategory(c)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ${category === c ? "bg-slate-900 text-white shadow-md" : "bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100"}`}>
-                            {c}
+                <h3 className="font-sora font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-3">Service Category</h3>
+                <div className="space-y-1.5">
+                    {categoryFilters.map(cat => (
+                        <button
+                            key={cat}
+                            onClick={() => setCategory(cat)}
+                            className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                                category === cat
+                                    ? "bg-slate-900 text-white shadow-md"
+                                    : "text-slate-600 hover:bg-slate-100"
+                            }`}
+                        >
+                            {cat}
                         </button>
                     ))}
                 </div>
             </div>
-            {/* City */}
+
             <div>
-                <h3 className="text-xs font-black text-gray-400 tracking-widest mb-2.5">City</h3>
-                <div className="flex flex-wrap gap-2">
+                <h3 className="font-sora font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-3">Location</h3>
+                <div className="space-y-1.5">
                     {cityFilters.map(c => (
-                        <button key={c} onClick={() => setCity(c)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ${city === c ? "bg-navy text-white shadow-md" : "bg-white text-gray-600 border border-yellow-100 hover:bg-yellow-50"}`}>
+                        <button
+                            key={c}
+                            onClick={() => setCity(c)}
+                            className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                                city === c
+                                    ? "bg-slate-900 text-white shadow-md"
+                                    : "text-slate-600 hover:bg-slate-100"
+                            }`}
+                        >
                             {c}
                         </button>
                     ))}
                 </div>
             </div>
-            {/* Rating */}
+
             <div>
-                <h3 className="text-xs font-black text-gray-400 tracking-widest mb-2.5">Rating</h3>
-                <div className="flex flex-wrap gap-2">
+                <h3 className="font-sora font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-3">Rating</h3>
+                <div className="space-y-1.5">
                     {ratingFilters.map(r => (
-                        <button key={r} onClick={() => setRating(r)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ${rating === r ? "bg-amber-100 text-amber-800 border border-amber-200" : "bg-white text-gray-600 border border-yellow-100 hover:bg-yellow-50"}`}>
+                        <button
+                            key={r}
+                            onClick={() => setRating(r)}
+                            className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                                rating === r
+                                    ? "bg-slate-900 text-white shadow-md"
+                                    : "text-slate-600 hover:bg-slate-100"
+                            }`}
+                        >
                             {r}
                         </button>
                     ))}
                 </div>
             </div>
-            {/* Availability */}
+
             <div>
-                <h3 className="text-xs font-black text-gray-400 tracking-widest mb-2.5">Availability</h3>
-                <div className="flex flex-wrap gap-2">
+                <h3 className="font-sora font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-3">Availability</h3>
+                <div className="space-y-1.5">
                     {availFilters.map(a => (
-                        <button key={a} onClick={() => setAvail(a)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ${avail === a ? "bg-emerald-100 text-emerald-800 border border-emerald-200" : "bg-white text-gray-600 border border-yellow-100 hover:bg-yellow-50"}`}>
+                        <button
+                            key={a}
+                            onClick={() => setAvail(a)}
+                            className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                                avail === a
+                                    ? "bg-slate-900 text-white shadow-md"
+                                    : "text-slate-600 hover:bg-slate-100"
+                            }`}
+                        >
                             {a}
                         </button>
                     ))}
                 </div>
             </div>
+
             <button onClick={() => { setCategory("All"); setCity("All Cities"); setRating("Any"); setAvail("Anytime"); setSelectedCountry("All"); }}
                 className="w-full text-xs font-black tracking-wider text-slate-900 hover:underline mt-2">Clear All Filters</button>
         </div>
@@ -317,7 +368,13 @@ export function FindExpertsPortal() {
                                 <div key={e.id} onClick={(event) => { event.preventDefault(); }} className="block group cursor-pointer">
                                     <div className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col md:flex-row gap-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                                         <div className="relative w-20 h-20 shrink-0 mx-auto md:mx-0">
-                                            <img src={e.image} alt={e.name} className="w-full h-full object-cover rounded-2xl border border-slate-100" />
+                                            {e.image && !e.image.includes("unsplash.com") ? (
+                                                <img src={e.image} alt={e.name} className="w-full h-full object-cover rounded-2xl border border-slate-100" />
+                                            ) : (
+                                                <div className="w-full h-full rounded-2xl bg-[#00a896] text-white font-black text-2xl flex items-center justify-center border border-teal-200 shadow-2xs">
+                                                    {(e.name || "E").charAt(0).toUpperCase()}
+                                                </div>
+                                            )}
                                             {e.isAvailableToday && (
                                                 <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse">
                                                     Open
@@ -348,52 +405,23 @@ export function FindExpertsPortal() {
                                                 {e.tags.map(tag => (
                                                     <span key={tag} className="bg-slate-50 text-slate-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-200/60">{tag}</span>
                                                 ))}
-                                                {e.countries.map(c => (
-                                                    <span key={c} className="bg-slate-50 text-slate-600 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-100">{c}</span>
-                                                ))}
                                             </div>
-                                            <div className="flex justify-center sm:justify-start gap-2">
-                                                <button onClick={(event) => { event.stopPropagation(); handleBooking(e.id); }} className="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-all hover:shadow-md active:scale-[0.97]">Book Now</button>
-                                                <button onClick={(event) => { event.stopPropagation(); event.preventDefault(); }} className="border border-slate-300 text-slate-800 px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all">View Profile</button>
+                                            <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-100 gap-3">
+                                                <span className="text-xs font-bold text-[#00a896]">🌍 Destinations: {e.countries.join(", ")}</span>
+                                                <a href="/consultation-booking" className="w-full sm:w-auto text-center bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
+                                                    Book Consultation
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             ))}
-                            {sorted.length === 0 && (
-                                <div className="text-center py-20 bg-white rounded-3xl border border-slate-100">
-                                    <Search className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                                    <h3 className="font-sora font-bold text-navy mb-1">No experts found</h3>
-                                    <p className="text-sm text-gray-400">Try adjusting your filters or search terms</p>
-                                </div>
-                            )}
                         </div>
                     ) : (
-                        <div className="h-[600px] w-full rounded-3xl overflow-hidden border border-slate-100 shadow-xl relative bg-slate-50">
-                            <div className="absolute inset-0 bg-cover bg-center opacity-70" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&h=900&fit=crop')" }} />
-                            <div className="absolute inset-0 bg-navy/20 backdrop-blur-[2px]" />
-                            {sorted.slice(0, 4).map((e, i) => {
-                                const positions = [{ top: "20%", left: "30%" }, { top: "50%", left: "55%" }, { top: "35%", left: "15%" }, { top: "60%", left: "70%" }];
-                                const pos = positions[i] || positions[0];
-                                return (
-                                    <div key={e.id} className="absolute group cursor-pointer" style={pos} onClick={() => handleBooking(e.id)}>
-                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 bg-white rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 transition-all p-3 border border-slate-100 pointer-events-none z-10 duration-300">
-                                            <div className="flex gap-3">
-                                                <img src={e.image} className="w-10 h-10 rounded-xl object-cover" alt="" />
-                                                <div>
-                                                    <div className="text-xs font-extrabold text-navy truncate">{e.name}</div>
-                                                    <div className="flex items-center text-[10px] font-bold mt-0.5">
-                                                        <Star className="w-3 h-3 text-amber-500 fill-amber-500 mr-1" /> {e.rating} · ₹{e.price}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="bg-slate-900 text-white font-black text-xs px-3 py-2 rounded-xl shadow-lg border-2 border-white hover:scale-110 transition-transform duration-300">
-                                            ₹{e.price.toLocaleString()}
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                        <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center space-y-4 shadow-xl">
+                            <MapIcon className="w-12 h-12 text-slate-400 mx-auto animate-bounce" />
+                            <h3 className="font-sora font-extrabold text-navy text-lg">Map View</h3>
+                            <p className="text-xs text-gray-500 max-w-sm mx-auto">Showing {sorted.length} verified experts on the interactive location map.</p>
                         </div>
                     )}
                 </section>
@@ -401,4 +429,3 @@ export function FindExpertsPortal() {
         </div>
     );
 }
-

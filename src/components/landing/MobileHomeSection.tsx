@@ -134,173 +134,95 @@ export function MobileHomeSection() {
           </div>
         </div>
 
-        {/* ── 2. Mobile Advance Search Box (Clean White Theme) ── */}
-        <div className="mx-3 mt-3 bg-white rounded-2xl p-4 shadow-sm border border-slate-200/90 max-w-[calc(100vw-24px)] space-y-3">
-          <div className="flex items-center gap-2.5 pb-2 border-b border-slate-100">
-            <div className="w-8 h-8 rounded-xl bg-teal-50 flex items-center justify-center text-[#00a896] shrink-0 border border-teal-100">
+        {/* ── Mobile Interactive Structured Search Card ── */}
+        <div className="mx-3 mt-3 bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-teal-50 flex items-center justify-center text-[#00a896] shrink-0">
               <Search className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-extrabold text-[#0c1a2e] leading-tight">Find Visa Experts &amp; Services</h2>
-              <p className="text-[11px] text-slate-500 font-semibold">Search by keyword, country, location or category</p>
+              <h2 className="text-sm font-extrabold text-[#0c1a2e] leading-tight">Find Visa Information &amp; Consultants</h2>
+              <p className="text-[11px] text-gray-500 font-semibold">Select your destination, purpose &amp; location</p>
             </div>
           </div>
 
-          <form onSubmit={handleSearchSubmit} className="space-y-3">
-            {/* 1. What are you looking for? (Search Input) */}
-            <div className="bg-slate-50/80 rounded-xl border border-slate-200/90 px-3.5 py-2.5 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#00a896] shrink-0 border border-slate-200/60 shadow-2xs">
-                <FileText className="w-4 h-4" />
-              </div>
-              <div className="flex-1 flex flex-col justify-center min-w-0">
-                <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
-                  What are you looking for?
-                </label>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="e.g. USA Student Visa, Consultant"
-                  className="w-full text-xs font-bold text-slate-900 placeholder:text-slate-400 outline-none bg-transparent"
-                />
-              </div>
+          <form onSubmit={handleSearchSubmit} className="space-y-2.5">
+            {/* 1. Country */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">I want to go to</label>
+              <select
+                value={selectedCountry}
+                onChange={(e) => setSelectedCountry(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="">Select Country</option>
+                <option value="Canada">Canada</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="United States">United States</option>
+                <option value="Australia">Australia</option>
+                <option value="Germany">Germany</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="UAE">UAE</option>
+              </select>
             </div>
 
-            {/* 2. Country */}
-            <div 
-              onClick={() => { setCountryOpen(!countryOpen); setCityOpen(false); setPurposeOpen(false); }}
-              className="bg-slate-50/80 rounded-xl border border-slate-200/90 px-3.5 py-2.5 flex items-center justify-between gap-3 relative cursor-pointer select-none"
-            >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#00a896] shrink-0 border border-slate-200/60 shadow-2xs">
-                  <Globe className="w-4 h-4" />
-                </div>
-                <div className="flex-1 flex flex-col justify-center min-w-0">
-                  <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
-                    Country
-                  </span>
-                  <span className="text-xs font-bold text-slate-900 truncate">
-                    {selectedCountry || "Select Country"}
-                  </span>
-                </div>
-              </div>
-              <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${countryOpen ? "rotate-180" : ""}`} />
-
-              {countryOpen && (
-                <div className="absolute top-[calc(100%+4px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-48 overflow-y-auto">
-                  <div
-                    onClick={(e) => { e.stopPropagation(); setSelectedCountry(""); setCountryOpen(false); }}
-                    className="px-3.5 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 cursor-pointer"
-                  >
-                    Select Country
-                  </div>
-                  {["Canada", "United Kingdom", "United States", "Australia", "Germany", "New Zealand", "UAE"].map((c) => (
-                    <div
-                      key={c}
-                      onClick={(e) => { e.stopPropagation(); setSelectedCountry(c); setCountryOpen(false); }}
-                      className={`px-3.5 py-2 text-xs transition-colors cursor-pointer ${
-                        selectedCountry === c ? "bg-slate-900 text-white font-bold" : "text-slate-800 hover:bg-slate-100 font-semibold"
-                      }`}
-                    >
-                      {c}
-                    </div>
-                  ))}
-                </div>
-              )}
+            {/* 2. Purpose */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">I am going for</label>
+              <select
+                value={selectedPurpose}
+                onChange={(e) => setSelectedPurpose(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="">Select Purpose</option>
+                <option value="Higher Education / Study">Higher Education / Study</option>
+                <option value="Employment / Work">Employment / Work</option>
+                <option value="Tourism / Visit">Tourism / Visit</option>
+                <option value="Permanent Residency">Permanent Residency</option>
+                <option value="Business / Investment">Business / Investment</option>
+              </select>
             </div>
 
-            {/* 3. Location */}
-            <div 
-              onClick={() => { setCityOpen(!cityOpen); setCountryOpen(false); setPurposeOpen(false); }}
-              className="bg-slate-50/80 rounded-xl border border-slate-200/90 px-3.5 py-2.5 flex items-center justify-between gap-3 relative cursor-pointer select-none"
-            >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#00a896] shrink-0 border border-slate-200/60 shadow-2xs">
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <div className="flex-1 flex flex-col justify-center min-w-0">
-                  <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
-                    Location
-                  </span>
-                  <span className="text-xs font-bold text-slate-900 truncate">
-                    {selectedCity || "Select Location"}
-                  </span>
-                </div>
-              </div>
-              <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${cityOpen ? "rotate-180" : ""}`} />
-
-              {cityOpen && (
-                <div className="absolute top-[calc(100%+4px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-48 overflow-y-auto">
-                  <div
-                    onClick={(e) => { e.stopPropagation(); setSelectedCity(""); setCityOpen(false); }}
-                    className="px-3.5 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 cursor-pointer"
-                  >
-                    Select Location
-                  </div>
-                  {["Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Remote"].map((loc) => (
-                    <div
-                      key={loc}
-                      onClick={(e) => { e.stopPropagation(); setSelectedCity(loc); setCityOpen(false); }}
-                      className={`px-3.5 py-2 text-xs transition-colors cursor-pointer ${
-                        selectedCity === loc ? "bg-slate-900 text-white font-bold" : "text-slate-800 hover:bg-slate-100 font-semibold"
-                      }`}
-                    >
-                      {loc}
-                    </div>
-                  ))}
-                </div>
-              )}
+            {/* 3. Visa Type */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Visa Type</label>
+              <select
+                value={selectedVisaType}
+                onChange={(e) => setSelectedVisaType(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="">Select Visa Type</option>
+                <option value="Student Visa">Student Visa</option>
+                <option value="Work Permit">Work Permit</option>
+                <option value="Tourist / Visitor Visa">Tourist / Visitor Visa</option>
+                <option value="PR / Express Entry">PR / Express Entry</option>
+              </select>
             </div>
 
-            {/* 4. Category */}
-            <div 
-              onClick={() => { setPurposeOpen(!purposeOpen); setCountryOpen(false); setCityOpen(false); }}
-              className="bg-slate-50/80 rounded-xl border border-slate-200/90 px-3.5 py-2.5 flex items-center justify-between gap-3 relative cursor-pointer select-none"
-            >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[#00a896] shrink-0 border border-slate-200/60 shadow-2xs">
-                  <Activity className="w-4 h-4" />
-                </div>
-                <div className="flex-1 flex flex-col justify-center min-w-0">
-                  <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
-                    Category
-                  </span>
-                  <span className="text-xs font-bold text-slate-900 truncate">
-                    {selectedPurpose || "Select Category"}
-                  </span>
-                </div>
-              </div>
-              <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${purposeOpen ? "rotate-180" : ""}`} />
-
-              {purposeOpen && (
-                <div className="absolute top-[calc(100%+4px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-48 overflow-y-auto">
-                  <div
-                    onClick={(e) => { e.stopPropagation(); setSelectedPurpose(""); setPurposeOpen(false); }}
-                    className="px-3.5 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 cursor-pointer"
-                  >
-                    Select Category
-                  </div>
-                  {["Student Visa", "Work Permit", "Visitor / Tourist Visa", "Permanent Residence", "Business Visa"].map((cat) => (
-                    <div
-                      key={cat}
-                      onClick={(e) => { e.stopPropagation(); setSelectedPurpose(cat); setPurposeOpen(false); }}
-                      className={`px-3.5 py-2 text-xs transition-colors cursor-pointer ${
-                        selectedPurpose === cat ? "bg-slate-900 text-white font-bold" : "text-slate-800 hover:bg-slate-100 font-semibold"
-                      }`}
-                    >
-                      {cat}
-                    </div>
-                  ))}
-                </div>
-              )}
+            {/* 4. Location */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">My Location</label>
+              <select
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold text-gray-900 outline-none focus:border-[#00a896] focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="">Select City</option>
+                <option value="Mumbai, India">Mumbai, India</option>
+                <option value="Delhi, India">Delhi, India</option>
+                <option value="Bangalore, India">Bangalore, India</option>
+                <option value="Hyderabad, India">Hyderabad, India</option>
+                <option value="Punjab, India">Punjab, India</option>
+              </select>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer mt-1"
+              className="w-full bg-[#00a896] hover:bg-[#009485] text-white text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99] cursor-pointer mt-2"
             >
-              <Search className="w-4 h-4" /> Search Consultants &amp; Visas
+              <Search className="w-4 h-4" />
+              <span>Search Consultants</span>
             </button>
           </form>
         </div>

@@ -26,6 +26,7 @@ export function ConsultantDashboard() {
     });
 
     const [isEditingProfile, setIsEditingProfile] = useState(false);
+    const [isProfileIncomplete, setIsProfileIncomplete] = useState(false);
     const [showSuccessToast, setShowSuccessToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("Action saved successfully!");
 
@@ -133,6 +134,14 @@ export function ConsultantDashboard() {
             setFormCountries(loadedCountries);
             setFormImage(image);
 
+            const hasIncompleteDetails = !localStorage.getItem("expert_officeAddress") || 
+                                         city === "Location Not Specified" || 
+                                         !localStorage.getItem("expert_aboutMe") || 
+                                         !localStorage.getItem("expert_profilePhoto") ||
+                                         finalName === "Immigration Expert";
+
+            setIsProfileIncomplete(hasIncompleteDetails);
+
             // Load real Classified Ads from localStorage
             try {
                 const savedAds = localStorage.getItem("expert_activeAds");
@@ -181,6 +190,7 @@ export function ConsultantDashboard() {
         localStorage.setItem("expert_countriesExpertise", formCountries);
         localStorage.setItem("expert_profilePhoto", formImage);
 
+        setIsProfileIncomplete(false);
         setIsEditingProfile(false);
         triggerToast("Profile details updated successfully!");
     };
@@ -304,6 +314,15 @@ export function ConsultantDashboard() {
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-4">
+                    {isProfileIncomplete && (
+                        <button 
+                            onClick={() => setIsEditingProfile(true)}
+                            className="hidden sm:flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300/80 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                        >
+                            <span>⚠️ Complete Profile</span>
+                        </button>
+                    )}
+
                     <button onClick={() => setActiveTab("help")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors">
                         <HelpCircle className="w-4.5 h-4.5" />
                     </button>
@@ -431,6 +450,30 @@ export function ConsultantDashboard() {
 
                 {/* Main Content Workspace */}
                 <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden">
+
+                    {/* Incomplete Profile Alert Banner */}
+                    {isProfileIncomplete && (
+                        <div className="bg-amber-50 border border-amber-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs w-full animate-fade-up">
+                            <div className="flex items-start gap-3.5">
+                                <div className="w-10 h-10 rounded-2xl bg-amber-100/90 flex items-center justify-center text-amber-800 shrink-0 font-black text-lg border border-amber-200">
+                                    ⚠️
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-extrabold text-amber-950 leading-tight">Complete your consultant profile details</h4>
+                                    <p className="text-xs font-semibold text-amber-800 mt-1 leading-relaxed">
+                                        Please add your office address, bio, profile photo, and specialization tags to get listed publicly and start receiving client enquiries.
+                                    </p>
+                                </div>
+                            </div>
+                            <button 
+                                onClick={() => setIsEditingProfile(true)}
+                                className="bg-amber-800 hover:bg-amber-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
+                            >
+                                <span>Complete Profile</span>
+                                <ChevronRight className="w-4 h-4" />
+                            </button>
+                        </div>
+                    )}
 
                     {/* 1. TAB: OVERVIEW */}
                     {activeTab === "overview" && (

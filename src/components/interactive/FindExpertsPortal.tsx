@@ -107,7 +107,7 @@ export function FindExpertsPortal() {
                 setSelectedCountry(countryQuery);
             }
             
-            const textQuery = params.get("query");
+            const textQuery = params.get("q") || params.get("query");
             if (textQuery) {
                 setSearchText(textQuery);
             }

@@ -26,6 +26,19 @@ function ExpertSignupPortalContent() {
   const [businessName, setBusinessName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [consultantType, setConsultantType] = useState("Freelancer");
+  
+  // Security Captcha States
+  const [captchaNum1, setCaptchaNum1] = useState(5);
+  const [captchaNum2, setCaptchaNum2] = useState(3);
+  const [captchaAnswer, setCaptchaAnswer] = useState("");
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+
+  const refreshCaptcha = () => {
+    setCaptchaNum1(Math.floor(Math.random() * 9) + 1);
+    setCaptchaNum2(Math.floor(Math.random() * 9) + 1);
+    setCaptchaAnswer("");
+    setCaptchaVerified(false);
+  };
 
   // Granular Address States
   const [addressArea, setAddressArea] = useState("");
@@ -419,6 +432,11 @@ function ExpertSignupPortalContent() {
       setBusinessName(finalBiz);
     }
 
+    if (!captchaVerified) {
+      setValidationError("Please solve the Security Captcha verification to proceed.");
+      return;
+    }
+
     if (!firstName || !lastName || !finalBiz || !contactNumber || !email || !password) {
       setValidationError("Please fill in all required fields.");
       return;
@@ -535,6 +553,30 @@ function ExpertSignupPortalContent() {
         advisor_type: consultantType,
         type: "expert"
       }));
+
+      // Append to all experts list for instant search index
+      try {
+        const existingAll = JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]");
+        const newRecord = {
+          id: `expert_${Date.now()}`,
+          name: businessName || `${firstName} ${lastName}`.trim() || "Registered Expert",
+          category: consultantType.toLowerCase().includes("consultancy") ? "pr" : "work",
+          role: consultantType || "Visa Expert",
+          rating: 5.0,
+          reviews: 1,
+          price: 1500,
+          city: finalAddress || addressCity || "Remote",
+          countries: (countriesExpertise || "Canada, UK, USA, Australia").split(",").map((c: string) => c.trim()),
+          experience: 5,
+          isRemote: true,
+          isAvailableToday: true,
+          isEmergency: false,
+          tags: finalExpertise,
+          image: profilePhoto || ""
+        };
+        const updatedAll = [newRecord, ...existingAll.filter((x: any) => x.name !== newRecord.name)];
+        localStorage.setItem("visaformula_all_experts", JSON.stringify(updatedAll));
+      } catch (e) {}
       
       window.scrollTo({ top: 0, behavior: "instant" });
       setIsRegistrationSuccess(true);
@@ -1022,6 +1064,49 @@ function ExpertSignupPortalContent() {
                   </div>
                 </div>
 
+                {/* Security Captcha Verification Widget */}
+                <div className="bg-slate-50 border border-slate-200 p-3.5 rounded-xl space-y-2 text-left mt-4 shadow-2xs">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                      <Shield className="w-3.5 h-3.5 text-[#00a896]" /> Security Captcha Verification *
+                    </label>
+                    <button 
+                      type="button" 
+                      onClick={refreshCaptcha} 
+                      className="text-[10px] font-bold text-[#00a896] hover:underline cursor-pointer"
+                    >
+                      🔄 Refresh Code
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="bg-slate-900 text-white font-mono font-bold text-sm tracking-widest px-3 py-2 rounded-lg select-none shadow-inner border border-slate-700">
+                      {captchaNum1} + {captchaNum2} = ?
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      value={captchaAnswer}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setCaptchaAnswer(val);
+                        if (parseInt(val, 10) === captchaNum1 + captchaNum2) {
+                          setCaptchaVerified(true);
+                          setValidationError("");
+                        } else {
+                          setCaptchaVerified(false);
+                        }
+                      }}
+                      placeholder="Answer"
+                      className="w-24 px-3 py-2 rounded-lg border border-slate-300 text-xs font-bold text-center focus:outline-none focus:ring-2 focus:ring-[#00a896] bg-white"
+                    />
+                    {captchaVerified && (
+                      <span className="text-xs font-extrabold text-emerald-600 flex items-center gap-1 bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-200">
+                        ✓ Verified
+                      </span>
+                    )}
+                  </div>
+                </div>
+
                 {validationError && (
                   <div className="p-3.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-medium text-center transition-all animate-premium-fade max-w-lg mx-auto mt-4">
                     {validationError}
@@ -1224,10 +1309,9 @@ function ExpertSignupPortalContent() {
                     <>
                       <div className="col-span-1">
                         <input 
-                          required
                           value={govRegNumber}
                           onChange={(e) => setGovRegNumber(e.target.value)}
-                          placeholder="Government Registration Number / License *" 
+                          placeholder="Government Registration Number / License (Optional)" 
                           style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                           className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         />
@@ -1238,7 +1322,6 @@ function ExpertSignupPortalContent() {
                             type="file"
                             id="license-file-input"
                             accept=".pdf,.jpg,.jpeg,.png"
-                            required
                             onChange={(e) => {
                               const file = e.target.files?.[0];
                               if (file) {
@@ -1251,16 +1334,15 @@ function ExpertSignupPortalContent() {
                           <div 
                             className={`w-full py-2.5 border border-dashed rounded-md text-sm font-semibold text-center transition-all shadow-sm ${licenseUploaded ? "bg-slate-50 border-black text-black" : "border-slate-300 hover:bg-slate-50 text-slate-500"}`}
                           >
-                            {licenseUploaded ? `✓ ${licenseFileName || "License Copy Attached"}` : "Upload License Copy (PDF / JPG) *"}
+                            {licenseUploaded ? `✓ ${licenseFileName || "License Copy Attached"}` : "Upload License Copy (PDF / JPG) (Optional)"}
                           </div>
                         </div>
                       </div>
                       <div className="col-span-2">
                         <input 
-                          required
                           value={officeAddress}
                           onChange={(e) => setOfficeAddress(e.target.value)}
-                          placeholder="Physical Verified Office Address *" 
+                          placeholder="Office / Practice Address (Optional)" 
                           style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                           className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         />

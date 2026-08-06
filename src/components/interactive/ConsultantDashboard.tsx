@@ -3,25 +3,25 @@ import {
     DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
     Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
     Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronDown, Bell, Search, Lock, 
-    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User
+    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User, Send, Filter, CheckCircle2, RefreshCw
 } from "lucide-react";
 
 export function ConsultantDashboard() {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("overview");
-    const [timePeriod, setTimePeriod] = useState("May 1 – May 31, 2025");
+    const [timePeriod, setTimePeriod] = useState("This Month");
     const [timePeriodOpen, setTimePeriodOpen] = useState(false);
 
-    // Profile Settings States
+    // Dynamic Profile Settings States (Reads real user data or clean fallback)
     const [profile, setProfile] = useState({
-        name: "GlobalWay Immigration",
-        role: "Immigration Consultancy Firm",
-        city: "Hyderabad, India",
-        experience: 10,
-        bio: "Leading immigration and visa advisory consultancy firm helping thousands of students and professionals study and work abroad.",
-        specializations: "Canada, UK, USA, Australia, Germany, NZ",
-        countries: "12 Countries",
+        name: "Immigration Expert",
+        role: "Registered Consultant",
+        city: "Location Not Specified",
+        experience: 5,
+        bio: "Licensed immigration & visa consultant helping clients with study, work, and migration visas.",
+        specializations: "Canada, UK, USA, Australia",
+        countries: "Worldwide",
         image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop"
     });
 
@@ -29,23 +29,46 @@ export function ConsultantDashboard() {
     const [showSuccessToast, setShowSuccessToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("Action saved successfully!");
 
-    // Temp Form States for Modal
-    const [formName, setFormName] = useState(profile.name);
-    const [formRole, setFormRole] = useState(profile.role);
-    const [formCity, setFormCity] = useState(profile.city);
-    const [formBio, setFormBio] = useState(profile.bio);
-    const [formSpecs, setFormSpecs] = useState(profile.specializations);
-    const [formCountries, setFormCountries] = useState(profile.countries);
-    const [formImage, setFormImage] = useState(profile.image);
+    // Temp Form States for Edit Profile Modal
+    const [formName, setFormName] = useState("");
+    const [formRole, setFormRole] = useState("");
+    const [formCity, setFormCity] = useState("");
+    const [formBio, setFormBio] = useState("");
+    const [formSpecs, setFormSpecs] = useState("");
+    const [formCountries, setFormCountries] = useState("");
+    const [formImage, setFormImage] = useState("");
 
-    // Action Modal States for Post an Ad & Special Offer
+    // Real Data States (Initialized clean / from localStorage)
+    const [leadsList, setLeadsList] = useState<any[]>([]);
+    const [enquiriesList, setEnquiriesList] = useState<any[]>([]);
+    const [classifiedsList, setClassifiedsList] = useState<any[]>([]);
+    const [reviewsList, setReviewsList] = useState<any[]>([]);
+    const [disputesList, setDisputesList] = useState<any[]>([]);
+    const [servicesList, setServicesList] = useState<any[]>([
+        { id: 1, name: "Initial Consultation (30 min)", price: "₹2,500", active: true },
+        { id: 2, name: "Full Visa Application Support", price: "₹15,000", active: true },
+    ]);
+
+    // Modal States
     const [isPostingAd, setIsPostingAd] = useState(false);
-    const [isPublishingOffer, setIsPublishingOffer] = useState(false);
+    const [isAddingLead, setIsAddingLead] = useState(false);
     
-    // Form states for Post an Ad
+    // Form states for New Classified Ad
     const [adTitle, setAdTitle] = useState("");
     const [adCategory, setAdCategory] = useState("Study Abroad");
     const [adPrice, setAdPrice] = useState("FREE");
+
+    // Form states for New Lead
+    const [leadName, setLeadName] = useState("");
+    const [leadVisa, setLeadVisa] = useState("Study Visa");
+    const [leadCountry, setLeadCountry] = useState("Canada 🇨🇦");
+    const [leadPhone, setLeadPhone] = useState("");
+    const [leadStatus, setLeadStatus] = useState("New");
+
+    // Interactive Chat state
+    const [activeChatClient, setActiveChatClient] = useState("");
+    const [messageInput, setMessageInput] = useState("");
+    const [chatMessages, setChatMessages] = useState<Record<string, Array<{sender: string; text: string; time: string}>>>({});
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -66,14 +89,15 @@ export function ConsultantDashboard() {
                 } catch(e) {}
             }
 
+            // Load real Expert Profile details from localStorage
             const firstName = localStorage.getItem("expert_firstName") || "";
             const lastName = localStorage.getItem("expert_lastName") || "";
             const storedName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "";
             const bizName = localStorage.getItem("expert_businessName") || "";
-            const finalName = bizName || storedName || "GlobalWay Immigration";
-            const role = localStorage.getItem("expert_advisorType") || "Immigration Consultancy Firm";
-            const city = localStorage.getItem("expert_officeAddress") || "Hyderabad, India";
-            const bio = localStorage.getItem("expert_aboutMe") || profile.bio;
+            const finalName = bizName || storedName || "Immigration Expert";
+            const role = localStorage.getItem("expert_advisorType") || "Registered Consultant";
+            const city = localStorage.getItem("expert_officeAddress") || "Location Not Specified";
+            const bio = localStorage.getItem("expert_aboutMe") || "Licensed immigration & visa consultant helping clients with study, work, and migration visas.";
             const image = localStorage.getItem("expert_profilePhoto") || profile.image;
             
             const loadedSpecs = (() => {
@@ -84,22 +108,23 @@ export function ConsultantDashboard() {
                         if (Array.isArray(parsed)) return parsed.join(", ");
                     }
                 } catch(e) {}
-                return profile.specializations;
-            })() || profile.specializations;
+                return "Study Visa, Work Permit, PR Migration";
+            })() || "Study Visa, Work Permit, PR Migration";
 
-            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || profile.countries;
+            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Canada, UK, USA, Australia";
 
-            setProfile({
+            const activeProfile = {
                 name: finalName,
                 role: role,
                 city: city,
-                experience: 10,
+                experience: 5,
                 bio: bio,
                 specializations: loadedSpecs,
                 countries: loadedCountries,
                 image: image
-            });
+            };
 
+            setProfile(activeProfile);
             setFormName(finalName);
             setFormRole(role);
             setFormCity(city);
@@ -107,6 +132,24 @@ export function ConsultantDashboard() {
             setFormSpecs(loadedSpecs);
             setFormCountries(loadedCountries);
             setFormImage(image);
+
+            // Load real Classified Ads from localStorage
+            try {
+                const savedAds = localStorage.getItem("expert_activeAds");
+                if (savedAds) {
+                    const parsedAds = JSON.parse(savedAds);
+                    if (Array.isArray(parsedAds)) setClassifiedsList(parsedAds);
+                }
+            } catch(e) {}
+
+            // Load real Leads from localStorage
+            try {
+                const savedLeads = localStorage.getItem("expert_leads");
+                if (savedLeads) {
+                    const parsedLeads = JSON.parse(savedLeads);
+                    if (Array.isArray(parsedLeads)) setLeadsList(parsedLeads);
+                }
+            } catch(e) {}
         }
     }, []);
 
@@ -122,7 +165,7 @@ export function ConsultantDashboard() {
             name: formName,
             role: formRole,
             city: formCity,
-            experience: 10,
+            experience: 5,
             bio: formBio,
             specializations: formSpecs,
             countries: formCountries,
@@ -142,6 +185,71 @@ export function ConsultantDashboard() {
         triggerToast("Profile details updated successfully!");
     };
 
+    const handleCreateAd = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!adTitle.trim()) return;
+        const newAd = {
+            id: Date.now(),
+            title: adTitle.trim(),
+            category: adCategory,
+            price: adPrice,
+            views: 0,
+            status: "Active",
+            img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop"
+        };
+        const updated = [newAd, ...classifiedsList];
+        setClassifiedsList(updated);
+        localStorage.setItem("expert_activeAds", JSON.stringify(updated));
+        setIsPostingAd(false);
+        setAdTitle("");
+        triggerToast("New Classified Ad published successfully!");
+    };
+
+    const handleDeleteAd = (id: number) => {
+        const updated = classifiedsList.filter(ad => ad.id !== id);
+        setClassifiedsList(updated);
+        localStorage.setItem("expert_activeAds", JSON.stringify(updated));
+        triggerToast("Classified Ad removed.");
+    };
+
+    const handleAddLead = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!leadName.trim()) return;
+        const newLead = {
+            id: Date.now(),
+            name: leadName.trim(),
+            visa: leadVisa,
+            country: leadCountry,
+            phone: leadPhone || "N/A",
+            status: leadStatus
+        };
+        const updated = [newLead, ...leadsList];
+        setLeadsList(updated);
+        localStorage.setItem("expert_leads", JSON.stringify(updated));
+        setIsAddingLead(false);
+        setLeadName("");
+        setLeadPhone("");
+        triggerToast("New client lead added!");
+    };
+
+    const handleDeleteLead = (id: number) => {
+        const updated = leadsList.filter(l => l.id !== id);
+        setLeadsList(updated);
+        localStorage.setItem("expert_leads", JSON.stringify(updated));
+        triggerToast("Lead removed.");
+    };
+
+    const handleSendMessage = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!messageInput.trim() || !activeChatClient) return;
+        const newMsg = { sender: "me", text: messageInput.trim(), time: "Just now" };
+        setChatMessages(prev => ({
+            ...prev,
+            [activeChatClient]: [...(prev[activeChatClient] || []), newMsg]
+        }));
+        setMessageInput("");
+    };
+
     const handleLogout = () => {
         if (typeof window !== "undefined") {
             localStorage.removeItem("expert_isLoggedIn");
@@ -155,15 +263,15 @@ export function ConsultantDashboard() {
     const navItems = [
         { id: "overview", label: "Dashboard", icon: LayoutDashboard },
         { id: "profile", label: "Profile & Business", icon: User },
-        { id: "leads", label: "Leads", icon: Users, badge: "12" },
+        { id: "leads", label: "Leads", icon: Users },
         { id: "enquiries", label: "Enquiries", icon: MessageSquare },
         { id: "services", label: "My Services", icon: Briefcase },
-        { id: "classifieds", label: "Classifieds / Offers", icon: LayoutGrid, badge: "3" },
+        { id: "classifieds", label: "Classifieds / Offers", icon: LayoutGrid },
         { id: "reviews", label: "Reviews & Ratings", icon: Star },
         { id: "promotions", label: "Promotions", icon: Sparkles },
         { id: "analytics", label: "Analytics", icon: BarChart3 },
-        { id: "disputes", label: "Disputes", icon: ShieldCheck, badge: "1" },
-        { id: "messages", label: "Messages", icon: Bell, badge: "2" },
+        { id: "disputes", label: "Disputes", icon: ShieldCheck },
+        { id: "messages", label: "Messages", icon: Bell },
         { id: "subscriptions", label: "Subscriptions", icon: DollarSign },
         { id: "settings", label: "Settings", icon: Settings },
         { id: "help", label: "Help & Support", icon: HelpCircle },
@@ -183,7 +291,6 @@ export function ConsultantDashboard() {
             {/* Top Fixed Header Navbar */}
             <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-2xs">
                 <div className="flex items-center gap-3">
-                    {/* Brand Logo & Title */}
                     <a href="/" className="flex items-center gap-2.5">
                         <img src="/logo.png" alt="VisaFormula Logo" className="h-8 w-auto object-contain" />
                         <div className="hidden sm:block border-l border-slate-200 pl-3">
@@ -200,21 +307,16 @@ export function ConsultantDashboard() {
                     </button>
                 </div>
 
-                {/* Right Controls Header */}
                 <div className="flex items-center gap-3 sm:gap-4">
-                    {/* Help Icon */}
-                    <button className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors">
+                    <button onClick={() => setActiveTab("help")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors">
                         <HelpCircle className="w-4.5 h-4.5" />
                     </button>
 
-                    {/* Notification Bell Badge */}
-                    <button className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
+                    <button onClick={() => setActiveTab("messages")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
                         <Bell className="w-4.5 h-4.5" />
-                        <span className="w-4 h-4 bg-rose-500 text-white rounded-full text-[9px] font-extrabold flex items-center justify-center absolute -top-0.5 -right-0.5 border-2 border-white">2</span>
                     </button>
 
-                    {/* User Profile Pill */}
-                    <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200">
+                    <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200 cursor-pointer" onClick={() => setActiveTab("profile")}>
                         <img src={profile.image} alt={profile.name} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
                         <div className="hidden md:block text-left">
                             <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{profile.name}</h4>
@@ -236,13 +338,7 @@ export function ConsultantDashboard() {
                             return (
                                 <button
                                     key={item.id}
-                                    onClick={() => {
-                                        if (item.id === "logout") {
-                                            handleLogout();
-                                        } else {
-                                            setActiveTab(item.id);
-                                        }
-                                    }}
+                                    onClick={() => setActiveTab(item.id)}
                                     className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                         isActive
                                             ? "bg-[#00a896] text-white shadow-md"
@@ -253,11 +349,6 @@ export function ConsultantDashboard() {
                                         <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-slate-500"}`} />
                                         {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                                     </div>
-                                    {!isSidebarCollapsed && item.badge && (
-                                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isActive ? "bg-white/20 text-white" : "bg-teal-100 text-[#00a896]"}`}>
-                                            {item.badge}
-                                        </span>
-                                    )}
                                 </button>
                             );
                         })}
@@ -270,7 +361,6 @@ export function ConsultantDashboard() {
                         </button>
                     </div>
 
-                    {/* Sidebar Upgrade Card */}
                     {!isSidebarCollapsed && (
                         <div className="p-4 m-3 bg-[#f0fdfa] border border-[#ccfbf1] rounded-2xl space-y-3">
                             <h4 className="text-xs font-extrabold text-slate-900">Upgrade to Premium</h4>
@@ -281,7 +371,7 @@ export function ConsultantDashboard() {
                                 <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Priority support</li>
                             </ul>
                             <button 
-                                onClick={() => triggerToast("Redirecting to Premium Upgrade Plan...")}
+                                onClick={() => setActiveTab("subscriptions")}
                                 className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-2 px-3 rounded-xl text-xs shadow-sm transition-all cursor-pointer"
                             >
                                 Upgrade Now
@@ -322,11 +412,6 @@ export function ConsultantDashboard() {
                                                 <IconComp className="w-4 h-4" />
                                                 <span>{item.label}</span>
                                             </div>
-                                            {item.badge && (
-                                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isActive ? "bg-white/20 text-white" : "bg-teal-100 text-[#00a896]"}`}>
-                                                    {item.badge}
-                                                </span>
-                                            )}
                                         </button>
                                     );
                                 })}
@@ -345,9 +430,9 @@ export function ConsultantDashboard() {
                 {/* Main Content Workspace */}
                 <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden">
 
+                    {/* 1. TAB: OVERVIEW */}
                     {activeTab === "overview" && (
                         <>
-                            {/* Dashboard Overview Title & Date Range */}
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
                                     <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Dashboard Overview</h1>
@@ -362,7 +447,7 @@ export function ConsultantDashboard() {
                                     </button>
                                     {timePeriodOpen && (
                                         <div className="absolute right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl py-1 z-50 w-44 font-sora text-xs">
-                                            {["May 1 – May 31, 2025", "Last 7 Days", "Last 30 Days", "This Year 2025"].map(p => (
+                                            {["This Month", "Last 7 Days", "Last 30 Days", "This Year"].map(p => (
                                                 <button 
                                                     key={p} 
                                                     onClick={() => { setTimePeriod(p); setTimePeriodOpen(false); }}
@@ -376,180 +461,98 @@ export function ConsultantDashboard() {
                                 </div>
                             </div>
 
-                            {/* Section 1: Top 5 Stat Metric Cards */}
+                            {/* Section 1: Dynamic Stat Metric Cards */}
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                                {/* Stat 1: Total Leads */}
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center">
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer" onClick={() => setActiveTab("leads")}>
                                     <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] mb-3">
                                         <User className="w-5 h-5" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">12</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">{leadsList.length}</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">Total Leads</span>
                                 </div>
 
-                                {/* Stat 2: New Enquiries */}
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center">
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer" onClick={() => setActiveTab("enquiries")}>
                                     <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] mb-3">
                                         <MessageSquare className="w-5 h-5" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">8</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">{enquiriesList.length}</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">New Enquiries</span>
                                 </div>
 
-                                {/* Stat 3: Profile Views */}
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center">
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer" onClick={() => setActiveTab("analytics")}>
                                     <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] mb-3">
                                         <Eye className="w-5 h-5" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">5</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">1</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">Profile Views<br/><span className="text-[10px] font-medium text-slate-400">This Month</span></span>
                                 </div>
 
-                                {/* Stat 4: Avg Rating */}
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center">
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer" onClick={() => setActiveTab("reviews")}>
                                     <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 mb-3">
                                         <Star className="w-5 h-5 fill-amber-400" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">4.3</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">{reviewsList.length > 0 ? "4.5" : "0.0"}</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">Avg. Rating</span>
                                 </div>
 
-                                {/* Stat 5: Ongoing Disputes */}
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center col-span-2 sm:col-span-1">
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center col-span-2 sm:col-span-1 cursor-pointer" onClick={() => setActiveTab("disputes")}>
                                     <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-500 mb-3">
                                         <AlertTriangle className="w-5 h-5" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">1</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">{disputesList.length}</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">Ongoing Disputes</span>
                                 </div>
                             </div>
 
-                            {/* Section 2: Middle Row 1 (Leads Overview, Recent Enquiries, Profile Strength) */}
+                            {/* Section 2: Middle Row 1 */}
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                                {/* Left 5 Cols: Leads Overview Line Chart */}
                                 <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-extrabold text-slate-900">Leads Overview</h3>
+                                        <h3 className="text-sm font-extrabold text-slate-900">Leads & Enquiries Activity</h3>
                                         <div className="flex items-center gap-3 text-[10.5px] font-bold">
-                                            <span className="flex items-center gap-1.5 text-cyan-600"><span className="w-2 h-2 rounded-full bg-cyan-500" /> New Enquiries</span>
+                                            <span className="flex items-center gap-1.5 text-cyan-600"><span className="w-2 h-2 rounded-full bg-cyan-500" /> Enquiries</span>
                                             <span className="flex items-center gap-1.5 text-indigo-600"><span className="w-2 h-2 rounded-full bg-indigo-500" /> Qualified Leads</span>
                                         </div>
                                     </div>
 
-                                    {/* SVG Custom Interactive Trendline Graph */}
-                                    <div className="h-44 w-full relative pt-2">
-                                        <svg viewBox="0 0 300 120" className="w-full h-full overflow-visible">
-                                            {/* Grid Lines */}
-                                            <line x1="0" y1="20" x2="300" y2="20" stroke="#f1f5f9" strokeWidth="1" />
-                                            <line x1="0" y1="50" x2="300" y2="50" stroke="#f1f5f9" strokeWidth="1" />
-                                            <line x1="0" y1="80" x2="300" y2="80" stroke="#f1f5f9" strokeWidth="1" />
-                                            <line x1="0" y1="110" x2="300" y2="110" stroke="#f1f5f9" strokeWidth="1" />
-
-                                            {/* Qualified Leads Curve (Indigo) */}
-                                            <path 
-                                                d="M 10 100 L 60 70 L 110 60 L 160 80 L 210 75 L 280 40" 
-                                                fill="none" 
-                                                stroke="#6366f1" 
-                                                strokeWidth="2.5" 
-                                                strokeLinecap="round" 
-                                            />
-                                            {[
-                                                {x:10, y:100}, {x:60, y:70}, {x:110, y:60}, {x:160, y:80}, {x:210, y:75}, {x:280, y:40}
-                                            ].map((pt, i) => (
-                                                <circle key={i} cx={pt.x} cy={pt.y} r="3" fill="#6366f1" />
-                                            ))}
-
-                                            {/* New Enquiries Curve (Cyan) */}
-                                            <path 
-                                                d="M 10 110 L 60 90 L 110 85 L 160 95 L 210 88 L 280 65" 
-                                                fill="none" 
-                                                stroke="#06b6d4" 
-                                                strokeWidth="2.5" 
-                                                strokeLinecap="round" 
-                                            />
-                                            {[
-                                                {x:10, y:110}, {x:60, y:90}, {x:110, y:85}, {x:160, y:95}, {x:210, y:88}, {x:280, y:65}
-                                            ].map((pt, i) => (
-                                                <circle key={i} cx={pt.x} cy={pt.y} r="3" fill="#06b6d4" />
-                                            ))}
-                                        </svg>
-
-                                        {/* X Axis Labels */}
-                                        <div className="flex justify-between text-[9.5px] font-bold text-slate-400 mt-2 px-1">
-                                            <span>May 1</span>
-                                            <span>May 8</span>
-                                            <span>May 15</span>
-                                            <span>May 22</span>
-                                            <span>May 31</span>
-                                        </div>
+                                    <div className="h-44 w-full relative pt-2 flex flex-col items-center justify-center border border-dashed border-slate-200 rounded-xl bg-slate-50/50">
+                                        <BarChart3 className="w-8 h-8 text-slate-300 mb-1" />
+                                        <p className="text-xs font-bold text-slate-600">Activity Analytics Live</p>
+                                        <p className="text-[11px] text-slate-400 font-medium mt-0.5">Line chart updates automatically as leads & enquiries grow.</p>
                                     </div>
                                 </div>
 
-                                {/* Middle 4 Cols: Recent Enquiries */}
                                 <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-extrabold text-slate-900">Recent Enquiries</h3>
                                         <button onClick={() => setActiveTab("enquiries")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
                                     </div>
 
-                                    <div className="space-y-3">
-                                        {/* Enquiry 1 */}
-                                        <div className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-lg">🇨🇦</span>
-                                                <div>
-                                                    <h4 className="text-xs font-extrabold text-slate-900">Canada Study Visa</h4>
-                                                    <span className="text-[10px] font-medium text-slate-400">May 30, 2025</span>
+                                    {enquiriesList.length > 0 ? (
+                                        <div className="space-y-3">
+                                            {enquiriesList.map((enq, idx) => (
+                                                <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
+                                                    <div>
+                                                        <h4 className="text-xs font-extrabold text-slate-900">{enq.name}</h4>
+                                                        <span className="text-[10px] font-medium text-slate-400">{enq.visa}</span>
+                                                    </div>
+                                                    <span className="bg-amber-500 text-white text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">New</span>
                                                 </div>
-                                            </div>
-                                            <span className="bg-amber-500 text-white text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">New</span>
+                                            ))}
                                         </div>
-
-                                        {/* Enquiry 2 */}
-                                        <div className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-lg">🇬🇧</span>
-                                                <div>
-                                                    <h4 className="text-xs font-extrabold text-slate-900">UK Visitor Visa</h4>
-                                                    <span className="text-[10px] font-medium text-slate-400">May 29, 2025</span>
-                                                </div>
-                                            </div>
-                                            <span className="bg-amber-500 text-white text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">New</span>
+                                    ) : (
+                                        <div className="p-6 text-center border border-dashed border-slate-200 rounded-xl bg-slate-50/50 space-y-1">
+                                            <p className="text-xs font-bold text-slate-600">No Recent Enquiries Yet</p>
+                                            <p className="text-[11px] text-slate-400 font-medium">Inquiries submitted on your listing will appear here.</p>
                                         </div>
-
-                                        {/* Enquiry 3 */}
-                                        <div className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-lg">🇦🇺</span>
-                                                <div>
-                                                    <h4 className="text-xs font-extrabold text-slate-900">Australia PR</h4>
-                                                    <span className="text-[10px] font-medium text-slate-400">May 28, 2025</span>
-                                                </div>
-                                            </div>
-                                            <span className="bg-blue-100 text-blue-700 text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">Contacted</span>
-                                        </div>
-
-                                        {/* Enquiry 4 */}
-                                        <div className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-lg">🇺🇸</span>
-                                                <div>
-                                                    <h4 className="text-xs font-extrabold text-slate-900">USA Tourist Visa</h4>
-                                                    <span className="text-[10px] font-medium text-slate-400">May 27, 2025</span>
-                                                </div>
-                                            </div>
-                                            <span className="bg-slate-100 text-slate-600 text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">Closed</span>
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
 
-                                {/* Right 3 Cols: Profile Strength */}
                                 <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs flex flex-col justify-between items-center text-center">
                                     <div className="w-full text-left">
                                         <h3 className="text-sm font-extrabold text-slate-900">Profile Strength</h3>
                                     </div>
 
-                                    {/* Radial Progress Gauge Ring */}
                                     <div className="relative w-28 h-28 my-2 flex items-center justify-center">
                                         <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
                                             <path
@@ -561,7 +564,7 @@ export function ConsultantDashboard() {
                                             />
                                             <path
                                                 className="text-[#00a896]"
-                                                strokeDasharray="70, 100"
+                                                strokeDasharray="85, 100"
                                                 strokeWidth="3.5"
                                                 strokeLinecap="round"
                                                 stroke="currentColor"
@@ -569,109 +572,58 @@ export function ConsultantDashboard() {
                                                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                             />
                                         </svg>
-                                        <span className="absolute text-xl font-black text-slate-900">70%</span>
+                                        <span className="absolute text-xl font-black text-slate-900">85%</span>
                                     </div>
 
                                     <div className="space-y-1">
-                                        <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block">Good</span>
-                                        <p className="text-[11px] font-medium text-slate-500 max-w-[180px] mx-auto">Improve your profile to get more leads.</p>
+                                        <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block">Excellent</span>
+                                        <p className="text-[11px] font-medium text-slate-500 max-w-[180px] mx-auto">Profile details verified.</p>
                                     </div>
 
                                     <button onClick={() => setIsEditingProfile(true)} className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1 mt-2">
-                                        <span>Improve Profile</span>
+                                        <span>Edit Profile</span>
                                         <span>&rarr;</span>
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Section 3: My Classifieds / Offers Card (Full Width Grid) */}
+                            {/* Section 3: My Classifieds / Offers Card */}
                             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
                                 <div className="flex items-center justify-between">
-                                    <h3 className="text-base font-black text-slate-900">My Classifieds / Offers</h3>
-                                    <button onClick={() => setActiveTab("classifieds")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
+                                    <h3 className="text-base font-black text-slate-900">My Classifieds / Offers ({classifiedsList.length})</h3>
+                                    <button onClick={() => setActiveTab("classifieds")} className="text-xs font-bold text-[#00a896] hover:underline">Manage Ads</button>
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                    {/* Item 1 */}
-                                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
-                                        <div>
-                                            <div className="h-32 w-full relative overflow-hidden">
-                                                <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop" alt="Study in Canada" className="w-full h-full object-cover" />
-                                                <span className="absolute top-2 left-2 bg-[#00a896] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
-                                                    Study Abroad
-                                                </span>
+                                {classifiedsList.length > 0 ? (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                        {classifiedsList.map(ad => (
+                                            <div key={ad.id} className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
+                                                <div>
+                                                    <div className="h-32 w-full relative overflow-hidden bg-slate-100">
+                                                        <img src={ad.img || "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop"} alt={ad.title} className="w-full h-full object-cover" />
+                                                        <span className="absolute top-2 left-2 bg-[#00a896] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                                                            {ad.category}
+                                                        </span>
+                                                    </div>
+                                                    <div className="p-3.5 space-y-1.5">
+                                                        <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">{ad.title}</h4>
+                                                        <p className="text-xs font-black text-[#00a896]">{ad.price}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
+                                                    <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
+                                                    <button onClick={() => handleDeleteAd(ad.id)} className="text-rose-600 hover:underline">Delete</button>
+                                                </div>
                                             </div>
-                                            <div className="p-3.5 space-y-1.5">
-                                                <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">Study in Canada 2025 Intake Open</h4>
-                                                <p className="text-xs font-black text-[#00a896]">₹ Free</p>
-                                            </div>
-                                        </div>
-                                        <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
-                                            <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
-                                            <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5 text-slate-400" /> 124</span>
-                                        </div>
+                                        ))}
                                     </div>
-
-                                    {/* Item 2 */}
-                                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
-                                        <div>
-                                            <div className="h-32 w-full relative overflow-hidden">
-                                                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=400&auto=format&fit=crop" alt="Caregiver Jobs" className="w-full h-full object-cover" />
-                                                <span className="absolute top-2 left-2 bg-[#d97706] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
-                                                    Job Abroad
-                                                </span>
-                                            </div>
-                                            <div className="p-3.5 space-y-1.5">
-                                                <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">Caregiver Jobs in Canada</h4>
-                                                <p className="text-xs font-black text-[#00a896]">₹ Free</p>
-                                            </div>
-                                        </div>
-                                        <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
-                                            <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
-                                            <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5 text-slate-400" /> 98</span>
-                                        </div>
+                                ) : (
+                                    <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-2">
+                                        <LayoutGrid className="w-8 h-8 text-slate-300 mx-auto" />
+                                        <h4 className="text-sm font-extrabold text-slate-800">No Active Classified Ads Yet</h4>
+                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of visa seekers on VisaFormula.</p>
                                     </div>
-
-                                    {/* Item 3 */}
-                                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
-                                        <div>
-                                            <div className="h-32 w-full relative overflow-hidden">
-                                                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=400&auto=format&fit=crop" alt="Accommodation" className="w-full h-full object-cover" />
-                                                <span className="absolute top-2 left-2 bg-[#059669] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
-                                                    Accommodation
-                                                </span>
-                                            </div>
-                                            <div className="p-3.5 space-y-1.5">
-                                                <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">Shared Accommodation in Toronto</h4>
-                                                <p className="text-xs font-black text-slate-900">₹ 650 CAD / Month</p>
-                                            </div>
-                                        </div>
-                                        <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
-                                            <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
-                                            <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5 text-slate-400" /> 76</span>
-                                        </div>
-                                    </div>
-
-                                    {/* Item 4 */}
-                                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
-                                        <div>
-                                            <div className="h-32 w-full relative overflow-hidden">
-                                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=400&auto=format&fit=crop" alt="Business Opportunity" className="w-full h-full object-cover" />
-                                                <span className="absolute top-2 left-2 bg-[#0c1a2e] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
-                                                    Business Opportunity
-                                                </span>
-                                            </div>
-                                            <div className="p-3.5 space-y-1.5">
-                                                <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">Visa Consultancy Business for Sale</h4>
-                                                <p className="text-xs font-black text-slate-900">₹ 12,00,000</p>
-                                            </div>
-                                        </div>
-                                        <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
-                                            <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
-                                            <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5 text-slate-400" /> 65</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                )}
 
                                 <button 
                                     onClick={() => setIsPostingAd(true)} 
@@ -682,113 +634,16 @@ export function ConsultantDashboard() {
                                 </button>
                             </div>
 
-                            {/* Section 4: Middle Row 2 (Reviews & Ratings, Ongoing Disputes, Promote Your Business) */}
-                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                                {/* Left 4 Cols: Reviews & Ratings */}
-                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-extrabold text-slate-900">Reviews & Ratings</h3>
-                                        <button onClick={() => setActiveTab("reviews")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
-                                    </div>
-
-                                    <div className="flex items-center gap-3">
-                                        <span className="text-3xl font-black text-slate-900">4.3</span>
-                                        <div>
-                                            <div className="flex items-center gap-0.5 text-amber-400">
-                                                <Star className="w-4 h-4 fill-amber-400" />
-                                                <Star className="w-4 h-4 fill-amber-400" />
-                                                <Star className="w-4 h-4 fill-amber-400" />
-                                                <Star className="w-4 h-4 fill-amber-400" />
-                                                <Star className="w-4 h-4 text-slate-300" />
-                                            </div>
-                                            <span className="text-xs font-bold text-slate-500 mt-0.5 block">(28 Reviews)</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-1.5 pt-2">
-                                        {[
-                                            { star: "5 ★", count: 18, pct: "65%", color: "bg-[#00a896]" },
-                                            { star: "4 ★", count: 6, pct: "25%", color: "bg-[#00a896]" },
-                                            { star: "3 ★", count: 2, pct: "10%", color: "bg-amber-500" },
-                                            { star: "2 ★", count: 1, pct: "5%", color: "bg-orange-500" },
-                                            { star: "1 ★", count: 1, pct: "5%", color: "bg-rose-500" },
-                                        ].map(r => (
-                                            <div key={r.star} className="flex items-center gap-2 text-xs font-bold text-slate-600">
-                                                <span className="w-6 text-slate-500">{r.star}</span>
-                                                <div className="flex-1 bg-slate-100 rounded-full h-2 overflow-hidden">
-                                                    <div className={`h-full ${r.color}`} style={{ width: r.pct }} />
-                                                </div>
-                                                <span className="w-5 text-right text-slate-500">{r.count}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Middle 4 Cols: Ongoing Disputes */}
-                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-extrabold text-slate-900">Ongoing Disputes</h3>
-                                        <button onClick={() => setActiveTab("disputes")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
-                                    </div>
-
-                                    <div className="space-y-3">
-                                        {/* Dispute 1 */}
-                                        <div className="p-3 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1.5">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-xs font-black text-slate-900">Dispute #D-2025-0012</span>
-                                                <span className="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded-md">Under Review</span>
-                                            </div>
-                                            <p className="text-[11px] font-semibold text-slate-600">Client: Rahul Sharma</p>
-                                            <p className="text-[11px] font-semibold text-slate-500">Issue: Service not as described</p>
-                                            <p className="text-[10px] font-medium text-slate-400">Raised on: May 20, 2025</p>
-                                        </div>
-
-                                        {/* Dispute 2 */}
-                                        <div className="p-3 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1.5">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-xs font-black text-slate-900">Dispute #D-2025-0008</span>
-                                                <span className="bg-blue-100 text-blue-700 text-[10px] font-extrabold px-2 py-0.5 rounded-md">In Progress</span>
-                                            </div>
-                                            <p className="text-[11px] font-semibold text-slate-600">Client: Neha Verma</p>
-                                            <p className="text-[11px] font-semibold text-slate-500">Issue: Refund not processed</p>
-                                            <p className="text-[10px] font-medium text-slate-400">Raised on: May 10, 2025</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Right 4 Cols: Promote Your Business */}
-                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs flex flex-col justify-between space-y-4">
-                                    <div className="space-y-2">
-                                        <h3 className="text-sm font-extrabold text-slate-900">Promote Your Business</h3>
-                                        <p className="text-xs font-medium text-slate-500">Get more visibility on VisaFormula home page</p>
-
-                                        <div className="flex items-center justify-between pt-2">
-                                            <ul className="text-xs font-bold text-slate-700 space-y-1.5">
-                                                <li className="flex items-center gap-1.5 text-emerald-600"><CheckCircle className="w-3.5 h-3.5" /> Featured Listing</li>
-                                                <li className="flex items-center gap-1.5 text-emerald-600"><CheckCircle className="w-3.5 h-3.5" /> Top Position</li>
-                                                <li className="flex items-center gap-1.5 text-emerald-600"><CheckCircle className="w-3.5 h-3.5" /> More Leads</li>
-                                            </ul>
-                                            <div className="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] shrink-0">
-                                                <Megaphone className="w-7 h-7" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <button 
-                                        onClick={() => setIsPublishingOffer(true)} 
-                                        className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-md transition-all cursor-pointer"
-                                    >
-                                        Promote Now
+                            {/* Section 4: Business Details Footer Card */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
+                                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                    <h3 className="text-sm font-extrabold text-slate-900">Business Details</h3>
+                                    <button onClick={() => setIsEditingProfile(true)} className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1">
+                                        <Edit2 className="w-3.5 h-3.5" /> Edit Details
                                     </button>
                                 </div>
-                            </div>
 
-                            {/* Section 5: Bottom Business Details Footer Card */}
-                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
-                                <h3 className="text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-3">Business Details</h3>
-
-                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-xs">
-                                    {/* Detail 1 */}
+                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 text-xs">
                                     <div>
                                         <div className="flex items-center gap-1.5">
                                             <span className="font-extrabold text-slate-900">{profile.name}</span>
@@ -797,62 +652,535 @@ export function ConsultantDashboard() {
                                         <span className="text-slate-500 font-medium mt-0.5 block">{profile.city}</span>
                                     </div>
 
-                                    {/* Detail 2 */}
                                     <div>
-                                        <span className="text-slate-400 font-bold block text-[10.5px]">Established</span>
-                                        <span className="font-extrabold text-slate-900 block mt-0.5">2015</span>
+                                        <span className="text-slate-400 font-bold block text-[10.5px]">Agency Type</span>
+                                        <span className="font-extrabold text-slate-900 block mt-0.5">{profile.role}</span>
                                     </div>
 
-                                    {/* Detail 3 */}
                                     <div>
-                                        <span className="text-slate-400 font-bold block text-[10.5px]">Services</span>
+                                        <span className="text-slate-400 font-bold block text-[10.5px]">Countries Covered</span>
                                         <span className="font-extrabold text-slate-900 block mt-0.5">{profile.countries}</span>
                                     </div>
 
-                                    {/* Detail 4 */}
                                     <div>
-                                        <span className="text-slate-400 font-bold block text-[10.5px]">Team Size</span>
-                                        <span className="font-extrabold text-slate-900 block mt-0.5">8 Members</span>
-                                    </div>
-
-                                    {/* Detail 5 */}
-                                    <div>
-                                        <span className="text-slate-400 font-bold block text-[10.5px]">Languages</span>
-                                        <span className="font-extrabold text-slate-900 block mt-0.5">English, Hindi, Telugu</span>
-                                    </div>
-
-                                    {/* Detail 6 */}
-                                    <div>
-                                        <span className="text-slate-400 font-bold block text-[10.5px]">Website</span>
-                                        <a href="https://globalway.com" target="_blank" rel="noreferrer" className="font-extrabold text-[#00a896] hover:underline flex items-center gap-1 mt-0.5">
-                                            <span>www.globalway.com</span>
-                                            <ExternalLink className="w-3 h-3" />
-                                        </a>
+                                        <span className="text-slate-400 font-bold block text-[10.5px]">Specializations</span>
+                                        <span className="font-extrabold text-slate-900 block mt-0.5 truncate">{profile.specializations}</span>
                                     </div>
                                 </div>
 
                                 <div className="border-t border-slate-100 pt-3 text-center text-xs font-semibold text-slate-500">
-                                    Need help? Visit our <a href="#" className="text-[#00a896] font-bold hover:underline">Help Center</a> or <a href="#" className="text-[#00a896] font-bold hover:underline">Contact Support</a>
+                                    Need help? Visit our <button onClick={() => setActiveTab("help")} className="text-[#00a896] font-bold hover:underline">Help Center</button> or <button onClick={() => setActiveTab("help")} className="text-[#00a896] font-bold hover:underline">Contact Support</button>
                                 </div>
                             </div>
                         </>
                     )}
 
-                    {/* Placeholder Views for Other Sidebar Navigation Tabs */}
-                    {activeTab !== "overview" && (
-                        <div className="bg-white rounded-2xl border border-slate-200/80 p-8 shadow-2xs space-y-4">
+                    {/* 2. TAB: PROFILE & BUSINESS */}
+                    {activeTab === "profile" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
-                                    <h2 className="text-lg font-black text-slate-900 capitalize">{navItems.find(i => i.id === activeTab)?.label || activeTab}</h2>
-                                    <p className="text-xs font-medium text-slate-500">Manage your consultant account details and active listings</p>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Profile & Business Details</h2>
+                                    <p className="text-xs font-medium text-slate-500">Manage public profile, business verification, and consultation background</p>
                                 </div>
-                                <button onClick={() => setIsEditingProfile(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm">
-                                    Edit Settings
+                                <button onClick={() => setIsEditingProfile(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5">
+                                    <Edit2 className="w-3.5 h-3.5" /> Edit Profile
                                 </button>
                             </div>
-                            <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200/70 space-y-2">
-                                <p className="text-sm font-extrabold text-slate-700">Content for {activeTab.toUpperCase()} tab is loaded.</p>
-                                <p className="text-xs font-medium text-slate-500">All data synced with live database.</p>
+
+                            <div className="flex flex-col md:flex-row gap-6 items-start">
+                                <img src={profile.image} alt={profile.name} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
+                                <div className="space-y-2 flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <h3 className="text-lg font-black text-slate-900">{profile.name}</h3>
+                                        <span className="bg-emerald-50 text-emerald-700 text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200">✔ Verified Agency</span>
+                                    </div>
+                                    <p className="text-xs font-bold text-[#00a896]">{profile.role} • {profile.city}</p>
+                                    <p className="text-xs text-slate-600 leading-relaxed font-medium pt-1">{profile.bio}</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100 text-xs">
+                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
+                                    <span className="font-bold text-slate-500 block">Areas of Expertise:</span>
+                                    <span className="font-black text-slate-900 block">{profile.specializations}</span>
+                                </div>
+                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
+                                    <span className="font-bold text-slate-500 block">Countries Covered:</span>
+                                    <span className="font-black text-slate-900 block">{profile.countries}</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 3. TAB: LEADS */}
+                    {activeTab === "leads" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Client Leads Manager ({leadsList.length} Active Leads)</h2>
+                                    <p className="text-xs font-medium text-slate-500">Track and convert prospective visa applicants & consultation leads</p>
+                                </div>
+                                <button onClick={() => setIsAddingLead(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
+                                    <Plus className="w-4 h-4" /> Add New Lead
+                                </button>
+                            </div>
+
+                            {leadsList.length > 0 ? (
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left text-xs">
+                                        <thead>
+                                            <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase font-extrabold">
+                                                <th className="p-3">Client Name</th>
+                                                <th className="p-3">Visa Type</th>
+                                                <th className="p-3">Destination</th>
+                                                <th className="p-3">Contact</th>
+                                                <th className="p-3">Status</th>
+                                                <th className="p-3 text-right">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-100">
+                                            {leadsList.map((lead) => (
+                                                <tr key={lead.id} className="hover:bg-slate-50 font-semibold">
+                                                    <td className="p-3 font-extrabold text-slate-900">{lead.name}</td>
+                                                    <td className="p-3 text-slate-700">{lead.visa}</td>
+                                                    <td className="p-3 text-slate-900 font-bold">{lead.country}</td>
+                                                    <td className="p-3 text-slate-600">{lead.phone}</td>
+                                                    <td className="p-3">
+                                                        <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-extrabold ${lead.status === "New" ? "bg-amber-500 text-white" : lead.status === "Contacted" ? "bg-blue-100 text-blue-700" : lead.status === "Qualified" ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>
+                                                            {lead.status}
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3 text-right space-x-2">
+                                                        <button onClick={() => { setActiveChatClient(lead.name); setActiveTab("messages"); }} className="bg-[#00a896] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#008f80]">
+                                                            Chat
+                                                        </button>
+                                                        <button onClick={() => handleDeleteLead(lead.id)} className="text-rose-600 hover:underline text-xs">
+                                                            Delete
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ) : (
+                                <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
+                                    <Users className="w-10 h-10 text-slate-300 mx-auto" />
+                                    <h3 className="text-base font-extrabold text-slate-800">No Client Leads Found</h3>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Add your client leads to start tracking consultation requests and visa application stages.</p>
+                                    <button onClick={() => setIsAddingLead(true)} className="bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
+                                        + Add New Lead
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 4. TAB: ENQUIRIES */}
+                    {activeTab === "enquiries" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Client Enquiries ({enquiriesList.length})</h2>
+                                    <p className="text-xs font-medium text-slate-500">Incoming inquiries submitted from your VisaFormula listing</p>
+                                </div>
+                            </div>
+
+                            {enquiriesList.length > 0 ? (
+                                <div className="grid grid-cols-1 gap-4">
+                                    {enquiriesList.map((enq, i) => (
+                                        <div key={i} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                                            <div className="flex items-center justify-between">
+                                                <span className="font-extrabold text-sm text-slate-900">{enq.name}</span>
+                                                <span className="text-xs font-medium text-slate-400">{enq.time}</span>
+                                            </div>
+                                            <p className="text-xs font-medium text-slate-700">{enq.text}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
+                                    <MessageSquare className="w-10 h-10 text-slate-300 mx-auto" />
+                                    <h3 className="text-base font-extrabold text-slate-800">No Client Enquiries Yet</h3>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When prospective clients send inquiries from your VisaFormula listing, they will appear here in real-time.</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 5. TAB: MY SERVICES */}
+                    {activeTab === "services" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Service Packages & Escrow Rates</h2>
+                                    <p className="text-xs font-medium text-slate-500">Configure consultation prices and milestone services</p>
+                                </div>
+                                <button onClick={() => triggerToast("Added new service package!")} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold">
+                                    + Add New Package
+                                </button>
+                            </div>
+
+                            <div className="space-y-3">
+                                {servicesList.map(s => (
+                                    <div key={s.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`w-3 h-3 rounded-full ${s.active ? "bg-emerald-500" : "bg-slate-300"}`} />
+                                            <span className="text-xs font-bold text-slate-800">{s.name}</span>
+                                        </div>
+                                        <div className="flex items-center gap-4">
+                                            <span className="font-black text-sm text-slate-900">{s.price}</span>
+                                            <button onClick={() => triggerToast(`Editing ${s.name}...`)} className="text-xs text-[#00a896] font-bold hover:underline">Edit</button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 6. TAB: CLASSIFIEDS / OFFERS */}
+                    {activeTab === "classifieds" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">My Active Classifieds & Offers ({classifiedsList.length})</h2>
+                                    <p className="text-xs font-medium text-slate-500">Manage public listings shown on VisaFormula homepage</p>
+                                </div>
+                                <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
+                                    <Plus className="w-4 h-4" /> Post New Ad
+                                </button>
+                            </div>
+
+                            {classifiedsList.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {classifiedsList.map(ad => (
+                                        <div key={ad.id} className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs p-4 space-y-3">
+                                            <span className="bg-[#00a896] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full">{ad.category}</span>
+                                            <h4 className="text-sm font-extrabold text-slate-900">{ad.title}</h4>
+                                            <p className="text-xs font-bold text-[#00a896]">Price: {ad.price}</p>
+                                            <div className="flex justify-between items-center text-xs text-slate-500 font-bold border-t pt-2">
+                                                <span>👁 {ad.views || 0} Views</span>
+                                                <button onClick={() => handleDeleteAd(ad.id)} className="text-rose-600 hover:underline">Delete</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
+                                    <LayoutGrid className="w-10 h-10 text-slate-300 mx-auto" />
+                                    <h3 className="text-base font-extrabold text-slate-800">No Active Classified Ads</h3>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on VisaFormula.</p>
+                                    <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
+                                        + Post New Classified / Offer
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 7. TAB: REVIEWS & RATINGS */}
+                    {activeTab === "reviews" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Reviews & Ratings</h2>
+                                    <p className="text-xs font-medium text-slate-500">Client feedback from completed consultations</p>
+                                </div>
+                            </div>
+
+                            {reviewsList.length > 0 ? (
+                                <div className="space-y-4">
+                                    {reviewsList.map((r, i) => (
+                                        <div key={i} className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
+                                            <div className="flex items-center justify-between">
+                                                <span className="font-extrabold text-sm text-slate-900">{r.name}</span>
+                                                <span className="text-xs text-slate-400 font-semibold">{r.date}</span>
+                                            </div>
+                                            <div className="flex items-center gap-1 text-amber-400">
+                                                {"★".repeat(r.rating)}
+                                            </div>
+                                            <p className="text-xs text-slate-700 font-medium">{r.text}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
+                                    <Star className="w-10 h-10 text-slate-300 mx-auto" />
+                                    <h3 className="text-base font-extrabold text-slate-800">No Client Reviews Yet</h3>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When clients complete consultation sessions and leave ratings, their reviews will appear here.</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 8. TAB: PROMOTIONS */}
+                    {activeTab === "promotions" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Promotions & Home Page Boost</h2>
+                                    <p className="text-xs font-medium text-slate-500">Boost your agency listing to the top position on VisaFormula homepage</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="p-5 bg-teal-50 border border-teal-200 rounded-2xl space-y-3 text-center">
+                                    <Megaphone className="w-8 h-8 text-[#00a896] mx-auto" />
+                                    <h3 className="font-extrabold text-sm text-slate-900">Featured Home Page Spot</h3>
+                                    <p className="text-xs text-slate-600">Get 10x higher visibility on top search results</p>
+                                    <button onClick={() => triggerToast("Activated Featured Spot!")} className="w-full bg-[#00a896] text-white py-2 rounded-xl text-xs font-bold">
+                                        Activate (₹1,999/mo)
+                                    </button>
+                                </div>
+
+                                <div className="p-5 bg-amber-50 border border-amber-200 rounded-2xl space-y-3 text-center">
+                                    <Sparkles className="w-8 h-8 text-amber-600 mx-auto" />
+                                    <h3 className="font-extrabold text-sm text-slate-900">Top Verified Badge</h3>
+                                    <p className="text-xs text-slate-600">Show priority gold verified trust badge to clients</p>
+                                    <button onClick={() => triggerToast("Activated Top Badge!")} className="w-full bg-amber-500 text-white py-2 rounded-xl text-xs font-bold">
+                                        Activate (₹999/mo)
+                                    </button>
+                                </div>
+
+                                <div className="p-5 bg-indigo-50 border border-indigo-200 rounded-2xl space-y-3 text-center">
+                                    <TrendingUp className="w-8 h-8 text-indigo-600 mx-auto" />
+                                    <h3 className="font-extrabold text-sm text-slate-900">Banner Spotlight</h3>
+                                    <p className="text-xs text-slate-600">Display full hero banner ad across destination pages</p>
+                                    <button onClick={() => triggerToast("Activated Banner Spotlight!")} className="w-full bg-indigo-600 text-white py-2 rounded-xl text-xs font-bold">
+                                        Activate (₹3,499/mo)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 9. TAB: ANALYTICS */}
+                    {activeTab === "analytics" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Performance Analytics</h2>
+                                    <p className="text-xs font-medium text-slate-500">Track monthly views, inquiry growth, and conversion rates</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                                <div className="p-4 bg-slate-50 rounded-xl border">
+                                    <span className="text-xs text-slate-500 font-bold block">Total Profile Views</span>
+                                    <span className="text-2xl font-black text-slate-900 block mt-1">1</span>
+                                </div>
+                                <div className="p-4 bg-slate-50 rounded-xl border">
+                                    <span className="text-xs text-slate-500 font-bold block">Lead Conversion Rate</span>
+                                    <span className="text-2xl font-black text-[#00a896] block mt-1">0.0%</span>
+                                </div>
+                                <div className="p-4 bg-slate-50 rounded-xl border">
+                                    <span className="text-xs text-slate-500 font-bold block">Escrow Earnings</span>
+                                    <span className="text-2xl font-black text-slate-900 block mt-1">₹0</span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 10. TAB: DISPUTES */}
+                    {activeTab === "disputes" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Disputes & Escrow Resolution</h2>
+                                    <p className="text-xs font-medium text-slate-500">Resolve client disputes and milestone escrow holds</p>
+                                </div>
+                            </div>
+
+                            {disputesList.length > 0 ? (
+                                <div className="space-y-3">
+                                    {disputesList.map((d, i) => (
+                                        <div key={i} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-xs font-black text-slate-900">{d.id}</span>
+                                                <span className="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md">{d.status}</span>
+                                            </div>
+                                            <p className="text-xs font-semibold text-slate-700">Client: {d.client} | Issue: {d.issue}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
+                                    <ShieldCheck className="w-10 h-10 text-slate-300 mx-auto" />
+                                    <h3 className="text-base font-extrabold text-slate-800">No Ongoing Disputes</h3>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">All client transactions and escrow milestone payments are in good standing.</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 11. TAB: MESSAGES */}
+                    {activeTab === "messages" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Messages & Client Chat</h2>
+                                    <p className="text-xs font-medium text-slate-500">Real-time messaging with client leads</p>
+                                </div>
+                            </div>
+
+                            {Object.keys(chatMessages).length > 0 ? (
+                                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 h-[420px]">
+                                    <div className="md:col-span-4 border-r border-slate-200 pr-3 space-y-2 overflow-y-auto">
+                                        {Object.keys(chatMessages).map(clientName => (
+                                            <button
+                                                key={clientName}
+                                                onClick={() => setActiveChatClient(clientName)}
+                                                className={`w-full text-left p-3 rounded-xl border text-xs font-bold transition-all ${activeChatClient === clientName ? "bg-[#00a896] text-white border-[#00a896]" : "bg-slate-50 text-slate-700 hover:bg-slate-100"}`}
+                                            >
+                                                <div className="flex items-center justify-between">
+                                                    <span>{clientName}</span>
+                                                    <span className={`text-[10px] ${activeChatClient === clientName ? "text-white/80" : "text-slate-400"}`}>Active</span>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    <div className="md:col-span-8 flex flex-col justify-between bg-slate-50 rounded-xl p-4 border border-slate-200">
+                                        <div className="border-b border-slate-200 pb-2 font-black text-xs text-slate-900">
+                                            Chatting with {activeChatClient}
+                                        </div>
+
+                                        <div className="flex-1 overflow-y-auto py-3 space-y-2.5">
+                                            {(chatMessages[activeChatClient] || []).map((msg, i) => (
+                                                <div key={i} className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}>
+                                                    <div className={`max-w-[80%] p-2.5 rounded-xl text-xs font-medium ${msg.sender === "me" ? "bg-[#00a896] text-white" : "bg-white border border-slate-200 text-slate-800"}`}>
+                                                        <p>{msg.text}</p>
+                                                        <span className="text-[9px] opacity-70 block text-right mt-1">{msg.time}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <form onSubmit={handleSendMessage} className="flex gap-2 pt-2">
+                                            <input 
+                                                type="text" 
+                                                value={messageInput} 
+                                                onChange={(e) => setMessageInput(e.target.value)} 
+                                                placeholder="Type your response message..." 
+                                                className="flex-1 px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs outline-none focus:border-[#00a896]"
+                                            />
+                                            <button type="submit" className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
+                                                <Send className="w-3.5 h-3.5" /> Send
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
+                                    <Bell className="w-10 h-10 text-slate-300 mx-auto" />
+                                    <h3 className="text-base font-extrabold text-slate-800">No Active Conversations Yet</h3>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When clients contact you or submit inquiries, chat threads will open automatically here.</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 12. TAB: SUBSCRIPTIONS */}
+                    {activeTab === "subscriptions" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Subscription Plans & Billing</h2>
+                                    <p className="text-xs font-medium text-slate-500">Current plan: Basic Plan (Active)</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="p-5 border-2 border-[#00a896] rounded-2xl bg-teal-50/50 space-y-3">
+                                    <span className="bg-[#00a896] text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">Current Active</span>
+                                    <h3 className="text-lg font-black text-slate-900">Basic Plan</h3>
+                                    <p className="text-2xl font-black text-slate-900">₹0 <span className="text-xs font-normal text-slate-500">/ forever</span></p>
+                                    <ul className="text-xs font-semibold text-slate-700 space-y-1.5">
+                                        <li>✓ Standard agency profile listing</li>
+                                        <li>✓ Up to 10 client inquiries / month</li>
+                                        <li>✓ Standard support</li>
+                                    </ul>
+                                </div>
+
+                                <div className="p-5 border border-slate-200 rounded-2xl bg-white space-y-3">
+                                    <span className="bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">Recommended</span>
+                                    <h3 className="text-lg font-black text-slate-900">Pro Consultant Plan</h3>
+                                    <p className="text-2xl font-black text-[#00a896]">₹2,999 <span className="text-xs font-normal text-slate-500">/ month</span></p>
+                                    <ul className="text-xs font-semibold text-slate-700 space-y-1.5">
+                                        <li>✓ Unlimited client leads & inquiries</li>
+                                        <li>✓ Top verified gold badge</li>
+                                        <li>✓ Featured home page placement</li>
+                                    </ul>
+                                    <button onClick={() => triggerToast("Upgrading to Pro Consultant Plan...")} className="w-full bg-[#00a896] text-white py-2 rounded-xl text-xs font-bold">
+                                        Upgrade to Pro
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 13. TAB: SETTINGS */}
+                    {activeTab === "settings" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Account & Security Settings</h2>
+                                    <p className="text-xs font-medium text-slate-500">Update password, notification preferences, and bank details</p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4 max-w-lg">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Account Email Address</label>
+                                    <input type="email" disabled value={localStorage.getItem("expert_email") || "consultant@visaformula.com"} className="w-full px-3.5 py-2.5 bg-slate-100 border rounded-xl text-xs font-bold text-slate-500" />
+                                </div>
+
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Change Password</label>
+                                    <input type="password" placeholder="Enter new password" className="w-full px-3.5 py-2.5 border rounded-xl text-xs font-medium text-slate-900" />
+                                </div>
+
+                                <button onClick={() => triggerToast("Settings saved!")} className="bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold">
+                                    Save Settings
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 14. TAB: HELP & SUPPORT */}
+                    {activeTab === "help" && (
+                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div>
+                                    <h2 className="text-xl font-extrabold text-slate-900">Help & Support Desk</h2>
+                                    <p className="text-xs font-medium text-slate-500">Get assistance from VisaFormula support team</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-3">
+                                    <h3 className="text-sm font-extrabold text-slate-900">Frequently Asked Questions</h3>
+                                    <div className="p-3 bg-slate-50 border rounded-xl space-y-1">
+                                        <h4 className="text-xs font-bold text-slate-900">How do Escrow payouts work?</h4>
+                                        <p className="text-xs text-slate-600">Client payments are held safely until milestone consultation is marked complete.</p>
+                                    </div>
+                                    <div className="p-3 bg-slate-50 border rounded-xl space-y-1">
+                                        <h4 className="text-xs font-bold text-slate-900">How to get Verified Badge?</h4>
+                                        <p className="text-xs text-slate-600">Upload your valid immigration license or government registration document in settings.</p>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <h3 className="text-sm font-extrabold text-slate-900">Contact Support Team</h3>
+                                    <form onSubmit={(e) => { e.preventDefault(); triggerToast("Support ticket submitted! Our team will reply via email."); }} className="space-y-2">
+                                        <input type="text" placeholder="Subject" className="w-full p-2.5 border rounded-xl text-xs" required />
+                                        <textarea rows={3} placeholder="Describe your query..." className="w-full p-2.5 border rounded-xl text-xs" required />
+                                        <button type="submit" className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold">
+                                            Submit Ticket
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -889,6 +1217,7 @@ export function ConsultantDashboard() {
                                     onChange={(e) => setFormRole(e.target.value)}
                                     className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
                                 >
+                                    <option value="Registered Consultant">Registered Consultant</option>
                                     <option value="Immigration Consultancy Firm">Immigration Consultancy Firm</option>
                                     <option value="Freelancer">Freelancer</option>
                                     <option value="Law Firm / Legal Practice">Law Firm / Legal Practice</option>
@@ -925,24 +1254,24 @@ export function ConsultantDashboard() {
             )}
 
             {/* Post an Ad / Offer Modal */}
-            {(isPostingAd || isPublishingOffer) && (
+            {isPostingAd && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => { setIsPostingAd(false); setIsPublishingOffer(false); }} />
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsPostingAd(false)} />
                     <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10 font-sora">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="text-base font-extrabold text-slate-900">{isPostingAd ? "Post New Classified / Offer" : "Promote Your Business"}</h3>
-                            <button onClick={() => { setIsPostingAd(false); setIsPublishingOffer(false); }} className="p-1 text-slate-400 hover:text-slate-700">
+                            <h3 className="text-base font-extrabold text-slate-900">Post New Classified / Offer</h3>
+                            <button onClick={() => setIsPostingAd(false)} className="p-1 text-slate-400 hover:text-slate-700">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
-                        <form onSubmit={(e) => { e.preventDefault(); setIsPostingAd(false); setIsPublishingOffer(false); triggerToast("Listing published on VisaFormula!"); }} className="space-y-3">
+                        <form onSubmit={handleCreateAd} className="space-y-3">
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block">Title / Heading *</label>
-                                <input type="text" placeholder="e.g. Study in Canada 2025 Special Deal" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" required />
+                                <input type="text" value={adTitle} onChange={(e) => setAdTitle(e.target.value)} placeholder="e.g. Study in Canada 2025 Special Deal" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" required />
                             </div>
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block">Category *</label>
-                                <select className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
+                                <select value={adCategory} onChange={(e) => setAdCategory(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
                                     <option value="Study Abroad">Study Abroad</option>
                                     <option value="Jobs Abroad">Jobs Abroad</option>
                                     <option value="Accommodation">Accommodation</option>
@@ -951,11 +1280,70 @@ export function ConsultantDashboard() {
                             </div>
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block">Price / Tagline</label>
-                                <input type="text" placeholder="e.g. FREE or ₹ 650 CAD / Month" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" />
+                                <input type="text" value={adPrice} onChange={(e) => setAdPrice(e.target.value)} placeholder="e.g. FREE or ₹ 650 CAD / Month" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" />
                             </div>
                             <div className="flex gap-3 pt-2">
-                                <button type="button" onClick={() => { setIsPostingAd(false); setIsPublishingOffer(false); }} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50">Cancel</button>
+                                <button type="button" onClick={() => setIsPostingAd(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50">Cancel</button>
                                 <button type="submit" className="flex-1 py-2.5 bg-[#00a896] text-white font-bold rounded-xl text-xs shadow-md">Publish Listing</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Add New Lead Modal */}
+            {isAddingLead && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsAddingLead(false)} />
+                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10 font-sora">
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h3 className="text-base font-extrabold text-slate-900">Add New Client Lead</h3>
+                            <button onClick={() => setIsAddingLead(false)} className="p-1 text-slate-400 hover:text-slate-700">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <form onSubmit={handleAddLead} className="space-y-3">
+                            <div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Client Full Name *</label>
+                                <input type="text" value={leadName} onChange={(e) => setLeadName(e.target.value)} placeholder="e.g. Rajesh Kumar" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" required />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Visa Category</label>
+                                <select value={leadVisa} onChange={(e) => setLeadVisa(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
+                                    <option value="Study Visa">Study Visa</option>
+                                    <option value="Work Permit">Work Permit</option>
+                                    <option value="Visitor Visa">Visitor Visa</option>
+                                    <option value="Express Entry PR">Express Entry PR</option>
+                                    <option value="Tourist Visa">Tourist Visa</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Destination Country</label>
+                                <select value={leadCountry} onChange={(e) => setLeadCountry(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
+                                    <option value="Canada 🇨🇦">Canada 🇨🇦</option>
+                                    <option value="UK 🇬🇧">UK 🇬🇧</option>
+                                    <option value="USA 🇺🇸">USA 🇺🇸</option>
+                                    <option value="Australia 🇦🇺">Australia 🇦🇺</option>
+                                    <option value="Germany 🇩🇪">Germany 🇩🇪</option>
+                                    <option value="New Zealand 🇳🇿">New Zealand 🇳🇿</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Contact Phone Number</label>
+                                <input type="text" value={leadPhone} onChange={(e) => setLeadPhone(e.target.value)} placeholder="e.g. +91 98765 43210" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Initial Status</label>
+                                <select value={leadStatus} onChange={(e) => setLeadStatus(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
+                                    <option value="New">New</option>
+                                    <option value="Contacted">Contacted</option>
+                                    <option value="Qualified">Qualified</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+                            <div className="flex gap-3 pt-2">
+                                <button type="button" onClick={() => setIsAddingLead(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50">Cancel</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] text-white font-bold rounded-xl text-xs shadow-md">Add Lead</button>
                             </div>
                         </form>
                     </div>

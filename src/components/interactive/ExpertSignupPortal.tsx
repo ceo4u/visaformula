@@ -81,7 +81,7 @@ function ExpertSignupPortalContent() {
         if (nameParam) setBusinessName(nameParam);
         if (phoneParam) setContactNumber(phoneParam);
         if (typeParam) {
-          const validTypes = ["Freelancer", "Registered consultancy", "Employer/ hr agency", "University/ educational institute", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"];
+          const validTypes = ["Freelancer", "Registered consultancy", "Authorised immigration / visa appeal lawyer", "Education & Training Institute", "Employer/ hr agency", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"];
           if (validTypes.includes(typeParam)) {
             setConsultantType(typeParam);
           }
@@ -924,7 +924,7 @@ function ExpertSignupPortalContent() {
                       </button>
                       {signupConsultantOpen && (
                         <div className="absolute top-full left-0 w-full bg-white border border-[#dadce0] rounded-lg shadow-lg mt-1 py-1 z-50">
-                          {["Freelancer", "Registered consultancy", "Employer/ hr agency", "University/ educational institute", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"].map(type => (
+                          {["Freelancer", "Registered consultancy", "Authorised immigration / visa appeal lawyer", "Education & Training Institute", "Employer/ hr agency", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"].map(type => (
                             <button
                               key={type}
                               type="button"
@@ -2229,7 +2229,7 @@ function ExpertSignupPortalContent() {
                       </button>
                       {editConsultantOpen && (
                         <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
-                          {["Freelancer", "Registered consultancy", "Employer/ hr agency", "University/ educational institute", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"].map(type => (
+                          {["Freelancer", "Registered consultancy", "Authorised immigration / visa appeal lawyer", "Education & Training Institute", "Employer/ hr agency", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"].map(type => (
                             <button
                               key={type}
                               type="button"

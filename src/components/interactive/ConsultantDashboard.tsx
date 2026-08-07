@@ -1289,10 +1289,10 @@ export function ConsultantDashboard() {
                                     className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
                                 >
                                     <option value="Registered Consultant">Registered Consultant</option>
-                                    <option value="Immigration Consultancy Firm">Immigration Consultancy Firm</option>
+                                    <option value="Authorised immigration / visa appeal lawyer">Authorised immigration / visa appeal lawyer</option>
                                     <option value="Freelancer">Freelancer</option>
                                     <option value="Law Firm / Legal Practice">Law Firm / Legal Practice</option>
-                                    <option value="Education & Student Agency">Education & Student Agency</option>
+                                    <option value="Education & Training Institute">Education & Training Institute</option>
                                     <option value="Recruitment & Manpower Agency">Recruitment & Manpower Agency</option>
                                     <option value="Travel & Tour Agency">Travel & Tour Agency</option>
                                 </select>

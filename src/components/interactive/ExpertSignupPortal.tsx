@@ -1259,20 +1259,20 @@ function ExpertSignupPortalContent() {
             {/* Profile Completion Box */}
             <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 max-w-lg mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-left">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full border-4 border-[#00a896] flex items-center justify-center text-sm font-black text-slate-900 shrink-0">
-                  82%
+                <div className="w-14 h-14 rounded-full border-4 border-[#00a896] bg-teal-50 flex items-center justify-center text-sm font-black text-[#00a896] shrink-0 shadow-sm">
+                  100%
                 </div>
                 <div>
                   <h4 className="text-xs font-extrabold text-slate-900">Profile Completion</h4>
-                  <p className="text-[11px] font-semibold text-slate-500 mt-0.5">Great! Complete remaining details to get more visibility & enquiries.</p>
+                  <p className="text-[11px] font-semibold text-slate-500 mt-0.5">Awesome! Your registration & profile are 100% complete and live.</p>
                 </div>
               </div>
 
               <a
                 href="/consultant/dashboard"
-                className="bg-[#00a896] text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shrink-0 hover:bg-[#008f80] transition-colors"
+                className="bg-[#00a896] text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shrink-0 hover:bg-[#008f80] transition-colors shadow-xs"
               >
-                Complete Profile →
+                Go to Dashboard →
               </a>
             </div>
 

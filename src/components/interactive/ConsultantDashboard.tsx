@@ -1443,12 +1443,16 @@ export function ConsultantDashboard() {
                             {/* Business Name & Type of Business */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
-                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Business / Consultancy Name *</label>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+                                        <span>Business / Consultancy Name *</span>
+                                        <span className="text-[10px] text-slate-400 font-semibold flex items-center gap-1"><Lock className="w-3 h-3 text-slate-400" /> Non-editable</span>
+                                    </label>
                                     <input 
                                         type="text" 
                                         value={formName} 
-                                        onChange={(e) => setFormName(e.target.value)} 
-                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                        disabled
+                                        readOnly
+                                        className="w-full px-3.5 py-2.5 border border-slate-200 bg-slate-100 rounded-xl text-xs font-bold text-slate-500 cursor-not-allowed outline-none select-none" 
                                         required
                                     />
                                 </div>

@@ -360,8 +360,9 @@ export function AgentsPortal() {
             <button onClick={() => { setRegDone(false); setPage("dashboard"); }} className="w-full bg-[#0c1a2e] hover:bg-[#0f2a40] text-white font-bold py-3.5 rounded-2xl text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
               Go to Agent Dashboard <ArrowRight className="w-4 h-4" />
             </button>
-            <button onClick={() => { setRegDone(false); setPage("landing"); }} className="w-full bg-white border border-slate-200 text-[#0c1a2e] font-bold py-3 rounded-2xl text-sm hover:bg-slate-50 transition-all">
-              Back to Homepage
+            <button onClick={() => { setRegDone(false); setPage("landing"); }} className="w-full flex items-center justify-center gap-2 bg-[#0c1a2e] hover:bg-[#0f2a40] text-white font-bold py-3 rounded-2xl text-sm shadow-md hover:shadow-lg transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" /></svg>
+              Back to Home
             </button>
           </div>
         </div>

@@ -65,8 +65,8 @@ function CustomSelect({ value, onChange, options, className = "" }: CustomSelect
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ExpertSignupPortalContent() {
-  // Wizard Step State: 0 (Start options), 1 (Business Info), 2 (Services & Expertise), 3 (Location & Verification), 3.5 (OTP Modal), 4 (Congratulations / Done)
-  const [currentStep, setCurrentStep] = useState<number>(0);
+  // Wizard Step State: 1 (Business Info), 2 (Services & Expertise), 3 (Location & Verification), 3.5 (OTP Modal), 4 (Congratulations / Done)
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [showOtpModal, setShowOtpModal] = useState<boolean>(false);
 
   // --- Step 1: Business Info States ---

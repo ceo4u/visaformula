@@ -40,7 +40,7 @@ export interface EmailLogEntry {
   email: string;
   type: EmailType;
   status: 'sent' | 'failed' | 'retried';
-  provider: 'plunk';
+  provider: 'resend';
   providerId?: string;
   errorMessage?: string;
   createdAt: Date;

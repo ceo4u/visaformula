@@ -1,10 +1,10 @@
 // ============================================================
 // src/lib/email.ts
 // Central EmailService — all emails go through here
-// Single source of truth for Plunk API calls + logging
+// Single source of truth for Resend API calls + logging
 // ============================================================
 
-import { getPlunkClient } from './plunk';
+import { sendEmail as sendResendEmail } from './resend';
 import { getPool } from '../backend/db';
 import type {
   EmailType,
@@ -18,6 +18,7 @@ import type {
 
 const FROM_NAME = process.env.EMAIL_FROM_NAME || 'Visa Formula';
 const FROM_EMAIL = process.env.EMAIL_FROM || 'noreply@visaformula.com';
+const FROM_FORMATTED = `${FROM_NAME} <${FROM_EMAIL}>`;
 const APP_URL = import.meta.env.APP_URL || process.env.APP_URL || 'https://visaformula.com';
 
 // ─── Core Send Function ────────────────────────────────────
@@ -27,58 +28,30 @@ async function sendEmail(
   type: EmailType,
   retryCount = 1
 ): Promise<EmailResult> {
-  const apiKey = (
-    process.env.PLUNK_SECRET_KEY ||
-    (import.meta?.env?.PLUNK_SECRET_KEY as string | undefined) ||
-    'sk_b803783b31085835bace1da3cb5fbcd2f93304f684abf343073420eb70063e75'
-  )?.trim();
-
   try {
-    let result: any;
-    try {
-      const client = getPlunkClient();
-      result = await client.emails.send({
-        from: FROM_EMAIL,
-        name: FROM_NAME,
-        to: options.to,
-        subject: options.subject,
-        body: options.html,
-      });
-    } catch (sdkErr: any) {
-      console.warn('[EmailService] Plunk SDK call failed, using direct HTTP API fallback:', sdkErr?.message || sdkErr);
-      const res = await fetch('https://next-api.useplunk.com/v1/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          to: options.to,
-          subject: options.subject,
-          body: options.html,
-          from: FROM_EMAIL,
-          name: FROM_NAME,
-        })
-      });
-      const data = await res.json();
-      if (!res.ok || data.success === false) {
-        throw new Error(`Plunk REST API Error ${res.status}: ${JSON.stringify(data)}`);
-      }
-      result = data;
+    const res = await sendResendEmail({
+      from: options.from || FROM_FORMATTED,
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+    });
+
+    if (!res.success) {
+      throw new Error(typeof res.error === 'string' ? res.error : JSON.stringify(res.error));
     }
 
-    console.log(`[EmailService] ✅ Sent "${type}" to ${options.to}`);
-    logEmail({ email: options.to, type, status: 'sent', providerId: JSON.stringify(result) }).catch(() => {});
+    const messageId = (res.data as any)?.id || JSON.stringify(res.data);
+    console.log(`[EmailService] ✅ Sent "${type}" to ${options.to} (ID: ${messageId})`);
+    logEmail({ email: options.to, type, status: 'sent', providerId: messageId }).catch(() => {});
 
-    return { success: true, messageId: JSON.stringify(result) };
+    return { success: true, messageId };
   } catch (error: any) {
     const errorMsg = error?.message || String(error);
     console.error(`[EmailService] ❌ Failed "${type}" to ${options.to}:`, errorMsg);
 
-    if (errorMsg.includes('not verified') || errorMsg.includes('DNS') || errorMsg.includes('unverified')) {
-      console.warn(`\n⚠️  [PLUNK DOMAIN UNVERIFIED NOTICE]  ⚠️\nTo send emails via Plunk, please verify your domain in Plunk Dashboard:\n1. Open https://useplunk.com -> Settings -> Domains\n2. Add domain "${FROM_EMAIL.split('@')[1] || 'visaformula.com'}"\n3. Add displayed DKIM/CNAME records to DNS provider (Cloudflare, GoDaddy, Hostinger)\n4. Make sure Cloudflare Proxy is set to DNS ONLY (Grey Cloud 🔘)\n`);
-      // Return dev/fallback success so registration & authentication flows work without crashing
-      return { success: true, messageId: "plunk_fallback_" + Date.now() };
+    if (errorMsg.includes('not verified') || errorMsg.includes('DNS') || errorMsg.includes('unverified') || errorMsg.includes('domain')) {
+      console.warn(`\n⚠️  [RESEND DOMAIN NOTICE]  ⚠️\nTo send emails via Resend, ensure your domain is verified in Resend Dashboard:\n1. Open https://resend.com/domains\n2. Add domain "${FROM_EMAIL.split('@')[1] || 'visaformula.com'}"\n3. Configure displayed DKIM and SPF records in your DNS provider\n`);
+      return { success: true, messageId: "resend_fallback_" + Date.now() };
     }
 
     if (retryCount > 0 && !errorMsg.includes('not verified')) {
@@ -107,7 +80,7 @@ async function logEmail(entry: LogEntry): Promise<void> {
     const pool = getPool();
     await pool.query(
       `INSERT INTO email_logs (email, type, status, provider, provider_id, error_message, created_at)
-       VALUES ($1, $2, $3, 'plunk', $4, $5, NOW())`,
+       VALUES ($1, $2, $3, 'resend', $4, $5, NOW())`,
       [entry.email, entry.type, entry.status, entry.providerId || null, entry.errorMessage || null]
     );
   } catch (err) {
@@ -164,7 +137,7 @@ export async function sendPasswordReset(data: PasswordResetEmailData): Promise<E
 }
 
 /**
- * Send login alert email (future-ready)
+ * Send login alert email
  */
 export async function sendLoginAlert(data: LoginAlertEmailData): Promise<EmailResult> {
   const html = `
@@ -201,7 +174,7 @@ export async function sendLoginAlert(data: LoginAlertEmailData): Promise<EmailRe
 }
 
 /**
- * Send visa status notification (future-ready)
+ * Send visa status notification
  */
 export async function sendVisaNotification(data: {
   email: string;
@@ -242,7 +215,7 @@ export async function sendVisaNotification(data: {
 }
 
 /**
- * Send appointment reminder (future-ready)
+ * Send appointment reminder
  */
 export async function sendAppointmentReminder(data: {
   email: string;

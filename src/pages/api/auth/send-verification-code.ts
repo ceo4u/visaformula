@@ -1,6 +1,6 @@
 // ============================================================
 // src/pages/api/auth/send-verification-code.ts
-// Send OTP via Plunk using the EmailService + OTP module
+// Send OTP via Resend using the EmailService + OTP module
 // ============================================================
 
 import type { APIRoute } from 'astro';

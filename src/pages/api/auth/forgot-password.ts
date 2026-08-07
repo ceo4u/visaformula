@@ -1,6 +1,6 @@
 // ============================================================
 // src/pages/api/auth/forgot-password.ts
-// Generate secure reset token and send password reset email via Plunk
+// Generate secure reset token and send password reset email via Resend
 // ============================================================
 
 import type { APIRoute } from 'astro';

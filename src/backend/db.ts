@@ -192,7 +192,7 @@ export async function runMigrations() {
       email VARCHAR(255) NOT NULL,
       type VARCHAR(50) NOT NULL,
       status VARCHAR(20) NOT NULL,
-      provider VARCHAR(30) DEFAULT 'plunk',
+      provider VARCHAR(30) DEFAULT 'resend',
       provider_id VARCHAR(255),
       error_message TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

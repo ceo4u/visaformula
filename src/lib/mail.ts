@@ -19,12 +19,12 @@ export interface MailOptions {
  * This function is kept for backward compatibility only.
  */
 export async function sendEmailWithRetry(options: MailOptions, _retryCount = 1): Promise<any> {
-  const { getPlunkClient } = await import('./plunk');
-  const client = getPlunkClient();
-  const result = await client.emails.send({
+  const { sendEmail } = await import('./resend');
+  const result = await sendEmail({
     to: options.to,
     subject: options.subject,
-    body: options.html,
+    html: options.html,
+    from: options.from,
   });
   console.log(`[mail.ts legacy] Sent to ${options.to}`);
   return result;

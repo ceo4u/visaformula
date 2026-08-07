@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, Sparkles, ArrowRight, X } from "lucide-react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { AuthModalPortalContent } from "./AuthModalPortal";
 
 export function SignupFlowPortal() {
     const [mode, setMode] = useState<"selection" | "seeker" | "expert">("selection");
+    const [showCaptchaModal, setShowCaptchaModal] = useState(false);
+    const [targetRole, setTargetRole] = useState<"seeker" | "expert" | null>(null);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -16,6 +19,23 @@ export function SignupFlowPortal() {
             }
         }
     }, []);
+
+    const handleRoleClick = (role: "seeker" | "expert", e?: React.MouseEvent) => {
+        if (e) e.preventDefault();
+        setTargetRole(role);
+        setShowCaptchaModal(true);
+    };
+
+    const handleCaptchaSolved = (token: string) => {
+        setShowCaptchaModal(false);
+        if (targetRole === "expert") {
+            window.location.href = "/signup/expert";
+        } else {
+            setMode("seeker");
+        }
+    };
+
+    const siteKey = (import.meta.env.PUBLIC_HCAPTCHA_SITE_KEY as string) || "10000000-ffff-ffff-ffff-000000000001";
 
     return (
         <div 
@@ -74,7 +94,7 @@ export function SignupFlowPortal() {
                             
                             {/* Seeker Option */}
                             <div 
-                                onClick={() => setMode("seeker")}
+                                onClick={(e) => handleRoleClick("seeker", e)}
                                 className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-[#f0fdfa]/60 hover:bg-[#f0fdfa] p-6 rounded-2xl border border-teal-100 hover:border-[#00a896] hover:shadow-xl transition-all font-sora"
                             >
                                 <div className="relative circle-float-1">
@@ -95,7 +115,10 @@ export function SignupFlowPortal() {
                                 <span className="text-xs text-slate-500 max-w-[200px] mt-1 mb-4 font-medium leading-relaxed">
                                     Find, consult &amp; book immigration experts
                                 </span>
-                                <button className="w-full sm:w-auto bg-[#00a896] hover:bg-[#008f80] text-white px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
+                                <button 
+                                    onClick={(e) => handleRoleClick("seeker", e)}
+                                    className="w-full sm:w-auto bg-[#00a896] hover:bg-[#008f80] text-white px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer"
+                                >
                                     Register as Seeker <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </button>
                             </div>
@@ -108,8 +131,8 @@ export function SignupFlowPortal() {
                             </div>
 
                             {/* Expert Option */}
-                            <a 
-                                href="/signup/expert"
+                            <div 
+                                onClick={(e) => handleRoleClick("expert", e)}
                                 className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-slate-50 hover:bg-slate-100/80 p-6 rounded-2xl border border-slate-200 hover:border-slate-400 hover:shadow-xl transition-all font-sora"
                             >
                                 <div className="relative circle-float-2">
@@ -131,10 +154,13 @@ export function SignupFlowPortal() {
                                 <span className="text-xs text-slate-500 max-w-[200px] mt-1 mb-4 font-medium leading-relaxed">
                                     Grow your global client consulting practice
                                 </span>
-                                <button className="w-full sm:w-auto bg-[#0c1a2e] hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
+                                <button 
+                                    onClick={(e) => handleRoleClick("expert", e)}
+                                    className="w-full sm:w-auto bg-[#0c1a2e] hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer"
+                                >
                                     Register as Expert <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </button>
-                            </a>
+                            </div>
 
                         </div>
 
@@ -158,6 +184,34 @@ export function SignupFlowPortal() {
                 )}
 
             </div>
+
+            {/* Instant hCaptcha Security Verification Modal */}
+            {showCaptchaModal && (
+                <div className="fixed inset-0 z-[10000] bg-slate-900/75 backdrop-blur-md flex items-center justify-center p-4 font-sora animate-fade-up">
+                    <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-4 shadow-2xl relative border border-slate-200">
+                        <button 
+                            onClick={() => setShowCaptchaModal(false)} 
+                            className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                        <div className="w-12 h-12 rounded-2xl bg-teal-50 text-[#00a896] flex items-center justify-center mx-auto text-xl font-bold border border-teal-200 shadow-2xs">
+                            🔒
+                        </div>
+                        <h3 className="text-xl font-extrabold text-slate-900">Security Verification</h3>
+                        <p className="text-xs font-semibold text-slate-500 leading-relaxed">
+                            Please complete the quick hCaptcha check below to unlock registration for <strong className="text-slate-900">{targetRole === "seeker" ? "Visa Seeker" : "Visa Expert"}</strong>.
+                        </p>
+                        <div className="flex justify-center pt-2">
+                            <HCaptcha
+                                sitekey={siteKey}
+                                onVerify={handleCaptchaSolved}
+                                onExpire={() => {}}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

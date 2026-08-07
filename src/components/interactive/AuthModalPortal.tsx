@@ -108,23 +108,35 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         setGoogleLoadingText("Connecting to Google Auth...");
         try {
             const res = await signInWithGoogle();
-            if (res && res.status === "needs_role") {
-                setGoogleLoading(false);
-                return;
-            }
-            setGoogleLoadingText("Authenticated! Setting up your workspace...");
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
-            if (userStr) {
-                const parsed = JSON.parse(userStr);
-                if (parsed.type === "expert") {
-                    window.location.href = "/consultant/dashboard";
-                } else {
-                    window.location.href = "/dashboard";
+            if (res) {
+                const nameParts = (res.name || '').trim().split(' ');
+                const gFirstName = nameParts[0] || '';
+                const gLastName = nameParts.slice(1).join(' ') || '';
+
+                if (gFirstName) setFirstName(gFirstName);
+                if (gLastName) setLastName(gLastName);
+                if (res.email) setSignupEmail(res.email);
+
+                const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+                const existingAddress = typeof window !== "undefined" ? localStorage.getItem("seeker_address") : null;
+
+                if (userStr && existingAddress && existingAddress !== "") {
+                    setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    const parsed = JSON.parse(userStr);
+                    if (parsed.type === "expert") {
+                        window.location.href = "/consultant/dashboard";
+                    } else {
+                        window.location.href = "/dashboard";
+                    }
+                    return;
                 }
-            } else {
-                window.location.href = "/dashboard";
+
+                setGoogleLoadingText("Google Account Connected! Please complete your details...");
+                await new Promise(resolve => setTimeout(resolve, 600));
+                setGoogleLoading(false);
+                setActiveTab("signup");
+                setSignupError("Google Account Connected! Please enter your Phone Number, Residential Address (Area, City, State, ZIP), and Target Countries to complete your profile.");
             }
         } catch (e: any) {
             setLoginError(e.message || "Google Authentication failed.");

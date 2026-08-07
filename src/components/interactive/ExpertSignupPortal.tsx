@@ -258,6 +258,17 @@ function ExpertSignupPortalContent() {
                 localStorage.setItem("expert_email", res.email);
               }
 
+              // Check if existing user already completed registration with location
+              const existingCity = typeof window !== "undefined" ? (localStorage.getItem("expert_city") || localStorage.getItem("expert_officeAddress")) : null;
+              const isLoggedIn = typeof window !== "undefined" ? localStorage.getItem("expert_isLoggedIn") === "true" : false;
+
+              if (isLoggedIn && existingCity && existingCity !== "" && existingCity !== "Location Not Specified") {
+                setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
+                await new Promise(resolve => setTimeout(resolve, 500));
+                window.location.href = "/consultant/dashboard";
+                return;
+              }
+
               try {
                 const response = await fetch("/api/auth/google/register", {
                     method: "POST",
@@ -274,16 +285,15 @@ function ExpertSignupPortalContent() {
                     const data = await response.json();
                     if (typeof window !== "undefined" && data.user) {
                         localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-                        localStorage.setItem("expert_isLoggedIn", "true");
                     }
                 }
               } catch (e) {}
 
-              setGoogleLoadingText("Google Verified! Proceeding to Step 2 (Location & Expertise)...");
+              setGoogleLoadingText("Google Verified! Please complete your Phone Number & Location Address...");
               await new Promise(resolve => setTimeout(resolve, 500));
               setGoogleLoading(false);
-              setStep(2);
-              window.scrollTo({ top: 0, behavior: "smooth" });
+              setValidationError("Google Account Connected! Please enter your Mobile Number below, then proceed to enter your Location Address (Area, City, State, ZIP) in Step 2.");
+              window.scrollTo({ top: 150, behavior: "smooth" });
           }
       } catch (e: any) {
           setValidationError(e.message || "Google signup failed.");

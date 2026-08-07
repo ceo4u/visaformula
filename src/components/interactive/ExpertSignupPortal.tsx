@@ -215,19 +215,30 @@ function ExpertSignupPortalContent() {
     return () => clearInterval(timer);
   }, [resendCooldown]);
 
+  const [googleSuccessMsg, setGoogleSuccessMsg] = useState("");
+
   // Google OAuth Signup
   const handleGoogleSignup = async () => {
     setGoogleLoading(true);
     setValidationError("");
+    setGoogleSuccessMsg("");
     try {
       const res = await signInWithGoogle();
       if (res) {
         if (res.email) setEmailAddress(res.email);
-        if (res.name) setBusinessName(res.name);
+        if (res.name) {
+          const parts = res.name.trim().split(" ");
+          const gFirst = parts[0] || "";
+          const gLast = parts.slice(1).join(" ") || "";
+          if (gFirst) setFirstName(gFirst);
+          if (gLast) setLastName(gLast);
+        }
+        setGoogleSuccessMsg(`Successfully authenticated via Google as ${res.name || res.email}!`);
         setCurrentStep(1);
       }
     } catch (e: any) {
-      setValidationError("Google Auth failed. Please try again or use Email.");
+      console.error("Google Auth error:", e);
+      setValidationError(e?.message?.includes("popup-closed") ? "Google Sign-In popup was closed." : "Google Auth failed. Please try again.");
     } finally {
       setGoogleLoading(false);
     }
@@ -662,6 +673,13 @@ function ExpertSignupPortalContent() {
                     <span className="bg-white px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest absolute" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>OR FILL DETAILS BELOW</span>
                   </div>
                 </div>
+
+                {googleSuccessMsg && (
+                  <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>{googleSuccessMsg}</span>
+                  </div>
+                )}
 
                 {/* First Name + Last Name */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

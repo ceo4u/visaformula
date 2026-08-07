@@ -2,8 +2,12 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Sparkles, ArrowRight, X } from "lucide-react";
 import { AuthModalPortalContent } from "./AuthModalPortal";
 
-export function SignupFlowPortal() {
-    const [mode, setMode] = useState<"selection" | "seeker" | "expert">("selection");
+interface SignupFlowPortalProps {
+    initialMode?: "selection" | "seeker" | "expert";
+}
+
+export function SignupFlowPortal({ initialMode = "seeker" }: SignupFlowPortalProps) {
+    const [mode, setMode] = useState<"selection" | "seeker" | "expert">(initialMode);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -13,9 +17,13 @@ export function SignupFlowPortal() {
                 setMode("seeker");
             } else if (roleParam === "expert") {
                 window.location.href = "/signup/expert";
+            } else if (roleParam === "selection") {
+                setMode("selection");
+            } else if (initialMode) {
+                setMode(initialMode);
             }
         }
-    }, []);
+    }, [initialMode]);
 
     return (
         <div 

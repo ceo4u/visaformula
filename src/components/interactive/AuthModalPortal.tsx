@@ -81,9 +81,10 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     const [googleLoading, setGoogleLoading] = useState(false);
     const [googleLoadingText, setGoogleLoadingText] = useState("");
 
-    // Email Edit States
+    // Email Edit & Dev Helper States
     const [isEditingEmail, setIsEditingEmail] = useState(false);
     const [tempEmail, setTempEmail] = useState("");
+    const [devOtp, setDevOtp] = useState("");
 
     // --- PASSWORD VALIDATION RULES ---
     const hasMinLength = signupPassword.length >= 6;
@@ -99,7 +100,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         if (!signupPassword) return { text: "Too Short", color: "bg-slate-200 text-slate-400", width: "w-1/4" };
         if (passedCriteriaCount <= 1) return { text: "Too Short", color: "bg-red-500 text-red-600", width: "w-1/4" };
         if (passedCriteriaCount === 2) return { text: "Weak", color: "bg-amber-500 text-amber-600", width: "w-2/4" };
-        if (passedCriteriaCount === 3) return { text: "Good", color: "bg-blue-500 text-blue-600", width: "w-3/4" };
+        if (passedCriteriaCount === 3) return { text: "Good", color: "bg-[#00a896] text-[#00a896]", width: "w-3/4" };
         return { text: "Strong", color: "bg-emerald-500 text-emerald-600", width: "w-full" };
     };
     const strength = getStrengthLabel();
@@ -327,10 +328,11 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 body: JSON.stringify({ email: signupEmail })
             });
             const data = await res.json();
+            if (data.otp) setDevOtp(data.otp);
             if (res.ok) {
                 setShowOtpModal(true);
             } else {
-                setSignupError(data.message || "Failed to send verification OTP code.");
+                setSignupError(data.message || "Failed to send OTP code.");
             }
         } catch (err) {
             setShowOtpModal(true);
@@ -749,7 +751,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
 
                                 {/* Primary Immigration Goals Badges */}
                                 <div>
-                                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                                    <label className="block text-[11px] font-bold text-slate-700 mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                                         Primary Visa Goals
                                     </label>
                                     <div className="grid grid-cols-2 gap-2">
@@ -758,13 +760,14 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                                 type="button"
                                                 key={g.id}
                                                 onClick={() => toggleGoal(g.id)}
-                                                className={`px-3 py-1.5 rounded-xl border text-xs font-bold text-left flex items-center gap-2 transition-all cursor-pointer ${
+                                                className={`px-3 py-2 rounded-xl border text-xs font-bold text-left flex items-center gap-2 transition-all cursor-pointer ${
                                                     selectedGoals.includes(g.id)
-                                                        ? "bg-blue-50 border-[#2563eb] text-[#2563eb]"
+                                                        ? "bg-teal-50 border-[#00a896] text-[#00a896] shadow-2xs font-extrabold"
                                                         : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
                                                 }`}
+                                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                             >
-                                                <g.icon className="w-3.5 h-3.5 shrink-0" />
+                                                <g.icon className={`w-3.5 h-3.5 shrink-0 ${selectedGoals.includes(g.id) ? "text-[#00a896]" : "text-slate-500"}`} />
                                                 <span>{g.label}</span>
                                             </button>
                                         ))}
@@ -773,7 +776,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
 
                                 {/* Target Destinations Pills */}
                                 <div>
-                                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                                    <label className="block text-[11px] font-bold text-slate-700 mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                                         Target Countries
                                     </label>
                                     <div className="flex flex-wrap gap-1.5">
@@ -782,11 +785,12 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                                 type="button"
                                                 key={d}
                                                 onClick={() => toggleDest(d)}
-                                                className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                                                className={`px-3 py-1.5 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
                                                     selectedDests.includes(d)
-                                                        ? "bg-[#2563eb] text-white shadow-xs"
+                                                        ? "bg-[#00a896] text-white shadow-xs font-extrabold"
                                                         : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                                                 }`}
+                                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                             >
                                                 {d}
                                             </button>
@@ -909,6 +913,15 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                         </div>
                                     )}
                                 </div>
+
+                                {devOtp && (
+                                    <div className="bg-teal-50 border border-teal-200/80 rounded-xl p-2.5 text-center text-xs font-bold text-[#00a896]">
+                                        <div className="text-[11px] text-teal-800 font-semibold mb-1">Your 6-Digit OTP Code:</div>
+                                        <span className="text-base font-black tracking-widest bg-white text-[#00a896] px-3 py-1 rounded-lg border border-teal-200 shadow-2xs inline-block select-all">
+                                            {devOtp}
+                                        </span>
+                                    </div>
+                                )}
 
                                 {otpError && (
                                     <p className="text-xs font-bold text-red-600 bg-red-50 p-2 rounded-lg">{otpError}</p>

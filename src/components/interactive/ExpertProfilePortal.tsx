@@ -152,7 +152,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                         </div>
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-1.5">
-                            {currentExpert.tags.map(tag => (
+                            {currentExpert.tags.map((tag: string) => (
                                 <span key={tag} className="bg-slate-50 text-slate-700 text-[11px] font-bold px-3 py-1 rounded-full border border-slate-200">{tag}</span>
                             ))}
                         </div>

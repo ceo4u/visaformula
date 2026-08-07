@@ -68,12 +68,13 @@ export const POST: APIRoute = async ({ request }) => {
 
     const [_, saveResult] = await Promise.all([emailPromise, savePromise]);
 
-    if (saveResult && 'success' in saveResult && !saveResult.success && saveResult.error === 'COOLDOWN_ACTIVE') {
+    if (saveResult && 'error' in saveResult && saveResult.error === 'COOLDOWN_ACTIVE') {
+      const cooldownSecs = 'cooldownSecondsLeft' in saveResult ? saveResult.cooldownSecondsLeft : 5;
       return new Response(JSON.stringify({
         status: 'error',
         code: 'COOLDOWN_ACTIVE',
-        message: `Please wait ${saveResult.cooldownSecondsLeft} seconds before requesting another code.`,
-        cooldownSecondsLeft: saveResult.cooldownSecondsLeft,
+        message: `Please wait ${cooldownSecs} seconds before requesting another code.`,
+        cooldownSecondsLeft: cooldownSecs,
       }), { status: 429, headers: { 'Content-Type': 'application/json' } });
     }
 

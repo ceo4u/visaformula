@@ -25,7 +25,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const body = await request.json();
-    const { email, role, first_name, last_name, phone, passport_country, resident_of, looking_for } = body;
+    const { email, role, first_name, last_name, phone, passport_country, resident_of, looking_for, business_name, advisor_type = 'Freelancer', about_me = '', portfolio_link = '', office_address = '', gov_registration_number = '', countries_expertise = '[]' } = body;
 
     if (!email) {
       return new Response(JSON.stringify({ status: 'error', message: 'Email is required to update profile.' }), {

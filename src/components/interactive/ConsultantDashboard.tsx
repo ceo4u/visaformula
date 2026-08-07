@@ -86,6 +86,12 @@ export function ConsultantDashboard() {
     const [messageInput, setMessageInput] = useState("");
     const [chatMessages, setChatMessages] = useState<Record<string, Array<{sender: string; text: string; time: string}>>>({});
 
+    const handleSendMessage = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!messageInput.trim()) return;
+        setMessageInput("");
+    };
+
     useEffect(() => {
         if (typeof window !== "undefined") {
             const userStr = localStorage.getItem("visaformula_user");

@@ -18,7 +18,7 @@ interface AuthContextType {
     loading: boolean;
     signIn: (email: string, password: string) => Promise<void>;
     signUp: (email: string, password: string, name: string) => Promise<void>;
-    signInWithGoogle: () => Promise<void>;
+    signInWithGoogle: () => Promise<any>;
     signOut: () => Promise<void>;
 }
 
@@ -177,6 +177,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             googleProvider.setCustomParameters({ prompt: 'select_account' });
 
             const result = await signInWithPopup(auth, googleProvider);
+            const fbUser = result.user;
             const idToken = await fbUser.getIdToken();
 
             const nameParts = (fbUser.displayName || '').trim().split(' ');

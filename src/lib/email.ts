@@ -95,6 +95,7 @@ async function logEmail(entry: LogEntry): Promise<void> {
  * Send OTP verification email
  */
 export async function sendVerificationOTP(data: VerificationEmailData): Promise<EmailResult> {
+  console.log("STEP 4 Email Function (sendVerificationOTP)", { email: data.email });
   const { generateVerificationEmailHtml } = await import('../emails/VerificationEmail');
   return sendEmail(
     {
@@ -105,6 +106,7 @@ export async function sendVerificationOTP(data: VerificationEmailData): Promise<
     'otp_verification'
   );
 }
+
 
 /**
  * Send welcome email after successful registration

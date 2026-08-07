@@ -112,10 +112,14 @@ export function MobileHomeSection() {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const terms = [selectedCountry, selectedPurpose, selectedVisaType, selectedCity].filter(Boolean);
-    const query = terms.join(' ');
-    window.location.href = `/find-experts?q=${encodeURIComponent(query)}`;
+    const params = new URLSearchParams();
+    if (selectedCountry) params.set('country', selectedCountry);
+    if (selectedPurpose) params.set('purpose', selectedPurpose);
+    if (selectedCity) params.set('city', selectedCity);
+    if (selectedVisaType) params.set('q', selectedVisaType);
+    window.location.href = `/find-experts?${params.toString()}`;
   };
+
 
   return (
     <div

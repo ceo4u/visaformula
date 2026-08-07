@@ -294,6 +294,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     // --- SIGNUP FINAL SUBMIT HANDLER ---
     const handleSignupSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log("STEP 1 Button clicked (handleSignupSubmit)", { email: signupEmail });
         setSignupError("");
 
         if (!firstName || !lastName) {
@@ -322,6 +323,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: signupEmail })
             });
+
             const data = await res.json();
             if (data.otp) setDevOtp(data.otp);
             if (res.ok) {

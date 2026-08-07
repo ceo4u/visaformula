@@ -13,7 +13,7 @@ export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   console.log("====================================================");
-  console.log("OTP API HIT");
+  console.log("STEP 2 API Hit (/api/auth/send-verification-code)");
   
   try {
     const body = await request.json();
@@ -54,7 +54,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     // ── Generate & store OTP ─────────────────────────────────
     const otp = generateOtp();
-    console.log(`[send-verification-code] Generated OTP for ${email}: ${otp}`);
+    console.log("STEP 3 OTP Generated:", otp, "for email:", email);
+
 
     // ── Parallel Execution: Resend Email Dispatch + DB Save ──
     const emailPromise = sendVerificationOTP({ otp, email, expiresInMinutes: 10 }).catch(emailErr => {

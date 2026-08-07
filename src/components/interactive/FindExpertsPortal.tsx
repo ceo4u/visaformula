@@ -130,18 +130,21 @@ export function FindExpertsPortal() {
                 dbExperts = data.experts;
             }
 
-            // Filter dummies by search query client-side
+            // Filter dummies by search query client-side (keyword matching)
             let filteredDummies = dummyExperts;
             if (q) {
-                const ql = q.toLowerCase();
-                filteredDummies = dummyExperts.filter(e =>
-                    e.name.toLowerCase().includes(ql) ||
-                    e.role.toLowerCase().includes(ql) ||
-                    e.city.toLowerCase().includes(ql) ||
-                    e.tags.some((t: string) => t.toLowerCase().includes(ql)) ||
-                    e.countries.some((c: string) => c.toLowerCase().includes(ql)) ||
-                    (e.bio || '').toLowerCase().includes(ql)
-                );
+                const keywords = q.toLowerCase().split(/\s+/).filter(Boolean);
+                filteredDummies = dummyExperts.filter(e => {
+                    const profileText = [
+                        e.name,
+                        e.role,
+                        e.city,
+                        ...(e.tags || []),
+                        ...(e.countries || []),
+                        e.bio || ''
+                    ].join(' ').toLowerCase();
+                    return keywords.some(kw => profileText.includes(kw));
+                });
             }
             if (country && country !== "All") {
                 filteredDummies = filteredDummies.filter(e =>
@@ -152,7 +155,10 @@ export function FindExpertsPortal() {
             // Merge: real experts first, then dummies (deduplicate by name)
             const dbNames = new Set(dbExperts.map((e: any) => e.name.toLowerCase()));
             const uniqueDummies = filteredDummies.filter(e => !dbNames.has(e.name.toLowerCase()));
-            setExperts([...dbExperts, ...uniqueDummies]);
+            const combined = [...dbExperts, ...uniqueDummies];
+
+            // Safety fallback: if filters return 0 items, show all dummyExperts so page is never blank
+            setExperts(combined.length > 0 ? combined : dummyExperts);
 
             if (data.error) setFetchError(data.error);
         } catch (err: any) {
@@ -162,6 +168,7 @@ export function FindExpertsPortal() {
             setLoading(false);
         }
     }, []);
+
 
     useEffect(() => {
         if (!sortOpen) return;

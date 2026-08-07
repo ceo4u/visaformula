@@ -47,13 +47,9 @@ export const sendEmail = async ({
   const apiKey = getApiKey();
   const apiKeyExists = Boolean(apiKey);
 
-  console.log('----------------------------------------------------');
-  console.log('[RESEND AUDIT LOG] Initiating email dispatch...');
-  console.log(`- RESEND_API_KEY exists?: ${apiKeyExists}`);
+  console.log("STEP 5 RESEND_API_KEY:", apiKeyExists);
   console.log(`- From address: ${from}`);
   console.log(`- To address: ${Array.isArray(to) ? to.join(', ') : to}`);
-  console.log(`- Email type: ${emailType}`);
-  console.log(`- Subject: ${subject}`);
 
   // Enforce verified domain constraint (must be visaformula.com)
   const allowedDomains = ['visaformula.com'];
@@ -66,9 +62,9 @@ export const sendEmail = async ({
     return { success: false, error: domainError };
   }
 
+  console.log("STEP 6 Calling Resend");
   try {
     const resend = getResendClient();
-    console.log('[RESEND AUDIT LOG] Executing resend.emails.send()...');
 
     const result = await resend.emails.send({
       from,
@@ -78,7 +74,7 @@ export const sendEmail = async ({
       text,
     });
 
-    console.log('[RESEND AUDIT LOG] FULL Resend Response:');
+    console.log("STEP 6 Resend Response:");
     console.log(JSON.stringify(result, null, 2));
 
     if (result.error) {
@@ -88,10 +84,10 @@ export const sendEmail = async ({
 
     return { success: true, data: result.data };
   } catch (error: any) {
-    console.error('[RESEND AUDIT EXCEPTION] Failed to send email via Resend:');
-    console.error('Message:', error?.message);
-    console.error('Stack:', error?.stack);
-    console.error('Full Error Object:', error);
+    console.error("STEP 6 RESEND ERROR:");
+    console.error(error);
+    if (error?.stack) console.error(error.stack);
     return { success: false, error: error?.message || error };
   }
 };
+

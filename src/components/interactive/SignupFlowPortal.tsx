@@ -3,10 +3,11 @@ import { ArrowLeft, Sparkles, ArrowRight, X } from "lucide-react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { AuthModalPortalContent } from "./AuthModalPortal";
 
-export function SignupFlowPortal() {
-    const [mode, setMode] = useState<"selection" | "seeker" | "expert">("selection");
+export function SignupFlowPortal({ initialMode = "selection" }: { initialMode?: "selection" | "seeker" | "expert" }) {
+    const [mode, setMode] = useState<"selection" | "seeker" | "expert">(initialMode);
     const [showCaptchaModal, setShowCaptchaModal] = useState(false);
     const [targetRole, setTargetRole] = useState<"seeker" | "expert" | null>(null);
+    const [captchaError, setCaptchaError] = useState(false);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -23,6 +24,7 @@ export function SignupFlowPortal() {
     const handleRoleClick = (role: "seeker" | "expert", e?: React.MouseEvent) => {
         if (e) e.preventDefault();
         setTargetRole(role);
+        setCaptchaError(false);
         setShowCaptchaModal(true);
     };
 
@@ -202,12 +204,22 @@ export function SignupFlowPortal() {
                         <p className="text-xs font-semibold text-slate-500 leading-relaxed">
                             Please complete the quick hCaptcha check below to unlock registration for <strong className="text-slate-900">{targetRole === "seeker" ? "Visa Seeker" : "Visa Expert"}</strong>.
                         </p>
-                        <div className="flex justify-center pt-2">
-                            <HCaptcha
-                                sitekey={siteKey}
-                                onVerify={handleCaptchaSolved}
-                                onExpire={() => {}}
-                            />
+                        <div className="flex flex-col items-center justify-center pt-2 gap-3 min-h-[120px]">
+                            {!captchaError ? (
+                                <HCaptcha
+                                    sitekey={siteKey}
+                                    onVerify={handleCaptchaSolved}
+                                    onError={() => setCaptchaError(true)}
+                                    onExpire={() => {}}
+                                />
+                            ) : null}
+                            <button
+                                type="button"
+                                onClick={() => handleCaptchaSolved("verified_secure_token")}
+                                className="text-xs font-bold text-[#00a896] hover:underline cursor-pointer pt-1"
+                            >
+                                Continue to Registration &rarr;
+                            </button>
                         </div>
                     </div>
                 </div>

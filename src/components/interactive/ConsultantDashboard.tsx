@@ -501,17 +501,17 @@ export function ConsultantDashboard() {
                 {/* Main Content Workspace */}
                 <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden">
 
-                    {/* Incomplete Profile Alert Banner */}
-                    {isProfileIncomplete && (
+                    {/* Live Profile Listing Status Banners */}
+                    {isProfileIncomplete ? (
                         <div className="bg-amber-50 border border-amber-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs w-full animate-fade-up">
                             <div className="flex items-start gap-3.5">
                                 <div className="w-10 h-10 rounded-2xl bg-amber-100/90 flex items-center justify-center text-amber-800 shrink-0 font-black text-lg border border-amber-200">
                                     ⚠️
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-extrabold text-amber-950 leading-tight">Complete your consultant profile details</h4>
+                                    <h4 className="text-sm font-extrabold text-amber-950 leading-tight">Complete your consultant profile to get listed</h4>
                                     <p className="text-xs font-semibold text-amber-800 mt-1 leading-relaxed">
-                                        Please add your office address, bio, profile photo, and specialization tags to get listed publicly and start receiving client enquiries.
+                                        Please fill in your location address, specialization tags, and bio to get publicly listed on Find Experts & start receiving client leads.
                                     </p>
                                 </div>
                             </div>
@@ -519,9 +519,35 @@ export function ConsultantDashboard() {
                                 onClick={() => setIsEditingProfile(true)}
                                 className="bg-amber-800 hover:bg-amber-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
                             >
-                                <span>Complete Profile</span>
+                                <span>Complete Profile to Get Listed</span>
                                 <ChevronRight className="w-4 h-4" />
                             </button>
+                        </div>
+                    ) : (
+                        <div className="bg-emerald-50 border border-emerald-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs w-full animate-fade-up">
+                            <div className="flex items-start gap-3.5">
+                                <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 font-black text-lg shadow-sm">
+                                    ✓
+                                </div>
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <h4 className="text-sm font-extrabold text-emerald-950 leading-tight">Your Agency Profile is Active & Listed Live!</h4>
+                                        <span className="bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">🟢 LIVE LISTING</span>
+                                    </div>
+                                    <p className="text-xs font-semibold text-emerald-800 mt-1 leading-relaxed">
+                                        Your profile is published and publicly discoverable by visa seekers across the Find Experts directory.
+                                    </p>
+                                </div>
+                            </div>
+                            <a 
+                                href="/find-experts"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm shrink-0 flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+                            >
+                                <span>View Live Listing</span>
+                                <ChevronRight className="w-4 h-4" />
+                            </a>
                         </div>
                     )}
 

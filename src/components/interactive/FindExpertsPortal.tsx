@@ -123,15 +123,19 @@ export function FindExpertsPortal() {
     // Filter Logic
     const filtered = experts.filter(expert => {
         if (category !== "All") {
-            if (category === "Student Visa" && expert.category !== "student") return false;
-            if (category === "Work Permit" && expert.category !== "work") return false;
-            if (category === "PR" && expert.category !== "pr") return false;
-            if (category === "Local Expert" && expert.isRemote) return false;
+            const catLower = category.toLowerCase();
+            const hasCategoryMatch = expert.category === catLower ||
+                expert.role.toLowerCase().includes(catLower) ||
+                expert.tags.some(t => t.toLowerCase().includes(catLower));
+            if (category === "Student Visa" && !hasCategoryMatch && !expert.tags.some(t => t.toLowerCase().includes("study"))) return false;
+            if (category === "Work Permit" && !hasCategoryMatch && !expert.tags.some(t => t.toLowerCase().includes("work"))) return false;
+            if (category === "PR" && !hasCategoryMatch && !expert.tags.some(t => t.toLowerCase().includes("pr") || t.toLowerCase().includes("migration"))) return false;
+            if (category === "Local Expert" && expert.city === "Remote") return false;
         }
 
         if (city !== "All Cities") {
             if (city === "Remote" && !expert.isRemote) return false;
-            if (city !== "Remote" && expert.city.toLowerCase() !== city.toLowerCase()) return false;
+            if (city !== "Remote" && !expert.city.toLowerCase().includes(city.toLowerCase())) return false;
         }
 
         if (rating !== "Any") {

@@ -232,7 +232,7 @@ function ExpertSignupPortalContent() {
     setShowOtpModal(true);
   };
 
-  // Verify OTP and complete registration
+  // Verify OTP and complete registration — saves full profile to localStorage so FindExpertsPortal lists this expert
   const handleVerifyOtp = async () => {
     const code = otpDigits.join("");
     if (code.length < 6) {
@@ -243,20 +243,83 @@ function ExpertSignupPortalContent() {
     setVerifyingOtp(true);
     setOtpError("");
 
-    // Simulate OTP validation and save payload
     setTimeout(() => {
       if (typeof window !== "undefined") {
+        // Core identity
         localStorage.setItem("expert_isLoggedIn", "true");
-        localStorage.setItem("expert_businessName", businessName || "VisaFormula Consultant");
+        localStorage.setItem("expert_firstName", firstName);
+        localStorage.setItem("expert_lastName", lastName);
+        localStorage.setItem("expert_businessName", businessName || `${firstName} ${lastName}`.trim() || "VisaFormula Consultant");
+        localStorage.setItem("expert_businessType", businessType);
+        localStorage.setItem("expert_yearsInBusiness", yearsInBusiness);
+        localStorage.setItem("expert_businessWebsite", businessWebsite);
+        localStorage.setItem("expert_businessDescription", businessDescription);
+        if (companyLogo) localStorage.setItem("expert_profilePhoto", companyLogo);
+
+        // Contact
         localStorage.setItem("expert_email", emailAddress);
         localStorage.setItem("expert_contactNumber", phoneNumber);
-        localStorage.setItem("expert_officeAddress", `${officeAddress}, ${city}, ${state}, ${country}`);
+        localStorage.setItem("expert_whatsapp", whatsappNumber);
+
+        // Address — detailed
+        localStorage.setItem("expert_streetAddress", streetAddress);
+        localStorage.setItem("expert_landmark", landmark);
+        localStorage.setItem("expert_pinCode", pinCode);
+        localStorage.setItem("expert_city", city);
+        localStorage.setItem("expert_state", state);
+        localStorage.setItem("expert_country", country);
+        localStorage.setItem("expert_officeAddress", [streetAddress, landmark, city, state, country].filter(Boolean).join(", "));
+
+        // Services & expertise
         localStorage.setItem("expert_services", JSON.stringify(selectedServices));
         localStorage.setItem("expert_countries", JSON.stringify(selectedCountries));
+        localStorage.setItem("expert_languages", JSON.stringify(selectedLanguages));
+        localStorage.setItem("expert_consultationMode", consultationMode);
+        localStorage.setItem("expert_expertiseTags", JSON.stringify(selectedServices));
+        localStorage.setItem("expert_countriesExpertise", selectedCountries.join(", "));
+        localStorage.setItem("expert_advisorType", businessType || "Visa Consultant");
+
+        // Add to global experts list for FindExpertsPortal
+        const fullName = businessName || `${firstName} ${lastName}`.trim() || "VisaFormula Consultant";
+        const newExpert = {
+          id: `expert-${Date.now()}`,
+          name: fullName,
+          category: selectedServices.some(s => s.toLowerCase().includes("student")) ? "student"
+                  : selectedServices.some(s => s.toLowerCase().includes("work") || s.toLowerCase().includes("permit")) ? "work"
+                  : "pr",
+          role: businessType || "Visa Consultant",
+          rating: 5.0,
+          reviews: 1,
+          price: 1500,
+          city: city || "Remote",
+          countries: selectedCountries.length > 0 ? selectedCountries : ["India"],
+          experience: yearsInBusiness === "Less than 1 year" ? 1
+                    : yearsInBusiness === "1-2 years" ? 2
+                    : yearsInBusiness === "3-5 years" ? 4
+                    : yearsInBusiness === "5-10 years" ? 7
+                    : yearsInBusiness === "10+ years" ? 12 : 5,
+          isRemote: consultationMode === "Online" || consultationMode === "Both",
+          isAvailableToday: true,
+          isEmergency: false,
+          tags: selectedServices.slice(0, 3),
+          image: companyLogo || "",
+        };
+
+        let existingList: any[] = [];
+        try {
+          const stored = localStorage.getItem("visaformula_all_experts");
+          if (stored) existingList = JSON.parse(stored);
+        } catch(e) {}
+
+        const alreadyExists = existingList.some((e: any) => e.name?.toLowerCase() === fullName.toLowerCase());
+        if (!alreadyExists) {
+          existingList = [newExpert, ...existingList];
+          localStorage.setItem("visaformula_all_experts", JSON.stringify(existingList));
+        }
       }
       setVerifyingOtp(false);
       setShowOtpModal(false);
-      setCurrentStep(4); // Navigate to Congratulations
+      setCurrentStep(4);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 800);
   };
@@ -854,21 +917,7 @@ function ExpertSignupPortalContent() {
                     </div>
                   </div>
 
-                  {/* Google Maps Pin */}
-                  <div>
-                    <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Google Maps / Pin Location</label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={pinLocation}
-                        onChange={(e) => setPinLocation(e.target.value)}
-                        placeholder="Paste Google Maps link or coordinates"
-                        className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      />
-                      <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    </div>
-                  </div>
+                  {/* Google Maps / Pin Location — removed */}
                 </div>
 
                 {/* Contact Information */}

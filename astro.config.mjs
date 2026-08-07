@@ -32,7 +32,8 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
-      include: ['react', 'react-dom', 'firebase/app', 'firebase/auth'],
+      include: ['lucide-react', 'react', 'react-dom', 'firebase/app', 'firebase/auth'],
+      force: true
     },
   },
 });

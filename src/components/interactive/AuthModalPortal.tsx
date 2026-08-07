@@ -87,6 +87,9 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
 
     // --- PASSWORD VALIDATION RULES ---
     const hasMinLength = signupPassword.length >= 6;
+    const hasLowercase = /[a-z]/.test(signupPassword);
+    const hasUppercase = /[A-Z]/.test(signupPassword);
+    const hasNumber = /[0-9]/.test(signupPassword);
     const isPasswordValid = signupPassword.length >= 6;
     const passwordsMatch = !confirmPassword || signupPassword === confirmPassword;
 

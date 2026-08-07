@@ -36,17 +36,18 @@ export const POST: APIRoute = async ({ request }) => {
     let user: any = null;
     let userType: 'seeker' | 'expert' | null = null;
 
-    const seekerRes = await pool.query('SELECT id, first_name FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
+    const seekerRes = await pool.query('SELECT id, first_name, password_hash FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
     if (seekerRes.rows.length > 0) {
       user = seekerRes.rows[0];
       userType = 'seeker';
     } else {
-      const expertRes = await pool.query('SELECT id, business_name FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
+      const expertRes = await pool.query('SELECT id, business_name, password_hash FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
       if (expertRes.rows.length > 0) {
         user = expertRes.rows[0];
         userType = 'expert';
       }
     }
+
 
     // Return error if user does not exist to guide reset flow
     if (!user) {

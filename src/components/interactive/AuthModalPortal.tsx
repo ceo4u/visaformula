@@ -218,12 +218,15 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 body: JSON.stringify({ email: signupEmail, otp: fullCode, code: fullCode })
             });
             const data = await res.json();
-            if (!res.ok && data?.message && !data.message.toLowerCase().includes("fallback")) {
-                console.warn("OTP verification response:", data);
+            if (!res.ok && data?.status === "error") {
+                setOtpError(data.message || "Invalid verification code. Please check and try again.");
+                setSendingCode(false);
+                return;
             }
         } catch (err) {
             console.warn("Verify code fallback mode.", err);
         }
+
 
         // Complete Seeker Registration
         try {
@@ -259,6 +262,20 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         } catch (err) {
             console.warn("Fallback to local simulation mode.", err);
         }
+
+        // Dispatch Welcome Email
+        fetch("/api/auth/send-welcome-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: signupEmail,
+                firstName: firstName,
+                displayName: `${firstName} ${lastName}`.trim(),
+                userType: "seeker"
+            })
+        }).catch(err => console.error("Welcome email send error:", err));
+
+
 
         // Save locally for instant client persistence and navigate with Registration Successful notification
         if (typeof window !== "undefined") {

@@ -432,8 +432,24 @@ function ExpertSignupPortalContent() {
           localStorage.setItem("visaformula_all_experts", JSON.stringify(existingList));
         }
 
-        // Clear temporary draft
-        localStorage.removeItem("expert_form_draft");
+        // Complete Expert DB Registration
+        fetch("/api/register/expert", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            business_name: businessName || `${firstName} ${lastName}`.trim(),
+            email: emailAddress,
+            password: password,
+            contact_number: phoneNumber,
+            advisor_type: businessType || "Freelancer",
+            about_me: businessDescription,
+            portfolio_link: businessWebsite,
+            office_address: [streetAddress, landmark, city, state, country].filter(Boolean).join(", "),
+            gov_registration_number: registrationNumber,
+            expertise_tags: selectedServices,
+            countries_expertise: selectedCountries
+          })
+        }).catch(e => console.warn("Expert DB reg error:", e));
 
         // Send Welcome Email instantly via Resend
         fetch("/api/auth/send-welcome-email", {
@@ -446,6 +462,7 @@ function ExpertSignupPortalContent() {
             userType: "expert",
           }),
         }).catch(e => console.error("Welcome email send error:", e));
+
       }
       setVerifyingOtp(false);
       setShowOtpModal(false);

@@ -156,8 +156,8 @@ function ExpertSignupPortalContent() {
         const savedDraft = localStorage.getItem("expert_form_draft");
         if (savedDraft) {
           const draft = JSON.parse(savedDraft);
-          if (draft.firstName) setFirstName(draft.firstName);
-          if (draft.lastName) setLastName(draft.lastName);
+          if (draft.firstName && draft.firstName !== "Google") setFirstName(draft.firstName);
+          if (draft.lastName && draft.lastName !== "User") setLastName(draft.lastName);
           if (draft.businessName) setBusinessName(draft.businessName);
           if (draft.businessType) setBusinessType(draft.businessType);
           if (draft.yearsInBusiness) setYearsInBusiness(draft.yearsInBusiness);

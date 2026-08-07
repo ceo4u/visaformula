@@ -33,7 +33,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const stored = localStorage.getItem("visaformula_user");
             if (stored && stored !== "null") {
                 try {
-                    setUser(JSON.parse(stored));
+                    const parsed = JSON.parse(stored);
+                    if (parsed && (parsed.displayName === "Google User" || parsed.displayName === "Google" || parsed.email === "user.google@visaformula.com" || parsed.email?.includes("google_"))) {
+                        localStorage.removeItem("visaformula_user");
+                        localStorage.removeItem("seeker_firstName");
+                        localStorage.removeItem("seeker_lastName");
+                        localStorage.removeItem("seeker_email");
+                        setUser(null);
+                    } else {
+                        setUser(parsed);
+                    }
                 } catch (e) {
                     localStorage.removeItem("visaformula_user");
                 }

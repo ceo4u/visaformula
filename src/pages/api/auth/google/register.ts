@@ -18,8 +18,9 @@ export const POST: APIRoute = async ({ request }) => {
     const pool = getPool();
 
     let user: any = null;
-    const names = (name || 'Google User').trim().split(' ');
-    const firstName = names[0] || 'User';
+    const fallbackName = email ? email.split('@')[0] : 'User';
+    const names = (name || fallbackName).trim().split(' ');
+    const firstName = names[0] || fallbackName;
     const lastName = names.slice(1).join(' ') || '';
 
     // If explicit businessName is provided, use it; otherwise use full name

@@ -39,6 +39,17 @@ export function ConsultantDashboard() {
     const [formCountries, setFormCountries] = useState("");
     const [formImage, setFormImage] = useState("");
 
+    // Granular Location & Registration Form States for Edit Profile Modal
+    const [formPhone, setFormPhone] = useState("");
+    const [formArea, setFormArea] = useState("");
+    const [formCityName, setFormCityName] = useState("");
+    const [formState, setFormState] = useState("");
+    const [formCountry, setFormCountry] = useState("");
+    const [formZip, setFormZip] = useState("");
+    const [formGovReg, setFormGovReg] = useState("");
+    const [formPortfolio, setFormPortfolio] = useState("");
+    const [formTagsArray, setFormTagsArray] = useState<string[]>([]);
+
     // Real Data States (Initialized clean / from localStorage)
     const [leadsList, setLeadsList] = useState<any[]>([]);
     const [enquiriesList, setEnquiriesList] = useState<any[]>([]);
@@ -134,6 +145,23 @@ export function ConsultantDashboard() {
             setFormCountries(loadedCountries);
             setFormImage(image);
 
+            // Populate granular registration states for Edit Profile modal
+            setFormPhone(localStorage.getItem("expert_contactNumber") || localStorage.getItem("expert_phone") || "");
+            setFormArea(localStorage.getItem("expert_area") || "");
+            setFormCityName(localStorage.getItem("expert_city") || "");
+            setFormState(localStorage.getItem("expert_state") || "");
+            setFormCountry(localStorage.getItem("expert_country") || "India");
+            setFormZip(localStorage.getItem("expert_zip") || "");
+            setFormGovReg(localStorage.getItem("expert_govRegNumber") || "");
+            setFormPortfolio(localStorage.getItem("expert_portfolioLink") || "");
+            try {
+                const tagsStr = localStorage.getItem("expert_expertiseTags");
+                if (tagsStr) {
+                    const parsed = JSON.parse(tagsStr);
+                    if (Array.isArray(parsed)) setFormTagsArray(parsed);
+                }
+            } catch(e) {}
+
             // Check if Expert profile is incomplete based on registration starting details
             const hasBizName = Boolean(localStorage.getItem("expert_businessName") || localStorage.getItem("expert_firstName"));
             const hasOfficeAddress = Boolean(localStorage.getItem("expert_officeAddress")) && localStorage.getItem("expert_officeAddress") !== "Location Not Specified";
@@ -170,13 +198,16 @@ export function ConsultantDashboard() {
 
     const handleSaveProfile = (e: React.FormEvent) => {
         e.preventDefault();
+        
+        const finalFullAddress = [formArea, formCityName, formState, formCountry, formZip].filter(Boolean).join(", ") || formCity || "Location Not Specified";
+
         const updatedProfile = {
             name: formName,
             role: formRole,
-            city: formCity,
+            city: formCityName || formCity || finalFullAddress,
             experience: 5,
             bio: formBio,
-            specializations: formSpecs,
+            specializations: formTagsArray.length > 0 ? formTagsArray.join(", ") : formSpecs,
             countries: formCountries,
             image: formImage
         };
@@ -184,15 +215,43 @@ export function ConsultantDashboard() {
 
         localStorage.setItem("expert_businessName", formName);
         localStorage.setItem("expert_advisorType", formRole);
-        localStorage.setItem("expert_officeAddress", formCity);
+        localStorage.setItem("expert_officeAddress", finalFullAddress);
+        localStorage.setItem("expert_area", formArea);
+        localStorage.setItem("expert_city", formCityName);
+        localStorage.setItem("expert_state", formState);
+        localStorage.setItem("expert_country", formCountry);
+        localStorage.setItem("expert_zip", formZip);
+        localStorage.setItem("expert_contactNumber", formPhone);
+        localStorage.setItem("expert_phone", formPhone);
+        localStorage.setItem("expert_govRegNumber", formGovReg);
+        localStorage.setItem("expert_portfolioLink", formPortfolio);
         localStorage.setItem("expert_aboutMe", formBio);
-        localStorage.setItem("expert_expertiseTags", JSON.stringify(formSpecs.split(",").map(s => s.trim())));
+        localStorage.setItem("expert_expertiseTags", JSON.stringify(formTagsArray));
         localStorage.setItem("expert_countriesExpertise", formCountries);
         localStorage.setItem("expert_profilePhoto", formImage);
 
+        // Update active user & search database
+        try {
+            localStorage.setItem("visaformula_user", JSON.stringify({
+                name: formName,
+                email: localStorage.getItem("expert_email") || "",
+                role: "expert",
+                advisor_type: formRole,
+                type: "expert"
+            }));
+            const existingAll = JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]");
+            const updatedAll = existingAll.map((x: any) => {
+                if (x.name?.toLowerCase() === formName.toLowerCase() || x.id === "logged-in-expert") {
+                    return { ...x, name: formName, role: formRole, city: formCityName || finalFullAddress, tags: formTagsArray, countries: formCountries.split(",").map(c => c.trim()) };
+                }
+                return x;
+            });
+            localStorage.setItem("visaformula_all_experts", JSON.stringify(updatedAll));
+        } catch (e) {}
+
         setIsProfileIncomplete(false);
         setIsEditingProfile(false);
-        triggerToast("Profile details updated successfully!");
+        triggerToast("Profile & Location details updated successfully!");
     };
 
     const handleCreateAd = (e: React.FormEvent) => {
@@ -1232,16 +1291,18 @@ export function ConsultantDashboard() {
 
             {/* Profile Edit Modal */}
             {isEditingProfile && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
                     <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsEditingProfile(false)} />
-                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 space-y-4 z-10 font-sora">
+                    <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-5 sm:p-7 space-y-4 z-10 font-sora max-h-[88vh] overflow-y-auto">
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="text-base font-extrabold text-slate-900">Edit Business & Profile Details</h3>
-                            <button onClick={() => setIsEditingProfile(false)} className="p-1 text-slate-400 hover:text-slate-700">
+                            <h3 className="text-base sm:text-lg font-extrabold text-slate-900">Edit Business & Profile Details</h3>
+                            <button onClick={() => setIsEditingProfile(false)} className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
-                        <form onSubmit={handleSaveProfile} className="space-y-3">
+                        <form onSubmit={handleSaveProfile} className="space-y-4 text-left">
+                            
+                            {/* Profile Photo / Business Logo */}
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block">Profile Photo / Business Logo</label>
                                 <div className="flex items-center gap-3">
@@ -1271,41 +1332,215 @@ export function ConsultantDashboard() {
                                     />
                                 </div>
                             </div>
+
+                            {/* Business Name & Type of Business */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Business / Consultancy Name *</label>
+                                    <input 
+                                        type="text" 
+                                        value={formName} 
+                                        onChange={(e) => setFormName(e.target.value)} 
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Type of Business *</label>
+                                    <select 
+                                        value={formRole} 
+                                        onChange={(e) => setFormRole(e.target.value)}
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
+                                    >
+                                        <option value="Registered Consultant">Registered Consultant</option>
+                                        <option value="Authorised immigration / visa appeal lawyer">Authorised immigration / visa appeal lawyer</option>
+                                        <option value="Freelancer">Freelancer</option>
+                                        <option value="Law Firm / Legal Practice">Law Firm / Legal Practice</option>
+                                        <option value="Education & Training Institute">Education & Training Institute</option>
+                                        <option value="Recruitment & Manpower Agency">Recruitment & Manpower Agency</option>
+                                        <option value="Travel & Tour Agency">Travel & Tour Agency</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Contact / WhatsApp Number */}
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Business / Consultancy Name</label>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Contact / WhatsApp Number *</label>
                                 <input 
-                                    type="text" 
-                                    value={formName} 
-                                    onChange={(e) => setFormName(e.target.value)} 
-                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                    type="tel" 
                                     required
-                                />
-                            </div>
-                            <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Type of Business</label>
-                                <select 
-                                    value={formRole} 
-                                    onChange={(e) => setFormRole(e.target.value)}
-                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
-                                >
-                                    <option value="Registered Consultant">Registered Consultant</option>
-                                    <option value="Authorised immigration / visa appeal lawyer">Authorised immigration / visa appeal lawyer</option>
-                                    <option value="Freelancer">Freelancer</option>
-                                    <option value="Law Firm / Legal Practice">Law Firm / Legal Practice</option>
-                                    <option value="Education & Training Institute">Education & Training Institute</option>
-                                    <option value="Recruitment & Manpower Agency">Recruitment & Manpower Agency</option>
-                                    <option value="Travel & Tour Agency">Travel & Tour Agency</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Office Location / Address</label>
-                                <input 
-                                    type="text" 
-                                    value={formCity} 
-                                    onChange={(e) => setFormCity(e.target.value)} 
+                                    value={formPhone} 
+                                    onChange={(e) => setFormPhone(e.target.value)} 
+                                    placeholder="e.g. +91 98765 43210"
                                     className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
                                 />
                             </div>
+
+                            {/* Office / Practice Location Address (Granular 5 Fields) */}
+                            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+                                <label className="text-xs font-black text-slate-900 uppercase tracking-wider block">Office / Practice Location Address *</label>
+                                <div>
+                                    <label className="text-[11px] font-bold text-slate-700 mb-1 block">Area / Locality / Street Address *</label>
+                                    <input 
+                                        type="text" 
+                                        required
+                                        value={formArea} 
+                                        onChange={(e) => setFormArea(e.target.value)} 
+                                        placeholder="e.g. Suite 402, MG Road"
+                                        className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                    />
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label className="text-[11px] font-bold text-slate-700 mb-1 block">City / District / Town *</label>
+                                        <input 
+                                            type="text" 
+                                            required
+                                            value={formCityName} 
+                                            onChange={(e) => setFormCityName(e.target.value)} 
+                                            placeholder="e.g. Mumbai"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[11px] font-bold text-slate-700 mb-1 block">State / Province *</label>
+                                        <input 
+                                            type="text" 
+                                            required
+                                            value={formState} 
+                                            onChange={(e) => setFormState(e.target.value)} 
+                                            placeholder="e.g. Maharashtra"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                        />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label className="text-[11px] font-bold text-slate-700 mb-1 block">Country *</label>
+                                        <input 
+                                            type="text" 
+                                            required
+                                            value={formCountry} 
+                                            onChange={(e) => setFormCountry(e.target.value)} 
+                                            placeholder="e.g. India"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[11px] font-bold text-slate-700 mb-1 block">ZIP / Postal Code *</label>
+                                        <input 
+                                            type="text" 
+                                            required
+                                            value={formZip} 
+                                            onChange={(e) => setFormZip(e.target.value)} 
+                                            placeholder="e.g. 400001"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Field of Expertise / Study Pills */}
+                            <div>
+                                <label className="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-1">Field of Expertise / Study *</label>
+                                <span className="text-[11px] text-slate-500 font-semibold block mb-2">Select one or more services:</span>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                    {[
+                                        "VISIT",
+                                        "WORK",
+                                        "VISA APPEALS",
+                                        "DIGITAL NOMAD",
+                                        "PR / MIGRATION",
+                                        "STUDY",
+                                        "BUSINESS / INVESTMENT",
+                                        "VISA FILING ASSISTANCE"
+                                    ].map(service => {
+                                        const isChecked = formTagsArray.includes(service);
+                                        return (
+                                            <button
+                                                key={service}
+                                                type="button"
+                                                onClick={() => {
+                                                    if (isChecked) {
+                                                        setFormTagsArray(prev => prev.filter(t => t !== service));
+                                                    } else {
+                                                        setFormTagsArray(prev => [...prev, service]);
+                                                    }
+                                                }}
+                                                className={`p-2 rounded-xl border text-[11px] font-black text-center transition-all cursor-pointer ${
+                                                    isChecked 
+                                                        ? "bg-[#00a896] border-[#00a896] text-white shadow-xs" 
+                                                        : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+                                                }`}
+                                            >
+                                                {service}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {/* Countries Covered */}
+                            <div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block">Countries Covered *</label>
+                                <select
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        if (val) {
+                                            const currentList = formCountries ? formCountries.split(",").map(c => c.trim()).filter(Boolean) : [];
+                                            if (!currentList.includes(val)) {
+                                                setFormCountries([...currentList, val].join(", "));
+                                            }
+                                        }
+                                        e.target.value = "";
+                                    }}
+                                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 bg-white mb-1.5 cursor-pointer"
+                                >
+                                    <option value="">+ Add Country from Dropdown</option>
+                                    <option value="Canada">Canada</option>
+                                    <option value="United Kingdom">United Kingdom</option>
+                                    <option value="United States">United States</option>
+                                    <option value="Australia">Australia</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="New Zealand">New Zealand</option>
+                                    <option value="UAE / Dubai">UAE / Dubai</option>
+                                    <option value="Schengen Countries">Schengen Countries</option>
+                                    <option value="Worldwide">Worldwide / All Countries</option>
+                                </select>
+                                <input 
+                                    type="text" 
+                                    value={formCountries} 
+                                    onChange={(e) => setFormCountries(e.target.value)} 
+                                    placeholder="e.g. Canada, UK, USA, Australia"
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                />
+                            </div>
+
+                            {/* Government Registration & Portfolio */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Government Registration Number / License (Optional)</label>
+                                    <input 
+                                        type="text" 
+                                        value={formGovReg} 
+                                        onChange={(e) => setFormGovReg(e.target.value)} 
+                                        placeholder="License / Reg Number"
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 outline-none focus:border-black" 
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Portfolio / Website Link (Optional)</label>
+                                    <input 
+                                        type="url" 
+                                        value={formPortfolio} 
+                                        onChange={(e) => setFormPortfolio(e.target.value)} 
+                                        placeholder="https://yourwebsite.com"
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 outline-none focus:border-black" 
+                                    />
+                                </div>
+                            </div>
+
+                            {/* About Consultancy & Bio */}
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block">About Consultancy & Bio</label>
                                 <textarea 
@@ -1315,9 +1550,10 @@ export function ConsultantDashboard() {
                                     className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 outline-none focus:border-black" 
                                 />
                             </div>
-                            <div className="flex gap-3 pt-2">
-                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50">Cancel</button>
-                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md">Save Changes</button>
+
+                            <div className="flex gap-3 pt-2 border-t border-slate-100">
+                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-colors">Cancel</button>
+                                <button type="submit" className="flex-1 py-3 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md transition-all">Save Changes</button>
                             </div>
                         </form>
                     </div>

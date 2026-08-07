@@ -114,37 +114,32 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         try {
             const res = await signInWithGoogle();
             if (res) {
-                const nameParts = (res.name || '').trim().split(' ');
-                const gFirstName = nameParts[0] || '';
-                const gLastName = nameParts.slice(1).join(' ') || '';
-
-                if (gFirstName) setFirstName(gFirstName);
-                if (gLastName) setLastName(gLastName);
-                if (res.email) setSignupEmail(res.email);
-
-                const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
-                const existingAddress = typeof window !== "undefined" ? localStorage.getItem("seeker_address") : null;
-
-                if (userStr && existingAddress && existingAddress !== "") {
-                    setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    const parsed = JSON.parse(userStr);
-                    if (parsed.type === "expert") {
-                        window.location.href = "/consultant/dashboard";
-                    } else {
-                        window.location.href = "/dashboard";
-                    }
+                setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
+                await new Promise(resolve => setTimeout(resolve, 400));
+                
+                if (res.redirect) {
+                    window.location.href = res.redirect;
                     return;
                 }
 
-                setGoogleLoadingText("Google Account Connected! Please complete your details...");
-                await new Promise(resolve => setTimeout(resolve, 600));
-                setGoogleLoading(false);
-                setActiveTab("signup");
-                setSignupError("Google Account Connected! Please enter your Phone Number, Residential Address (Area, City, State, ZIP), and Target Countries to complete your profile.");
+                const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+                if (userStr) {
+                    try {
+                        const parsed = JSON.parse(userStr);
+                        if (parsed.type === "expert") {
+                            window.location.href = "/consultant/dashboard";
+                        } else {
+                            window.location.href = "/dashboard";
+                        }
+                        return;
+                    } catch (e) {}
+                }
+                window.location.href = "/dashboard";
             }
         } catch (e: any) {
+            console.error("Google login error:", e);
             setLoginError(e.message || "Google Authentication failed.");
+            setSignupError(e.message || "Google Authentication failed.");
             setGoogleLoading(false);
         }
     };

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, Sparkles, ArrowRight, X } from "lucide-react";
 import { AuthModalPortalContent } from "./AuthModalPortal";
+import { AuthProvider } from "../providers/auth-provider";
 
 interface SignupFlowPortalProps {
     initialMode?: "selection" | "seeker" | "expert";
 }
 
-export function SignupFlowPortal({ initialMode = "seeker" }: SignupFlowPortalProps) {
+function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps) {
     const [mode, setMode] = useState<"selection" | "seeker" | "expert">(initialMode);
 
     useEffect(() => {
@@ -167,5 +168,13 @@ export function SignupFlowPortal({ initialMode = "seeker" }: SignupFlowPortalPro
 
             </div>
         </div>
+    );
+}
+
+export function SignupFlowPortal(props: SignupFlowPortalProps) {
+    return (
+        <AuthProvider>
+            <SignupFlowPortalInner {...props} />
+        </AuthProvider>
     );
 }

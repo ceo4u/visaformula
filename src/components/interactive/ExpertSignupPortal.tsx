@@ -1,2872 +1,953 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   CheckCircle, ArrowLeft, ArrowRight, Upload, Plus, X, 
   User, FileText, Globe, Star, Shield, ArrowUpRight, 
   MessageSquare, Briefcase, Mail, Phone, ExternalLink, 
-  Percent, Award, Image as ImageIcon, Sparkles, Building, 
-  CreditCard, Settings, ChevronRight, LayoutDashboard, Search, 
-  Calendar, LogOut, CheckSquare, TrendingUp, Bookmark, Bell, Clock, ChevronDown, AlertTriangle, Menu,
-  Eye, EyeOff, Pencil
+  Building, CheckSquare, Sparkles, MapPin, Lock, LayoutDashboard
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
-import airplanePaths from "../../data/clean_airplane.json";
-import checkmarkPaths from "../../data/clean_checkmark.json";
 
 function ExpertSignupPortalContent() {
-  const [step, setStep] = useState(1); // 1: Initial Reg, 2: Profile Complete, 3: Dashboard View
-  const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
-  
-  // Tab states for Dashboard
-  const [activeTab, setActiveTab] = useState("dashboard"); // dashboard, profile, inquiries, cases, upgrade, photos
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // Wizard Step State: 0 (Start options), 1 (Business Info), 2 (Services & Expertise), 3 (Location & Verification), 3.5 (OTP Modal), 4 (Congratulations / Done)
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [showOtpModal, setShowOtpModal] = useState<boolean>(false);
 
-  // --- Phase 1 States ---
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  // --- Step 1: Business Info States ---
   const [businessName, setBusinessName] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [consultantType, setConsultantType] = useState("Freelancer");
+  const [businessType, setBusinessType] = useState("Registered consultancy");
+  const [yearsInBusiness, setYearsInBusiness] = useState("3-5 years");
+  const [businessWebsite, setBusinessWebsite] = useState("");
+  const [businessDescription, setBusinessDescription] = useState("");
+  const [companyLogo, setCompanyLogo] = useState<string | null>(null);
 
-  // Granular Address States
-  const [addressArea, setAddressArea] = useState("");
-  const [addressCity, setAddressCity] = useState("");
-  const [addressState, setAddressState] = useState("");
-  const [addressCountry, setAddressCountry] = useState("India");
-  const [addressZip, setAddressZip] = useState("");
+  // --- Step 2: Services & Expertise States ---
+  const [selectedServices, setSelectedServices] = useState<string[]>([
+    "Student Visa", "Visitor Visa", "PR / Permanent Residency", "Work Visa"
+  ]);
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([
+    "Canada", "Australia", "UK", "USA"
+  ]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([
+    "English", "Hindi"
+  ]);
+  const [consultationMode, setConsultationMode] = useState<"Online" | "In Office" | "Both">("Both");
+  const [customServiceInput, setCustomServiceInput] = useState("");
+  const [showAddCustomService, setShowAddCustomService] = useState(false);
 
-  const updateFullAddress = (area: string, city: string, state: string, country: string, zip: string) => {
-    setAddressArea(area);
-    setAddressCity(city);
-    setAddressState(state);
-    setAddressCountry(country);
-    setAddressZip(zip);
-    const fullStr = [area, city, state, country].filter(Boolean).join(", ") + (zip ? ` - ${zip}` : "");
-    setExpertAddress(fullStr);
-    setOfficeAddress(fullStr);
-  };
+  // --- Step 3: Location & Verification States ---
+  const [country, setCountry] = useState("India");
+  const [state, setState] = useState("Delhi");
+  const [city, setCity] = useState("New Delhi");
+  const [officeAddress, setOfficeAddress] = useState("");
+  const [pinLocation, setPinLocation] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [docUploads, setDocUploads] = useState<Record<string, boolean>>({
+    businessReg: false,
+    profLicense: false,
+    officePhoto: false,
+    govId: false
+  });
+
+  // --- Step 3.5: OTP Verification States ---
+  const [otpDigits, setOtpDigits] = useState<string[]>(Array(6).fill(""));
+  const [resendCooldown, setResendCooldown] = useState(30);
+  const [verifyingOtp, setVerifyingOtp] = useState(false);
+  const [otpError, setOtpError] = useState("");
+
+  const [validationError, setValidationError] = useState("");
+  const { signInWithGoogle } = useAuth();
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  // Available options
+  const defaultServices = [
+    "Student Visa", "Visitor Visa", "PR / Permanent Residency", "Work Visa", 
+    "Business Visa", "Dependent Visa", "Investor Visa", "Citizenship", 
+    "Appeals / Tribunal", "University Admissions", "Jobs Abroad", "Travel Insurance"
+  ];
+
+  const defaultCountries = [
+    { name: "Canada", flag: "🇨🇦" },
+    { name: "Australia", flag: "🇦🇺" },
+    { name: "UK", flag: "🇬🇧" },
+    { name: "USA", flag: "🇺🇸" },
+    { name: "Germany", flag: "🇩🇪" },
+    { name: "New Zealand", flag: "🇳🇿" },
+    { name: "UAE", flag: "🇦🇪" },
+    { name: "Europe", flag: "🇪🇺" },
+    { name: "Singapore", flag: "🇸🇬" },
+    { name: "Other", flag: "🌐" }
+  ];
+
+  const defaultLanguages = ["English", "Hindi", "Telugu", "Tamil", "Punjabi", "Arabic", "French", "Other"];
 
   useEffect(() => {
+    // Check if expert is already logged in
     if (typeof window !== "undefined") {
-        const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
-        const name = localStorage.getItem("expert_businessName");
-        if (isLoggedInExpert === "true" && name) {
-          setStep(3);
-          setFirstName(localStorage.getItem("expert_firstName") || "");
-          setLastName(localStorage.getItem("expert_lastName") || "");
-          setBusinessName(name);
-          setEmail(localStorage.getItem("expert_email") || "");
-          setContactNumber(localStorage.getItem("expert_contactNumber") || "");
-          setConsultantType(localStorage.getItem("expert_advisorType") || "Freelancer");
-          setAboutMe(localStorage.getItem("expert_aboutMe") || "");
-          setPortfolioLink(localStorage.getItem("expert_portfolioLink") || "");
-          setExpertAddress(localStorage.getItem("expert_officeAddress") || "");
-          setOfficeAddress(localStorage.getItem("expert_officeAddress") || "");
-          setGovRegNumber(localStorage.getItem("expert_govRegNumber") || "");
-          setLicenseFileName(localStorage.getItem("expert_licenseFileName") || "");
-          setLicenseUploaded(localStorage.getItem("expert_licenseUploaded") === "true");
-          
-          try {
-            const tags = localStorage.getItem("expert_expertiseTags");
-            if (tags) setExpertiseTags(JSON.parse(tags));
-          } catch(e) {}
-          
-          setCountriesExpertise(localStorage.getItem("expert_countriesExpertise") || "");
-          setProfilePhoto(localStorage.getItem("expert_profilePhoto") || "");
-      } else {
-        const params = new URLSearchParams(window.location.search);
-        const nameParam = params.get("name");
-        const phoneParam = params.get("phone");
-        const typeParam = params.get("type");
-
-        if (nameParam) setBusinessName(nameParam);
-        if (phoneParam) setContactNumber(phoneParam);
-        if (typeParam) {
-          const validTypes = ["Freelancer", "Registered consultancy", "Authorised immigration / visa appeal lawyer", "Education & Training Institute", "Employer/ hr agency", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"];
-          if (validTypes.includes(typeParam)) {
-            setConsultantType(typeParam);
-          }
-        }
+      const isLoggedIn = localStorage.getItem("expert_isLoggedIn");
+      if (isLoggedIn === "true") {
+        setCurrentStep(4);
       }
     }
   }, []);
-  const [website, setWebsite] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailVerified, setEmailVerified] = useState(false); // must verify
-  const [verifyingEmail, setVerifyingEmail] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpDigits, setOtpDigits] = useState<string[]>(Array(6).fill(""));
-  const [resendCooldown, setResendCooldown] = useState(0);
-  const [sendingCode, setSendingCode] = useState(false);
-  const [otpInput, setOtpInput] = useState("");
 
-  const [verifyingCode, setVerifyingCode] = useState(false);
+  useEffect(() => {
+    let timer: any;
+    if (resendCooldown > 0) {
+      timer = setInterval(() => setResendCooldown(prev => prev - 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
-  const [emailErrorMsg, setEmailErrorMsg] = useState("");
-
-  // Modal OTP States
-  const [showOtpModal, setShowOtpModal] = useState(false);
-  const [modalError, setModalError] = useState("");
-  const [isEditingEmail, setIsEditingEmail] = useState(false);
-
-  const handleSendVerificationCode = async () => {
+  // Google OAuth Signup
+  const handleGoogleSignup = async () => {
+    setGoogleLoading(true);
     setValidationError("");
-    setEmailErrorMsg("");
-    const trimmedEmail = email.trim();
-    if (!trimmedEmail) {
-      setValidationError("Please enter your email address first.");
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(trimmedEmail)) {
-      setValidationError("Please enter a valid email address.");
-      return;
-    }
-    setSendingCode(true);
     try {
-      const res = await fetch("/api/auth/send-verification-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmedEmail })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setOtpSent(true);
-        setResendCooldown(60);
-      } else {
-        const errorText = data.message || "Failed to send verification code.";
-        setValidationError(errorText);
-        if (data.code === 'EMAIL_ALREADY_EXISTS' || errorText.toLowerCase().includes('already registered')) {
-          setEmailErrorMsg("This email is already registered.");
-        }
+      const res = await signInWithGoogle();
+      if (res) {
+        if (res.email) setEmailAddress(res.email);
+        if (res.name) setBusinessName(res.name);
+        setCurrentStep(1);
       }
-    } catch (err) {
-      setValidationError("Server connection error. Please try again.");
+    } catch (e: any) {
+      setValidationError("Google Auth failed. Please try again or use Email.");
     } finally {
-      setSendingCode(false);
+      setGoogleLoading(false);
     }
   };
 
-  const handleVerifyCode = async (forcedCode?: string): Promise<boolean> => {
+  // Toggle helpers
+  const toggleService = (svc: string) => {
+    setSelectedServices(prev => prev.includes(svc) ? prev.filter(x => x !== svc) : [...prev, svc]);
+  };
+
+  const toggleCountry = (ctry: string) => {
+    setSelectedCountries(prev => prev.includes(ctry) ? prev.filter(x => x !== ctry) : [...prev, ctry]);
+  };
+
+  const toggleLanguage = (lang: string) => {
+    setSelectedLanguages(prev => prev.includes(lang) ? prev.filter(x => x !== lang) : [...prev, lang]);
+  };
+
+  const handleAddCustomService = () => {
+    if (customServiceInput.trim()) {
+      setSelectedServices(prev => [...prev, customServiceInput.trim()]);
+      setCustomServiceInput("");
+      setShowAddCustomService(false);
+    }
+  };
+
+  // Step Navigators
+  const goToNextStep = (target: number) => {
     setValidationError("");
-    const code = (forcedCode || otpInput || otpDigits.join("")).trim();
+    if (currentStep === 1) {
+      if (!businessName.trim()) {
+        setValidationError("Please enter your Business Name.");
+        return;
+      }
+      if (!businessDescription.trim()) {
+        setValidationError("Please provide a brief Business Description.");
+        return;
+      }
+    }
+    if (currentStep === 2) {
+      if (selectedServices.length === 0) {
+        setValidationError("Please select at least one service you offer.");
+        return;
+      }
+    }
+    setCurrentStep(target);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Trigger OTP Verification on "Complete & Continue"
+  const handleCompleteAndContinue = () => {
+    setValidationError("");
+    if (!phoneNumber.trim()) {
+      setValidationError("Please enter your Phone Number.");
+      return;
+    }
+    if (!emailAddress.trim()) {
+      setValidationError("Please enter your Email Address.");
+      return;
+    }
+    setShowOtpModal(true);
+  };
+
+  // Verify OTP and complete registration
+  const handleVerifyOtp = async () => {
+    const code = otpDigits.join("");
     if (code.length < 6) {
-      setValidationError("Please enter all 6 digits of the code.");
-      return false;
+      setOtpError("Please enter the complete 6-digit verification code.");
+      return;
     }
-    setVerifyingCode(true);
-    try {
-      const res = await fetch("/api/auth/verify-email-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), otp: code })
-      });
-      setEmailVerified(true);
-      setValidationError("");
-      return true;
-    } catch (err) {
-      setEmailVerified(true);
-      setValidationError("");
-      return true;
-    } finally {
-      setVerifyingCode(false);
-    }
+
+    setVerifyingOtp(true);
+    setOtpError("");
+
+    // Simulate OTP validation and save payload
+    setTimeout(() => {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("expert_isLoggedIn", "true");
+        localStorage.setItem("expert_businessName", businessName || "VisaFormula Consultant");
+        localStorage.setItem("expert_email", emailAddress);
+        localStorage.setItem("expert_contactNumber", phoneNumber);
+        localStorage.setItem("expert_officeAddress", `${officeAddress}, ${city}, ${state}, ${country}`);
+        localStorage.setItem("expert_services", JSON.stringify(selectedServices));
+        localStorage.setItem("expert_countries", JSON.stringify(selectedCountries));
+      }
+      setVerifyingOtp(false);
+      setShowOtpModal(false);
+      setCurrentStep(4); // Navigate to Congratulations
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 800);
   };
 
   const handleDigitChange = (val: string, idx: number) => {
-    const cleanVal = val.replace(/\D/g, "").slice(-1);
+    const clean = val.replace(/\D/g, "").slice(-1);
     const updated = [...otpDigits];
-    updated[idx] = cleanVal;
+    updated[idx] = clean;
     setOtpDigits(updated);
-    setOtpInput(updated.join(""));
-    setModalError("");
+    setOtpError("");
 
-    if (cleanVal && idx < 5) {
-      const nextInput = document.getElementById(`expert-otp-box-${idx + 1}`);
+    if (clean && idx < 5) {
+      const nextInput = document.getElementById(`reg-otp-box-${idx + 1}`);
       if (nextInput) nextInput.focus();
     }
   };
 
   const handleDigitKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, idx: number) => {
     if (e.key === "Backspace" && !otpDigits[idx] && idx > 0) {
-      const prevInput = document.getElementById(`expert-otp-box-${idx - 1}`);
+      const prevInput = document.getElementById(`reg-otp-box-${idx - 1}`);
       if (prevInput) prevInput.focus();
     }
   };
 
-  const handleDigitPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
-    if (pasted) {
-      const digitsArr = pasted.split("");
-      const updated = Array(6).fill("");
-      digitsArr.forEach((d, i) => { updated[i] = d; });
-      setOtpDigits(updated);
-      setOtpInput(pasted);
-      setModalError("");
-      const targetIdx = Math.min(digitsArr.length, 5);
-      const targetInput = document.getElementById(`expert-otp-box-${targetIdx}`);
-      if (targetInput) targetInput.focus();
-    }
-  };
-
-  useEffect(() => {
-    let timer: any;
-    if (resendCooldown > 0) {
-      timer = setInterval(() => {
-        setResendCooldown((prev) => prev - 1);
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [resendCooldown]);
-  const [facebookLink, setFacebookLink] = useState("");
-  const [linkedinLink, setLinkedinLink] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [countryCode, setCountryCode] = useState("+91");
-  const [validationError, setValidationError] = useState("");
-  const [countryCodeOpen, setCountryCodeOpen] = useState(false);
-
-  const { signInWithGoogle } = useAuth();
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [googleLoadingText, setGoogleLoadingText] = useState("");
-
-  const handleGoogleSignup = async () => {
-      setValidationError("");
-      setGoogleLoading(true);
-      setGoogleLoadingText("Connecting to Google Auth...");
-      try {
-          const res = await signInWithGoogle();
-          
-          if (res) {
-              setGoogleLoadingText("Google connected! Setting up your details...");
-              const nameParts = (res.name || '').trim().split(' ');
-              const gFirstName = nameParts[0] || '';
-              const gLastName = nameParts.slice(1).join(' ') || '';
-
-              if (gFirstName) {
-                setFirstName(gFirstName);
-                localStorage.setItem("expert_firstName", gFirstName);
-              }
-              if (gLastName) {
-                setLastName(gLastName);
-                localStorage.setItem("expert_lastName", gLastName);
-              }
-              if (res.email) {
-                setEmail(res.email);
-                localStorage.setItem("expert_email", res.email);
-              }
-
-              // Check if email is already registered on initial stage
-              const gEmail = (res.email || "").trim().toLowerCase();
-              const storedEmail = (localStorage.getItem("expert_email") || "").toLowerCase();
-              const allExperts = (() => {
-                  try { return JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]"); } catch(e) { return []; }
-              })();
-              const isAlreadyRegistered = (storedEmail === gEmail && localStorage.getItem("expert_isLoggedIn") === "true") || allExperts.some((x: any) => x.email?.toLowerCase() === gEmail);
-
-              if (isAlreadyRegistered) {
-                  setValidationError(`The email address "${res.email}" is already registered on VisaFormula. Please log in to your existing account.`);
-                  setGoogleLoading(false);
-                  return;
-              }
-
-              // Check if existing user already completed registration with location
-              const existingCity = typeof window !== "undefined" ? (localStorage.getItem("expert_city") || localStorage.getItem("expert_officeAddress")) : null;
-              const isLoggedIn = typeof window !== "undefined" ? localStorage.getItem("expert_isLoggedIn") === "true" : false;
-
-              if (isLoggedIn && existingCity && existingCity !== "" && existingCity !== "Location Not Specified") {
-                setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
-                await new Promise(resolve => setTimeout(resolve, 500));
-                window.location.href = "/consultant/dashboard";
-                return;
-              }
-
-              try {
-                const response = await fetch("/api/auth/google/register", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        email: res.email,
-                        name: res.name,
-                        businessName: businessName || `${gFirstName} ${gLastName}`.trim(),
-                        uid: res.uid,
-                        role: 'expert'
-                    })
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (typeof window !== "undefined" && data.user) {
-                        localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-                    }
-                }
-              } catch (e) {}
-
-              setGoogleLoadingText("Google Verified! Please complete your Phone Number & Location Address...");
-              await new Promise(resolve => setTimeout(resolve, 500));
-              setGoogleLoading(false);
-              setValidationError("Google Account Connected! Please enter your Mobile Number below, then proceed to enter your Location Address (Area, City, State, ZIP) in Step 2.");
-              window.scrollTo({ top: 150, behavior: "smooth" });
-          }
-      } catch (e: any) {
-          setValidationError(e.message || "Google signup failed.");
-          setGoogleLoading(false);
-      }
-  };
-  const [expertCategory, setExpertCategory] = useState("Student visa expert");
-  const [expertAddress, setExpertAddress] = useState("");
-  const [signupCategoryOpen, setSignupCategoryOpen] = useState(false);
-  const [editConsultantOpen, setEditConsultantOpen] = useState(false);
-  const [editCategoryOpen, setEditCategoryOpen] = useState(false);
-  const [signupConsultantOpen, setSignupConsultantOpen] = useState(false);
-
-  useEffect(() => {
-    if (!signupCategoryOpen && !editConsultantOpen && !editCategoryOpen && !signupConsultantOpen) return;
-    const handleOutsideClick = () => {
-      setSignupCategoryOpen(false);
-      setEditConsultantOpen(false);
-      setEditCategoryOpen(false);
-      setSignupConsultantOpen(false);
-    };
-    window.addEventListener("click", handleOutsideClick);
-    return () => window.removeEventListener("click", handleOutsideClick);
-  }, [signupCategoryOpen, editConsultantOpen, editCategoryOpen, signupConsultantOpen]);
-
-  // --- Phase 2 States ---
-  // Freelancer specific
-  const [smmAccounts, setSmmAccounts] = useState("");
-  const [aboutMe, setAboutMe] = useState("");
-  const [portfolioLink, setPortfolioLink] = useState("");
-  
-  // Corporate specific
-  const [govRegNumber, setGovRegNumber] = useState("");
-  const [licenseUploaded, setLicenseUploaded] = useState(false);
-  const [licenseFileName, setLicenseFileName] = useState("");
-  const [officeAddress, setOfficeAddress] = useState("");
-
-  // Shared Features Matrix
-  const [newTag, setNewTag] = useState("");
-  const [expertiseTags, setExpertiseTags] = useState<string[]>([]);
-  const [countriesExpertise, setCountriesExpertise] = useState("");
-  const [pastSuccessText, setPastSuccessText] = useState("");
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
-  const [escrowAccepted, setEscrowAccepted] = useState(true);
-  const [subscribeUpdates, setSubscribeUpdates] = useState("Yes");
-
-  // --- Auto-Save Registration Draft in LocalStorage ---
-  const [draftRestored, setDraftRestored] = useState(false);
-
-  useEffect(() => {
-    try {
-      const savedDraft = localStorage.getItem("vf_expert_signup_draft");
-      const isLoggedIn = localStorage.getItem("expert_isLoggedIn");
-      if (savedDraft && isLoggedIn !== "true") {
-        const d = JSON.parse(savedDraft);
-        if (d.step && d.step <= 2) setStep(d.step);
-        if (d.firstName) setFirstName(d.firstName);
-        if (d.lastName) setLastName(d.lastName);
-        if (d.businessName) setBusinessName(d.businessName);
-        if (d.email) setEmail(d.email);
-        if (d.contactNumber) setContactNumber(d.contactNumber);
-        if (d.consultantType) setConsultantType(d.consultantType);
-        if (d.addressArea) setAddressArea(d.addressArea);
-        if (d.addressCity) setAddressCity(d.addressCity);
-        if (d.addressState) setAddressState(d.addressState);
-        if (d.addressCountry) setAddressCountry(d.addressCountry);
-        if (d.addressZip) setAddressZip(d.addressZip);
-        if (d.govRegNumber) setGovRegNumber(d.govRegNumber);
-        if (Array.isArray(d.expertiseTags) && d.expertiseTags.length > 0) setExpertiseTags(d.expertiseTags);
-        if (d.countriesExpertise) setCountriesExpertise(d.countriesExpertise);
-        setDraftRestored(true);
-      }
-    } catch (e) {}
-  }, []);
-
-  useEffect(() => {
-    try {
-      if (step < 3) {
-        const draftObj = {
-          step,
-          firstName,
-          lastName,
-          businessName,
-          email,
-          contactNumber,
-          consultantType,
-          addressArea,
-          addressCity,
-          addressState,
-          addressCountry,
-          addressZip,
-          govRegNumber,
-          expertiseTags,
-          countriesExpertise,
-        };
-        localStorage.setItem("vf_expert_signup_draft", JSON.stringify(draftObj));
-      }
-    } catch (e) {}
-  }, [step, firstName, lastName, businessName, email, contactNumber, consultantType, addressArea, addressCity, addressState, addressCountry, addressZip, govRegNumber, expertiseTags, countriesExpertise]);
-
-  const clearDraft = () => {
-    localStorage.removeItem("vf_expert_signup_draft");
-    setDraftRestored(false);
-  };
-
-
-  // --- Tag Helpers ---
-  const addTag = () => {
-    if (newTag && !expertiseTags.includes(newTag)) {
-      setExpertiseTags([...expertiseTags, newTag]);
-      setNewTag("");
-    }
-  };
-
-  const removeTag = (tag: string) => {
-    setExpertiseTags(expertiseTags.filter(t => t !== tag));
-  };
-
-  // Mock Active Cases & Inquiries
-  const [inquiries, setInquiries] = useState<any[]>([]);
-
-  const [activeCases, setActiveCases] = useState<any[]>([]);
-
-  const handleProceedToPhase2 = (e: React.FormEvent) => {
-    e.preventDefault();
-    setValidationError("");
-    let finalBiz = businessName;
-    if (consultantType === "Freelancer") {
-      finalBiz = `${firstName} ${lastName}`.trim() || "Freelancer";
-      // We set the state so it is correctly synced
-      setBusinessName(finalBiz);
-    }
-
-    if (!firstName || !lastName || !finalBiz || !contactNumber || !email || !password) {
-      setValidationError("Please fill in all required fields.");
-      return;
-    }
-
-    // 1. Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      setValidationError("Please enter a valid email address (must contain '@' and end with a valid domain like '.com').");
-      return;
-    }
-
-    // Initial Stage Email Check
-    const cleanEmail = email.trim().toLowerCase();
-    const storedEmail = (localStorage.getItem("expert_email") || "").toLowerCase();
-    const allExperts = (() => {
-        try { return JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]"); } catch(e) { return []; }
-    })();
-    const isAlreadyRegistered = (storedEmail === cleanEmail && localStorage.getItem("expert_isLoggedIn") === "true") || allExperts.some((x: any) => x.email?.toLowerCase() === cleanEmail);
-
-    if (isAlreadyRegistered) {
-      setValidationError(`The email address "${email}" is already registered. Please log in to your account or use a different email.`);
-      return;
-    }
-
-    // 2. Contact Number validation
-    const cleanPhone = contactNumber.replace(/\D/g, "");
-    if (cleanPhone.length < 10) {
-      setValidationError("Please enter a valid contact number (must contain at least 10 digits).");
-      return;
-    }
-
-    // 3. Password validation
-    const hasNumber = /\d/.test(password);
-    const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    if (password.length < 8) {
-      setValidationError("Password must be at least 8 characters long.");
-      return;
-    }
-    if (!hasNumber || !hasSymbol) {
-      setValidationError("Password must contain at least one number and one special character / symbol (e.g. !, @, #, etc).");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setValidationError("Passwords do not match. Please verify your password entry.");
-      return;
-    }
-
-    setStep(2);
-  };
-
-  const [profilePhoto, setProfilePhoto] = useState<string>("");
-  const [uploadedFiles, setUploadedFiles] = useState<{ name: string; url: string }[]>([]);
-  const [showAdModal, setShowAdModal] = useState(false);
-  const [showOfferModal, setShowOfferModal] = useState(false);
-  const [adTitle, setAdTitle] = useState("");
-  const [adCompany, setAdCompany] = useState("");
-  const [adCategory, setAdCategory] = useState("Visit Visa");
-  const [adCoverPhoto, setAdCoverPhoto] = useState("");
-  const [adDescription, setAdDescription] = useState("");
-  const [adNotice, setAdNotice] = useState("");
-  const [offerTitle, setOfferTitle] = useState("");
-  const [offerDiscount, setOfferDiscount] = useState("");
-  const [membershipTier, setMembershipTier] = useState("Standard Directory");
-
-  const [adsList, setAdsList] = useState<Array<{title: string, company?: string, category?: string, coverPhoto?: string, desc: string, status?: string}>>([]);
-  const [offersList, setOffersList] = useState<Array<{title: string, discount: string}>>([]);
-
-  const handleLaunchDashboard = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setValidationError("");
-    
-    // Use user-selected tags or empty array (no forced hardcoding)
-    const finalExpertise = expertiseTags;
-
-    const finalAddress = (addressArea || addressCity) 
-      ? [addressArea, addressCity, addressState, addressCountry, addressZip].filter(Boolean).join(", ") 
-      : (officeAddress || addressCity || "");
-
-    try {
-      const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/expert`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
-          business_name: businessName,
-          email: email,
-          password: password,
-          contact_number: `${countryCode} ${contactNumber}`,
-          advisor_type: consultantType,
-          about_me: aboutMe,
-          portfolio_link: portfolioLink,
-          office_address: finalAddress,
-          gov_registration_number: govRegNumber,
-          license_document_url: "uploaded_license_copy.pdf",
-          expertise_tags: finalExpertise,
-          countries_expertise: countriesExpertise.trim() ? countriesExpertise.split(",").map(c => c.trim()).filter(Boolean) : []
-        })
-      });
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        if (errData.message || response.status === 400) {
-          setValidationError(errData.message || `The email "${email}" is already registered. Please log in instead.`);
-          return;
-        }
-      }
-    } catch (err) {
-      console.warn("Backend server offline. Proceeding in frontend mode.", err);
-    }
-
-    // Save full registration profile to localStorage so Dashboard loads completely
-    if (typeof window !== "undefined") {
-      localStorage.setItem("expert_firstName", firstName || "Expert");
-      localStorage.setItem("expert_lastName", lastName || "User");
-      localStorage.setItem("expert_businessName", businessName || `${firstName} ${lastName}`.trim());
-      localStorage.setItem("expert_email", email);
-      localStorage.setItem("expert_contactNumber", `${countryCode} ${contactNumber}`);
-      localStorage.setItem("expert_advisorType", consultantType);
-      localStorage.setItem("expert_aboutMe", aboutMe || "");
-      localStorage.setItem("expert_portfolioLink", portfolioLink || "");
-      localStorage.setItem("expert_officeAddress", finalAddress || addressCity || "");
-      localStorage.setItem("expert_area", addressArea || "");
-      localStorage.setItem("expert_city", addressCity || "");
-      localStorage.setItem("expert_state", addressState || "");
-      localStorage.setItem("expert_country", addressCountry || "");
-      localStorage.setItem("expert_zip", addressZip || "");
-      localStorage.setItem("expert_govRegNumber", govRegNumber || "");
-      localStorage.setItem("expert_expertiseTags", JSON.stringify(finalExpertise));
-      localStorage.setItem("expert_countriesExpertise", countriesExpertise || "");
-      localStorage.setItem("expert_profilePhoto", profilePhoto || "");
-      localStorage.setItem("expert_isLoggedIn", "true");
-      localStorage.setItem("visaformula_user", JSON.stringify({
-        name: `${firstName} ${lastName}`,
-        email: email,
-        role: "expert",
-        advisor_type: consultantType,
-        type: "expert"
-      }));
-
-      // Append to all experts list for instant search index
-      try {
-        const existingAll = JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]");
-        const newRecord = {
-          id: `expert_${Date.now()}`,
-          name: businessName || `${firstName} ${lastName}`.trim() || "Registered Expert",
-          category: consultantType.toLowerCase().includes("consultancy") ? "pr" : "work",
-          role: consultantType || "Visa Expert",
-          rating: 5.0,
-          reviews: 1,
-          price: 1500,
-          city: finalAddress || addressCity || "Remote",
-          countries: (countriesExpertise || "Canada, UK, USA, Australia").split(",").map((c: string) => c.trim()),
-          experience: 5,
-          isRemote: true,
-          isAvailableToday: true,
-          isEmergency: false,
-          tags: finalExpertise,
-          image: profilePhoto || ""
-        };
-        const updatedAll = [newRecord, ...existingAll.filter((x: any) => x.name !== newRecord.name)];
-        localStorage.setItem("visaformula_all_experts", JSON.stringify(updatedAll));
-      } catch (e) {}
-      
-      window.scrollTo({ top: 0, behavior: "instant" });
-      setIsRegistrationSuccess(true);
-      setTimeout(() => {
-        if (typeof window !== "undefined" && window.location.pathname.includes("/signup")) {
-          window.location.href = "/consultant/dashboard";
-        } else {
-          setIsRegistrationSuccess(false);
-          setStep(3);
-        }
-      }, 1500);
-      return;
-    }
-
-    // Launch Step 3 (Live Dashboard)
-    setStep(3);
-  };
-
-  const handleAddAd = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (adTitle) {
-      const finalCompany = adCompany || businessName || "Consultancy Partner";
-      const newAd = {
-        title: adTitle,
-        company: finalCompany,
-        category: adCategory,
-        coverPhoto: adCoverPhoto,
-        desc: adDescription,
-        status: "Under Verification"
-      };
-
-      // Save ad details into PostgreSQL database
-      try {
-        await fetch("/api/ads/create", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: adTitle,
-            company: finalCompany,
-            category: adCategory,
-            cover_photo: adCoverPhoto,
-            description: adDescription,
-            expert_email: email || (typeof window !== "undefined" ? localStorage.getItem("expert_email") : "") || ""
-          })
-        });
-      } catch (dbErr) {
-        console.warn("Could not persist ad to server DB, saved to local state.", dbErr);
-      }
-
-      setAdsList([...adsList, newAd]);
-      setAdNotice("Our team will verify your details.");
-      setTimeout(() => {
-        setAdTitle("");
-        setAdCompany("");
-        setAdCategory("Visit Visa");
-        setAdCoverPhoto("");
-        setAdDescription("");
-        setAdNotice("");
-        setShowAdModal(false);
-      }, 2500);
-    }
-  };
-
-  const handleAddOffer = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (offerTitle) {
-      setOffersList([...offersList, { title: offerTitle, discount: offerDiscount }]);
-      setOfferTitle("");
-      setOfferDiscount("");
-      setShowOfferModal(false);
-    }
-  };
-
-  const handleAcceptInquiry = (id: number) => {
-    const inq = inquiries.find(item => item.id === id);
-    if (inq) {
-      const newCase = {
-        id: Date.now(),
-        name: inq.name,
-        visa: inq.type,
-        status: "milestone initialized",
-        escrow: "₹15,000 Secured",
-        progress: 10
-      };
-      setActiveCases([...activeCases, newCase]);
-      setInquiries(inquiries.filter(item => item.id !== id));
-    }
-  };
-
-  const handleFileUpload = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (event.target?.result) {
-        setUploadedFiles(prev => [...prev, { name: file.name, url: event.target.result as string }]);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleSaveProfile = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/profile/update`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-          role: "expert",
-          business_name: businessName,
-          first_name: businessName,
-          phone: contactNumber,
-          advisor_type: consultantType,
-          about_me: aboutMe,
-          portfolio_link: portfolioLink,
-          office_address: consultantType === "Freelancer" ? expertAddress : officeAddress,
-          gov_registration_number: govRegNumber,
-          countries_expertise: countriesExpertise
-        })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        if (data.user && typeof window !== "undefined") {
-          localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-        }
-      }
-    } catch (err) {
-      console.warn("Failed to update profile to backend, saving locally.", err);
-    }
-
-    if (typeof window !== "undefined") {
-      localStorage.setItem("expert_businessName", businessName);
-      localStorage.setItem("expert_contactNumber", contactNumber);
-      localStorage.setItem("expert_advisorType", consultantType);
-      localStorage.setItem("expert_aboutMe", aboutMe);
-      localStorage.setItem("expert_portfolioLink", portfolioLink);
-      localStorage.setItem("expert_officeAddress", consultantType === "Freelancer" ? expertAddress : officeAddress);
-      localStorage.setItem("expert_govRegNumber", govRegNumber);
-      localStorage.setItem("expert_licenseFileName", licenseFileName);
-      localStorage.setItem("expert_licenseUploaded", licenseUploaded ? "true" : "false");
-      localStorage.setItem("expert_profilePhoto", profilePhoto || "");
-      alert("Profile details and photo saved successfully!");
-    }
-  };
-
-  const avatarPresets = [
-    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&q=80"
-  ];
-
   return (
-    <div className={step < 3 ? "fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-center p-2.5 sm:p-6 font-sora overflow-y-auto no-scrollbar" : "min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-white font-sora relative overflow-x-hidden w-full max-w-full"} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      {googleLoading && (
-          <div className="absolute inset-0 bg-white/80 backdrop-blur-md flex flex-col items-center justify-center z-[9999] transition-all duration-300">
-              <div className="flex flex-col items-center gap-4">
-                  <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
-                  <p className="text-sm font-bold text-black tracking-wide animate-pulse">
-                      {googleLoadingText}
-                  </p>
-              </div>
+    <div className="min-h-screen bg-slate-50/60 font-sans py-8 px-4 sm:px-6 lg:px-8 font-sora">
+      <div className="max-w-4xl mx-auto">
+        
+        {/* Validation error message */}
+        {validationError && (
+          <div className="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold rounded-2xl text-center shadow-xs">
+            {validationError}
           </div>
-      )}
-      <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
-        * {
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-            box-sizing: border-box;
-        }
-        html, body {
-            overflow-x: hidden !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            margin: 0;
-            padding: 0;
-        }
-        @keyframes premiumFadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(12px) scale(0.995);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-        .animate-premium-fade {
-          animation: premiumFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-      `}} />
-      
-      {draftRestored && step < 3 && (
-        <div className="w-full max-w-3xl mb-2 bg-[#00a896] text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-lg border border-teal-400 flex items-center justify-between backdrop-blur-md animate-fade-in">
-          <div className="flex items-center gap-2">
-            <span>✨ Restored your registration progress! You can continue right where you left off.</span>
-          </div>
-          <button onClick={clearDraft} className="text-white/80 hover:text-white underline font-semibold text-[11px] cursor-pointer">
-            Start Fresh
-          </button>
-        </div>
-      )}
+        )}
 
-      {step < 3 && (
-        <div className="w-full max-w-3xl flex items-center justify-between mb-2 px-1 shrink-0 gap-2">
-          <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 px-3 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-sm shrink-0">
-            &larr; <span className="hidden sm:inline">Back to </span>Home
-          </a>
-          <a href="/" className="shrink-0">
-            <img src="/logo-white.png" alt="VisaFormula" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none" />
-          </a>
-        </div>
-      )}
-
-      {step < 3 ? (
-        <div className="bg-white rounded-3xl p-4 sm:p-7 shadow-2xl border border-slate-200/80 max-w-3xl w-[95vw] sm:w-full mx-auto my-auto flex flex-col justify-start relative max-h-[85vh] sm:max-h-[88vh] overflow-y-auto">
-          {/* Top-Right X Close Button */}
-          <button 
-            type="button"
-            onClick={() => window.location.href = "/"}
-            title="Close and return to homepage"
-            className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-all cursor-pointer shadow-2xs border border-slate-200 z-30"
-          >
-            <X className="w-4 h-4" />
-          </button>
-          
-          <div className="text-center mt-1 mb-3">
-            <h1 className="text-xl md:text-2xl font-bold text-[#0c1a2e] tracking-tight mb-1 font-jakarta">Register as Expert</h1>
-            <p className="text-xs md:text-sm text-slate-400 font-medium">Enter your details to initialize your portal</p>
-          </div>
-
-          <div className="flex items-center justify-center gap-2 md:gap-6 my-3 font-sans max-w-full overflow-x-auto px-2">
-            <div className="flex items-center gap-2 md:gap-3 shrink-0">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
-                step > 1 ? "bg-emerald-500 text-white" : "bg-[#1C1C1E] text-white shadow-sm"
-              }`}>
-                {step > 1 ? "✓" : "1"}
-              </div>
-              <span className={`text-xs font-bold whitespace-nowrap ${step === 1 ? "text-black" : "text-slate-400"}`}>
-                General Details
-              </span>
-            </div>
+        {/* SCREEN 0: INITIAL START OPTIONS ("Create your account") */}
+        {currentStep === 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200/90">
             
-            <div className={`h-0.5 w-6 md:w-16 shrink-0 transition-all ${step > 1 ? "bg-emerald-500" : "bg-slate-200"}`}></div>
-
-            <div className="flex items-center gap-2 md:gap-3 shrink-0">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-all shrink-0 ${
-                step === 2 
-                  ? "bg-[#1C1C1E] text-white shadow-sm" 
-                  : "border border-slate-200 bg-white text-slate-400"
-              }`}>
-                2
+            {/* Left Options Box */}
+            <div className="md:col-span-7 space-y-6">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Create your account</h1>
+                <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">Welcome! Sign up to get started as a verified consultant</p>
               </div>
-              <span className={`text-xs font-bold whitespace-nowrap ${step === 2 ? "text-black" : "text-slate-400"}`}>
-                Credentials & Service
-              </span>
-            </div>
-          </div>
 
-          <div className="w-full mx-auto transition-all duration-300 font-sans mt-2">
-            {step === 1 && (
-              <form onSubmit={handleProceedToPhase2} className="space-y-3">
-                <div className="flex flex-col items-center gap-2 mb-3">
-                    <button
-                        type="button"
-                        onClick={handleGoogleSignup}
-                        className="w-full max-w-[260px] h-10 border border-slate-200/80 bg-white hover:bg-slate-50 transition-all text-slate-800 font-extrabold text-xs rounded-xl flex items-center justify-center gap-2.5 shadow-xs hover:shadow-sm hover:scale-[1.01] active:scale-95 duration-200 shrink-0 cursor-pointer"
-                    >
-                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
-                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
-                        </svg>
-                        <span>Continue with Google</span>
-                    </button>
-
-                    <div className="flex items-center justify-center gap-3 w-full max-w-[260px]">
-                        <div className="h-[1px] bg-slate-200 flex-grow" />
-                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">— OR —</span>
-                        <div className="h-[1px] bg-slate-200 flex-grow" />
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  {/* 1. First Name & Last Name */}
-                  <div className="col-span-1">
-                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">First Name *</label>
-                    <input 
-                      required
-                      value={firstName} 
-                      onChange={(e) => setFirstName(e.target.value)} 
-                      placeholder="First name" 
-                      className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
-                    />
-                  </div>
-                  <div className="col-span-1">
-                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Last Name *</label>
-                    <input 
-                      required
-                      value={lastName} 
-                      onChange={(e) => setLastName(e.target.value)} 
-                      placeholder="Last name" 
-                      className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
-                    />
-                  </div>
-
-                  {/* 2. Type of Expert & Business Name */}
-                  <div className="col-span-2 md:col-span-1" onClick={(e) => e.stopPropagation()}>
-                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Type of Expert *</label>
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setSignupConsultantOpen(!signupConsultantOpen)}
-                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 text-[#202124] cursor-pointer flex items-center justify-between shadow-2xs h-[46px] font-normal"
-                      >
-                        <span>{consultantType}</span>
-                        <svg className={`w-4 h-4 text-[#5f6368] transition-transform duration-200 ${signupConsultantOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
-                      </button>
-                      {signupConsultantOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white border border-[#dadce0] rounded-lg shadow-lg mt-1 py-1 z-50">
-                          {["Freelancer", "Registered consultancy", "Authorised immigration / visa appeal lawyer", "Education & Training Institute", "Employer/ hr agency", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"].map(type => (
-                            <button
-                              key={type}
-                              type="button"
-                              onClick={() => { setConsultantType(type); setSignupConsultantOpen(false); }}
-                              className="w-full text-left px-4 py-2.5 text-[14px] font-normal text-[#202124] hover:bg-slate-100 transition-colors"
-                            >
-                              {type}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {consultantType !== "Freelancer" && (
-                    <div className="col-span-2 md:col-span-1 animate-premium-fade">
-                      <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Business / Agency Name *</label>
-                      <input 
-                        required
-                        value={businessName} 
-                        onChange={(e) => setBusinessName(e.target.value)} 
-                        placeholder="Business or Consultancy Name" 
-                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs"
-                      />
-                    </div>
-                  )}
-
-                  {/* 3. Email Address */}
-                  <div className="col-span-2 space-y-1">
-                    <label className="text-[13px] font-medium text-[#3c4043] block mb-1">Email Address *</label>
-                    <div className="relative w-full">
-                      <input 
-                        type="email"
-                        required
-                        value={email}
-                        onChange={(e) => {
-                          setEmail(e.target.value);
-                          setEmailVerified(false);
-                          setEmailErrorMsg("");
-                        }}
-                        placeholder="name@example.com" 
-                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20 transition-all duration-150 shadow-2xs pr-10"
-                      />
-                      {emailVerified && (
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center bg-emerald-50 border border-emerald-250 p-1.5 rounded-full animate-premium-fade shadow-sm">
-                          <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
-                        </span>
-                      )}
-                    </div>
-
-                    {emailErrorMsg && (
-                      <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-medium flex items-center justify-between gap-3 mt-2 w-full animate-premium-fade shadow-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="text-amber-600 font-bold">⚠️</span>
-                          <span>{emailErrorMsg}</span>
-                        </div>
-                        <a href="/login" className="px-3 py-1.5 bg-[#00a896] text-white rounded-lg text-xs font-medium shrink-0 hover:bg-[#008f80] transition-colors shadow-xs">
-                          Log In &rarr;
-                        </a>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 4. Create Password & Confirm Password */}
-                  <div className="col-span-2 space-y-3 pt-1">
-                    <div className="flex justify-between items-center">
-                      <label className="text-[13px] font-medium text-[#3c4043] block">Password *</label>
-                      {password && confirmPassword && (
-                        <span className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full ${
-                          password === confirmPassword ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'
-                        }`}>
-                          {password === confirmPassword ? '✓ Passwords match' : '✗ Passwords do not match'}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="relative">
-                        <input 
-                          type={showPassword ? "text" : "password"} 
-                          required
-                          value={password} 
-                          onChange={(e) => setPassword(e.target.value)} 
-                          placeholder="Password" 
-                          className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#00a896] focus:ring-2 focus:ring-[#00a896]/20 transition-all duration-150 shadow-2xs pr-10"
-                        />
-                        <button 
-                          type="button" 
-                          onClick={() => setShowPassword(!showPassword)} 
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
-                        >
-                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                        </button>
-                      </div>
-
-                      <div className="relative">
-                        <input 
-                          type={showConfirmPassword ? "text" : "password"} 
-                          required
-                          value={confirmPassword} 
-                          onChange={(e) => setConfirmPassword(e.target.value)} 
-                          placeholder="Confirm" 
-                          className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#00a896] focus:ring-2 focus:ring-[#00a896]/20 transition-all duration-150 shadow-2xs pr-10"
-                        />
-                        <button 
-                          type="button" 
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650"
-                        >
-                          {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                        </button>
-                      </div>
-                    </div>
-                    <span className="text-[11px] text-[#5f6368] block font-normal leading-normal">Use 8 or more characters with a mix of letters, numbers & symbols</span>
-                  </div>
-
-                  {/* 5. Mobile Number */}
-                  <div className="col-span-2 space-y-1">
-                    <label className="text-[13px] font-medium text-[#3c4043] block">Mobile / Phone Number *</label>
-                    <div className="flex gap-2.5">
-                      <div className="relative" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          type="button"
-                          onClick={() => setCountryCodeOpen(!countryCodeOpen)}
-                          className="px-3 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] outline-none focus:border-[#00a896] focus:ring-2 focus:ring-[#00a896]/20 text-[#202124] shadow-2xs shrink-0 cursor-pointer flex items-center justify-between gap-1 h-[46px] font-medium"
-                        >
-                          <span>{countryCode}</span>
-                          <svg className={`w-3.5 h-3.5 text-[#5f6368] transition-transform ${countryCodeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
-                        {countryCodeOpen && (
-                          <div className="absolute left-0 mt-1 w-40 bg-white border border-[#dadce0] rounded-lg shadow-lg max-h-60 overflow-y-auto z-[60]">
-                            {[
-                              { val: "+91", label: "+91 (IN)" },
-                              { val: "+1", label: "+1 (US/CA)" },
-                              { val: "+44", label: "+44 (UK)" },
-                              { val: "+61", label: "+61 (AU)" },
-                              { val: "+971", label: "+971 (AE)" },
-                              { val: "+49", label: "+49 (DE)" },
-                              { val: "+33", label: "+33 (FR)" },
-                              { val: "+65", label: "+65 (SG)" },
-                              { val: "+64", label: "+64 (NZ)" }
-                            ].map(opt => (
-                              <button
-                                key={opt.val}
-                                type="button"
-                                onClick={() => { setCountryCode(opt.val); setCountryCodeOpen(false); }}
-                                className="w-full text-left px-3.5 py-2 text-xs font-medium text-[#202124] hover:bg-slate-100 transition-colors"
-                              >
-                                {opt.label}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <input 
-                        required
-                        value={contactNumber} 
-                        onChange={(e) => setContactNumber(e.target.value)} 
-                        placeholder="e.g. 99999 99999" 
-                        className="w-full px-3.5 py-3 bg-white border border-[#dadce0] rounded-lg text-[14px] text-[#202124] placeholder:text-[#80868b] outline-none focus:border-[#00a896] focus:ring-2 focus:ring-[#00a896]/20 transition-all duration-150 shadow-2xs"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {validationError && (
-                  <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold text-center transition-all animate-premium-fade max-w-lg mx-auto mt-4 space-y-2.5">
-                    <p>{validationError}</p>
-                    {validationError.toLowerCase().includes("already registered") && (
-                      <a 
-                        href="/login" 
-                        className="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors shadow-xs"
-                      >
-                        <span>Log in to your account</span>
-                        <span>&rarr;</span>
-                      </a>
-                    )}
-                  </div>
-                )}
-
-                <div className="pt-6 flex justify-end">
-                  <button 
-                    type="submit"
-                    className="bg-[#00a896] hover:bg-[#008f80] text-white px-8 py-3 rounded-lg text-[14px] font-medium tracking-wide transition-all shadow-sm active:scale-98 cursor-pointer flex items-center gap-2"
-                  >
-                    <span>Proceed to Location & Expertise Details</span>
-                    <span>&rarr;</span>
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {step === 2 && (
-              <form onSubmit={handleLaunchDashboard} className="space-y-10">
-                <div className="bg-slate-50 rounded-xl p-5 border border-slate-150 flex items-center justify-between text-sm shadow-sm">
-                  <span className="text-slate-700 font-semibold">Selected Consultant Category: <strong className="text-black font-bold">{consultantType}</strong></span>
-                  {consultantType === "Freelancer" ? (
-                    <span className="text-[10px] bg-slate-100 text-slate-700 px-3 py-1 rounded-lg border border-slate-250 font-semibold">Verification Documents: Optional</span>
-                  ) : (
-                    <span className="text-[10px] bg-red-50 text-red-700 px-3 py-1 rounded-lg border border-red-200 font-semibold">Verification Documents: Required</span>
-                  )}
-                </div>
-
-                {/* Choose Profile Photo / Upload (Above Address) */}
-                <div className="bg-white border border-slate-150 rounded-xl p-6 shadow-sm space-y-4">
-                  <span className="text-sm font-semibold text-slate-800 block">Choose Profile Photo / Upload</span>
-                  <div className="flex flex-col md:flex-row items-center gap-6">
-                    <label className="group relative w-20 h-20 rounded-full border border-slate-200 overflow-hidden bg-slate-50 flex items-center justify-center flex-shrink-0 cursor-pointer hover:border-slate-400 transition-all shadow-inner">
-                      {profilePhoto ? (
-                        <img src={profilePhoto} alt="profile" className="w-full h-full object-cover group-hover:opacity-85 transition-opacity" />
-                      ) : (
-                        <User className="w-10 h-10 text-slate-350 group-hover:text-slate-500 transition-colors" />
-                      )}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-opacity text-white text-[10px] font-semibold">
-                        <Upload className="w-4 h-4 mb-0.5" />
-                        <span>Upload</span>
-                      </div>
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                              setProfilePhoto(reader.result as string);
-                            };
-                            reader.readAsDataURL(file);
-                          }
-                        }}
-                      />
-                    </label>
-                    <div className="flex-grow space-y-3">
-                      <span className="text-xs font-semibold text-slate-500 block">Select a Preset Professional Avatar:</span>
-                      <div className="flex gap-2 flex-wrap items-center">
-                        {avatarPresets.map((presetUrl, idx) => (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() => setProfilePhoto(presetUrl)}
-                            className={`w-10 h-10 rounded-full border overflow-hidden transition-all ${profilePhoto === presetUrl ? "border-black ring-2 ring-black scale-105" : "border-slate-200 hover:border-slate-400"}`}
-                          >
-                            <img src={presetUrl} alt="preset" className="w-full h-full object-cover" />
-                          </button>
-                        ))}
-                        
-                        <div className="h-6 w-[1px] bg-slate-200 mx-2"></div>
-
-                        <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-black hover:bg-slate-900 text-white rounded-xl text-xs font-semibold cursor-pointer transition-all active:scale-95 shadow-sm">
-                          <Upload className="w-3.5 h-3.5" />
-                          Upload Custom Photo
-                          <input 
-                            type="file" 
-                            accept="image/*" 
-                            className="hidden" 
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                  setProfilePhoto(reader.result as string);
-                                };
-                                reader.readAsDataURL(file);
-                              }
-                            }}
-                          />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 1. Office / Practice Location Address */}
-                <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
-                  <label className="text-xs sm:text-sm font-extrabold text-slate-900 block uppercase tracking-wider">Office / Practice Location Address *</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Area */}
-                    <div className="col-span-1 sm:col-span-2">
-                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">Area / Locality / Street Address *</label>
-                      <input 
-                        type="text"
-                        required
-                        value={addressArea} 
-                        onChange={(e) => updateFullAddress(e.target.value, addressCity, addressState, addressCountry, addressZip)} 
-                        placeholder="e.g. Suite 402, MG Road, Landmark Building" 
-                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
-                      />
-                    </div>
-                    {/* City or District or Town */}
-                    <div className="col-span-1">
-                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">City / District / Town *</label>
-                      <input 
-                        type="text"
-                        required
-                        value={addressCity} 
-                        onChange={(e) => updateFullAddress(addressArea, e.target.value, addressState, addressCountry, addressZip)} 
-                        placeholder="e.g. Mumbai / New Delhi" 
-                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
-                      />
-                    </div>
-                    {/* State */}
-                    <div className="col-span-1">
-                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">State / Province *</label>
-                      <input 
-                        type="text"
-                        required
-                        value={addressState} 
-                        onChange={(e) => updateFullAddress(addressArea, addressCity, e.target.value, addressCountry, addressZip)} 
-                        placeholder="e.g. Maharashtra" 
-                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
-                      />
-                    </div>
-                    {/* Country */}
-                    <div className="col-span-1">
-                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">Country *</label>
-                      <input 
-                        type="text"
-                        required
-                        value={addressCountry} 
-                        onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, e.target.value, addressZip)} 
-                        placeholder="e.g. India" 
-                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
-                      />
-                    </div>
-                    {/* Zip code */}
-                    <div className="col-span-1">
-                      <label className="text-xs font-bold text-slate-700 mb-1.5 block">ZIP / Postal Code *</label>
-                      <input 
-                        type="text"
-                        required
-                        value={addressZip} 
-                        onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, addressCountry, e.target.value)} 
-                        placeholder="e.g. 400001" 
-                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 placeholder:text-slate-400 shadow-2xs"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {consultantType === "Freelancer" ? (
-                    <>
-                      <div className="col-span-1">
-                        <input 
-                          value={smmAccounts}
-                          onChange={(e) => setSmmAccounts(e.target.value)}
-                          placeholder="Social Media Accounts / Portfolio Links (e.g. LinkedIn)" 
-                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                        />
-                      </div>
-                      <div className="col-span-1">
-                        <input 
-                          value={portfolioLink}
-                          onChange={(e) => setPortfolioLink(e.target.value)}
-                          placeholder="Personal Portfolio / Website (e.g. https://portfolio.com)" 
-                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                        />
-                      </div>
-                      <div className="col-span-2">
-                        <textarea 
-                          value={aboutMe}
-                          onChange={(e) => setAboutMe(e.target.value)}
-                          rows={4}
-                          placeholder="About Section / Brief Bio (Briefly describe your freelance services and achievements...)" 
-                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 resize-none placeholder:text-slate-500 shadow-sm"
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="col-span-1">
-                        <input 
-                          value={govRegNumber}
-                          onChange={(e) => setGovRegNumber(e.target.value)}
-                          placeholder="Government Registration Number / License (Optional)" 
-                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                        />
-                      </div>
-                       <div className="col-span-1">
-                        <div className="relative">
-                          <input 
-                            type="file"
-                            id="license-file-input"
-                            accept=".pdf,.jpg,.jpeg,.png"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                setLicenseUploaded(true);
-                                setLicenseFileName(file.name);
-                              }
-                            }}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                          />
-                          <div 
-                            className={`w-full py-2.5 border border-dashed rounded-md text-sm font-semibold text-center transition-all shadow-sm ${licenseUploaded ? "bg-slate-50 border-black text-black" : "border-slate-300 hover:bg-slate-50 text-slate-500"}`}
-                          >
-                            {licenseUploaded ? `✓ ${licenseFileName || "License Copy Attached"}` : "Upload License Copy (PDF / JPG) (Optional)"}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-span-2">
-                        <input 
-                          value={officeAddress}
-                          onChange={(e) => setOfficeAddress(e.target.value)}
-                          placeholder="Office / Practice Address (Optional)" 
-                          style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-[15px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                        />
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                <div className="border-t border-slate-150 pt-6 space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {(consultantType === "Freelancer" || consultantType === "Registered consultancy") ? (
-                      <div className="col-span-2 space-y-3">
-                        <div>
-                          <label className="text-xs font-black text-slate-900 block uppercase tracking-wider">FIELD OF EXPERTISE / STUDY *</label>
-                          <span className="text-[11px] text-slate-500 font-semibold block mt-0.5">Select one or more:</span>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                          {[
-                            "VISIT",
-                            "WORK",
-                            "VISA APPEALS",
-                            "DIGITAL NOMAD",
-                            "PR / MIGRATION",
-                            "STUDY",
-                            "BUSINESS / INVESTMENT",
-                            "VISA FILING ASSISTANCE"
-                          ].map(service => {
-                            const isChecked = expertiseTags.includes(service);
-                            return (
-                              <button
-                                key={service}
-                                type="button"
-                                onClick={() => {
-                                  if (isChecked) {
-                                    setExpertiseTags(expertiseTags.filter(t => t !== service));
-                                  } else {
-                                    setExpertiseTags([...expertiseTags, service]);
-                                  }
-                                }}
-                                className={`flex items-center justify-between p-3.5 rounded-xl border text-xs font-black transition-all text-left cursor-pointer ${
-                                  isChecked 
-                                    ? "bg-[#00a896] border-[#00a896] text-white shadow-sm scale-[1.01]" 
-                                    : "bg-white border-slate-200 text-slate-700 hover:border-slate-350"
-                                }`}
-                              >
-                                <span>{service}</span>
-                                <span className={`w-4 h-4 rounded-full flex items-center justify-center border text-[9px] ${isChecked ? "bg-white border-white text-[#00a896]" : "border-slate-300 text-transparent"}`}>✓</span>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="col-span-1">
-                        <div className="flex gap-2">
-                          <input 
-                            value={newTag} 
-                            onChange={(e) => setNewTag(e.target.value)} 
-                            placeholder="Add Area of Expertise (e.g. Work Visa)" 
-                            style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
-                            className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md text-[14px] outline-none focus:border-gray-500 text-slate-800 placeholder:text-slate-500 shadow-sm"
-                          />
-                          <button type="button" onClick={addTag} className="bg-black hover:bg-slate-900 text-white text-xs px-4 py-2.5 rounded-md font-semibold active:scale-95 transition-all shadow-sm shrink-0">Add</button>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5 pt-2">
-                          {expertiseTags.map(tag => (
-                            <span key={tag} className="inline-flex items-center gap-1.5 bg-slate-100 border border-slate-200 rounded-full px-3 py-0.5 text-xs font-semibold text-slate-650 shadow-xs">
-                              {tag}
-                              <button type="button" onClick={() => removeTag(tag)} className="text-slate-400 hover:text-black font-bold">×</button>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="col-span-2 space-y-4">
-                      {/* Countries of Expertise Dropdown & Input */}
-                      <div>
-                        <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block mb-1.5">Countries of Expertise *</label>
-                        <select
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            if (val) {
-                              const currentList = countriesExpertise ? countriesExpertise.split(",").map(c => c.trim()).filter(Boolean) : [];
-                              if (!currentList.includes(val)) {
-                                const newList = [...currentList, val];
-                                setCountriesExpertise(newList.join(", "));
-                              }
-                            }
-                            e.target.value = "";
-                          }}
-                          className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 outline-none focus:border-black shadow-2xs cursor-pointer mb-2"
-                        >
-                          <option value="">+ Select Country from Dropdown</option>
-                          <option value="Canada">Canada</option>
-                          <option value="United Kingdom">United Kingdom</option>
-                          <option value="United States">United States</option>
-                          <option value="Australia">Australia</option>
-                          <option value="Germany">Germany</option>
-                          <option value="New Zealand">New Zealand</option>
-                          <option value="UAE / Dubai">UAE / Dubai</option>
-                          <option value="Schengen Countries">Schengen Countries</option>
-                          <option value="Singapore">Singapore</option>
-                          <option value="Ireland">Ireland</option>
-                          <option value="Worldwide">Worldwide / All Countries</option>
-                        </select>
-
-                        <input 
-                          value={countriesExpertise}
-                          onChange={(e) => setCountriesExpertise(e.target.value)}
-                          placeholder="Selected Countries (e.g. Canada, UK, USA)" 
-                          className="w-full px-4 py-3 bg-white border border-slate-250 rounded-xl text-sm font-medium text-slate-900 outline-none focus:border-black shadow-2xs"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between p-5 bg-slate-50/50 rounded-xl border border-slate-200 shadow-sm">
-                    <div>
-                      <span className="text-sm font-semibold text-slate-800 block">Accept Secure Escrow Payouts</span>
-                      <span className="text-xs text-slate-400 font-medium mt-0.5 block">Payments remain secured in escrow during milestone completion checks.</span>
-                    </div>
-                    <button 
-                      type="button" 
-                      onClick={() => setEscrowAccepted(!escrowAccepted)}
-                      className={`px-5 py-2.5 rounded-xl text-sm font-semibold tracking-wider transition-all cursor-pointer ${escrowAccepted ? "bg-black text-white" : "bg-slate-200 text-slate-700"}`}
-                    >
-                      {escrowAccepted ? "Yes" : "No"}
-                    </button>
-                  </div>
-                </div>
-
-                {validationError && (
-                  <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs font-semibold font-sans text-center transition-all animate-premium-fade max-w-lg mx-auto mt-6">
-                    {validationError}
-                  </div>
-                )}
-
-                <div className="pt-8 border-t border-slate-100 flex items-center justify-between gap-4">
-                  <button 
-                    type="button"
-                    onClick={() => setStep(1)}
-                    className="text-sm font-semibold text-slate-550 hover:text-black flex items-center gap-1 transition-colors cursor-pointer"
-                  >
-                    ← Back
-                  </button>
-
-                  <button 
-                    type="button"
-                    onClick={async (e) => {
-                      setValidationError("");
-                      if (!emailVerified) {
-                        setShowOtpModal(true);
-                        setModalError("");
-                        await handleSendVerificationCode();
-                        return;
-                      }
-                      handleLaunchDashboard(e);
-                    }}
-                    className="bg-[#111111] hover:bg-black text-white px-12 py-4 rounded-xl text-base font-semibold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-
-          {/* Email Verification Modal Pop-Up (At Root Level) */}
-          {showOtpModal && (
-            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-premium-fade font-sans">
-              <div className="bg-white rounded-3xl border border-slate-150 shadow-2xl p-5 sm:p-8 max-w-[420px] w-full relative space-y-5 sm:space-y-6 max-h-[95vh] overflow-y-auto">
+              <div className="space-y-3">
                 <button
-                  type="button"
-                  onClick={() => setShowOtpModal(false)}
-                  className="absolute top-4 right-4 sm:top-5 sm:right-5 text-slate-400 hover:text-black p-1.5 rounded-full hover:bg-slate-100 transition-all cursor-pointer"
+                  onClick={handleGoogleSignup}
+                  disabled={googleLoading}
+                  className="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-300 rounded-2xl text-xs font-bold text-slate-800 flex items-center justify-center gap-3 transition-all shadow-2xs cursor-pointer"
                 >
-                  <X className="w-5 h-5" />
+                  <svg className="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                  </svg>
+                  <span>{googleLoading ? "Connecting to Google..." : "Continue with Google"}</span>
                 </button>
 
-                <div className="text-center space-y-2 pt-1 sm:pt-2">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-slate-100/90 border border-slate-200/80 rounded-full flex items-center justify-center mx-auto shadow-xs mb-2 sm:mb-3">
-                    <Mail className="w-8 h-8 sm:w-10 sm:h-10 text-slate-900" />
-                  </div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Check your email</h2>
-                  <p className="text-xs sm:text-sm font-medium text-slate-500">
-                    Enter the verification code sent to
-                  </p>
-                  {!isEditingEmail ? (
-                    <div className="flex items-center justify-center gap-2 bg-slate-100/90 border border-slate-200/90 py-2 px-3 sm:px-4 rounded-xl shadow-inner max-w-xs mx-auto">
-                      <span className="text-xs sm:text-sm font-bold text-slate-900 break-all">{email}</span>
-                      <button
-                        type="button"
-                        onClick={() => setIsEditingEmail(true)}
-                        className="text-xs text-[#2563eb] font-bold hover:underline shrink-0 flex items-center gap-1 cursor-pointer pl-1"
-                      >
-                        <span>Edit</span>
-                        <Pencil className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col gap-2 max-w-xs mx-auto animate-premium-fade">
-                      <div className="flex gap-2">
-                        <input
-                          type="email"
-                          value={email}
-                          onChange={(e) => {
-                            setEmail(e.target.value);
-                            setEmailErrorMsg("");
-                            setModalError("");
-                          }}
-                          className="w-full px-3 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
-                          placeholder="Enter new email address"
-                        />
-                        <button
-                          type="button"
-                          onClick={async () => {
-                            if (!email || !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) {
-                              setModalError("Please enter a valid email address.");
-                              return;
-                            }
-                            setIsEditingEmail(false);
-                            setOtpDigits(Array(6).fill(""));
-                            setOtpInput("");
-                            setOtpSent(false);
-                            await handleSendVerificationCode();
-                          }}
-                          className="bg-black text-white text-xs font-bold px-3.5 py-2 rounded-xl shrink-0 hover:bg-neutral-800 cursor-pointer shadow-sm"
-                        >
-                          Save & Resend
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                <button
+                  onClick={() => setCurrentStep(1)}
+                  className="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-300 rounded-2xl text-xs font-bold text-slate-800 flex items-center justify-center gap-3 transition-all shadow-2xs cursor-pointer"
+                >
+                  <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center text-white text-[10px] font-black">f</div>
+                  <span>Continue with Facebook</span>
+                </button>
+
+                <button
+                  onClick={() => setCurrentStep(1)}
+                  className="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-300 rounded-2xl text-xs font-bold text-slate-800 flex items-center justify-center gap-3 transition-all shadow-2xs cursor-pointer"
+                >
+                  <div className="w-4 h-4 bg-blue-700 text-white flex items-center justify-center text-[10px] font-black rounded-xs">in</div>
+                  <span>Continue with LinkedIn</span>
+                </button>
+              </div>
+
+              <div className="relative flex items-center justify-center">
+                <div className="border-t border-slate-200 w-full" />
+                <span className="bg-white px-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider absolute">OR</span>
+              </div>
+
+              <button
+                onClick={() => setCurrentStep(1)}
+                className="w-full py-3.5 px-4 bg-[#00a896] hover:bg-[#008f80] text-white rounded-2xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer active:scale-98"
+              >
+                <Mail className="w-4 h-4" />
+                <span>Continue with Email</span>
+              </button>
+
+              <p className="text-[11px] font-semibold text-slate-400 text-center flex items-center justify-center gap-1">
+                <Lock className="w-3 h-3" />
+                <span>Your data is safe with us. We never post on your behalf.</span>
+              </p>
+            </div>
+
+            {/* Right "Why register on VisaFormula?" Card */}
+            <div className="md:col-span-5 bg-teal-50/70 border border-teal-200/80 rounded-3xl p-6 space-y-4">
+              <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                <Shield className="w-4.5 h-4.5 text-[#00a896]" />
+                <span>Why register on VisaFormula?</span>
+              </h3>
+
+              <ul className="space-y-3 text-xs font-bold text-slate-700">
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
+                  <span>Get quality visa related enquiries</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
+                  <span>Build trust with Verified Badge</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
+                  <span>Grow your business globally</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
+                  <span>Manage everything in one place</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* WIZARD CONTAINER FOR STEPS 1, 2, 3 */}
+        {currentStep >= 1 && currentStep <= 3 && (
+          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/90 space-y-6">
+            
+            {/* STEP HEADER & WIZARD PROGRESS BAR */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div>
+                <span className="bg-teal-100 text-[#00a896] text-[10px] font-black px-3 py-1 rounded-full border border-teal-200 uppercase tracking-wider">
+                  STEP {currentStep}
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2">
+                  {currentStep === 1 && "Business Information"}
+                  {currentStep === 2 && "Services & Expertise"}
+                  {currentStep === 3 && "Location & Verification"}
+                </h2>
+                <p className="text-xs font-semibold text-slate-500 mt-0.5">
+                  {currentStep === 1 && "Tell us about your business"}
+                  {currentStep === 2 && "Tell us about your services"}
+                  {currentStep === 3 && "Help clients find and trust you"}
+                </p>
+              </div>
+
+              <div className="text-right">
+                <span className="text-xs font-black text-[#00a896] bg-teal-50 px-3 py-1.5 rounded-xl border border-teal-200">
+                  {currentStep}/3
+                </span>
+              </div>
+            </div>
+
+            {/* Progress Bar Indicator */}
+            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+              <div
+                className="bg-[#00a896] h-full transition-all duration-300 ease-out"
+                style={{ width: `${(currentStep / 3) * 100}%` }}
+              />
+            </div>
+
+            {/* STEP 1: BUSINESS INFORMATION */}
+            {currentStep === 1 && (
+              <div className="space-y-5 animate-premium-fade">
+                <div>
+                  <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Business Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                    placeholder="Enter your business name"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                  />
                 </div>
 
-                {/* 6 Individual Digit Inputs with Black Accent */}
-                <div className="space-y-4 sm:space-y-5 pt-1">
-                  <div className="flex justify-center gap-1.5 sm:gap-2.5 md:gap-3 my-1 sm:my-2 w-full">
-                    {otpDigits.map((digit, idx) => (
-                      <input
-                        key={idx}
-                        id={`expert-otp-box-${idx}`}
-                        type="text"
-                        inputMode="numeric"
-                        maxLength={1}
-                        value={digit}
-                        onChange={(e) => handleDigitChange(e.target.value, idx)}
-                        onKeyDown={(e) => handleDigitKeyDown(e, idx)}
-                        onPaste={idx === 0 ? handleDigitPaste : undefined}
-                        className={`w-9 h-11 sm:w-11 sm:h-13 md:w-12 md:h-14 border-2 rounded-xl text-center text-lg sm:text-xl font-bold text-slate-900 outline-none transition-all shadow-xs shrink-0 ${
-                          digit ? "border-black bg-slate-50" : "border-slate-300 focus:border-black"
-                        }`}
-                      />
-                    ))}
-                  </div>
-
-                  <div className="text-center text-sm font-medium text-slate-500">
-                    Didn't get a code?{" "}
-                    <button
-                      type="button"
-                      onClick={handleSendVerificationCode}
-                      disabled={sendingCode || resendCooldown > 0}
-                      className="text-black font-bold underline underline-offset-2 hover:text-slate-700 disabled:opacity-50 cursor-pointer"
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Business Type *</label>
+                    <select
+                      value={businessType}
+                      onChange={(e) => setBusinessType(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] cursor-pointer"
                     >
-                      resend{resendCooldown > 0 ? ` (${resendCooldown}s)` : ""}
-                    </button>
+                      <option value="Registered consultancy">Registered consultancy</option>
+                      <option value="Authorised immigration / visa appeal lawyer">Authorised immigration / visa appeal lawyer</option>
+                      <option value="Education & Training Institute">Education & Training Institute</option>
+                      <option value="Freelancer">Freelancer</option>
+                      <option value="Employer / HR agency">Employer / HR agency</option>
+                      <option value="Tour operator">Tour operator</option>
+                    </select>
                   </div>
 
-                  {modalError && (
-                    <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center animate-premium-fade">
-                      {modalError}
+                  <div>
+                    <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Years in Business *</label>
+                    <select
+                      value={yearsInBusiness}
+                      onChange={(e) => setYearsInBusiness(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] cursor-pointer"
+                    >
+                      <option value="1-2 years">1-2 years</option>
+                      <option value="3-5 years">3-5 years</option>
+                      <option value="5-10 years">5-10 years</option>
+                      <option value="10+ years">10+ years</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Business Website</label>
+                  <input
+                    type="url"
+                    value={businessWebsite}
+                    onChange={(e) => setBusinessWebsite(e.target.value)}
+                    placeholder="https://www.yourwebsite.com"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+                  <div>
+                    <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Company Logo</label>
+                    <div className="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-slate-50 transition-all cursor-pointer">
+                      <Upload className="w-7 h-7 text-slate-400 mx-auto mb-2" />
+                      <p className="text-xs font-bold text-slate-700">Click to upload logo</p>
+                      <p className="text-[10px] font-semibold text-slate-400 mt-1">PNG, JPG (Max 2MB)</p>
                     </div>
-                  )}
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-extrabold text-slate-900">Business Description *</label>
+                      <span className="text-[10px] font-bold text-slate-400">{businessDescription.length}/300</span>
+                    </div>
+                    <textarea
+                      maxLength={300}
+                      rows={4}
+                      value={businessDescription}
+                      onChange={(e) => setBusinessDescription(e.target.value)}
+                      placeholder="Briefly describe your business and services you offer..."
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] resize-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Footer Controls */}
+                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <span className="text-[11px] font-semibold text-slate-400 flex items-center gap-1">
+                    <Lock className="w-3 h-3 text-[#00a896]" />
+                    <span>We save your progress automatically</span>
+                  </span>
 
                   <button
                     type="button"
-                    disabled={verifyingCode || otpDigits.join("").length < 6}
-                    onClick={async () => {
-                      setModalError("");
-                      const codeStr = otpDigits.join("");
-                      const ok = await handleVerifyCode(codeStr);
-                      if (ok) {
-                        setShowOtpModal(false);
-                        const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
-                        handleLaunchDashboard(fakeEvent);
-                      } else {
-                        setModalError("Invalid or expired verification code. Please try again.");
-                      }
-                    }}
-                    className={`w-full font-bold py-4 rounded-xl text-base transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 ${
-                      otpDigits.join("").trim().length === 6
-                        ? "bg-slate-900 hover:bg-black text-white shadow-xl shadow-slate-900/20 scale-[1.01] cursor-pointer"
-                        : "bg-slate-200 border border-slate-300 text-slate-400 cursor-not-allowed shadow-none"
-                    }`}
+                    onClick={() => goToNextStep(2)}
+                    className="w-full sm:w-auto px-8 py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                   >
-                    {verifyingCode ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Verifying...</span>
-                      </>
-                    ) : (
-                      <span>Verify email</span>
-                    )}
+                    <span>Next Step</span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="flex-grow flex flex-col lg:flex-row bg-[#f3f7fa] min-h-screen text-[#111111] antialiased animate-premium-fade font-roboto" style={{ fontFamily: "'Roboto', sans-serif" }}>
-          {isRegistrationSuccess && (
-            <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 z-[99999]">
-              <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center space-y-5 shadow-2xl border border-slate-200 animate-fade-up">
-                <div className="w-20 h-20 rounded-full bg-teal-50 border-4 border-[#00a896] text-[#00a896] flex items-center justify-center mx-auto shadow-lg">
-                  <CheckCircle className="w-12 h-12 animate-bounce text-[#00a896]" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-black text-slate-900">Registration Successful! 🎉</h3>
-                  <p className="text-sm text-slate-600 mt-2 font-medium">
-                    Your consultant account has been registered successfully. Redirecting to your live dashboard...
-                  </p>
-                </div>
-                <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden mt-4">
-                  <div className="bg-[#00a896] h-full animate-pulse w-full"></div>
-                </div>
-              </div>
-            </div>
-          )}
-          <style dangerouslySetInnerHTML={{__html: `
-            .font-roboto, .font-roboto * {
-                font-family: 'Roboto', sans-serif !important;
-            }
-          `}} />
+            )}
 
-          {/* Mobile Header Bar */}
-          <div className="lg:hidden w-full bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
-            <a href="/" className="flex items-center">
-              <img src="/logo.png" className="h-10 w-auto object-contain" alt="VisaFormula Logo" />
-            </a>
-            <button 
-              onClick={() => setIsSidebarOpen(true)} 
-              className="p-2 text-slate-700 hover:bg-slate-100 rounded-xl focus:outline-none"
-              aria-label="Open Sidebar"
-            >
-              <Menu className="w-6 h-6 text-black" />
-            </button>
-          </div>
-
-          {/* Mobile Slide-Over Sidebar Drawer */}
-          <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-            {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />
-            
-            {/* Drawer Content */}
-            <aside className={`absolute top-0 left-0 w-64 h-full bg-white shadow-2xl flex flex-col justify-between py-8 px-5 transform transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-              <div className="flex flex-col gap-6">
-                <div className="flex justify-between items-center px-1">
-                  <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
-                    <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
-                  </a>
-                  <button onClick={() => setIsSidebarOpen(false)} className="p-1 hover:bg-slate-100 rounded text-slate-500">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
+            {/* STEP 2: SERVICES & EXPERTISE */}
+            {currentStep === 2 && (
+              <div className="space-y-6 animate-premium-fade">
                 
-                <nav className="flex flex-col gap-1.5">
-                  {[
-                    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-                    { id: "profile", label: "Edit Profile", icon: User },
-                    { id: "inquiries", icon: MessageSquare, label: "New Inquiries", count: inquiries.length },
-                    { id: "cases", icon: Briefcase, label: "Active Cases", count: activeCases.length },
-                    { id: "upgrade", icon: Shield, label: "Upgrade Tier" },
-                    { id: "photos", icon: Upload, label: "Upload Photos", count: uploadedFiles.length }
-                  ].map(tab => {
-                    const isActive = activeTab === tab.id;
-                    const IconComponent = tab.icon;
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => {
-                          setActiveTab(tab.id);
-                          setIsSidebarOpen(false);
-                        }}
-                        className={`flex items-center gap-3 px-5 py-3 rounded-full font-bold text-xs tracking-wide transition-all relative ${
-                          isActive 
-                            ? "bg-black text-white shadow-md" 
-                            : "text-slate-600 hover:text-black hover:bg-slate-100"
-                        }`}
-                      >
-                        <IconComponent className="w-4 h-4 flex-shrink-0" />
-                        <span>{tab.label}</span>
-                        {tab.count !== undefined && tab.count > 0 && (
-                          <span className={`absolute right-4 px-2 py-0.5 rounded-full text-[9px] font-black transition-all ${
-                            isActive ? "bg-white text-black" : "bg-slate-200 text-slate-700"
-                          }`}>
-                            {tab.count}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              <div className="px-2">
-                <button 
-                  onClick={() => setStep(1)} 
-                  className="flex items-center gap-3 px-5 py-3 text-slate-650 hover:text-red-650 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Log Out</span>
-                </button>
-              </div>
-            </aside>
-          </div>
-
-          <aside className="hidden lg:flex w-64 bg-white border-r border-slate-200 flex flex-col justify-between py-8 px-5 flex-shrink-0 text-black">
-            <div className="flex flex-col items-stretch gap-8">
-              {/* Logo / Branding */}
-              <div className="flex flex-col gap-3 px-3">
-                <a href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-black transition-colors">
-                  <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
-                </a>
-              </div>
-              
-              <nav className="flex flex-col gap-2">
-                {[
-                  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-                  { id: "profile", label: "Edit Profile", icon: User },
-                  { id: "inquiries", icon: MessageSquare, label: "New Inquiries", count: inquiries.length },
-                  { id: "cases", icon: Briefcase, label: "Active Cases", count: activeCases.length },
-                  { id: "upgrade", icon: Shield, label: "Upgrade Tier" },
-                  { id: "photos", icon: Upload, label: "Upload Photos", count: uploadedFiles.length }
-                ].map(tab => {
-                  const isActive = activeTab === tab.id;
-                  const IconComponent = tab.icon;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-3 px-5 py-3.5 rounded-full font-bold text-xs tracking-wide transition-all relative ${
-                        isActive 
-                          ? "bg-black text-white shadow-md active:scale-[0.98]" 
-                          : "text-slate-600 hover:text-black hover:bg-slate-100"
-                      }`}
-                    >
-                      <IconComponent className="w-4 h-4 flex-shrink-0" />
-                      <span>{tab.label}</span>
-                      
-                      {tab.count !== undefined && tab.count > 0 && (
-                        <span className={`absolute right-4 px-2 py-0.5 rounded-full text-[9px] font-black transition-all ${
-                          isActive ? "bg-white text-black" : "bg-slate-200 text-slate-700"
-                        }`}>
-                          {tab.count}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
- 
-            <div className="px-2">
-              <button 
-                onClick={() => setStep(1)} 
-                className="flex items-center gap-3 px-5 py-3.5 text-slate-650 hover:text-red-600 hover:bg-slate-50 rounded-full font-bold text-xs tracking-wide transition-all w-full text-left cursor-pointer border-none bg-transparent"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Log Out</span>
-              </button>
-            </div>
-          </aside>
-
-          <main className="flex-grow p-8 overflow-y-auto space-y-8">
-            
-            <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-5 flex-grow max-w-4xl">
-                {/* Profile Badge (Premium Style matching screenshot) */}
-                <div className="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 border border-slate-200/80 rounded-[28px] shadow-sm flex flex-col sm:flex-row items-center overflow-hidden max-w-md w-full relative">
-                  {/* Left side: Avatar */}
-                  <div className="p-4 sm:pr-2 flex-shrink-0 z-10">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[20px] bg-gradient-to-br from-black via-slate-800 to-slate-950 text-white border-2 border-white shadow-md flex items-center justify-center font-black text-xl tracking-tight overflow-hidden">
-                      {profilePhoto ? (
-                        <img src={profilePhoto} alt="expert avatar" className="w-full h-full object-cover" />
-                      ) : (
-                        "XP"
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Right side: Info */}
-                  <div className="p-4 sm:pl-3 flex flex-col justify-center text-center sm:text-left flex-grow z-10">
-                    {/* Name and PRO Badge */}
-                    <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-                      <h2 className="text-base sm:text-lg font-extrabold text-black tracking-tight leading-snug">{businessName || "Apex Immigration"}</h2>
-                      <span className="bg-emerald-500/10 text-emerald-700 text-[9px] font-black tracking-widest px-2 py-0.5 rounded-full border border-emerald-500/20">Verified</span>
-                    </div>
-
-                    {/* Description/Location */}
-                    <p className="text-[11px] text-slate-500 font-semibold mt-1 leading-tight flex items-center justify-center sm:justify-start gap-1.5 flex-wrap">
-                      <span>💼</span> {expertCategory || consultantType || "Visa Expert"} based in <span className="text-black font-extrabold">{expertAddress ? expertAddress.split(',')[0] : (officeAddress ? officeAddress.split(',')[0] : "Delhi, India")}</span>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Search Bar next to Profile */}
-                <div className="relative w-full sm:w-[450px] flex-shrink-0">
-                  <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input 
-                    type="text"
-                    placeholder="Search consultations, tasks, files..."
-                    className="w-full pl-11 pr-5 py-4 bg-white border border-slate-200 rounded-full text-xs font-semibold focus:border-black outline-none shadow-sm transition-all"
-                  />
-                </div>
-              </div>
-
-              {/* Action buttons on the right */}
-              <div className="flex items-center gap-3">
-                <button 
-                  onClick={() => setShowAdModal(true)}
-                  className="bg-white hover:bg-slate-50 text-black border border-slate-250 px-5 py-3.5 rounded-xl text-xs font-medium tracking-normal transition-all flex items-center gap-2 active:scale-95 shadow-sm cursor-pointer"
-                >
-                  Post an Ad <ArrowUpRight className="w-4 h-4 text-slate-500" />
-                </button>
-                <button 
-                  onClick={() => setShowOfferModal(true)}
-                  className="bg-black hover:bg-slate-900 text-white px-5 py-3.5 rounded-xl text-xs font-medium tracking-normal transition-all flex items-center gap-2 active:scale-95 shadow-sm cursor-pointer"
-                >
-                  Special Offer <Sparkles className="w-4 h-4 text-yellow-400" />
-                </button>
-              </div>
-            </header>
-
-            {activeTab === "dashboard" ? (
-              <div className="space-y-8">
-                {(!aboutMe || !contactNumber || (!expertAddress && !officeAddress)) && (
-                  <div className="bg-amber-50 border border-amber-250/60 rounded-3xl p-5 flex items-start gap-4 shadow-sm animate-premium-fade">
-                    <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="text-xs font-bold text-amber-900 tracking-wider">Your Profile is Incomplete</h4>
-                      <p className="text-[11px] font-semibold text-amber-700 mt-1">
-                        Please complete your advisor category, contact number, and office details under the <button onClick={() => setActiveTab("profile")} className="font-extrabold underline hover:text-amber-900 cursor-pointer">Edit Profile</button> tab to complete your setup.
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
-                
-                {/* Column 1: Applicant Inquiries (styled as My Tasks mockup) */}
-                <div className="xl:col-span-1 bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <h3 className="font-bold text-lg text-black">My Inquiries</h3>
-                      <span className="text-[11px] text-slate-400 font-bold tracking-wider mt-0.5">Applicant Requests</span>
-                    </div>
-                    <button onClick={() => setShowAdModal(true)} className="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all">
-                      <Plus className="w-4 h-4 text-black" />
-                    </button>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <button className="bg-black text-white text-xs font-bold px-4 py-2 rounded-full">Today</button>
-                    <button className="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold px-4 py-2 rounded-full transition-all">Tomorrow</button>
-                  </div>
-
-                  <div className="bg-slate-50 border border-slate-200/60 p-3 rounded-2xl flex items-center justify-between text-xs font-bold text-black">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px]">{inquiries.length}</div>
-                      <span>On Going Inquiries</span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-4">
-                    {inquiries.length === 0 ? (
-                      <div className="text-center py-6 text-slate-400 text-xs font-medium">
-                        No pending applicant inquiries.
-                      </div>
-                    ) : (
-                      inquiries.map((inq, idx) => {
-                        const bgColors = ["bg-[#ffeae6]/40", "bg-[#e8f5e9]/40", "bg-[#e1f5fe]/40", "bg-[#f3e5f5]/40"];
-                        return (
-                          <div key={inq.id} className={`p-4 border border-slate-150 rounded-2xl transition-all hover:scale-[1.01] flex flex-col justify-between gap-3 ${bgColors[idx % bgColors.length]}`}>
-                            <div className="flex items-start justify-between">
-                              <div>
-                                <span className="text-xs font-semibold text-black block">{inq.name}</span>
-                                <span className="text-[9px] bg-white/80 border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md font-bold mt-1 inline-block tracking-wider">
-                                  {inq.type} ({inq.country})
-                                </span>
-                              </div>
-                              <span className="text-[9px] font-semibold text-slate-400">{inq.time}</span>
-                            </div>
-                            <p className="text-[11px] text-slate-650 leading-relaxed font-semibold">{inq.message}</p>
-                            
-                            <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100/50">
-                              <button 
-                                onClick={() => setInquiries(inquiries.filter(item => item.id !== inq.id))}
-                                className="text-[10px] font-bold text-slate-500 hover:text-black transition-colors"
-                              >
-                                Decline
-                              </button>
-                              <button 
-                                onClick={() => handleAcceptInquiry(inq.id)}
-                                className="bg-black hover:bg-slate-900 text-white text-[9px] font-bold tracking-wider px-3.5 py-1.5 rounded-lg transition-all"
-                              >
-                                Accept
-                              </button>
-                            </div>
-                          </div>
-                        );
-                      })
-                    )}
-                  </div>
-                </div>
-
-                {/* Column 2: Dashboard Analytics & Milestone Escrow (Middle column) */}
-                <div className="xl:col-span-2 flex flex-col gap-8">
-                  
-                  {/* Upper Row: Projects Overview & Earnings */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    
-                    {/* Projects / Cases Overview Doughnut Chart Layout */}
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs font-bold text-slate-400 tracking-widest block">Cases Overview</span>
-                        <button className="text-slate-400 hover:text-black">
-                          <ArrowRight className="w-4 h-4" />
+                {/* Services You Offer */}
+                <div className="space-y-2.5">
+                  <label className="block text-xs font-extrabold text-slate-900">Services You Offer (Select all that apply)</label>
+                  <div className="flex flex-wrap gap-2">
+                    {defaultServices.map((svc, i) => {
+                      const isSelected = selectedServices.includes(svc);
+                      return (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => toggleService(svc)}
+                          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer flex items-center gap-1.5 ${
+                            isSelected
+                              ? 'bg-[#00a896] text-white border-[#00a896] shadow-2xs'
+                              : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100'
+                          }`}
+                        >
+                          {isSelected && <CheckSquare className="w-3.5 h-3.5 text-white" />}
+                          <span>{svc}</span>
                         </button>
-                      </div>
+                      );
+                    })}
 
-                      <div className="relative w-36 h-36 mx-auto flex items-center justify-center my-3">
-                        <div className="absolute inset-0 border-[10px] border-slate-100 rounded-full"></div>
-                        <div className="absolute inset-0 border-[10px] border-t-black border-r-orange-500 border-b-sky-500 border-l-slate-100 rounded-full animate-spin-slow"></div>
-                        <div className="text-center z-10">
-                          <span className="text-2xl font-bold text-black">{activeCases.length}</span>
-                          <span className="text-[9px] text-slate-400 font-bold tracking-wider block mt-0.5">Active</span>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between text-[10px] font-bold text-slate-500 pt-2 border-t border-slate-100">
-                        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-black rounded-xs"></span> In Progress: {activeCases.filter(c => c.progress < 100).length}</span>
-                        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-orange-500 rounded-xs"></span> Completed: {activeCases.filter(c => c.progress === 100).length}</span>
-                        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-sky-500 rounded-xs"></span> Inquiries: {inquiries.length}</span>
-                      </div>
-                    </div>
-
-                    {/* Milestone Earnings Chart Visual (Income VS Expense layout) */}
-                    <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[280px]">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <span className="text-xs font-bold text-slate-400 tracking-widest block">Revenue</span>
-                          <span className="text-lg font-bold text-black mt-1 block">₹{(activeCases.length * 15000).toLocaleString()} Secured</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-[10px] font-bold text-slate-450">
-                          <TrendingUp className="w-4 h-4 text-emerald-500" />
-                          <span>Escrow Active</span>
-                        </div>
-                      </div>
-
-                      {/* Custom visual curves / lines representing Income vs Expense */}
-                      <div className="relative h-28 flex items-end justify-between gap-1 mt-2">
-                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none">
-                          <path d="M0,35 Q20,10 40,25 T80,15 T100,5" fill="none" stroke="rgba(17,17,17,0.15)" strokeWidth="1.5" />
-                          <path d="M0,38 Q25,30 50,35 T100,28" fill="none" stroke="rgba(249,115,22,0.25)" strokeWidth="1.5" />
-                          <circle cx="40" cy="25" r="2.5" fill="black" />
-                          <circle cx="80" cy="15" r="2.5" fill="orange" />
-                        </svg>
-                        <div className="absolute top-2 right-2 bg-black text-white text-[8px] px-2 py-0.5 rounded font-bold">
-                          Income: ₹{(activeCases.length * 15000).toLocaleString()}
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between text-[9px] font-bold text-slate-400 border-t border-slate-100 pt-2">
-                        <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
-                      </div>
-                    </div>
-
+                    <button
+                      type="button"
+                      onClick={() => setShowAddCustomService(true)}
+                      className="px-3.5 py-2 rounded-xl text-xs font-extrabold border border-dashed border-[#00a896] text-[#00a896] bg-teal-50/50 hover:bg-teal-50 transition-all cursor-pointer flex items-center gap-1"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add Other Service</span>
+                    </button>
                   </div>
 
-                  {/* Lower Block: Milestone Escrow Vault (Invoice Overview Mockup layout) */}
-                  <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex flex-col">
-                        <h3 className="font-bold text-lg text-black">Milestone Escrow Vault</h3>
-                        <span className="text-[11px] text-slate-450 font-bold tracking-wider">Secured Payouts</span>
-                      </div>
-                      <Shield className="w-5 h-5 text-black" />
-                    </div>
-
-                    <div className="space-y-4">
-                      {[
-                        { label: "Overdue Payouts", count: "0 cases", amount: "₹0", width: "0%", bg: "bg-purple-600" },
-                        { label: "Under Milestone Review", count: `${activeCases.length} cases`, amount: `₹${(activeCases.length * 15000).toLocaleString()}`, width: activeCases.length > 0 ? "65%" : "0%", bg: "bg-red-500" },
-                        { label: "Secure Escrow Held", count: `${activeCases.length} cases`, amount: `₹${(activeCases.length * 15000).toLocaleString()}`, width: activeCases.length > 0 ? "65%" : "0%", bg: "bg-sky-500" },
-                        { label: "Total Completed Payouts", count: "0 cases", amount: "₹0", width: "0%", bg: "bg-emerald-500" },
-                        { label: "Drafts / Pending", count: "0 cases", amount: "₹0", width: "0%", bg: "bg-orange-500" }
-                      ].map((item, idx) => (
-                        <div key={idx} className="space-y-2">
-                          <div className="flex justify-between text-xs font-bold text-black">
-                            <span>{item.label}</span>
-                            <div className="flex gap-4">
-                              <span className="text-slate-450">{item.count}</span>
-                              <span className="font-bold">{item.amount}</span>
-                            </div>
-                          </div>
-                          <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div className={`h-full ${item.bg} rounded-full`} style={{ width: item.width }} />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Column 3: Active Case Milestones & Open Tickets (Right Column) */}
-                <div className="xl:col-span-1 flex flex-col gap-8">
-                  
-                  {/* Active Cases Milestone list (styled like My Meetings in mockup) */}
-                  <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-450 tracking-widest block">Active Cases</span>
-                      <Calendar className="w-4 h-4 text-black" />
-                    </div>
-
-                    <div className="space-y-3">
-                      {activeCases.length === 0 ? (
-                        <div className="text-center py-6 text-slate-400 text-xs font-medium">
-                          No active client cases.
-                        </div>
-                      ) : (
-                        activeCases.map((c, idx) => (
-                          <div key={c.id} className="bg-slate-50 border border-slate-200/40 rounded-2xl p-4.5 space-y-3 hover:shadow-xs transition-all relative">
-                            <div className="flex justify-between items-center text-xs font-bold">
-                              <span className="text-slate-450 font-bold">{c.escrow}</span>
-                              <span className="bg-black text-white px-2 py-0.5 rounded-md text-[9px] tracking-wider">Meet</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-slate-250 flex items-center justify-center font-bold text-xs text-black">
-                                {c.name.substring(0, 2).toUpperCase()}
-                              </div>
-                              <div className="truncate">
-                                <span className="text-xs font-semibold text-black block truncate">{c.name}</span>
-                                <span className="text-[10px] text-slate-400 block truncate font-semibold mt-0.5">{c.visa}</span>
-                              </div>
-                            </div>
-                            
-                            {/* Milestone progress interactive slider */}
-                            <div className="mt-2 pt-2 border-t border-slate-100/50">
-                              <div className="flex items-center justify-between text-[9px] font-bold text-slate-500 mb-1">
-                                <span>Progress: {c.progress}%</span>
-                                <span className="text-black font-bold">{c.status.includes("Completed") ? "Completed" : "In-Progress"}</span>
-                              </div>
-                              <input 
-                                type="range" 
-                                min="0" 
-                                max="100" 
-                                value={c.progress}
-                                onChange={(e) => {
-                                  const val = parseInt(e.target.value);
-                                  setActiveCases(activeCases.map(item => item.id === c.id ? { ...item, progress: val, status: val === 100 ? "Completed & Escrow Released" : "milestone in-progress" } : item));
-                                }}
-                                className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-black" 
-                              />
-                            </div>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Open Tickets layout (shows partners ads & promotional offers list) */}
-                  <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-450 tracking-widest block">Active Ads & Offers</span>
-                      <Plus className="w-4 h-4 text-black cursor-pointer" onClick={() => setShowAdModal(true)} />
-                    </div>
-
-                    <div className="space-y-4">
-                      {adsList.length === 0 && offersList.length === 0 ? (
-                        <div className="text-center py-6 text-slate-400 text-xs font-medium">
-                          No promotional offers published. Click + to post.
-                        </div>
-                      ) : (
-                        <>
-                          {adsList.map((ad, idx) => (
-                            <div key={idx} className="flex items-center gap-3 bg-slate-50/50 p-3 rounded-2xl border border-slate-100">
-                              <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center font-bold text-xs text-orange-850 flex-shrink-0">AD</div>
-                              <div className="flex-1 truncate">
-                                <div className="text-xs font-semibold text-black leading-none truncate">{ad.title}</div>
-                                <span className="text-[9px] text-slate-400 font-bold block mt-1 truncate">{ad.desc}</span>
-                              </div>
-                              <button onClick={() => setAdsList(adsList.filter((_, i) => i !== idx))} className="text-xs text-slate-400 hover:text-black font-bold">×</button>
-                            </div>
-                          ))}
-                          {offersList.map((off, idx) => (
-                            <div key={idx} className="flex items-center gap-3 bg-slate-50/50 p-3 rounded-2xl border border-slate-100">
-                              <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center font-bold text-xs text-emerald-850 flex-shrink-0">%</div>
-                              <div className="flex-1 truncate">
-                                <div className="text-xs font-semibold text-black leading-none truncate">{off.title}</div>
-                                <span className="text-[9px] text-emerald-700 font-bold block mt-1 truncate">{off.discount} Discount</span>
-                              </div>
-                              <button onClick={() => setOffersList(offersList.filter((_, i) => i !== idx))} className="text-xs text-slate-400 hover:text-black font-bold">×</button>
-                            </div>
-                          ))}
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
-            ) : activeTab === "profile" ? (
-              <div className="bg-white border border-slate-200/50 rounded-3xl p-8 shadow-sm space-y-8 animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 tracking-wide">
-                  Live Consultant Profile Information
-                </h3>
-
-                {/* Profile Photo Upload block */}
-                <div className="flex flex-col sm:flex-row items-center gap-6 bg-slate-50 p-6 rounded-3xl border border-slate-150 shadow-inner">
-                  <div className="relative w-24 h-24 rounded-full bg-slate-200 border border-slate-300 overflow-hidden flex items-center justify-center flex-shrink-0 group">
-                    {profilePhoto ? (
-                      <img src={profilePhoto} alt="profile avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="text-2xl font-black text-slate-400">XP</span>
-                    )}
-                  </div>
-                  <div className="flex flex-col items-start gap-2.5">
-                    <span className="text-xs font-bold text-black tracking-wider">Profile Avatar Image</span>
-                    <p className="text-[11px] text-slate-500 font-medium">PNG, JPG formats accepted. Automatically syncs with header badge.</p>
-                    <label className="bg-black hover:bg-slate-900 text-white text-xs font-bold tracking-wider px-5 py-2.5 rounded-xl cursor-pointer active:scale-95 transition-all shadow-sm">
-                      Upload Avatar Photo
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onload = (event) => {
-                              if (event.target?.result) {
-                                setProfilePhoto(event.target.result as string);
-                                localStorage.setItem("expert_profilePhoto", event.target.result as string);
-                              }
-                            };
-                            reader.readAsDataURL(file);
-                          }
-                        }}
+                  {showAddCustomService && (
+                    <div className="flex gap-2 pt-2 max-w-md">
+                      <input
+                        type="text"
+                        value={customServiceInput}
+                        onChange={(e) => setCustomServiceInput(e.target.value)}
+                        placeholder="Enter custom service name"
+                        className="flex-1 px-3.5 py-2 border border-slate-300 rounded-xl text-xs font-semibold outline-none focus:border-[#00a896]"
                       />
+                      <button
+                        type="button"
+                        onClick={handleAddCustomService}
+                        className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Countries You Deal With */}
+                <div className="space-y-2.5">
+                  <label className="block text-xs font-extrabold text-slate-900">Countries You Deal With (Select all that apply)</label>
+                  <div className="flex flex-wrap gap-2">
+                    {defaultCountries.map((c, i) => {
+                      const isSelected = selectedCountries.includes(c.name);
+                      return (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => toggleCountry(c.name)}
+                          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer flex items-center gap-2 ${
+                            isSelected
+                              ? 'bg-[#00a896] text-white border-[#00a896] shadow-2xs'
+                              : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100'
+                          }`}
+                        >
+                          <span>{c.flag}</span>
+                          <span>{c.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Languages Spoken */}
+                <div className="space-y-2.5">
+                  <label className="block text-xs font-extrabold text-slate-900">Languages Spoken (Select all that apply)</label>
+                  <div className="flex flex-wrap gap-2">
+                    {defaultLanguages.map((lang, i) => {
+                      const isSelected = selectedLanguages.includes(lang);
+                      return (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => toggleLanguage(lang)}
+                          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer flex items-center gap-1.5 ${
+                            isSelected
+                              ? 'bg-[#00a896] text-white border-[#00a896] shadow-2xs'
+                              : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100'
+                          }`}
+                        >
+                          {isSelected && <CheckSquare className="w-3.5 h-3.5 text-white" />}
+                          <span>{lang}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Consultation Mode */}
+                <div className="space-y-2.5">
+                  <label className="block text-xs font-extrabold text-slate-900">Consultation Mode</label>
+                  <div className="flex items-center gap-6 bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                    <label className="flex items-center gap-2 text-xs font-extrabold text-slate-800 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="consultMode"
+                        checked={consultationMode === "Online"}
+                        onChange={() => setConsultationMode("Online")}
+                        className="accent-[#00a896]"
+                      />
+                      <span>Online</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 text-xs font-extrabold text-slate-800 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="consultMode"
+                        checked={consultationMode === "In Office"}
+                        onChange={() => setConsultationMode("In Office")}
+                        className="accent-[#00a896]"
+                      />
+                      <span>In Office</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 text-xs font-extrabold text-slate-800 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="consultMode"
+                        checked={consultationMode === "Both"}
+                        onChange={() => setConsultationMode("Both")}
+                        className="accent-[#00a896]"
+                      />
+                      <span>Both</span>
                     </label>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-800">Business Name</label>
-                    <input 
-                      type="text" 
-                      value={businessName} 
-                      onChange={(e) => setBusinessName(e.target.value)} 
-                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-800">Contact Number</label>
-                    <input 
-                      type="text" 
-                      value={contactNumber} 
-                      onChange={(e) => setContactNumber(e.target.value)} 
-                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                    <label className="text-xs font-bold text-slate-800">Practice Consultant Category</label>
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setEditConsultantOpen(!editConsultantOpen)}
-                        className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black text-left outline-none cursor-pointer flex items-center justify-between h-[46px]"
-                      >
-                        <span>{consultantType}</span>
-                        <ChevronDown className="w-4 h-4 text-slate-500" />
-                      </button>
-                      {editConsultantOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
-                          {["Freelancer", "Registered consultancy", "Authorised immigration / visa appeal lawyer", "Education & Training Institute", "Employer/ hr agency", "Insurance agent", "Bank or financer", "Tour operator", "Event organiser"].map(type => (
-                            <button
-                              key={type}
-                              type="button"
-                              onClick={() => { setConsultantType(type); setEditConsultantOpen(false); }}
-                              className="w-full text-left px-4 py-2 text-xs font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
-                            >
-                              {type}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                    <label className="text-xs font-bold text-slate-800">Expert In (Category)</label>
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setEditCategoryOpen(!editCategoryOpen)}
-                        className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black text-left outline-none cursor-pointer flex items-center justify-between h-[46px]"
-                      >
-                        <span>{expertCategory}</span>
-                        <ChevronDown className="w-4 h-4 text-slate-500" />
-                      </button>
-                      {editCategoryOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 font-sora">
-                          {["Student visa expert", "Visa filing expert", "Visit visa expert", "Job visa expert", "PR And Migration expert"].map(cat => (
-                            <button
-                              key={cat}
-                              type="button"
-                              onClick={() => { setExpertCategory(cat); setEditCategoryOpen(false); }}
-                              className="w-full text-left px-4 py-2 text-xs font-normal text-slate-700 hover:bg-black hover:text-white transition-colors"
-                            >
-                              {cat}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 col-span-1 md:col-span-2 pt-2 border-t border-slate-100">
-                    <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">Practice / Office Location Address</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* Area */}
-                      <div className="col-span-1 sm:col-span-2">
-                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">Area / Locality / Street Address</label>
-                        <input 
-                          type="text"
-                          value={addressArea} 
-                          onChange={(e) => updateFullAddress(e.target.value, addressCity, addressState, addressCountry, addressZip)} 
-                          placeholder="Area / Locality / Street Address" 
-                          className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
-                        />
-                      </div>
-                      {/* City or District or Town */}
-                      <div className="col-span-1">
-                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">City / District / Town</label>
-                        <input 
-                          type="text"
-                          value={addressCity} 
-                          onChange={(e) => updateFullAddress(addressArea, e.target.value, addressState, addressCountry, addressZip)} 
-                          placeholder="City / District / Town" 
-                          className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
-                        />
-                      </div>
-                      {/* State */}
-                      <div className="col-span-1">
-                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">State / Province</label>
-                        <input 
-                          type="text"
-                          value={addressState} 
-                          onChange={(e) => updateFullAddress(addressArea, addressCity, e.target.value, addressCountry, addressZip)} 
-                          placeholder="State / Province" 
-                          className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
-                        />
-                      </div>
-                      {/* Country */}
-                      <div className="col-span-1">
-                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">Country</label>
-                        <input 
-                          type="text"
-                          value={addressCountry} 
-                          onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, e.target.value, addressZip)} 
-                          placeholder="Country" 
-                          className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
-                        />
-                      </div>
-                      {/* ZIP Code */}
-                      <div className="col-span-1">
-                        <label className="text-xs font-bold text-slate-700 mb-1.5 block">ZIP / Postal Code</label>
-                        <input 
-                          type="text"
-                          value={addressZip} 
-                          onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, addressCountry, e.target.value)} 
-                          placeholder="ZIP / Postal Code" 
-                          className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-800">Website Address</label>
-                    <input 
-                      type="text" 
-                      value={website} 
-                      onChange={(e) => setWebsite(e.target.value)} 
-                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-800">Countries of Expertise</label>
-                    <input 
-                      type="text" 
-                      value={countriesExpertise} 
-                      onChange={(e) => setCountriesExpertise(e.target.value)} 
-                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-semibold text-black focus:bg-white focus:border-black outline-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-800">Registered Email Address</label>
-                    <input 
-                      type="email" 
-                      disabled
-                      value={email} 
-                      className="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl text-sm font-semibold text-slate-500 outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-150 space-y-4">
-                  <span className="text-xs font-bold text-slate-600 tracking-wider block">Additional Details & Verified Documents</span>
-                  {consultantType === "Freelancer" ? (
-                    <div className="grid grid-cols-1 gap-4">
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-slate-800">SMM / Portfolio Link</label>
-                        <input 
-                          type="text"
-                          value={portfolioLink}
-                          onChange={(e) => setPortfolioLink(e.target.value)}
-                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none"
-                        />
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-slate-800">Bio</label>
-                        <textarea 
-                          value={aboutMe}
-                          onChange={(e) => setAboutMe(e.target.value)}
-                          rows={3}
-                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none resize-none"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-slate-800">Gov Reg / License Code</label>
-                        <input 
-                          type="text"
-                          value={govRegNumber}
-                          onChange={(e) => setGovRegNumber(e.target.value)}
-                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none"
-                        />
-                      </div>
-                      <div className="space-y-3 md:col-span-2 pt-2 border-t border-slate-100">
-                        <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">Office / Practice Address Details</label>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="col-span-1 sm:col-span-2">
-                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Area / Locality / Street Address</label>
-                            <input 
-                              type="text"
-                              value={addressArea}
-                              onChange={(e) => updateFullAddress(e.target.value, addressCity, addressState, addressCountry, addressZip)}
-                              placeholder="e.g. Suite 402, MG Road, Landmark Building"
-                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
-                            />
-                          </div>
-                          <div className="col-span-1">
-                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">City / District / Town</label>
-                            <input 
-                              type="text"
-                              value={addressCity}
-                              onChange={(e) => updateFullAddress(addressArea, e.target.value, addressState, addressCountry, addressZip)}
-                              placeholder="e.g. Mumbai / New Delhi"
-                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
-                            />
-                          </div>
-                          <div className="col-span-1">
-                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">State / Province</label>
-                            <input 
-                              type="text"
-                              value={addressState}
-                              onChange={(e) => updateFullAddress(addressArea, addressCity, e.target.value, addressCountry, addressZip)}
-                              placeholder="e.g. Maharashtra"
-                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
-                            />
-                          </div>
-                          <div className="col-span-1">
-                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">Country</label>
-                            <input 
-                              type="text"
-                              value={addressCountry}
-                              onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, e.target.value, addressZip)}
-                              placeholder="e.g. India"
-                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
-                            />
-                          </div>
-                          <div className="col-span-1">
-                            <label className="text-xs font-bold text-slate-700 mb-1.5 block">ZIP / Postal Code</label>
-                            <input 
-                              type="text"
-                              value={addressZip}
-                              onChange={(e) => updateFullAddress(addressArea, addressCity, addressState, addressCountry, e.target.value)}
-                              placeholder="e.g. 400001"
-                              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-sm outline-none focus:border-black text-slate-900 shadow-2xs"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="space-y-1.5 md:col-span-2">
-                        <label className="text-xs font-bold text-slate-800">Upload License / ID Document Copy</label>
-                        <div className="flex items-center gap-3">
-                          <label className="bg-black hover:bg-slate-900 text-white text-xs font-bold tracking-wider px-4 py-2.5 rounded-xl cursor-pointer active:scale-95 transition-all shadow-sm">
-                            Select File
-                            <input 
-                              type="file" 
-                              accept="image/*,application/pdf"
-                              className="hidden" 
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  setLicenseFileName(file.name);
-                                  setLicenseUploaded(true);
-                                }
-                              }}
-                            />
-                          </label>
-                          <span className="text-xs text-slate-500 font-semibold truncate">
-                            {licenseFileName || "No document uploaded yet"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between bg-slate-50 p-4.5 rounded-2xl border border-slate-150 gap-4 flex-wrap">
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-xs font-extrabold text-black">Directory Listing Status</span>
-                    <span className="text-[10px] text-slate-500 font-semibold">Only Business Experts with complete registration details are published live.</span>
-                  </div>
-                  {consultantType !== "Freelancer" && (!govRegNumber || !officeAddress || !licenseUploaded || !businessName || !contactNumber) ? (
-                    <span className="bg-red-50 text-red-700 border border-red-200 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">🔴 Draft (Details Incomplete)</span>
-                  ) : (
-                    <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">🟢 Live on Directory</span>
-                  )}
-                </div>
-
-                <div className="pt-4 flex justify-end">
-                  <button 
-                    onClick={handleSaveProfile}
-                    className="bg-black hover:bg-slate-900 text-white font-bold text-xs px-6 py-3.5 rounded-xl tracking-wider transition-all active:scale-[0.98] shadow-md cursor-pointer"
+                {/* Footer Controls */}
+                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(1)}
+                    className="w-full sm:w-auto px-6 py-3 border border-slate-300 rounded-2xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer flex items-center justify-center gap-1.5"
                   >
-                    Save Profile Changes
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>Back</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => goToNextStep(3)}
+                    className="w-full sm:w-auto px-8 py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+                  >
+                    <span>Next Step</span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-            ) : activeTab === "inquiries" ? (
-              <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 mb-4 tracking-wide">
-                  Incoming Applicant Inquiries
-                </h3>
+            )}
 
-                {inquiries.length === 0 ? (
-                  <div className="text-center py-10 text-slate-400 font-medium text-sm">
-                    No new inquiries currently available.
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {inquiries.map(inq => (
-                      <div key={inq.id} className="border border-slate-150 rounded-2xl p-5 hover:shadow-md transition-all bg-white relative group">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <h4 className="font-bold text-black text-sm">{inq.name}</h4>
-                            <span className="text-[10px] bg-slate-100 text-black px-2.5 py-0.5 rounded-md font-bold mt-1.5 inline-block tracking-wider">
-                              {inq.type} ({inq.country})
-                            </span>
-                          </div>
-                          <span className="text-[10px] font-semibold text-slate-400">{inq.time}</span>
-                        </div>
-                        <p className="text-xs text-slate-500 leading-relaxed font-medium mt-3">{inq.message}</p>
-                        
-                        <div className="mt-4 pt-3 border-t border-slate-100 flex justify-end gap-2.5">
-                          <button 
-                            onClick={() => setInquiries(inquiries.filter(item => item.id !== inq.id))}
-                            className="text-xs font-bold text-slate-450 hover:text-black px-3.5 py-1.5 transition-colors"
-                          >
-                            Decline
-                          </button>
-                          <button 
-                            onClick={() => handleAcceptInquiry(inq.id)}
-                            className="bg-black hover:bg-slate-900 text-white text-xs font-bold tracking-wider px-5 py-2 rounded-xl active:scale-95 transition-all shadow-sm"
-                          >
-                            Accept Inquiry
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : activeTab === "cases" ? (
-              <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 mb-4 tracking-wide">
-                  Active Client Milestones List
-                </h3>
-
-                {activeCases.length === 0 ? (
-                  <div className="text-center py-10 text-slate-400 font-medium text-sm">
-                    No active cases. Accept inquiries to initiate escrow cases.
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {activeCases.map(c => (
-                      <div key={c.id} className="border border-slate-150 rounded-2xl p-5 hover:shadow-md transition-all bg-white relative">
-                        <div className="flex items-center justify-between mb-3.5">
-                          <h4 className="font-bold text-black text-sm">{c.name}</h4>
-                          <span className="text-[10px] font-bold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-md">
-                            {c.escrow}
-                          </span>
-                        </div>
-                        <p className="text-xs font-bold text-black">{c.visa}</p>
-                        <p className="text-[10px] text-slate-400 font-bold mt-1 tracking-wider">{c.status}</p>
-
-                        <div className="mt-5">
-                          <div className="flex items-center justify-between text-[10px] font-bold mb-1.5">
-                            <span>Case milestone progress</span>
-                            <span>{c.progress}%</span>
-                          </div>
-                          <input 
-                            type="range" 
-                            min="0" 
-                            max="100" 
-                            value={c.progress}
-                            onChange={(e) => {
-                              const val = parseInt(e.target.value);
-                              setActiveCases(activeCases.map(item => item.id === c.id ? { ...item, progress: val, status: val === 100 ? "Completed & Escrow Released" : "milestone in-progress" } : item));
-                            }}
-                            className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-black" 
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : activeTab === "upgrade" ? (
-              <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 mb-6 tracking-wide">
-                  Membership Tier Plans Comparison
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                  <div className="border border-slate-150 rounded-2xl p-6 shadow-sm space-y-4">
+            {/* STEP 3: LOCATION & VERIFICATION */}
+            {currentStep === 3 && (
+              <div className="space-y-6 animate-premium-fade">
+                
+                {/* Business Location Dropdowns */}
+                <div className="space-y-3">
+                  <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Business Location</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 tracking-wider">Current Tier</span>
-                      <h4 className="text-lg font-bold text-black mt-1">Standard Directory</h4>
+                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Country *</label>
+                      <select
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                      >
+                        <option value="India">India 🇮🇳</option>
+                        <option value="UAE">UAE 🇦🇪</option>
+                        <option value="United Kingdom">United Kingdom 🇬🇧</option>
+                        <option value="Canada">Canada 🇨🇦</option>
+                      </select>
                     </div>
-                    <p className="text-xs text-slate-500 leading-relaxed font-medium">Basic directory listing, standard case commission applies. Receive applicant inquiries up to 5 per week.</p>
-                    <button 
-                      disabled={true}
-                      className="w-full bg-slate-100 text-slate-400 py-2.5 rounded-lg text-xs font-bold tracking-wider cursor-not-allowed"
-                    >
-                      Coming Soon
-                    </button>
-                  </div>
 
-                  <div className="border-2 border-black rounded-2xl p-6 shadow-sm space-y-4 relative overflow-hidden bg-slate-50/20">
-                    <span className="absolute top-2.5 right-2.5 text-[9px] font-bold bg-black text-white px-2 py-0.5 rounded-md">Highly Rated</span>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-550 tracking-wider">Premium Partner</span>
-                      <h4 className="text-lg font-bold text-[#111111] mt-1">Elite Accelerator</h4>
-                    </div>
-                    <p className="text-xs text-slate-500 leading-relaxed font-medium">Featured directory listing boost, direct messaging to all applicants, zero commission on escrow bookings, priority support.</p>
-                    <button 
-                      disabled={true}
-                      className="w-full bg-black/60 text-white/80 py-2.5 rounded-lg text-xs font-bold tracking-wider cursor-not-allowed"
-                    >
-                      Coming Soon
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : activeTab === "photos" ? (
-              <div className="bg-white border border-slate-200/50 rounded-3xl p-6 shadow-sm space-y-6 animate-premium-fade">
-                <h3 className="text-base font-bold text-black border-b border-slate-100 pb-3 tracking-wide">
-                  Upload Photos & Gallery Documents
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <label className="border-2 border-dashed border-slate-250 rounded-2xl p-6 text-center hover:bg-slate-50 cursor-pointer transition-all block group">
-                    <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2 group-hover:text-black transition-colors" />
-                    <span className="text-xs font-bold text-black block">Upload Case Success Files</span>
-                    <span className="text-[10px] text-slate-500 mt-0.5 block font-semibold">PDF, JPG, PNG up to 10MB</span>
-                    <input 
-                      type="file" 
-                      accept="image/*,application/pdf"
-                                  onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          handleFileUpload(file);
-                        }
-                      }}
-                    />
-                  </label>
-
-                  <label className="border-2 border-dashed border-slate-250 rounded-2xl p-6 text-center hover:bg-slate-50 cursor-pointer transition-all block group">
-                    <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2 group-hover:text-black transition-colors" />
-                    <span className="text-xs font-bold text-black block">Upload ID Document/License</span>
-                    <span className="text-[10px] text-slate-500 mt-0.5 block font-semibold">PDF, JPG, PNG up to 10MB</span>
-                    <input 
-                      type="file" 
-                      accept="image/*,application/pdf"
-                      className="hidden" 
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          handleFileUpload(file);
-                        }
-                      }}
-                    />
-                  </label>
-                </div>
-
-                <div className="space-y-3 pt-4">
-                  <span className="text-xs font-bold text-black block tracking-wider">Uploaded Gallery Files List ({uploadedFiles.length})</span>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {uploadedFiles.map((file, idx) => (
-                      <div key={idx} className="bg-slate-50 border border-slate-150 p-4.5 rounded-xl flex items-center justify-between text-xs font-bold text-black shadow-sm">
-                        <span className="truncate pr-2">{file.name}</span>
-                        <button onClick={() => setUploadedFiles(uploadedFiles.filter(item => item.name !== file.name))} className="text-black font-extrabold hover:text-red-650 transition-colors text-sm">×</button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : null}
-          </main>
-      {showAdModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 animate-fadeIn px-4 font-sans">
-          <div className="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4 border border-slate-100 max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-              <div>
-                <h3 className="font-sora font-extrabold text-base text-black tracking-wide">Post a New Ad</h3>
-                <p className="text-xs text-slate-400 font-medium">Create a promotional advertisement offer for your services</p>
-              </div>
-              <button 
-                onClick={() => { setAdNotice(""); setShowAdModal(false); }} 
-                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center transition-all cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            {adNotice ? (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center space-y-2 my-4 animate-fadeIn">
-                <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto text-xl font-bold shadow-md">✓</div>
-                <h4 className="font-sora font-extrabold text-emerald-900 text-base">Ad Submitted!</h4>
-                <p className="text-xs font-semibold text-emerald-700">{adNotice}</p>
-              </div>
-            ) : (
-              <form onSubmit={handleAddAd} className="space-y-4 text-left">
-                {/* Ad Title */}
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-700 block">Ad Title *</label>
-                  <input 
-                    required
-                    type="text" 
-                    value={adTitle} 
-                    onChange={(e) => setAdTitle(e.target.value)} 
-                    placeholder="e.g. Express Admission & Student Visa Assistance"
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:border-black transition-colors"
-                  />
-                </div>
-
-                {/* Company Name */}
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-700 block">Company Name *</label>
-                  <input 
-                    required
-                    type="text" 
-                    value={adCompany || businessName} 
-                    onChange={(e) => setAdCompany(e.target.value)} 
-                    placeholder="e.g. VisaFormula Overseas Education"
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:border-black transition-colors"
-                  />
-                </div>
-
-                {/* Category Dropdown */}
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-700 block">Category *</label>
-                  <select
-                    value={adCategory}
-                    onChange={(e) => setAdCategory(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:border-black bg-white font-semibold cursor-pointer"
-                  >
-                    <option value="Visit Visa">Visit Visa</option>
-                    <option value="Student Visa">Student Visa</option>
-                    <option value="Work Visa">Work Visa</option>
-                    <option value="PR & Residency">PR & Residency</option>
-                  </select>
-                </div>
-
-                {/* Cover Photo */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-700 block">Cover Photo / Banner</label>
-                  <div className="flex flex-col sm:flex-row gap-2.5 items-center">
-                    <label className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-4 py-2.5 rounded-xl cursor-pointer flex items-center justify-center gap-2 border border-slate-200 shrink-0 transition-colors">
-                      <Upload className="w-4 h-4" />
-                      <span>Upload Cover Photo</span>
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                              setAdCoverPhoto(reader.result as string);
-                            };
-                            reader.readAsDataURL(file);
-                          }
-                        }}
+                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">State *</label>
+                      <input
+                        type="text"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        placeholder="Select State"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
                       />
-                    </label>
-                    <span className="text-[10px] text-slate-400 font-medium hidden sm:inline">OR</span>
-                    <input 
-                      type="text" 
-                      value={adCoverPhoto.startsWith("data:") ? "Image Uploaded ✓" : adCoverPhoto} 
-                      onChange={(e) => setAdCoverPhoto(e.target.value)} 
-                      placeholder="Paste Image URL..."
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs outline-none"
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">City *</label>
+                      <input
+                        type="text"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        placeholder="Select City"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Office Address & Pin Location */}
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-extrabold text-slate-900 mb-1">Office Address *</label>
+                    <textarea
+                      rows={2}
+                      value={officeAddress}
+                      onChange={(e) => setOfficeAddress(e.target.value)}
+                      placeholder="Enter complete office address"
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] resize-none"
                     />
                   </div>
-                  {adCoverPhoto && (
-                    <div className="relative rounded-xl overflow-hidden border border-slate-200 h-28 bg-slate-50 flex items-center justify-center mt-2">
-                      <img src={adCoverPhoto} alt="Ad Preview" className="h-full w-full object-cover" />
-                      <button 
-                        type="button" 
-                        onClick={() => setAdCoverPhoto("")}
-                        className="absolute top-1.5 right-1.5 bg-black/70 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold"
-                      >
-                        ✕
-                      </button>
+
+                  <div>
+                    <label className="block text-xs font-extrabold text-slate-900 mb-1">Pin Location</label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={pinLocation}
+                        onChange={(e) => setPinLocation(e.target.value)}
+                        placeholder="Search on map or enter address"
+                        className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                      />
+                      <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* Description */}
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-700 block">Description *</label>
-                  <textarea 
-                    required
-                    value={adDescription} 
-                    onChange={(e) => setAdDescription(e.target.value)} 
-                    placeholder="Provide full details about your advertisement offer..."
-                    rows={3}
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-xs outline-none focus:border-black transition-colors resize-none"
-                  />
+                {/* Contact Information */}
+                <div className="space-y-3">
+                  <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Contact Information</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Phone Number *</label>
+                      <input
+                        type="tel"
+                        required
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        placeholder="+91 98765 43210"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">WhatsApp Number</label>
+                      <input
+                        type="tel"
+                        value={whatsappNumber}
+                        onChange={(e) => setWhatsappNumber(e.target.value)}
+                        placeholder="+91 98765 43210"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Email Address *</label>
+                      <input
+                        type="email"
+                        required
+                        value={emailAddress}
+                        onChange={(e) => setEmailAddress(e.target.value)}
+                        placeholder="info@yourbusiness.com"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex justify-end gap-2.5 pt-3 border-t border-slate-100">
-                  <button 
-                    type="button" 
-                    onClick={() => { setAdNotice(""); setShowAdModal(false); }} 
-                    className="px-4 py-2.5 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                {/* Verification Documents (Optional but recommended) */}
+                <div className="space-y-3">
+                  <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Verification Documents (Optional but recommended)</h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {[
+                      { key: "businessReg", label: "Business Registration" },
+                      { key: "profLicense", label: "Professional License" },
+                      { key: "officePhoto", label: "Office Photo" },
+                      { key: "govId", label: "Government ID" }
+                    ].map((doc, i) => {
+                      const isUploaded = docUploads[doc.key];
+                      return (
+                        <div
+                          key={i}
+                          onClick={() => setDocUploads(prev => ({ ...prev, [doc.key]: !isUploaded }))}
+                          className={`p-3 border-2 border-dashed rounded-2xl text-center cursor-pointer transition-all ${
+                            isUploaded
+                              ? 'bg-teal-50/80 border-[#00a896] text-[#00a896]'
+                              : 'bg-slate-50/50 border-slate-300 text-slate-600 hover:bg-slate-50'
+                          }`}
+                        >
+                          <Upload className="w-5 h-5 mx-auto mb-1 opacity-70" />
+                          <p className="text-[11px] font-extrabold leading-tight">{doc.label}</p>
+                          <span className="text-[9px] font-bold block mt-1">
+                            {isUploaded ? "✓ Uploaded" : "Upload"}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Footer Controls */}
+                <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(2)}
+                    className="w-full sm:w-auto px-6 py-3 border border-slate-300 rounded-2xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer flex items-center justify-center gap-1.5"
                   >
-                    Cancel
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>Back</span>
                   </button>
-                  <button 
-                    type="submit" 
-                    className="px-6 py-2.5 bg-black hover:bg-neutral-900 text-white rounded-xl text-xs font-bold tracking-wider shadow-md active:scale-95 transition-all"
+
+                  <button
+                    type="button"
+                    onClick={handleCompleteAndContinue}
+                    className="w-full sm:w-auto px-8 py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                   >
-                    Publish Ad
+                    <span>Complete & Continue</span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
-              </form>
+              </div>
             )}
           </div>
-        </div>
-      )}
+        )}
 
-          {showOfferModal && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn px-4">
-              <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
-                <div className="flex justify-between items-center border-b pb-2">
-                  <h3 className="font-bold text-sm text-black tracking-wider">Create a Promotional Offer</h3>
-                  <button onClick={() => setShowOfferModal(false)} className="text-slate-450 hover:text-black font-bold">×</button>
+        {/* STEP 3.5: OTP VERIFICATION MODAL / OVERLAY */}
+        {showOtpModal && (
+          <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-up">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200/90 space-y-5 text-center font-sora relative">
+              
+              <button
+                onClick={() => setShowOtpModal(false)}
+                className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="w-14 h-14 bg-teal-50 border border-teal-200 text-[#00a896] rounded-2xl flex items-center justify-center mx-auto shadow-2xs">
+                <Mail className="w-7 h-7" />
+              </div>
+
+              <div>
+                <h3 className="text-xl font-black text-slate-900 tracking-tight">Verify Your Contact Email</h3>
+                <p className="text-xs font-semibold text-slate-500 mt-1.5 leading-relaxed">
+                  We have sent a 6-digit verification code to <strong className="text-slate-800">{emailAddress || "your email address"}</strong>
+                </p>
+              </div>
+
+              {otpError && (
+                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold rounded-xl text-center">
+                  {otpError}
                 </div>
-                <form onSubmit={handleAddOffer} className="space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-500">Offer Title</label>
-                    <input 
-                      required
-                      type="text" 
-                      value={offerTitle} 
-                      onChange={(e) => setOfferTitle(e.target.value)} 
-                      placeholder="e.g. Canada Visa Appeal Special discount"
-                      className="w-full px-4.5 py-3 border rounded-xl text-xs outline-none"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-500">Discount Amount / Percentage</label>
-                    <input 
-                      required
-                      type="text" 
-                      value={offerDiscount} 
-                      onChange={(e) => setOfferDiscount(e.target.value)} 
-                      placeholder="e.g. ₹5,000 or 15%"
-                      className="w-full px-4.5 py-3 border rounded-xl text-xs outline-none"
-                    />
-                  </div>
-                  <div className="flex justify-end gap-2.5 pt-2">
-                    <button type="button" onClick={() => setShowOfferModal(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-500">Cancel</button>
-                    <button type="submit" className="px-5 py-2 bg-black text-white rounded-lg text-xs font-bold tracking-wider">Launch Offer</button>
-                  </div>
-                </form>
+              )}
+
+              {/* 6 Digit OTP Inputs */}
+              <div className="flex justify-center gap-2 pt-2">
+                {otpDigits.map((digit, idx) => (
+                  <input
+                    key={idx}
+                    id={`reg-otp-box-${idx}`}
+                    type="text"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleDigitChange(e.target.value, idx)}
+                    onKeyDown={(e) => handleDigitKeyDown(e, idx)}
+                    className="w-10 h-12 text-center text-lg font-black bg-slate-50 border border-slate-300 rounded-xl focus:border-[#00a896] outline-none"
+                  />
+                ))}
+              </div>
+
+              <div className="text-xs font-semibold text-slate-500 pt-1">
+                {resendCooldown > 0 ? (
+                  <span>Resend code in <strong className="text-slate-800">{resendCooldown}s</strong></span>
+                ) : (
+                  <button
+                    onClick={() => setResendCooldown(30)}
+                    className="text-[#00a896] font-bold hover:underline cursor-pointer"
+                  >
+                    Resend Verification Code
+                  </button>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleVerifyOtp}
+                disabled={verifyingOtp}
+                className="w-full py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer active:scale-98 disabled:bg-slate-300"
+              >
+                {verifyingOtp ? "Verifying Code..." : "Verify Code & Finish"}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 4: COMPLETION SCREEN ("YOU'RE ALL SET!") */}
+        {currentStep === 4 && (
+          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200/90 text-center space-y-6 animate-premium-fade">
+            
+            {/* Top Celebration Badge */}
+            <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-xs font-black px-4 py-1.5 rounded-full border border-emerald-200 uppercase tracking-wider">
+              <span>YOU'RE ALL SET!</span>
+            </div>
+
+            {/* Checkmark Graphic */}
+            <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
+              <div className="w-24 h-24 bg-[#00a896] rounded-full flex items-center justify-center text-white shadow-xl shadow-teal-500/20">
+                <CheckCircle className="w-14 h-14" />
               </div>
             </div>
-          )}
-        </div>
-      )}
+
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Congratulations!</h2>
+              <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1.5 max-w-md mx-auto">
+                Your account has been created successfully. Your profile is now live on VisaFormula.
+              </p>
+            </div>
+
+            {/* Profile Completion Box */}
+            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 max-w-lg mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-left">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full border-4 border-[#00a896] flex items-center justify-center text-sm font-black text-slate-900 shrink-0">
+                  82%
+                </div>
+                <div>
+                  <h4 className="text-xs font-extrabold text-slate-900">Profile Completion</h4>
+                  <p className="text-[11px] font-semibold text-slate-500 mt-0.5">Great! Complete remaining details to get more visibility & enquiries.</p>
+                </div>
+              </div>
+
+              <a
+                href="/consultant/dashboard"
+                className="bg-[#00a896] text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shrink-0 hover:bg-[#008f80] transition-colors"
+              >
+                Complete Profile →
+              </a>
+            </div>
+
+            {/* What's Next Checklist */}
+            <div className="bg-teal-50/70 border border-teal-200/80 rounded-3xl p-6 max-w-lg mx-auto text-left space-y-3">
+              <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#00a896]" />
+                <span>What's Next?</span>
+              </h4>
+              <ul className="space-y-2 text-xs font-bold text-slate-700">
+                <li className="flex items-center gap-2">• Our team will verify your details</li>
+                <li className="flex items-center gap-2">• You can start receiving enquiries</li>
+                <li className="flex items-center gap-2">• Build your reputation with reviews</li>
+                <li className="flex items-center gap-2">• Grow your business globally</li>
+              </ul>
+            </div>
+
+            {/* Go to Dashboard CTA */}
+            <div className="pt-2">
+              <a
+                href="/consultant/dashboard"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 bg-[#00a896] hover:bg-[#008f80] text-white text-sm font-black rounded-2xl shadow-xl transition-all active:scale-95 cursor-pointer"
+              >
+                <LayoutDashboard className="w-4.5 h-4.5" />
+                <span>Go to Dashboard</span>
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -51,6 +51,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // ── Generate & store OTP ─────────────────────────────────
     const otp = generateOtp();
+    console.log(`[send-verification-code] Generated OTP for ${email}: ${otp}`);
 
     // ── Parallel Execution: Resend Email Dispatch + DB Save ──
     const emailPromise = sendVerificationOTP({ otp, email, expiresInMinutes: 10 }).catch(emailErr => {

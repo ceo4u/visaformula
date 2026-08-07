@@ -54,21 +54,10 @@ export const sendEmail = async ({
 
     if (result.error) {
       console.warn('[Resend] API returned warning/error:', result.error);
-      // Fallback for Resend test mode if custom domain isn't fully active yet
-      if (result.error.message?.toLowerCase().includes('domain') || result.error.message?.toLowerCase().includes('verify')) {
-        console.log('[Resend] Retrying with default onboarding sender...');
-        const fallbackResult = await resend.emails.send({
-          from: 'onboarding@resend.dev',
-          to,
-          subject,
-          html,
-          text,
-        });
-        if (fallbackResult.data) return { success: true, data: fallbackResult.data };
-      }
       return { success: false, error: result.error.message || JSON.stringify(result.error) };
     }
 
+    console.log('[Resend] Email sent successfully with ID:', result.data?.id);
     return { success: true, data: result.data };
   } catch (error: any) {
     console.error('Failed to send email via Resend:', error);

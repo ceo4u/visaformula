@@ -18,14 +18,13 @@ export function getResendClient(): Resend {
   if (_resendClient) return _resendClient;
   const apiKey = getApiKey();
   if (!apiKey) {
-    throw new Error(
-      '[Resend] RESEND_API_KEY is not configured in environment variables. ' +
-      'Add RESEND_API_KEY to your .env file and server environment variables.'
-    );
+    throw new Error('[Resend] RESEND_API_KEY is missing');
   }
   _resendClient = new Resend(apiKey);
   return _resendClient;
 }
+
+
 
 export interface SendEmailOptions {
   to: string | string[];

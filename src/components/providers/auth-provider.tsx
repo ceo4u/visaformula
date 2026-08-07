@@ -177,7 +177,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             googleProvider.setCustomParameters({ prompt: 'select_account' });
 
             const result = await signInWithPopup(auth, googleProvider);
-            const fbUser = result.user;
+            const idToken = await fbUser.getIdToken();
 
             const nameParts = (fbUser.displayName || '').trim().split(' ');
             const gFirstName = nameParts[0] || fbUser.email?.split('@')[0] || 'User';
@@ -199,12 +199,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 localStorage.setItem("seeker_lastName", gLastName);
             }
 
-            // Register/Notify backend of real Google auth
+            // Verify Firebase ID Token on SSR Backend API & resolve database user
             try {
-                const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/auth/google`, {
+                const response = await fetch('/api/auth/google', {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: fbUser.email, name: fbUser.displayName, uid: fbUser.uid })
+                    body: JSON.stringify({ idToken, role: 'seeker' })
                 });
 
                 if (response.ok) {
@@ -215,6 +215,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                             localStorage.setItem("visaformula_user", JSON.stringify(data.user));
                         }
                     }
+                    return data;
                 }
             } catch (backendErr) {
                 console.warn("Google Auth backend sync warning:", backendErr);

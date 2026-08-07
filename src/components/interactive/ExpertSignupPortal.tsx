@@ -226,7 +226,7 @@ function ExpertSignupPortalContent() {
   };
 
   return (
-    <div className="w-full font-sans">
+    <div className="w-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <div className="w-full">
         
         {/* Validation error message */}
@@ -241,67 +241,61 @@ function ExpertSignupPortalContent() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200/90">
             
             {/* Left Options Box */}
-            <div className="md:col-span-7 space-y-6">
+            <div className="md:col-span-7 space-y-5">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Create your account</h1>
-                <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">Welcome! Sign up to get started as a verified consultant</p>
+                <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Create your account</h1>
+                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} className="text-sm text-slate-500 mt-1.5">Welcome! Sign up to get started as a verified consultant</p>
               </div>
 
               <div className="space-y-3">
+                {/* Google Button */}
                 <button
                   onClick={handleGoogleSignup}
                   disabled={googleLoading}
-                  className="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-300 rounded-2xl text-xs font-bold text-slate-800 flex items-center justify-center gap-3 transition-all shadow-2xs cursor-pointer"
+                  className="w-full py-3.5 px-5 bg-white hover:bg-slate-50 border border-slate-300 rounded-2xl font-semibold text-slate-800 flex items-center justify-center gap-3 transition-all shadow-sm cursor-pointer text-sm"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                  </svg>
-                  <span>{googleLoading ? "Connecting to Google..." : "Continue with Google"}</span>
-                </button>
-
-                <button
-                  onClick={() => setCurrentStep(1)}
-                  className="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-300 rounded-2xl text-xs font-bold text-slate-800 flex items-center justify-center gap-3 transition-all shadow-2xs cursor-pointer"
-                >
-                  <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center text-white text-[10px] font-black">f</div>
-                  <span>Continue with Facebook</span>
-                </button>
-
-                <button
-                  onClick={() => setCurrentStep(1)}
-                  className="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-300 rounded-2xl text-xs font-bold text-slate-800 flex items-center justify-center gap-3 transition-all shadow-2xs cursor-pointer"
-                >
-                  <div className="w-4 h-4 bg-blue-700 text-white flex items-center justify-center text-[10px] font-black rounded-xs">in</div>
-                  <span>Continue with LinkedIn</span>
+                  {googleLoading ? (
+                    <svg className="animate-spin w-4 h-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                    </svg>
+                  )}
+                  <span>{googleLoading ? "Signing in with Google..." : "Continue with Google"}</span>
                 </button>
               </div>
 
               <div className="relative flex items-center justify-center">
                 <div className="border-t border-slate-200 w-full" />
-                <span className="bg-white px-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider absolute">OR</span>
+                <span className="bg-white px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-widest absolute" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>OR</span>
               </div>
 
               <button
                 onClick={() => setCurrentStep(1)}
-                className="w-full py-3.5 px-4 bg-[#00a896] hover:bg-[#008f80] text-white rounded-2xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer active:scale-98"
+                className="w-full py-3.5 px-5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md cursor-pointer active:scale-98 text-sm"
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
-                <Mail className="w-4 h-4" />
+                <Mail className="w-4.5 h-4.5" />
                 <span>Continue with Email</span>
               </button>
 
-              <p className="text-[11px] font-semibold text-slate-400 text-center flex items-center justify-center gap-1">
+              <p className="text-xs text-slate-400 text-center flex items-center justify-center gap-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 <Lock className="w-3 h-3" />
                 <span>Your data is safe with us. We never post on your behalf.</span>
               </p>
             </div>
 
             {/* Right "Why register on VisaFormula?" Card */}
-            <div className="md:col-span-5 bg-teal-50/70 border border-teal-200/80 rounded-3xl p-6 space-y-4">
-              <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                <Shield className="w-4.5 h-4.5 text-[#00a896]" />
+            <div className="md:col-span-5 bg-teal-50/60 border border-teal-200/60 rounded-3xl p-6 space-y-4">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <Shield className="w-4.5 h-4.5 text-[#00a896] shrink-0" />
                 <span>Why register on VisaFormula?</span>
               </h3>
 
@@ -329,20 +323,20 @@ function ExpertSignupPortalContent() {
 
         {/* WIZARD CONTAINER FOR STEPS 1, 2, 3 */}
         {currentStep >= 1 && currentStep <= 3 && (
-          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/90 space-y-6">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/90 space-y-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             
             {/* STEP HEADER & WIZARD PROGRESS BAR */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
-                <span className="bg-teal-100 text-[#00a896] text-[10px] font-black px-3 py-1 rounded-full border border-teal-200 uppercase tracking-wider">
+                <span className="bg-teal-100 text-[#00a896] text-[10px] font-bold px-3 py-1 rounded-full border border-teal-200 uppercase tracking-wider" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   STEP {currentStep}
                 </span>
-                <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   {currentStep === 1 && "Business Information"}
                   {currentStep === 2 && "Services & Expertise"}
                   {currentStep === 3 && "Location & Verification"}
                 </h2>
-                <p className="text-xs font-semibold text-slate-500 mt-0.5">
+                <p className="text-sm text-slate-500 mt-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   {currentStep === 1 && "Tell us about your business"}
                   {currentStep === 2 && "Tell us about your services"}
                   {currentStep === 3 && "Help clients find and trust you"}
@@ -366,16 +360,17 @@ function ExpertSignupPortalContent() {
 
             {/* STEP 1: BUSINESS INFORMATION */}
             {currentStep === 1 && (
-              <div className="space-y-5 animate-premium-fade">
+              <div className="space-y-5 animate-premium-fade" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 <div>
-                  <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Business Name *</label>
+                  <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Business Name *</label>
                   <input
                     type="text"
                     required
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
                     placeholder="Enter your business name"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896]"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
                 </div>
 

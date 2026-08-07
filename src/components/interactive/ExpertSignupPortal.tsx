@@ -70,6 +70,8 @@ function ExpertSignupPortalContent() {
   const [showOtpModal, setShowOtpModal] = useState<boolean>(false);
 
   // --- Step 1: Business Info States ---
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [businessType, setBusinessType] = useState("");
   const [yearsInBusiness, setYearsInBusiness] = useState("");
@@ -89,6 +91,9 @@ function ExpertSignupPortalContent() {
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [landmark, setLandmark] = useState("");
+  const [pinCode, setPinCode] = useState("");
   const [officeAddress, setOfficeAddress] = useState("");
   const [pinLocation, setPinLocation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -412,6 +417,36 @@ function ExpertSignupPortalContent() {
             {/* STEP 1: BUSINESS INFORMATION */}
             {currentStep === 1 && (
               <div className="space-y-5 animate-premium-fade" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+
+                {/* First Name + Last Name */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>First Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      placeholder="Enter your first name"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Last Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      placeholder="Enter your last name"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    />
+                  </div>
+                </div>
+
+                {/* Business Name */}
                 <div>
                   <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Business Name *</label>
                   <input
@@ -776,28 +811,60 @@ function ExpertSignupPortalContent() {
                   </div>
                 </div>
 
-                {/* Office Address & Pin Location */}
+                {/* Detailed Address */}
                 <div className="space-y-3">
+                  <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Office Address Details</h4>
+
+                  {/* Street Address */}
                   <div>
-                    <label className="block text-xs font-extrabold text-slate-900 mb-1">Office Address *</label>
-                    <textarea
-                      rows={2}
-                      value={officeAddress}
-                      onChange={(e) => setOfficeAddress(e.target.value)}
-                      placeholder="Enter complete office address"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] resize-none"
+                    <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Street Address *</label>
+                    <input
+                      type="text"
+                      value={streetAddress}
+                      onChange={(e) => setStreetAddress(e.target.value)}
+                      placeholder="Building no., Street name, Area"
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     />
                   </div>
 
+                  {/* Landmark + Pin/Zip Code */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Landmark</label>
+                      <input
+                        type="text"
+                        value={landmark}
+                        onChange={(e) => setLandmark(e.target.value)}
+                        placeholder="e.g. Near City Mall, Opposite Metro"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Pin / Zip Code *</label>
+                      <input
+                        type="text"
+                        value={pinCode}
+                        onChange={(e) => setPinCode(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                        placeholder="e.g. 110001"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Google Maps Pin */}
                   <div>
-                    <label className="block text-xs font-extrabold text-slate-900 mb-1">Pin Location</label>
+                    <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Google Maps / Pin Location</label>
                     <div className="relative">
                       <input
                         type="text"
                         value={pinLocation}
                         onChange={(e) => setPinLocation(e.target.value)}
-                        placeholder="Search on map or enter address"
-                        className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                        placeholder="Paste Google Maps link or coordinates"
+                        className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       />
                       <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                     </div>

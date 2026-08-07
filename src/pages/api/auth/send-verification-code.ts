@@ -51,24 +51,27 @@ export const POST: APIRoute = async ({ request }) => {
 
     // ── Generate & store OTP ─────────────────────────────────
     const otp = generateOtp();
-    try {
-      const saveResult = await saveOtp(email, otp);
-      if (!saveResult.success && saveResult.error === 'COOLDOWN_ACTIVE') {
-        return new Response(JSON.stringify({
-          status: 'error',
-          code: 'COOLDOWN_ACTIVE',
-          message: `Please wait ${saveResult.cooldownSecondsLeft} seconds before requesting another code.`,
-          cooldownSecondsLeft: saveResult.cooldownSecondsLeft,
-        }), { status: 429, headers: { 'Content-Type': 'application/json' } });
-      }
-    } catch (saveErr) {
-      console.warn('[send-verification-code] DB save fallback mode active:', saveErr);
-    }
 
-    // ── Instant Email Dispatch via Resend ─────
-    await sendVerificationOTP({ otp, email, expiresInMinutes: 10 }).catch(emailErr => {
+    // ── Parallel Execution: Resend Email Dispatch + DB Save ──
+    const emailPromise = sendVerificationOTP({ otp, email, expiresInMinutes: 10 }).catch(emailErr => {
       console.error('[send-verification-code] Email dispatch error:', emailErr);
     });
+
+    const savePromise = saveOtp(email, otp).catch(saveErr => {
+      console.warn('[send-verification-code] DB save fallback mode active:', saveErr);
+      return { success: true };
+    });
+
+    const [_, saveResult] = await Promise.all([emailPromise, savePromise]);
+
+    if (saveResult && 'success' in saveResult && !saveResult.success && saveResult.error === 'COOLDOWN_ACTIVE') {
+      return new Response(JSON.stringify({
+        status: 'error',
+        code: 'COOLDOWN_ACTIVE',
+        message: `Please wait ${saveResult.cooldownSecondsLeft} seconds before requesting another code.`,
+        cooldownSecondsLeft: saveResult.cooldownSecondsLeft,
+      }), { status: 429, headers: { 'Content-Type': 'application/json' } });
+    }
 
     return new Response(JSON.stringify({
       status: 'success',

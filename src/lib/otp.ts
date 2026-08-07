@@ -29,6 +29,17 @@ export function hashOtp(otp: string): string {
 
 // ─── Storage ───────────────────────────────────────────────
 
+let _migrationsRan = false;
+async function ensureMigrations() {
+  if (_migrationsRan) return;
+  try {
+    await runMigrations();
+    _migrationsRan = true;
+  } catch (e) {
+    console.warn('[otp] Migrations check warning:', e);
+  }
+}
+
 /**
  * Save or refresh OTP record in `email_verifications` table.
  * Respects resend limits and cooldown.
@@ -38,7 +49,7 @@ export async function saveOtp(email: string, otp: string): Promise<{
   error?: 'MAX_RESENDS_EXCEEDED' | 'COOLDOWN_ACTIVE';
   cooldownSecondsLeft?: number;
 }> {
-  await runMigrations();
+  await ensureMigrations();
   const pool = getPool();
   const normalizedEmail = email.toLowerCase();
   const otpHash = hashOtp(otp);

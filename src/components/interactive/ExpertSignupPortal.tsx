@@ -3,7 +3,7 @@ import {
   CheckCircle, ArrowLeft, ArrowRight, Upload, Plus, X, 
   User, FileText, Globe, Star, Shield, ArrowUpRight, 
   MessageSquare, Briefcase, Mail, Phone, ExternalLink, 
-  Building, CheckSquare, Sparkles, MapPin, Lock, LayoutDashboard, ChevronDown
+  Building, CheckSquare, Sparkles, MapPin, Lock, LayoutDashboard, ChevronDown, Edit2
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 
@@ -111,6 +111,8 @@ function ExpertSignupPortalContent() {
   const [resendCooldown, setResendCooldown] = useState(30);
   const [verifyingOtp, setVerifyingOtp] = useState(false);
   const [otpError, setOtpError] = useState("");
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [tempEmail, setTempEmail] = useState("");
 
   const [validationError, setValidationError] = useState("");
   const { signInWithGoogle } = useAuth();
@@ -138,15 +140,68 @@ function ExpertSignupPortalContent() {
 
   const defaultLanguages = ["English", "Hindi", "Telugu", "Tamil", "Punjabi", "Arabic", "French", "Other"];
 
+  // Auto-restore draft from localStorage on mount so details never vanish
   useEffect(() => {
-    // Check if expert is already logged in
     if (typeof window !== "undefined") {
       const isLoggedIn = localStorage.getItem("expert_isLoggedIn");
       if (isLoggedIn === "true") {
         setCurrentStep(4);
+        return;
       }
+      try {
+        const savedDraft = localStorage.getItem("expert_form_draft");
+        if (savedDraft) {
+          const draft = JSON.parse(savedDraft);
+          if (draft.firstName) setFirstName(draft.firstName);
+          if (draft.lastName) setLastName(draft.lastName);
+          if (draft.businessName) setBusinessName(draft.businessName);
+          if (draft.businessType) setBusinessType(draft.businessType);
+          if (draft.yearsInBusiness) setYearsInBusiness(draft.yearsInBusiness);
+          if (draft.businessWebsite) setBusinessWebsite(draft.businessWebsite);
+          if (draft.businessDescription) setBusinessDescription(draft.businessDescription);
+          if (draft.companyLogo) setCompanyLogo(draft.companyLogo);
+          if (draft.selectedServices) setSelectedServices(draft.selectedServices);
+          if (draft.selectedCountries) setSelectedCountries(draft.selectedCountries);
+          if (draft.selectedLanguages) setSelectedLanguages(draft.selectedLanguages);
+          if (draft.consultationMode) setConsultationMode(draft.consultationMode);
+          if (draft.country) setCountry(draft.country);
+          if (draft.state) setState(draft.state);
+          if (draft.city) setCity(draft.city);
+          if (draft.streetAddress) setStreetAddress(draft.streetAddress);
+          if (draft.landmark) setLandmark(draft.landmark);
+          if (draft.pinCode) setPinCode(draft.pinCode);
+          if (draft.phoneNumber) setPhoneNumber(draft.phoneNumber);
+          if (draft.whatsappNumber) setWhatsappNumber(draft.whatsappNumber);
+          if (draft.emailAddress) setEmailAddress(draft.emailAddress);
+          if (draft.currentStep && draft.currentStep >= 1 && draft.currentStep <= 3) {
+            setCurrentStep(draft.currentStep);
+          }
+        }
+      } catch (e) {}
     }
   }, []);
+
+  // Auto-save draft to localStorage whenever fields change
+  useEffect(() => {
+    if (typeof window !== "undefined" && currentStep >= 1 && currentStep <= 3) {
+      try {
+        const draft = {
+          firstName, lastName, businessName, businessType, yearsInBusiness,
+          businessWebsite, businessDescription, companyLogo,
+          selectedServices, selectedCountries, selectedLanguages, consultationMode,
+          country, state, city, streetAddress, landmark, pinCode,
+          phoneNumber, whatsappNumber, emailAddress, currentStep
+        };
+        localStorage.setItem("expert_form_draft", JSON.stringify(draft));
+      } catch (e) {}
+    }
+  }, [
+    firstName, lastName, businessName, businessType, yearsInBusiness,
+    businessWebsite, businessDescription, companyLogo,
+    selectedServices, selectedCountries, selectedLanguages, consultationMode,
+    country, state, city, streetAddress, landmark, pinCode,
+    phoneNumber, whatsappNumber, emailAddress, currentStep
+  ]);
 
   useEffect(() => {
     let timer: any;
@@ -316,6 +371,9 @@ function ExpertSignupPortalContent() {
           existingList = [newExpert, ...existingList];
           localStorage.setItem("visaformula_all_experts", JSON.stringify(existingList));
         }
+
+        // Clear temporary draft
+        localStorage.removeItem("expert_form_draft");
       }
       setVerifyingOtp(false);
       setShowOtpModal(false);
@@ -346,6 +404,27 @@ function ExpertSignupPortalContent() {
 
   return (
     <div className="w-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      {/* Top-left fixed Back button — steps back when in wizard, goes home when on step 1 */}
+      {currentStep !== 4 && (
+        <div className="fixed top-4 left-4 z-40 pointer-events-auto">
+          <button
+            type="button"
+            onClick={() => {
+              if (currentStep > 1) {
+                setCurrentStep(prev => prev - 1);
+              } else {
+                window.location.href = "/";
+              }
+            }}
+            className="flex items-center gap-1.5 text-xs font-bold text-white bg-white/20 hover:bg-white/30 transition-all px-4 py-2 rounded-full border border-white/30 backdrop-blur-md shadow-md cursor-pointer active:scale-95"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>{currentStep > 1 ? "Back" : "Back to Home"}</span>
+          </button>
+        </div>
+      )}
+
       <div className="w-full">
         
         {/* Validation error message */}
@@ -1037,7 +1116,7 @@ function ExpertSignupPortalContent() {
         {/* STEP 3.5: OTP VERIFICATION MODAL / OVERLAY */}
         {showOtpModal && (
           <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-up">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200/90 space-y-5 text-center font-sora relative">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200/90 space-y-5 text-center relative" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               
               <button
                 onClick={() => setShowOtpModal(false)}
@@ -1050,11 +1129,61 @@ function ExpertSignupPortalContent() {
                 <Mail className="w-7 h-7" />
               </div>
 
-              <div>
-                <h3 className="text-xl font-black text-slate-900 tracking-tight">Verify Your Contact Email</h3>
-                <p className="text-xs font-semibold text-slate-500 mt-1.5 leading-relaxed">
-                  We have sent a 6-digit verification code to <strong className="text-slate-800">{emailAddress || "your email address"}</strong>
+              <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <h3 className="text-xl font-black text-slate-900 tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Verify Your Contact Email</h3>
+                <p className="text-xs font-semibold text-slate-500 mt-1.5 leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  We have sent a 6-digit verification code to
                 </p>
+
+                {!isEditingEmail ? (
+                  <div className="inline-flex items-center gap-2 bg-slate-100 px-3.5 py-1.5 rounded-full mt-2 border border-slate-200">
+                    <strong className="text-slate-800 text-xs font-bold">{emailAddress || "your email address"}</strong>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setTempEmail(emailAddress);
+                        setIsEditingEmail(true);
+                      }}
+                      className="text-[#00a896] hover:text-[#008f80] text-xs font-extrabold flex items-center gap-1 cursor-pointer transition-colors"
+                      title="Edit Email Address"
+                    >
+                      <Edit2 className="w-3 h-3" />
+                      <span>Edit</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-2 mt-2.5">
+                    <input
+                      type="email"
+                      value={tempEmail}
+                      onChange={(e) => setTempEmail(e.target.value)}
+                      placeholder="Enter correct email"
+                      className="px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] w-full max-w-[210px]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      autoFocus
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (tempEmail.trim()) {
+                          setEmailAddress(tempEmail.trim());
+                          setIsEditingEmail(false);
+                          setResendCooldown(30);
+                        }
+                      }}
+                      className="px-3 py-1.5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-xl text-xs font-extrabold shadow-xs cursor-pointer transition-all active:scale-95"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditingEmail(false)}
+                      className="px-2 py-1.5 text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
               </div>
 
               {otpError && (

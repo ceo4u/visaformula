@@ -223,17 +223,22 @@ function ExpertSignupPortalContent() {
     setValidationError("");
     setGoogleSuccessMsg("");
     try {
-      const res = await signInWithGoogle();
+      const res: any = await signInWithGoogle();
       if (res) {
-        if (res.email) setEmailAddress(res.email);
-        if (res.name) {
-          const parts = res.name.trim().split(" ");
+        const userEmail = res.email || res.user?.email || "";
+        const userName = res.name || res.displayName || res.user?.displayName || "";
+
+        if (userEmail) setEmailAddress(userEmail);
+        if (userName && userName !== "undefined") {
+          const parts = userName.trim().split(" ");
           const gFirst = parts[0] || "";
           const gLast = parts.slice(1).join(" ") || "";
           if (gFirst) setFirstName(gFirst);
           if (gLast) setLastName(gLast);
         }
-        setGoogleSuccessMsg(`Successfully authenticated via Google as ${res.name || res.email}!`);
+        
+        const displayName = userName && userName !== "undefined" ? userName : userEmail;
+        setGoogleSuccessMsg(`Successfully authenticated via Google as ${displayName}!`);
         setCurrentStep(1);
       }
     } catch (e: any) {

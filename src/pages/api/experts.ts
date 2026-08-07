@@ -78,20 +78,39 @@ export const GET: APIRoute = async ({ url }) => {
       params
     );
 
-    const experts = result.rows.map((row: any) => {
-      // Parse JSON fields safely
-      let tags: string[] = [];
-      try {
-        const t = typeof row.expertise_tags === 'string' ? JSON.parse(row.expertise_tags) : row.expertise_tags;
-        if (Array.isArray(t)) tags = t;
-      } catch { tags = row.expertise_tags ? [row.expertise_tags] : []; }
+    // Clean Postgres array format e.g. {"Uk","Canada"} or JSON array
+    const parseArrayField = (val: any): string[] => {
+      if (!val) return [];
+      if (Array.isArray(val)) {
+        return val.map(x => String(x).replace(/^[\{\"\s]+|[\}\"\s]+$/g, '')).filter(Boolean);
+      }
+      if (typeof val === 'string') {
+        try {
+          const parsed = JSON.parse(val);
+          if (Array.isArray(parsed)) return parsed.map(x => String(x).trim()).filter(Boolean);
+        } catch {}
+        return val
+          .replace(/^\{|\}$/g, '')
+          .split(',')
+          .map(x => x.replace(/^["'\s]+|["'\s]+$/g, '').trim())
+          .filter(Boolean);
+      }
+      return [];
+    };
 
-      let countries: string[] = [];
-      try {
-        const c = typeof row.countries_expertise === 'string' ? JSON.parse(row.countries_expertise) : row.countries_expertise;
-        if (Array.isArray(c)) countries = c;
-        else if (typeof c === 'string') countries = c.split(',').map((x: string) => x.trim()).filter(Boolean);
-      } catch { countries = row.countries_expertise ? row.countries_expertise.split(',').map((x: string) => x.trim()) : []; }
+    // Deduplicate by business_name (keep latest)
+    const seenNames = new Set<string>();
+    const uniqueRows = result.rows.filter((row: any) => {
+      const key = (row.business_name || '').toLowerCase().trim();
+      if (!key) return true;
+      if (seenNames.has(key)) return false;
+      seenNames.add(key);
+      return true;
+    });
+
+    const experts = uniqueRows.map((row: any) => {
+      const tags = parseArrayField(row.expertise_tags);
+      const countries = parseArrayField(row.countries_expertise);
 
       return {
         id: `db_${row.id}`,
@@ -113,6 +132,7 @@ export const GET: APIRoute = async ({ url }) => {
         createdAt: row.created_at,
       };
     });
+
 
     return new Response(JSON.stringify({ success: true, experts, total: experts.length }), {
       status: 200,

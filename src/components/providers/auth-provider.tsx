@@ -143,29 +143,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const signInWithGoogle = async () => {
         try {
-            const apiKey = import.meta.env.PUBLIC_FIREBASE_API_KEY || import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY;
-            const authDomain = import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN;
+            const apiKey = import.meta.env.PUBLIC_FIREBASE_API_KEY || import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY || process.env.PUBLIC_FIREBASE_API_KEY;
+            const authDomain = import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || process.env.PUBLIC_FIREBASE_AUTH_DOMAIN;
 
-            if (apiKey && authDomain) {
-                const { initializeApp, getApps, getApp } = await import("firebase/app");
-                const { getAuth, GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
+            if (!apiKey || !authDomain) {
+                throw new Error("Firebase Google Authentication keys missing in environment variables.");
+            }
 
-                const firebaseConfig = {
-                    apiKey,
-                    authDomain,
-                    projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-                    storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET || import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-                    messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-                    appId: import.meta.env.PUBLIC_FIREBASE_APP_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
-                };
+            const { initializeApp, getApps, getApp } = await import("firebase/app");
+            const { getAuth, GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
 
-                const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-                const auth = getAuth(app);
-                const googleProvider = new GoogleAuthProvider();
+            const firebaseConfig = {
+                apiKey,
+                authDomain,
+                projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+                storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET || import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+                messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+                appId: import.meta.env.PUBLIC_FIREBASE_APP_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID
+            };
 
-                const result = await signInWithPopup(auth, googleProvider);
-                const fbUser = result.user;
+            const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+            const auth = getAuth(app);
+            const googleProvider = new GoogleAuthProvider();
+            googleProvider.setCustomParameters({ prompt: 'select_account' });
 
+            const result = await signInWithPopup(auth, googleProvider);
+            const fbUser = result.user;
+
+            const nameParts = (fbUser.displayName || '').trim().split(' ');
+            const gFirstName = nameParts[0] || fbUser.email?.split('@')[0] || 'User';
+            const gLastName = nameParts.slice(1).join(' ') || '';
+
+            const authenticatedUser: User = {
+                uid: fbUser.uid,
+                email: fbUser.email || '',
+                displayName: fbUser.displayName || `${gFirstName} ${gLastName}`.trim() || 'User',
+                type: 'seeker'
+            };
+
+            setUser(authenticatedUser);
+
+            if (typeof window !== "undefined") {
+                localStorage.setItem("visaformula_user", JSON.stringify(authenticatedUser));
+                localStorage.setItem("seeker_email", fbUser.email || '');
+                localStorage.setItem("seeker_firstName", gFirstName);
+                localStorage.setItem("seeker_lastName", gLastName);
+            }
+
+            // Register/Notify backend of real Google auth
+            try {
                 const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/auth/google`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -174,35 +200,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
                 if (response.ok) {
                     const data = await response.json();
-                    if (data.status === 'needs_role') {
-                        return data;
+                    if (data.user) {
+                        setUser(data.user);
+                        if (typeof window !== "undefined") {
+                            localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                        }
                     }
-                    setUser(data.user);
-                    if (typeof window !== "undefined") {
-                        localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-                    }
-                    return data;
                 }
+            } catch (backendErr) {
+                console.warn("Google Auth backend sync warning:", backendErr);
             }
-        } catch (error: any) {
-            console.warn("Firebase Google login popup error or environment missing, executing seamless auth fallback...", error);
-        }
 
-        // Fast Fail-Safe Fallback: Instant Google Authentication Persistence
-        const googleUser: User = {
-            uid: `google_${Date.now()}`,
-            email: "user.google@visaformula.com",
-            displayName: "Google User",
-            type: "seeker"
-        };
-        setUser(googleUser);
-        if (typeof window !== "undefined") {
-            localStorage.setItem("visaformula_user", JSON.stringify(googleUser));
-            localStorage.setItem("seeker_email", "user.google@visaformula.com");
-            localStorage.setItem("seeker_firstName", "Google");
-            localStorage.setItem("seeker_lastName", "User");
+            return { status: "success", user: authenticatedUser, name: fbUser.displayName, email: fbUser.email };
+        } catch (error: any) {
+            console.error("Google Authentication Popup Error:", error);
+            throw error;
         }
-        return { status: "success", user: googleUser };
     };
 
     const signOut = async () => {

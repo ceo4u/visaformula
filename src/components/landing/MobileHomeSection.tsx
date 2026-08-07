@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import {
   Search, Home as HomeIcon, ChevronRight, Plus,
   MessageSquare, User, ShieldCheck, FileText, DollarSign,
-  Activity, MapPin, Globe, ChevronDown
+  Activity, MapPin, Globe, ChevronDown,
+  LayoutGrid, UserCheck, Building2, Briefcase, Scale, MoreHorizontal
 } from 'lucide-react';
 import { trackAdClick, handleAdClickWithAuth } from '../../utils/trackAdClick';
 
@@ -84,9 +85,20 @@ const classifieds = [
 
 const classifiedTabs = ['All', 'Jobs', 'Accommodation', 'Business', 'Study Abroad', 'Visa Appeals'];
 
+const searchCategories = [
+  { key: 'all',          label: 'All Services',  icon: LayoutGrid,     purpose: '' },
+  { key: 'consultant',   label: 'Consultant',     icon: UserCheck,      purpose: 'Consultant' },
+  { key: 'universities', label: 'Universities',   icon: Building2,      purpose: 'Higher Education / Study' },
+  { key: 'jobs',         label: 'Jobs Abroad',    icon: Briefcase,      purpose: 'Employment / Work' },
+  { key: 'insurance',    label: 'Insurance',      icon: ShieldCheck,    purpose: 'Insurance' },
+  { key: 'lawyers',      label: 'Lawyers',        icon: Scale,          purpose: 'Lawyers' },
+  { key: 'more',         label: 'More',           icon: MoreHorizontal, purpose: '' },
+];
+
 export function MobileHomeSection() {
   const [activeTab, setActiveTab] = useState('All');
   const [activeNav, setActiveNav] = useState('home');
+  const [activeCategory, setActiveCategory] = useState('all');
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -157,8 +169,31 @@ export function MobileHomeSection() {
           </div>
         </div>
 
-        {/* ── 2. Mobile Interactive Search Card (Matches User Screenshot 100%) ── */}
-        <div className="mx-3 mt-3 bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3">
+        {/* ── 2. Mobile Interactive Search Card ── */}
+        <div className="mx-3 mt-3 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+
+          {/* ── Category Tabs Row ── */}
+          <div className="flex items-center gap-1 border-b border-gray-100 px-3 pt-3 pb-0 overflow-x-auto mob-scrollbar">
+            {searchCategories.map(({ key, label, icon: Icon, purpose }) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => { setActiveCategory(key); setSelectedPurpose(purpose); }}
+                className={`flex flex-col items-center gap-0.5 px-2.5 py-2 rounded-t-lg transition-all cursor-pointer shrink-0 border-b-2 ${
+                  activeCategory === key
+                    ? 'text-[#00a896] border-[#00a896] bg-teal-50/60'
+                    : 'text-gray-500 border-transparent hover:text-gray-800'
+                }`}
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
+                <Icon className="w-4 h-4 stroke-[2]" />
+                <span className="text-[9px] font-bold whitespace-nowrap">{label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* ── Search Form ── */}
+          <div className="p-4 space-y-3">
           {/* Header */}
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-teal-50 flex items-center justify-center text-[#00a896] shrink-0">
@@ -250,6 +285,7 @@ export function MobileHomeSection() {
               <span>Search Consultants</span>
             </button>
           </form>
+          </div>{/* end search form wrapper */}
         </div>
 
         {/* ── 2. Dreaming of Studying in Canada Banner ── */}

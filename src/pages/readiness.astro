@@ -1,0 +1,14 @@
+---
+// src/pages/readiness.astro
+import Layout from '../layouts/Layout.astro';
+import VisaReadinessEngine from '../components/readiness/VisaReadinessEngine';
+---
+
+<Layout 
+  title="AI Visa Readiness Score Calculator | VisaFormula" 
+  description="Check your visa readiness score (0-100%) and embassy refusal risk gaps using AI evaluation before submitting official applications for Canada, USA, UK, Germany, and Australia."
+>
+  <main className="min-h-screen bg-slate-50/50 py-8 sm:py-12 px-4">
+    <VisaReadinessEngine client:only="react" />
+  </main>
+</Layout>

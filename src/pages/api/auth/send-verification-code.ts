@@ -12,9 +12,12 @@ import { checkRateLimit, RATE_LIMITS, getIpFromRequest, rateLimitErrorResponse }
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
+  console.log("====================================================");
+  console.log("OTP API HIT");
+  
   try {
-    // ── Validate input ───────────────────────────────────────
     const body = await request.json();
+    console.log("OTP API Request Body:", JSON.stringify(body, null, 2));
     const { email } = body;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email || !emailRegex.test(email)) {

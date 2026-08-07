@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RegisterStart from '../components/auth/RegisterStart';
+---
+
+<Layout 
+  title="Create Account - VisaFormula Initial Registration" 
+  description="Verify humanity with hCaptcha and create your VisaFormula account."
+>
+  <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6 py-12">
+    <div className="w-full max-w-md">
+      <RegisterStart client:only="react" />
+    </div>
+  </main>
+</Layout>

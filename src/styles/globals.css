@@ -13,6 +13,17 @@
   }
 }
 
+/* Override native select option blue highlight → black */
+select option:checked,
+select option:hover {
+  background: linear-gradient(0deg, #0f172a 0%, #0f172a 100%) !important;
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}
+select {
+  accent-color: #0f172a;
+}
+
 @layer base {
   *::selection {
     background-color: #000000 !important;

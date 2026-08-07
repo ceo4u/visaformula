@@ -288,7 +288,7 @@ export function DesktopHomeSection() {
               <div className="flex items-center gap-6 border-b border-gray-100 pb-3 overflow-x-auto scrollbar-none">
                 <button
                   type="button"
-                  onClick={() => setActiveCategory('all')}
+                  onClick={() => { setActiveCategory('all'); setSelectedPurpose(''); }}
                   className={`flex items-center gap-2 text-xs font-extrabold pb-2 transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'all'
                       ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -302,7 +302,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('consultant'); window.location.href = '/find-experts'; }}
+                  onClick={() => { setActiveCategory('consultant'); setSelectedPurpose('Consultant'); }}
                   className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'consultant'
                       ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -316,7 +316,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('universities'); window.location.href = '/universities'; }}
+                  onClick={() => { setActiveCategory('universities'); setSelectedPurpose('Higher Education / Study'); }}
                   className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'universities'
                       ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -330,7 +330,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('jobs'); window.location.href = '/jobs'; }}
+                  onClick={() => { setActiveCategory('jobs'); setSelectedPurpose('Employment / Work'); }}
                   className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'jobs'
                       ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -344,7 +344,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('insurance'); window.location.href = '/find-experts?category=Insurance'; }}
+                  onClick={() => { setActiveCategory('insurance'); setSelectedPurpose('Insurance'); }}
                   className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'insurance'
                       ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -358,7 +358,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('lawyers'); window.location.href = '/find-experts?category=Lawyers'; }}
+                  onClick={() => { setActiveCategory('lawyers'); setSelectedPurpose('Lawyers'); }}
                   className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'lawyers'
                       ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -372,8 +372,12 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { window.location.href = '/find-experts'; }}
-                  className="flex items-center gap-2 text-xs font-bold text-gray-600 hover:text-gray-900 pb-2 transition-all cursor-pointer shrink-0"
+                  onClick={() => { setActiveCategory('more'); }}
+                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                    activeCategory === 'more'
+                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                  }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   <MoreHorizontal className="w-4 h-4 stroke-[2.2]" />

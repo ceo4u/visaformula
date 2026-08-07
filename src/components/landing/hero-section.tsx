@@ -664,7 +664,7 @@ export function HeroSection() {
 
             <button
               type="button"
-              onClick={() => { setActiveTab('consultant'); setCategory('Consultant'); window.location.href = '/find-experts'; }}
+              onClick={() => { setActiveTab('consultant'); setCategory('Consultant'); }}
               className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
                 activeTab === 'consultant'
                   ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -678,7 +678,7 @@ export function HeroSection() {
 
             <button
               type="button"
-              onClick={() => { setActiveTab('universities'); window.location.href = '/universities'; }}
+              onClick={() => { setActiveTab('universities'); setCategory('Student Visa'); }}
               className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
                 activeTab === 'universities'
                   ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -692,7 +692,7 @@ export function HeroSection() {
 
             <button
               type="button"
-              onClick={() => { setActiveTab('jobs'); window.location.href = '/jobs'; }}
+              onClick={() => { setActiveTab('jobs'); setCategory('Work Visa'); }}
               className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
                 activeTab === 'jobs'
                   ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -706,7 +706,7 @@ export function HeroSection() {
 
             <button
               type="button"
-              onClick={() => { setActiveTab('insurance'); setCategory('Insurance'); window.location.href = '/find-experts?category=Insurance'; }}
+              onClick={() => { setActiveTab('insurance'); setCategory('Insurance'); }}
               className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
                 activeTab === 'insurance'
                   ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -720,7 +720,7 @@ export function HeroSection() {
 
             <button
               type="button"
-              onClick={() => { setActiveTab('lawyers'); setCategory('Lawyers'); window.location.href = '/find-experts?category=Lawyers'; }}
+              onClick={() => { setActiveTab('lawyers'); setCategory('Lawyers'); }}
               className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
                 activeTab === 'lawyers'
                   ? 'text-[#00a896] border-b-2 border-[#00a896]'
@@ -734,8 +734,12 @@ export function HeroSection() {
 
             <button
               type="button"
-              onClick={() => { window.location.href = '/find-experts'; }}
-              className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition-all pb-2 cursor-pointer shrink-0"
+              onClick={() => { setActiveTab('more'); }}
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+                activeTab === 'more'
+                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+              }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <MoreHorizontal className="w-4.5 h-4.5 stroke-[2.2]" />

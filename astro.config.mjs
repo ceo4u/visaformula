@@ -23,7 +23,7 @@ export default defineConfig({
   vite: {
     envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_'],
     ssr: {
-      external: ['resend', 'pg', 'bcryptjs', 'nodemailer'],
+      external: ['resend', 'pg', 'bcryptjs', 'nodemailer', 'firebase-admin', 'firebase-admin/app', 'firebase-admin/auth'],
       noExternal: ['framer-motion', 'lucide-react'],
     },
     resolve: {

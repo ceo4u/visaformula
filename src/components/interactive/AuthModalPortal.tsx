@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { 
     Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, CheckCircle, 
-    Sparkles, ShieldCheck, GraduationCap, Briefcase, Plane, Home, X, Globe, User, Phone, MapPin 
+    Sparkles, ShieldCheck, GraduationCap, Briefcase, Plane, Home, X, Globe, User, Phone, MapPin, Edit2 
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 
@@ -80,6 +80,10 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     // Google SSO States
     const [googleLoading, setGoogleLoading] = useState(false);
     const [googleLoadingText, setGoogleLoadingText] = useState("");
+
+    // Email Edit States
+    const [isEditingEmail, setIsEditingEmail] = useState(false);
+    const [tempEmail, setTempEmail] = useState("");
 
     // --- PASSWORD VALIDATION RULES ---
     const hasMinLength = signupPassword.length >= 8;
@@ -851,10 +855,59 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     <Mail className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-bold text-slate-900">Verify Email Address</h3>
-                                    <p className="text-xs text-slate-500 mt-1 font-medium">
-                                        Enter the 6-digit code sent to <span className="font-bold text-slate-800">{signupEmail}</span>
+                                    <h3 className="text-lg font-bold text-slate-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Verify Email Address</h3>
+                                    <p className="text-xs text-slate-500 mt-1 font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                        Enter the 6-digit code sent to
                                     </p>
+                                    {!isEditingEmail ? (
+                                        <div className="flex items-center justify-center gap-1.5 mt-1">
+                                            <span className="text-xs font-bold text-slate-900 break-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{signupEmail}</span>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setTempEmail(signupEmail);
+                                                    setIsEditingEmail(true);
+                                                }}
+                                                className="inline-flex items-center gap-1 text-[11px] font-extrabold text-[#00a896] hover:text-[#008f80] hover:underline cursor-pointer bg-teal-50 px-2 py-0.5 rounded-md border border-teal-100 shrink-0"
+                                            >
+                                                <Edit2 className="w-3 h-3" />
+                                                <span>Edit</span>
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center justify-center gap-2 mt-2">
+                                            <input
+                                                type="email"
+                                                value={tempEmail}
+                                                onChange={(e) => setTempEmail(e.target.value)}
+                                                placeholder="Enter correct email"
+                                                className="px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] w-full max-w-[210px]"
+                                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                                autoFocus
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={async () => {
+                                                    if (tempEmail.trim()) {
+                                                        const newEmail = tempEmail.trim();
+                                                        setSignupEmail(newEmail);
+                                                        setIsEditingEmail(false);
+                                                        handleSendVerificationCode();
+                                                    }
+                                                }}
+                                                className="px-3 py-1.5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-xl text-xs font-extrabold shadow-xs cursor-pointer transition-all active:scale-95 shrink-0"
+                                            >
+                                                Save & Send
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setIsEditingEmail(false)}
+                                                className="px-2 py-1.5 text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {otpError && (

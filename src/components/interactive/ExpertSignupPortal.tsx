@@ -1,11 +1,68 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   CheckCircle, ArrowLeft, ArrowRight, Upload, Plus, X, 
   User, FileText, Globe, Star, Shield, ArrowUpRight, 
   MessageSquare, Briefcase, Mail, Phone, ExternalLink, 
-  Building, CheckSquare, Sparkles, MapPin, Lock, LayoutDashboard
+  Building, CheckSquare, Sparkles, MapPin, Lock, LayoutDashboard, ChevronDown
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
+
+// ─── Custom Dropdown (no browser-blue) ───────────────────────────────────────
+interface CustomSelectProps {
+  value: string;
+  onChange: (val: string) => void;
+  options: { value: string; label: string }[];
+  className?: string;
+}
+function CustomSelect({ value, onChange, options, className = "" }: CustomSelectProps) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const selected = options.find(o => o.value === value);
+
+  return (
+    <div ref={ref} className={`relative ${className}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <button
+        type="button"
+        onClick={() => setOpen(prev => !prev)}
+        className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none hover:border-[#00a896] focus:border-[#00a896] transition-colors cursor-pointer"
+        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+      >
+        <span>{selected?.label || "Select..."}</span>
+        <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div className="absolute z-50 top-full mt-1.5 left-0 right-0 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
+          {options.map(opt => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => { onChange(opt.value); setOpen(false); }}
+              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                opt.value === value
+                  ? "bg-slate-900 text-white font-semibold"
+                  : "text-slate-700 hover:bg-slate-100"
+              }`}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 function ExpertSignupPortalContent() {
   // Wizard Step State: 0 (Start options), 1 (Business Info), 2 (Services & Expertise), 3 (Location & Verification), 3.5 (OTP Modal), 4 (Congratulations / Done)
@@ -14,30 +71,24 @@ function ExpertSignupPortalContent() {
 
   // --- Step 1: Business Info States ---
   const [businessName, setBusinessName] = useState("");
-  const [businessType, setBusinessType] = useState("Registered consultancy");
-  const [yearsInBusiness, setYearsInBusiness] = useState("3-5 years");
+  const [businessType, setBusinessType] = useState("");
+  const [yearsInBusiness, setYearsInBusiness] = useState("");
   const [businessWebsite, setBusinessWebsite] = useState("");
   const [businessDescription, setBusinessDescription] = useState("");
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
 
   // --- Step 2: Services & Expertise States ---
-  const [selectedServices, setSelectedServices] = useState<string[]>([
-    "Student Visa", "Visitor Visa", "PR / Permanent Residency", "Work Visa"
-  ]);
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([
-    "Canada", "Australia", "UK", "USA"
-  ]);
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([
-    "English", "Hindi"
-  ]);
-  const [consultationMode, setConsultationMode] = useState<"Online" | "In Office" | "Both">("Both");
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [consultationMode, setConsultationMode] = useState<"Online" | "In Office" | "Both" | "">("");
   const [customServiceInput, setCustomServiceInput] = useState("");
   const [showAddCustomService, setShowAddCustomService] = useState(false);
 
   // --- Step 3: Location & Verification States ---
-  const [country, setCountry] = useState("India");
-  const [state, setState] = useState("Delhi");
-  const [city, setCity] = useState("New Delhi");
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
   const [officeAddress, setOfficeAddress] = useState("");
   const [pinLocation, setPinLocation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -376,33 +427,34 @@ function ExpertSignupPortalContent() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Business Type *</label>
-                    <select
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Business Type *</label>
+                    <CustomSelect
                       value={businessType}
-                      onChange={(e) => setBusinessType(e.target.value)}
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] cursor-pointer"
-                    >
-                      <option value="Registered consultancy">Registered consultancy</option>
-                      <option value="Authorised immigration / visa appeal lawyer">Authorised immigration / visa appeal lawyer</option>
-                      <option value="Education & Training Institute">Education & Training Institute</option>
-                      <option value="Freelancer">Freelancer</option>
-                      <option value="Employer / HR agency">Employer / HR agency</option>
-                      <option value="Tour operator">Tour operator</option>
-                    </select>
+                      onChange={setBusinessType}
+                      options={[
+                        { value: "Registered consultancy", label: "Registered consultancy" },
+                        { value: "Authorised immigration / visa appeal lawyer", label: "Authorised immigration / visa appeal lawyer" },
+                        { value: "Education & Training Institute", label: "Education & Training Institute" },
+                        { value: "Freelancer", label: "Freelancer" },
+                        { value: "Employer / HR agency", label: "Employer / HR agency" },
+                        { value: "Tour operator", label: "Tour operator" },
+                      ]}
+                    />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Years in Business *</label>
-                    <select
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Years in Business *</label>
+                    <CustomSelect
                       value={yearsInBusiness}
-                      onChange={(e) => setYearsInBusiness(e.target.value)}
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] cursor-pointer"
-                    >
-                      <option value="1-2 years">1-2 years</option>
-                      <option value="3-5 years">3-5 years</option>
-                      <option value="5-10 years">5-10 years</option>
-                      <option value="10+ years">10+ years</option>
-                    </select>
+                      onChange={setYearsInBusiness}
+                      options={[
+                        { value: "Less than 1 year", label: "Less than 1 year" },
+                        { value: "1-2 years", label: "1-2 years" },
+                        { value: "3-5 years", label: "3-5 years" },
+                        { value: "5-10 years", label: "5-10 years" },
+                        { value: "10+ years", label: "10+ years" },
+                      ]}
+                    />
                   </div>
                 </div>
 
@@ -681,16 +733,23 @@ function ExpertSignupPortalContent() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                       <label className="block text-[11px] font-extrabold text-slate-700 mb-1">Country *</label>
-                      <select
+                      <CustomSelect
                         value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896]"
-                      >
-                        <option value="India">India 🇮🇳</option>
-                        <option value="UAE">UAE 🇦🇪</option>
-                        <option value="United Kingdom">United Kingdom 🇬🇧</option>
-                        <option value="Canada">Canada 🇨🇦</option>
-                      </select>
+                        onChange={setCountry}
+                        options={[
+                          { value: "India", label: "India 🇮🇳" },
+                          { value: "UAE", label: "UAE 🇦🇪" },
+                          { value: "United Kingdom", label: "United Kingdom 🇬🇧" },
+                          { value: "Canada", label: "Canada 🇨🇦" },
+                          { value: "Australia", label: "Australia 🇦🇺" },
+                          { value: "USA", label: "USA 🇺🇸" },
+                          { value: "Germany", label: "Germany 🇩🇪" },
+                          { value: "Singapore", label: "Singapore 🇸🇬" },
+                          { value: "New Zealand", label: "New Zealand 🇳🇿" },
+                          { value: "Other", label: "Other 🌐" },
+                        ]}
+                        className=""
+                      />
                     </div>
 
                     <div>

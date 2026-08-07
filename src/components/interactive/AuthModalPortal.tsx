@@ -914,15 +914,6 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     )}
                                 </div>
 
-                                {devOtp && (
-                                    <div className="bg-teal-50 border border-teal-200/80 rounded-xl p-2.5 text-center text-xs font-bold text-[#00a896]">
-                                        <div className="text-[11px] text-teal-800 font-semibold mb-1">Your 6-Digit OTP Code:</div>
-                                        <span className="text-base font-black tracking-widest bg-white text-[#00a896] px-3 py-1 rounded-lg border border-teal-200 shadow-2xs inline-block select-all">
-                                            {devOtp}
-                                        </span>
-                                    </div>
-                                )}
-
                                 {otpError && (
                                     <p className="text-xs font-bold text-red-600 bg-red-50 p-2 rounded-lg">{otpError}</p>
                                 )}

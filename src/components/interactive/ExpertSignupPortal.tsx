@@ -239,9 +239,8 @@ function ExpertSignupPortalContent() {
       try {
           const res = await signInWithGoogle();
           
-          // If user is brand new (needs_role), set First Name & Last Name from Google name, and do NOT force Gmail name as Business Name!
-          if (res && res.status === 'needs_role') {
-              setGoogleLoadingText("Initializing your expert profile...");
+          if (res) {
+              setGoogleLoadingText("Google connected! Setting up your details...");
               const nameParts = (res.name || '').trim().split(' ');
               const gFirstName = nameParts[0] || '';
               const gLastName = nameParts.slice(1).join(' ') || '';
@@ -254,39 +253,38 @@ function ExpertSignupPortalContent() {
                 setLastName(gLastName);
                 localStorage.setItem("expert_lastName", gLastName);
               }
-
-              const response = await fetch("/api/auth/google/register", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                      email: res.email,
-                      name: res.name,
-                      businessName: businessName || `${gFirstName} ${gLastName}`.trim(),
-                      uid: res.uid,
-                      role: 'expert'
-                  })
-              });
-
-              if (response.ok) {
-                  const data = await response.json();
-                  if (typeof window !== "undefined") {
-                      localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-                      if (data.user && data.user.rawUser) {
-                          const raw = data.user.rawUser;
-                          localStorage.setItem("expert_businessName", raw.business_name || `${gFirstName} ${gLastName}`.trim());
-                          localStorage.setItem("expert_email", raw.email);
-                          localStorage.setItem("expert_isLoggedIn", "true");
-                      }
-                  }
-              } else {
-                  const errData = await response.json();
-                  throw new Error(errData.message || "Failed to register expert profile.");
+              if (res.email) {
+                setEmail(res.email);
+                localStorage.setItem("expert_email", res.email);
               }
-          }
 
-          setGoogleLoadingText("Authenticated! Redirecting to dashboard...");
-          await new Promise(resolve => setTimeout(resolve, 800));
-          window.location.href = "/consultant/dashboard";
+              try {
+                const response = await fetch("/api/auth/google/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: res.email,
+                        name: res.name,
+                        businessName: businessName || `${gFirstName} ${gLastName}`.trim(),
+                        uid: res.uid,
+                        role: 'expert'
+                    })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (typeof window !== "undefined" && data.user) {
+                        localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                        localStorage.setItem("expert_isLoggedIn", "true");
+                    }
+                }
+              } catch (e) {}
+
+              setGoogleLoadingText("Google Verified! Proceeding to Step 2 (Location & Expertise)...");
+              await new Promise(resolve => setTimeout(resolve, 500));
+              setGoogleLoading(false);
+              setStep(2);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+          }
       } catch (e: any) {
           setValidationError(e.message || "Google signup failed.");
           setGoogleLoading(false);
@@ -479,13 +477,12 @@ function ExpertSignupPortalContent() {
     e.preventDefault();
     setValidationError("");
     
-    // Auto-populate expertise tags if empty to avoid blocking registration
-    const finalExpertise = expertiseTags.length > 0 ? expertiseTags : ["Study visa", "Visa filing assistance"];
-    if (expertiseTags.length === 0) {
-      setExpertiseTags(finalExpertise);
-    }
+    // Use user-selected tags or empty array (no forced hardcoding)
+    const finalExpertise = expertiseTags;
 
-    const finalAddress = expertAddress || (addressArea ? `${addressArea}, ${addressCity}, ${addressState}, ${addressCountry} - ${addressZip}` : officeAddress) || "Primary Office Address";
+    const finalAddress = (addressArea || addressCity) 
+      ? [addressArea, addressCity, addressState, addressCountry, addressZip].filter(Boolean).join(", ") 
+      : (officeAddress || addressCity || "");
 
     try {
       await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/expert`, {
@@ -505,7 +502,7 @@ function ExpertSignupPortalContent() {
           gov_registration_number: govRegNumber,
           license_document_url: "uploaded_license_copy.pdf",
           expertise_tags: finalExpertise,
-          countries_expertise: countriesExpertise.trim() ? countriesExpertise.split(",").map(c => c.trim()).filter(Boolean) : ["Canada", "UK", "USA"]
+          countries_expertise: countriesExpertise.trim() ? countriesExpertise.split(",").map(c => c.trim()).filter(Boolean) : []
         })
       });
     } catch (err) {
@@ -516,16 +513,21 @@ function ExpertSignupPortalContent() {
     if (typeof window !== "undefined") {
       localStorage.setItem("expert_firstName", firstName || "Expert");
       localStorage.setItem("expert_lastName", lastName || "User");
-      localStorage.setItem("expert_businessName", businessName || "Consultancy Agency");
+      localStorage.setItem("expert_businessName", businessName || `${firstName} ${lastName}`.trim());
       localStorage.setItem("expert_email", email);
       localStorage.setItem("expert_contactNumber", `${countryCode} ${contactNumber}`);
       localStorage.setItem("expert_advisorType", consultantType);
-      localStorage.setItem("expert_aboutMe", aboutMe || "Verified visa and relocation consultant.");
+      localStorage.setItem("expert_aboutMe", aboutMe || "");
       localStorage.setItem("expert_portfolioLink", portfolioLink || "");
-      localStorage.setItem("expert_officeAddress", finalAddress);
-      localStorage.setItem("expert_govRegNumber", govRegNumber || "REG-2026-OK");
+      localStorage.setItem("expert_officeAddress", finalAddress || addressCity || "");
+      localStorage.setItem("expert_area", addressArea || "");
+      localStorage.setItem("expert_city", addressCity || "");
+      localStorage.setItem("expert_state", addressState || "");
+      localStorage.setItem("expert_country", addressCountry || "");
+      localStorage.setItem("expert_zip", addressZip || "");
+      localStorage.setItem("expert_govRegNumber", govRegNumber || "");
       localStorage.setItem("expert_expertiseTags", JSON.stringify(finalExpertise));
-      localStorage.setItem("expert_countriesExpertise", countriesExpertise || "Canada, UK, USA, Australia, Cyprus");
+      localStorage.setItem("expert_countriesExpertise", countriesExpertise || "");
       localStorage.setItem("expert_profilePhoto", profilePhoto || "");
       localStorage.setItem("expert_isLoggedIn", "true");
       localStorage.setItem("visaformula_user", JSON.stringify({

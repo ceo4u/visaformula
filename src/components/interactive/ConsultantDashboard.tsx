@@ -97,7 +97,7 @@ export function ConsultantDashboard() {
             const bizName = localStorage.getItem("expert_businessName") || "";
             const finalName = bizName || storedName || "Immigration Expert";
             const role = localStorage.getItem("expert_advisorType") || "Registered Consultant";
-            const city = localStorage.getItem("expert_officeAddress") || "Location Not Specified";
+            const city = localStorage.getItem("expert_city") || localStorage.getItem("expert_officeAddress") || "Location Not Specified";
             const bio = localStorage.getItem("expert_aboutMe") || "Licensed immigration & visa consultant helping clients with study, work, and migration visas.";
             const image = localStorage.getItem("expert_profilePhoto") || localStorage.getItem("expert_profilePhotoUrl") || "";
             
@@ -106,13 +106,13 @@ export function ConsultantDashboard() {
                     const tags = localStorage.getItem("expert_expertiseTags");
                     if (tags) {
                         const parsed = JSON.parse(tags);
-                        if (Array.isArray(parsed)) return parsed.join(", ");
+                        if (Array.isArray(parsed) && parsed.length > 0) return parsed.join(", ");
                     }
                 } catch(e) {}
-                return "Study Visa, Work Permit, PR Migration";
-            })() || "Study Visa, Work Permit, PR Migration";
+                return "";
+            })() || "Not Specified";
 
-            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Canada, UK, USA, Australia";
+            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Not Specified";
 
             const activeProfile = {
                 name: finalName,

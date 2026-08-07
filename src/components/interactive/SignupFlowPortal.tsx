@@ -2,30 +2,29 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Sparkles, ArrowRight, X } from "lucide-react";
 import { AuthModalPortalContent } from "./AuthModalPortal";
 
-export function SignupFlowPortal() {
-    const [mode, setMode] = useState<"selection" | "seeker" | "expert">("selection");
+interface SignupFlowPortalProps {
+    initialMode?: "selection" | "seeker" | "expert";
+}
+
+export function SignupFlowPortal({ initialMode = "seeker" }: SignupFlowPortalProps) {
+    const [mode, setMode] = useState<"selection" | "seeker" | "expert">(initialMode);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
+            const path = window.location.pathname;
             const urlParams = new URLSearchParams(window.location.search);
             const roleParam = urlParams.get("role");
-            if (roleParam === "seeker") {
+
+            if (roleParam === "seeker" || path.includes("/signup/seeker") || path === "/signup") {
                 setMode("seeker");
-            } else if (roleParam === "expert") {
+            } else if (roleParam === "expert" || path.includes("/signup/expert")) {
                 window.location.href = "/signup/expert";
             }
         }
-    }, []);
+    }, [initialMode]);
 
     return (
-        <div 
-            onClick={(e) => {
-                if (e.target === e.currentTarget) {
-                    window.location.href = "/";
-                }
-            }}
-            className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sora overflow-y-auto selection:bg-[#00a896] selection:text-white"
-        >
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sora overflow-y-auto selection:bg-[#00a896] selection:text-white">
             <div className="relative z-10 w-full max-w-2xl flex flex-col items-center justify-center my-auto py-4 font-sora">
                 
                 {/* Top Navigation Header */}
@@ -39,7 +38,7 @@ export function SignupFlowPortal() {
                 </div>
 
                 {/* ========================================================================= */}
-                {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") - Unified Sora Font */}
+                {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") */}
                 {/* ========================================================================= */}
                 {mode === "selection" ? (
                     <div className="text-slate-900 max-w-2xl w-[94vw] sm:w-full p-6 sm:p-9 text-center space-y-6 sm:space-y-8 animate-fade-up relative my-auto bg-white border border-slate-200/90 rounded-[32px] shadow-2xl font-sora max-h-[85vh] overflow-y-auto">

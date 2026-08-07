@@ -237,8 +237,13 @@ export function MobileHomeSection() {
                   <option value="United States">United States</option>
                   <option value="Australia">Australia</option>
                   <option value="Germany">Germany</option>
+                  <option value="Europe">Europe</option>
+                  <option value="Schengen Countries">Schengen Countries</option>
+                  <option value="South Africa">South Africa</option>
                   <option value="New Zealand">New Zealand</option>
                   <option value="UAE">UAE</option>
+                  <option value="Other">Other</option>
+
                 </select>
               </div>
 

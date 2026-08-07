@@ -123,12 +123,16 @@ const countriesList = [
   'UK',
   'Australia',
   'Germany',
+  'Europe',
+  'Schengen Countries',
+  'South Africa',
   'France',
   'Japan',
   'Singapore',
   'UAE',
   'Other'
 ]
+
 
 const locationsList = [
   'All Locations',

@@ -391,11 +391,12 @@ export function DesktopHomeSection() {
                   label="Destination" 
                   value={selectedCountry} 
                   placeholder="Select Country" 
-                  options={['Canada', 'United Kingdom', 'United States', 'Australia', 'Germany', 'New Zealand', 'UAE']} 
+                  options={['Canada', 'United Kingdom', 'United States', 'Australia', 'Germany', 'Europe', 'Schengen Countries', 'South Africa', 'New Zealand', 'UAE', 'Other']} 
                   isOpen={countryOpen}
                   onToggle={() => { setCountryOpen(!countryOpen); setPurposeOpen(false); setVisaTypeOpen(false); setCityOpen(false); }}
                   onSelect={(val) => { setSelectedCountry(val); setCountryOpen(false); }}
                 />
+
 
                 <CustomSelect 
                   label="I am going for" 

@@ -414,6 +414,18 @@ function ExpertSignupPortalContent() {
 
         // Clear temporary draft
         localStorage.removeItem("expert_form_draft");
+
+        // Send Welcome Email instantly via Resend
+        fetch("/api/auth/send-welcome-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: emailAddress,
+            firstName: firstName || businessName,
+            displayName: businessName || `${firstName} ${lastName}`.trim(),
+            userType: "expert",
+          }),
+        }).catch(e => console.error("Welcome email send error:", e));
       }
       setVerifyingOtp(false);
       setShowOtpModal(false);
@@ -1280,10 +1292,10 @@ function ExpertSignupPortalContent() {
 
         {/* STEP 4: COMPLETION SCREEN ("YOU'RE ALL SET!") */}
         {currentStep === 4 && (
-          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200/90 text-center space-y-6 animate-premium-fade">
+          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200/90 text-center space-y-6 animate-premium-fade" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             
             {/* Top Celebration Badge */}
-            <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-xs font-black px-4 py-1.5 rounded-full border border-emerald-200 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-[10px] font-black px-4 py-1.5 rounded-full border border-emerald-300 uppercase tracking-wider" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               <span>YOU'RE ALL SET!</span>
             </div>
 
@@ -1295,43 +1307,61 @@ function ExpertSignupPortalContent() {
             </div>
 
             <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Congratulations!</h2>
-              <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1.5 max-w-md mx-auto">
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Congratulations!</h2>
+              <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1.5 max-w-md mx-auto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Your account has been created successfully. Your profile is now live on VisaFormula.
               </p>
             </div>
 
             {/* Profile Completion Box */}
-            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 max-w-lg mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-left">
+            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-5 max-w-lg mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xs">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full border-4 border-[#00a896] bg-teal-50 flex items-center justify-center text-sm font-black text-[#00a896] shrink-0 shadow-sm">
-                  100%
+                <div className="relative w-14 h-14 shrink-0 flex items-center justify-center">
+                  <svg className="w-14 h-14 transform -rotate-90" viewBox="0 0 36 36">
+                    <path className="text-slate-200" strokeWidth="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path className="text-[#00a896]" strokeWidth="3" strokeDasharray="100, 100" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  </svg>
+                  <span className="absolute text-xs font-black text-[#00a896]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>100%</span>
                 </div>
                 <div>
-                  <h4 className="text-xs font-extrabold text-slate-900">Profile Completion</h4>
-                  <p className="text-[11px] font-semibold text-slate-500 mt-0.5">Awesome! Your registration & profile are 100% complete and live.</p>
+                  <h4 className="text-xs font-extrabold text-slate-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Profile Completion</h4>
+                  <p className="text-[11px] font-semibold text-slate-500 mt-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Awesome! Your registration & profile are 100% complete and live.</p>
                 </div>
               </div>
 
               <a
                 href="/consultant/dashboard"
-                className="bg-[#00a896] text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shrink-0 hover:bg-[#008f80] transition-colors shadow-xs"
+                className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shrink-0 transition-colors shadow-xs flex items-center gap-1 cursor-pointer"
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
-                Go to Dashboard →
+                <span>Go to Dashboard</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </div>
 
             {/* What's Next Checklist */}
-            <div className="bg-teal-50/70 border border-teal-200/80 rounded-3xl p-6 max-w-lg mx-auto text-left space-y-3">
-              <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-[#00a896]" />
-                <span>What's Next?</span>
+            <div className="bg-teal-50/60 border border-teal-200/80 rounded-3xl p-6 max-w-lg mx-auto text-left space-y-3">
+              <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <Shield className="w-4 h-4 text-[#00a896]" />
+                <span>WHAT'S NEXT?</span>
               </h4>
-              <ul className="space-y-2 text-xs font-bold text-slate-700">
-                <li className="flex items-center gap-2">• Our team will verify your details</li>
-                <li className="flex items-center gap-2">• You can start receiving enquiries</li>
-                <li className="flex items-center gap-2">• Build your reputation with reviews</li>
-                <li className="flex items-center gap-2">• Grow your business globally</li>
+              <ul className="space-y-2.5 text-xs font-bold text-slate-700" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <li className="flex items-center gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#00a896] rounded-full shrink-0"></span>
+                  <span>Our team will verify your details</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#00a896] rounded-full shrink-0"></span>
+                  <span>You can start receiving enquiries</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#00a896] rounded-full shrink-0"></span>
+                  <span>Build your reputation with reviews</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#00a896] rounded-full shrink-0"></span>
+                  <span>Grow your business globally</span>
+                </li>
               </ul>
             </div>
 
@@ -1339,7 +1369,8 @@ function ExpertSignupPortalContent() {
             <div className="pt-2">
               <a
                 href="/consultant/dashboard"
-                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 bg-[#00a896] hover:bg-[#008f80] text-white text-sm font-black rounded-2xl shadow-xl transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white text-xs sm:text-sm font-black rounded-2xl shadow-xl transition-all active:scale-98 cursor-pointer"
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 <LayoutDashboard className="w-4.5 h-4.5" />
                 <span>Go to Dashboard</span>

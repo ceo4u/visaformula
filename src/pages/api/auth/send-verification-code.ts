@@ -65,9 +65,9 @@ export const POST: APIRoute = async ({ request }) => {
       console.warn('[send-verification-code] DB save fallback mode active:', saveErr);
     }
 
-    // ── Non-blocking Email Dispatch (Async <30ms Response) ─────
-    sendVerificationOTP({ otp, email, expiresInMinutes: 10 }).catch(emailErr => {
-      console.error('[send-verification-code] Async email dispatch log:', emailErr);
+    // ── Instant Email Dispatch via Resend ─────
+    await sendVerificationOTP({ otp, email, expiresInMinutes: 10 }).catch(emailErr => {
+      console.error('[send-verification-code] Email dispatch error:', emailErr);
     });
 
     return new Response(JSON.stringify({

@@ -23,16 +23,17 @@ export default defineConfig({
   vite: {
     envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_'],
     ssr: {
+      external: ['resend', 'pg', 'bcryptjs', 'nodemailer'],
       noExternal: ['framer-motion', 'lucide-react'],
     },
     resolve: {
-      dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
+      dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
     },
     optimizeDeps: {
-      include: ['lucide-react', 'react', 'react-dom', 'react/jsx-runtime'],
+      include: ['lucide-react', 'react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
     },
   },
 });

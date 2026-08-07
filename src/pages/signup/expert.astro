@@ -11,9 +11,34 @@ import { ExpertSignupPortal } from '../../components/interactive/ExpertSignupPor
   hideHeader={true}
   hideFooter={true}
 >
-  <!-- Main Home Page rendered in the background -->
-  <LandingPage client:only="react" />
+  <!-- Main Home Page rendered in the background (blurred) -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <LandingPage client:only="react" />
+  </div>
 
-  <!-- Fixed Expert Registration Modal Overlay -->
-  <ExpertSignupPortal client:only="react" />
+  <!-- Dark Overlay -->
+  <div class="fixed inset-0 z-10 bg-slate-900/50 backdrop-blur-sm pointer-events-none"></div>
+
+  <!-- Expert Registration Wizard on top -->
+  <div class="fixed inset-0 z-20 overflow-y-auto">
+    <!-- Back to home pill button -->
+    <div class="sticky top-0 z-30 flex justify-start p-4 pointer-events-auto">
+      <a
+        href="/"
+        class="flex items-center gap-2 bg-white/90 backdrop-blur-sm text-slate-700 hover:text-slate-900 text-xs font-extrabold px-4 py-2.5 rounded-full shadow-lg border border-slate-200/80 hover:bg-white transition-all"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span>Back to Home</span>
+      </a>
+    </div>
+
+    <!-- Portal Content -->
+    <div class="min-h-screen flex items-start justify-center pb-12 pt-4 px-4 pointer-events-auto">
+      <div class="w-full max-w-4xl">
+        <ExpertSignupPortal client:only="react" />
+      </div>
+    </div>
+  </div>
 </Layout>

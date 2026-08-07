@@ -1,4 +1,4 @@
-import { ChevronDown, Search, Globe, MapPin, LayoutGrid, FileText, Pause, Play } from 'lucide-react'
+import { ChevronDown, Search, Globe, MapPin, LayoutGrid, FileText, Pause, Play, UserCheck, Building2, Briefcase, ShieldCheck, Scale, MoreHorizontal, Crosshair } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 
 const heroSlides = [
@@ -168,6 +168,7 @@ export function HeroSection() {
   const [activeSlide, setActiveSlide] = useState(0)
   const [slideProgress, setSlideProgress] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [activeTab, setActiveTab] = useState('all')
 
   const [query, setQuery] = useState('')
   const [country, setCountry] = useState('Select Country')
@@ -641,62 +642,158 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Advance Search Card — Matching User Reference Image */}
+      {/* Advance Search Card — Matching User Reference Images (Photo 1 & Photo 2) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 relative z-10">
-        <div id="search-panel" className="bg-[#0B1527] rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800/90">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-center">
+        <div id="search-panel" className="bg-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-slate-200/90" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          
+          {/* Top Category Tabs Bar (Photo 1 & 2) */}
+          <div className="flex items-center gap-6 sm:gap-8 border-b border-slate-100 pb-3 mb-5 overflow-x-auto scrollbar-none">
+            <button
+              type="button"
+              onClick={() => { setActiveTab('all'); setCategory('Select Category'); }}
+              className={`flex items-center gap-2 text-xs sm:text-sm font-extrabold transition-all pb-2 cursor-pointer shrink-0 ${
+                activeTab === 'all'
+                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+              }`}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <LayoutGrid className="w-4.5 h-4.5 stroke-[2.2]" />
+              <span>All Services</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { setActiveTab('consultant'); setCategory('Consultant'); window.location.href = '/find-experts'; }}
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+                activeTab === 'consultant'
+                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+              }`}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <UserCheck className="w-4.5 h-4.5 stroke-[2.2]" />
+              <span>Consultant</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { setActiveTab('universities'); window.location.href = '/universities'; }}
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+                activeTab === 'universities'
+                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+              }`}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <Building2 className="w-4.5 h-4.5 stroke-[2.2]" />
+              <span>Universities</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { setActiveTab('jobs'); window.location.href = '/jobs'; }}
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+                activeTab === 'jobs'
+                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+              }`}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <Briefcase className="w-4.5 h-4.5 stroke-[2.2]" />
+              <span>Jobs Abroad</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { setActiveTab('insurance'); setCategory('Insurance'); window.location.href = '/find-experts?category=Insurance'; }}
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+                activeTab === 'insurance'
+                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+              }`}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <ShieldCheck className="w-4.5 h-4.5 stroke-[2.2]" />
+              <span>Insurance</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { setActiveTab('lawyers'); setCategory('Lawyers'); window.location.href = '/find-experts?category=Lawyers'; }}
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+                activeTab === 'lawyers'
+                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+              }`}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <Scale className="w-4.5 h-4.5 stroke-[2.2]" />
+              <span>Lawyers</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { window.location.href = '/find-experts'; }}
+              className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition-all pb-2 cursor-pointer shrink-0"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <MoreHorizontal className="w-4.5 h-4.5 stroke-[2.2]" />
+              <span>More</span>
+            </button>
+          </div>
+
+          {/* 4 Search Input Fields Row (Photo 2) */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 mb-4">
             
             {/* Box 1: What are you looking for? */}
-            <div className="bg-white rounded-xl border border-slate-200/90 focus-within:border-[#2563eb] focus-within:ring-4 focus-within:ring-blue-500/15 hover:border-blue-400/80 px-3.5 py-2.5 h-[62px] flex items-center gap-3 shadow-xs relative transition-all duration-200">
-              <div className="w-8.5 h-8.5 rounded-lg bg-blue-50 flex items-center justify-center text-[#2563eb] shrink-0">
-                <FileText className="w-4.5 h-4.5 stroke-[2.2]" />
-              </div>
-              <div className="flex-1 flex flex-col justify-center min-w-0">
-                <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1 block select-none tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  What are you looking for?
-                </label>
+            <div>
+              <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1.5 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                What are you looking for?
+              </label>
+              <div className="bg-slate-50/70 border border-slate-200/90 focus-within:border-[#00a896] focus-within:bg-white hover:border-slate-300 rounded-xl px-3.5 py-2 h-[50px] flex items-center gap-2.5 transition-all">
+                <Search className="w-4.5 h-4.5 text-slate-400 shrink-0" />
                 <input
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="e.g. USA Student Visa, Consultant"
-                  className="w-full text-[13px] font-semibold text-slate-900 placeholder:text-slate-400/80 outline-none bg-transparent"
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+                  placeholder="e.g., Canada student visa consultant"
+                  className="w-full text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 outline-none bg-transparent"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 />
               </div>
             </div>
 
-            {/* Box 2: Country */}
-            <div 
-              ref={countryRef}
-              onClick={() => { setCountryOpen(!countryOpen); setLocationOpen(false); setCategoryOpen(false); }}
-              className="bg-white rounded-xl border border-slate-200/90 hover:border-[#2563eb]/80 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-xs relative cursor-pointer transition-all duration-200"
-            >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-8.5 h-8.5 rounded-lg bg-blue-50 flex items-center justify-center text-[#2563eb] shrink-0">
-                  <Globe className="w-4.5 h-4.5 stroke-[2.2]" />
-                </div>
-                <div className="flex flex-col justify-center min-w-0 select-none">
-                  <span className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    Country
-                  </span>
-                  <span className={`text-[13px] font-semibold truncate ${country !== 'Select Country' ? 'text-slate-900' : 'text-slate-400/80'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    {country}
+            {/* Box 2: Destination Country */}
+            <div ref={countryRef} className="relative">
+              <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1.5 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                Destination Country
+              </label>
+              <div
+                onClick={() => { setCountryOpen(!countryOpen); setLocationOpen(false); setCategoryOpen(false); }}
+                className="bg-slate-50/70 border border-slate-200/90 hover:border-[#00a896] rounded-xl px-3.5 py-2 h-[50px] flex items-center justify-between gap-2.5 cursor-pointer transition-all"
+              >
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <Globe className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                  <span className={`text-xs sm:text-sm font-semibold truncate ${country !== 'Select Country' ? 'text-slate-900' : 'text-slate-400'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    {country !== 'Select Country' ? country : 'Select country'}
                   </span>
                 </div>
+                <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`} />
               </div>
-              <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`} />
 
               {countryOpen && (
-                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto font-sans">
+                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto">
                   {countriesList.map((c) => (
                     <button
                       key={c}
                       type="button"
                       onClick={(e) => { e.stopPropagation(); setCountry(c); setCountryOpen(false); }}
-                      className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-medium ${
-                        country === c ? 'bg-blue-50 text-[#2563eb] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                      className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-semibold ${
+                        country === c ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'
                       }`}
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >
                       {c}
                     </button>
@@ -705,76 +802,74 @@ export function HeroSection() {
               )}
             </div>
 
-            {/* Box 3: Location */}
-            <div 
-              ref={locationRef}
-              onClick={() => { setLocationOpen(!locationOpen); setCountryOpen(false); setCategoryOpen(false); }}
-              className="bg-white rounded-xl border border-slate-200/90 hover:border-[#2563eb]/80 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-xs relative cursor-pointer transition-all duration-200"
-            >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-8.5 h-8.5 rounded-lg bg-blue-50 flex items-center justify-center text-[#2563eb] shrink-0">
-                  <MapPin className="w-4.5 h-4.5 stroke-[2.2]" />
+            {/* Box 3: Your Location v */}
+            <div ref={locationRef} className="relative">
+              <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1.5 block tracking-tight flex items-center gap-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <span>Your Location</span>
+                <span className="text-[10px] text-slate-400 font-normal">v</span>
+              </label>
+              <div className="bg-slate-50/70 border border-slate-200/90 focus-within:border-[#00a896] hover:border-slate-300 rounded-xl px-3.5 py-2 h-[50px] flex items-center justify-between gap-2 transition-all">
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                  <input
+                    type="text"
+                    value={location !== 'Select Location' ? location : ''}
+                    onChange={(e) => setLocation(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+                    placeholder="State / City"
+                    className="w-full text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 outline-none bg-transparent"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  />
                 </div>
-                <div className="flex flex-col justify-center min-w-0 select-none">
-                  <span className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    Location
-                  </span>
-                  <span className={`text-[13px] font-semibold truncate ${location !== 'Select Location' ? 'text-slate-900' : 'text-slate-400/80'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    {location}
-                  </span>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (navigator.geolocation) {
+                      navigator.geolocation.getCurrentPosition(
+                        (pos) => setLocation('Current Location'),
+                        () => setLocation('Delhi')
+                      );
+                    } else {
+                      setLocation('Delhi');
+                    }
+                  }}
+                  title="Detect my current location"
+                  className="p-1 hover:bg-teal-50 rounded-lg transition-colors cursor-pointer"
+                >
+                  <Crosshair className="w-4 h-4 text-[#00a896]" />
+                </button>
               </div>
-              <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${locationOpen ? 'rotate-180' : ''}`} />
-
-              {locationOpen && (
-                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto font-sans">
-                  {locationsList.map((loc) => (
-                    <button
-                      key={loc}
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); setLocation(loc); setLocationOpen(false); }}
-                      className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-medium ${
-                        location === loc ? 'bg-blue-50 text-[#2563eb] font-bold' : 'text-slate-700 hover:bg-slate-50'
-                      }`}
-                    >
-                      {loc}
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
 
-            {/* Box 4: All Categories */}
-            <div 
-              ref={categoryRef}
-              onClick={() => { setCategoryOpen(!categoryOpen); setCountryOpen(false); setLocationOpen(false); }}
-              className="bg-white rounded-xl border border-slate-200/90 hover:border-[#2563eb]/80 px-3.5 py-2.5 h-[62px] flex items-center justify-between gap-3 shadow-xs relative cursor-pointer transition-all duration-200"
-            >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-8.5 h-8.5 rounded-lg bg-blue-50 flex items-center justify-center text-[#2563eb] shrink-0">
-                  <LayoutGrid className="w-4.5 h-4.5 stroke-[2.2]" />
-                </div>
-                <div className="flex flex-col justify-center min-w-0 select-none">
-                  <span className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    All Categories
-                  </span>
-                  <span className={`text-[13px] font-semibold truncate ${category !== 'Select Category' ? 'text-slate-900' : 'text-slate-400/80'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    {category}
+            {/* Box 4: Visa Category (Optional) */}
+            <div ref={categoryRef} className="relative">
+              <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1.5 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                Visa Category <span className="text-slate-400 font-normal">(Optional)</span>
+              </label>
+              <div
+                onClick={() => { setCategoryOpen(!categoryOpen); setCountryOpen(false); setLocationOpen(false); }}
+                className="bg-slate-50/70 border border-slate-200/90 hover:border-[#00a896] rounded-xl px-3.5 py-2 h-[50px] flex items-center justify-between gap-2.5 cursor-pointer transition-all"
+              >
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <FileText className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                  <span className={`text-xs sm:text-sm font-semibold truncate ${category !== 'Select Category' ? 'text-slate-900' : 'text-slate-400'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    {category !== 'Select Category' ? category : 'Select visa type'}
                   </span>
                 </div>
+                <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${categoryOpen ? 'rotate-180' : ''}`} />
               </div>
-              <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${categoryOpen ? 'rotate-180' : ''}`} />
 
               {categoryOpen && (
-                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto font-sans">
+                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto">
                   {categoriesList.map((cat) => (
                     <button
                       key={cat}
                       type="button"
                       onClick={(e) => { e.stopPropagation(); setCategory(cat); setCategoryOpen(false); }}
-                      className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-medium ${
-                        category === cat ? 'bg-blue-50 text-[#2563eb] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                      className={`w-full text-left px-4 py-2.5 text-xs transition-colors font-semibold ${
+                        category === cat ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'
                       }`}
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >
                       {cat}
                     </button>
@@ -783,32 +878,35 @@ export function HeroSection() {
               )}
             </div>
 
-            {/* Box 5: Search Button */}
-            <button 
-              onClick={handleSearch}
-              className="h-[62px] bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-xl shadow-md flex items-center justify-center gap-2 font-extrabold text-sm sm:text-base cursor-pointer transition-all active:scale-98 w-full"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            >
-              <Search className="w-5 h-5 stroke-[2.5]" />
-              <span>Search</span>
-            </button>
           </div>
 
-          {/* Popular Searches Row (Matching User Reference Image) */}
-          <div className="flex items-center gap-2 sm:gap-3 mt-4 pt-1 text-xs overflow-x-auto pb-1 scrollbar-none">
-            <span className="text-white font-bold shrink-0">Popular Searches:</span>
-            {popularSearches.map((item, idx) => (
-              <div key={item} className="flex items-center gap-2 shrink-0">
-                {idx > 0 && <span className="text-teal-400/60 font-bold text-[10px] select-none">&gt;</span>}
-                <button 
-                  type="button"
-                  onClick={() => handlePopularSearch(item)}
-                  className="text-slate-200 hover:text-cyan-300 font-medium hover:underline transition-colors text-xs whitespace-nowrap cursor-pointer"
-                >
-                  {item}
-                </button>
-              </div>
-            ))}
+          {/* Action Row & Popular Searches */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100">
+            <div className="flex items-center gap-2 text-xs overflow-x-auto pb-1 scrollbar-none w-full sm:w-auto">
+              <span className="text-slate-500 font-extrabold shrink-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Popular Searches:</span>
+              {popularSearches.map((item, idx) => (
+                <div key={item} className="flex items-center gap-2 shrink-0">
+                  {idx > 0 && <span className="text-slate-300 font-bold text-[10px] select-none">&gt;</span>}
+                  <button 
+                    type="button"
+                    onClick={() => handlePopularSearch(item)}
+                    className="text-slate-700 hover:text-[#00a896] font-bold hover:underline transition-colors text-xs whitespace-nowrap cursor-pointer"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  >
+                    {item}
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <button 
+              onClick={handleSearch}
+              className="w-full sm:w-auto px-8 py-3 bg-[#00a896] hover:bg-[#008f80] text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-extrabold text-xs sm:text-sm cursor-pointer transition-all active:scale-98 shrink-0"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <Search className="w-4.5 h-4.5 stroke-[2.5]" />
+              <span>Search Experts & Services</span>
+            </button>
           </div>
         </div>
       </div>

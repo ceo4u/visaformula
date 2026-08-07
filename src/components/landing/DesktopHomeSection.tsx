@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Search, ShieldCheck, FileText, Users, CheckCircle2,
-  Clock, ChevronRight, Globe, Download, ChevronDown, User
+  Clock, ChevronRight, Globe, Download, ChevronDown, User,
+  LayoutGrid, UserCheck, Building2, Briefcase, Scale, MoreHorizontal
 } from 'lucide-react';
 import { trackAdClick, handleAdClickWithAuth } from '../../utils/trackAdClick';
 
@@ -59,6 +60,7 @@ export function DesktopHomeSection() {
   const [selectedVisaType, setSelectedVisaType] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [activeTab, setActiveTab] = useState('All');
+  const [activeCategory, setActiveCategory] = useState('all');
 
   const [countryOpen, setCountryOpen] = useState(false);
   const [purposeOpen, setPurposeOpen] = useState(false);
@@ -280,8 +282,106 @@ export function DesktopHomeSection() {
           <div className="lg:col-span-9 space-y-4">
 
             {/* 3A. Search Form */}
-            <div className="bg-white rounded-2xl px-6 py-5 shadow-sm border border-gray-100 space-y-3">
-              <h2 className="text-base font-bold text-gray-900">Find Visa Information &amp; Consultants</h2>
+            <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 space-y-4">
+              
+              {/* Category Icon Tabs Header (Matching User Reference Images) */}
+              <div className="flex items-center gap-6 border-b border-gray-100 pb-3 overflow-x-auto scrollbar-none">
+                <button
+                  type="button"
+                  onClick={() => setActiveCategory('all')}
+                  className={`flex items-center gap-2 text-xs font-extrabold pb-2 transition-all cursor-pointer shrink-0 ${
+                    activeCategory === 'all'
+                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                  }`}
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  <LayoutGrid className="w-4 h-4 stroke-[2.2]" />
+                  <span>All Services</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => { setActiveCategory('consultant'); window.location.href = '/find-experts'; }}
+                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                    activeCategory === 'consultant'
+                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                  }`}
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  <UserCheck className="w-4 h-4 stroke-[2.2]" />
+                  <span>Consultant</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => { setActiveCategory('universities'); window.location.href = '/universities'; }}
+                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                    activeCategory === 'universities'
+                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                  }`}
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  <Building2 className="w-4 h-4 stroke-[2.2]" />
+                  <span>Universities</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => { setActiveCategory('jobs'); window.location.href = '/jobs'; }}
+                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                    activeCategory === 'jobs'
+                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                  }`}
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  <Briefcase className="w-4 h-4 stroke-[2.2]" />
+                  <span>Jobs Abroad</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => { setActiveCategory('insurance'); window.location.href = '/find-experts?category=Insurance'; }}
+                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                    activeCategory === 'insurance'
+                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                  }`}
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  <ShieldCheck className="w-4 h-4 stroke-[2.2]" />
+                  <span>Insurance</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => { setActiveCategory('lawyers'); window.location.href = '/find-experts?category=Lawyers'; }}
+                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                    activeCategory === 'lawyers'
+                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
+                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                  }`}
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  <Scale className="w-4 h-4 stroke-[2.2]" />
+                  <span>Lawyers</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => { window.location.href = '/find-experts'; }}
+                  className="flex items-center gap-2 text-xs font-bold text-gray-600 hover:text-gray-900 pb-2 transition-all cursor-pointer shrink-0"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  <MoreHorizontal className="w-4 h-4 stroke-[2.2]" />
+                  <span>More</span>
+                </button>
+              </div>
+
+              <h2 className="text-base font-bold text-gray-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Find Visa Information &amp; Consultants</h2>
               <form onSubmit={handleSearch} className="grid grid-cols-2 lg:grid-cols-5 gap-3 items-end">
                 <CustomSelect 
                   label="Destination" 

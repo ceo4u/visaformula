@@ -43,7 +43,7 @@ function ExpertSignupPortalContent() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [whatsappNumber, setWhatsappNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
-  const [docUploads, setDocUploads] = useState<Record<string, boolean>>({
+  const [docUploads, setDocUploads] = useState<Record<string, boolean | string>>({
     businessReg: false,
     profLicense: false,
     officePhoto: false,
@@ -419,12 +419,52 @@ function ExpertSignupPortalContent() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
                   <div>
-                    <label className="block text-xs font-extrabold text-slate-900 mb-1.5">Company Logo</label>
-                    <div className="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-slate-50 transition-all cursor-pointer">
-                      <Upload className="w-7 h-7 text-slate-400 mx-auto mb-2" />
-                      <p className="text-xs font-bold text-slate-700">Click to upload logo</p>
-                      <p className="text-[10px] font-semibold text-slate-400 mt-1">PNG, JPG (Max 2MB)</p>
-                    </div>
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Company Logo</label>
+                    <label
+                      htmlFor="company-logo-upload"
+                      className="block border-2 border-dashed border-slate-300 rounded-2xl p-5 text-center bg-slate-50/50 hover:bg-slate-50 hover:border-[#00a896] transition-all cursor-pointer group"
+                    >
+                      {companyLogo ? (
+                        <div className="relative">
+                          <img
+                            src={companyLogo}
+                            alt="Company Logo"
+                            className="w-20 h-20 object-contain rounded-xl mx-auto border border-slate-200"
+                          />
+                          <button
+                            type="button"
+                            onClick={(e) => { e.preventDefault(); setCompanyLogo(null); }}
+                            className="absolute -top-2 -right-2 w-5 h-5 bg-rose-500 text-white rounded-full text-[10px] flex items-center justify-center font-bold hover:bg-rose-600"
+                          >
+                            ×
+                          </button>
+                          <p className="text-[11px] font-semibold text-[#00a896] mt-2">✓ Logo uploaded — click to change</p>
+                        </div>
+                      ) : (
+                        <>
+                          <Upload className="w-7 h-7 text-slate-400 group-hover:text-[#00a896] mx-auto mb-2 transition-colors" />
+                          <p className="text-xs font-bold text-slate-700" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Click to upload logo</p>
+                          <p className="text-[10px] font-semibold text-slate-400 mt-1">PNG, JPG (Max 2MB)</p>
+                        </>
+                      )}
+                    </label>
+                    <input
+                      id="company-logo-upload"
+                      type="file"
+                      accept="image/png,image/jpeg,image/jpg,image/webp"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        if (file.size > 2 * 1024 * 1024) {
+                          setValidationError("Logo file size must be under 2MB.");
+                          return;
+                        }
+                        const reader = new FileReader();
+                        reader.onload = (ev) => setCompanyLogo(ev.target?.result as string);
+                        reader.readAsDataURL(file);
+                      }}
+                    />
                   </div>
 
                   <div>
@@ -747,32 +787,48 @@ function ExpertSignupPortalContent() {
                 </div>
 
                 {/* Verification Documents (Optional but recommended) */}
-                <div className="space-y-3">
+              <div className="space-y-3">
                   <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Verification Documents (Optional but recommended)</h4>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
-                      { key: "businessReg", label: "Business Registration" },
-                      { key: "profLicense", label: "Professional License" },
-                      { key: "officePhoto", label: "Office Photo" },
-                      { key: "govId", label: "Government ID" }
+                      { key: "businessReg", label: "Business Registration", accept: ".pdf,image/*" },
+                      { key: "profLicense", label: "Professional License", accept: ".pdf,image/*" },
+                      { key: "officePhoto", label: "Office Photo", accept: "image/*" },
+                      { key: "govId", label: "Government ID", accept: ".pdf,image/*" }
                     ].map((doc, i) => {
-                      const isUploaded = docUploads[doc.key];
+                      const isUploaded = !!docUploads[doc.key];
+                      const fileName = typeof docUploads[doc.key] === 'string' ? docUploads[doc.key] as string : null;
                       return (
-                        <div
+                        <label
                           key={i}
-                          onClick={() => setDocUploads(prev => ({ ...prev, [doc.key]: !isUploaded }))}
-                          className={`p-3 border-2 border-dashed rounded-2xl text-center cursor-pointer transition-all ${
+                          htmlFor={`doc-upload-${doc.key}`}
+                          className={`p-3 border-2 border-dashed rounded-2xl text-center cursor-pointer transition-all block ${
                             isUploaded
                               ? 'bg-teal-50/80 border-[#00a896] text-[#00a896]'
-                              : 'bg-slate-50/50 border-slate-300 text-slate-600 hover:bg-slate-50'
+                              : 'bg-slate-50/50 border-slate-300 text-slate-600 hover:bg-slate-50 hover:border-[#00a896]'
                           }`}
                         >
                           <Upload className="w-5 h-5 mx-auto mb-1 opacity-70" />
-                          <p className="text-[11px] font-extrabold leading-tight">{doc.label}</p>
-                          <span className="text-[9px] font-bold block mt-1">
-                            {isUploaded ? "✓ Uploaded" : "Upload"}
+                          <p className="text-[11px] font-extrabold leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{doc.label}</p>
+                          <span className="text-[9px] font-bold block mt-1 truncate px-1">
+                            {isUploaded ? (fileName ? `✓ ${fileName.slice(0, 12)}…` : "✓ Uploaded") : "Click to Upload"}
                           </span>
-                        </div>
+                          <input
+                            id={`doc-upload-${doc.key}`}
+                            type="file"
+                            accept={doc.accept}
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              if (file.size > 10 * 1024 * 1024) {
+                                setValidationError(`${doc.label} must be under 10MB.`);
+                                return;
+                              }
+                              setDocUploads(prev => ({ ...prev, [doc.key]: file.name }));
+                            }}
+                          />
+                        </label>
                       );
                     })}
                   </div>

@@ -258,6 +258,20 @@ function ExpertSignupPortalContent() {
                 localStorage.setItem("expert_email", res.email);
               }
 
+              // Check if email is already registered on initial stage
+              const gEmail = (res.email || "").trim().toLowerCase();
+              const storedEmail = (localStorage.getItem("expert_email") || "").toLowerCase();
+              const allExperts = (() => {
+                  try { return JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]"); } catch(e) { return []; }
+              })();
+              const isAlreadyRegistered = (storedEmail === gEmail && localStorage.getItem("expert_isLoggedIn") === "true") || allExperts.some((x: any) => x.email?.toLowerCase() === gEmail);
+
+              if (isAlreadyRegistered) {
+                  setValidationError(`The email address "${res.email}" is already registered on VisaFormula. Please log in to your existing account.`);
+                  setGoogleLoading(false);
+                  return;
+              }
+
               // Check if existing user already completed registration with location
               const existingCity = typeof window !== "undefined" ? (localStorage.getItem("expert_city") || localStorage.getItem("expert_officeAddress")) : null;
               const isLoggedIn = typeof window !== "undefined" ? localStorage.getItem("expert_isLoggedIn") === "true" : false;
@@ -439,6 +453,19 @@ function ExpertSignupPortalContent() {
       return;
     }
 
+    // Initial Stage Email Check
+    const cleanEmail = email.trim().toLowerCase();
+    const storedEmail = (localStorage.getItem("expert_email") || "").toLowerCase();
+    const allExperts = (() => {
+        try { return JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]"); } catch(e) { return []; }
+    })();
+    const isAlreadyRegistered = (storedEmail === cleanEmail && localStorage.getItem("expert_isLoggedIn") === "true") || allExperts.some((x: any) => x.email?.toLowerCase() === cleanEmail);
+
+    if (isAlreadyRegistered) {
+      setValidationError(`The email address "${email}" is already registered. Please log in to your account or use a different email.`);
+      return;
+    }
+
     // 2. Contact Number validation
     const cleanPhone = contactNumber.replace(/\D/g, "");
     if (cleanPhone.length < 10) {
@@ -495,7 +522,7 @@ function ExpertSignupPortalContent() {
       : (officeAddress || addressCity || "");
 
     try {
-      await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/expert`, {
+      const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/register/expert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -515,6 +542,13 @@ function ExpertSignupPortalContent() {
           countries_expertise: countriesExpertise.trim() ? countriesExpertise.split(",").map(c => c.trim()).filter(Boolean) : []
         })
       });
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        if (errData.message || response.status === 400) {
+          setValidationError(errData.message || `The email "${email}" is already registered. Please log in instead.`);
+          return;
+        }
+      }
     } catch (err) {
       console.warn("Backend server offline. Proceeding in frontend mode.", err);
     }
@@ -1059,8 +1093,17 @@ function ExpertSignupPortalContent() {
                 </div>
 
                 {validationError && (
-                  <div className="p-3.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-medium text-center transition-all animate-premium-fade max-w-lg mx-auto mt-4">
-                    {validationError}
+                  <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold text-center transition-all animate-premium-fade max-w-lg mx-auto mt-4 space-y-2.5">
+                    <p>{validationError}</p>
+                    {validationError.toLowerCase().includes("already registered") && (
+                      <a 
+                        href="/login" 
+                        className="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors shadow-xs"
+                      >
+                        <span>Log in to your account</span>
+                        <span>&rarr;</span>
+                      </a>
+                    )}
                   </div>
                 )}
 

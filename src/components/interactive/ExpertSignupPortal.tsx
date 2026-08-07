@@ -3,7 +3,7 @@ import {
   CheckCircle, ArrowLeft, ArrowRight, Upload, Plus, X, 
   User, FileText, Globe, Star, Shield, ArrowUpRight, 
   MessageSquare, Briefcase, Mail, Phone, ExternalLink, 
-  Building, CheckSquare, Sparkles, MapPin, Lock, LayoutDashboard, ChevronDown, Edit2
+  Building, CheckSquare, Sparkles, MapPin, Lock, LayoutDashboard, ChevronDown, Edit2, Eye, EyeOff
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 
@@ -73,6 +73,10 @@ function ExpertSignupPortalContent() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [businessName, setBusinessName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [businessType, setBusinessType] = useState("");
   const [yearsInBusiness, setYearsInBusiness] = useState("");
   const [businessWebsite, setBusinessWebsite] = useState("");
@@ -254,8 +258,24 @@ function ExpertSignupPortalContent() {
   const goToNextStep = (target: number) => {
     setValidationError("");
     if (currentStep === 1) {
+      if (!firstName.trim() || !lastName.trim()) {
+        setValidationError("Please enter your First Name and Last Name.");
+        return;
+      }
       if (!businessName.trim()) {
         setValidationError("Please enter your Business Name.");
+        return;
+      }
+      if (!password) {
+        setValidationError("Please create a Password for your account.");
+        return;
+      }
+      if (password.length < 6) {
+        setValidationError("Password must be at least 6 characters long.");
+        return;
+      }
+      if (password !== confirmPassword) {
+        setValidationError("Passwords do not match. Please verify and try again.");
         return;
       }
       if (!businessDescription.trim()) {
@@ -652,6 +672,53 @@ function ExpertSignupPortalContent() {
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896]"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
+                </div>
+
+                {/* Password & Confirm Password */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password *</label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Create a password (min 6 chars)"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896] pr-10"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Confirm Password *</label>
+                    <div className="relative">
+                      <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        required
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Re-enter your password"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896] pr-10"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                      >
+                        {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

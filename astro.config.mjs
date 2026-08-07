@@ -33,7 +33,16 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
-      include: ['lucide-react', 'react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
+      include: [
+        'lucide-react',
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+        'firebase/app',
+        'firebase/auth',
+      ],
+      exclude: ['firebase-admin'],
     },
   },
 });

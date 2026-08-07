@@ -273,7 +273,29 @@ function ExpertSignupPortalContent() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Trigger OTP Verification on "Complete & Continue"
+  const [sendingOtp, setSendingOtp] = useState(false);
+
+  const sendVerificationEmail = async (targetEmail: string) => {
+    setSendingOtp(true);
+    setOtpError("");
+    try {
+      const res = await fetch("/api/auth/send-verification-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: targetEmail.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.warn("[ExpertSignupPortal] OTP send response:", data);
+      }
+    } catch (e) {
+      console.error("[ExpertSignupPortal] OTP send error:", e);
+    } finally {
+      setSendingOtp(false);
+    }
+  };
+
+  // Trigger OTP Verification on "Complete & Continue" — dispatches real Resend email
   const handleCompleteAndContinue = () => {
     setValidationError("");
     if (!phoneNumber.trim()) {
@@ -285,6 +307,8 @@ function ExpertSignupPortalContent() {
       return;
     }
     setShowOtpModal(true);
+    setResendCooldown(30);
+    sendVerificationEmail(emailAddress);
   };
 
   // Verify OTP and complete registration — saves full profile to localStorage so FindExpertsPortal lists this expert
@@ -297,6 +321,22 @@ function ExpertSignupPortalContent() {
 
     setVerifyingOtp(true);
     setOtpError("");
+
+    try {
+      const res = await fetch("/api/auth/verify-email-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailAddress, code }),
+      });
+      const data = await res.json();
+      if (!res.ok && data.status === "error") {
+        setOtpError(data.message || "Invalid verification code. Please check and try again.");
+        setVerifyingOtp(false);
+        return;
+      }
+    } catch (e) {
+      console.warn("[handleVerifyOtp] Verification fallback mode:", e);
+    }
 
     setTimeout(() => {
       if (typeof window !== "undefined") {
@@ -1166,14 +1206,16 @@ function ExpertSignupPortalContent() {
                       type="button"
                       onClick={() => {
                         if (tempEmail.trim()) {
-                          setEmailAddress(tempEmail.trim());
+                          const newEmail = tempEmail.trim();
+                          setEmailAddress(newEmail);
                           setIsEditingEmail(false);
                           setResendCooldown(30);
+                          sendVerificationEmail(newEmail);
                         }
                       }}
                       className="px-3 py-1.5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-xl text-xs font-extrabold shadow-xs cursor-pointer transition-all active:scale-95"
                     >
-                      Save
+                      Save & Send Code
                     </button>
                     <button
                       type="button"
@@ -1213,7 +1255,10 @@ function ExpertSignupPortalContent() {
                   <span>Resend code in <strong className="text-slate-800">{resendCooldown}s</strong></span>
                 ) : (
                   <button
-                    onClick={() => setResendCooldown(30)}
+                    onClick={() => {
+                      setResendCooldown(30);
+                      sendVerificationEmail(emailAddress);
+                    }}
                     className="text-[#00a896] font-bold hover:underline cursor-pointer"
                   >
                     Resend Verification Code

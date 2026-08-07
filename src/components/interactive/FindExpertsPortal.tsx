@@ -1,14 +1,5 @@
-import { useState, useEffect } from "react";
-import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Clock, Search, Filter, X } from "lucide-react";
-
-const allExperts = [
-    { id: 1, name: "Marcus Thorne, JD", category: "work", role: "Immigration Attorney", rating: 4.9, reviews: 142, price: 2500, city: "Hyderabad", countries: ["USA", "Canada"], experience: 15, isRemote: true, isAvailableToday: true, isEmergency: true, tags: ["H-1B", "L-1", "EB-1"], image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face" },
-    { id: 2, name: "Elena Rodriguez", category: "student", role: "Student Visa Consultant", rating: 5.0, reviews: 89, price: 1500, city: "Mumbai", countries: ["UK", "Australia"], experience: 8, isRemote: true, isAvailableToday: true, isEmergency: false, tags: ["Student Visa", "SOP Review"], image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face" },
-    { id: 3, name: "Raj Patel", category: "pr", role: "Express Entry Specialist", rating: 4.8, reviews: 234, price: 1800, city: "Delhi", countries: ["Canada", "Australia"], experience: 12, isRemote: false, isAvailableToday: false, isEmergency: false, tags: ["Express Entry", "PNP", "SINP"], image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face" },
-    { id: 4, name: "Aisha Khan", category: "student", role: "UK Visa Consultant", rating: 4.6, reviews: 67, price: 1200, city: "Bangalore", countries: ["UK", "Germany"], experience: 5, isRemote: true, isAvailableToday: true, isEmergency: false, tags: ["UK Student", "Germany Blue Card"], image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face" },
-    { id: 5, name: "Deepak Kumar", category: "work", role: "Work Permit Advisor", rating: 4.7, reviews: 156, price: 2000, city: "Hyderabad", countries: ["Canada", "UAE"], experience: 10, isRemote: true, isAvailableToday: false, isEmergency: true, tags: ["LMIA", "Work Permit", "PGWP"], image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=face" },
-    { id: 6, name: "Priya Nair", category: "pr", role: "PR & Citizenship Expert", rating: 4.9, reviews: 312, price: 3000, city: "Chennai", countries: ["Canada", "Australia", "USA"], experience: 18, isRemote: true, isAvailableToday: true, isEmergency: false, tags: ["PR", "Citizenship", "Super Visa"], image: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&h=200&fit=crop&crop=face" },
-];
+import { useState, useEffect, useCallback } from "react";
+import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Search, Filter, X, Loader2, Users } from "lucide-react";
 
 const categoryFilters = ["All", "Student Visa", "Work Permit", "PR", "Local Expert"];
 const cityFilters = ["All Cities", "Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Remote"];
@@ -17,7 +8,9 @@ const availFilters = ["Anytime", "Today", "This Week", "Emergency 24/7"];
 
 export function FindExpertsPortal() {
     const [viewMode, setViewMode] = useState<"list" | "map">("list");
-    const [experts, setExperts] = useState(allExperts);
+    const [experts, setExperts] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [fetchError, setFetchError] = useState("");
     const [category, setCategory] = useState("All");
     const [city, setCity] = useState("All Cities");
     const [rating, setRating] = useState("Any");
@@ -28,60 +21,31 @@ export function FindExpertsPortal() {
     const [selectedCountry, setSelectedCountry] = useState("All");
     const [sortOpen, setSortOpen] = useState(false);
 
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            let registeredList: any[] = [];
-            try {
-                const storedAll = localStorage.getItem("visaformula_all_experts");
-                if (storedAll) {
-                    const parsed = JSON.parse(storedAll);
-                    if (Array.isArray(parsed)) registeredList = parsed;
-                }
-            } catch(e) {}
+    // ── Fetch real experts from Neon DB via /api/experts ──
+    const fetchExperts = useCallback(async (q = "", country = "", purpose = "", cityParam = "") => {
+        setLoading(true);
+        setFetchError("");
+        try {
+            const params = new URLSearchParams();
+            if (q) params.set("q", q);
+            if (country && country !== "All") params.set("country", country);
+            if (purpose) params.set("purpose", purpose);
+            if (cityParam && cityParam !== "All Cities") params.set("city", cityParam);
 
-            const bizName = localStorage.getItem("expert_businessName") || "";
-            const firstName = localStorage.getItem("expert_firstName") || "";
-            const lastName = localStorage.getItem("expert_lastName") || "";
-            const fullName = bizName || (`${firstName} ${lastName}`).trim();
-            const isLoggedIn = localStorage.getItem("expert_isLoggedIn") === "true";
-            const advisorType = localStorage.getItem("expert_advisorType") || "Registered Consultant";
+            const res = await fetch(`/api/experts?${params.toString()}`);
+            const data = await res.json();
 
-            // List ANY type of registered expert who completed basic profile details
-            if (isLoggedIn && fullName) {
-                let tagsArray = ["Study Visa", "Work Permit", "PR Migration"];
-                try {
-                    const savedTags = localStorage.getItem("expert_expertiseTags");
-                    if (savedTags) {
-                        const parsed = JSON.parse(savedTags);
-                        if (Array.isArray(parsed) && parsed.length > 0) tagsArray = parsed;
-                    }
-                } catch(e) {}
-                
-                const loggedInExpert = {
-                    id: "logged-in-expert",
-                    name: fullName,
-                    category: "pr",
-                    role: advisorType,
-                    rating: 5.0,
-                    reviews: 1,
-                    price: 1500,
-                    city: localStorage.getItem("expert_officeAddress") || "Remote",
-                    countries: (localStorage.getItem("expert_countriesExpertise") || "Canada, UK, USA, Australia").split(",").map((c: string) => c.trim()),
-                    experience: 5,
-                    isRemote: true,
-                    isAvailableToday: true,
-                    isEmergency: false,
-                    tags: tagsArray,
-                    image: localStorage.getItem("expert_profilePhoto") || localStorage.getItem("expert_profilePhotoUrl") || ""
-                };
-
-                const alreadyInList = registeredList.some(e => e.name?.toLowerCase() === fullName.toLowerCase());
-                if (!alreadyInList) {
-                    registeredList = [loggedInExpert, ...registeredList];
-                }
+            if (data.success && Array.isArray(data.experts)) {
+                setExperts(data.experts);
+            } else {
+                setExperts([]);
+                if (data.error) setFetchError(data.error);
             }
-
-            setExperts([...registeredList, ...allExperts]);
+        } catch (err: any) {
+            setFetchError("Could not load experts. Please try again.");
+            setExperts([]);
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -92,9 +56,16 @@ export function FindExpertsPortal() {
         return () => window.removeEventListener("click", handleOutside);
     }, [sortOpen]);
 
+    // Read URL params once on mount and trigger initial fetch
     useEffect(() => {
+        let initQ = "";
+        let initCountry = "All";
+        let initCity = "All Cities";
+        let initPurpose = "";
+
         if (typeof window !== "undefined") {
             const params = new URLSearchParams(window.location.search);
+
             const catQuery = params.get("category");
             if (catQuery) {
                 if (catQuery === "student") setCategory("Student Visa");
@@ -102,23 +73,27 @@ export function FindExpertsPortal() {
                 if (catQuery === "pr") setCategory("PR");
                 if (catQuery === "local") setCategory("Local Expert");
             }
-            const countryQuery = params.get("country");
-            if (countryQuery) {
-                setSelectedCountry(countryQuery);
-            }
-            
-            const textQuery = params.get("q") || params.get("query");
-            if (textQuery) {
-                setSearchText(textQuery);
-            }
 
-            const cityQuery = params.get("city");
+            const countryQuery = params.get("country");
+            if (countryQuery) { setSelectedCountry(countryQuery); initCountry = countryQuery; }
+
+            const textQuery = params.get("q") || params.get("query") || "";
+            if (textQuery) { setSearchText(textQuery); initQ = textQuery; }
+
+            const cityQuery = params.get("city") || "";
             if (cityQuery) {
                 const matchCity = cityFilters.find(c => c.toLowerCase() === cityQuery.toLowerCase());
-                if (matchCity) setCity(matchCity);
+                if (matchCity) { setCity(matchCity); initCity = matchCity; }
             }
+
+            const purposeQuery = params.get("purpose") || "";
+            if (purposeQuery) initPurpose = purposeQuery;
         }
-    }, []);
+
+        // Fetch with initial URL params
+        fetchExperts(initQ, initCountry, initPurpose, initCity);
+    }, [fetchExperts]);
+
 
     // Filter Logic
     const filtered = experts.filter(expert => {
@@ -298,8 +273,25 @@ export function FindExpertsPortal() {
                     <div className="bg-white rounded-3xl border border-slate-100 p-4 shadow-xl mb-6 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                         <div className="flex items-center gap-2.5 bg-slate-50/50 border border-slate-100/70 rounded-2xl px-4 py-2.5 flex-1 w-full sm:w-auto">
                             <Search className="w-4 h-4 text-gray-400 shrink-0" />
-                            <input value={searchText} onChange={e => setSearchText(e.target.value)} placeholder="Search by name, tag, or specialty..." className="bg-transparent outline-none text-xs w-full font-medium" />
+                            <input
+                                value={searchText}
+                                onChange={e => setSearchText(e.target.value)}
+                                onKeyDown={e => { if (e.key === 'Enter') fetchExperts(searchText, selectedCountry); }}
+                                placeholder="Search by name, country, specialty..."
+                                className="bg-transparent outline-none text-xs w-full font-medium"
+                            />
+                            {searchText && (
+                                <button onClick={() => { setSearchText(''); fetchExperts('', selectedCountry); }} className="text-gray-400 hover:text-gray-600">
+                                    <X className="w-3.5 h-3.5" />
+                                </button>
+                            )}
                         </div>
+                        <button
+                            onClick={() => fetchExperts(searchText, selectedCountry)}
+                            className="shrink-0 bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5"
+                        >
+                            <Search className="w-3.5 h-3.5" /> Search
+                        </button>
                         <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
                             <div className="relative" onClick={e => e.stopPropagation()}>
                                 <button
@@ -355,63 +347,125 @@ export function FindExpertsPortal() {
                     </div>
 
                     <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-                        <p className="text-xs font-black tracking-wider text-gray-400">{sorted.length} expert{sorted.length !== 1 ? "s" : ""} found</p>
+                        {loading ? (
+                            <p className="text-xs font-black tracking-wider text-gray-400 flex items-center gap-2"><Loader2 className="w-3.5 h-3.5 animate-spin" /> Loading experts from database...</p>
+                        ) : (
+                            <p className="text-xs font-black tracking-wider text-gray-400">{sorted.length} expert{sorted.length !== 1 ? "s" : ""} found</p>
+                        )}
                         {selectedCountry !== "All" && (
                             <div className="flex items-center gap-2">
                                 <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-sm">
                                     🌍 Destination: {selectedCountry}
-                                    <button onClick={() => setSelectedCountry("All")} className="hover:text-red-400 font-extrabold text-[12px] ml-1">×</button>
+                                    <button onClick={() => { setSelectedCountry("All"); fetchExperts(searchText, "All"); }} className="hover:text-red-400 font-extrabold text-[12px] ml-1">×</button>
                                 </span>
                             </div>
                         )}
                     </div>
 
-                    {viewMode === "list" ? (
+                    {/* Loading skeleton */}
+                    {loading && (
+                        <div className="space-y-4">
+                            {[1,2,3].map(i => (
+                                <div key={i} className="bg-white border border-slate-100 rounded-3xl p-6 flex gap-5 shadow-sm animate-pulse">
+                                    <div className="w-20 h-20 rounded-2xl bg-slate-200 shrink-0" />
+                                    <div className="flex-1 space-y-3">
+                                        <div className="h-4 bg-slate-200 rounded-lg w-1/3" />
+                                        <div className="h-3 bg-slate-100 rounded-lg w-1/2" />
+                                        <div className="h-3 bg-slate-100 rounded-lg w-2/3" />
+                                        <div className="flex gap-2 mt-2">
+                                            <div className="h-6 w-16 bg-slate-100 rounded-full" />
+                                            <div className="h-6 w-20 bg-slate-100 rounded-full" />
+                                            <div className="h-6 w-14 bg-slate-100 rounded-full" />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Error state */}
+                    {!loading && fetchError && (
+                        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+                            <p className="text-red-600 font-bold text-sm">{fetchError}</p>
+                            <button onClick={() => fetchExperts(searchText, selectedCountry)} className="mt-3 text-xs font-bold text-red-500 underline">Retry</button>
+                        </div>
+                    )}
+
+                    {/* Empty state */}
+                    {!loading && !fetchError && experts.length === 0 && (
+                        <div className="bg-white border border-slate-100 rounded-3xl p-12 text-center space-y-4 shadow-xl">
+                            <div className="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mx-auto">
+                                <Users className="w-8 h-8 text-[#00a896]" />
+                            </div>
+                            <h3 className="font-sora font-extrabold text-navy text-lg">No Registered Experts Yet</h3>
+                            <p className="text-xs text-gray-500 max-w-sm mx-auto">Be the first! Register as an expert consultant and your profile will appear here for thousands of seekers to discover.</p>
+                            <a href="/register/expert" className="inline-block mt-2 bg-[#00a896] text-white text-xs font-extrabold px-6 py-2.5 rounded-xl shadow-md hover:bg-[#008f80] transition-all">Register as Expert →</a>
+                        </div>
+                    )}
+
+                    {viewMode === "list" && !loading ? (
                         <div className="space-y-4">
                             {sorted.map(e => (
-                                <div key={e.id} onClick={(event) => { event.preventDefault(); }} className="block group cursor-pointer">
+                                <div key={e.id} className="block group cursor-pointer">
                                     <div className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col md:flex-row gap-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                        {/* Avatar */}
                                         <div className="relative w-20 h-20 shrink-0 mx-auto md:mx-0">
-                                            {e.image && !e.image.includes("unsplash.com") ? (
+                                            {e.image ? (
                                                 <img src={e.image} alt={e.name} className="w-full h-full object-cover rounded-2xl border border-slate-100" />
                                             ) : (
-                                                <div className="w-full h-full rounded-2xl bg-[#00a896] text-white font-black text-2xl flex items-center justify-center border border-teal-200 shadow-2xs">
+                                                <div className="w-full h-full rounded-2xl bg-gradient-to-br from-[#00a896] to-[#006b5e] text-white font-black text-2xl flex items-center justify-center border border-teal-200">
                                                     {(e.name || "E").charAt(0).toUpperCase()}
                                                 </div>
                                             )}
-                                            {e.isAvailableToday && (
-                                                <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black tracking-wider px-2 py-0.5 rounded-full border-2 border-white animate-pulse">
-                                                    Open
+                                            {e.isVerified && (
+                                                <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black tracking-wider px-2 py-0.5 rounded-full border-2 border-white">
+                                                    ✓ Verified
                                                 </span>
                                             )}
                                         </div>
+
+                                        {/* Info */}
                                         <div className="flex-1">
                                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2 text-center sm:text-left">
                                                 <div>
                                                     <h3 className="text-lg font-bold font-sora text-navy group-hover:text-slate-900 transition-colors flex items-center justify-center sm:justify-start gap-2 leading-tight">
-                                                        {e.name} <CheckCircle className="w-4 h-4 text-slate-900 fill-slate-50" />
+                                                        {e.name} <CheckCircle className="w-4 h-4 text-[#00a896] fill-teal-50" />
                                                     </h3>
-                                                    <p className="text-xs text-gray-400 mt-0.5">{e.role} · {e.experience} yrs experience</p>
+                                                    <p className="text-xs text-gray-400 mt-0.5">{e.role}</p>
                                                 </div>
                                                 <div className="text-center sm:text-right shrink-0">
-                                                    <div className="font-sora font-extrabold text-navy text-lg">₹{e.price.toLocaleString()}</div>
-                                                    <div className="text-[9px] font-bold text-gray-400 tracking-widest">per session</div>
+                                                    <div className="flex items-center gap-1 justify-center sm:justify-end">
+                                                        <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                                                        <span className="font-bold text-sm text-navy">{e.rating?.toFixed(1)}</span>
+                                                        {e.reviews > 0 && <span className="text-[10px] text-gray-400">({e.reviews} reviews)</span>}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 text-xs font-semibold text-gray-500 mb-4">
-                                                <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> {e.rating} ({e.reviews} reviews)</span>
-                                                <span>·</span>
+
+                                            {/* Bio */}
+                                            {e.bio && (
+                                                <p className="text-xs text-gray-500 mb-3 line-clamp-2 text-center sm:text-left">{e.bio}</p>
+                                            )}
+
+                                            {/* Meta */}
+                                            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 text-xs font-semibold text-gray-500 mb-3">
                                                 <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-slate-400" /> {e.city}</span>
                                                 {e.isRemote && <span className="text-emerald-600">· Remote available</span>}
-                                                {e.isEmergency && <span className="text-slate-600">· 24/7 Emergency</span>}
+                                                {e.govReg && <span className="text-blue-600">· Govt. Registered</span>}
                                             </div>
-                                            <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-4">
-                                                {e.tags.map(tag => (
-                                                    <span key={tag} className="bg-slate-50 text-slate-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-200/60">{tag}</span>
-                                                ))}
-                                            </div>
+
+                                            {/* Tags */}
+                                            {e.tags && e.tags.length > 0 && (
+                                                <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-4">
+                                                    {e.tags.slice(0, 5).map((tag: string) => (
+                                                        <span key={tag} className="bg-teal-50 text-teal-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-teal-100">{tag}</span>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {/* Footer */}
                                             <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-100 gap-3">
-                                                <span className="text-xs font-bold text-[#00a896]">🌍 Destinations: {e.countries.join(", ")}</span>
+                                                <span className="text-xs font-bold text-[#00a896]">🌍 {e.countries?.join(", ")}</span>
                                                 <a href="/consultation-booking" className="w-full sm:w-auto text-center bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
                                                     Book Consultation
                                                 </a>
@@ -421,13 +475,14 @@ export function FindExpertsPortal() {
                                 </div>
                             ))}
                         </div>
-                    ) : (
+                    ) : !loading ? (
                         <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center space-y-4 shadow-xl">
                             <MapIcon className="w-12 h-12 text-slate-400 mx-auto animate-bounce" />
                             <h3 className="font-sora font-extrabold text-navy text-lg">Map View</h3>
                             <p className="text-xs text-gray-500 max-w-sm mx-auto">Showing {sorted.length} verified experts on the interactive location map.</p>
                         </div>
-                    )}
+                    ) : null}
+
                 </section>
             </main>
         </div>

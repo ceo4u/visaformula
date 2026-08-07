@@ -132,6 +132,12 @@ export async function runMigrations() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
+  // Add profile_photo column if not exists
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS profile_photo TEXT;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS city VARCHAR(150);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS state VARCHAR(150);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS country VARCHAR(150);`);
+
 
   // 3. Sessions Table
   await p.query(`

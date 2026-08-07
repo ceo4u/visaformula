@@ -211,18 +211,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 if (response.ok) {
                     const data = await response.json();
                     if (data.user) {
-                        setUser(data.user);
+                        const resolvedUser = data.user;
+                        setUser(resolvedUser);
                         if (typeof window !== "undefined") {
-                            localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                            localStorage.setItem("visaformula_user", JSON.stringify(resolvedUser));
+                            // If resolved as expert, set expert-specific localStorage flags
+                            if (resolvedUser.type === 'expert') {
+                                const raw = resolvedUser.rawUser || {};
+                                localStorage.setItem("expert_isLoggedIn", "true");
+                                localStorage.setItem("expert_email", resolvedUser.email || '');
+                                localStorage.setItem("expert_businessName", raw.business_name || resolvedUser.displayName || '');
+                                localStorage.setItem("expert_advisorType", raw.advisor_type || 'Freelancer');
+                                localStorage.setItem("expert_aboutMe", raw.about_me || '');
+                                localStorage.setItem("expert_contactNumber", raw.contact_number || '');
+                                localStorage.setItem("expert_officeAddress", raw.office_address || '');
+                                localStorage.setItem("expert_govRegNumber", raw.gov_registration_number || '');
+                                localStorage.setItem("expert_expertiseTags", typeof raw.expertise_tags === 'string' ? raw.expertise_tags : JSON.stringify(raw.expertise_tags || []));
+                                localStorage.setItem("expert_countriesExpertise", typeof raw.countries_expertise === 'string' ? raw.countries_expertise : JSON.stringify(raw.countries_expertise || []));
+                                localStorage.setItem("expert_profilePhoto", raw.profile_photo || '');
+                                localStorage.setItem("expert_portfolioLink", raw.portfolio_link || '');
+                            }
                         }
                     }
-                    return data;
+                    // Return the backend data including redirect URL
+                    return {
+                        ...data,
+                        redirect: data.redirect || (data.user?.type === 'expert' ? '/consultant/dashboard' : '/dashboard')
+                    };
                 }
             } catch (backendErr) {
                 console.warn("Google Auth backend sync warning:", backendErr);
             }
 
-            return { status: "success", user: authenticatedUser, name: fbUser.displayName, email: fbUser.email };
+            return { status: "success", user: authenticatedUser, redirect: '/dashboard', name: fbUser.displayName, email: fbUser.email };
         } catch (error: any) {
             console.error("Google Authentication Popup Error:", error);
             throw error;

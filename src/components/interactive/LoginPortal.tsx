@@ -23,14 +23,18 @@ function LoginPortalContent() {
                 setGoogleLoading(false);
                 return;
             }
+            // Use redirect URL from backend response (correctly identifies expert vs seeker)
+            if (res?.redirect) {
+                window.location.href = res.redirect;
+                return;
+            }
+            // Fallback: read from localStorage
             const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
             if (userStr) {
-                const parsed = JSON.parse(userStr);
-                if (parsed.type === "expert") {
-                    window.location.href = "/consultant/dashboard";
-                } else {
-                    window.location.href = "/dashboard";
-                }
+                try {
+                    const parsed = JSON.parse(userStr);
+                    window.location.href = parsed.type === "expert" ? "/consultant/dashboard" : "/dashboard";
+                } catch { window.location.href = "/dashboard"; }
             } else {
                 window.location.href = "/dashboard";
             }

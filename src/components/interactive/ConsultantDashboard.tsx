@@ -96,19 +96,16 @@ export function ConsultantDashboard() {
         if (typeof window !== "undefined") {
             const userStr = localStorage.getItem("visaformula_user");
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
-            const seekerFirst = localStorage.getItem("seeker_firstName");
-            if (seekerFirst && isLoggedInExpert !== "true") {
-                window.location.href = "/dashboard";
+
+            let parsedUser: any = null;
+            try { parsedUser = userStr ? JSON.parse(userStr) : null; } catch(e) {}
+
+            const isExpert = parsedUser?.type === "expert" || isLoggedInExpert === "true";
+            
+            if (!isExpert) {
+                // Not an expert - redirect to appropriate dashboard
+                window.location.href = parsedUser?.type === "seeker" ? "/dashboard" : "/login";
                 return;
-            }
-            if (userStr) {
-                try {
-                    const u = JSON.parse(userStr);
-                    if (u && u.type === "seeker") {
-                        window.location.href = "/dashboard";
-                        return;
-                    }
-                } catch(e) {}
             }
 
             // Load real Expert Profile details from localStorage

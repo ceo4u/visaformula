@@ -1,11 +1,6 @@
 import type { APIRoute } from 'astro';
-import { GoogleGenAI, Type } from '@google/genai';
 
-// Initialize Google GenAI
-const apiKey = import.meta.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY || '';
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
-
-// Algorithmic evaluation fallback for ultra-fast latency & offline guarantee
+// Algorithmic evaluation fallback for ultra-fast response & 100% offline guarantee
 function evaluateReadinessAlgorithmic(data: {
   country: string;
   visaType: string;
@@ -105,7 +100,6 @@ export const POST: APIRoute = async ({ request }) => {
       ieltsScore,
       passportValidMonths,
       previousRefusals,
-      userId,
     } = body;
 
     if (!country || !visaType) {
@@ -115,57 +109,57 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    const apiKey = import.meta.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY || '';
     let evaluationResult: any = null;
 
-    // Try Gemini 2.0 Flash AI Evaluation if key is available
-    if (ai) {
+    // Call Gemini REST API directly if API key is provided
+    if (apiKey) {
       try {
-        const prompt = `
-          Act as a senior official visa immigration officer evaluating a visa applicant's readiness score.
+        const promptText = `
+          Act as an official visa officer evaluating a visa applicant's readiness score.
           
           Applicant Profile:
-          - Target Country: ${country}
-          - Visa Category: ${visaType}
-          - Liquid Financial Funds Available (USD): $${financialFundsUsd}
-          - IELTS / Language Score: ${ieltsScore}
+          - Destination: ${country}
+          - Visa Type: ${visaType}
+          - Available Liquid Funds (USD): $${financialFundsUsd}
+          - IELTS Score: ${ieltsScore}
           - Passport Remaining Expiry: ${passportValidMonths} months
-          - Has Previous Visa Refusals: ${previousRefusals ? 'Yes' : 'No'}
+          - Previous Refusals: ${previousRefusals ? 'Yes' : 'No'}
 
-          Evaluate strictly against official ${country} embassy regulations.
-          Calculate readinessScore (0-100), financialScore (0-100), assign risk status ('READY' | 'MODERATE_RISK' | 'HIGH_RISK'), and list specific actionable critical gaps.
+          Evaluate strictly against ${country} embassy criteria.
+          Return ONLY valid JSON matching this exact structure:
+          {
+            "readinessScore": 75,
+            "status": "MODERATE_RISK",
+            "financialScore": 80,
+            "criticalGaps": ["Gap 1", "Gap 2"],
+            "recommendationSummary": "Summary statement..."
+          }
         `;
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.0-flash',
-          contents: prompt,
-          config: {
-            responseMimeType: 'application/json',
-            responseSchema: {
-              type: Type.OBJECT,
-              properties: {
-                readinessScore: { type: Type.INTEGER },
-                status: { type: Type.STRING },
-                financialScore: { type: Type.INTEGER },
-                criticalGaps: {
-                  type: Type.ARRAY,
-                  items: { type: Type.STRING },
-                },
-                recommendationSummary: { type: Type.STRING },
-              },
-              required: ['readinessScore', 'status', 'criticalGaps', 'recommendationSummary'],
-            },
-          },
-        });
+        const geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: promptText }] }],
+              generationConfig: { responseMimeType: 'application/json' }
+            })
+          }
+        );
 
-        if (response.text) {
-          evaluationResult = JSON.parse(response.text);
+        const geminiData = await geminiRes.json();
+        const rawText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (rawText) {
+          evaluationResult = JSON.parse(rawText);
         }
       } catch (geminiError) {
-        console.warn("[Readiness API] Gemini 2.0 Flash fallback to algorithmic evaluator:", geminiError);
+        console.warn("[Readiness API] Gemini REST API call fallback to algorithmic evaluator:", geminiError);
       }
     }
 
-    // Fallback to high-speed algorithmic evaluator if Gemini API key not present or call errored
+    // Fallback to high-speed algorithmic evaluator if API key not available or errored
     if (!evaluationResult) {
       evaluationResult = evaluateReadinessAlgorithmic({
         country,

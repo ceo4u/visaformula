@@ -86,12 +86,9 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     const [tempEmail, setTempEmail] = useState("");
 
     // --- PASSWORD VALIDATION RULES ---
-    const hasMinLength = signupPassword.length >= 8;
-    const hasLowercase = /[a-z]/.test(signupPassword);
-    const hasUppercase = /[A-Z]/.test(signupPassword);
-    const hasNumber = /[0-9]/.test(signupPassword);
-    const isPasswordValid = hasMinLength && hasLowercase && hasUppercase && hasNumber;
-    const passwordsMatch = signupPassword && confirmPassword && signupPassword === confirmPassword;
+    const hasMinLength = signupPassword.length >= 6;
+    const isPasswordValid = signupPassword.length >= 6;
+    const passwordsMatch = !confirmPassword || signupPassword === confirmPassword;
 
     // Password Strength Score (0 to 4)
     const passedCriteriaCount = [hasMinLength, hasLowercase, hasUppercase, hasNumber].filter(Boolean).length;
@@ -301,39 +298,32 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         setSignupError("");
 
         if (!firstName || !lastName) {
-            setSignupError("Please enter your first name and last name.");
+            setSignupError("Please enter your First Name and Last Name.");
+            if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
         if (!signupEmail || !/\S+@\S+\.\S+/.test(signupEmail)) {
             setSignupError("Please enter a valid email address.");
+            if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
-        if (!isPasswordValid) {
-            setSignupError("Password does not meet all security requirements.");
-            return;
-        }
-        if (!passwordsMatch) {
-            setSignupError("Passwords do not match.");
+        if (signupPassword && signupPassword.length < 6) {
+            setSignupError("Password must be at least 6 characters.");
+            if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
 
         setSignupLoading(true);
+        setShowOtpModal(true);
 
-        // Dispatch 6-digit OTP code to user's email and open verification modal
         try {
-            const res = await fetch("/api/auth/send-verification-code", {
+            await fetch("/api/auth/send-verification-code", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: signupEmail })
             });
-            const data = await res.json();
-            if (res.ok) {
-                setShowOtpModal(true);
-            } else {
-                setSignupError(data.message || "Failed to send verification OTP code.");
-            }
         } catch (err) {
-            setShowOtpModal(true);
+            console.warn("Async OTP send dispatch:", err);
         } finally {
             setSignupLoading(false);
         }

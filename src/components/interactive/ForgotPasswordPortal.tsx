@@ -122,33 +122,27 @@ export function ForgotPasswordPortal() {
     };
 
     return (
-        <div className="min-h-screen text-[#111111] flex flex-col justify-between selection:bg-black selection:text-white bg-gray-50/50 font-sans" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            <style dangerouslySetInnerHTML={{__html: `
-                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
-                * {
-                    font-family: 'Plus Jakarta Sans', sans-serif !important;
-                }
-            `}} />
-
-            {/* Floating Back Button */}
-            <a href="/login" className="absolute top-6 left-6 flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-xs font-bold text-black hover:bg-slate-50 shadow-sm transition-all z-50 shrink-0">
-                <span className="text-sm font-semibold">&larr;</span>
-                <span>Back to Login</span>
-            </a>
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar font-sora">
+            
+            {/* Top Back Button & Logo Header */}
+            <div className="w-full max-w-md flex items-center justify-between mb-3 px-1 shrink-0 gap-2">
+                <a href="/login" className="flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 px-3.5 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-sm shrink-0">
+                    <ArrowLeft className="w-3.5 h-3.5" /> <span>Back to Login</span>
+                </a>
+                <a href="/" className="shrink-0">
+                    <img src="/logo-white.png" alt="VisaFormula" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
+                </a>
+            </div>
 
             {/* Main Portal Card */}
-            <main className="flex-grow flex items-center justify-center px-4 py-16">
-                <div className="w-full max-w-md">
-                    
-                    {/* Outer Box */}
-                    <div className="w-full bg-white border-2 border-black rounded-3xl p-6 md:p-8 shadow-xl shadow-gray-150/40 text-center">
-                        
-                        {/* Centered Logo */}
-                        <div className="text-center mb-4">
-                            <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
-                                <img src="/logo.png" alt="VisaFormula" className="h-28 w-auto object-contain mx-auto" />
-                            </a>
-                        </div>
+            <div className="bg-white rounded-[32px] p-5 sm:p-8 max-w-md w-[94vw] sm:w-full shadow-2xl border border-slate-200/80 space-y-5 text-slate-900 relative animate-fade-up max-h-[88vh] overflow-y-auto no-scrollbar my-auto text-center">
+                
+                {/* Centered Logo */}
+                <div className="flex justify-center pt-1">
+                    <a href="/" className="inline-block">
+                        <img src="/logo.png" alt="VisaFormula" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+                    </a>
+                </div>
 
                         {success ? (
                             <div className="space-y-6">
@@ -384,14 +378,7 @@ export function ForgotPasswordPortal() {
                                 </button>
                             </form>
                         )}
-                    </div>
-                </div>
-            </main>
-
-            {/* Footer */}
-            <footer className="py-6 text-center text-xs text-slate-400 font-semibold border-t border-slate-100">
-                © 2026 VisaFormula. All rights reserved.
-            </footer>
+            </div>
         </div>
     );
 }

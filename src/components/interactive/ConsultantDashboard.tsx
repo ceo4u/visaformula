@@ -56,6 +56,10 @@ export function ConsultantDashboard() {
     const [classifiedsList, setClassifiedsList] = useState<any[]>([]);
     const [reviewsList, setReviewsList] = useState<any[]>([]);
     const [disputesList, setDisputesList] = useState<any[]>([]);
+    const [supportTickets, setSupportTickets] = useState<any[]>([]);
+    const [ticketSubject, setTicketSubject] = useState("");
+    const [ticketQuery, setTicketQuery] = useState("");
+    const [isSubmittingTicket, setIsSubmittingTicket] = useState(false);
     const [servicesList, setServicesList] = useState<any[]>([
         { id: 1, name: "Initial Consultation (30 min)", price: "₹2,500", active: true },
         { id: 2, name: "Full Visa Application Support", price: "₹15,000", active: true },
@@ -179,12 +183,12 @@ export function ConsultantDashboard() {
                 }
             } catch(e) {}
 
-            // Load real Leads from localStorage
+            // Load real Support Tickets from localStorage
             try {
-                const savedLeads = localStorage.getItem("expert_leads");
-                if (savedLeads) {
-                    const parsedLeads = JSON.parse(savedLeads);
-                    if (Array.isArray(parsedLeads)) setLeadsList(parsedLeads);
+                const savedTickets = localStorage.getItem("expert_support_tickets");
+                if (savedTickets) {
+                    const parsedTickets = JSON.parse(savedTickets);
+                    if (Array.isArray(parsedTickets)) setSupportTickets(parsedTickets);
                 }
             } catch(e) {}
         }
@@ -308,15 +312,41 @@ export function ConsultantDashboard() {
         triggerToast("Lead removed.");
     };
 
-    const handleSendMessage = (e: React.FormEvent) => {
+    const handleSubmitTicket = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!messageInput.trim() || !activeChatClient) return;
-        const newMsg = { sender: "me", text: messageInput.trim(), time: "Just now" };
-        setChatMessages(prev => ({
-            ...prev,
-            [activeChatClient]: [...(prev[activeChatClient] || []), newMsg]
-        }));
-        setMessageInput("");
+        if (!ticketSubject.trim() || !ticketQuery.trim()) return;
+
+        setIsSubmittingTicket(true);
+        const ticketId = `TK-${Math.floor(1000 + Math.random() * 9000)}`;
+        const userEmail = localStorage.getItem("expert_email") || "consultant@visaformula.com";
+        const userName = profile.name || "Registered Expert";
+
+        const newTicket = {
+            id: ticketId,
+            subject: ticketSubject.trim(),
+            query: ticketQuery.trim(),
+            email: userEmail,
+            name: userName,
+            status: "Open",
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        };
+
+        try {
+            await fetch('/api/support/ticket', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newTicket)
+            });
+        } catch (e) {}
+
+        const updatedTickets = [newTicket, ...supportTickets];
+        setSupportTickets(updatedTickets);
+        localStorage.setItem("expert_support_tickets", JSON.stringify(updatedTickets));
+
+        setTicketSubject("");
+        setTicketQuery("");
+        setIsSubmittingTicket(false);
+        triggerToast(`Support ticket #${ticketId} created & saved to your dashboard!`);
     };
 
     const handleLogout = () => {
@@ -1281,18 +1311,18 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Help & Support Desk</h2>
-                                    <p className="text-xs font-medium text-slate-500">Get assistance from VisaFormula support team</p>
+                                    <p className="text-xs font-medium text-slate-500">Get assistance from VisaFormula support team & track your queries</p>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-3">
                                     <h3 className="text-sm font-extrabold text-slate-900">Frequently Asked Questions</h3>
-                                    <div className="p-3 bg-slate-50 border rounded-xl space-y-1">
+                                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
                                         <h4 className="text-xs font-bold text-slate-900">How do Escrow payouts work?</h4>
                                         <p className="text-xs text-slate-600">Client payments are held safely until milestone consultation is marked complete.</p>
                                     </div>
-                                    <div className="p-3 bg-slate-50 border rounded-xl space-y-1">
+                                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
                                         <h4 className="text-xs font-bold text-slate-900">How to get Verified Badge?</h4>
                                         <p className="text-xs text-slate-600">Upload your valid immigration license or government registration document in settings.</p>
                                     </div>
@@ -1300,14 +1330,65 @@ export function ConsultantDashboard() {
 
                                 <div className="space-y-3">
                                     <h3 className="text-sm font-extrabold text-slate-900">Contact Support Team</h3>
-                                    <form onSubmit={(e) => { e.preventDefault(); triggerToast("Support ticket submitted! Our team will reply via email."); }} className="space-y-2">
-                                        <input type="text" placeholder="Subject" className="w-full p-2.5 border rounded-xl text-xs" required />
-                                        <textarea rows={3} placeholder="Describe your query..." className="w-full p-2.5 border rounded-xl text-xs" required />
-                                        <button type="submit" className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold">
-                                            Submit Ticket
+                                    <form onSubmit={handleSubmitTicket} className="space-y-2.5">
+                                        <input 
+                                            type="text" 
+                                            value={ticketSubject}
+                                            onChange={(e) => setTicketSubject(e.target.value)}
+                                            placeholder="Subject" 
+                                            className="w-full p-2.5 border border-slate-300 rounded-xl text-xs font-medium outline-none focus:border-[#00a896]" 
+                                            required 
+                                        />
+                                        <textarea 
+                                            rows={3} 
+                                            value={ticketQuery}
+                                            onChange={(e) => setTicketQuery(e.target.value)}
+                                            placeholder="Describe your query..." 
+                                            className="w-full p-2.5 border border-slate-300 rounded-xl text-xs font-medium outline-none focus:border-[#00a896]" 
+                                            required 
+                                        />
+                                        <button 
+                                            type="submit" 
+                                            disabled={isSubmittingTicket}
+                                            className="bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer disabled:bg-slate-300"
+                                        >
+                                            {isSubmittingTicket ? "Submitting Ticket..." : "Submit Ticket"}
                                         </button>
                                     </form>
                                 </div>
+                            </div>
+
+                            {/* Submitted Tickets & Contact Queries List */}
+                            <div className="pt-4 border-t border-slate-100 space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-sm font-extrabold text-slate-900">My Support Tickets & Queries ({supportTickets.length})</h3>
+                                </div>
+
+                                {supportTickets.length > 0 ? (
+                                    <div className="space-y-2.5">
+                                        {supportTickets.map((ticket: any, idx: number) => (
+                                            <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-sora">
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="bg-teal-100 text-[#00a896] text-[10px] font-black px-2 py-0.5 rounded-md border border-teal-200">
+                                                            #{ticket.id}
+                                                        </span>
+                                                        <h4 className="text-xs font-extrabold text-slate-900">{ticket.subject}</h4>
+                                                    </div>
+                                                    <p className="text-xs text-slate-600 font-medium">{ticket.query}</p>
+                                                    <span className="text-[10px] text-slate-400 font-semibold block">{ticket.date} · {ticket.email}</span>
+                                                </div>
+                                                <span className="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-3 py-1 rounded-full border border-amber-200 self-start sm:self-auto shrink-0">
+                                                    ● {ticket.status || "Open"}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="p-6 text-center border border-dashed border-slate-200 rounded-2xl text-xs text-slate-400 font-medium">
+                                        No support tickets submitted yet. Submit a query above to track your tickets here.
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}

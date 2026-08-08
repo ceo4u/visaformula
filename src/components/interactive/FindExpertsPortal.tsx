@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Search, Filter, X, Loader2 } from "lucide-react";
+import { ExpertProfileModal } from "./ExpertProfileModal";
+
 
 const categoryFilters = ["All", "Student Visa", "Work Permit", "PR", "Local Expert"];
 const cityFilters = ["All Cities", "Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Remote"];
@@ -109,6 +111,8 @@ export function FindExpertsPortal() {
     const [showMobileFilters, setShowMobileFilters] = useState(false);
     const [selectedCountry, setSelectedCountry] = useState("All");
     const [sortOpen, setSortOpen] = useState(false);
+    const [selectedProfileExpert, setSelectedProfileExpert] = useState<any>(null);
+
 
     // ── Fetch real experts from Neon DB, then append dummies ──
     const fetchExperts = useCallback(async (q = "", country = "", purpose = "", cityParam = "") => {
@@ -527,7 +531,7 @@ export function FindExpertsPortal() {
                     {viewMode === "list" && !loading ? (
                         <div className="space-y-4">
                             {sorted.map(e => (
-                                <div key={e.id} className="block group cursor-pointer">
+                                <div key={e.id} onClick={() => setSelectedProfileExpert(e)} className="block group cursor-pointer">
                                     <div className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col md:flex-row gap-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                                         {/* Avatar */}
                                         <div className="relative w-20 h-20 shrink-0 mx-auto md:mx-0">
@@ -549,7 +553,7 @@ export function FindExpertsPortal() {
                                         <div className="flex-1">
                                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2 text-center sm:text-left">
                                                 <div>
-                                                    <h3 className="text-lg font-bold font-sora text-navy group-hover:text-slate-900 transition-colors flex items-center justify-center sm:justify-start gap-2 leading-tight">
+                                                    <h3 className="text-lg font-bold font-sora text-navy group-hover:text-[#00a896] transition-colors flex items-center justify-center sm:justify-start gap-2 leading-tight">
                                                         {e.name} <CheckCircle className="w-4 h-4 text-[#00a896] fill-teal-50" />
                                                     </h3>
                                                     <p className="text-xs text-gray-400 mt-0.5">{e.role}</p>
@@ -573,6 +577,7 @@ export function FindExpertsPortal() {
                                                 <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-slate-400" /> {e.city}</span>
                                                 {e.isRemote && <span className="text-emerald-600">· Remote available</span>}
                                                 {e.govReg && <span className="text-blue-600">· Govt. Registered</span>}
+                                                <span className="text-[#00a896] font-bold hover:underline ml-auto text-xs flex items-center gap-0.5">View Profile →</span>
                                             </div>
 
                                             {/* Tags */}
@@ -585,9 +590,9 @@ export function FindExpertsPortal() {
                                             )}
 
                                             {/* Footer */}
-                                            <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-100 gap-3">
+                                            <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-100 gap-3" onClick={(e) => e.stopPropagation()}>
                                                 <span className="text-xs font-bold text-[#00a896]">🌍 {e.countries?.join(", ")}</span>
-                                                <a href="/consultation-booking" className="w-full sm:w-auto text-center bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
+                                                <a href={`/consultation-booking?expert=${encodeURIComponent(e.name)}`} className="w-full sm:w-auto text-center bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
                                                     Book Consultation
                                                 </a>
                                             </div>
@@ -606,6 +611,14 @@ export function FindExpertsPortal() {
 
                 </section>
             </main>
+
+            {/* Instagram Style Expert Profile Modal */}
+            <ExpertProfileModal 
+                expert={selectedProfileExpert} 
+                isOpen={!!selectedProfileExpert} 
+                onClose={() => setSelectedProfileExpert(null)} 
+            />
         </div>
     );
 }
+

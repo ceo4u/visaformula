@@ -46,9 +46,9 @@ export const sendEmail = async ({
   const toArray = Array.isArray(to) ? to : [to];
   const maskedRecipients = toArray.map(addr => addr.replace(/^(.{2}).*(@.*)$/, "$1***$2")).join(', ');
 
-  console.log(`[Email Audit] Provider: Resend`);
-  console.log(`[Email Audit] From Address: ${from}`);
-  console.log(`[Email Audit] Recipient: ${maskedRecipients}`);
+  console.log(`[OTP DEBUG] email provider: RESEND`);
+  console.log(`[OTP DEBUG] from address: ${from}`);
+  console.log(`[OTP DEBUG] resend request started for recipient: ${maskedRecipients}`);
 
   const allowedDomains = ['visaformula.com', 'resend.dev'];
   const fromDomainMatch = from.match(/@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
@@ -71,7 +71,7 @@ export const sendEmail = async ({
     });
 
     if (result.data?.id) {
-      console.log(`[Resend API Success] Message ID: ${result.data.id}`);
+      console.log(`[OTP DEBUG] resend response ID: ${result.data.id}`);
     }
 
     // Fallback: If custom domain is not verified in Resend account, retry using onboarding@resend.dev
@@ -80,7 +80,7 @@ export const sendEmail = async ({
       JSON.stringify(result.error).toLowerCase().includes('verified') ||
       result.error.name === 'validation_error'
     )) {
-      console.warn('[Resend Fallback] Unverified domain encountered. Retrying via onboarding@resend.dev...');
+      console.warn('[OTP DEBUG] Unverified domain encountered. Retrying via onboarding@resend.dev...');
       result = await resend.emails.send({
         from: 'VisaFormula <onboarding@resend.dev>',
         to,
@@ -89,12 +89,12 @@ export const sendEmail = async ({
         text,
       });
       if (result.data?.id) {
-        console.log(`[Resend API Fallback Success] Message ID: ${result.data.id}`);
+        console.log(`[OTP DEBUG] resend response ID: ${result.data.id}`);
       }
     }
 
     if (result.error) {
-      console.error('[Resend API Error]', result.error);
+      console.log(`[OTP DEBUG] resend error: ${result.error.message || JSON.stringify(result.error)}`);
       return { success: false, error: result.error.message || JSON.stringify(result.error) };
     }
 

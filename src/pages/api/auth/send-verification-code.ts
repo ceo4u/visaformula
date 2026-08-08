@@ -26,7 +26,8 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
     const maskedEmail = email.replace(/^(.{2}).*(@.*)$/, "$1***$2");
-    console.log(`[OTP API] Endpoint hit (/api/auth/send-verification-code) for recipient: ${maskedEmail}`);
+    console.log(`[OTP DEBUG] endpoint called: /api/auth/send-verification-code`);
+    console.log(`[OTP DEBUG] recipient: ${maskedEmail}`);
 
     // ── Rate limit by Email & IP ─────────────────────────────
     const ip = getIpFromRequest(request);
@@ -55,7 +56,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // ── Generate & store OTP ─────────────────────────────────
     const otp = generateOtp();
-    console.log(`[OTP API] OTP Generation Succeeded: YES | Recipient: ${maskedEmail}`);
+    console.log(`[OTP DEBUG] OTP generated: YES`);
 
 
     // ── Parallel Execution: Resend Email Dispatch + DB Save ──

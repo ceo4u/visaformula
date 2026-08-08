@@ -306,11 +306,11 @@ function ExpertSignupPortalContent() {
         body: JSON.stringify({ email: targetEmail.trim() }),
       });
       const data = await res.json();
-      if (data.otp && data.otp.length === 6) {
-        setOtpDigits(data.otp.split(""));
-      }
+      // Keep inputs blank so user must enter OTP received in email
+      setOtpDigits(Array(6).fill(""));
       if (!res.ok) {
         console.warn("[ExpertSignupPortal] OTP send response:", data);
+        if (data.message) setOtpError(data.message);
       }
 
     } catch (e) {

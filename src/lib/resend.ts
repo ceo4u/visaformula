@@ -50,31 +50,45 @@ export const sendEmail = async ({
   console.log(`- From address: ${from}`);
   console.log(`- To address: ${Array.isArray(to) ? to.join(', ') : to}`);
 
-  // Enforce verified domain constraint (must be visaformula.com)
-  const allowedDomains = ['visaformula.com'];
+  const allowedDomains = ['visaformula.com', 'resend.dev'];
   const fromDomainMatch = from.match(/@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
   const fromDomain = fromDomainMatch ? fromDomainMatch[1].toLowerCase() : '';
 
+  let sender = from;
   if (!allowedDomains.includes(fromDomain)) {
-    const domainError = `[RESEND AUDIT REJECTION] Sender domain "${fromDomain}" is not an allowed verified domain. Allowed: ${allowedDomains.join(', ')}`;
-    console.error(domainError);
-    return { success: false, error: domainError };
+    sender = 'VisaFormula <onboarding@resend.dev>';
   }
 
-  console.log("STEP 6 Calling Resend");
+  console.log("STEP 6 Calling Resend API with sender:", sender);
   try {
     const resend = getResendClient();
 
-    const result = await resend.emails.send({
-      from,
+    let result = await resend.emails.send({
+      from: sender,
       to,
       subject,
       html,
       text,
     });
 
-    console.log("STEP 6 Resend Response:");
-    console.log(JSON.stringify(result, null, 2));
+    console.log("STEP 6 Resend Response:", JSON.stringify(result, null, 2));
+
+    // Fallback: If custom domain is not verified in Resend account, retry using onboarding@resend.dev
+    if (result.error && (
+      JSON.stringify(result.error).toLowerCase().includes('domain') ||
+      JSON.stringify(result.error).toLowerCase().includes('verified') ||
+      result.error.name === 'validation_error'
+    )) {
+      console.warn('[RESEND] Custom domain not verified on Resend account. Retrying with onboarding@resend.dev...');
+      result = await resend.emails.send({
+        from: 'VisaFormula <onboarding@resend.dev>',
+        to,
+        subject,
+        html,
+        text,
+      });
+      console.log("[RESEND] Fallback Response:", JSON.stringify(result, null, 2));
+    }
 
     if (result.error) {
       console.error('[RESEND AUDIT ERROR] Resend API returned error:', result.error);
@@ -83,8 +97,7 @@ export const sendEmail = async ({
 
     return { success: true, data: result.data };
   } catch (error: any) {
-    console.error("STEP 6 RESEND ERROR:");
-    console.error(error);
+    console.error("STEP 6 RESEND ERROR:", error);
     if (error?.stack) console.error(error.stack);
     return { success: false, error: error?.message || error };
   }

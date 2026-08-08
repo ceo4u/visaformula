@@ -81,7 +81,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       status: 'success',
-      otp: otp,
       message: 'Verification code sent! Please check your email.',
     }), {
       status: 200,

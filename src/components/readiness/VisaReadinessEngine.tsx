@@ -26,7 +26,10 @@ import {
   RefreshCw,
   HelpCircle,
   Download,
-  Share2
+  Share2,
+  ArrowLeft,
+  Sliders,
+  CheckSquare
 } from 'lucide-react';
 
 interface GapItem {
@@ -50,6 +53,9 @@ export default function VisaReadinessEngine() {
   // Step state
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 6;
+
+  // Flow State: false = Collecting Inputs, true = Showing Results Dashboard
+  const [isEvaluated, setIsEvaluated] = useState(false);
 
   // Human captcha state
   const [isHumanChecked, setIsHumanChecked] = useState(true);
@@ -103,7 +109,6 @@ export default function VisaReadinessEngine() {
 
     const gaps: GapItem[] = [];
 
-    // Parse numeric values
     const fundsNum = Number(bankBalanceUsd) || 0;
     const ieltsVal = parseFloat(languageScoreStr.replace(/[^0-9.]/g, '')) || 6.5;
 
@@ -198,7 +203,6 @@ export default function VisaReadinessEngine() {
       });
     }
 
-    // Default gap if profile is exceptionally clean
     if (gaps.length === 0) {
       gaps.push({
         id: 'gap-clean-sop',
@@ -229,7 +233,7 @@ export default function VisaReadinessEngine() {
     };
   };
 
-  // Re-compute readiness dynamically whenever inputs change
+  // Re-compute readiness whenever inputs change
   useEffect(() => {
     const computed = computeReadiness();
     setReadinessScore(computed.score);
@@ -243,26 +247,26 @@ export default function VisaReadinessEngine() {
     setActiveTab(catId);
     if (catId === 'student') {
       setVisaType('Study Permit');
-      setCurrentStep(1);
     } else if (catId === 'work') {
       setVisaType('Work Permit');
-      setCurrentStep(2);
     } else if (catId === 'tourist') {
       setVisaType('Tourist / Visitor Visa');
-      setCurrentStep(3);
     } else {
       setVisaType('Permanent Residency (PR)');
-      setCurrentStep(4);
     }
   };
 
-  // Form Submission Handler calling real API
-  const handleNextStep = async (e: React.FormEvent) => {
+  // Form Submission Handler -> Triggers evaluation and transitions to results
+  const handleSubmitEvaluation = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isHumanChecked) {
+      alert("Please confirm 'I am human' checkbox to proceed.");
+      return;
+    }
+
     setIsEvaluating(true);
 
     try {
-      // Call backend API for audit & evaluation persistence
       await fetch('/api/readiness', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -275,16 +279,13 @@ export default function VisaReadinessEngine() {
           previousRefusals: hasRefusals
         }),
       });
-    } catch (err) {
-      // Gracefully continue with client-side computed score
-    } finally {
-      setTimeout(() => {
-        setIsEvaluating(false);
-        if (currentStep < totalSteps) {
-          setCurrentStep((prev) => prev + 1);
-        }
-      }, 500);
-    }
+    } catch (err) {}
+
+    setTimeout(() => {
+      setIsEvaluating(false);
+      setIsEvaluated(true); // Transition to Output Results Dashboard
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 700);
   };
 
   const handleLeadSubmit = (e: React.FormEvent) => {
@@ -329,21 +330,33 @@ export default function VisaReadinessEngine() {
           </p>
         </div>
 
-        <a
-          href="/find-experts"
-          className="inline-flex items-center justify-center gap-2 bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-sm transition-all cursor-pointer shrink-0"
-        >
-          <UserCheck className="w-4 h-4" />
-          <span>Find Expert</span>
-        </a>
+        <div className="flex items-center gap-3">
+          {isEvaluated && (
+            <button
+              onClick={() => setIsEvaluated(false)}
+              className="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Edit Details</span>
+            </button>
+          )}
+
+          <a
+            href="/find-experts"
+            className="inline-flex items-center justify-center gap-2 bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-sm transition-all cursor-pointer shrink-0"
+          >
+            <UserCheck className="w-4 h-4" />
+            <span>Find Expert</span>
+          </a>
+        </div>
       </div>
 
-      {/* ── 2. MAIN DASHBOARD GRID ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        {/* ── LEFT COLUMN: APPLICATION INPUT FORM (lg:col-span-4) ── */}
-        <div className="lg:col-span-4 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-5 flex flex-col justify-between">
-          <div>
+      {/* ── STEP 1: COLLECTING DETAILS (BEFORE EVALUATION) ── */}
+      {!isEvaluated ? (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Form Card (lg:col-span-5) */}
+          <div className="lg:col-span-5 bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/90 shadow-md space-y-5">
             {/* Category Tabs */}
             <div className="grid grid-cols-4 gap-1 bg-slate-100/80 p-1 rounded-xl mb-4">
               {categories.map((cat) => {
@@ -369,22 +382,23 @@ export default function VisaReadinessEngine() {
             {/* Step Progress Line */}
             <div className="space-y-1.5 mb-5">
               <div className="flex items-center justify-between text-[11px] font-bold text-slate-700">
-                <span className="text-[#00a896]">Step {currentStep} of {totalSteps}</span>
+                <span className="text-[#00a896]">Step 1 of 6</span>
+                <span className="text-slate-400 font-medium">Enter Details Below</span>
               </div>
               <div className="grid grid-cols-6 gap-1.5">
                 {[1, 2, 3, 4, 5, 6].map((step) => (
                   <div
                     key={step}
                     className={`h-1.5 rounded-full transition-all ${
-                      step <= currentStep ? 'bg-[#00a896]' : 'bg-slate-200'
+                      step === 1 ? 'bg-[#00a896]' : 'bg-slate-200'
                     }`}
                   />
                 ))}
               </div>
             </div>
 
-            {/* Mock hCaptcha Checkbox Widget */}
-            <div className="bg-slate-50/80 border border-slate-200 p-3 rounded-xl flex items-center justify-between mb-5">
+            {/* hCaptcha Checkbox Widget */}
+            <div className="bg-slate-50/80 border border-slate-200 p-3.5 rounded-xl flex items-center justify-between mb-5">
               <label className="flex items-center gap-3 cursor-pointer select-none">
                 <input
                   type="checkbox"
@@ -392,7 +406,7 @@ export default function VisaReadinessEngine() {
                   onChange={(e) => setIsHumanChecked(e.target.checked)}
                   className="w-5 h-5 accent-[#00a896] rounded cursor-pointer"
                 />
-                <span className="text-xs font-semibold text-slate-700">I am human</span>
+                <span className="text-xs font-bold text-slate-800">I am human</span>
               </label>
               <div className="flex flex-col items-end text-[9px] text-slate-400">
                 <div className="w-5 h-5 bg-teal-500 text-white rounded flex items-center justify-center font-bold">h</div>
@@ -401,18 +415,18 @@ export default function VisaReadinessEngine() {
             </div>
 
             {/* Input Form Fields */}
-            <form onSubmit={handleNextStep} className="space-y-4">
+            <form onSubmit={handleSubmitEvaluation} className="space-y-4">
               
               {/* 1. Target Country */}
               <div>
-                <label className="block text-[12px] font-bold text-slate-800 mb-1">
+                <label className="block text-xs font-extrabold text-slate-800 mb-1.5">
                   1. Select Target Country
                 </label>
                 <div className="relative">
                   <select
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
-                    className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
+                    className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
                   >
                     <option value="Canada">🇨🇦 Canada</option>
                     <option value="United States">🇺🇸 United States</option>
@@ -422,20 +436,20 @@ export default function VisaReadinessEngine() {
                     <option value="New Zealand">🇳🇿 New Zealand</option>
                     <option value="Schengen">🇪🇺 Schengen Europe</option>
                   </select>
-                  <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" />
+                  <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3.5 pointer-events-none" />
                 </div>
               </div>
 
               {/* 2. Visa Type */}
               <div>
-                <label className="block text-[12px] font-bold text-slate-800 mb-1">
+                <label className="block text-xs font-extrabold text-slate-800 mb-1.5">
                   2. Select Visa Type
                 </label>
                 <div className="relative">
                   <select
                     value={visaType}
                     onChange={(e) => setVisaType(e.target.value)}
-                    className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
+                    className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
                   >
                     <option value="Study Permit">Study Permit</option>
                     <option value="Work Permit">Work Permit</option>
@@ -443,7 +457,7 @@ export default function VisaReadinessEngine() {
                     <option value="Permanent Residency (PR)">Permanent Residency (PR)</option>
                     <option value="Business / Investor Visa">Business / Investor Visa</option>
                   </select>
-                  <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" />
+                  <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3.5 pointer-events-none" />
                 </div>
               </div>
 
@@ -451,7 +465,7 @@ export default function VisaReadinessEngine() {
               <div className="grid grid-cols-2 gap-3">
                 {/* 3. Bank Balance */}
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-800 mb-1">
+                  <label className="block text-[11px] font-extrabold text-slate-800 mb-1">
                     3. Bank Balance (USD)
                   </label>
                   <div className="relative">
@@ -463,21 +477,21 @@ export default function VisaReadinessEngine() {
                       step="500"
                       value={bankBalanceUsd}
                       onChange={(e) => setBankBalanceUsd(Number(e.target.value))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-7 pr-2 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-7 pr-2 py-2.5 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896]"
                     />
                   </div>
                 </div>
 
                 {/* 4. Language Band Score */}
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-800 mb-1">
+                  <label className="block text-[11px] font-extrabold text-slate-800 mb-1">
                     4. Language Band Score
                   </label>
                   <div className="relative">
                     <select
                       value={languageScoreStr}
                       onChange={(e) => setLanguageScoreStr(e.target.value)}
-                      className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer truncate"
+                      className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2.5 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer truncate"
                     >
                       <option value="IELTS - 5.5 Overall">IELTS - 5.5 Overall</option>
                       <option value="IELTS - 6.0 Overall">IELTS - 6.0 Overall</option>
@@ -496,14 +510,14 @@ export default function VisaReadinessEngine() {
               <div className="grid grid-cols-2 gap-3">
                 {/* 5. Work Experience */}
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-800 mb-1">
+                  <label className="block text-[11px] font-extrabold text-slate-800 mb-1">
                     5. Work Experience
                   </label>
                   <div className="relative">
                     <select
                       value={workExperience}
                       onChange={(e) => setWorkExperience(e.target.value)}
-                      className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
+                      className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2.5 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
                     >
                       <option value="1 - 2 Years">1 - 2 Years</option>
                       <option value="3 - 5 Years">3 - 5 Years</option>
@@ -516,7 +530,7 @@ export default function VisaReadinessEngine() {
 
                 {/* 6. Previous Refusals? */}
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-800 mb-1 flex items-center justify-between">
+                  <label className="block text-[11px] font-extrabold text-slate-800 mb-1 flex items-center justify-between">
                     <span>6. Previous Refusals?</span>
                     <Info className="w-3 h-3 text-slate-400 cursor-pointer" />
                   </label>
@@ -537,33 +551,112 @@ export default function VisaReadinessEngine() {
               <button
                 type="submit"
                 disabled={isEvaluating}
-                className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98 mt-2"
+                className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold py-4 px-4 rounded-xl text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98 mt-3"
               >
                 {isEvaluating ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Evaluating AI Parameters...</span>
+                    <span>Evaluating Against Embassy Criteria...</span>
                   </>
                 ) : (
                   <>
-                    <span>Evaluate My Score (Next Step)</span>
+                    <span>Evaluate My Score Now</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>
             </form>
+
+            <div className="text-center pt-2 border-t border-slate-100">
+              <span className="text-[11px] font-medium text-slate-500 inline-flex items-center gap-1.5">
+                <Lock className="w-3 h-3 text-slate-400" />
+                Your data is 100% secure and private.
+              </span>
+            </div>
           </div>
 
-          <div className="text-center pt-3 border-t border-slate-100">
-            <span className="text-[11px] font-medium text-slate-500 inline-flex items-center gap-1.5">
-              <Lock className="w-3 h-3 text-slate-400" />
-              Your data is 100% secure and private.
-            </span>
+          {/* Right Side Preview Hero Card (lg:col-span-7) */}
+          <div className="lg:col-span-7 bg-gradient-to-br from-slate-900 via-slate-800 to-[#0c1a2e] rounded-3xl p-8 text-white space-y-6 shadow-xl border border-slate-800 flex flex-col justify-between min-h-[500px]">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 bg-teal-500/20 border border-teal-500/30 text-teal-300 text-xs font-bold px-3.5 py-1.5 rounded-full">
+                <Sparkles className="w-4 h-4 text-teal-400" />
+                <span>Powered by Gemini 2.0 AI Intelligence</span>
+              </div>
+
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+                Know Your Exact Visa Approval Probability Before Filing
+              </h2>
+
+              <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed max-w-lg">
+                Fill out the quick 6-step details on the left. Our AI evaluates your financial reserves, language scores, ties to home country, and refusal history against real embassy criteria.
+              </p>
+
+              {/* Feature Highlights Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-3">
+                <div className="p-3.5 bg-white/5 border border-white/10 rounded-2xl flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-xs font-extrabold text-white block">0 - 100% Score Gauge</span>
+                    <span className="text-[11px] text-slate-400 font-medium">Instant approval score & risk status rating.</span>
+                  </div>
+                </div>
+
+                <div className="p-3.5 bg-white/5 border border-white/10 rounded-2xl flex items-start gap-3">
+                  <ShieldCheck className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-xs font-extrabold text-white block">Critical Gap Analysis</span>
+                    <span className="text-[11px] text-slate-400 font-medium">Detect financial and document gaps early.</span>
+                  </div>
+                </div>
+
+                <div className="p-3.5 bg-white/5 border border-white/10 rounded-2xl flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-xs font-extrabold text-white block">Actionable AI Advice</span>
+                    <span className="text-[11px] text-slate-400 font-medium">Tailored steps to boost approval past 90%.</span>
+                  </div>
+                </div>
+
+                <div className="p-3.5 bg-white/5 border border-white/10 rounded-2xl flex items-start gap-3">
+                  <Users className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-xs font-extrabold text-white block">Verified Expert Match</span>
+                    <span className="text-[11px] text-slate-400 font-medium">Connect directly with licensed consultants.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+              <span className="font-semibold">Over 15,000+ visa assessments generated</span>
+              <span className="font-bold text-teal-400">Free & Confidential</span>
+            </div>
           </div>
+
         </div>
+      ) : (
 
-        {/* ── RIGHT COLUMN: DASHBOARD RESULTS (lg:col-span-8) ── */}
-        <div className="lg:col-span-8 space-y-6">
+        /* ── STEP 2: OUTPUT RESULTS DASHBOARD (AFTER EVALUATION) ── */
+        <div className="space-y-6 animate-premium-fade">
+          
+          {/* Top Bar with Edit Button */}
+          <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="w-3 h-3 rounded-full bg-[#00a896] animate-ping" />
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">AI Evaluation Complete</span>
+                <h3 className="text-sm font-extrabold text-slate-900">{country} — {visaType} (${bankBalanceUsd.toLocaleString()} USD)</h3>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsEvaluated(false)}
+              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Modify Details / Re-Evaluate</span>
+            </button>
+          </div>
 
           {/* ── TOP TWO PANELS GRID ── */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -848,7 +941,7 @@ export default function VisaReadinessEngine() {
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* ── 3. FOOTER 4-FEATURES TRUST BAR ── */}
       <div className="mt-8 pt-6 border-t border-slate-200/80 grid grid-cols-2 md:grid-cols-4 gap-4">

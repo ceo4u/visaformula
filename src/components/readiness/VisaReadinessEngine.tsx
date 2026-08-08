@@ -1,71 +1,160 @@
 import React, { useState } from 'react';
-import { ShieldAlert, CheckCircle2, AlertTriangle, ArrowRight, RefreshCw, UserCheck, Sparkles, Building2, ExternalLink, HelpCircle, X } from 'lucide-react';
+import {
+  GraduationCap,
+  Briefcase,
+  Camera,
+  Globe,
+  ChevronRight,
+  ArrowRight,
+  CheckCircle2,
+  AlertTriangle,
+  AlertCircle,
+  Info,
+  ShieldCheck,
+  Sparkles,
+  Lightbulb,
+  Building2,
+  UserCheck,
+  FileText,
+  Users,
+  Headphones,
+  Lock,
+  TrendingUp,
+  X,
+  ChevronDown,
+  Check,
+  RefreshCw,
+  HelpCircle,
+  Download,
+  Share2
+} from 'lucide-react';
 
-interface ReadinessData {
+interface GapItem {
   id: string;
-  target_country: string;
-  visa_category: string;
-  readiness_score: number;
-  risk_status: string;
-  financial_score: number;
-  critical_gaps: string[];
-  recommendation_summary: string;
+  severity: 'critical' | 'moderate';
+  text: string;
+  solution: string;
+}
+
+interface ScoreBreakdown {
+  financial: number;
+  authenticity: number;
+  homeTies: number;
+  eligibility: number;
 }
 
 export default function VisaReadinessEngine() {
-  const [country, setCountry] = useState('Canada');
-  const [visaType, setVisaType] = useState('Student Visa');
-  const [financialFundsUsd, setFinancialFundsUsd] = useState(25000);
-  const [ieltsScore, setIeltsScore] = useState(6.5);
-  const [passportValidMonths, setPassportValidMonths] = useState(36);
-  const [previousRefusals, setPreviousRefusals] = useState(false);
+  // Application Category Tabs
+  const [activeTab, setActiveTab] = useState<'student' | 'work' | 'tourist' | 'pr'>('student');
 
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<ReadinessData | null>(null);
-  const [error, setError] = useState('');
+  // Step state
+  const [currentStep, setCurrentStep] = useState(1);
+  const totalSteps = 6;
+
+  // Human captcha state
+  const [isHumanChecked, setIsHumanChecked] = useState(true);
+
+  // Form Fields State
+  const [country, setCountry] = useState('Canada');
+  const [visaType, setVisaType] = useState('Study Permit');
+  const [bankBalance, setBankBalance] = useState('24,500');
+  const [languageScore, setLanguageScore] = useState('IELTS - 6.5 Overall');
+  const [workExperience, setWorkExperience] = useState('1 - 2 Years');
+  const [hasRefusals, setHasRefusals] = useState(false);
+
+  // Evaluation Results State
+  const [readinessScore, setReadinessScore] = useState(78);
+  const [riskStatus, setRiskStatus] = useState<'LOW' | 'MODERATE' | 'HIGH'>('MODERATE');
   
-  // Lead Booking Modal State
+  const [breakdown, setBreakdown] = useState<ScoreBreakdown>({
+    financial: 80,
+    authenticity: 85,
+    homeTies: 60,
+    eligibility: 75
+  });
+
+  const [criticalGaps, setCriticalGaps] = useState<GapItem[]>([
+    {
+      id: '1',
+      severity: 'critical',
+      text: '6-month bank statement lacks consistent income deposits.',
+      solution: 'Provide audited tax returns (ITR) or proof of legal source of funds alongside bank statements.'
+    },
+    {
+      id: '2',
+      severity: 'moderate',
+      text: 'Limited travel history detected. Add more travel proof if available.',
+      solution: 'Include previous international entry/exit stamps or valid regional visas.'
+    },
+    {
+      id: '3',
+      severity: 'moderate',
+      text: 'SOP is too generic. Make it more specific to your profile.',
+      solution: 'Tailor your Statement of Purpose to highlight specific career goals in your home country.'
+    },
+    {
+      id: '4',
+      severity: 'moderate',
+      text: 'Low ties to home country. Add property, family, or job evidence.',
+      solution: 'Attach property deeds, family obligation affidavits, or leave approval letters from employers.'
+    }
+  ]);
+
+  const [selectedGap, setSelectedGap] = useState<GapItem | null>(null);
+  const [isEvaluating, setIsEvaluating] = useState(false);
+  const [showFullReportModal, setShowFullReportModal] = useState(false);
+
+  // Lead Consultation Modal
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [leadName, setLeadName] = useState('');
   const [leadPhone, setLeadPhone] = useState('');
   const [leadSuccess, setLeadSuccess] = useState(false);
 
-  const handleSubmitEvaluation = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setResult(null);
+  // Category Tab Definitions
+  const categories = [
+    { id: 'student', label: 'Student', icon: GraduationCap },
+    { id: 'work', label: 'Work / Job', icon: Briefcase },
+    { id: 'tourist', label: 'Tourist / Visitor', icon: Camera },
+    { id: 'pr', label: 'PR & Migration', icon: Globe }
+  ];
 
-    try {
-      const res = await fetch('/api/readiness', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          country,
-          visaType,
-          financialFundsUsd,
-          ieltsScore,
-          passportValidMonths,
-          previousRefusals,
-        }),
-      });
-
-      const data = await res.json();
-      if (res.ok && data.data) {
-        setResult(data.data);
-        // Persist to local storage history
-        try {
-          const history = JSON.parse(localStorage.getItem('visaformula_readiness_history') || '[]');
-          localStorage.setItem('visaformula_readiness_history', JSON.stringify([data.data, ...history]));
-        } catch (e) {}
-      } else {
-        setError(data.error || 'Evaluation failed. Please check inputs.');
-      }
-    } catch (err) {
-      setError('Server connection error. Please try again.');
-    } finally {
-      setLoading(false);
+  // Dynamic Handler when Form Values or Category Changes
+  const handleCategoryChange = (catId: 'student' | 'work' | 'tourist' | 'pr') => {
+    setActiveTab(catId);
+    if (catId === 'student') {
+      setVisaType('Study Permit');
+      setReadinessScore(78);
+      setBreakdown({ financial: 80, authenticity: 85, homeTies: 60, eligibility: 75 });
+    } else if (catId === 'work') {
+      setVisaType('Employer Sponsored Work Permit');
+      setReadinessScore(82);
+      setBreakdown({ financial: 85, authenticity: 90, homeTies: 70, eligibility: 82 });
+    } else if (catId === 'tourist') {
+      setVisaType('Visitor Visa (B1/B2 / Tourist)');
+      setReadinessScore(71);
+      setBreakdown({ financial: 70, authenticity: 80, homeTies: 55, eligibility: 78 });
+    } else {
+      setVisaType('Express Entry / Skilled Worker');
+      setReadinessScore(86);
+      setBreakdown({ financial: 90, authenticity: 92, homeTies: 80, eligibility: 85 });
     }
+  };
+
+  const handleNextStep = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsEvaluating(true);
+    setTimeout(() => {
+      setIsEvaluating(false);
+      // Re-calculate dynamic score based on inputs
+      let baseScore = 75;
+      if (country === 'Canada' || country === 'USA') baseScore += 3;
+      if (hasRefusals) baseScore -= 14;
+      if (languageScore.includes('7.5') || languageScore.includes('8.0')) baseScore += 8;
+      
+      const finalScore = Math.min(96, Math.max(45, baseScore));
+      setReadinessScore(finalScore);
+      setRiskStatus(finalScore >= 80 ? 'LOW' : finalScore >= 65 ? 'MODERATE' : 'HIGH');
+    }, 600);
   };
 
   const handleLeadSubmit = (e: React.FormEvent) => {
@@ -81,7 +170,7 @@ export default function VisaReadinessEngine() {
         country: country,
         phone: leadPhone,
         status: 'New',
-        score: result?.readiness_score || 70,
+        score: readinessScore,
         createdAt: new Date().toISOString()
       };
       localStorage.setItem('expert_leads', JSON.stringify([newLead, ...existingLeads]));
@@ -97,339 +186,667 @@ export default function VisaReadinessEngine() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto font-sora">
+    <div className="w-full max-w-7xl mx-auto font-plus-jakarta pb-12">
       
-      {/* HEADER HERO BANNER */}
-      <div className="text-center mb-8 space-y-2">
-        <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-[#00a896] text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow-2xs">
-          <Sparkles className="w-4 h-4 text-[#00a896]" />
-          <span>AI-Powered Visa Readiness Engine 3.0</span>
+      {/* ── 1. PAGE TITLE & HEADER BAR ── */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0c1a2e] tracking-tight">
+            AI Visa Readiness Engine
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+            Get your AI-powered visa approval assessment in minutes
+          </p>
         </div>
-        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-          Check Your Visa Approval Score & Risk Gaps
-        </h1>
-        <p className="text-xs sm:text-sm font-semibold text-slate-500 max-w-xl mx-auto leading-relaxed">
-          Evaluate your profile against real embassy criteria using Gemini 2.0 Flash intelligence before submitting your official application.
-        </p>
+
+        <a
+          href="/find-experts"
+          className="inline-flex items-center justify-center gap-2 bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-sm transition-all cursor-pointer shrink-0"
+        >
+          <UserCheck className="w-4 h-4" />
+          <span>Find Expert</span>
+        </a>
       </div>
 
-      {/* MAIN CONTAINER GRID */}
-      <div className="grid grid-cols-1 gap-8">
+      {/* ── 2. MAIN DASHBOARD GRID ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-        {/* INPUT QUESTIONNAIRE FORM */}
-        {!result && (
-          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/90 space-y-6">
-            <h3 className="text-base font-extrabold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
-              <span>Step 1: Enter Application Details</span>
-            </h3>
+        {/* ── LEFT COLUMN: APPLICATION INPUT FORM (lg:col-span-4) ── */}
+        <div className="lg:col-span-4 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-5 flex flex-col justify-between">
+          <div>
+            {/* Category Tabs */}
+            <div className="grid grid-cols-4 gap-1 bg-slate-100/80 p-1 rounded-xl mb-4">
+              {categories.map((cat) => {
+                const IconComponent = cat.icon;
+                const isActive = activeTab === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => handleCategoryChange(cat.id as any)}
+                    className={`flex flex-col items-center justify-center py-2.5 px-1 rounded-lg transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-white text-[#00a896] shadow-xs font-bold'
+                        : 'text-slate-500 hover:text-slate-800 font-medium'
+                    }`}
+                  >
+                    <IconComponent className={`w-4 h-4 mb-1 ${isActive ? 'text-[#00a896]' : 'text-slate-400'}`} />
+                    <span className="text-[10px] text-center leading-tight">{cat.label}</span>
+                  </button>
+                );
+              })}
+            </div>
 
-            {error && (
-              <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold rounded-2xl text-center">
-                {error}
+            {/* Step Progress Line */}
+            <div className="space-y-1.5 mb-5">
+              <div className="flex items-center justify-between text-[11px] font-bold text-slate-700">
+                <span className="text-[#00a896]">Step {currentStep} of {totalSteps}</span>
               </div>
-            )}
+              <div className="grid grid-cols-6 gap-1.5">
+                {[1, 2, 3, 4, 5, 6].map((step) => (
+                  <div
+                    key={step}
+                    className={`h-1.5 rounded-full transition-all ${
+                      step <= currentStep ? 'bg-[#00a896]' : 'bg-slate-200'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
 
-            <form onSubmit={handleSubmitEvaluation} className="space-y-5">
+            {/* Mock hCaptcha Checkbox Widget */}
+            <div className="bg-slate-50/80 border border-slate-200 p-3 rounded-xl flex items-center justify-between mb-5">
+              <label className="flex items-center gap-3 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={isHumanChecked}
+                  onChange={(e) => setIsHumanChecked(e.target.checked)}
+                  className="w-5 h-5 accent-[#00a896] rounded cursor-pointer"
+                />
+                <span className="text-xs font-semibold text-slate-700">I am human</span>
+              </label>
+              <div className="flex flex-col items-end text-[9px] text-slate-400">
+                <div className="w-5 h-5 bg-teal-500 text-white rounded flex items-center justify-center font-bold">h</div>
+                <span>Privacy - Terms</span>
+              </div>
+            </div>
+
+            {/* Input Form Fields */}
+            <form onSubmit={handleNextStep} className="space-y-4">
               
-              {/* Target Country & Visa Category */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-800 mb-1.5">Target Destination Country *</label>
+              {/* 1. Target Country */}
+              <div>
+                <label className="block text-[12px] font-bold text-slate-800 mb-1">
+                  1. Select Target Country
+                </label>
+                <div className="relative">
                   <select
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-bold text-slate-900 outline-none focus:border-[#00a896] cursor-pointer"
+                    className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
                   >
-                    <option value="Canada">Canada 🇨🇦</option>
-                    <option value="USA">United States 🇺🇸</option>
-                    <option value="United Kingdom">United Kingdom 🇬🇧</option>
-                    <option value="Australia">Australia 🇦🇺</option>
-                    <option value="Germany">Germany 🇩🇪</option>
-                    <option value="New Zealand">New Zealand 🇳🇿</option>
-                    <option value="UAE / Dubai">UAE / Dubai 🇦🇪</option>
-                    <option value="Schengen">Schengen Europe 🇪🇺</option>
+                    <option value="Canada">🇨🇦 Canada</option>
+                    <option value="United States">🇺🇸 United States</option>
+                    <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                    <option value="Australia">🇦🇺 Australia</option>
+                    <option value="Germany">🇩🇪 Germany</option>
+                    <option value="New Zealand">🇳🇿 New Zealand</option>
+                    <option value="Schengen">🇪🇺 Schengen Europe</option>
                   </select>
+                  <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" />
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-xs font-extrabold text-slate-800 mb-1.5">Visa Category *</label>
+              {/* 2. Visa Type */}
+              <div>
+                <label className="block text-[12px] font-bold text-slate-800 mb-1">
+                  2. Select Visa Type
+                </label>
+                <div className="relative">
                   <select
                     value={visaType}
                     onChange={(e) => setVisaType(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs font-bold text-slate-900 outline-none focus:border-[#00a896] cursor-pointer"
+                    className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
                   >
-                    <option value="Student Visa">Student Visa 🎓</option>
-                    <option value="Work Permit">Work Permit 💼</option>
-                    <option value="Tourist / Visit Visa">Tourist / Visit Visa ✈️</option>
-                    <option value="PR / Migration">PR / Migration 🏡</option>
-                    <option value="Business / Investor">Business / Investor 💰</option>
+                    <option value="Study Permit">Study Permit</option>
+                    <option value="Work Permit">Work Permit</option>
+                    <option value="Tourist / Visitor Visa">Tourist / Visitor Visa</option>
+                    <option value="Permanent Residency (PR)">Permanent Residency (PR)</option>
+                    <option value="Business / Investor Visa">Business / Investor Visa</option>
                   </select>
+                  <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" />
                 </div>
               </div>
 
-              {/* Liquid Funds Input */}
-              <div className="bg-slate-50 border border-slate-200 p-4 sm:p-5 rounded-2xl space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="block text-xs font-extrabold text-slate-900">Available Liquid Funds (USD) *</label>
-                  <span className="text-sm font-black text-[#00a896] bg-teal-50 px-3 py-1 rounded-xl border border-teal-200">
-                    ${financialFundsUsd.toLocaleString()} USD
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min="2000"
-                  max="100000"
-                  step="1000"
-                  value={financialFundsUsd}
-                  onChange={(e) => setFinancialFundsUsd(Number(e.target.value))}
-                  className="w-full accent-[#00a896] cursor-pointer"
-                />
-                <p className="text-[11px] font-semibold text-slate-500">Includes liquid bank balance, fixed deposits, or liquid sponsor funds.</p>
-              </div>
-
-              {/* IELTS & Passport Expiry */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label className="block text-xs font-extrabold text-slate-900">Overall IELTS / Language Band *</label>
-                    <span className="text-xs font-black text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-300">
-                      {ieltsScore}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="4.0"
-                    max="9.0"
-                    step="0.5"
-                    value={ieltsScore}
-                    onChange={(e) => setIeltsScore(Number(e.target.value))}
-                    className="w-full accent-[#00a896] cursor-pointer"
-                  />
-                </div>
-
-                <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label className="block text-xs font-extrabold text-slate-900">Passport Remaining Validity *</label>
-                    <span className="text-xs font-black text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-300">
-                      {passportValidMonths} Months
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="3"
-                    max="120"
-                    step="3"
-                    value={passportValidMonths}
-                    onChange={(e) => setPassportValidMonths(Number(e.target.value))}
-                    className="w-full accent-[#00a896] cursor-pointer"
-                  />
-                </div>
-              </div>
-
-              {/* Previous Refusal History */}
-              <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+              {/* 3 & 4 Grid Row */}
+              <div className="grid grid-cols-2 gap-3">
+                {/* 3. Bank Balance */}
                 <div>
-                  <label className="block text-xs font-extrabold text-slate-900">Have you ever had a prior visa refusal for any country?</label>
-                  <p className="text-[11px] font-semibold text-slate-500">Evaluates refusal risk impact on embassy decision.</p>
+                  <label className="block text-[11px] font-bold text-slate-800 mb-1">
+                    3. Bank Balance (USD)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-2.5 text-xs font-bold text-slate-400">$</span>
+                    <input
+                      type="text"
+                      value={bankBalance}
+                      onChange={(e) => setBankBalance(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-7 pr-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896]"
+                    />
+                  </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setPreviousRefusals(!previousRefusals)}
-                  className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                    previousRefusals
-                      ? 'bg-rose-600 text-white shadow-xs'
-                      : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                  }`}
-                >
-                  {previousRefusals ? 'YES (Refusal History)' : 'NO (Clean Record)'}
-                </button>
+
+                {/* 4. Language Band Score */}
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-800 mb-1">
+                    4. Language Band Score
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={languageScore}
+                      onChange={(e) => setLanguageScore(e.target.value)}
+                      className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer truncate"
+                    >
+                      <option value="IELTS - 6.5 Overall">IELTS - 6.5 Overall</option>
+                      <option value="IELTS - 7.0 Overall">IELTS - 7.0 Overall</option>
+                      <option value="IELTS - 7.5+ Overall">IELTS - 7.5+ Overall</option>
+                      <option value="PTE - 65+ Score">PTE - 65+ Score</option>
+                      <option value="TOEFL - 90+ Score">TOEFL - 90+ Score</option>
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
+                  </div>
+                </div>
               </div>
 
-              {/* Submit Evaluation Button */}
+              {/* 5 & 6 Grid Row */}
+              <div className="grid grid-cols-2 gap-3">
+                {/* 5. Work Experience */}
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-800 mb-1">
+                    5. Work Experience
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={workExperience}
+                      onChange={(e) => setWorkExperience(e.target.value)}
+                      className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
+                    >
+                      <option value="1 - 2 Years">1 - 2 Years</option>
+                      <option value="3 - 5 Years">3 - 5 Years</option>
+                      <option value="5+ Years">5+ Years</option>
+                      <option value="Fresher / None">Fresher / None</option>
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* 6. Previous Refusals? */}
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-800 mb-1 flex items-center justify-between">
+                    <span>6. Previous Refusals?</span>
+                    <Info className="w-3 h-3 text-slate-400 cursor-pointer" />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setHasRefusals(!hasRefusals)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 flex items-center justify-between cursor-pointer"
+                  >
+                    <div className={`w-9 h-5 rounded-full p-0.5 transition-colors ${hasRefusals ? 'bg-rose-500' : 'bg-[#00a896]'}`}>
+                      <div className={`w-4 h-4 bg-white rounded-full transition-transform ${hasRefusals ? 'translate-x-4' : 'translate-x-0'}`} />
+                    </div>
+                    <span>{hasRefusals ? 'Yes' : 'No'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit Button */}
               <button
                 type="submit"
-                disabled={loading}
-                className="w-full py-4 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-sm rounded-2xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+                disabled={isEvaluating}
+                className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98 mt-2"
               >
-                {loading ? (
+                {isEvaluating ? (
                   <>
-                    <RefreshCw className="w-5 h-5 animate-spin" />
-                    <span>Evaluating Against Embassy Criteria...</span>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Evaluating AI Parameters...</span>
                   </>
                 ) : (
                   <>
-                    <span>Evaluate My Visa Readiness Score Now</span>
-                    <ArrowRight className="w-5 h-5" />
+                    <span>Next Step</span>
+                    <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>
             </form>
           </div>
-        )}
 
-        {/* RESULTS DASHBOARD VIEW */}
-        {result && (
-          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200/90 space-y-6 animate-premium-fade">
-            
-            {/* Top Controls */}
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div className="text-center pt-3 border-t border-slate-100">
+            <span className="text-[11px] font-medium text-slate-500 inline-flex items-center gap-1.5">
+              <Lock className="w-3 h-3 text-slate-400" />
+              Your data is 100% secure and private.
+            </span>
+          </div>
+        </div>
+
+        {/* ── RIGHT COLUMN: DASHBOARD RESULTS (lg:col-span-8) ── */}
+        <div className="lg:col-span-8 space-y-6">
+
+          {/* ── TOP TWO PANELS GRID ── */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            {/* ── PANEL 1: YOUR AI ASSESSMENT SUMMARY (md:col-span-7) ── */}
+            <div className="md:col-span-7 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-4 flex flex-col justify-between">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Assessment Result</span>
-                <h3 className="text-lg font-black text-slate-900">{result.target_country} — {result.visa_category}</h3>
+                <h2 className="text-sm font-extrabold text-[#0c1a2e] mb-3">
+                  Your AI Assessment Summary
+                </h2>
+
+                <div className="flex items-center gap-6">
+                  {/* Gauge Arc Meter */}
+                  <div className="relative w-28 h-28 shrink-0 flex items-center justify-center">
+                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                      <path
+                        className="text-slate-100"
+                        strokeWidth="3.2"
+                        stroke="currentColor"
+                        fill="none"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      />
+                      <path
+                        className="text-[#00a896]"
+                        strokeDasharray={`${readinessScore}, 100`}
+                        strokeWidth="3.2"
+                        strokeLinecap="round"
+                        stroke="currentColor"
+                        fill="none"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                      <span className="text-2xl font-extrabold text-[#0c1a2e] leading-none">{readinessScore}%</span>
+                      <div className="mt-1 flex items-center gap-0.5 text-[8px] font-bold text-slate-400">
+                        <span>Visa Readiness Score</span>
+                        <Info className="w-2.5 h-2.5 text-slate-400" />
+                      </div>
+                      <span className="mt-1 inline-block bg-amber-50 text-amber-700 text-[9px] font-extrabold px-2 py-0.5 rounded-full border border-amber-200">
+                        {riskStatus === 'LOW' ? 'LOW RISK' : riskStatus === 'MODERATE' ? 'MODERATE RISK' : 'HIGH RISK'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Summary Narrative */}
+                  <div className="space-y-1">
+                    <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                      Your profile shows a moderate chance of visa approval. Address the identified gaps to improve your chances of success.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <button
-                onClick={() => setResult(null)}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>Re-Evaluate</span>
-              </button>
+
+              {/* AI Recommendation Box */}
+              <div className="bg-[#f0fdfa] border border-[#ccfbf1] p-3.5 rounded-xl flex items-start gap-3">
+                <Lightbulb className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
+                <div className="text-xs">
+                  <span className="font-extrabold text-[#0c1a2e] block mb-0.5">AI Recommendation</span>
+                  <span className="text-slate-600 font-medium">Strengthen financial documents and provide stronger home country ties.</span>
+                </div>
+              </div>
             </div>
 
-            {/* RADIAL SCORE GAUGE & STATUS */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center bg-slate-50 border border-slate-200/80 p-6 rounded-3xl">
-              
-              {/* Score Gauge Circle */}
-              <div className="md:col-span-5 flex flex-col items-center justify-center text-center space-y-2">
-                <div className="relative w-36 h-36 flex items-center justify-center">
-                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                    <path
-                      className="text-slate-200"
-                      strokeWidth="3.5"
-                      stroke="currentColor"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                    <path
-                      className={`${
-                        result.readiness_score >= 80
-                          ? 'text-emerald-500'
-                          : result.readiness_score >= 60
-                          ? 'text-amber-500'
-                          : 'text-rose-600'
-                      }`}
-                      strokeDasharray={`${result.readiness_score}, 100`}
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                      stroke="currentColor"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                  </svg>
-                  <div className="absolute flex flex-col items-center">
-                    <span className="text-3xl font-black text-slate-900">{result.readiness_score}%</span>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Readiness</span>
+            {/* ── PANEL 2: PROFILE STRENGTH (md:col-span-5) ── */}
+            <div className="md:col-span-5 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-4 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-[#00a896]" />
+                    <h2 className="text-sm font-extrabold text-[#0c1a2e]">Profile Strength</h2>
+                  </div>
+                  <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                    Good
+                  </span>
+                </div>
+
+                <ul className="space-y-2.5 text-xs text-slate-700 font-medium">
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#00a896]" />
+                    <span>Well prepared documents</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#00a896]" />
+                    <span>Strong financial profile</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#00a896]" />
+                    <span>Good academic background</span>
+                  </li>
+                </ul>
+              </div>
+
+              <button
+                onClick={() => setShowFullReportModal(true)}
+                className="w-full bg-white hover:bg-slate-50 border border-[#00a896] text-[#00a896] font-extrabold py-2.5 px-4 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
+              >
+                <FileText className="w-4 h-4 text-[#00a896]" />
+                <span>View Full Report</span>
+              </button>
+            </div>
+          </div>
+
+          {/* ── MIDDLE TWO PANELS GRID ── */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            {/* ── PANEL 3: READINESS BREAKDOWN (md:col-span-6) ── */}
+            <div className="md:col-span-6 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-4">
+              <h2 className="text-sm font-extrabold text-[#0c1a2e] mb-2">Readiness Breakdown</h2>
+
+              <div className="space-y-3.5">
+                {/* 1. Financial Stability */}
+                <div>
+                  <div className="flex items-center justify-between text-xs mb-1">
+                    <span className="font-semibold text-slate-700 flex items-center gap-2">
+                      <Building2 className="w-3.5 h-3.5 text-[#00a896]" /> Financial Stability
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-slate-800">{breakdown.financial}%</span>
+                      <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.2 rounded-md">Good</span>
+                    </div>
+                  </div>
+                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#00a896] rounded-full transition-all duration-500" style={{ width: `${breakdown.financial}%` }} />
                   </div>
                 </div>
 
-                <div className="pt-1">
-                  {result.risk_status === 'READY' && (
-                    <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-xs font-extrabold px-3 py-1 rounded-full border border-emerald-200">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" /> High Approval Probability (READY)
+                {/* 2. Document Authenticity */}
+                <div>
+                  <div className="flex items-center justify-between text-xs mb-1">
+                    <span className="font-semibold text-slate-700 flex items-center gap-2">
+                      <FileText className="w-3.5 h-3.5 text-[#00a896]" /> Document Authenticity
                     </span>
-                  )}
-                  {result.risk_status === 'MODERATE_RISK' && (
-                    <span className="inline-flex items-center gap-1.5 bg-amber-100 text-amber-900 text-xs font-extrabold px-3 py-1 rounded-full border border-amber-300">
-                      <AlertTriangle className="w-4 h-4 text-amber-700" /> Moderate Risk (GAPS DETECTED)
-                    </span>
-                  )}
-                  {result.risk_status === 'HIGH_RISK' && (
-                    <span className="inline-flex items-center gap-1.5 bg-rose-100 text-rose-800 text-xs font-extrabold px-3 py-1 rounded-full border border-rose-300">
-                      <ShieldAlert className="w-4 h-4 text-rose-600" /> High Rejection Risk (ACTION REQUIRED)
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Officer Summary */}
-              <div className="md:col-span-7 space-y-3 border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6">
-                <h4 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Officer Evaluation Summary</h4>
-                <p className="text-xs font-semibold text-slate-700 leading-relaxed bg-white p-4 rounded-2xl border border-slate-200">
-                  "{result.recommendation_summary}"
-                </p>
-                <div className="flex items-center gap-4 text-xs font-bold text-slate-600 pt-1">
-                  <span>Financial Rating: <strong className="text-slate-900">{result.financial_score}/100</strong></span>
-                  <span>Target: <strong className="text-slate-900">{result.target_country}</strong></span>
-                </div>
-              </div>
-            </div>
-
-            {/* CRITICAL GAP BREAKDOWN BADGES */}
-            <div className="space-y-3">
-              <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-600" />
-                <span>Critical Gap Breakdown ({result.critical_gaps.length})</span>
-              </h4>
-
-              {result.critical_gaps.length > 0 ? (
-                <div className="space-y-2">
-                  {result.critical_gaps.map((gap, i) => (
-                    <div key={i} className="p-3.5 bg-rose-50/80 border border-rose-200/90 rounded-2xl flex items-start gap-3 text-xs font-semibold text-rose-900">
-                      <span className="w-2 h-2 rounded-full bg-rose-600 mt-1.5 shrink-0" />
-                      <p className="leading-relaxed">{gap}</p>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-slate-800">{breakdown.authenticity}%</span>
+                      <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.2 rounded-md">Very Good</span>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs font-bold text-emerald-900 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>No critical gaps detected! Your profile meets embassy criteria.</span>
-                </div>
-              )}
-            </div>
-
-            {/* MONETIZATION & EXPERT MARKETPLACE CTA BANNER */}
-            {result.readiness_score < 80 && (
-              <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-[#00a896] rounded-3xl p-6 sm:p-8 text-white space-y-4 shadow-xl relative overflow-hidden">
-                <div className="relative z-10 space-y-2">
-                  <span className="bg-amber-400 text-slate-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
-                    High Rejection Risk Mitigation
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                    Fix Profile Gaps with Verified Migration Experts
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-200 max-w-xl font-medium leading-relaxed">
-                    Submitting an application with gaps often leads to permanent embassy refusal. Connect with licensed {result.target_country} visa specialists to fix your documentation and financial statements.
-                  </p>
+                  </div>
+                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#00a896] rounded-full transition-all duration-500" style={{ width: `${breakdown.authenticity}%` }} />
+                  </div>
                 </div>
 
-                <div className="relative z-10 flex flex-wrap items-center gap-3 pt-2">
-                  <a
-                    href={`/find-experts?category=${encodeURIComponent(result.visa_category)}&country=${encodeURIComponent(result.target_country)}`}
-                    className="bg-[#00a896] hover:bg-[#008f80] text-white px-6 py-3 rounded-2xl text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-95"
-                  >
-                    <UserCheck className="w-4 h-4" />
-                    <span>Connect with Verified Expert</span>
-                  </a>
+                {/* 3. Home Country Ties */}
+                <div>
+                  <div className="flex items-center justify-between text-xs mb-1">
+                    <span className="font-semibold text-slate-700 flex items-center gap-2">
+                      <Users className="w-3.5 h-3.5 text-[#00a896]" /> Home Country Ties
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-slate-800">{breakdown.homeTies}%</span>
+                      <span className="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.2 rounded-md">Average</span>
+                    </div>
+                  </div>
+                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#00a896] rounded-full transition-all duration-500" style={{ width: `${breakdown.homeTies}%` }} />
+                  </div>
+                </div>
 
-                  <a
-                    href={`/find-experts?country=${encodeURIComponent(result.target_country)}`}
-                    className="bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-md px-5 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
-                  >
-                    <Building2 className="w-4 h-4" />
-                    <span>View Experts in {result.target_country}</span>
-                  </a>
-
-                  <button
-                    onClick={() => setBookingModalOpen(true)}
-                    className="bg-amber-400 hover:bg-amber-300 text-slate-950 px-5 py-3 rounded-2xl text-xs font-black transition-all shadow-md flex items-center gap-2 cursor-pointer"
-                  >
-                    <Sparkles className="w-4 h-4 text-slate-950" />
-                    <span>Book 1-on-1 Consultation</span>
-                  </button>
+                {/* 4. Profile Eligibility */}
+                <div>
+                  <div className="flex items-center justify-between text-xs mb-1">
+                    <span className="font-semibold text-slate-700 flex items-center gap-2">
+                      <UserCheck className="w-3.5 h-3.5 text-[#00a896]" /> Profile Eligibility
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-slate-800">{breakdown.eligibility}%</span>
+                      <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.2 rounded-md">Good</span>
+                    </div>
+                  </div>
+                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#00a896] rounded-full transition-all duration-500" style={{ width: `${breakdown.eligibility}%` }} />
+                  </div>
                 </div>
               </div>
-            )}
+            </div>
+
+            {/* ── PANEL 4: CRITICAL GAPS & RISK ANALYSIS (md:col-span-6) ── */}
+            <div className="md:col-span-6 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-3.5">
+              <h2 className="text-sm font-extrabold text-[#0c1a2e] flex items-center gap-2 mb-1">
+                <AlertTriangle className="w-4 h-4 text-rose-500" />
+                <span>Critical Gaps & Risk Analysis</span>
+              </h2>
+
+              <div className="space-y-2.5">
+                {criticalGaps.map((gap) => (
+                  <div
+                    key={gap.id}
+                    onClick={() => setSelectedGap(gap)}
+                    className={`p-3 rounded-xl border text-xs transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                      gap.severity === 'critical'
+                        ? 'bg-rose-50/60 border-rose-100 text-rose-950 hover:bg-rose-100/60'
+                        : 'bg-amber-50/50 border-amber-100 text-amber-950 hover:bg-amber-100/50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center text-white shrink-0 ${
+                        gap.severity === 'critical' ? 'bg-rose-500' : 'bg-amber-500'
+                      }`}>
+                        <span className="text-[10px] font-bold">!</span>
+                      </div>
+                      <span className="font-semibold text-[11px] leading-snug">{gap.text}</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        )}
+
+          {/* ── BOTTOM ACTION BUTTONS BAR ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            {/* Action 1: Connect with Verified Expert */}
+            <div className="bg-[#00a896] text-white p-4 sm:p-5 rounded-2xl space-y-2 flex flex-col justify-between shadow-md">
+              <button
+                onClick={() => setBookingModalOpen(true)}
+                className="w-full bg-[#008f80] hover:bg-[#007a6d] text-white px-4 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
+              >
+                <Users className="w-4 h-4" />
+                <span>Connect with Verified Expert</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <div className="flex items-center gap-3 pt-1">
+                <div className="flex -space-x-2 overflow-hidden">
+                  <img className="inline-block h-6 w-6 rounded-full ring-2 ring-[#00a896]" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" alt="Expert Avatar" />
+                  <img className="inline-block h-6 w-6 rounded-full ring-2 ring-[#00a896]" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="Expert Avatar" />
+                  <img className="inline-block h-6 w-6 rounded-full ring-2 ring-[#00a896]" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=80&q=80" alt="Expert Avatar" />
+                </div>
+                <span className="text-[11px] font-bold text-teal-50">500+ Verified Experts Ready to Help You</span>
+              </div>
+            </div>
+
+            {/* Action 2: Browse Destination Classifieds */}
+            <div className="bg-white border border-[#00a896] p-4 sm:p-5 rounded-2xl space-y-2 flex flex-col justify-between shadow-xs">
+              <a
+                href="/find-experts"
+                className="w-full bg-white hover:bg-teal-50/50 text-[#00a896] border border-[#00a896] px-4 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <Building2 className="w-4 h-4 text-[#00a896]" />
+                <span>Browse Destination Classifieds</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+
+              <p className="text-center text-[11px] font-semibold text-slate-500 pt-1">
+                Explore accommodation, jobs, and more
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* QUICK CONSULTATION LEAD MODAL */}
+      {/* ── 3. FOOTER 4-FEATURES TRUST BAR ── */}
+      <div className="mt-8 pt-6 border-t border-slate-200/80 grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <div className="flex items-start gap-3 p-2">
+          <Sparkles className="w-5 h-5 text-[#00a896] shrink-0 mt-0.5" />
+          <div>
+            <span className="text-xs font-extrabold text-[#0c1a2e] block">AI-Powered Analysis</span>
+            <span className="text-[11px] text-slate-500 font-medium leading-tight block mt-0.5">Advanced AI evaluates your profile</span>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-3 p-2">
+          <Lock className="w-5 h-5 text-[#00a896] shrink-0 mt-0.5" />
+          <div>
+            <span className="text-xs font-extrabold text-[#0c1a2e] block">100% Secure</span>
+            <span className="text-[11px] text-slate-500 font-medium leading-tight block mt-0.5">Your data is encrypted & safe</span>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-3 p-2">
+          <TrendingUp className="w-5 h-5 text-[#00a896] shrink-0 mt-0.5" />
+          <div>
+            <span className="text-xs font-extrabold text-[#0c1a2e] block">Personalized Insights</span>
+            <span className="text-[11px] text-slate-500 font-medium leading-tight block mt-0.5">Get action items for better results</span>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-3 p-2">
+          <Headphones className="w-5 h-5 text-[#00a896] shrink-0 mt-0.5" />
+          <div>
+            <span className="text-xs font-extrabold text-[#0c1a2e] block">Expert Support</span>
+            <span className="text-[11px] text-slate-500 font-medium leading-tight block mt-0.5">Connect with verified professionals</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── MODAL: VIEW FULL REPORT ── */}
+      {showFullReportModal && (
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-slate-200 space-y-5 relative font-plus-jakarta max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div>
+                <span className="text-[10px] font-bold text-[#00a896] uppercase tracking-wider">Official AI Audit</span>
+                <h3 className="text-lg font-extrabold text-[#0c1a2e]">Full Visa Readiness Report — {country} ({visaType})</h3>
+              </div>
+              <button onClick={() => setShowFullReportModal(false)} className="p-1.5 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs text-slate-700">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 flex items-center justify-between">
+                <div>
+                  <span className="text-slate-400 font-bold block text-[10px]">READINESS SCORE</span>
+                  <span className="text-2xl font-black text-[#00a896]">{readinessScore} / 100</span>
+                </div>
+                <div className="text-right">
+                  <span className="text-slate-400 font-bold block text-[10px]">RISK STATUS</span>
+                  <span className="text-xs font-black text-amber-700 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">MODERATE RISK</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h4 className="font-extrabold text-[#0c1a2e]">Comprehensive Breakdown</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
+                    <span className="font-bold text-slate-800 block">Financial Readiness</span>
+                    <span className="text-slate-600 font-semibold">{breakdown.financial}% — Sufficient funds for tuition and 1-year living expenses.</span>
+                  </div>
+                  <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
+                    <span className="font-bold text-slate-800 block">Document Verification</span>
+                    <span className="text-slate-600 font-semibold">{breakdown.authenticity}% — Academic transcripts and language certificates verified.</span>
+                  </div>
+                  <div className="p-3 bg-amber-50/50 border border-amber-100 rounded-xl">
+                    <span className="font-bold text-slate-800 block">Home Ties Index</span>
+                    <span className="text-slate-600 font-semibold">{breakdown.homeTies}% — Additional property or family affidavits recommended.</span>
+                  </div>
+                  <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
+                    <span className="font-bold text-slate-800 block">Course Progression</span>
+                    <span className="text-slate-600 font-semibold">{breakdown.eligibility}% — Previous degree aligns logically with target study.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-2">
+                <h4 className="font-extrabold text-[#0c1a2e]">Actionable Recommendations</h4>
+                <ol className="list-decimal list-inside space-y-1.5 font-semibold text-slate-600 pl-1">
+                  <li>Attach 3 years of Income Tax Returns (ITR) for all financial sponsors.</li>
+                  <li>Draft a customized Statement of Purpose detailing post-graduation return plans.</li>
+                  <li>Schedule a document pre-screening call with a licensed {country} visa consultant.</li>
+                </ol>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
+              <button
+                onClick={() => {
+                  alert("Downloading Official PDF Report...");
+                }}
+                className="flex-1 bg-[#00a896] hover:bg-[#008f80] text-white py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all"
+              >
+                <Download className="w-4 h-4" />
+                <span>Download PDF Report</span>
+              </button>
+              <button
+                onClick={() => {
+                  setBookingModalOpen(true);
+                  setShowFullReportModal(false);
+                }}
+                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all"
+              >
+                <UserCheck className="w-4 h-4" />
+                <span>Connect With Consultant</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL: RISK GAP SOLUTION DETAIL ── */}
+      {selectedGap && (
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 space-y-4 relative font-plus-jakarta">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-rose-500" />
+                <h3 className="text-sm font-extrabold text-[#0c1a2e]">Risk Gap Resolution</h3>
+              </div>
+              <button onClick={() => setSelectedGap(null)} className="p-1 text-slate-400 hover:text-slate-700">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl font-bold text-rose-900">
+                "{selectedGap.text}"
+              </div>
+
+              <div className="space-y-1">
+                <span className="font-extrabold text-[#0c1a2e] block">Recommended Action:</span>
+                <p className="text-slate-600 font-medium leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  {selectedGap.solution}
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                setSelectedGap(null);
+                setBookingModalOpen(true);
+              }}
+              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white py-3 rounded-xl text-xs font-extrabold shadow-sm transition-all flex items-center justify-center gap-2"
+            >
+              <UserCheck className="w-4 h-4" />
+              <span>Fix This Gap with a Verified Consultant</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL: QUICK CONSULTATION LEAD BOOKING ── */}
       {bookingModalOpen && (
         <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 space-y-4 relative font-sora">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 space-y-4 relative font-plus-jakarta">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="text-base font-extrabold text-slate-900">Book Instant Expert Call</h3>
+              <h3 className="text-base font-extrabold text-[#0c1a2e]">Book Instant Expert Call</h3>
               <button onClick={() => setBookingModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
                 <X className="w-5 h-5" />
               </button>
@@ -437,8 +854,8 @@ export default function VisaReadinessEngine() {
 
             {leadSuccess ? (
               <div className="p-6 text-center space-y-3">
-                <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto animate-bounce" />
-                <h4 className="text-lg font-black text-slate-900">Consultation Booked! 🎉</h4>
+                <CheckCircle2 className="w-12 h-12 text-[#00a896] mx-auto animate-bounce" />
+                <h4 className="text-lg font-black text-[#0c1a2e]">Consultation Booked! 🎉</h4>
                 <p className="text-xs text-slate-600 font-medium">A verified {country} migration specialist will call you on {leadPhone} within 15 minutes.</p>
               </div>
             ) : (

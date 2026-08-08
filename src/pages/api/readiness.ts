@@ -1,7 +1,12 @@
+// src/pages/api/readiness.ts
 import type { APIRoute } from 'astro';
+import { GoogleGenAI, Type } from '@google/genai';
 import fs from 'fs';
 import path from 'path';
 
+export const prerender = false;
+
+// Safe runtime resolution for GEMINI_API_KEY
 const getGeminiApiKey = (): string => {
   let key = (import.meta?.env?.GEMINI_API_KEY as string | undefined)?.trim();
   if (key) return key;
@@ -24,27 +29,23 @@ const getGeminiApiKey = (): string => {
   return '';
 };
 
-// Algorithmic evaluation fallback for high speed response & offline guarantee
+// Algorithmic evaluation engine fallback
 function evaluateReadinessAlgorithmic(data: {
-  country: string;
-  visaType: string;
-  financialFundsUsd: number;
-  ieltsScore: number;
-  passportValidMonths: number;
-  previousRefusals: boolean;
-  workExperience?: string;
+  visaCategory: string;
+  targetCountry: string;
+  residenceCountry: string;
+  profileDetails: any;
 }) {
+  const details = data.profileDetails || {};
   const gaps: Array<{ id: string; severity: 'critical' | 'moderate'; text: string; solution: string }> = [];
-  let score = 86;
-  let financialScore = 85;
-  let authScore = 90;
-  let tiesScore = 75;
-  let eligScore = 80;
 
-  const funds = Number(data.financialFundsUsd) || 0;
-  const ielts = Number(data.ieltsScore) || 6.5;
+  let readinessScore = 82;
+  let financialScore = 28; // Max 35
+  let credentialScore = 25; // Max 30
+  let homeTiesScore = 16; // Max 20
+  let historyScore = 13; // Max 15
 
-  // 1. Financial Evaluation Thresholds
+  const funds = Number(details.bankBalanceUsd || details.monthlySalaryUsd || details.settlementFundsUsd) || 0;
   const reqFunds: Record<string, number> = {
     'USA': 32000,
     'United States': 32000,
@@ -52,110 +53,110 @@ function evaluateReadinessAlgorithmic(data: {
     'United Kingdom': 20000,
     'Australia': 25000,
     'Germany': 14000,
-    'New Zealand': 18000,
-    'Schengen': 14000
+    'Schengen': 14000,
+    'UAE': 10000
   };
-  const minRequired = reqFunds[data.country] || 20000;
+  const minRequired = reqFunds[data.targetCountry] || 20000;
 
-  if (funds < minRequired) {
+  // 1. Financial Analysis
+  if (funds > 0 && funds < minRequired) {
     const deficit = minRequired - funds;
-    score -= 25;
-    financialScore = Math.max(30, Math.round((funds / minRequired) * 100));
+    readinessScore -= 22;
+    financialScore = Math.max(10, Math.round((funds / minRequired) * 35));
     gaps.push({
-      id: 'fin-gap',
+      id: 'fin-crit',
       severity: 'critical',
-      text: `Financial Shortfall: Minimum $${minRequired.toLocaleString()} USD required for ${data.country} ${data.visaType}. You have a $${deficit.toLocaleString()} USD deficit.`,
-      solution: `Add a liquid co-sponsor (parent or immediate family member) with verified bank balance and official affidavit of support.`
+      text: `Available liquid funds ($${funds.toLocaleString()} USD) are below the recommended threshold ($${minRequired.toLocaleString()} USD) for ${data.targetCountry}.`,
+      solution: `Add an immediate family co-sponsor with verified liquid bank statements and an official Affidavit of Support.`
     });
-  } else if (funds < minRequired * 1.25) {
-    score -= 8;
-    financialScore = 78;
+  } else if (funds === 0) {
+    readinessScore -= 18;
+    financialScore = 14;
     gaps.push({
-      id: 'fin-mod',
-      severity: 'moderate',
-      text: `Tight liquid reserves detected for ${data.country}.`,
-      solution: `Attach fixed deposit certificates, mutual fund portfolio statements, or liquid property valuation reports.`
-    });
-  }
-
-  // 2. Language Proficiency Thresholds
-  if (data.visaType.toLowerCase().includes('student') || data.visaType.toLowerCase().includes('study')) {
-    if (ielts < 6.0) {
-      score -= 22;
-      eligScore -= 25;
-      gaps.push({
-        id: 'lang-crit',
-        severity: 'critical',
-        text: `Language score (${ielts}) is below embassy threshold (6.0 overall required for student visa).`,
-        solution: `Retake IELTS/PTE to achieve overall 6.5+ band before submitting official application.`
-      });
-    } else if (ielts < 6.5) {
-      score -= 6;
-      eligScore -= 10;
-      gaps.push({
-        id: 'lang-mod',
-        severity: 'moderate',
-        text: `Language score (${ielts}) meets minimum cutoff, but 7.0+ overall improves university acceptance rate.`,
-        solution: `Attach a Medium of Instruction (MOI) letter from your prior educational institution.`
-      });
-    }
-  }
-
-  // 3. Work Experience
-  if (data.workExperience === 'Fresher / None' && (data.visaType.toLowerCase().includes('work') || data.visaType.toLowerCase().includes('pr'))) {
-    score -= 20;
-    eligScore -= 30;
-    gaps.push({
-      id: 'exp-crit',
+      id: 'fin-zero',
       severity: 'critical',
-      text: `Work permit / PR applications require verified skilled work experience.`,
-      solution: `Provide official employer reference letters, salary bank credits, and tax filings.`
+      text: `Liquid proof of funds missing for ${data.targetCountry} ${data.visaCategory} evaluation.`,
+      solution: `Provide updated bank balance certificates, fixed deposit receipts, or liquid investment valuation reports.`
     });
   }
 
-  // 4. Refusal History
-  if (data.previousRefusals) {
-    score -= 24;
-    tiesScore -= 25;
+  // 2. Refusal History Analysis
+  if (details.previousRefusals) {
+    readinessScore -= 22;
+    historyScore = 5;
     gaps.push({
       id: 'refusal-crit',
       severity: 'critical',
-      text: `Prior visa refusal recorded. Triggers mandatory secondary officer review under embassy refusal section.`,
-      solution: `Submit a professionally drafted Statement of Purpose (SOP) directly refuting previous refusal grounds with new supporting evidence.`
+      text: `Prior visa refusal recorded (${details.refusalDetails || 'Previous rejection'}). Triggers mandatory secondary officer scrutiny.`,
+      solution: `Submit a professionally drafted Statement of Purpose (SOP) refuting previous refusal grounds with new supporting evidence.`
     });
+  }
+
+  // 3. Category Specific Gaps
+  if (data.visaCategory === 'student' || data.visaCategory === 'Study Permit') {
+    const ieltsVal = parseFloat(String(details.languageScore || '6.5').replace(/[^0-9.]/g, '')) || 6.5;
+    if (ieltsVal < 6.0) {
+      readinessScore -= 18;
+      credentialScore -= 10;
+      gaps.push({
+        id: 'ielts-low',
+        severity: 'critical',
+        text: `Language score (${details.languageScore}) is below recommended 6.0 minimum band.`,
+        solution: `Retake IELTS/PTE to achieve overall 6.5+ band before filing official visa application.`
+      });
+    }
+  } else if (data.visaCategory === 'work' || data.visaCategory === 'Work Permit') {
+    if (details.ecaStatus === 'No') {
+      credentialScore -= 8;
+      readinessScore -= 10;
+      gaps.push({
+        id: 'eca-missing',
+        severity: 'moderate',
+        text: `Educational Credential Assessment (ECA/WES) is not completed.`,
+        solution: `Initiate WES or equivalent ECA credential evaluation to prove degree equivalency.`
+      });
+    }
+  } else if (data.visaCategory === 'tourist' || data.visaCategory === 'Tourist / Visitor') {
+    if (details.travelStamps === '0 Visas') {
+      historyScore = Math.max(4, historyScore - 6);
+      gaps.push({
+        id: 'travel-zero',
+        severity: 'moderate',
+        text: `Blank passport with zero international travel history increases visitor visa refusal risk.`,
+        solution: `Provide a detailed travel itinerary, prepaid accommodation, and strong proof of return employment ties.`
+      });
+    }
   }
 
   if (gaps.length === 0) {
     gaps.push({
       id: 'clean-sop',
       severity: 'moderate',
-      text: `Ensure Statement of Purpose (SOP) clearly outlines academic progression and ties to home country.`,
-      solution: `Have a certified visa consultant review your SOP structure prior to submission.`
+      text: `Ensure your Statement of Purpose (SOP) clearly articulates academic/professional goals and return ties.`,
+      solution: `Have a certified VisaFormula consultant audit your complete document checklist prior to embassy submission.`
     });
   }
 
-  score = Math.max(20, Math.min(98, Math.round(score)));
-  financialScore = Math.max(20, Math.min(98, financialScore));
+  readinessScore = Math.max(20, Math.min(98, Math.round(readinessScore)));
+  let status = 'READY';
+  if (readinessScore < 60) status = 'HIGH_RISK';
+  else if (readinessScore < 80) status = 'MODERATE_RISK';
 
-  let status = 'LOW_RISK';
-  if (score < 65) status = 'HIGH_RISK';
-  else if (score < 82) status = 'MODERATE_RISK';
-
-  let recommendationSummary = `Your profile shows high approval probability for ${data.country}. Ensure all documents match official guidelines.`;
+  let recommendationSummary = `Your profile shows a strong approval probability for ${data.targetCountry} (${data.visaCategory}).`;
   if (status === 'HIGH_RISK') {
-    recommendationSummary = `High application risk detected due to critical profile gaps. Connecting with a licensed ${data.country} migration lawyer before filing is critical to prevent visa rejection.`;
+    recommendationSummary = `High application risk detected due to critical profile gaps. Secondary expert review is strongly recommended before filing.`;
   } else if (status === 'MODERATE_RISK') {
-    recommendationSummary = `Moderate risk identified for ${data.country}. Addressing highlighted financial/document gaps with a verified consultant will boost your approval probability above 90%.`;
+    recommendationSummary = `Moderate risk identified for ${data.targetCountry}. Resolving the highlighted financial and document gaps will boost your score above 85%.`;
   }
 
   return {
-    readinessScore: score,
+    readinessScore,
     status,
     financialScore,
-    authenticityScore: authScore,
-    homeTiesScore: tiesScore,
-    eligibilityScore: eligScore,
-    criticalGaps: gaps,
+    credentialScore,
+    homeTiesScore,
+    historyScore,
+    criticalGaps: gaps.map(g => `${g.text} — Action: ${g.solution}`),
     recommendationSummary
   };
 }
@@ -164,122 +165,129 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
     const {
-      country,
-      visaType,
-      financialFundsUsd,
-      ieltsScore,
-      passportValidMonths,
-      previousRefusals,
-      workExperience
+      visaCategory,
+      targetCountry,
+      profileDetails,
+      captchaToken,
     } = body;
 
-    if (!country || !visaType) {
+    // 1. Strict Payload Validation
+    if (!visaCategory || !targetCountry || !profileDetails) {
       return new Response(
-        JSON.stringify({ error: 'Missing required inputs: Target Country and Visa Type are required.' }),
+        JSON.stringify({ error: 'Missing required inputs: Category, Destination, or Profile details.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    const apiKey = getGeminiApiKey();
-    let evaluationResult: any = null;
-
-    // Call Gemini 2.0 Flash REST API directly if API key is configured
-    if (apiKey) {
+    // 2. Server-Side hCaptcha Verification (with mock token & env fallback pass)
+    const secretKey = (import.meta?.env?.HCAPTCHA_SECRET_KEY as string) || (process.env.HCAPTCHA_SECRET_KEY as string) || '';
+    if (captchaToken && captchaToken !== 'mock-token' && secretKey) {
       try {
-        const promptText = `
-          Act as a senior embassy visa officer evaluating an applicant's visa readiness score for ${country} (${visaType}).
-          
-          Applicant Profile:
-          - Target Country: ${country}
-          - Visa Type: ${visaType}
-          - Available Liquid Funds (USD): $${financialFundsUsd || 0}
-          - Language Score / IELTS: ${ieltsScore || 'Not provided'}
-          - Work Experience: ${workExperience || 'Not provided'}
-          - Prior Refusal History: ${previousRefusals ? 'Yes' : 'No'}
+        const verifyParams = new URLSearchParams({
+          secret: secretKey,
+          response: captchaToken,
+        });
 
-          Evaluate strictly against official ${country} embassy criteria.
-          Return ONLY valid JSON matching this exact structure:
-          {
-            "readinessScore": 78,
-            "status": "MODERATE_RISK",
-            "financialScore": 80,
-            "authenticityScore": 85,
-            "homeTiesScore": 65,
-            "eligibilityScore": 75,
-            "criticalGaps": [
-              {
-                "id": "gap1",
-                "severity": "critical",
-                "text": "Specific gap description for applicant...",
-                "solution": "Specific actionable solution for applicant..."
-              }
-            ],
-            "recommendationSummary": "Official officer evaluation summary..."
-          }
-        `;
+        const captchaRes = await fetch('https://api.hcaptcha.com/siteverify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: verifyParams.toString(),
+        });
 
-        const geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: promptText }] }],
-              generationConfig: { responseMimeType: 'application/json' }
-            })
-          }
-        );
-
-        if (geminiRes.ok) {
-          const geminiData = await geminiRes.json();
-          const rawText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (rawText) {
-            evaluationResult = JSON.parse(rawText);
-          }
+        const captchaData = await captchaRes.json();
+        if (!captchaData.success) {
+          return new Response(
+            JSON.stringify({ error: 'CAPTCHA verification failed. Please complete the captcha again.' }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+          );
         }
-      } catch (geminiError) {
-        console.warn("[Readiness API] Gemini AI evaluation error, falling back to algorithmic engine:", geminiError);
+      } catch (captchaErr) {
+        console.warn("[Readiness API] hCaptcha siteverify error, proceeding with evaluation:", captchaErr);
       }
     }
 
-    // Algorithmic Fallback Engine
-    if (!evaluationResult) {
-      evaluationResult = evaluateReadinessAlgorithmic({
-        country,
-        visaType,
-        financialFundsUsd: Number(financialFundsUsd) || 0,
-        ieltsScore: parseFloat(String(ieltsScore).replace(/[^0-9.]/g, '')) || 6.5,
-        passportValidMonths: Number(passportValidMonths) || 36,
-        previousRefusals: Boolean(previousRefusals),
-        workExperience
+    const apiKey = getGeminiApiKey();
+    let assessmentResult: any = null;
+
+    // 3. Gemini 2.0 Flash Execution using @google/genai SDK or direct REST Endpoint
+    if (apiKey) {
+      try {
+        const ai = new GoogleGenAI({ apiKey });
+        const promptText = `
+          Act as an official senior visa officer evaluating a visa application for ${targetCountry}.
+          Selected Visa Category: ${visaCategory}
+
+          Applicant Profile Details:
+          ${JSON.stringify(profileDetails, null, 2)}
+
+          Strict Evaluation Criteria:
+          - Student: Check liquid fund threshold vs tuition/living costs, IELTS/language requirements, and academic progression.
+          - Work: Check job offer status, ECA equivalency, and work experience depth.
+          - Tourist: Check 6-month bank balance stability, employer NOC, home country ties proof, and travel history.
+          - PR: Check settlement funds, skill assessment status, and calculated points benchmark.
+
+          Calculate readinessScore (0-100), status ('READY' | 'MODERATE_RISK' | 'HIGH_RISK'), breakdown scores, criticalGaps, and recommendationSummary.
+        `;
+
+        const response = await ai.models.generateContent({
+          model: 'gemini-2.0-flash',
+          contents: promptText,
+          config: {
+            responseMimeType: 'application/json',
+            responseSchema: {
+              type: Type.OBJECT,
+              properties: {
+                readinessScore: { type: Type.INTEGER },
+                status: { type: Type.STRING },
+                financialScore: { type: Type.INTEGER },
+                credentialScore: { type: Type.INTEGER },
+                homeTiesScore: { type: Type.INTEGER },
+                historyScore: { type: Type.INTEGER },
+                criticalGaps: {
+                  type: Type.ARRAY,
+                  items: { type: Type.STRING },
+                },
+                recommendationSummary: { type: Type.STRING },
+              },
+              required: [
+                'readinessScore',
+                'status',
+                'financialScore',
+                'credentialScore',
+                'homeTiesScore',
+                'historyScore',
+                'criticalGaps',
+                'recommendationSummary',
+              ],
+            },
+          },
+        });
+
+        if (response.text) {
+          assessmentResult = JSON.parse(response.text);
+        }
+      } catch (geminiError) {
+        console.warn("[Readiness API] Gemini SDK call failed, triggering fallback evaluation:", geminiError);
+      }
+    }
+
+    // Fallback Algorithmic Evaluator if Gemini API Key missing or errored
+    if (!assessmentResult) {
+      assessmentResult = evaluateReadinessAlgorithmic({
+        visaCategory,
+        targetCountry,
+        residenceCountry: profileDetails.residenceCountry || 'India',
+        profileDetails
       });
     }
 
-    const assessmentRecord = {
-      id: "eval_" + Date.now(),
-      target_country: country,
-      visa_category: visaType,
-      readiness_score: evaluationResult.readinessScore || 75,
-      risk_status: evaluationResult.status || "MODERATE_RISK",
-      financial_score: evaluationResult.financialScore || 80,
-      authenticity_score: evaluationResult.authenticityScore || 85,
-      home_ties_score: evaluationResult.homeTiesScore || 65,
-      eligibility_score: evaluationResult.eligibilityScore || 75,
-      critical_gaps: evaluationResult.criticalGaps || [],
-      recommendation_summary: evaluationResult.recommendationSummary || `Your profile evaluation for ${country} is complete.`,
-      created_at: new Date().toISOString()
-    };
-
     return new Response(
-      JSON.stringify({
-        success: true,
-        data: assessmentRecord
-      }),
+      JSON.stringify({ success: true, data: assessmentResult }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error: any) {
     return new Response(
-      JSON.stringify({ error: 'Evaluation failed', details: error.message }),
+      JSON.stringify({ error: 'Internal evaluation engine error.', details: error.message }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

@@ -132,7 +132,7 @@ export function FindExpertsPortal() {
 
 
 
-    // ── Fetch real experts from Neon DB, then append dummies ──
+    // ── Fetch real experts from DB & local storage, then filter accurately by search ──
     const fetchExperts = useCallback(async (q = "", country = "", purpose = "", cityParam = "") => {
         setLoading(true);
         setFetchError("");
@@ -143,51 +143,102 @@ export function FindExpertsPortal() {
             if (purpose) params.set("purpose", purpose);
             if (cityParam && cityParam !== "All Cities") params.set("city", cityParam);
 
-            const res = await fetch(`/api/experts?${params.toString()}`);
-            const data = await res.json();
-
-            // Real DB experts come first, dummies fill the rest
             let dbExperts: any[] = [];
-            if (data.success && Array.isArray(data.experts)) {
-                dbExperts = data.experts;
+            try {
+                const res = await fetch(`/api/experts?${params.toString()}`);
+                const data = await res.json();
+                if (data.success && Array.isArray(data.experts)) {
+                    dbExperts = data.experts;
+                }
+            } catch (err) {}
+
+            // Get experts registered in LocalStorage (from signup flow)
+            let localRegisteredExperts: any[] = [];
+            if (typeof window !== "undefined") {
+                try {
+                    const storedAll = localStorage.getItem("visaformula_all_experts");
+                    if (storedAll) localRegisteredExperts = JSON.parse(storedAll);
+                } catch(e) {}
+
+                // Also check if current logged-in expert profile exists
+                const currExpertName = localStorage.getItem("expert_businessName") || `${localStorage.getItem("expert_firstName") || ''} ${localStorage.getItem("expert_lastName") || ''}`.trim();
+                const currExpertEmail = localStorage.getItem("expert_email");
+                if (currExpertName && currExpertEmail) {
+                    const currExpertObj = {
+                        id: `curr-expert-${Date.now()}`,
+                        name: currExpertName,
+                        role: localStorage.getItem("expert_advisorType") || "Visa Consultant",
+                        city: localStorage.getItem("expert_city") || "Remote",
+                        bio: localStorage.getItem("expert_businessDescription") || "Verified VisaFormula Immigration Consultant.",
+                        tags: JSON.parse(localStorage.getItem("expert_services") || '["Visa Consultation", "Immigration"]'),
+                        countries: [localStorage.getItem("expert_country") || "Canada"],
+                        rating: 5.0,
+                        reviews: 1,
+                        isVerified: true,
+                        isRemote: true,
+                        email: currExpertEmail,
+                        contact_number: localStorage.getItem("expert_contactNumber") || "",
+                        image: localStorage.getItem("expert_profilePhoto") || ""
+                    };
+                    localRegisteredExperts.unshift(currExpertObj);
+                }
             }
 
-            // Filter dummies client-side
-            let filteredDummies = [...dummyExperts];
+            // Combine candidate pools: Local registered experts -> DB experts -> Sample platform experts
+            const combinedPool = [...localRegisteredExperts, ...dbExperts, ...dummyExperts];
 
-            // 1. Filter by country
-            if (country && country !== "All") {
-                filteredDummies = filteredDummies.filter(e =>
-                    e.countries.some((c: string) => c.toLowerCase().includes(country.toLowerCase()))
-                );
-            }
+            // Perform accurate multi-field search filtering
+            let filtered = combinedPool;
 
-            // 2. Filter by keyword (q)
-            if (q) {
-                const keywords = q.toLowerCase().split(/\s+/).filter(Boolean);
-                filteredDummies = filteredDummies.filter(e => {
-                    const profileText = [
-                        e.name, e.role, e.city,
-                        ...(e.tags || []),
-                        ...(e.countries || []),
-                        e.bio || ''
+            // 1. Search Query (q)
+            if (q && q.trim()) {
+                const searchLower = q.toLowerCase().trim();
+                const searchWords = searchLower.split(/\s+/).filter(Boolean);
+                filtered = filtered.filter(e => {
+                    const text = [
+                        e.name || e.business_name || '',
+                        e.role || e.advisor_type || '',
+                        e.city || e.office_address || '',
+                        e.bio || e.about_me || '',
+                        e.email || '',
+                        e.phone || e.contact_number || '',
+                        ...(Array.isArray(e.tags) ? e.tags : [e.tags || '']),
+                        ...(Array.isArray(e.countries) ? e.countries : [e.countries || '']),
                     ].join(' ').toLowerCase();
-                    return keywords.some(kw => profileText.includes(kw));
+
+                    return searchWords.every(word => text.includes(word));
                 });
             }
 
-            // Merge: real experts first, then dummies (deduplicate by name)
-            const dbNames = new Set(dbExperts.map((e: any) => e.name.toLowerCase()));
-            const uniqueDummies = filteredDummies.filter(e => !dbNames.has(e.name.toLowerCase()));
-            const combined = [...dbExperts, ...uniqueDummies];
+            // 2. Destination Country
+            if (country && country !== "All") {
+                const cLower = country.toLowerCase();
+                filtered = filtered.filter(e => {
+                    const cList = Array.isArray(e.countries) ? e.countries : [e.countries || ''];
+                    return cList.some((c: string) => String(c).toLowerCase().includes(cLower));
+                });
+            }
 
-            // Only fall back to all dummies if NO filters were applied at all
-            const hasFilters = !!(q || (country && country !== 'All') || (cityParam && cityParam !== 'All Cities'));
-            setExperts(combined.length > 0 ? combined : (hasFilters ? [] : dummyExperts));
+            // 3. City
+            if (cityParam && cityParam !== "All Cities") {
+                const cityLower = cityParam.toLowerCase();
+                filtered = filtered.filter(e => {
+                    const cName = String(e.city || e.office_address || '').toLowerCase();
+                    return cName.includes(cityLower);
+                });
+            }
 
-            if (data.error) setFetchError(data.error);
+            // Deduplicate by lowercased name/email
+            const seenIdentifiers = new Set<string>();
+            const deduplicated = filtered.filter(e => {
+                const identifier = (e.name || e.business_name || e.email || '').toLowerCase().trim();
+                if (!identifier || seenIdentifiers.has(identifier)) return false;
+                seenIdentifiers.add(identifier);
+                return true;
+            });
+
+            setExperts(deduplicated);
         } catch (err: any) {
-            // On error still show dummies so page isn't empty
             setExperts(dummyExperts);
         } finally {
             setLoading(false);

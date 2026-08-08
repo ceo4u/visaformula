@@ -224,9 +224,14 @@ export default function VisaReadinessEngine() {
             <X className="w-4.5 h-4.5" />
           </button>
 
+          {/* Logo Centered (Login Page Replica) */}
+          <div className="flex justify-center pt-1 mb-2">
+            <img src="/logo.png" alt="VisaFormula" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+          </div>
+
           {/* Modal Title Banner */}
-          <div className="mb-5 border-b border-slate-100 pb-3.5 text-center font-sora">
-            <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight font-sora">
+          <div className="mb-4 border-b border-slate-100 pb-3 text-center font-sora">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight font-sora">
               AI Visa Readiness Engine
             </h2>
             <p className="text-xs text-slate-500 font-semibold mt-0.5 font-sora">
@@ -751,10 +756,9 @@ export default function VisaReadinessEngine() {
           )}
 
           {/* ── FOOTER BRAND TRUST BADGE ── */}
-          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-center gap-2 text-center font-sora">
+          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-center font-sora">
             <Lock className="w-4 h-4 text-[#00a896]" />
             <span className="text-xs font-bold text-slate-800 font-sora">100% Secure & Encrypted</span>
-            <span className="text-[11px] font-semibold text-slate-400 font-sora">| Your data is 256-bit SSL protected</span>
           </div>
         </div>
       </div>

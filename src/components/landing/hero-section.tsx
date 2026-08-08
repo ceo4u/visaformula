@@ -651,115 +651,136 @@ export function HeroSection() {
         <div id="search-panel" className="bg-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-slate-200/90" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           
           {/* Top Category Tabs Bar (Exact match to Reference Image) */}
-          <div className="flex items-center gap-2 sm:gap-4 border-b border-slate-100 pb-3 mb-5 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-4 sm:gap-6 border-b border-slate-100 pb-4 mb-6 overflow-x-auto scrollbar-none">
             <button
               type="button"
               onClick={() => { setActiveTab('all'); setCategory('Select Category'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-extrabold px-3.5 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-extrabold transition-all cursor-pointer shrink-0 relative ${
                 activeTab === 'all'
-                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                  ? 'bg-white border border-slate-200/90 text-[#00a896] px-4 py-2 rounded-2xl shadow-xs'
+                  : 'text-slate-800 hover:text-slate-900 px-3 py-2 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <LayoutGrid className="w-4.5 h-4.5 stroke-[2.2] text-[#00a896]" />
               <span>All Services</span>
+              {activeTab === 'all' && (
+                <div className="absolute -bottom-[17px] left-2 right-2 h-[3px] bg-[#00a896] rounded-full" />
+              )}
             </button>
 
             <button
               type="button"
               onClick={() => { setActiveTab('consultant'); setCategory('Consultant'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all cursor-pointer shrink-0 relative ${
                 activeTab === 'consultant'
-                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                  ? 'bg-white border border-slate-200/90 text-[#00a896] px-4 py-2 rounded-2xl shadow-xs'
+                  : 'text-slate-800 hover:text-slate-900 px-3 py-2 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <UserCheck className="w-4.5 h-4.5 stroke-[2.2]" />
               <span>Consultant</span>
+              {activeTab === 'consultant' && (
+                <div className="absolute -bottom-[17px] left-2 right-2 h-[3px] bg-[#00a896] rounded-full" />
+              )}
             </button>
 
             <button
               type="button"
               onClick={() => { setActiveTab('universities'); setCategory('Student Visa'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all cursor-pointer shrink-0 relative ${
                 activeTab === 'universities'
-                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                  ? 'bg-white border border-slate-200/90 text-[#00a896] px-4 py-2 rounded-2xl shadow-xs'
+                  : 'text-slate-800 hover:text-slate-900 px-3 py-2 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <Building2 className="w-4.5 h-4.5 stroke-[2.2]" />
               <span>Universities</span>
+              {activeTab === 'universities' && (
+                <div className="absolute -bottom-[17px] left-2 right-2 h-[3px] bg-[#00a896] rounded-full" />
+              )}
             </button>
 
             <button
               type="button"
               onClick={() => { setActiveTab('jobs'); setCategory('Work Visa'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all cursor-pointer shrink-0 relative ${
                 activeTab === 'jobs'
-                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                  ? 'bg-white border border-slate-200/90 text-[#00a896] px-4 py-2 rounded-2xl shadow-xs'
+                  : 'text-slate-800 hover:text-slate-900 px-3 py-2 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <Briefcase className="w-4.5 h-4.5 stroke-[2.2]" />
               <span>Jobs Abroad</span>
+              {activeTab === 'jobs' && (
+                <div className="absolute -bottom-[17px] left-2 right-2 h-[3px] bg-[#00a896] rounded-full" />
+              )}
             </button>
 
             <button
               type="button"
               onClick={() => { setActiveTab('insurance'); setCategory('Insurance'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all cursor-pointer shrink-0 relative ${
                 activeTab === 'insurance'
-                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                  ? 'bg-white border border-slate-200/90 text-[#00a896] px-4 py-2 rounded-2xl shadow-xs'
+                  : 'text-slate-800 hover:text-slate-900 px-3 py-2 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <ShieldCheck className="w-4.5 h-4.5 stroke-[2.2]" />
               <span>Insurance</span>
+              {activeTab === 'insurance' && (
+                <div className="absolute -bottom-[17px] left-2 right-2 h-[3px] bg-[#00a896] rounded-full" />
+              )}
             </button>
 
             <button
               type="button"
               onClick={() => { setActiveTab('lawyers'); setCategory('Lawyers'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all cursor-pointer shrink-0 relative ${
                 activeTab === 'lawyers'
-                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                  ? 'bg-white border border-slate-200/90 text-[#00a896] px-4 py-2 rounded-2xl shadow-xs'
+                  : 'text-slate-800 hover:text-slate-900 px-3 py-2 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <Scale className="w-4.5 h-4.5 stroke-[2.2]" />
               <span>Lawyers</span>
+              {activeTab === 'lawyers' && (
+                <div className="absolute -bottom-[17px] left-2 right-2 h-[3px] bg-[#00a896] rounded-full" />
+              )}
             </button>
 
             <button
               type="button"
               onClick={() => { setActiveTab('more'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all cursor-pointer shrink-0 relative ${
                 activeTab === 'more'
-                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                  ? 'bg-white border border-slate-200/90 text-[#00a896] px-4 py-2 rounded-2xl shadow-xs'
+                  : 'text-slate-800 hover:text-slate-900 px-3 py-2 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <MoreHorizontal className="w-4.5 h-4.5 stroke-[2.2]" />
               <span>More</span>
+              {activeTab === 'more' && (
+                <div className="absolute -bottom-[17px] left-2 right-2 h-[3px] bg-[#00a896] rounded-full" />
+              )}
             </button>
           </div>
 
           {/* 4 Search Input Fields Row (Exact match to Reference Image) */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 mb-5">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             
             {/* Box 1: What are you looking for? */}
             <div>
-              <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1.5 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <label className="text-xs font-bold text-slate-800 leading-none mb-2 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 What are you looking for?
               </label>
-              <div className="bg-slate-50/70 border border-slate-200/90 focus-within:border-[#00a896] focus-within:bg-white hover:border-slate-300 rounded-xl px-3.5 py-2 h-[50px] flex items-center gap-2.5 transition-all">
+              <div className="bg-white border border-slate-200/90 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 py-2.5 h-[52px] flex items-center gap-3 transition-all shadow-2xs">
                 <Search className="w-4.5 h-4.5 text-slate-400 shrink-0" />
                 <input
                   type="text"
@@ -767,7 +788,7 @@ export function HeroSection() {
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
                   placeholder="e.g., Canada student visa consultant"
-                  className="w-full text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 outline-none bg-transparent"
+                  className="w-full text-xs sm:text-sm font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 />
               </div>
@@ -775,24 +796,24 @@ export function HeroSection() {
 
             {/* Box 2: Destination Country */}
             <div ref={countryRef} className="relative">
-              <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1.5 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <label className="text-xs font-bold text-slate-800 leading-none mb-2 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Destination Country
               </label>
               <div
                 onClick={() => { setCountryOpen(!countryOpen); setLocationOpen(false); setCategoryOpen(false); }}
-                className="bg-slate-50/70 border border-slate-200/90 hover:border-[#00a896] rounded-xl px-3.5 py-2 h-[50px] flex items-center justify-between gap-2.5 cursor-pointer transition-all"
+                className="bg-white border border-slate-200/90 hover:border-[#00a896] rounded-2xl px-4 py-2.5 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-2xs"
               >
-                <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <Globe className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <Globe className="w-4.5 h-4.5 text-slate-600 shrink-0" />
                   <span className={`text-xs sm:text-sm font-semibold truncate ${country !== 'Select Country' ? 'text-slate-900' : 'text-slate-400'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {country !== 'Select Country' ? country : 'Select country'}
                   </span>
                 </div>
-                <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-slate-700 shrink-0 transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`} />
               </div>
 
               {countryOpen && (
-                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto">
+                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
                   {countriesList.map((c) => (
                     <button
                       key={c}
@@ -812,20 +833,20 @@ export function HeroSection() {
 
             {/* Box 3: Your Location v */}
             <div ref={locationRef} className="relative">
-              <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1.5 block tracking-tight flex items-center gap-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <label className="text-xs font-bold text-slate-800 leading-none mb-2 block tracking-tight flex items-center gap-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 <span>Your Location</span>
                 <span className="text-[10px] text-slate-400 font-normal">v</span>
               </label>
-              <div className="bg-slate-50/70 border border-slate-200/90 focus-within:border-[#00a896] hover:border-slate-300 rounded-xl px-3.5 py-2 h-[50px] flex items-center justify-between gap-2 transition-all">
-                <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+              <div className="bg-white border border-slate-200/90 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 py-2.5 h-[52px] flex items-center justify-between gap-2 transition-all shadow-2xs">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <MapPin className="w-4.5 h-4.5 text-slate-600 shrink-0" />
                   <input
                     type="text"
                     value={location !== 'Select Location' ? location : ''}
                     onChange={(e) => setLocation(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
                     placeholder="State / City"
-                    className="w-full text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 outline-none bg-transparent"
+                    className="w-full text-xs sm:text-sm font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
                 </div>
@@ -844,31 +865,31 @@ export function HeroSection() {
                   title="Detect my current location"
                   className="p-1 hover:bg-teal-50 rounded-lg transition-colors cursor-pointer"
                 >
-                  <Crosshair className="w-4 h-4 text-[#00a896]" />
+                  <Crosshair className="w-4.5 h-4.5 text-[#00a896]" />
                 </button>
               </div>
             </div>
 
             {/* Box 4: Visa Category (Optional) */}
             <div ref={categoryRef} className="relative">
-              <label className="text-[11.5px] font-extrabold text-slate-900 leading-none mb-1.5 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <label className="text-xs font-bold text-slate-800 leading-none mb-2 block tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Visa Category <span className="text-slate-400 font-normal">(Optional)</span>
               </label>
               <div
                 onClick={() => { setCategoryOpen(!categoryOpen); setCountryOpen(false); setLocationOpen(false); }}
-                className="bg-slate-50/70 border border-slate-200/90 hover:border-[#00a896] rounded-xl px-3.5 py-2 h-[50px] flex items-center justify-between gap-2.5 cursor-pointer transition-all"
+                className="bg-white border border-slate-200/90 hover:border-[#00a896] rounded-2xl px-4 py-2.5 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-2xs"
               >
-                <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <FileText className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <FileText className="w-4.5 h-4.5 text-slate-600 shrink-0" />
                   <span className={`text-xs sm:text-sm font-semibold truncate ${category !== 'Select Category' ? 'text-slate-900' : 'text-slate-400'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {category !== 'Select Category' ? category : 'Select visa type'}
                   </span>
                 </div>
-                <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${categoryOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-slate-700 shrink-0 transition-transform duration-200 ${categoryOpen ? 'rotate-180' : ''}`} />
               </div>
 
               {categoryOpen && (
-                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 max-h-60 overflow-y-auto">
+                <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
                   {categoriesList.map((cat) => (
                     <button
                       key={cat}
@@ -889,12 +910,12 @@ export function HeroSection() {
           </div>
 
           {/* Centered Search Button + Right Aligned Advanced Search Link (Exact match to Reference Image) */}
-          <div className="pt-4 border-t border-slate-100 relative flex flex-col items-center justify-center">
+          <div className="mt-6 pt-2 relative flex flex-col items-center justify-center">
             
             {/* Centered Pill Search Button */}
             <button 
               onClick={handleSearch}
-              className="w-full sm:w-auto min-w-[280px] sm:min-w-[340px] px-8 py-3.5 bg-[#008f80] hover:bg-[#007a6d] active:scale-98 text-white rounded-2xl shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2.5 font-extrabold text-sm sm:text-base cursor-pointer transition-all mx-auto"
+              className="w-full sm:w-auto min-w-[280px] sm:min-w-[320px] px-10 py-3.5 bg-[#008f80] hover:bg-[#007a6d] active:scale-98 text-white rounded-2xl shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2.5 font-extrabold text-sm sm:text-base cursor-pointer transition-all mx-auto"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <Search className="w-5 h-5 stroke-[2.5]" />
@@ -904,7 +925,7 @@ export function HeroSection() {
             {/* Advanced Search Link (Positioned Right Side) */}
             <a 
               href="/smart-search"
-              className="sm:absolute sm:right-0 sm:top-5 mt-3 sm:mt-0 inline-flex items-center gap-1.5 text-xs font-extrabold text-[#00a896] hover:text-[#007a6d] hover:underline cursor-pointer"
+              className="sm:absolute sm:right-2 sm:top-3 mt-4 sm:mt-0 inline-flex items-center gap-1.5 text-xs font-extrabold text-[#00a896] hover:text-[#007a6d] hover:underline cursor-pointer"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 stroke-[2.2] text-[#00a896]" stroke="currentColor">
@@ -913,6 +934,7 @@ export function HeroSection() {
               <span>Advanced Search</span>
             </a>
           </div>
+
 
         </div>
       </div>

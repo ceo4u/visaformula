@@ -322,7 +322,9 @@ export default function VisaReadinessEngine() {
       }}
       className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sora overflow-y-auto selection:bg-[#00a896] selection:text-white"
     >
-      <div className="relative z-10 w-full max-w-5xl flex flex-col items-center justify-center my-auto py-4 font-sora">
+      <div className={`relative z-10 w-full flex flex-col items-center justify-center my-auto py-4 font-sora transition-all ${
+        isEvaluated ? 'max-w-5xl' : 'max-w-md'
+      }`}>
         
         {/* Top Navigation Header (Registration Portal Style) */}
         <div className="w-full flex items-center justify-between mb-3 px-1 shrink-0 gap-2 font-sora">
@@ -334,90 +336,87 @@ export default function VisaReadinessEngine() {
           </a>
         </div>
 
-        {/* Modal Card Box */}
-        <div className="bg-white border border-slate-200/90 rounded-[32px] shadow-2xl relative w-full p-6 sm:p-8 font-sora max-h-[88vh] overflow-y-auto text-slate-900">
+        {/* Modal Card Box (Single Portrait Box like Login) */}
+        <div className="bg-white border border-slate-200/90 rounded-[32px] shadow-2xl relative w-full p-5 sm:p-7 font-sora max-h-[88vh] overflow-y-auto text-slate-900">
           
           {/* Close Button */}
           <button 
             onClick={() => window.location.href = "/"}
             title="Close and return to homepage"
-            className="absolute top-4 right-4 sm:top-5 sm:right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-all cursor-pointer shadow-2xs border border-slate-200 z-30"
+            className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-all cursor-pointer shadow-2xs border border-slate-200 z-30"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4.5 h-4.5" />
           </button>
 
           {/* Modal Title Banner */}
-          <div className="mb-6 border-b border-slate-100 pb-4 font-sora">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight font-sora">
+          <div className="mb-5 border-b border-slate-100 pb-3.5 text-center font-sora">
+            <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight font-sora">
               AI Visa Readiness Engine
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5 font-sora">
+            <p className="text-xs text-slate-500 font-semibold mt-0.5 font-sora">
               Get your AI-powered visa approval assessment in minutes
             </p>
           </div>
 
           {/* ── STEP 1: COLLECTING DETAILS (BEFORE EVALUATION) ── */}
           {!isEvaluated ? (
-            <div className="max-w-xl mx-auto">
-              
-              {/* Form Card */}
-              <div className="bg-slate-50/60 rounded-2xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-                {/* Category Tabs */}
-                <div className="grid grid-cols-4 gap-1 bg-slate-100/90 p-1 rounded-xl mb-3">
-                  {categories.map((cat) => {
-                    const IconComponent = cat.icon;
-                    const isActive = activeTab === cat.id;
-                    return (
-                      <button
-                        key={cat.id}
-                        onClick={() => handleCategoryChange(cat.id as any)}
-                        className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all cursor-pointer ${
-                          isActive
-                            ? 'bg-white text-[#00a896] shadow-xs font-bold'
-                            : 'text-slate-500 hover:text-slate-800 font-medium'
-                        }`}
-                      >
-                        <IconComponent className={`w-4 h-4 mb-1 ${isActive ? 'text-[#00a896]' : 'text-slate-400'}`} />
-                        <span className="text-[10px] text-center leading-tight">{cat.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+            <div className="space-y-4">
+              {/* Category Tabs */}
+              <div className="grid grid-cols-4 gap-1 bg-slate-100/90 p-1 rounded-xl mb-3">
+                {categories.map((cat) => {
+                  const IconComponent = cat.icon;
+                  const isActive = activeTab === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => handleCategoryChange(cat.id as any)}
+                      className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all cursor-pointer ${
+                        isActive
+                          ? 'bg-white text-[#00a896] shadow-xs font-bold'
+                          : 'text-slate-500 hover:text-slate-800 font-medium'
+                      }`}
+                    >
+                      <IconComponent className={`w-4 h-4 mb-1 ${isActive ? 'text-[#00a896]' : 'text-slate-400'}`} />
+                      <span className="text-[10px] text-center leading-tight">{cat.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
 
-                {/* Step Progress Line */}
-                <div className="space-y-1 mb-4">
-                  <div className="flex items-center justify-between text-[11px] font-bold text-slate-700">
-                    <span className="text-[#00a896]">Step 1 of 6</span>
-                    <span className="text-slate-400 font-medium">Enter Details Below</span>
-                  </div>
-                  <div className="grid grid-cols-6 gap-1.5">
-                    {[1, 2, 3, 4, 5, 6].map((step) => (
-                      <div
-                        key={step}
-                        className={`h-1.5 rounded-full transition-all ${
-                          step === 1 ? 'bg-[#00a896]' : 'bg-slate-200'
-                        }`}
-                      />
-                    ))}
-                  </div>
+              {/* Step Progress Line */}
+              <div className="space-y-1 mb-3">
+                <div className="flex items-center justify-between text-[11px] font-bold text-slate-700">
+                  <span className="text-[#00a896]">Step 1 of 6</span>
+                  <span className="text-slate-400 font-medium">Enter Details Below</span>
                 </div>
-
-                {/* hCaptcha Checkbox Widget */}
-                <div className="bg-white border border-slate-200 p-3 rounded-xl flex items-center justify-between mb-4 shadow-2xs">
-                  <label className="flex items-center gap-3 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={isHumanChecked}
-                      onChange={(e) => setIsHumanChecked(e.target.checked)}
-                      className="w-5 h-5 accent-[#00a896] rounded cursor-pointer"
+                <div className="grid grid-cols-6 gap-1.5">
+                  {[1, 2, 3, 4, 5, 6].map((step) => (
+                    <div
+                      key={step}
+                      className={`h-1.5 rounded-full transition-all ${
+                        step === 1 ? 'bg-[#00a896]' : 'bg-slate-200'
+                      }`}
                     />
-                    <span className="text-xs font-bold text-slate-800">I am human</span>
-                  </label>
-                  <div className="flex flex-col items-end text-[9px] text-slate-400">
-                    <div className="w-5 h-5 bg-teal-500 text-white rounded flex items-center justify-center font-bold">h</div>
-                    <span>Privacy - Terms</span>
-                  </div>
+                  ))}
                 </div>
+              </div>
+
+              {/* hCaptcha Checkbox Widget */}
+              <div className="bg-slate-50/80 border border-slate-200/80 p-3 rounded-xl flex items-center justify-between mb-4 shadow-2xs">
+                <label className="flex items-center gap-3 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={isHumanChecked}
+                    onChange={(e) => setIsHumanChecked(e.target.checked)}
+                    className="w-5 h-5 accent-[#00a896] rounded cursor-pointer"
+                  />
+                  <span className="text-xs font-bold text-slate-800">I am human</span>
+                </label>
+                <div className="flex flex-col items-end text-[9px] text-slate-400">
+                  <div className="w-5 h-5 bg-teal-500 text-white rounded flex items-center justify-center font-bold">h</div>
+                  <span>Privacy - Terms</span>
+                </div>
+              </div>
 
                 {/* Input Form Fields */}
                 <form onSubmit={handleSubmitEvaluation} className="space-y-3.5">
@@ -578,8 +577,6 @@ export default function VisaReadinessEngine() {
                     Your data is 100% secure and private.
                   </span>
                 </div>
-              </div>
-
             </div>
           ) : (
 

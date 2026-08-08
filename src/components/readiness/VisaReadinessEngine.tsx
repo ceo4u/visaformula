@@ -358,10 +358,10 @@ export default function VisaReadinessEngine() {
 
           {/* ── STEP 1: COLLECTING DETAILS (BEFORE EVALUATION) ── */}
           {!isEvaluated ? (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="max-w-xl mx-auto">
               
-              {/* Form Card (lg:col-span-6) */}
-              <div className="lg:col-span-6 bg-slate-50/60 rounded-2xl p-5 border border-slate-200/80 shadow-xs space-y-4">
+              {/* Form Card */}
+              <div className="bg-slate-50/60 rounded-2xl p-6 border border-slate-200/80 shadow-xs space-y-4">
                 {/* Category Tabs */}
                 <div className="grid grid-cols-4 gap-1 bg-slate-100/90 p-1 rounded-xl mb-3">
                   {categories.map((cat) => {
@@ -577,47 +577,6 @@ export default function VisaReadinessEngine() {
                     <Lock className="w-3 h-3 text-slate-400" />
                     Your data is 100% secure and private.
                   </span>
-                </div>
-              </div>
-
-              {/* Right Side Feature Hero Card (lg:col-span-6) */}
-              <div className="lg:col-span-6 bg-gradient-to-br from-slate-900 via-slate-800 to-[#0c1a2e] rounded-2xl p-6 sm:p-7 text-white space-y-5 shadow-lg border border-slate-800 flex flex-col justify-between h-full">
-                <div className="space-y-3.5">
-                  <div className="inline-flex items-center gap-2 bg-teal-500/20 border border-teal-500/30 text-teal-300 text-xs font-bold px-3 py-1 rounded-full">
-                    <Sparkles className="w-3.5 h-3.5 text-teal-400" />
-                    <span>Gemini 2.0 AI Intelligence</span>
-                  </div>
-
-                  <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
-                    Know Your Exact Visa Approval Score Before Filing
-                  </h3>
-
-                  <p className="text-xs text-slate-300 font-medium leading-relaxed">
-                    Fill out the quick step details on the left. Our AI evaluates your financial reserves, language scores, ties to home country, and refusal history against real embassy criteria.
-                  </p>
-
-                  {/* Feature Highlights List */}
-                  <div className="space-y-2.5 pt-2">
-                    <div className="p-3 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
-                      <span className="text-xs font-bold text-white">0 - 100% Score Gauge & Risk Rating</span>
-                    </div>
-
-                    <div className="p-3 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3">
-                      <ShieldCheck className="w-4 h-4 text-teal-400 shrink-0" />
-                      <span className="text-xs font-bold text-white">Financial & Document Gap Analysis</span>
-                    </div>
-
-                    <div className="p-3 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3">
-                      <Lightbulb className="w-4 h-4 text-teal-400 shrink-0" />
-                      <span className="text-xs font-bold text-white">Actionable Steps to Boost Approval Past 90%</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
-                  <span>15,000+ Assessments Generated</span>
-                  <span className="font-bold text-teal-400">100% Free & Confidential</span>
                 </div>
               </div>
 

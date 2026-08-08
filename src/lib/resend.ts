@@ -3,13 +3,12 @@
 // Central Resend client with complete delivery audit logging & domain verification
 // ============================================================
 
-import 'dotenv/config';
 import { Resend } from 'resend';
 
 const getApiKey = (): string => {
   return (
-    process.env.RESEND_API_KEY ||
     (import.meta?.env?.RESEND_API_KEY as string | undefined) ||
+    process.env.RESEND_API_KEY ||
     ''
   ).trim();
 };

@@ -703,23 +703,11 @@ export default function VisaReadinessEngine() {
                     </div>
                   )}
                 </div>
-
-                {/* hCaptcha Verification Widget */}
-                <div className="pt-2 flex flex-col items-center justify-center font-sora">
-                  <HCaptcha
-                    sitekey="10000000-ffff-ffff-ffff-ffffffffffff"
-                    onVerify={(token) => {
-                      setCaptchaToken(token);
-                      setCaptchaSolved(true);
-                    }}
-                  />
-                </div>
-
                 {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isEvaluating}
-                  className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98 mt-3 font-sora"
+                  className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98 mt-4 font-sora"
                 >
                   {isEvaluating ? (
                     <>
@@ -734,13 +722,6 @@ export default function VisaReadinessEngine() {
                   )}
                 </button>
               </form>
-
-              <div className="text-center pt-1 border-t border-slate-200">
-                <span className="text-[11px] font-medium text-slate-500 inline-flex items-center gap-1.5 font-sora">
-                  <Lock className="w-3 h-3 text-slate-400" />
-                  100% Secure & Encrypted
-                </span>
-              </div>
             </div>
           ) : (
 

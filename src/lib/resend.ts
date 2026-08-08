@@ -47,10 +47,13 @@ export const sendEmail = async ({
   const apiKey = getApiKey();
   const apiKeyAvailable = Boolean(apiKey) ? 'YES' : 'NO';
   const sender = from || 'VisaFormula <noreply@visaformula.com>';
+  const toArray = Array.isArray(to) ? to : [to];
+  const maskedTo = toArray.map(addr => addr.replace(/^(.{2}).*(@.*)$/, "$1***$2")).join(', ');
 
-  console.log(`[OTP DEBUG] provider: RESEND`);
-  console.log(`[OTP DEBUG] API key available: ${apiKeyAvailable}`);
-  console.log(`[OTP DEBUG] from: ${sender}`);
+  console.log(`[OTP TRACE] Step 8: sendEmail() executed = YES`);
+  console.log(`[OTP TRACE] Step 9: exact to value passed = ${maskedTo}`);
+  console.log(`[OTP TRACE] Step 10: exact from value passed = ${sender}`);
+  console.log(`[OTP TRACE] Step 11: RESEND_API_KEY available = ${apiKeyAvailable}`);
   console.log(`[OTP DEBUG] resend request started`);
 
   if (!apiKey) {

@@ -56,20 +56,16 @@ export const POST: APIRoute = async ({ request }) => {
 
     // ── Generate & store OTP ─────────────────────────────────
     const otp = generateOtp();
-    console.log(`[OTP DEBUG] OTP generated: YES`);
+    console.log(`[OTP TRACE] Step 3: generateOtp() executed = YES`);
 
-
-    // ── Parallel Execution: Resend Email Dispatch + DB Save ──
-    const emailPromise = sendVerificationOTP({ otp, email, expiresInMinutes: 10 }).catch(emailErr => {
-      console.error('[send-verification-code] Email dispatch error:', emailErr);
-    });
-
-    const savePromise = saveOtp(email, otp).catch(saveErr => {
-      console.warn('[send-verification-code] DB save fallback mode active:', saveErr);
-      return { success: true };
-    });
-
-    const [_, saveResult] = await Promise.all([emailPromise, savePromise]);
+    // ── Save OTP to DB ───────────────────────────────────────
+    let saveResult: any = { success: true };
+    try {
+      saveResult = await saveOtp(email, otp);
+      console.log(`[OTP TRACE] Step 4-5: saveOtp() executed = YES, error = NONE`);
+    } catch (saveErr: any) {
+      console.warn(`[OTP TRACE] Step 5: saveOtp() error = ${saveErr?.message || saveErr}`);
+    }
 
     if (saveResult && 'error' in saveResult && saveResult.error === 'COOLDOWN_ACTIVE') {
       const cooldownSecs = 'cooldownSecondsLeft' in saveResult ? saveResult.cooldownSecondsLeft : 5;
@@ -79,6 +75,22 @@ export const POST: APIRoute = async ({ request }) => {
         message: `Please wait ${cooldownSecs} seconds before requesting another code.`,
         cooldownSecondsLeft: cooldownSecs,
       }), { status: 429, headers: { 'Content-Type': 'application/json' } });
+    }
+
+    // ── Dispatch Email via Resend & Require Confirmation ────
+    console.log(`[OTP TRACE] Step 6-7: sendVerificationOTP() called for recipient: ${maskedEmail}`);
+    const emailResult = await sendVerificationOTP({ otp, email, expiresInMinutes: 10 });
+    console.log(`[OTP TRACE] Step 12-13: Resend success = ${emailResult.success}, messageId = ${emailResult.messageId || 'NONE'}, error = ${emailResult.error || 'NONE'}`);
+
+    if (!emailResult.success) {
+      console.error(`[OTP TRACE] Step 15: Resend failed! Returning HTTP 500. Error: ${emailResult.error}`);
+      return new Response(JSON.stringify({
+        status: 'error',
+        message: emailResult.error || 'Failed to dispatch verification email.',
+      }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     return new Response(JSON.stringify({

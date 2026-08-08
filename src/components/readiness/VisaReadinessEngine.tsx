@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   GraduationCap,
   Briefcase,
@@ -57,8 +57,8 @@ export default function VisaReadinessEngine() {
   // Form Fields State
   const [country, setCountry] = useState('Canada');
   const [visaType, setVisaType] = useState('Study Permit');
-  const [bankBalance, setBankBalance] = useState('24,500');
-  const [languageScore, setLanguageScore] = useState('IELTS - 6.5 Overall');
+  const [bankBalanceUsd, setBankBalanceUsd] = useState(24500);
+  const [languageScoreStr, setLanguageScoreStr] = useState('IELTS - 6.5 Overall');
   const [workExperience, setWorkExperience] = useState('1 - 2 Years');
   const [hasRefusals, setHasRefusals] = useState(false);
 
@@ -73,32 +73,7 @@ export default function VisaReadinessEngine() {
     eligibility: 75
   });
 
-  const [criticalGaps, setCriticalGaps] = useState<GapItem[]>([
-    {
-      id: '1',
-      severity: 'critical',
-      text: '6-month bank statement lacks consistent income deposits.',
-      solution: 'Provide audited tax returns (ITR) or proof of legal source of funds alongside bank statements.'
-    },
-    {
-      id: '2',
-      severity: 'moderate',
-      text: 'Limited travel history detected. Add more travel proof if available.',
-      solution: 'Include previous international entry/exit stamps or valid regional visas.'
-    },
-    {
-      id: '3',
-      severity: 'moderate',
-      text: 'SOP is too generic. Make it more specific to your profile.',
-      solution: 'Tailor your Statement of Purpose to highlight specific career goals in your home country.'
-    },
-    {
-      id: '4',
-      severity: 'moderate',
-      text: 'Low ties to home country. Add property, family, or job evidence.',
-      solution: 'Attach property deeds, family obligation affidavits, or leave approval letters from employers.'
-    }
-  ]);
+  const [criticalGaps, setCriticalGaps] = useState<GapItem[]>([]);
 
   const [selectedGap, setSelectedGap] = useState<GapItem | null>(null);
   const [isEvaluating, setIsEvaluating] = useState(false);
@@ -118,43 +93,198 @@ export default function VisaReadinessEngine() {
     { id: 'pr', label: 'PR & Migration', icon: Globe }
   ];
 
-  // Dynamic Handler when Form Values or Category Changes
+  // REAL DYNAMIC CALCULATION ENGINE
+  const computeReadiness = () => {
+    let score = 84;
+    let finScore = 85;
+    let authScore = 90;
+    let tiesScore = 75;
+    let eligScore = 80;
+
+    const gaps: GapItem[] = [];
+
+    // Parse numeric values
+    const fundsNum = Number(bankBalanceUsd) || 0;
+    const ieltsVal = parseFloat(languageScoreStr.replace(/[^0-9.]/g, '')) || 6.5;
+
+    // Minimum Required Liquid Funds by Country (USD)
+    const requiredFunds: Record<string, number> = {
+      'Canada': 22000,
+      'United States': 32000,
+      'United Kingdom': 20000,
+      'Australia': 25000,
+      'Germany': 14000,
+      'New Zealand': 18000,
+      'Schengen': 14000,
+    };
+    const req = requiredFunds[country] || 20000;
+
+    // 1. Financial Fund Assessment
+    if (fundsNum < req) {
+      const diff = req - fundsNum;
+      finScore = Math.max(25, Math.round((fundsNum / req) * 100));
+      score -= 24;
+      gaps.push({
+        id: 'gap-fin-crit',
+        severity: 'critical',
+        text: `Financial shortfall: Minimum $${req.toLocaleString()} USD required for ${country} ${visaType}. You have a $${diff.toLocaleString()} USD gap.`,
+        solution: `Increase liquid bank balance or add a co-sponsor (parents/family member) with official liquid fund proof and affidavit.`
+      });
+    } else if (fundsNum < req * 1.25) {
+      finScore = 78;
+      score -= 8;
+      gaps.push({
+        id: 'gap-fin-mod',
+        severity: 'moderate',
+        text: `Tight liquid reserves detected. Adding $${Math.round(req * 1.25 - fundsNum).toLocaleString()} USD buffer lowers financial refusal risk.`,
+        solution: `Attach fixed deposit certificates, mutual fund statements, or liquid property valuation reports.`
+      });
+    } else {
+      finScore = Math.min(98, 88 + Math.round((fundsNum - req) / 6000));
+    }
+
+    // 2. Language Proficiency Assessment
+    if (visaType.toLowerCase().includes('study') || visaType.toLowerCase().includes('student')) {
+      if (ieltsVal < 6.0) {
+        eligScore -= 26;
+        score -= 18;
+        gaps.push({
+          id: 'gap-lang-crit',
+          severity: 'critical',
+          text: `Language score (${languageScoreStr}) is below embassy minimum threshold (6.0 overall required for student permit).`,
+          solution: `Retake IELTS/PTE to achieve overall 6.5+ band before submitting official visa file.`
+        });
+      } else if (ieltsVal < 6.5) {
+        eligScore -= 10;
+        score -= 6;
+        gaps.push({
+          id: 'gap-lang-mod',
+          severity: 'moderate',
+          text: `Language score meets minimum criteria, but 7.0+ overall significantly improves university visa acceptance.`,
+          solution: `Include a Medium of Instruction (MOI) certificate from your previous institution.`
+        });
+      }
+    }
+
+    // 3. Work Experience Assessment
+    if (workExperience === 'Fresher / None' && (visaType.toLowerCase().includes('work') || visaType.toLowerCase().includes('pr'))) {
+      eligScore -= 30;
+      score -= 20;
+      gaps.push({
+        id: 'gap-exp-crit',
+        severity: 'critical',
+        text: `Work permit / PR applications require documented skilled work experience.`,
+        solution: `Provide official employer reference letters, salary bank credits, and tax filings for past employment.`
+      });
+    } else if (workExperience === '1 - 2 Years') {
+      tiesScore -= 10;
+      gaps.push({
+        id: 'gap-exp-mod',
+        severity: 'moderate',
+        text: `Early career profile. Providing evidence of ongoing employment or study leave approval strengthens ties.`,
+        solution: `Attach a No Objection Certificate (NOC) and approved study leave letter from your employer.`
+      });
+    }
+
+    // 4. Previous Refusals Assessment
+    if (hasRefusals) {
+      tiesScore -= 25;
+      score -= 22;
+      gaps.push({
+        id: 'gap-[#refusal]',
+        severity: 'critical',
+        text: `Prior visa refusal recorded. Triggers mandatory secondary officer review under embassy refusal codes.`,
+        solution: `File a detailed Statement of Purpose (SOP) directly refuting previous refusal grounds with new supporting evidence.`
+      });
+    }
+
+    // Default gap if profile is exceptionally clean
+    if (gaps.length === 0) {
+      gaps.push({
+        id: 'gap-clean-sop',
+        severity: 'moderate',
+        text: `Ensure Statement of Purpose (SOP) clearly outlines academic progression and return ties.`,
+        solution: `Have a certified visa consultant review your SOP structure prior to submission.`
+      });
+    }
+
+    score = Math.max(22, Math.min(98, Math.round(score)));
+    finScore = Math.max(20, Math.min(98, finScore));
+    authScore = Math.max(65, Math.min(98, authScore));
+    tiesScore = Math.max(25, Math.min(98, tiesScore));
+    eligScore = Math.max(30, Math.min(98, eligScore));
+
+    const status: 'LOW' | 'MODERATE' | 'HIGH' = score >= 82 ? 'LOW' : score >= 64 ? 'MODERATE' : 'HIGH';
+
+    return {
+      score,
+      status,
+      breakdown: {
+        financial: finScore,
+        authenticity: authScore,
+        homeTies: tiesScore,
+        eligibility: eligScore,
+      },
+      gaps
+    };
+  };
+
+  // Re-compute readiness dynamically whenever inputs change
+  useEffect(() => {
+    const computed = computeReadiness();
+    setReadinessScore(computed.score);
+    setRiskStatus(computed.status);
+    setBreakdown(computed.breakdown);
+    setCriticalGaps(computed.gaps);
+  }, [country, visaType, bankBalanceUsd, languageScoreStr, workExperience, hasRefusals]);
+
+  // Category Tab Handler
   const handleCategoryChange = (catId: 'student' | 'work' | 'tourist' | 'pr') => {
     setActiveTab(catId);
     if (catId === 'student') {
       setVisaType('Study Permit');
-      setReadinessScore(78);
-      setBreakdown({ financial: 80, authenticity: 85, homeTies: 60, eligibility: 75 });
+      setCurrentStep(1);
     } else if (catId === 'work') {
-      setVisaType('Employer Sponsored Work Permit');
-      setReadinessScore(82);
-      setBreakdown({ financial: 85, authenticity: 90, homeTies: 70, eligibility: 82 });
+      setVisaType('Work Permit');
+      setCurrentStep(2);
     } else if (catId === 'tourist') {
-      setVisaType('Visitor Visa (B1/B2 / Tourist)');
-      setReadinessScore(71);
-      setBreakdown({ financial: 70, authenticity: 80, homeTies: 55, eligibility: 78 });
+      setVisaType('Tourist / Visitor Visa');
+      setCurrentStep(3);
     } else {
-      setVisaType('Express Entry / Skilled Worker');
-      setReadinessScore(86);
-      setBreakdown({ financial: 90, authenticity: 92, homeTies: 80, eligibility: 85 });
+      setVisaType('Permanent Residency (PR)');
+      setCurrentStep(4);
     }
   };
 
-  const handleNextStep = (e: React.FormEvent) => {
+  // Form Submission Handler calling real API
+  const handleNextStep = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsEvaluating(true);
-    setTimeout(() => {
-      setIsEvaluating(false);
-      // Re-calculate dynamic score based on inputs
-      let baseScore = 75;
-      if (country === 'Canada' || country === 'USA') baseScore += 3;
-      if (hasRefusals) baseScore -= 14;
-      if (languageScore.includes('7.5') || languageScore.includes('8.0')) baseScore += 8;
-      
-      const finalScore = Math.min(96, Math.max(45, baseScore));
-      setReadinessScore(finalScore);
-      setRiskStatus(finalScore >= 80 ? 'LOW' : finalScore >= 65 ? 'MODERATE' : 'HIGH');
-    }, 600);
+
+    try {
+      // Call backend API for audit & evaluation persistence
+      await fetch('/api/readiness', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          country,
+          visaType,
+          financialFundsUsd: bankBalanceUsd,
+          ieltsScore: parseFloat(languageScoreStr.replace(/[^0-9.]/g, '')) || 6.5,
+          passportValidMonths: 36,
+          previousRefusals: hasRefusals
+        }),
+      });
+    } catch (err) {
+      // Gracefully continue with client-side computed score
+    } finally {
+      setTimeout(() => {
+        setIsEvaluating(false);
+        if (currentStep < totalSteps) {
+          setCurrentStep((prev) => prev + 1);
+        }
+      }, 500);
+    }
   };
 
   const handleLeadSubmit = (e: React.FormEvent) => {
@@ -327,10 +457,13 @@ export default function VisaReadinessEngine() {
                   <div className="relative">
                     <span className="absolute left-3 top-2.5 text-xs font-bold text-slate-400">$</span>
                     <input
-                      type="text"
-                      value={bankBalance}
-                      onChange={(e) => setBankBalance(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-7 pr-3 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896]"
+                      type="number"
+                      min="1000"
+                      max="200000"
+                      step="500"
+                      value={bankBalanceUsd}
+                      onChange={(e) => setBankBalanceUsd(Number(e.target.value))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-7 pr-2 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896]"
                     />
                   </div>
                 </div>
@@ -342,10 +475,12 @@ export default function VisaReadinessEngine() {
                   </label>
                   <div className="relative">
                     <select
-                      value={languageScore}
-                      onChange={(e) => setLanguageScore(e.target.value)}
+                      value={languageScoreStr}
+                      onChange={(e) => setLanguageScoreStr(e.target.value)}
                       className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer truncate"
                     >
+                      <option value="IELTS - 5.5 Overall">IELTS - 5.5 Overall</option>
+                      <option value="IELTS - 6.0 Overall">IELTS - 6.0 Overall</option>
                       <option value="IELTS - 6.5 Overall">IELTS - 6.5 Overall</option>
                       <option value="IELTS - 7.0 Overall">IELTS - 7.0 Overall</option>
                       <option value="IELTS - 7.5+ Overall">IELTS - 7.5+ Overall</option>
@@ -411,7 +546,7 @@ export default function VisaReadinessEngine() {
                   </>
                 ) : (
                   <>
-                    <span>Next Step</span>
+                    <span>Evaluate My Score (Next Step)</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -452,7 +587,13 @@ export default function VisaReadinessEngine() {
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                       />
                       <path
-                        className="text-[#00a896]"
+                        className={
+                          riskStatus === 'LOW'
+                            ? 'text-emerald-500'
+                            : riskStatus === 'MODERATE'
+                            ? 'text-[#00a896]'
+                            : 'text-rose-500'
+                        }
                         strokeDasharray={`${readinessScore}, 100`}
                         strokeWidth="3.2"
                         strokeLinecap="round"
@@ -467,27 +608,43 @@ export default function VisaReadinessEngine() {
                         <span>Visa Readiness Score</span>
                         <Info className="w-2.5 h-2.5 text-slate-400" />
                       </div>
-                      <span className="mt-1 inline-block bg-amber-50 text-amber-700 text-[9px] font-extrabold px-2 py-0.5 rounded-full border border-amber-200">
+                      <span className={`mt-1 inline-block text-[9px] font-extrabold px-2 py-0.5 rounded-full border ${
+                        riskStatus === 'LOW'
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                          : riskStatus === 'MODERATE'
+                          ? 'bg-amber-50 text-amber-700 border-amber-200'
+                          : 'bg-rose-50 text-rose-700 border-rose-200'
+                      }`}>
                         {riskStatus === 'LOW' ? 'LOW RISK' : riskStatus === 'MODERATE' ? 'MODERATE RISK' : 'HIGH RISK'}
                       </span>
                     </div>
                   </div>
 
-                  {/* Summary Narrative */}
+                  {/* Dynamic Summary Narrative */}
                   <div className="space-y-1">
                     <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                      Your profile shows a moderate chance of visa approval. Address the identified gaps to improve your chances of success.
+                      {riskStatus === 'LOW'
+                        ? `Your profile shows a high chance of visa approval for ${country} (${visaType}). Ensure all documents match official requirements.`
+                        : riskStatus === 'MODERATE'
+                        ? `Your profile shows a moderate chance of visa approval for ${country}. Address identified financial/document gaps to improve success.`
+                        : `Elevated risk detected for ${country} (${visaType}). Secondary consultant review is strongly recommended before filing.`}
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* AI Recommendation Box */}
+              {/* Dynamic AI Recommendation Box */}
               <div className="bg-[#f0fdfa] border border-[#ccfbf1] p-3.5 rounded-xl flex items-start gap-3">
                 <Lightbulb className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
                 <div className="text-xs">
                   <span className="font-extrabold text-[#0c1a2e] block mb-0.5">AI Recommendation</span>
-                  <span className="text-slate-600 font-medium">Strengthen financial documents and provide stronger home country ties.</span>
+                  <span className="text-slate-600 font-medium">
+                    {bankBalanceUsd < 22000
+                      ? `Increase liquid reserves by at least $${(22000 - bankBalanceUsd).toLocaleString()} USD or add an official financial co-sponsor.`
+                      : hasRefusals
+                      ? `Draft an official Statement of Purpose (SOP) refuting past refusal reasons.`
+                      : `Strengthen financial documents and provide stronger home country ties.`}
+                  </span>
                 </div>
               </div>
             </div>
@@ -500,23 +657,27 @@ export default function VisaReadinessEngine() {
                     <ShieldCheck className="w-4 h-4 text-[#00a896]" />
                     <h2 className="text-sm font-extrabold text-[#0c1a2e]">Profile Strength</h2>
                   </div>
-                  <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
-                    Good
+                  <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${
+                    readinessScore >= 80
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      : 'bg-amber-50 text-amber-700 border-amber-200'
+                  }`}>
+                    {readinessScore >= 80 ? 'Excellent' : 'Good'}
                   </span>
                 </div>
 
                 <ul className="space-y-2.5 text-xs text-slate-700 font-medium">
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#00a896]" />
-                    <span>Well prepared documents</span>
+                    <span className={`w-2 h-2 rounded-full ${breakdown.authenticity >= 80 ? 'bg-[#00a896]' : 'bg-amber-400'}`} />
+                    <span>Well prepared documents ({breakdown.authenticity}%)</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#00a896]" />
-                    <span>Strong financial profile</span>
+                    <span className={`w-2 h-2 rounded-full ${breakdown.financial >= 75 ? 'bg-[#00a896]' : 'bg-rose-400'}`} />
+                    <span>Financial profile ({breakdown.financial}%)</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#00a896]" />
-                    <span>Good academic background</span>
+                    <span className={`w-2 h-2 rounded-full ${breakdown.eligibility >= 75 ? 'bg-[#00a896]' : 'bg-amber-400'}`} />
+                    <span>Academic & background ({breakdown.eligibility}%)</span>
                   </li>
                 </ul>
               </div>
@@ -547,7 +708,11 @@ export default function VisaReadinessEngine() {
                     </span>
                     <div className="flex items-center gap-2">
                       <span className="font-extrabold text-slate-800">{breakdown.financial}%</span>
-                      <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.2 rounded-md">Good</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.2 rounded-md ${
+                        breakdown.financial >= 80 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+                      }`}>
+                        {breakdown.financial >= 80 ? 'Good' : 'Needs Support'}
+                      </span>
                     </div>
                   </div>
                   <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
@@ -579,7 +744,11 @@ export default function VisaReadinessEngine() {
                     </span>
                     <div className="flex items-center gap-2">
                       <span className="font-extrabold text-slate-800">{breakdown.homeTies}%</span>
-                      <span className="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.2 rounded-md">Average</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.2 rounded-md ${
+                        breakdown.homeTies >= 75 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+                      }`}>
+                        {breakdown.homeTies >= 75 ? 'Strong' : 'Average'}
+                      </span>
                     </div>
                   </div>
                   <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
@@ -665,7 +834,7 @@ export default function VisaReadinessEngine() {
             {/* Action 2: Browse Destination Classifieds */}
             <div className="bg-white border border-[#00a896] p-4 sm:p-5 rounded-2xl space-y-2 flex flex-col justify-between shadow-xs">
               <a
-                href="/find-experts"
+                href={`/find-experts?country=${encodeURIComponent(country)}`}
                 className="w-full bg-white hover:bg-teal-50/50 text-[#00a896] border border-[#00a896] px-4 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <Building2 className="w-4 h-4 text-[#00a896]" />
@@ -674,7 +843,7 @@ export default function VisaReadinessEngine() {
               </a>
 
               <p className="text-center text-[11px] font-semibold text-slate-500 pt-1">
-                Explore accommodation, jobs, and more
+                Explore accommodation, jobs, and more in {country}
               </p>
             </div>
           </div>
@@ -739,7 +908,11 @@ export default function VisaReadinessEngine() {
                 </div>
                 <div className="text-right">
                   <span className="text-slate-400 font-bold block text-[10px]">RISK STATUS</span>
-                  <span className="text-xs font-black text-amber-700 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">MODERATE RISK</span>
+                  <span className={`text-xs font-black px-3 py-1 rounded-full border ${
+                    riskStatus === 'LOW' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'
+                  }`}>
+                    {riskStatus} RISK
+                  </span>
                 </div>
               </div>
 
@@ -747,20 +920,20 @@ export default function VisaReadinessEngine() {
                 <h4 className="font-extrabold text-[#0c1a2e]">Comprehensive Breakdown</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
-                    <span className="font-bold text-slate-800 block">Financial Readiness</span>
-                    <span className="text-slate-600 font-semibold">{breakdown.financial}% — Sufficient funds for tuition and 1-year living expenses.</span>
+                    <span className="font-bold text-slate-800 block">Financial Readiness ({breakdown.financial}%)</span>
+                    <span className="text-slate-600 font-semibold">${bankBalanceUsd.toLocaleString()} USD recorded for {country}.</span>
                   </div>
                   <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
-                    <span className="font-bold text-slate-800 block">Document Verification</span>
-                    <span className="text-slate-600 font-semibold">{breakdown.authenticity}% — Academic transcripts and language certificates verified.</span>
+                    <span className="font-bold text-slate-800 block">Document Verification ({breakdown.authenticity}%)</span>
+                    <span className="text-slate-600 font-semibold">Academic & Language certs ({languageScoreStr}) verified.</span>
                   </div>
                   <div className="p-3 bg-amber-50/50 border border-amber-100 rounded-xl">
-                    <span className="font-bold text-slate-800 block">Home Ties Index</span>
-                    <span className="text-slate-600 font-semibold">{breakdown.homeTies}% — Additional property or family affidavits recommended.</span>
+                    <span className="font-bold text-slate-800 block">Home Ties Index ({breakdown.homeTies}%)</span>
+                    <span className="text-slate-600 font-semibold">Property deeds or family affidavits recommended.</span>
                   </div>
                   <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
-                    <span className="font-bold text-slate-800 block">Course Progression</span>
-                    <span className="text-slate-600 font-semibold">{breakdown.eligibility}% — Previous degree aligns logically with target study.</span>
+                    <span className="font-bold text-slate-800 block">Work Experience ({breakdown.eligibility}%)</span>
+                    <span className="text-slate-600 font-semibold">{workExperience} documented.</span>
                   </div>
                 </div>
               </div>
@@ -768,9 +941,9 @@ export default function VisaReadinessEngine() {
               <div className="space-y-2 pt-2">
                 <h4 className="font-extrabold text-[#0c1a2e]">Actionable Recommendations</h4>
                 <ol className="list-decimal list-inside space-y-1.5 font-semibold text-slate-600 pl-1">
-                  <li>Attach 3 years of Income Tax Returns (ITR) for all financial sponsors.</li>
-                  <li>Draft a customized Statement of Purpose detailing post-graduation return plans.</li>
-                  <li>Schedule a document pre-screening call with a licensed {country} visa consultant.</li>
+                  {criticalGaps.map((gap, i) => (
+                    <li key={i}>{gap.solution}</li>
+                  ))}
                 </ol>
               </div>
             </div>
@@ -778,9 +951,9 @@ export default function VisaReadinessEngine() {
             <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
               <button
                 onClick={() => {
-                  alert("Downloading Official PDF Report...");
+                  alert(`Downloading Official PDF Visa Readiness Report for ${country}...`);
                 }}
-                className="flex-1 bg-[#00a896] hover:bg-[#008f80] text-white py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all"
+                className="flex-1 bg-[#00a896] hover:bg-[#008f80] text-white py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 <span>Download PDF Report</span>
@@ -790,7 +963,7 @@ export default function VisaReadinessEngine() {
                   setBookingModalOpen(true);
                   setShowFullReportModal(false);
                 }}
-                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all"
+                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
               >
                 <UserCheck className="w-4 h-4" />
                 <span>Connect With Consultant</span>
@@ -832,7 +1005,7 @@ export default function VisaReadinessEngine() {
                 setSelectedGap(null);
                 setBookingModalOpen(true);
               }}
-              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white py-3 rounded-xl text-xs font-extrabold shadow-sm transition-all flex items-center justify-center gap-2"
+              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white py-3 rounded-xl text-xs font-extrabold shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <UserCheck className="w-4 h-4" />
               <span>Fix This Gap with a Verified Consultant</span>

@@ -403,11 +403,11 @@ export default function VisaReadinessEngine() {
                   </a>
 
                   <a
-                    href={`/classifieds?country=${encodeURIComponent(result.target_country)}`}
+                    href={`/find-experts?country=${encodeURIComponent(result.target_country)}`}
                     className="bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-md px-5 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
                   >
                     <Building2 className="w-4 h-4" />
-                    <span>View Classified Offers</span>
+                    <span>View Experts in {result.target_country}</span>
                   </a>
 
                   <button

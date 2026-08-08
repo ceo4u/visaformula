@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Search, Filter, X, Loader2 } from "lucide-react";
+import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Search, Filter, X, Loader2, Users } from "lucide-react";
 import { ExpertProfileModal } from "./ExpertProfileModal";
 
 
@@ -152,15 +152,22 @@ export function FindExpertsPortal() {
                 dbExperts = data.experts;
             }
 
-            // Filter dummies by search query client-side (keyword matching)
-            let filteredDummies = dummyExperts;
+            // Filter dummies client-side
+            let filteredDummies = [...dummyExperts];
+
+            // 1. Filter by country
+            if (country && country !== "All") {
+                filteredDummies = filteredDummies.filter(e =>
+                    e.countries.some((c: string) => c.toLowerCase().includes(country.toLowerCase()))
+                );
+            }
+
+            // 2. Filter by keyword (q)
             if (q) {
                 const keywords = q.toLowerCase().split(/\s+/).filter(Boolean);
-                filteredDummies = dummyExperts.filter(e => {
+                filteredDummies = filteredDummies.filter(e => {
                     const profileText = [
-                        e.name,
-                        e.role,
-                        e.city,
+                        e.name, e.role, e.city,
                         ...(e.tags || []),
                         ...(e.countries || []),
                         e.bio || ''
@@ -168,19 +175,15 @@ export function FindExpertsPortal() {
                     return keywords.some(kw => profileText.includes(kw));
                 });
             }
-            if (country && country !== "All") {
-                filteredDummies = filteredDummies.filter(e =>
-                    e.countries.some((c: string) => c.toLowerCase().includes(country.toLowerCase()))
-                );
-            }
 
             // Merge: real experts first, then dummies (deduplicate by name)
             const dbNames = new Set(dbExperts.map((e: any) => e.name.toLowerCase()));
             const uniqueDummies = filteredDummies.filter(e => !dbNames.has(e.name.toLowerCase()));
             const combined = [...dbExperts, ...uniqueDummies];
 
-            // Safety fallback: if filters return 0 items, show all dummyExperts so page is never blank
-            setExperts(combined.length > 0 ? combined : dummyExperts);
+            // Only fall back to all dummies if NO filters were applied at all
+            const hasFilters = !!(q || (country && country !== 'All') || (cityParam && cityParam !== 'All Cities'));
+            setExperts(combined.length > 0 ? combined : (hasFilters ? [] : dummyExperts));
 
             if (data.error) setFetchError(data.error);
         } catch (err: any) {
@@ -209,31 +212,66 @@ export function FindExpertsPortal() {
         if (typeof window !== "undefined") {
             const params = new URLSearchParams(window.location.search);
 
-            const catQuery = params.get("category");
-            if (catQuery) {
-                if (catQuery === "student") setCategory("Student Visa");
-                if (catQuery === "work") setCategory("Work Permit");
-                if (catQuery === "pr") setCategory("PR");
-                if (catQuery === "local") setCategory("Local Expert");
-            }
-
-            const countryQuery = params.get("country");
-            if (countryQuery) { setSelectedCountry(countryQuery); initCountry = countryQuery; }
-
+            // --- q: free text search ---
             const textQuery = params.get("q") || params.get("query") || "";
             if (textQuery) { setSearchText(textQuery); initQ = textQuery; }
 
+            // --- country: destination country ---
+            const countryQuery = params.get("country") || "";
+            if (countryQuery) { setSelectedCountry(countryQuery); initCountry = countryQuery; }
+
+            // --- city: consultant's city ---
             const cityQuery = params.get("city") || "";
             if (cityQuery) {
+                // Try exact match in cityFilters list first
                 const matchCity = cityFilters.find(c => c.toLowerCase() === cityQuery.toLowerCase());
-                if (matchCity) { setCity(matchCity); initCity = matchCity; }
+                if (matchCity) {
+                    setCity(matchCity); initCity = matchCity;
+                } else {
+                    // Store partial match for free-text filtering
+                    setSearchText(prev => prev ? `${prev} ${cityQuery}` : cityQuery);
+                    if (!textQuery) initQ = cityQuery;
+                }
             }
 
-            const purposeQuery = params.get("purpose") || "";
-            if (purposeQuery) initPurpose = purposeQuery;
+            // --- category: visa/service category (full name from homepage) ---
+            const catQuery = params.get("category") || "";
+            if (catQuery) {
+                const cat = catQuery.toLowerCase();
+                if (cat.includes("student")) {
+                    setCategory("Student Visa");
+                } else if (cat.includes("work")) {
+                    setCategory("Work Permit");
+                } else if (cat.includes("pr") || cat.includes("express") || cat.includes("permanent")) {
+                    setCategory("PR");
+                } else if (cat.includes("tourist") || cat.includes("visitor")) {
+                    // tourist/visitor — search by tag
+                    initQ = initQ ? `${initQ} ${catQuery}` : catQuery;
+                    setSearchText(initQ);
+                } else if (cat.includes("business") || cat.includes("investor")) {
+                    initQ = initQ ? `${initQ} Business Visa` : "Business Visa";
+                    setSearchText(initQ);
+                } else if (cat.includes("dependent") || cat.includes("spousal") || cat.includes("partner")) {
+                    initQ = initQ ? `${initQ} ${catQuery}` : catQuery;
+                    setSearchText(initQ);
+                } else {
+                    // Generic: pass as text search
+                    initQ = initQ ? `${initQ} ${catQuery}` : catQuery;
+                    setSearchText(initQ);
+                }
+                initPurpose = catQuery;
+            }
+
+            // --- legacy: ?category=student shorthand ---
+            const shortCat = params.get("cat") || "";
+            if (shortCat) {
+                if (shortCat === "student") setCategory("Student Visa");
+                if (shortCat === "work") setCategory("Work Permit");
+                if (shortCat === "pr") setCategory("PR");
+                if (shortCat === "local") setCategory("Local Expert");
+            }
         }
 
-        // Fetch with initial URL params
         fetchExperts(initQ, initCountry, initPurpose, initCity);
     }, [fetchExperts]);
 
@@ -244,10 +282,10 @@ export function FindExpertsPortal() {
             const catLower = category.toLowerCase();
             const hasCategoryMatch = expert.category === catLower ||
                 expert.role.toLowerCase().includes(catLower) ||
-                expert.tags.some(t => t.toLowerCase().includes(catLower));
-            if (category === "Student Visa" && !hasCategoryMatch && !expert.tags.some(t => t.toLowerCase().includes("study"))) return false;
-            if (category === "Work Permit" && !hasCategoryMatch && !expert.tags.some(t => t.toLowerCase().includes("work"))) return false;
-            if (category === "PR" && !hasCategoryMatch && !expert.tags.some(t => t.toLowerCase().includes("pr") || t.toLowerCase().includes("migration"))) return false;
+                expert.tags.some((t: string) => t.toLowerCase().includes(catLower));
+            if (category === "Student Visa" && !hasCategoryMatch && !expert.tags.some((t: string) => t.toLowerCase().includes("study"))) return false;
+            if (category === "Work Permit" && !hasCategoryMatch && !expert.tags.some((t: string) => t.toLowerCase().includes("work"))) return false;
+            if (category === "PR" && !hasCategoryMatch && !expert.tags.some((t: string) => t.toLowerCase().includes("pr") || t.toLowerCase().includes("migration"))) return false;
             if (category === "Local Expert" && expert.city === "Remote") return false;
         }
 
@@ -268,7 +306,7 @@ export function FindExpertsPortal() {
         }
 
         if (selectedCountry !== "All") {
-            const hasCountry = expert.countries.some(c => c.toLowerCase().includes(selectedCountry.toLowerCase()));
+            const hasCountry = expert.countries.some((c: string) => c.toLowerCase().includes(selectedCountry.toLowerCase()));
             if (!hasCountry) return false;
         }
 
@@ -277,8 +315,8 @@ export function FindExpertsPortal() {
             const matchName = expert.name.toLowerCase().includes(query);
             const matchRole = expert.role.toLowerCase().includes(query);
             const matchCity = expert.city.toLowerCase().includes(query);
-            const matchTag = expert.tags.some(t => t.toLowerCase().includes(query));
-            const matchCountry = expert.countries.some(c => c.toLowerCase().includes(query));
+            const matchTag = expert.tags.some((t: string) => t.toLowerCase().includes(query));
+            const matchCountry = expert.countries.some((c: string) => c.toLowerCase().includes(query));
             if (!matchName && !matchRole && !matchCity && !matchTag && !matchCountry) return false;
         }
 

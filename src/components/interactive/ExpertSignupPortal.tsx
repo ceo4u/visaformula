@@ -135,6 +135,7 @@ function ExpertSignupPortalContent() {
     { name: "UK", flag: "🇬🇧" },
     { name: "USA", flag: "🇺🇸" },
     { name: "Germany", flag: "🇩🇪" },
+    { name: "Schengen Countries", flag: "🇪🇺" },
     { name: "New Zealand", flag: "🇳🇿" },
     { name: "UAE", flag: "🇦🇪" },
     { name: "Europe", flag: "🇪🇺" },
@@ -449,7 +450,7 @@ function ExpertSignupPortalContent() {
             about_me: businessDescription,
             portfolio_link: businessWebsite,
             office_address: [streetAddress, landmark, city, state, country].filter(Boolean).join(", "),
-            gov_registration_number: registrationNumber,
+            gov_registration_number: '',
             expertise_tags: selectedServices,
             countries_expertise: selectedCountries
           })
@@ -731,14 +732,14 @@ function ExpertSignupPortalContent() {
                         className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-sm text-slate-900 outline-none focus:border-[#00a896] pr-10"
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
-                      >
-                        {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
                     </div>
+                    {/* INLINE POP ERROR RIGHT UNDER CONFIRM PASSWORD FIELD */}
+                    {(confirmPassword && password !== confirmPassword) || (validationError && validationError.includes("Passwords do not match")) ? (
+                      <div className="mt-2 p-2.5 bg-rose-50 border border-rose-300 text-rose-700 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm animate-pulse">
+                        <span className="bg-rose-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shrink-0">!</span>
+                        <span>Password does not match! Please verify your password.</span>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
 
@@ -904,9 +905,19 @@ function ExpertSignupPortalContent() {
                       className="px-3.5 py-2 rounded-xl text-xs font-extrabold border border-dashed border-[#00a896] text-[#00a896] bg-teal-50/50 hover:bg-teal-50 transition-all cursor-pointer flex items-center gap-1"
                     >
                       <Plus className="w-3.5 h-3.5" />
-                      <span>Add Other Service</span>
                     </button>
                   </div>
+
+                  {/* INLINE POP ERROR RIGHT UNDER SERVICE CHIPS SELECTION */}
+                  {selectedServices.length === 0 && validationError && validationError.includes("at least one service") && (
+                    <div className="mt-2.5 p-3 bg-rose-50 border-2 border-rose-400 text-rose-700 text-xs font-extrabold rounded-2xl flex items-center justify-between shadow-md animate-pulse">
+                      <div className="flex items-center gap-2">
+                        <span className="bg-rose-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-black shrink-0">!</span>
+                        <span>Please select at least one service you offer to continue.</span>
+                      </div>
+                      <span className="bg-rose-600 text-white text-[10px] px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-wider">Required Field</span>
+                    </div>
+                  )}
 
                   {showAddCustomService && (
                     <div className="flex gap-2 pt-2 max-w-md">

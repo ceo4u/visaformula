@@ -27,6 +27,7 @@ const tools = [
 
 const classifieds = [
   {
+    id: 'caregiver-jobs-canada',
     badge: 'Jobs Abroad', badgeColor: '#00a896',
     img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=200&auto=format&fit=crop',
     title: 'Caregiver Jobs in Canada',
@@ -38,6 +39,7 @@ const classifieds = [
     price: 'FREE', priceColor: '#00a896',
   },
   {
+    id: 'shared-room-humber-college',
     badge: 'Accommodation', badgeColor: '#059669',
     img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=200&auto=format&fit=crop',
     title: 'Shared Room Near Humber College',
@@ -49,6 +51,7 @@ const classifieds = [
     price: '$650 CAD / Month', priceColor: '#111827',
   },
   {
+    id: 'study-canada-2025-intake',
     badge: 'Study Abroad', badgeColor: '#0d9488',
     img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=200&auto=format&fit=crop',
     title: 'Study in Canada 2025 Intake Open',
@@ -60,6 +63,7 @@ const classifieds = [
     price: 'FREE', priceColor: '#00a896',
   },
   {
+    id: 'visa-business-for-sale',
     badge: 'Business', badgeColor: '#0c1a2e',
     img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=200&auto=format&fit=crop',
     title: 'Visa Consultancy Business for Sale',
@@ -373,7 +377,7 @@ export function MobileHomeSection() {
         <div className="mt-4 px-3">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-[15px] font-extrabold text-[#0c1a2e]">Featured Classifieds</h2>
-            <a href="/classifieds" className="flex items-center gap-0.5 text-[12px] font-semibold" style={{ color: '#00a896' }}>
+            <a href="/find-experts" className="flex items-center gap-0.5 text-[12px] font-semibold" style={{ color: '#00a896' }}>
               View All <ChevronRight className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -395,13 +399,13 @@ export function MobileHomeSection() {
           {/* Classified List Cards */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden divide-y divide-gray-50">
             {classifieds.map((item, idx) => (
-              <a key={idx} href="/classifieds"
+              <a key={idx} href={`/classifieds/${item.id || 'caregiver-jobs-canada'}`}
                 onClick={() => trackAdClick({
-                  adId: `classified_mob_${idx}_${item.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+                  adId: `classified_mob_${idx}_${item.id || 'caregiver-jobs-canada'}`,
                   adTitle: item.title,
                   adType: 'classified',
                   category: item.badge,
-                  targetUrl: '/classifieds'
+                  targetUrl: `/classifieds/${item.id || 'caregiver-jobs-canada'}`
                 })}
                 className="flex gap-3 p-3 active:bg-gray-50 transition-colors">
                 {/* Thumbnail */}

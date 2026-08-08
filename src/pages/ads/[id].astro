@@ -1,0 +1,242 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import { 
+  Sparkles, ShieldCheck, CheckCircle2, Star, ArrowRight, ArrowLeft, 
+  MessageSquare, Phone, Mail, Award, Clock, Users, Globe, BookOpen, Check
+} from 'lucide-react';
+
+export async function getStaticPaths() {
+  const ads = [
+    {
+      id: 'ielts-made-easy',
+      title: 'IELTS Made Easy — Achieve Your Target Band Score (7.5+ Guaranteed Strategy)',
+      category: 'Sponsored Offer',
+      sponsorName: 'VisaFormula Learning Hub',
+      badge: 'SPONSORED PROMO',
+      tagline: 'Achieve your dream score with expert British Council & IDP certified trainers!',
+      price: 'Special Offer: ₹3,999',
+      img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&auto=format&fit=crop&q=80',
+      description: 'Unlock top scores in IELTS Academic and General Training with targeted 1-on-1 coaching, real exam mock tests, SOP essay grading, and speaking interview practice with native English instructors.',
+      features: [
+        'Live Interactive Online Classes & Masterclasses',
+        'Unlimited Mock Tests with Detailed Writing & Speaking Evaluation',
+        'Grammar, Vocabulary & Listening Practice Workbooks',
+        '100% Money-Back Score Upgrade Assurance'
+      ],
+      stats: [
+        { label: 'Success Rate', val: '98.4%' },
+        { label: 'Students Trained', val: '12,500+' },
+        { label: 'Avg Band Score', val: '7.5' },
+        { label: 'Certified Tutors', val: '50+' }
+      ],
+      contactEmail: 'ielts@visaformula.com',
+      contactPhone: '+91 98765 11223',
+      whatsapp: '+919876511223'
+    },
+    {
+      id: 'canada-pr-express-entry-fasttrack',
+      title: 'Canada PR Fast-Track & Express Entry Category-Based Selection Assistance',
+      category: 'Sponsored Offer',
+      sponsorName: 'Canam Overseas Experts',
+      badge: 'FEATURED AD',
+      tagline: 'Fastest pathway to Canadian Permanent Residency for Healthcare, STEM & Trades!',
+      price: 'Free Eligibility Check',
+      img: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=1200&auto=format&fit=crop&q=80',
+      description: 'Get verified support for Canada Express Entry draw draws in 2025. Specialized assistance in STEM, Healthcare, Agriculture, Transport, and French Language proficiency categories.',
+      features: [
+        'CRS Score Optimization & ECA WES filing',
+        'PNP (Provincial Nominee Program) nomination filings',
+        'Express Entry Profile creation and ITA submission',
+        'Post-ITA Document compilation & PR Visa landing support'
+      ],
+      stats: [
+        { label: 'PR Grants', val: '3,800+' },
+        { label: 'Avg CRS Boost', val: '+50 Pts' },
+        { label: 'Processing', val: '6 Months' },
+        { label: 'Satisfaction', val: '99%' }
+      ],
+      contactEmail: 'canada-pr@canamoverseas.com',
+      contactPhone: '+91 98765 44332',
+      whatsapp: '+919876544332'
+    },
+    {
+      id: 'uk-skilled-worker-sponsorship',
+      title: 'UK Skilled Worker Job & Visa Sponsorship Placement Assistance',
+      category: 'Sponsored Offer',
+      sponsorName: 'UK Care & Career Mobility',
+      badge: 'SPONSORED AD',
+      tagline: 'Connect directly with licensed UK Home Office Certificate of Sponsorship (CoS) employers.',
+      price: 'Consultation Included',
+      img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200&auto=format&fit=crop&q=80',
+      description: 'Direct assistance for healthcare workers, IT professionals, engineers, and finance specialists seeking UK Skilled Worker Visas with registered UK Home Office Sponsors.',
+      features: [
+        'Match with Home Office licensed Sponsor Employers',
+        'CoS (Certificate of Sponsorship) processing guidance',
+        'UK Dependents Visa inclusion for family',
+        '5-Year Indefinite Leave to Remain (ILTR) pathway'
+      ],
+      stats: [
+        { label: 'CoS Issued', val: '1,450+' },
+        { label: 'Partner Employers', val: '120+' },
+        { label: 'Family Visas', val: '2,200+' },
+        { label: 'UK Support', val: '24/7' }
+      ],
+      contactEmail: 'uk@ukcareers.co.uk',
+      contactPhone: '+44 20 7123 4567',
+      whatsapp: '+442071234567'
+    }
+  ];
+
+  return ads.map(ad => ({
+    params: { id: ad.id },
+    props: { ad }
+  }));
+}
+
+const { ad } = Astro.props;
+---
+
+<Layout title={`${ad.title} | VisaFormula Sponsored Ads`}>
+  <Header />
+
+  <main class="bg-[#f8fafc] min-h-screen py-8 sm:py-12 font-plus-jakarta">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      {/* Top Navigation */}
+      <div class="flex items-center justify-between">
+        <a href="/" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-[#00a896] bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-xs transition-all">
+          <ArrowLeft class="w-4 h-4" /> Back to Home
+        </a>
+        <span class="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-600 text-xs font-extrabold px-3 py-1.5 rounded-xl uppercase tracking-wider">
+          <Sparkles class="w-3.5 h-3.5" /> {ad.badge}
+        </span>
+      </div>
+
+      {/* Main Sponsored Hero Banner */}
+      <div class="bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 rounded-3xl text-white shadow-2xl border border-slate-800 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+        
+        {/* Left Info Column */}
+        <div class="lg:col-span-7 p-6 sm:p-10 space-y-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2">
+              <span class="bg-[#1a73e8] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-md">
+                SPONSORED PROMO
+              </span>
+              <span class="text-xs text-blue-300 font-bold flex items-center gap-1">
+                <ShieldCheck class="w-4 h-4 text-[#00a896]" /> Verified Partner: {ad.sponsorName}
+              </span>
+            </div>
+
+            <h1 class="text-2xl sm:text-4xl font-black text-white leading-tight">
+              {ad.title}
+            </h1>
+
+            <p class="text-sm sm:text-base text-blue-100/90 font-medium leading-relaxed">
+              {ad.tagline}
+            </p>
+          </div>
+
+          {/* Key Stats Bar */}
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4 border-y border-white/10">
+            {ad.stats.map((st, i) => (
+              <div key={i} class="bg-white/5 p-3 rounded-2xl border border-white/10 text-center">
+                <p class="text-lg font-black text-white">{st.val}</p>
+                <p class="text-[10px] font-bold text-slate-300 uppercase">{st.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Action CTAs */}
+          <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+            <a 
+              href={`https://wa.me/${ad.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi! I am interested in your offer: ${ad.title}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto px-8 py-3.5 bg-[#1a73e8] hover:bg-blue-600 text-white font-black text-xs rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+            >
+              <MessageSquare class="w-4 h-4" />
+              <span>Book / Enquire via WhatsApp</span>
+            </a>
+
+            <a 
+              href={`tel:${ad.contactPhone}`}
+              class="w-full sm:w-auto px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs rounded-2xl transition-all flex items-center justify-center gap-2"
+            >
+              <Phone class="w-4 h-4 text-[#00a896]" />
+              <span>Call Representative</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Right Image Column */}
+        <div class="lg:col-span-5 relative min-h-[300px] lg:min-h-[480px]">
+          <img 
+            src={ad.img} 
+            alt={ad.title}
+            class="w-full h-full object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent lg:bg-gradient-to-r lg:from-slate-950 lg:via-transparent lg:to-transparent"></div>
+          <div class="absolute bottom-6 right-6 bg-slate-900/90 backdrop-blur-md border border-white/20 px-4 py-2.5 rounded-2xl shadow-xl">
+            <p class="text-[10px] font-bold text-slate-400 uppercase">Offer Price</p>
+            <p class="text-lg font-black text-[#00a896]">{ad.price}</p>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Overview & Features */}
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-8 space-y-6">
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-md space-y-4">
+            <h2 class="text-xl font-extrabold text-slate-900">Offer Overview</h2>
+            <p class="text-sm text-slate-700 leading-relaxed font-medium">
+              {ad.description}
+            </p>
+          </div>
+
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-md space-y-4">
+            <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+              <CheckCircle2 class="w-5 h-5 text-[#1a73e8]" /> Why Choose This Offer?
+            </h2>
+            <div class="space-y-3">
+              {ad.features.map((feat, i) => (
+                <div key={i} class="p-4 bg-blue-50/50 border border-blue-100 rounded-2xl flex items-start gap-3">
+                  <div class="w-6 h-6 rounded-full bg-[#1a73e8] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                    <Check class="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <span class="text-xs sm:text-sm font-bold text-slate-800">{feat}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div class="lg:col-span-4 space-y-6">
+          <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-md space-y-4 text-center">
+            <div class="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200 text-[#1a73e8] flex items-center justify-center font-black text-2xl mx-auto shadow-sm">
+              IE
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-slate-900">{ad.sponsorName}</h3>
+              <p class="text-xs text-slate-500 font-medium">Verified Educational Partner</p>
+            </div>
+            <a 
+              href={`mailto:${ad.contactEmail}`}
+              class="block w-full py-3 bg-[#1a73e8] hover:bg-blue-700 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all"
+            >
+              Email Sponsor Directly
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

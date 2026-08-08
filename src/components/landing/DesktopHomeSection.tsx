@@ -55,39 +55,56 @@ function CustomSelect({ label, value, placeholder, options, isOpen, onToggle, on
 }
 
 export function DesktopHomeSection() {
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedPurpose, setSelectedPurpose] = useState('');
-  const [selectedVisaType, setSelectedVisaType] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
-  const [activeTab, setActiveTab] = useState('All');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [activeTab, setActiveTab] = useState('All');
+
+  // New search fields
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState('Select Country');
+  const [location, setLocation] = useState('');
+  const [selectedVisaType, setSelectedVisaType] = useState('Select Category');
 
   const [countryOpen, setCountryOpen] = useState(false);
-  const [purposeOpen, setPurposeOpen] = useState(false);
   const [visaTypeOpen, setVisaTypeOpen] = useState(false);
-  const [cityOpen, setCityOpen] = useState(false);
 
   useEffect(() => {
     const handleClose = () => {
       setCountryOpen(false);
-      setPurposeOpen(false);
       setVisaTypeOpen(false);
-      setCityOpen(false);
     };
     window.addEventListener('click', handleClose);
     return () => window.removeEventListener('click', handleClose);
   }, []);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const query = [selectedCountry, selectedPurpose, selectedVisaType, selectedCity].filter(Boolean).join(' ');
-    window.location.href = `/find-experts?q=${encodeURIComponent(query)}`;
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const params = new URLSearchParams();
+
+    // Free-text keyword
+    if (searchQuery.trim()) params.set('q', searchQuery.trim());
+
+    // Destination country
+    if (selectedCountry && selectedCountry !== 'Select Country')
+      params.set('country', selectedCountry);
+
+    // Your location (city of consultant)
+    if (location.trim()) params.set('city', location.trim());
+
+    // Visa / service category
+    if (selectedVisaType && selectedVisaType !== 'Select Category')
+      params.set('category', selectedVisaType);
+
+    window.location.href = `/find-experts?${params.toString()}`;
   };
+
+  const countriesList = ['Canada', 'United Kingdom', 'United States', 'Australia', 'Germany', 'Europe', 'Schengen Countries', 'South Africa', 'New Zealand', 'UAE', 'France', 'Singapore', 'Ireland', 'Other'];
+  const categoriesList = ['Student Visa', 'Work Permit / Work Visa', 'Tourist / Visitor Visa', 'PR / Express Entry', 'Business Visa', 'Dependent Visa', 'Spousal / Partner Visa', 'Investor Visa'];
 
   const classifiedTabs = ['All', 'Jobs', 'Accommodation', 'Business', 'Study Abroad', 'Visa Appeals'];
 
   const classifieds = [
     {
+      id: 'caregiver-jobs-canada',
       badge: 'Jobs Abroad',
       badgeBg: 'bg-[#00a896]',
       img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
@@ -101,6 +118,7 @@ export function DesktopHomeSection() {
       priceColor: 'text-[#00a896]',
     },
     {
+      id: 'shared-room-humber-college',
       badge: 'Accommodation',
       badgeBg: 'bg-[#059669]',
       img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
@@ -114,6 +132,7 @@ export function DesktopHomeSection() {
       priceColor: 'text-gray-900',
     },
     {
+      id: 'study-canada-2025-intake',
       badge: 'Study Abroad',
       badgeBg: 'bg-[#0d9488]',
       img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800&auto=format&fit=crop',
@@ -128,6 +147,7 @@ export function DesktopHomeSection() {
       priceColor: 'text-[#00a896]',
     },
     {
+      id: 'visa-consultancy-business-sale',
       badge: 'Business',
       badgeBg: 'bg-[#0c1a2e]',
       img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
@@ -141,8 +161,9 @@ export function DesktopHomeSection() {
       priceColor: 'text-gray-900',
     },
     {
+      id: 'uk-australia-refusal-appeals',
       badge: 'Visa Appeals',
-      badgeBg: 'bg-[#7c3aed]',
+      badgeBg: 'bg-[#00a896]',
       img: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=800&auto=format&fit=crop',
       title: 'UK & Australia Refusal Visa Appeals',
       country: 'UK / Australia',
@@ -150,7 +171,7 @@ export function DesktopHomeSection() {
       postedBy: 'Immigration Law Partners',
       location: 'London / Remote',
       time: '3 hours ago',
-      price: 'Consultation Free',
+      price: 'Free Consultation',
       priceColor: 'text-[#00a896]',
     },
   ];
@@ -274,12 +295,10 @@ export function DesktopHomeSection() {
         </div>
 
         {/* ======================================================= */}
-        {/* 3. SEARCH + POPULAR DESTINATIONS (left 9) | IELTS (right 3) */}
+        {/* 3. SEARCH + POPULAR DESTINATIONS — full width */}
         {/* ======================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className="space-y-4">
 
-          {/* LEFT: Search + Popular stacked */}
-          <div className="lg:col-span-9 space-y-4">
 
             {/* 3A. Search Form */}
             <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 space-y-4">
@@ -287,7 +306,7 @@ export function DesktopHomeSection() {
               <div className="flex items-center gap-2 sm:gap-4 border-b border-slate-100 pb-3 mb-5 overflow-x-auto scrollbar-none">
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('all'); setSelectedPurpose(''); }}
+                  onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
                   className={`flex items-center gap-2 text-xs sm:text-sm font-extrabold px-3.5 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'all'
                       ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
@@ -301,7 +320,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('consultant'); setSelectedPurpose('Consultant'); }}
+                  onClick={() => { setActiveCategory('consultant'); setSearchQuery('Consultant'); }}
                   className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'consultant'
                       ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
@@ -315,7 +334,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('universities'); setSelectedPurpose('Higher Education / Study'); }}
+                  onClick={() => { setActiveCategory('universities'); setSearchQuery('Higher Education Study'); }}
                   className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'universities'
                       ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
@@ -329,7 +348,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('jobs'); setSelectedPurpose('Employment / Work'); }}
+                  onClick={() => { setActiveCategory('jobs'); setSearchQuery('Employment Work'); }}
                   className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'jobs'
                       ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
@@ -343,7 +362,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('insurance'); setSelectedPurpose('Insurance'); }}
+                  onClick={() => { setActiveCategory('insurance'); setSearchQuery('Insurance'); }}
                   className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'insurance'
                       ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
@@ -357,7 +376,7 @@ export function DesktopHomeSection() {
 
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory('lawyers'); setSelectedPurpose('Lawyers'); }}
+                  onClick={() => { setActiveCategory('lawyers'); setSearchQuery('Lawyers'); }}
                   className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'lawyers'
                       ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
@@ -384,54 +403,126 @@ export function DesktopHomeSection() {
                 </button>
               </div>
 
-              <h2 className="text-base font-bold text-gray-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Find Visa Information &amp; Consultants</h2>
-              <form onSubmit={handleSearch} className="grid grid-cols-2 lg:grid-cols-5 gap-3 items-end">
-                <CustomSelect 
-                  label="Destination" 
-                  value={selectedCountry} 
-                  placeholder="Select Country" 
-                  options={['Canada', 'United Kingdom', 'United States', 'Australia', 'Germany', 'Europe', 'Schengen Countries', 'South Africa', 'New Zealand', 'UAE', 'Other']} 
-                  isOpen={countryOpen}
-                  onToggle={() => { setCountryOpen(!countryOpen); setPurposeOpen(false); setVisaTypeOpen(false); setCityOpen(false); }}
-                  onSelect={(val) => { setSelectedCountry(val); setCountryOpen(false); }}
-                />
+              {/* New 4-input search matching reference image exactly */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
 
+                {/* Box 1: What are you looking for? */}
+                <div>
+                  <label className="text-xs font-bold text-slate-800 leading-none mb-2 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>What are you looking for?</label>
+                  <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center gap-3 transition-all shadow-sm">
+                    <Search className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+                      placeholder="e.g., Canada student visa consultant"
+                      className="w-full text-sm font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    />
+                  </div>
+                </div>
 
-                <CustomSelect 
-                  label="I am going for" 
-                  value={selectedPurpose} 
-                  placeholder="Select Purpose" 
-                  options={['Higher Education / Study', 'Employment / Work', 'Tourism / Visit', 'Permanent Residency', 'Business / Investment']} 
-                  isOpen={purposeOpen}
-                  onToggle={() => { setPurposeOpen(!purposeOpen); setCountryOpen(false); setVisaTypeOpen(false); setCityOpen(false); }}
-                  onSelect={(val) => { setSelectedPurpose(val); setPurposeOpen(false); }}
-                />
+                {/* Box 2: Destination Country */}
+                <div className="relative">
+                  <label className="text-xs font-bold text-slate-800 leading-none mb-2 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Destination Country</label>
+                  <div
+                    onClick={(e) => { e.stopPropagation(); setCountryOpen(!countryOpen); setVisaTypeOpen(false); }}
+                    className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-sm"
+                  >
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <Globe className="w-4.5 h-4.5 text-slate-600 shrink-0" />
+                      <span className={`text-sm font-semibold truncate ${selectedCountry !== 'Select Country' ? 'text-slate-900' : 'text-slate-400'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        {selectedCountry !== 'Select Country' ? selectedCountry : 'Select country'}
+                      </span>
+                    </div>
+                    <ChevronDown className={`w-4 h-4 text-slate-600 shrink-0 transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`} />
+                  </div>
+                  {countryOpen && (
+                    <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                      {countriesList.map((c) => (
+                        <button key={c} type="button"
+                          onClick={(e) => { e.stopPropagation(); setSelectedCountry(c); setCountryOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${ selectedCountry === c ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50' }`}
+                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                        >{c}</button>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-                <CustomSelect 
-                  label="Visa Type" 
-                  value={selectedVisaType} 
-                  placeholder="Select Visa Type" 
-                  options={['Student Visa', 'Work Permit', 'Tourist / Visitor Visa', 'PR / Express Entry']} 
-                  isOpen={visaTypeOpen}
-                  onToggle={() => { setVisaTypeOpen(!visaTypeOpen); setCountryOpen(false); setPurposeOpen(false); setCityOpen(false); }}
-                  onSelect={(val) => { setSelectedVisaType(val); setVisaTypeOpen(false); }}
-                />
+                {/* Box 3: Your Location */}
+                <div>
+                  <label className="text-xs font-bold text-slate-800 leading-none mb-2 flex items-center gap-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    <span>Your Location</span><span className="text-[10px] text-slate-400 font-normal">v</span>
+                  </label>
+                  <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center justify-between gap-2 transition-all shadow-sm">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <FileText className="w-4.5 h-4.5 text-slate-600 shrink-0" />
+                      <input
+                        type="text"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+                        placeholder="State / City"
+                        className="w-full text-sm font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      />
+                    </div>
+                    <button type="button" title="Detect location"
+                      onClick={() => { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition(() => setLocation('Current Location'), () => setLocation('Delhi')); } else { setLocation('Delhi'); } }}
+                      className="p-1 hover:bg-teal-50 rounded-lg transition-colors cursor-pointer shrink-0"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" className="w-4.5 h-4.5 text-[#00a896]" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
 
-                <CustomSelect 
-                  label="Near" 
-                  value={selectedCity} 
-                  placeholder="Select City" 
-                  options={['Mumbai, India', 'Delhi, India', 'Bangalore, India', 'Hyderabad, India', 'Punjab, India']} 
-                  isOpen={cityOpen}
-                  onToggle={() => { setCityOpen(!cityOpen); setCountryOpen(false); setPurposeOpen(false); setVisaTypeOpen(false); }}
-                  onSelect={(val) => { setSelectedCity(val); setCityOpen(false); }}
-                />
+                {/* Box 4: Visa Category (Optional) */}
+                <div className="relative">
+                  <label className="text-xs font-bold text-slate-800 leading-none mb-2 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Visa Category <span className="text-slate-400 font-normal">(Optional)</span></label>
+                  <div
+                    onClick={(e) => { e.stopPropagation(); setVisaTypeOpen(!visaTypeOpen); setCountryOpen(false); }}
+                    className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-sm"
+                  >
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <FileText className="w-4.5 h-4.5 text-slate-600 shrink-0" />
+                      <span className={`text-sm font-semibold truncate ${selectedVisaType !== 'Select Category' ? 'text-slate-900' : 'text-slate-400'}`} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        {selectedVisaType !== 'Select Category' ? selectedVisaType : 'Select visa type'}
+                      </span>
+                    </div>
+                    <ChevronDown className={`w-4 h-4 text-slate-600 shrink-0 transition-transform duration-200 ${visaTypeOpen ? 'rotate-180' : ''}`} />
+                  </div>
+                  {visaTypeOpen && (
+                    <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                      {categoriesList.map((cat) => (
+                        <button key={cat} type="button"
+                          onClick={(e) => { e.stopPropagation(); setSelectedVisaType(cat); setVisaTypeOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${ selectedVisaType === cat ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50' }`}
+                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                        >{cat}</button>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-                <button type="submit"
-                  className="w-full bg-[#00a896] hover:bg-[#009485] text-white font-bold text-sm px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md h-[38px] self-end mt-1">
-                  <Search className="w-4 h-4" /> Search
+              </div>
+
+              {/* Centered Search Button */}
+              <div className="mt-2 flex items-center justify-center">
+                <button
+                  type="button"
+                  onClick={() => handleSearch()}
+                  className="w-full sm:w-auto min-w-[280px] sm:min-w-[320px] px-10 py-3.5 bg-[#008f80] hover:bg-[#007a6d] active:scale-95 text-white rounded-2xl shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2.5 font-extrabold text-sm cursor-pointer transition-all mx-auto"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  <Search className="w-5 h-5" />
+                  <span>Search</span>
                 </button>
-              </form>
+              </div>
+
             </div>
 
             {/* 3B. Popular Destinations — simple flat circles like reference */}
@@ -461,31 +552,6 @@ export function DesktopHomeSection() {
               </div>
             </div>
 
-          </div>
-
-          {/* RIGHT 3 cols: IELTS Ad — spans full height alongside Search + Destinations */}
-          <div className="lg:col-span-3">
-            <div className="bg-[#eef7ff] border border-blue-100 rounded-3xl p-5 shadow-sm flex flex-col items-center text-center h-full gap-3 group">
-              <div className="w-full">
-                <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">SPONSORED</p>
-                <h3 className="text-xl font-black text-gray-900 leading-tight">
-                  IELTS<br /><span className="text-[#1a73e8]">Made Easy</span>
-                </h3>
-                <p className="text-xs text-gray-500 font-medium mt-1">Achieve your dream score!</p>
-              </div>
-              <a href="/ielts" className="w-full block bg-[#1a73e8] hover:bg-blue-700 text-white font-bold text-sm py-2.5 rounded-xl shadow transition-all">
-                Book Now
-              </a>
-              <div className="relative w-full flex-1 min-h-[180px] rounded-2xl overflow-hidden shadow">
-                <img
-                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=500&auto=format&fit=crop&q=80"
-                  alt="Student with books"
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-            </div>
-          </div>
-
         </div>
 
         {/* ======================================================= */}
@@ -508,13 +574,13 @@ export function DesktopHomeSection() {
           {/* 5 Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {classifieds.map((item, idx) => (
-              <a key={idx} href="/classifieds"
+              <a key={idx} href={`/classifieds/${item.id}`}
                 onClick={(e) => handleAdClickWithAuth(e, {
-                  adId: `classified_desk_${idx}_${item.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+                  adId: `classified_desk_${idx}_${item.id}`,
                   adTitle: item.title,
                   adType: 'classified',
                   category: item.badge,
-                  targetUrl: '/classifieds'
+                  targetUrl: `/classifieds/${item.id}`
                 })}
                 className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all group flex flex-col">
                 <div className="relative h-36 overflow-hidden bg-gray-100 shrink-0">

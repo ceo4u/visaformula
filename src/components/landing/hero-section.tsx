@@ -909,10 +909,8 @@ export function HeroSection() {
 
           </div>
 
-          {/* Centered Search Button + Right Aligned Advanced Search Link (Exact match to Reference Image) */}
-          <div className="mt-6 pt-2 relative flex flex-col items-center justify-center">
-            
-            {/* Centered Pill Search Button */}
+          {/* Centered Search Button */}
+          <div className="mt-6 pt-2 flex items-center justify-center">
             <button 
               onClick={handleSearch}
               className="w-full sm:w-auto min-w-[280px] sm:min-w-[320px] px-10 py-3.5 bg-[#008f80] hover:bg-[#007a6d] active:scale-98 text-white rounded-2xl shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2.5 font-extrabold text-sm sm:text-base cursor-pointer transition-all mx-auto"
@@ -921,24 +919,7 @@ export function HeroSection() {
               <Search className="w-5 h-5 stroke-[2.5]" />
               <span>Search</span>
             </button>
-
-            {/* Advanced Search Link (Positioned Right Side) */}
-            <a 
-              href="/smart-search"
-              className="sm:absolute sm:right-2 sm:top-3 mt-4 sm:mt-0 inline-flex items-center gap-1.5 text-xs font-extrabold text-[#00a896] hover:text-[#007a6d] hover:underline cursor-pointer"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            >
-              <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 stroke-[2.2] text-[#00a896]" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0m-9.75 0h9.75" />
-              </svg>
-              <span>Advanced Search</span>
-            </a>
           </div>
-
-
-        </div>
-      </div>
-
         </div>
       </div>
     </section>

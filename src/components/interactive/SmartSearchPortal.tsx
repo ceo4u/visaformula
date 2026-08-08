@@ -72,7 +72,7 @@ export function SmartSearchPortal() {
                         alt="Workspace desk"
                         className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/85 via-slate-950/90 to-black/95"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/50 to-slate-900/60"></div>
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(239,68,68,0.06),transparent_60%)]"></div>
                 </div>
                 <div className="max-w-5xl mx-auto text-center relative z-10">

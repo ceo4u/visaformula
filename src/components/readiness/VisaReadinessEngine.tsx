@@ -347,11 +347,11 @@ export default function VisaReadinessEngine() {
           </button>
 
           {/* Modal Title Banner */}
-          <div className="mb-6 border-b border-slate-100 pb-4">
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          <div className="mb-6 border-b border-slate-100 pb-4 font-sora">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight font-sora">
               AI Visa Readiness Engine
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+            <p className="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5 font-sora">
               Get your AI-powered visa approval assessment in minutes
             </p>
           </div>

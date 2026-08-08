@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   X, CheckCircle, Star, Award, ShieldCheck, MapPin, Globe, 
   Calendar, MessageSquare, ArrowRight, Sparkles, UserCheck, 
-  Briefcase, Check, Bookmark, Share2, ThumbsUp, ChevronRight
+  Briefcase, Check, Bookmark, Share2, ThumbsUp, ChevronRight, Clock
 } from 'lucide-react';
 
 export interface ExpertProfileData {
@@ -36,8 +36,75 @@ export function ExpertProfileModal({ expert, isOpen, onClose }: ExpertProfileMod
   const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'reviews'>('overview');
   const [isSaved, setIsSaved] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
   if (!isOpen || !expert) return null;
+
+  if (bookingConfirmed) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+        <div className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl text-center space-y-5 border border-slate-100 font-sans" onClick={(e) => e.stopPropagation()}>
+          <button 
+            onClick={() => { setBookingConfirmed(false); onClose(); }}
+            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <div className="w-16 h-16 rounded-3xl bg-teal-50 border border-teal-100 text-[#00a896] flex items-center justify-center mx-auto shadow-inner">
+            <CheckCircle className="w-9 h-9 text-[#00a896]" />
+          </div>
+
+          <div className="space-y-1.5">
+            <h3 className="text-xl font-black text-slate-900">Booking Request Sent! 🎉</h3>
+            <p className="text-xs text-slate-500 font-medium">Your session booking request has been dispatched to {expert.name}.</p>
+          </div>
+
+          {/* Prominent TAT Notice Box */}
+          <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border border-teal-200 rounded-2xl p-4 text-left space-y-2 shadow-xs">
+            <div className="flex items-center gap-2 text-emerald-900 font-black text-xs uppercase tracking-wider">
+              <Clock className="w-4 h-4 text-[#00a896]" />
+              <span>Turnaround Time Notice</span>
+            </div>
+            <p className="text-xs font-bold text-teal-950 leading-relaxed">
+              EXPERT WILL CHECK YOUR REQUEST AND CONNECT WITH YOU TAT - 12-24 HOURS.
+            </p>
+          </div>
+
+          <div className="bg-slate-50 rounded-2xl p-3.5 text-left text-xs space-y-2 border border-slate-100">
+            <div className="flex justify-between">
+              <span className="text-slate-400 font-medium">Consultant:</span>
+              <span className="font-bold text-slate-800">{expert.name}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400 font-medium">Fee:</span>
+              <span className="font-extrabold text-[#00a896]">₹{expert.price || 1500}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400 font-medium">Status:</span>
+              <span className="font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-md">Pending Expert Approval</span>
+            </div>
+          </div>
+
+          <div className="pt-2 space-y-2">
+            <button
+              onClick={() => { setBookingConfirmed(false); onClose(); window.location.href = "/dashboard"; }}
+              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all cursor-pointer"
+            >
+              View My Dashboard
+            </button>
+            <button
+              onClick={() => { setBookingConfirmed(false); onClose(); }}
+              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-2xl transition-all cursor-pointer"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 
   const handleShare = () => {
     if (typeof window !== 'undefined') {
@@ -145,25 +212,17 @@ export function ExpertProfileModal({ expert, isOpen, onClose }: ExpertProfileMod
                 </div>
               </div>
 
-              {/* Instagram Style Action Buttons */}
+              {/* Action Button */}
               <div className="flex items-center gap-2.5 w-full sm:w-auto">
-                <a 
-                  href="/consultation-booking"
-                  className="flex-1 sm:flex-none bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-extrabold text-xs px-6 py-3 rounded-2xl shadow-lg shadow-teal-500/20 flex items-center justify-center gap-2 transition-all"
+                <button 
+                  type="button"
+                  onClick={() => setBookingConfirmed(true)}
+                  className="flex-1 sm:flex-none bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-extrabold text-xs px-6 py-3 rounded-2xl shadow-lg shadow-teal-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <Calendar className="w-4 h-4" /> Book Consultation
-                </a>
-                <a 
-                  href="#contact-modal"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.location.href = `/consultation-booking?expert=${encodeURIComponent(expert.name)}`;
-                  }}
-                  className="bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 font-extrabold text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-1.5 transition-all"
-                >
-                  <MessageSquare className="w-4 h-4 text-[#00a896]" /> Message
-                </a>
+                </button>
               </div>
+
             </div>
 
             {/* Profile Titles */}
@@ -298,13 +357,15 @@ export function ExpertProfileModal({ expert, isOpen, onClose }: ExpertProfileMod
             </div>
           </div>
 
-          <a 
-            href={`/consultation-booking?expert=${encodeURIComponent(expert.name)}`}
-            className="bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-extrabold text-xs px-6 py-3 rounded-2xl shadow-lg shadow-teal-500/20 flex items-center gap-2 transition-all"
+          <button 
+            type="button"
+            onClick={() => setBookingConfirmed(true)}
+            className="bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-extrabold text-xs px-6 py-3 rounded-2xl shadow-lg shadow-teal-500/20 flex items-center gap-2 transition-all cursor-pointer"
           >
             <span>Book Session Now</span>
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </button>
+
         </div>
 
       </div>

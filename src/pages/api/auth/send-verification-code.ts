@@ -17,6 +17,14 @@ export const POST: APIRoute = async ({ request }) => {
   
   try {
     const body = await request.json();
+    const { email } = body;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!email || !emailRegex.test(email)) {
+      return new Response(JSON.stringify({ status: 'error', message: 'Please provide a valid email address.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
     const maskedEmail = email.replace(/^(.{2}).*(@.*)$/, "$1***$2");
     console.log(`[OTP API] Endpoint hit (/api/auth/send-verification-code) for recipient: ${maskedEmail}`);
 

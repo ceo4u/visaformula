@@ -342,10 +342,16 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             });
 
             const data = await res.json();
-            if (data.otp) setDevOtp(data.otp);
+            if (data.otp) {
+                setDevOtp(data.otp);
+                if (data.otp.length === 6) {
+                    setOtpDigits(data.otp.split(""));
+                }
+            }
             if (res.ok) {
                 setShowOtpModal(true);
             } else {
+
                 setSignupError(data.message || "Failed to send OTP code.");
             }
         } catch (err) {

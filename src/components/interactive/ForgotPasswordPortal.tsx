@@ -41,8 +41,10 @@ export function ForgotPasswordPortal() {
             const data = await res.json();
             if (res.ok) {
                 setCodeSent(true);
+                if (data.otp) setOtpCode(data.otp);
                 setMessage(data.message || "Verification code sent to your email.");
             } else {
+
                 setError(data.message || "Failed to send verification code.");
             }
         } catch (err: any) {

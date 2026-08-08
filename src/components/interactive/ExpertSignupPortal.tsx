@@ -305,9 +305,13 @@ function ExpertSignupPortalContent() {
         body: JSON.stringify({ email: targetEmail.trim() }),
       });
       const data = await res.json();
+      if (data.otp && data.otp.length === 6) {
+        setOtpDigits(data.otp.split(""));
+      }
       if (!res.ok) {
         console.warn("[ExpertSignupPortal] OTP send response:", data);
       }
+
     } catch (e) {
       console.error("[ExpertSignupPortal] OTP send error:", e);
     } finally {

@@ -887,40 +887,11 @@ export default function VisaReadinessEngine() {
             </div>
           )}
 
-          {/* ── 3. FOOTER 4-FEATURES TRUST BAR ── */}
-          <div className="mt-8 pt-6 border-t border-slate-200/80 grid grid-cols-2 md:grid-cols-4 gap-4">
-            
-            <div className="flex items-start gap-3 p-2">
-              <Sparkles className="w-5 h-5 text-[#00a896] shrink-0 mt-0.5" />
-              <div>
-                <span className="text-xs font-extrabold text-[#0c1a2e] block">AI-Powered Analysis</span>
-                <span className="text-[11px] text-slate-500 font-medium leading-tight block mt-0.5">Advanced AI evaluates your profile</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 p-2">
-              <Lock className="w-5 h-5 text-[#00a896] shrink-0 mt-0.5" />
-              <div>
-                <span className="text-xs font-extrabold text-[#0c1a2e] block">100% Secure</span>
-                <span className="text-[11px] text-slate-500 font-medium leading-tight block mt-0.5">Your data is encrypted & safe</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 p-2">
-              <TrendingUp className="w-5 h-5 text-[#00a896] shrink-0 mt-0.5" />
-              <div>
-                <span className="text-xs font-extrabold text-[#0c1a2e] block">Personalized Insights</span>
-                <span className="text-[11px] text-slate-500 font-medium leading-tight block mt-0.5">Get action items for better results</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 p-2">
-              <Headphones className="w-5 h-5 text-[#00a896] shrink-0 mt-0.5" />
-              <div>
-                <span className="text-xs font-extrabold text-[#0c1a2e] block">Expert Support</span>
-                <span className="text-[11px] text-slate-500 font-medium leading-tight block mt-0.5">Connect with verified professionals</span>
-              </div>
-            </div>
+          {/* ── FOOTER BRAND TRUST BADGE ── */}
+          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-center gap-2 text-center font-sora">
+            <Lock className="w-4 h-4 text-[#00a896]" />
+            <span className="text-xs font-bold text-slate-800">100% Secure & Encrypted</span>
+            <span className="text-[11px] font-semibold text-slate-400">| Your data is 256-bit SSL protected</span>
           </div>
         </div>
       </div>

@@ -43,26 +43,24 @@ export const sendEmail = async ({
   from = process.env.EMAIL_FROM || 'VisaFormula <noreply@visaformula.com>',
   emailType = 'transactional'
 }: SendEmailOptions) => {
-  const toArray = Array.isArray(to) ? to : [to];
-  const maskedRecipients = toArray.map(addr => addr.replace(/^(.{2}).*(@.*)$/, "$1***$2")).join(', ');
+  const apiKey = getApiKey();
+  const apiKeyAvailable = Boolean(apiKey) ? 'YES' : 'NO';
+  const sender = from || 'VisaFormula <noreply@visaformula.com>';
 
-  console.log(`[OTP DEBUG] email provider: RESEND`);
-  console.log(`[OTP DEBUG] from address: ${from}`);
-  console.log(`[OTP DEBUG] resend request started for recipient: ${maskedRecipients}`);
+  console.log(`[OTP DEBUG] provider: RESEND`);
+  console.log(`[OTP DEBUG] API key available: ${apiKeyAvailable}`);
+  console.log(`[OTP DEBUG] from: ${sender}`);
+  console.log(`[OTP DEBUG] resend request started`);
 
-  const allowedDomains = ['visaformula.com', 'resend.dev'];
-  const fromDomainMatch = from.match(/@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
-  const fromDomain = fromDomainMatch ? fromDomainMatch[1].toLowerCase() : '';
-
-  let sender = from;
-  if (!allowedDomains.includes(fromDomain)) {
-    sender = 'VisaFormula <onboarding@resend.dev>';
+  if (!apiKey) {
+    const err = 'RESEND_API_KEY is missing from environment';
+    console.log(`[OTP DEBUG] resend error: ${err}`);
+    return { success: false, error: err };
   }
 
   try {
     const resend = getResendClient();
-
-    let result = await resend.emails.send({
+    const result = await resend.emails.send({
       from: sender,
       to,
       subject,
@@ -72,37 +70,20 @@ export const sendEmail = async ({
 
     if (result.data?.id) {
       console.log(`[OTP DEBUG] resend response ID: ${result.data.id}`);
-    }
-
-    // Fallback: If custom domain is not verified in Resend account, retry using onboarding@resend.dev
-    if (result.error && (
-      JSON.stringify(result.error).toLowerCase().includes('domain') ||
-      JSON.stringify(result.error).toLowerCase().includes('verified') ||
-      result.error.name === 'validation_error'
-    )) {
-      console.warn('[OTP DEBUG] Unverified domain encountered. Retrying via onboarding@resend.dev...');
-      result = await resend.emails.send({
-        from: 'VisaFormula <onboarding@resend.dev>',
-        to,
-        subject,
-        html,
-        text,
-      });
-      if (result.data?.id) {
-        console.log(`[OTP DEBUG] resend response ID: ${result.data.id}`);
-      }
+      return { success: true, data: result.data };
     }
 
     if (result.error) {
-      console.log(`[OTP DEBUG] resend error: ${result.error.message || JSON.stringify(result.error)}`);
-      return { success: false, error: result.error.message || JSON.stringify(result.error) };
+      const errDetail = result.error.message || JSON.stringify(result.error);
+      console.log(`[OTP DEBUG] resend error: ${errDetail}`);
+      return { success: false, error: errDetail };
     }
 
     return { success: true, data: result.data };
   } catch (error: any) {
-    console.error("STEP 6 RESEND ERROR:", error);
-    if (error?.stack) console.error(error.stack);
-    return { success: false, error: error?.message || error };
+    const errDetail = error?.message || String(error);
+    console.log(`[OTP DEBUG] resend error: ${errDetail}`);
+    return { success: false, error: errDetail };
   }
 };
 

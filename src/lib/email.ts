@@ -48,18 +48,6 @@ async function sendEmail(
   } catch (error: any) {
     const errorMsg = error?.message || String(error);
     console.error(`[EmailService] ❌ Failed "${type}" to ${options.to}:`, errorMsg);
-
-    if (errorMsg.includes('not verified') || errorMsg.includes('DNS') || errorMsg.includes('unverified') || errorMsg.includes('domain')) {
-      console.warn(`\n⚠️  [RESEND DOMAIN NOTICE]  ⚠️\nTo send emails via Resend, ensure your domain is verified in Resend Dashboard:\n1. Open https://resend.com/domains\n2. Add domain "${FROM_EMAIL.split('@')[1] || 'visaformula.com'}"\n3. Configure displayed DKIM and SPF records in your DNS provider\n`);
-      return { success: true, messageId: "resend_fallback_" + Date.now() };
-    }
-
-    if (retryCount > 0 && !errorMsg.includes('not verified')) {
-      console.log(`[EmailService] 🔄 Retrying "${type}" to ${options.to}...`);
-      logEmail({ email: options.to, type, status: 'retried', errorMessage: errorMsg }).catch(() => {});
-      return sendEmail(options, type, retryCount - 1);
-    }
-
     logEmail({ email: options.to, type, status: 'failed', errorMessage: errorMsg }).catch(() => {});
     return { success: false, error: errorMsg };
   }

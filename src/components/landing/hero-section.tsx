@@ -650,29 +650,29 @@ export function HeroSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 relative z-10">
         <div id="search-panel" className="bg-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-slate-200/90" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           
-          {/* Top Category Tabs Bar (Photo 1 & 2) */}
-          <div className="flex items-center gap-6 sm:gap-8 border-b border-slate-100 pb-3 mb-5 overflow-x-auto scrollbar-none">
+          {/* Top Category Tabs Bar (Exact match to Reference Image) */}
+          <div className="flex items-center gap-2 sm:gap-4 border-b border-slate-100 pb-3 mb-5 overflow-x-auto scrollbar-none">
             <button
               type="button"
               onClick={() => { setActiveTab('all'); setCategory('Select Category'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-extrabold transition-all pb-2 cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-extrabold px-3.5 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                 activeTab === 'all'
-                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              <LayoutGrid className="w-4.5 h-4.5 stroke-[2.2]" />
+              <LayoutGrid className="w-4.5 h-4.5 stroke-[2.2] text-[#00a896]" />
               <span>All Services</span>
             </button>
 
             <button
               type="button"
               onClick={() => { setActiveTab('consultant'); setCategory('Consultant'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                 activeTab === 'consultant'
-                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
@@ -683,10 +683,10 @@ export function HeroSection() {
             <button
               type="button"
               onClick={() => { setActiveTab('universities'); setCategory('Student Visa'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                 activeTab === 'universities'
-                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
@@ -697,10 +697,10 @@ export function HeroSection() {
             <button
               type="button"
               onClick={() => { setActiveTab('jobs'); setCategory('Work Visa'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                 activeTab === 'jobs'
-                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
@@ -711,10 +711,10 @@ export function HeroSection() {
             <button
               type="button"
               onClick={() => { setActiveTab('insurance'); setCategory('Insurance'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                 activeTab === 'insurance'
-                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
@@ -725,10 +725,10 @@ export function HeroSection() {
             <button
               type="button"
               onClick={() => { setActiveTab('lawyers'); setCategory('Lawyers'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                 activeTab === 'lawyers'
-                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
@@ -739,10 +739,10 @@ export function HeroSection() {
             <button
               type="button"
               onClick={() => { setActiveTab('more'); }}
-              className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all pb-2 cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                 activeTab === 'more'
-                  ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                  : 'text-slate-600 hover:text-slate-900 border-b-2 border-transparent'
+                  ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                  : 'text-slate-600 hover:text-slate-900 border border-transparent'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
@@ -751,8 +751,8 @@ export function HeroSection() {
             </button>
           </div>
 
-          {/* 4 Search Input Fields Row (Photo 2) */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 mb-4">
+          {/* 4 Search Input Fields Row (Exact match to Reference Image) */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 mb-5">
             
             {/* Box 1: What are you looking for? */}
             <div>
@@ -888,34 +888,35 @@ export function HeroSection() {
 
           </div>
 
-          {/* Action Row & Popular Searches */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100">
-            <div className="flex items-center gap-2 text-xs overflow-x-auto pb-1 scrollbar-none w-full sm:w-auto">
-              <span className="text-slate-500 font-extrabold shrink-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Popular Searches:</span>
-              {popularSearches.map((item, idx) => (
-                <div key={item} className="flex items-center gap-2 shrink-0">
-                  {idx > 0 && <span className="text-slate-300 font-bold text-[10px] select-none">&gt;</span>}
-                  <button 
-                    type="button"
-                    onClick={() => handlePopularSearch(item)}
-                    className="text-slate-700 hover:text-[#00a896] font-bold hover:underline transition-colors text-xs whitespace-nowrap cursor-pointer"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                  >
-                    {item}
-                  </button>
-                </div>
-              ))}
-            </div>
-
+          {/* Centered Search Button + Right Aligned Advanced Search Link (Exact match to Reference Image) */}
+          <div className="pt-4 border-t border-slate-100 relative flex flex-col items-center justify-center">
+            
+            {/* Centered Pill Search Button */}
             <button 
               onClick={handleSearch}
-              className="w-full sm:w-auto px-8 py-3 bg-[#00a896] hover:bg-[#008f80] text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-extrabold text-xs sm:text-sm cursor-pointer transition-all active:scale-98 shrink-0"
+              className="w-full sm:w-auto min-w-[280px] sm:min-w-[340px] px-8 py-3.5 bg-[#008f80] hover:bg-[#007a6d] active:scale-98 text-white rounded-2xl shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2.5 font-extrabold text-sm sm:text-base cursor-pointer transition-all mx-auto"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              <Search className="w-4.5 h-4.5 stroke-[2.5]" />
-              <span>Search Experts & Services</span>
+              <Search className="w-5 h-5 stroke-[2.5]" />
+              <span>Search</span>
             </button>
+
+            {/* Advanced Search Link (Positioned Right Side) */}
+            <a 
+              href="/smart-search"
+              className="sm:absolute sm:right-0 sm:top-5 mt-3 sm:mt-0 inline-flex items-center gap-1.5 text-xs font-extrabold text-[#00a896] hover:text-[#007a6d] hover:underline cursor-pointer"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 stroke-[2.2] text-[#00a896]" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0m-9.75 0h9.75" />
+              </svg>
+              <span>Advanced Search</span>
+            </a>
           </div>
+
+        </div>
+      </div>
+
         </div>
       </div>
     </section>

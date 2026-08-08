@@ -283,104 +283,103 @@ export function DesktopHomeSection() {
 
             {/* 3A. Search Form */}
             <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 space-y-4">
-              
-              {/* Category Icon Tabs Header (Matching User Reference Images) */}
-              <div className="flex items-center gap-6 border-b border-gray-100 pb-3 overflow-x-auto scrollbar-none">
+                     {/* Top Category Tabs Bar (Exact match to Reference Image) */}
+              <div className="flex items-center gap-2 sm:gap-4 border-b border-slate-100 pb-3 mb-5 overflow-x-auto scrollbar-none">
                 <button
                   type="button"
                   onClick={() => { setActiveCategory('all'); setSelectedPurpose(''); }}
-                  className={`flex items-center gap-2 text-xs font-extrabold pb-2 transition-all cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-extrabold px-3.5 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'all'
-                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                      ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <LayoutGrid className="w-4 h-4 stroke-[2.2]" />
+                  <LayoutGrid className="w-4.5 h-4.5 stroke-[2.2] text-[#00a896]" />
                   <span>All Services</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => { setActiveCategory('consultant'); setSelectedPurpose('Consultant'); }}
-                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'consultant'
-                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                      ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <UserCheck className="w-4 h-4 stroke-[2.2]" />
+                  <UserCheck className="w-4.5 h-4.5 stroke-[2.2]" />
                   <span>Consultant</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => { setActiveCategory('universities'); setSelectedPurpose('Higher Education / Study'); }}
-                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'universities'
-                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                      ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <Building2 className="w-4 h-4 stroke-[2.2]" />
+                  <Building2 className="w-4.5 h-4.5 stroke-[2.2]" />
                   <span>Universities</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => { setActiveCategory('jobs'); setSelectedPurpose('Employment / Work'); }}
-                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'jobs'
-                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                      ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <Briefcase className="w-4 h-4 stroke-[2.2]" />
+                  <Briefcase className="w-4.5 h-4.5 stroke-[2.2]" />
                   <span>Jobs Abroad</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => { setActiveCategory('insurance'); setSelectedPurpose('Insurance'); }}
-                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'insurance'
-                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                      ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <ShieldCheck className="w-4 h-4 stroke-[2.2]" />
+                  <ShieldCheck className="w-4.5 h-4.5 stroke-[2.2]" />
                   <span>Insurance</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => { setActiveCategory('lawyers'); setSelectedPurpose('Lawyers'); }}
-                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'lawyers'
-                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                      ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <Scale className="w-4 h-4 stroke-[2.2]" />
+                  <Scale className="w-4.5 h-4.5 stroke-[2.2]" />
                   <span>Lawyers</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => { setActiveCategory('more'); }}
-                  className={`flex items-center gap-2 text-xs font-bold pb-2 transition-all cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-3 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
                     activeCategory === 'more'
-                      ? 'text-[#00a896] border-b-2 border-[#00a896]'
-                      : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+                      ? 'bg-teal-50/60 border border-teal-200 text-[#00a896] shadow-2xs border-b-2 border-b-[#00a896]'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <MoreHorizontal className="w-4 h-4 stroke-[2.2]" />
+                  <MoreHorizontal className="w-4.5 h-4.5 stroke-[2.2]" />
                   <span>More</span>
                 </button>
               </div>

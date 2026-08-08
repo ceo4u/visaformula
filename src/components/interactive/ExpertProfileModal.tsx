@@ -37,8 +37,74 @@ export function ExpertProfileModal({ expert, isOpen, onClose }: ExpertProfileMod
   const [isSaved, setIsSaved] = useState(false);
   const [copied, setCopied] = useState(false);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
+  const [showAuthRequired, setShowAuthRequired] = useState(false);
+
+  const isUserLoggedIn = () => {
+    if (typeof window === "undefined") return false;
+    const user = localStorage.getItem("visaformula_user");
+    const seekerEmail = localStorage.getItem("seeker_email");
+    const expertLoggedIn = localStorage.getItem("expert_isLoggedIn") === "true";
+    return !!(user || seekerEmail || expertLoggedIn);
+  };
+
+  const handleBookingClick = () => {
+    if (!isUserLoggedIn()) {
+      setShowAuthRequired(true);
+    } else {
+      setBookingConfirmed(true);
+    }
+  };
 
   if (!isOpen || !expert) return null;
+
+  if (showAuthRequired) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+        <div className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl text-center space-y-5 border border-slate-100 font-sans" onClick={(e) => e.stopPropagation()}>
+          <button 
+            onClick={() => setShowAuthRequired(false)}
+            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <div className="w-16 h-16 rounded-3xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center mx-auto shadow-inner">
+            <UserCheck className="w-8 h-8 text-amber-600" />
+          </div>
+
+          <div className="space-y-1.5">
+            <h3 className="text-xl font-black text-slate-900">Login Required 🔐</h3>
+            <p className="text-xs text-slate-500 font-medium">Please log in or sign up to check expert details and book a consultation session.</p>
+          </div>
+
+          <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-3.5 text-left text-xs space-y-1 text-amber-900 font-semibold">
+            <p className="flex items-center gap-1.5 text-amber-950 font-bold">
+              <span>🔒 Member Access Only</span>
+            </p>
+            <p className="text-[11px] text-amber-800 font-medium leading-relaxed">
+              Consultant scheduling and direct session booking requires a verified VisaFormula account.
+            </p>
+          </div>
+
+          <div className="pt-2 space-y-2">
+            <a
+              href="/login"
+              className="block w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all text-center"
+            >
+              Log In to Continue
+            </a>
+            <a
+              href="/signup"
+              className="block w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs py-2.5 rounded-2xl transition-all text-center"
+            >
+              Create Free Account
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 
   if (bookingConfirmed) {
     return (
@@ -216,7 +282,7 @@ export function ExpertProfileModal({ expert, isOpen, onClose }: ExpertProfileMod
               <div className="flex items-center gap-2.5 w-full sm:w-auto">
                 <button 
                   type="button"
-                  onClick={() => setBookingConfirmed(true)}
+                  onClick={handleBookingClick}
                   className="flex-1 sm:flex-none bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-extrabold text-xs px-6 py-3 rounded-2xl shadow-lg shadow-teal-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <Calendar className="w-4 h-4" /> Book Consultation
@@ -359,7 +425,7 @@ export function ExpertProfileModal({ expert, isOpen, onClose }: ExpertProfileMod
 
           <button 
             type="button"
-            onClick={() => setBookingConfirmed(true)}
+            onClick={handleBookingClick}
             className="bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-extrabold text-xs px-6 py-3 rounded-2xl shadow-lg shadow-teal-500/20 flex items-center gap-2 transition-all cursor-pointer"
           >
             <span>Book Session Now</span>

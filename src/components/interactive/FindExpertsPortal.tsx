@@ -112,6 +112,24 @@ export function FindExpertsPortal() {
     const [selectedCountry, setSelectedCountry] = useState("All");
     const [sortOpen, setSortOpen] = useState(false);
     const [selectedProfileExpert, setSelectedProfileExpert] = useState<any>(null);
+    const [showLoginModal, setShowLoginModal] = useState(false);
+
+    const isUserLoggedIn = () => {
+        if (typeof window === "undefined") return false;
+        const user = localStorage.getItem("visaformula_user");
+        const seekerEmail = localStorage.getItem("seeker_email");
+        const expertLoggedIn = localStorage.getItem("expert_isLoggedIn") === "true";
+        return !!(user || seekerEmail || expertLoggedIn);
+    };
+
+    const handleExpertCardClick = (expertObj: any) => {
+        if (!isUserLoggedIn()) {
+            setShowLoginModal(true);
+        } else {
+            setSelectedProfileExpert(expertObj);
+        }
+    };
+
 
 
     // ── Fetch real experts from Neon DB, then append dummies ──
@@ -531,7 +549,7 @@ export function FindExpertsPortal() {
                     {viewMode === "list" && !loading ? (
                         <div className="space-y-4">
                             {sorted.map(e => (
-                                <div key={e.id} onClick={() => setSelectedProfileExpert(e)} className="block group cursor-pointer">
+                                <div key={e.id} onClick={() => handleExpertCardClick(e)} className="block group cursor-pointer">
                                     <div className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col md:flex-row gap-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                                         {/* Avatar */}
                                         <div className="relative w-20 h-20 shrink-0 mx-auto md:mx-0">
@@ -592,9 +610,13 @@ export function FindExpertsPortal() {
                                             {/* Footer */}
                                             <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-100 gap-3" onClick={(e) => e.stopPropagation()}>
                                                 <span className="text-xs font-bold text-[#00a896]">🌍 {e.countries?.join(", ")}</span>
-                                                <a href={`/consultation-booking?expert=${encodeURIComponent(e.name)}`} className="w-full sm:w-auto text-center bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => handleExpertCardClick(e)} 
+                                                    className="w-full sm:w-auto text-center bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all cursor-pointer"
+                                                >
                                                     Book Consultation
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -618,7 +640,55 @@ export function FindExpertsPortal() {
                 isOpen={!!selectedProfileExpert} 
                 onClose={() => setSelectedProfileExpert(null)} 
             />
+
+            {/* Login Required Modal Popup */}
+            {showLoginModal && (
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+                    <div className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl text-center space-y-5 border border-slate-100 font-sans" onClick={(e) => e.stopPropagation()}>
+                        <button 
+                            onClick={() => setShowLoginModal(false)}
+                            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+
+                        <div className="w-16 h-16 rounded-3xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center mx-auto shadow-inner">
+                            <Filter className="w-8 h-8 text-amber-600" />
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <h3 className="text-xl font-black text-slate-900">Login Required 🔐</h3>
+                            <p className="text-xs text-slate-500 font-medium">Please log in or create a free account to check consultant details and book session requests.</p>
+                        </div>
+
+                        <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-3.5 text-left text-xs space-y-1 text-amber-900 font-semibold">
+                            <p className="flex items-center gap-1.5 text-amber-950 font-bold">
+                                <span>🔒 Member Protection</span>
+                            </p>
+                            <p className="text-[11px] text-amber-800 font-medium leading-relaxed">
+                                Without logging in, expert scheduling and direct session booking are restricted.
+                            </p>
+                        </div>
+
+                        <div className="pt-2 space-y-2">
+                            <a
+                                href="/login"
+                                className="block w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all text-center"
+                            >
+                                Log In Now
+                            </a>
+                            <a
+                                href="/signup"
+                                className="block w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs py-2.5 rounded-2xl transition-all text-center"
+                            >
+                                Create Free Account
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
+
 

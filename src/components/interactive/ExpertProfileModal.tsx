@@ -153,7 +153,7 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
                 <button 
                   type="button"
                   onClick={handleBookingClick}
-                  className="flex-1 sm:flex-none bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer font-sans"
+                  className="flex-1 sm:flex-none bg-slate-900 hover:bg-slate-700 active:scale-95 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer font-sans"
                 >
                   <Calendar className="w-4 h-4" /> Book Consultation
                 </button>
@@ -296,7 +296,7 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
           <button
             type="button"
             onClick={handleBookingClick}
-            className="bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer font-sans"
+            className="bg-slate-900 hover:bg-slate-700 active:scale-95 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer font-sans"
           >
             <Calendar className="w-4 h-4" /> Book Consultation
           </button>

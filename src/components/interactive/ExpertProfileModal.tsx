@@ -25,6 +25,7 @@ interface ExpertProfileModalProps {
     price?: number;
     portfolioLink?: string;
   };
+  isOpen?: boolean;
   onClose: () => void;
   onBookClick?: (expert: any) => void;
 }

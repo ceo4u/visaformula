@@ -329,26 +329,37 @@ export function FindExpertsPortal() {
 
     // Filter Logic
     const filtered = experts.filter(expert => {
+        if (!expert) return false;
+
+        const tags = Array.isArray(expert.tags) ? expert.tags : [expert.tags || ''];
+        const countries = Array.isArray(expert.countries) ? expert.countries : [expert.countries || ''];
+        const role = String(expert.role || expert.advisor_type || '');
+        const cityStr = String(expert.city || expert.office_address || '');
+        const name = String(expert.name || expert.business_name || '');
+        const bio = String(expert.bio || expert.about_me || '');
+
         if (category !== "All") {
             const catLower = category.toLowerCase();
-            const hasCategoryMatch = expert.category === catLower ||
-                expert.role.toLowerCase().includes(catLower) ||
-                expert.tags.some((t: string) => t.toLowerCase().includes(catLower));
-            if (category === "Student Visa" && !hasCategoryMatch && !expert.tags.some((t: string) => t.toLowerCase().includes("study"))) return false;
-            if (category === "Work Permit" && !hasCategoryMatch && !expert.tags.some((t: string) => t.toLowerCase().includes("work"))) return false;
-            if (category === "PR" && !hasCategoryMatch && !expert.tags.some((t: string) => t.toLowerCase().includes("pr") || t.toLowerCase().includes("migration"))) return false;
-            if (category === "Local Expert" && expert.city === "Remote") return false;
+            const hasCategoryMatch = expert.category?.toLowerCase() === catLower ||
+                role.toLowerCase().includes(catLower) ||
+                tags.some((t: string) => String(t).toLowerCase().includes(catLower));
+
+            if (category === "Student Visa" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("stud") || String(t).toLowerCase().includes("education"))) return false;
+            if (category === "Work Permit" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("work") || String(t).toLowerCase().includes("job"))) return false;
+            if (category === "PR" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("pr") || String(t).toLowerCase().includes("migrat") || String(t).toLowerCase().includes("express"))) return false;
+            if (category === "Local Expert" && (cityStr === "Remote" || expert.isRemote)) return false;
         }
 
         if (city !== "All Cities") {
             if (city === "Remote" && !expert.isRemote) return false;
-            if (city !== "Remote" && !expert.city.toLowerCase().includes(city.toLowerCase())) return false;
+            if (city !== "Remote" && !cityStr.toLowerCase().includes(city.toLowerCase())) return false;
         }
 
         if (rating !== "Any") {
-            if (rating === "4★+" && expert.rating < 4.0) return false;
-            if (rating === "4.5★+" && expert.rating < 4.5) return false;
-            if (rating === "Top Rated" && expert.rating < 4.8) return false;
+            const r = Number(expert.rating || 0);
+            if (rating === "4★+" && r < 4.0) return false;
+            if (rating === "4.5★+" && r < 4.5) return false;
+            if (rating === "Top Rated" && r < 4.8) return false;
         }
 
         if (avail !== "Anytime") {
@@ -357,18 +368,15 @@ export function FindExpertsPortal() {
         }
 
         if (selectedCountry !== "All") {
-            const hasCountry = expert.countries.some((c: string) => c.toLowerCase().includes(selectedCountry.toLowerCase()));
+            const hasCountry = countries.some((c: string) => String(c).toLowerCase().includes(selectedCountry.toLowerCase()));
             if (!hasCountry) return false;
         }
 
-        if (searchText.trim() !== "") {
-            const query = searchText.toLowerCase();
-            const matchName = expert.name.toLowerCase().includes(query);
-            const matchRole = expert.role.toLowerCase().includes(query);
-            const matchCity = expert.city.toLowerCase().includes(query);
-            const matchTag = expert.tags.some((t: string) => t.toLowerCase().includes(query));
-            const matchCountry = expert.countries.some((c: string) => c.toLowerCase().includes(query));
-            if (!matchName && !matchRole && !matchCity && !matchTag && !matchCountry) return false;
+        if (searchText && searchText.trim() !== "") {
+            const searchWords = searchText.toLowerCase().trim().split(/\s+/).filter(Boolean);
+            const fullText = [name, role, cityStr, bio, expert.email || '', expert.phone || expert.contact_number || '', ...tags, ...countries].join(' ').toLowerCase();
+            const matchAllWords = searchWords.every(word => fullText.includes(word));
+            if (!matchAllWords) return false;
         }
 
         return true;
@@ -619,18 +627,54 @@ export function FindExpertsPortal() {
 
                     <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
                         {loading ? (
-                            <p className="text-xs font-black tracking-wider text-gray-400 flex items-center gap-2"><Loader2 className="w-3.5 h-3.5 animate-spin" /> Loading experts from database...</p>
+                            <p className="text-xs font-black tracking-wider text-slate-400 flex items-center gap-2"><Loader2 className="w-3.5 h-3.5 animate-spin" /> Loading experts from database...</p>
                         ) : (
-                            <p className="text-xs font-black tracking-wider text-gray-400">{sorted.length} expert{sorted.length !== 1 ? "s" : ""} found</p>
+                            <p className="text-xs font-extrabold tracking-wider text-slate-500 font-sans">{sorted.length} expert{sorted.length !== 1 ? "s" : ""} found</p>
                         )}
-                        {selectedCountry !== "All" && (
-                            <div className="flex items-center gap-2">
-                                <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-sm">
-                                    🌍 Destination: {selectedCountry}
-                                    <button onClick={() => { setSelectedCountry("All"); fetchExperts(searchText, "All"); }} className="hover:text-red-400 font-extrabold text-[12px] ml-1">×</button>
+
+                        {/* Active Filter Chips / Pills */}
+                        <div className="flex flex-wrap items-center gap-2">
+                            {selectedCountry !== "All" && (
+                                <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
+                                    🌍 Country: {selectedCountry}
+                                    <button onClick={() => { setSelectedCountry("All"); fetchExperts(searchText, "All"); }} className="hover:text-red-300 font-extrabold text-[13px] ml-1 cursor-pointer">×</button>
                                 </span>
-                            </div>
-                        )}
+                            )}
+                            {category !== "All" && (
+                                <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
+                                    📂 Category: {category}
+                                    <button onClick={() => setCategory("All")} className="hover:text-red-300 font-extrabold text-[13px] ml-1 cursor-pointer">×</button>
+                                </span>
+                            )}
+                            {city !== "All Cities" && (
+                                <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
+                                    📍 Location: {city}
+                                    <button onClick={() => setCity("All Cities")} className="hover:text-red-300 font-extrabold text-[13px] ml-1 cursor-pointer">×</button>
+                                </span>
+                            )}
+                            {searchText.trim() !== "" && (
+                                <span className="text-[11px] bg-teal-800 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
+                                    🔍 "{searchText}"
+                                    <button onClick={() => { setSearchText(""); fetchExperts("", selectedCountry); }} className="hover:text-red-300 font-extrabold text-[13px] ml-1 cursor-pointer">×</button>
+                                </span>
+                            )}
+                            {(category !== "All" || city !== "All Cities" || selectedCountry !== "All" || searchText.trim() !== "" || rating !== "Any" || avail !== "Anytime") && (
+                                <button
+                                    onClick={() => {
+                                        setSearchText("");
+                                        setCategory("All");
+                                        setCity("All Cities");
+                                        setRating("Any");
+                                        setAvail("Anytime");
+                                        setSelectedCountry("All");
+                                        fetchExperts("", "All");
+                                    }}
+                                    className="text-[11px] text-slate-500 hover:text-slate-900 font-bold underline px-1 cursor-pointer font-sans"
+                                >
+                                    Clear all
+                                </button>
+                            )}
+                        </div>
                     </div>
 
                     {/* Loading skeleton */}
@@ -662,7 +706,7 @@ export function FindExpertsPortal() {
                         </div>
                     )}
 
-                    {/* Empty state */}
+                    {/* Empty DB state */}
                     {!loading && !fetchError && experts.length === 0 && (
                         <div className="bg-white border border-slate-100 rounded-3xl p-12 text-center space-y-4 shadow-xl">
                             <div className="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mx-auto">
@@ -671,6 +715,35 @@ export function FindExpertsPortal() {
                             <h3 className="font-sans font-extrabold text-slate-900 text-lg">No Registered Experts Yet</h3>
                             <p className="text-xs text-gray-500 max-w-sm mx-auto">Be the first! Register as an expert consultant and your profile will appear here for thousands of seekers to discover.</p>
                             <a href="/register/expert" className="inline-block mt-2 bg-[#00a896] text-white text-xs font-extrabold px-6 py-2.5 rounded-xl shadow-md hover:bg-[#008f80] transition-all">Register as Expert →</a>
+                        </div>
+                    )}
+
+                    {/* Empty Filter / Search match state */}
+                    {!loading && !fetchError && experts.length > 0 && sorted.length === 0 && (
+                        <div className="bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-12 text-center space-y-4 shadow-sm font-sans my-4">
+                            <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto text-slate-500">
+                                <Search className="w-8 h-8 text-slate-400" />
+                            </div>
+                            <div className="space-y-1">
+                                <h3 className="font-sans font-extrabold text-slate-900 text-lg">No Experts Match Your Search</h3>
+                                <p className="text-xs text-slate-500 max-w-sm mx-auto font-medium leading-relaxed">
+                                    No verified consultants match your active search query "{searchText}" or selected filter options.
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    setSearchText("");
+                                    setCategory("All");
+                                    setCity("All Cities");
+                                    setRating("Any");
+                                    setAvail("Anytime");
+                                    setSelectedCountry("All");
+                                    fetchExperts("", "All");
+                                }}
+                                className="inline-block mt-2 bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white text-xs font-bold px-6 py-3 rounded-2xl shadow-md transition-all cursor-pointer font-sans"
+                            >
+                                🔄 Reset Filters & Show All {experts.length} Experts
+                            </button>
                         </div>
                     )}
 

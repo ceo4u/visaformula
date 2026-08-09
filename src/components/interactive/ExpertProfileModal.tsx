@@ -31,11 +31,13 @@ interface ExpertProfileModalProps {
 }
 
 export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfileModalProps) {
+  if (!expert) return null;
+
   const [isSaved, setIsSaved] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const handleShare = () => {
-    if (navigator.clipboard) {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
       navigator.clipboard.writeText(window.location.href);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -50,9 +52,9 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
     }
   };
 
-  const experienceYears = expert.experience || 5;
-  const ratingValue = (expert.rating || 4.9).toFixed(1);
-  const reviewsCount = expert.reviews || 48;
+  const experienceYears = expert?.experience || 5;
+  const ratingValue = (expert?.rating || 4.9).toFixed(1);
+  const reviewsCount = expert?.reviews || 48;
 
   // Highlights with balanced colors
   const storyHighlights = [

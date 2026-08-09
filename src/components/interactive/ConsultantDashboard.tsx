@@ -380,7 +380,7 @@ export function ConsultantDashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#f4f6f9] font-sora flex flex-col text-slate-900 selection:bg-[#00a896] selection:text-white">
+        <div className="min-h-screen bg-[#f4f6f9] font-sans flex flex-col text-slate-900 selection:bg-[#00a896] selection:text-white">
             
             {/* Success Notification Toast */}
             {showSuccessToast && (
@@ -1491,103 +1491,103 @@ export function ConsultantDashboard() {
                             </div>
 
                             {/* Office / Practice Location Address (Granular 5 Fields) */}
-                            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
-                                <label className="text-xs font-black text-slate-900 uppercase tracking-wider block">Office / Practice Location Address *</label>
+                            <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 space-y-3 font-sans">
+                                <label className="text-xs font-bold text-slate-900 block font-sans">Office / Practice Location Address *</label>
                                 <div>
-                                    <label className="text-[11px] font-bold text-slate-700 mb-1 block">Area / Locality / Street Address *</label>
+                                    <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">Area / Locality / Street Address *</label>
                                     <input 
                                         type="text" 
                                         required
                                         value={formArea} 
                                         onChange={(e) => setFormArea(e.target.value)} 
                                         placeholder="e.g. Suite 402, MG Road"
-                                        className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                        className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
                                     />
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
                                     <div>
-                                        <label className="text-[11px] font-bold text-slate-700 mb-1 block">City / District / Town *</label>
+                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">City / District / Town *</label>
                                         <input 
                                             type="text" 
                                             required
                                             value={formCityName} 
                                             onChange={(e) => setFormCityName(e.target.value)} 
                                             placeholder="e.g. Mumbai"
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
                                         />
                                     </div>
                                     <div>
-                                        <label className="text-[11px] font-bold text-slate-700 mb-1 block">State / Province *</label>
+                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">State / Province *</label>
                                         <input 
                                             type="text" 
                                             required
                                             value={formState} 
                                             onChange={(e) => setFormState(e.target.value)} 
                                             placeholder="e.g. Maharashtra"
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
                                         />
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
                                     <div>
-                                        <label className="text-[11px] font-bold text-slate-700 mb-1 block">Country *</label>
+                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">Country *</label>
                                         <input 
                                             type="text" 
                                             required
                                             value={formCountry} 
                                             onChange={(e) => setFormCountry(e.target.value)} 
                                             placeholder="e.g. India"
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
                                         />
                                     </div>
                                     <div>
-                                        <label className="text-[11px] font-bold text-slate-700 mb-1 block">ZIP / Postal Code *</label>
+                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">ZIP / Postal Code *</label>
                                         <input 
                                             type="text" 
                                             required
                                             value={formZip} 
                                             onChange={(e) => setFormZip(e.target.value)} 
                                             placeholder="e.g. 400001"
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 bg-white" 
+                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
                                         />
                                     </div>
                                 </div>
                             </div>
 
                             {/* Field of Expertise / Study Pills */}
-                            <div>
-                                <label className="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-1">Field of Expertise / Study *</label>
-                                <span className="text-[11px] text-slate-500 font-semibold block mb-2">Select one or more services:</span>
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            <div className="font-sans">
+                                <label className="text-xs font-bold text-slate-900 block mb-1 font-sans">Field of Expertise / Study *</label>
+                                <span className="text-[11px] text-slate-500 font-semibold block mb-2 font-sans">Select one or more services:</span>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-sans">
                                     {[
-                                        "VISIT",
-                                        "WORK",
-                                        "VISA APPEALS",
-                                        "DIGITAL NOMAD",
-                                        "PR / MIGRATION",
-                                        "STUDY",
-                                        "BUSINESS / INVESTMENT",
-                                        "VISA FILING ASSISTANCE"
+                                        { id: "VISIT", label: "Visit Visa" },
+                                        { id: "WORK", label: "Work Permit" },
+                                        { id: "VISA APPEALS", label: "Visa Appeals" },
+                                        { id: "DIGITAL NOMAD", label: "Digital Nomad" },
+                                        { id: "PR / MIGRATION", label: "PR & Migration" },
+                                        { id: "STUDY", label: "Study Visa" },
+                                        { id: "BUSINESS / INVESTMENT", label: "Business / Investor" },
+                                        { id: "VISA FILING ASSISTANCE", label: "Visa Filing Assistance" }
                                     ].map(service => {
-                                        const isChecked = formTagsArray.includes(service);
+                                        const isChecked = formTagsArray.includes(service.id);
                                         return (
                                             <button
-                                                key={service}
+                                                key={service.id}
                                                 type="button"
                                                 onClick={() => {
                                                     if (isChecked) {
-                                                        setFormTagsArray(prev => prev.filter(t => t !== service));
+                                                        setFormTagsArray(prev => prev.filter(t => t !== service.id));
                                                     } else {
-                                                        setFormTagsArray(prev => [...prev, service]);
+                                                        setFormTagsArray(prev => [...prev, service.id]);
                                                     }
                                                 }}
-                                                className={`p-2 rounded-xl border text-[11px] font-black text-center transition-all cursor-pointer ${
+                                                className={`px-3 py-2.5 rounded-2xl border text-xs font-semibold text-center transition-all cursor-pointer font-sans ${
                                                     isChecked 
-                                                        ? "bg-[#00a896] border-[#00a896] text-white shadow-xs" 
-                                                        : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+                                                        ? "bg-[#00a896] border-[#00a896] text-white shadow-xs font-bold" 
+                                                        : "bg-white border-slate-200/90 text-slate-700 hover:bg-teal-50/50 hover:border-[#00a896]"
                                                 }`}
                                             >
-                                                {service}
+                                                {service.label}
                                             </button>
                                         );
                                     })}

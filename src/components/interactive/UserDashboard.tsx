@@ -233,7 +233,7 @@ export function UserDashboard() {
     const fullName = `${firstName} ${lastName}`.trim() || userDisplayName;
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] font-sora flex flex-col text-slate-800 antialiased selection:bg-[#00a896] selection:text-white">
+        <div className="min-h-screen bg-[#f8fafc] font-sans flex flex-col text-slate-800 antialiased selection:bg-[#00a896] selection:text-white">
             
             {/* Top Fixed Navigation Header */}
             <header className="bg-white border-b border-slate-200/80 shadow-2xs h-16 sticky top-0 z-40 flex items-center justify-between px-4 sm:px-6">

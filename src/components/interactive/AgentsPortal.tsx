@@ -50,9 +50,9 @@ function VerifyCard({ initials, gradient, name, type, location, exp, badge, earn
   return (
     <div className="bg-white border border-[#D4E8F5] rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 mb-4">
       <div className="flex gap-4 items-start mb-4">
-        <div className={`w-14 h-14 rounded-2xl ${gradient} flex items-center justify-center text-white font-sora font-bold text-lg shrink-0`}>{initials}</div>
+        <div className={`w-14 h-14 rounded-2xl ${gradient} flex items-center justify-center text-white font-sans font-bold text-lg shrink-0`}>{initials}</div>
         <div className="flex-1 min-w-0">
-          <div className="font-sora font-bold text-base text-[#0C1A2E]">{name}</div>
+          <div className="font-sans font-bold text-base text-[#0C1A2E]">{name}</div>
           <div className="text-xs text-[#475569] mb-1.5">{type}</div>
           <div className="flex flex-wrap gap-2 text-xs text-[#475569]">
             <span>📍 {location}</span><span>·</span><span>{exp}</span><span>·</span>
@@ -60,7 +60,7 @@ function VerifyCard({ initials, gradient, name, type, location, exp, badge, earn
           </div>
         </div>
         <div className="text-right shrink-0">
-          <div className="font-sora font-bold text-emerald-600 text-sm">{earn}</div>
+          <div className="font-sans font-bold text-emerald-600 text-sm">{earn}</div>
           <div className="text-[10px] text-[#94B0C4] font-semibold">{earnLabel}</div>
         </div>
       </div>
@@ -191,7 +191,7 @@ export function AgentsPortal() {
                 <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
                 Now Hiring · 200+ Agents Active · Earn from Home
               </div>
-              <h1 className="font-sora font-extrabold text-4xl sm:text-5xl md:text-6xl text-white leading-[1.07] mb-5 tracking-tight">
+              <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-white leading-[1.07] mb-5 tracking-tight">
                 Become a<br />
                 VisaFormula Agent.<br />
                 <span className="bg-gradient-to-r from-white to-[#7dd3fc] bg-clip-text text-transparent">
@@ -227,7 +227,7 @@ export function AgentsPortal() {
 
             <div className="hidden lg:block">
               <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-2xl shadow-[#0c1a2e]/30">
-                <div className="font-sora font-bold text-base text-[#0c1a2e] mb-5 flex items-center gap-2">
+                <div className="font-sans font-bold text-base text-[#0c1a2e] mb-5 flex items-center gap-2">
                   <span>💰</span> Agent Earnings — This Month
                 </div>
                 {[
@@ -238,12 +238,12 @@ export function AgentsPortal() {
                 ].map(row => (
                   <div key={row.label} className="flex items-center justify-between py-2.5 border-b border-slate-100 text-sm">
                     <span className="text-[#475569]">{row.label}</span>
-                    <span className="font-sora font-bold text-[#0c1a2e]">{row.value}</span>
+                    <span className="font-sans font-bold text-[#0c1a2e]">{row.value}</span>
                   </div>
                 ))}
                 <div className="flex items-center justify-between pt-4 mt-2 border-t-2 border-slate-200">
                   <span className="font-bold text-[#0c1a2e] text-sm">Total Earned</span>
-                  <span className="font-sora font-extrabold text-2xl text-emerald-600">₹18,400</span>
+                  <span className="font-sans font-extrabold text-2xl text-emerald-600">₹18,400</span>
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 mt-4 text-xs text-[#475569]">
                   🏆 <strong className="text-[#0c1a2e]">Riya M., Pune</strong> — Top agent this month. Average ₹15,000–₹35,000/month.
@@ -270,7 +270,7 @@ export function AgentsPortal() {
             { value: "4.8★",    label: "Agent satisfaction"  },
           ].map(s => (
             <div key={s.label} className="text-center px-6 py-2">
-              <div className="font-sora font-extrabold text-2xl text-[#0c1a2e]">{s.value}</div>
+              <div className="font-sans font-extrabold text-2xl text-[#0c1a2e]">{s.value}</div>
               <div className="text-xs text-[#475569] font-semibold mt-0.5">{s.label}</div>
             </div>
           ))}
@@ -281,13 +281,13 @@ export function AgentsPortal() {
         {/* WHAT AGENTS DO */}
         <div>
           <span className="text-[11px] font-extrabold text-[#0c1a2e] tracking-widest block mb-2">Your Role</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl mb-2">What Does a VisaFormula Agent Do?</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl mb-2">What Does a VisaFormula Agent Do?</h2>
           <p className="text-sm text-[#475569] mb-8">Agents are the quality backbone of VisaFormula — they verify everything before it goes live.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {perks.map(p => (
               <div key={p.title} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center">
                 <div className={`w-14 h-14 ${p.bg} rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4`}>{p.emoji}</div>
-                <div className="font-sora font-bold text-sm text-[#0c1a2e] mb-2">{p.title}</div>
+                <div className="font-sans font-bold text-sm text-[#0c1a2e] mb-2">{p.title}</div>
                 <p className="text-xs text-[#475569] leading-relaxed">{p.desc}</p>
               </div>
             ))}
@@ -297,7 +297,7 @@ export function AgentsPortal() {
         {/* COMMISSION TABLE */}
         <div>
           <span className="text-[11px] font-extrabold text-[#0c1a2e] tracking-widest block mb-2">Earnings</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl mb-2">How Much Do You Earn?</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl mb-2">How Much Do You Earn?</h2>
           <p className="text-sm text-[#475569] mb-6">Fixed commission per verified item — paid every week to your bank account or UPI.</p>
           <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
             <div className="grid grid-cols-12 bg-[#0c1a2e] px-5 py-3 text-[11px] font-bold text-white tracking-wider">
@@ -311,14 +311,14 @@ export function AgentsPortal() {
                 <div className="col-span-5 font-semibold text-[#0c1a2e] text-xs md:text-sm">{row.action}</div>
                 <div className="col-span-2 font-bold text-emerald-600 text-xs md:text-sm">{row.rate}</div>
                 <div className="col-span-3 text-[#475569] text-xs">{row.avg}</div>
-                <div className="col-span-2 font-sora font-bold text-[#0c1a2e] text-xs md:text-sm">{row.monthly}</div>
+                <div className="col-span-2 font-sans font-bold text-[#0c1a2e] text-xs md:text-sm">{row.monthly}</div>
               </div>
             ))}
             <div className="grid grid-cols-12 px-5 py-4 bg-gradient-to-r from-slate-50 to-white border-t-2 border-slate-200 items-center">
               <div className="col-span-5 font-bold text-[#0c1a2e] text-sm">🏆 Total Monthly (all combined)</div>
               <div className="col-span-2 font-bold text-emerald-600 text-xs">Variable</div>
               <div className="col-span-3 text-[#475569] text-xs">Work your pace</div>
-              <div className="col-span-2 font-sora font-extrabold text-[#0c1a2e] text-sm">₹15K–₹35K</div>
+              <div className="col-span-2 font-sans font-extrabold text-[#0c1a2e] text-sm">₹15K–₹35K</div>
             </div>
           </div>
         </div>
@@ -326,16 +326,16 @@ export function AgentsPortal() {
         {/* HOW TO JOIN */}
         <div>
           <span className="text-[11px] font-extrabold text-[#0c1a2e] tracking-widest block mb-2">Join Process</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl mb-2">How to Become an Agent</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl mb-2">How to Become an Agent</h2>
           <p className="text-sm text-[#475569] mb-8">Simple 4-step process — approved within 48 hours.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {joinSteps.map((s) => (
               <div key={s.num} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 text-white font-sora font-bold text-base flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 text-white font-sans font-bold text-base flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform">
                   {s.num}
                 </div>
                 <div className="text-2xl mb-3">{s.emoji}</div>
-                <div className="font-sora font-bold text-sm text-[#0c1a2e] mb-2">{s.title}</div>
+                <div className="font-sans font-bold text-sm text-[#0c1a2e] mb-2">{s.title}</div>
                 <p className="text-xs text-[#475569] leading-relaxed">{s.desc}</p>
               </div>
             ))}
@@ -353,7 +353,7 @@ export function AgentsPortal() {
           <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-5">
             <span className="text-4xl">🎉</span>
           </div>
-          <h2 className="font-sora font-extrabold text-2xl text-[#0c1a2e] mb-2">Application Submitted! 🎉</h2>
+          <h2 className="font-sans font-extrabold text-2xl text-[#0c1a2e] mb-2">Application Submitted! 🎉</h2>
           <p className="text-sm text-[#475569] mb-2">Your agent application is under review.</p>
           <p className="text-xs text-[#94B0C4] mb-7">We'll notify you via WhatsApp & email within 48 hours once verified.</p>
           <div className="space-y-3">
@@ -384,7 +384,7 @@ export function AgentsPortal() {
               <Globe className="w-6 h-6 text-red-500" />
               <span className="text-2xl font-extrabold tracking-tight text-[#0c1a2e]">VisaFormula</span>
             </a>
-            <h1 className="font-sora text-3xl font-extrabold text-black mb-1.5">Create Your Agent Account</h1>
+            <h1 className="font-sans text-3xl font-extrabold text-black mb-1.5">Create Your Agent Account</h1>
             <p className="text-sm text-gray-500">Takes 5 minutes · Approved within 48 hours</p>
           </div>
           <div className="flex items-center mb-8">
@@ -412,7 +412,7 @@ export function AgentsPortal() {
           <div className="bg-white border border-slate-200 rounded-3xl p-7 md:p-8 shadow-xl">
             {regStep === 1 && (
               <div>
-                <h3 className="font-sora font-bold text-lg text-[#0c1a2e] mb-5">Step 1 — Personal Information</h3>
+                <h3 className="font-sans font-bold text-lg text-[#0c1a2e] mb-5">Step 1 — Personal Information</h3>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">First Name</label>
                     <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="Riya" /></div>
@@ -450,7 +450,7 @@ export function AgentsPortal() {
 
             {regStep === 2 && (
               <div>
-                <h3 className="font-sora font-bold text-lg text-[#0c1a2e] mb-5">Step 2 — Availability & Skills</h3>
+                <h3 className="font-sans font-bold text-lg text-[#0c1a2e] mb-5">Step 2 — Availability & Skills</h3>
                 <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Available Hours Per Day</label>
                   <select className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] appearance-none cursor-pointer">
                     {["1–2 hours","2–4 hours","4–6 hours","Full-time (6+ hours)"].map(o => <option key={o}>{o}</option>)}
@@ -473,7 +473,7 @@ export function AgentsPortal() {
 
             {regStep === 3 && (
               <div>
-                <h3 className="font-sora font-bold text-lg text-[#0c1a2e] mb-2">Step 3 — KYC Upload</h3>
+                <h3 className="font-sans font-bold text-lg text-[#0c1a2e] mb-2">Step 3 — KYC Upload</h3>
                 <p className="text-xs text-[#475569] mb-6">Your documents are encrypted and used only for agent verification and payout setup.</p>
                 <div className="space-y-4">
                   {[
@@ -499,7 +499,7 @@ export function AgentsPortal() {
 
             {regStep === 4 && (
               <div>
-                <h3 className="font-sora font-bold text-lg text-[#0c1a2e] mb-5">Step 4 — Bank / UPI Details</h3>
+                <h3 className="font-sans font-bold text-lg text-[#0c1a2e] mb-5">Step 4 — Bank / UPI Details</h3>
                 <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">UPI ID</label>
                   <input className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all" placeholder="yourname@upi" /></div>
                 <div className="grid grid-cols-2 gap-4 mb-4">
@@ -546,7 +546,7 @@ export function AgentsPortal() {
       </div>
 
       <div className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-sm sticky top-0 z-40">
-        <div className="font-sora font-extrabold text-lg text-[#0c1a2e] flex items-center gap-2">
+        <div className="font-sans font-extrabold text-lg text-[#0c1a2e] flex items-center gap-2">
           <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
           VisaFormula <span className="text-[#0c1a2e]">·</span>
           <span className="text-sm font-medium text-[#94B0C4]">Agent Portal</span>
@@ -567,7 +567,7 @@ export function AgentsPortal() {
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-white font-bold shadow-md">RM</div>
               <div>
-                <div className="font-sora font-bold text-sm text-[#0c1a2e]">Riya Mehta</div>
+                <div className="font-sans font-bold text-sm text-[#0c1a2e]">Riya Mehta</div>
                 <div className="text-[10px] text-[#475569]">VisaFormula Agent · Pune</div>
                 <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full px-2 py-0.5 text-[9px] font-bold mt-0.5">
                   <BadgeCheck className="w-2.5 h-2.5" /> Verified
@@ -618,7 +618,7 @@ export function AgentsPortal() {
           {/* OVERVIEW */}
           {section === "overview" && (
             <div>
-              <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e] mb-1">Good morning, Riya 👋</h2>
+              <h2 className="font-sans font-extrabold text-xl text-[#0c1a2e] mb-1">Good morning, Riya 👋</h2>
               <p className="text-sm text-[#475569] mb-6">You have <strong className="text-[#0c1a2e]">28 pending verifications</strong> waiting for you.</p>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -631,13 +631,13 @@ export function AgentsPortal() {
                   <div key={card.label} className={`bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 ${card.color}`}>
                     <div className="absolute top-4 right-4 text-xl opacity-70">{card.icon}</div>
                     <div className="text-[10px] font-extrabold text-[#94B0C4] tracking-wider mb-1">{card.label}</div>
-                    <div className="font-sora font-extrabold text-2xl text-[#0c1a2e] mb-0.5">{card.value}</div>
+                    <div className="font-sans font-extrabold text-2xl text-[#0c1a2e] mb-0.5">{card.value}</div>
                     <div className="text-xs text-[#475569]">{card.sub}</div>
                   </div>
                 ))}
               </div>
 
-              <h3 className="font-sora font-bold text-base text-[#0c1a2e] mb-4">Pending Verifications — Priority Queue</h3>
+              <h3 className="font-sans font-bold text-base text-[#0c1a2e] mb-4">Pending Verifications — Priority Queue</h3>
               <div className="space-y-3 mb-6">
                 {[
                   { emoji:"🧑‍💼", label:"8 Expert Profiles waiting",  desc:"Consultants, lawyers and IELTS trainers — KYC and licence verification needed", earn:"₹1,200 potential", section:"verify-experts" as Section },
@@ -653,14 +653,14 @@ export function AgentsPortal() {
                       <div className="text-xs text-[#475569]">{item.desc}</div>
                     </div>
                     <div className="text-right shrink-0">
-                      <div className="font-sora font-bold text-emerald-600 text-xs mb-1">{item.earn}</div>
+                      <div className="font-sans font-bold text-emerald-600 text-xs mb-1">{item.earn}</div>
                       <button className="bg-[#0c1a2e] hover:bg-[#0f2a40] text-white font-bold text-[10px] px-3 py-1.5 rounded-lg transition-colors">Review Now →</button>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <h3 className="font-sora font-bold text-base text-[#0c1a2e] mb-4">Recent Activity</h3>
+              <h3 className="font-sans font-bold text-base text-[#0c1a2e] mb-4">Recent Activity</h3>
               <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
                 {[
                   { icon:"✅", bg:"bg-emerald-50", label:"Approved — Arjun Mehta (Immigration Lawyer, Canada)", earn:"+₹150", time:"2 hrs ago" },
@@ -685,7 +685,7 @@ export function AgentsPortal() {
             <div>
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e]">Verify Expert Profiles</h2>
+                  <h2 className="font-sans font-extrabold text-xl text-[#0c1a2e]">Verify Expert Profiles</h2>
                   <p className="text-sm text-[#475569]">8 pending · ₹150 per verified profile</p>
                 </div>
                 <span className="bg-slate-100 text-slate-700 border border-slate-200 rounded-full px-3 py-1 text-xs font-bold">8 pending</span>
@@ -722,7 +722,7 @@ export function AgentsPortal() {
             <div>
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e]">Verify Tour Packages</h2>
+                  <h2 className="font-sans font-extrabold text-xl text-[#0c1a2e]">Verify Tour Packages</h2>
                   <p className="text-sm text-[#475569]">12 pending · ₹80 per verified package</p>
                 </div>
                 <span className="bg-slate-100 text-slate-700 border border-slate-200 rounded-full px-3 py-1 text-xs font-bold">12 pending</span>
@@ -735,13 +735,13 @@ export function AgentsPortal() {
                   <div className="flex gap-4 mb-4">
                     <img src={pkg.img} alt={pkg.name} className="w-20 h-14 rounded-xl object-cover border border-slate-200" />
                     <div className="flex-1">
-                      <div className="font-sora font-bold text-sm text-[#0c1a2e] mb-0.5">{pkg.name}</div>
+                      <div className="font-sans font-bold text-sm text-[#0c1a2e] mb-0.5">{pkg.name}</div>
                       <div className="text-xs text-[#475569]">by {pkg.agency}</div>
                       <div className="font-bold text-[#0c1a2e] text-sm mt-1">{pkg.price}</div>
                     </div>
                     <div className="text-right shrink-0">
                       <span className="bg-slate-100 text-slate-700 border border-slate-200 px-2 py-1 rounded-lg text-[10px] font-bold">⚠️ {pkg.issue}</span>
-                      <div className="font-sora font-bold text-emerald-600 text-xs mt-2">+₹80 on approval</div>
+                      <div className="font-sans font-bold text-emerald-600 text-xs mt-2">+₹80 on approval</div>
                     </div>
                   </div>
                   <div className="flex gap-2 flex-wrap">
@@ -757,17 +757,17 @@ export function AgentsPortal() {
           {/* VERIFY JOBS */}
           {section === "verify-jobs" && (
             <div>
-              <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e] mb-1">Verify Job Listings</h2>
+              <h2 className="font-sans font-extrabold text-xl text-[#0c1a2e] mb-1">Verify Job Listings</h2>
               <p className="text-sm text-[#475569] mb-5">5 pending · ₹50 per verified listing</p>
               {["Amazon Canada Warehouse Staff","Senior Software Engineer — Toronto","Registered Nurse — Dubai Hospital"].map(job => (
                 <div key={job} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm mb-3 hover:shadow-md transition-all">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-lg">💼</div>
                     <div className="flex-1">
-                      <div className="font-sora font-bold text-sm text-[#0c1a2e]">{job}</div>
+                      <div className="font-sans font-bold text-sm text-[#0c1a2e]">{job}</div>
                       <div className="text-xs text-[#475569]">Verify: employer legitimacy · visa claim · salary accuracy</div>
                     </div>
-                    <div className="font-sora font-bold text-emerald-600 text-xs shrink-0">+₹50</div>
+                    <div className="font-sans font-bold text-emerald-600 text-xs shrink-0">+₹50</div>
                   </div>
                   <div className="flex gap-2">
                     <button onClick={() => showToast(`✅ Job approved! +₹50`)} className="flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs px-3 py-2 rounded-xl hover:bg-emerald-100 transition-all active:scale-[0.97]"><ThumbsUp className="w-3 h-3" /> Approve</button>
@@ -782,17 +782,17 @@ export function AgentsPortal() {
           {/* VERIFY EVENTS */}
           {section === "verify-events" && (
             <div>
-              <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e] mb-1">Verify Events & Exhibitions</h2>
+              <h2 className="font-sans font-extrabold text-xl text-[#0c1a2e] mb-1">Verify Events & Exhibitions</h2>
               <p className="text-sm text-[#475569] mb-5">3 pending · ₹100 per verified event</p>
               {["GITEX Tech Expo 2025 — Dubai","Canada Education Fair — Mumbai","Germany Trade Show 2025 — Frankfurt"].map(ev => (
                 <div key={ev} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm mb-3 hover:shadow-md transition-all">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-xl bg-violet-100 flex items-center justify-center text-lg">🎭</div>
                     <div className="flex-1">
-                      <div className="font-sora font-bold text-sm text-[#0c1a2e]">{ev}</div>
+                      <div className="font-sans font-bold text-sm text-[#0c1a2e]">{ev}</div>
                       <div className="text-xs text-[#475569]">Verify: dates · venue · organiser · entry requirements</div>
                     </div>
-                    <div className="font-sora font-bold text-emerald-600 text-xs shrink-0">+₹100</div>
+                    <div className="font-sans font-bold text-emerald-600 text-xs shrink-0">+₹100</div>
                   </div>
                   <div className="flex gap-2">
                     <button onClick={() => showToast(`✅ Event approved! +₹100`)} className="flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs px-3 py-2 rounded-xl hover:bg-emerald-100 transition-all active:scale-[0.97]"><ThumbsUp className="w-3 h-3" /> Approve</button>
@@ -807,12 +807,12 @@ export function AgentsPortal() {
           {/* EARNINGS */}
           {section === "earnings" && (
             <div>
-              <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e] mb-5">My Earnings</h2>
+              <h2 className="font-sans font-extrabold text-xl text-[#0c1a2e] mb-5">My Earnings</h2>
               <div className="grid grid-cols-3 gap-4 mb-6">
                 {[{label:"This Week",value:"₹3,200"},{label:"This Month",value:"₹18,400"},{label:"All Time",value:"₹1,24,700"}].map(s => (
                   <div key={s.label} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm text-center">
                     <div className="text-xs font-bold text-[#94B0C4] tracking-wider mb-1">{s.label}</div>
-                    <div className="font-sora font-extrabold text-2xl text-emerald-600">{s.value}</div>
+                    <div className="font-sans font-extrabold text-2xl text-emerald-600">{s.value}</div>
                   </div>
                 ))}
               </div>
@@ -842,7 +842,7 @@ export function AgentsPortal() {
           {/* PAYOUTS */}
           {section === "payouts" && (
             <div>
-              <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e] mb-5">Payouts</h2>
+              <h2 className="font-sans font-extrabold text-xl text-[#0c1a2e] mb-5">Payouts</h2>
               <div className="bg-[#f0f9ff] border border-[#bae6fd] rounded-2xl p-5 mb-6 flex items-start gap-3">
                 <Wallet className="w-5 h-5 text-[#0c1a2e] shrink-0 mt-0.5" />
                 <div>
@@ -851,7 +851,7 @@ export function AgentsPortal() {
                 </div>
               </div>
               <div className="bg-white border border-slate-200 p-5 shadow-sm">
-                <div className="font-sora font-bold text-sm text-[#0c1a2e] mb-4">Payout History</div>
+                <div className="font-sans font-bold text-sm text-[#0c1a2e] mb-4">Payout History</div>
                 {[
                   { date:"26 May 2026", amount:"₹4,100", method:"UPI", status:"Done" },
                   { date:"19 May 2026", amount:"₹3,750", method:"UPI", status:"Done" },
@@ -859,7 +859,7 @@ export function AgentsPortal() {
                 ].map((p, i) => (
                   <div key={i} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-0 text-sm">
                     <div><div className="font-semibold text-[#0c1a2e]">{p.date}</div><div className="text-xs text-[#475569]">via {p.method}</div></div>
-                    <div className="text-right"><div className="font-sora font-bold text-emerald-600">{p.amount}</div><span className="bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full px-2 py-0.5 text-[9px] font-bold">✓ {p.status}</span></div>
+                    <div className="text-right"><div className="font-sans font-bold text-emerald-600">{p.amount}</div><span className="bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full px-2 py-0.5 text-[9px] font-bold">✓ {p.status}</span></div>
                   </div>
                 ))}
               </div>
@@ -869,7 +869,7 @@ export function AgentsPortal() {
           {/* NOTIFICATIONS */}
           {section === "notifications" && (
             <div>
-              <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e] mb-5">Notifications</h2>
+              <h2 className="font-sans font-extrabold text-xl text-[#0c1a2e] mb-5">Notifications</h2>
               <div className="bg-white border border-slate-200 p-5 shadow-sm">
                 {[
                   { icon:"💰", bg:"bg-emerald-50", text:"₹150 earned — Priya Sharma profile approved", time:"2 hrs ago", unread:true },
@@ -894,12 +894,12 @@ export function AgentsPortal() {
           {/* PROFILE */}
           {section === "profile" && (
             <div>
-              <h2 className="font-sora font-extrabold text-xl text-[#0c1a2e] mb-5">My Profile</h2>
+              <h2 className="font-sans font-extrabold text-xl text-[#0c1a2e] mb-5">My Profile</h2>
               <div className="bg-white border border-slate-200 p-6 shadow-sm mb-4">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-white font-sora font-bold text-2xl shadow-md">RM</div>
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-white font-sans font-bold text-2xl shadow-md">RM</div>
                   <div>
-                    <div className="font-sora font-bold text-lg text-[#0c1a2e]">Riya Mehta</div>
+                    <div className="font-sans font-bold text-lg text-[#0c1a2e]">Riya Mehta</div>
                     <div className="text-sm text-[#475569]">VisaFormula Agent · Pune, Maharashtra</div>
                     <div className="flex gap-2 mt-1">
                       <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full px-2 py-0.5 text-[10px] font-bold flex items-center gap-1"><BadgeCheck className="w-2.5 h-2.5" /> KYC Verified</span>

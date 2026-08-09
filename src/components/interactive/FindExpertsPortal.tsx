@@ -498,12 +498,12 @@ export function FindExpertsPortal() {
     );
 
     return (
-        <div className="bg-[#fff5f5] min-h-screen">
-            <main className="max-w-7xl mx-auto flex flex-col lg:flex-row py-8 px-4 gap-8">
+        <div className="bg-[#f8fafc] min-h-screen font-sans">
+            <main className="max-w-7xl mx-auto flex flex-col lg:flex-row py-8 px-4 gap-8 font-sans">
                 {/* Desktop Sidebar */}
                 <aside className="hidden lg:block w-[300px] shrink-0">
-                    <div className="bg-white rounded-3xl border border-yellow-100 p-6 shadow-xl sticky top-24">
-                        <h2 className="font-sora text-lg font-bold text-navy mb-4">Filters</h2>
+                    <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm sticky top-24 font-sans">
+                        <h2 className="font-sans text-lg font-bold text-slate-900 mb-4">Filters</h2>
                         <FilterSidebar />
                     </div>
                 </aside>
@@ -668,7 +668,7 @@ export function FindExpertsPortal() {
                             <div className="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mx-auto">
                                 <Users className="w-8 h-8 text-[#00a896]" />
                             </div>
-                            <h3 className="font-sora font-extrabold text-navy text-lg">No Registered Experts Yet</h3>
+                            <h3 className="font-sans font-extrabold text-slate-900 text-lg">No Registered Experts Yet</h3>
                             <p className="text-xs text-gray-500 max-w-sm mx-auto">Be the first! Register as an expert consultant and your profile will appear here for thousands of seekers to discover.</p>
                             <a href="/register/expert" className="inline-block mt-2 bg-[#00a896] text-white text-xs font-extrabold px-6 py-2.5 rounded-xl shadow-md hover:bg-[#008f80] transition-all">Register as Expert →</a>
                         </div>
@@ -756,7 +756,7 @@ export function FindExpertsPortal() {
                     ) : !loading ? (
                         <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center space-y-4 shadow-xl">
                             <MapIcon className="w-12 h-12 text-slate-400 mx-auto animate-bounce" />
-                            <h3 className="font-sora font-extrabold text-navy text-lg">Map View</h3>
+                            <h3 className="font-sans font-extrabold text-slate-900 text-lg">Map View</h3>
                             <p className="text-xs text-gray-500 max-w-sm mx-auto">Showing {sorted.length} verified experts on the interactive location map.</p>
                         </div>
                     ) : null}

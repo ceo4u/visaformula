@@ -1,0 +1,77 @@
+name: 🚀 Deploy to Production (VPS)
+
+# Triggers on every push to main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build & Deploy to Hetzner VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      # ── Step 1: Checkout latest code ──────────────────────────────────────
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      # ── Step 2: SSH into VPS and deploy ───────────────────────────────────
+      - name: 🚀 Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          timeout: 15m
+          script: |
+            set -e
+            echo "========================================="
+            echo "🔄 Starting deployment at $(date)"
+            echo "========================================="
+
+            # Go to project directory
+            cd ${{ secrets.VPS_PROJECT_PATH }}
+
+            # Pull latest code from main
+            echo "📥 Pulling latest code..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            # Install dependencies (skip devDeps in prod)
+            echo "📦 Installing dependencies..."
+            npm install --production=false
+
+            # Build Astro SSR project
+            echo "🔨 Building project..."
+            npm run build
+
+            # Restart server with PM2 (or start if not running)
+            echo "♻️  Restarting server..."
+            if pm2 list | grep -q "visaformula"; then
+              pm2 restart visaformula --update-env
+            else
+              pm2 start ./dist/server/entry.mjs --name visaformula --env production
+            fi
+
+            # Save PM2 list so it survives reboots
+            pm2 save
+
+            echo "========================================="
+            echo "✅ Deployment complete at $(date)"
+            echo "========================================="
+
+      # ── Step 3: Health check ───────────────────────────────────────────────
+      - name: 🏥 Health Check
+        run: |
+          echo "Waiting 15 seconds for server to start..."
+          sleep 15
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://visaformula.com/api/readiness || echo "000")
+          echo "Health check status: $STATUS"
+          if [ "$STATUS" = "200" ]; then
+            echo "✅ Server is healthy!"
+          else
+            echo "⚠️ Server returned $STATUS — check PM2 logs on VPS."
+          fi

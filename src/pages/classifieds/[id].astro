@@ -186,18 +186,8 @@ const classified = Astro.props.classified || allClassifieds.find(c => c.id === i
           <X class="w-4.5 h-4.5" />
         </a>
 
-        {/* Top Badges Row */}
-        <div class="flex items-center justify-end gap-2 mb-4 pr-10">
-          <span class="inline-flex items-center gap-1.5 bg-teal-50 border border-teal-200 text-[#00a896] text-xs font-bold px-3 py-1 rounded-full">
-            <Tag class="w-3.5 h-3.5" /> {classified.category}
-          </span>
-          <span class="inline-flex items-center gap-1.5 bg-slate-900 text-white text-xs font-bold px-3 py-1 rounded-full">
-            {classified.flag} {classified.country}
-          </span>
-        </div>
-
         {/* Main Grid: Left Image + Right Info */}
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-2 sm:pt-4">
           
           {/* Left: Image Container */}
           <div class="lg:col-span-6 relative min-h-[260px] sm:min-h-[320px] rounded-2xl bg-slate-900 overflow-hidden group shadow-md">
@@ -227,11 +217,17 @@ const classified = Astro.props.classified || allClassifieds.find(c => c.id === i
           {/* Right: Info & Contact Action Buttons */}
           <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
             <div class="space-y-3">
-              <div class="flex items-center justify-between gap-2">
-                <span class="text-xs font-bold text-[#00a896] uppercase tracking-wider bg-teal-50 px-3 py-1 rounded-full border border-teal-200">
-                  {classified.category}
-                </span>
-                <span class="text-base sm:text-lg font-black text-emerald-600 bg-emerald-50 px-3.5 py-1 rounded-2xl border border-emerald-200">
+              {/* Single Consolidated Badges & Price Row */}
+              <div class="flex flex-wrap items-center justify-between gap-2 pr-6">
+                <div class="flex items-center gap-1.5">
+                  <span class="inline-flex items-center gap-1.5 bg-teal-50 border border-teal-200 text-[#00a896] text-xs font-extrabold px-3 py-1 rounded-full">
+                    <Tag class="w-3.5 h-3.5" /> {classified.category}
+                  </span>
+                  <span class="inline-flex items-center gap-1.5 bg-slate-900 text-white text-xs font-extrabold px-3 py-1 rounded-full">
+                    {classified.flag} {classified.country}
+                  </span>
+                </div>
+                <span class="text-xs sm:text-sm font-black text-emerald-700 bg-emerald-50 px-3.5 py-1 rounded-xl border border-emerald-200 shadow-2xs">
                   {classified.price}
                 </span>
               </div>

@@ -180,8 +180,6 @@ export function ExpertProfileModal({ expert, isOpen, onClose }: ExpertProfileMod
     }
   };
 
-  // Generate Instagram style handle
-  const handleName = `@${expert.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
   const experienceYears = expert.experience || 5;
   const ratingValue = (expert.rating || 4.9).toFixed(1);
   const reviewsCount = expert.reviews || 48;
@@ -203,7 +201,7 @@ export function ExpertProfileModal({ expert, isOpen, onClose }: ExpertProfileMod
         {/* Header Bar */}
         <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-md px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-extrabold text-slate-900 tracking-tight">{handleName}</span>
+            <span className="text-sm font-extrabold text-slate-900 tracking-tight">{expert.name}</span>
             {expert.isVerified && (
               <span className="inline-flex items-center gap-1 bg-teal-50 text-[#00a896] text-[10px] font-black px-2 py-0.5 rounded-full border border-teal-100">
                 <CheckCircle className="w-3 h-3 fill-teal-100 text-[#00a896]" /> Verified

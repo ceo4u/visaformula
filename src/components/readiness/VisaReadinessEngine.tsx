@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import {
   GraduationCap,
@@ -27,6 +27,68 @@ interface GapItem {
   id: string;
   text: string;
   solution: string;
+}
+
+// ── Custom Select Component (Replaces native browser dropdown to eliminate blue highlight) ──
+interface CustomSelectProps {
+  value: string;
+  onChange: (val: string) => void;
+  options: { value: string; label: string }[];
+  className?: string;
+}
+
+function CustomSelect({ value, onChange, options, className = "" }: CustomSelectProps) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const selected = options.find(o => o.value === value) || options[0];
+
+  return (
+    <div ref={ref} className={`relative font-sora ${className}`}>
+      <button
+        type="button"
+        onClick={() => setOpen(prev => !prev)}
+        className="w-full flex items-center justify-between bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 outline-none hover:border-[#00a896] focus:border-[#00a896] transition-colors cursor-pointer shadow-2xs font-sora text-left"
+      >
+        <span className="truncate">{selected?.label || value}</span>
+        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-[#00a896]' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute z-50 top-full mt-1.5 left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden max-h-56 overflow-y-auto font-sora animate-fade-in">
+          {options.map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => {
+                  onChange(opt.value);
+                  setOpen(false);
+                }}
+                className={`w-full text-left px-3.5 py-2.5 text-xs font-bold transition-all cursor-pointer flex items-center justify-between ${
+                  isSelected
+                    ? 'bg-slate-900 text-white font-extrabold'
+                    : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                }`}
+              >
+                <span>{opt.label}</span>
+                {isSelected && <span className="text-teal-400 font-bold ml-1">✓</span>}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function VisaReadinessEngine() {
@@ -96,6 +158,100 @@ export default function VisaReadinessEngine() {
     { id: 'work', label: 'Work / Job', icon: Briefcase },
     { id: 'tourist', label: 'Tourist / Visitor', icon: Camera },
     { id: 'pr', label: 'PR & Migration', icon: Globe }
+  ];
+
+  // Option definitions for CustomSelect
+  const targetCountryOptions = [
+    { value: "Canada", label: "🇨🇦 Canada" },
+    { value: "United States", label: "🇺🇸 United States" },
+    { value: "United Kingdom", label: "🇬🇧 United Kingdom" },
+    { value: "Australia", label: "🇦🇺 Australia" },
+    { value: "Germany", label: "🇩🇪 Germany" },
+    { value: "Schengen", label: "🇪🇺 Schengen Europe" },
+    { value: "UAE", label: "🇦🇪 United Arab Emirates" },
+    { value: "New Zealand", label: "🇳🇿 New Zealand" },
+  ];
+
+  const passportValidityOptions = [
+    { value: "6", label: "6 Months" },
+    { value: "12", label: "12 Months" },
+    { value: "24", label: "24 Months" },
+    { value: "36", label: "36 Months" },
+    { value: "60", label: "60+ Months" },
+  ];
+
+  const academicLevelOptions = [
+    { value: "High School", label: "High School" },
+    { value: "Bachelor's Degree", label: "Bachelor's Degree" },
+    { value: "Master's Degree", label: "Master's Degree" },
+    { value: "PhD / Doctorate", label: "PhD / Doctorate" },
+  ];
+
+  const languageScoreOptions = [
+    { value: "IELTS - 5.5 Overall", label: "IELTS - 5.5 Band" },
+    { value: "IELTS - 6.0 Overall", label: "IELTS - 6.0 Band" },
+    { value: "IELTS - 6.5 Overall", label: "IELTS - 6.5 Band" },
+    { value: "IELTS - 7.0+ Overall", label: "IELTS - 7.0+ Band" },
+    { value: "PTE - 65+ Score", label: "PTE - 65+ Score" },
+    { value: "TOEFL - 90+ Score", label: "TOEFL - 90+ Score" },
+    { value: "Not Appeared Yet", label: "Not Appeared Yet" },
+  ];
+
+  const sponsorDetailsOptions = [
+    { value: "Parents Co-Sponsor (Verified Funds)", label: "Parents (Verified Funds)" },
+    { value: "Self-Funded Savings", label: "Self-Funded Savings" },
+    { value: "Education Loan Approval", label: "Education Loan Approval" },
+    { value: "Govt / University Scholarship", label: "Govt / University Scholarship" },
+  ];
+
+  const workExperienceOptions = [
+    { value: "Fresher / < 1 Year", label: "Fresher / < 1 Year" },
+    { value: "1 - 2 Years", label: "1 - 2 Years" },
+    { value: "3 - 5 Years", label: "3 - 5 Years" },
+    { value: "5 - 10 Years", label: "5 - 10 Years" },
+    { value: "10+ Years", label: "10+ Years" },
+  ];
+
+  const jobOfferOptions = [
+    { value: "Confirmed Job Offer", label: "Confirmed Job Offer" },
+    { value: "Awaiting Job Offer", label: "Awaiting Job Offer" },
+    { value: "Applying as Job Seeker", label: "Applying as Job Seeker" },
+  ];
+
+  const ecaOptions = [
+    { value: "Yes", label: "Yes (Evaluated)" },
+    { value: "In Progress", label: "In Progress" },
+    { value: "No", label: "No" },
+  ];
+
+  const bankStabilityOptions = [
+    { value: "6 Months Stable Balance", label: "6 Months Stable Balance" },
+    { value: "Variable Income Balance", label: "Variable Income Balance" },
+    { value: "Recent Lump Sum Deposit", label: "Recent Lump Sum Deposit" },
+  ];
+
+  const homeTiesOptions = [
+    { value: "Employer NOC & Property Deed", label: "Employer NOC & Property" },
+    { value: "Registered Business License", label: "Business License" },
+    { value: "Family Affidavit Ties Only", label: "Family Affidavit Only" },
+  ];
+
+  const invitationOptions = [
+    { value: "Official Host Invitation", label: "Official Host Invitation" },
+    { value: "Confirmed Hotel Booking", label: "Confirmed Hotel Booking" },
+    { value: "Self-sponsored Travel", label: "Self-sponsored Travel" },
+  ];
+
+  const travelStampsOptions = [
+    { value: "0 Visas", label: "0 Visas (Blank)" },
+    { value: "1-3 Visas", label: "1-3 Visas" },
+    { value: "4+ Visas", label: "4+ Visas (Frequent)" },
+  ];
+
+  const skillAssessmentOptions = [
+    { value: "Yes", label: "Yes (Positively Assessed)" },
+    { value: "Pending", label: "Pending" },
+    { value: "No", label: "No" },
   ];
 
   // Handle Category Change
@@ -310,23 +466,11 @@ export default function VisaReadinessEngine() {
                   <label className="block text-xs font-bold text-slate-900 mb-1 font-sora">
                     1. Target Destination Country *
                   </label>
-                  <div className="relative">
-                    <select
-                      value={targetCountry}
-                      onChange={(e) => setTargetCountry(e.target.value)}
-                      className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer shadow-2xs font-sora"
-                    >
-                      <option value="Canada">🇨🇦 Canada</option>
-                      <option value="United States">🇺🇸 United States</option>
-                      <option value="United Kingdom">🇬🇧 United Kingdom</option>
-                      <option value="Australia">🇦🇺 Australia</option>
-                      <option value="Germany">🇩🇪 Germany</option>
-                      <option value="Schengen">🇪🇺 Schengen Europe</option>
-                      <option value="UAE">🇦🇪 United Arab Emirates</option>
-                      <option value="New Zealand">🇳🇿 New Zealand</option>
-                    </select>
-                    <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" />
-                  </div>
+                  <CustomSelect
+                    value={targetCountry}
+                    onChange={setTargetCountry}
+                    options={targetCountryOptions}
+                  />
                 </div>
 
                 {/* 2. Residence & Passport Validity Row */}
@@ -349,20 +493,11 @@ export default function VisaReadinessEngine() {
                     <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                       3. Passport Validity *
                     </label>
-                    <div className="relative">
-                      <select
-                        value={passportValidMonths}
-                        onChange={(e) => setPassportValidMonths(e.target.value)}
-                        className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer shadow-2xs font-sora"
-                      >
-                        <option value="6">6 Months</option>
-                        <option value="12">12 Months</option>
-                        <option value="24">24 Months</option>
-                        <option value="36">36 Months</option>
-                        <option value="60">60+ Months</option>
-                      </select>
-                      <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                    </div>
+                    <CustomSelect
+                      value={passportValidMonths}
+                      onChange={setPassportValidMonths}
+                      options={passportValidityOptions}
+                    />
                   </div>
                 </div>
 
@@ -376,41 +511,22 @@ export default function VisaReadinessEngine() {
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Academic Level *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={academicLevel}
-                            onChange={(e) => setAcademicLevel(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer shadow-2xs font-sora"
-                          >
-                            <option value="High School">High School</option>
-                            <option value="Bachelor's Degree">Bachelor's Degree</option>
-                            <option value="Master's Degree">Master's Degree</option>
-                            <option value="PhD / Doctorate">PhD / Doctorate</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={academicLevel}
+                          onChange={setAcademicLevel}
+                          options={academicLevelOptions}
+                        />
                       </div>
 
                       <div>
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Language Score *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={languageScore}
-                            onChange={(e) => setLanguageScore(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer shadow-2xs font-sora"
-                          >
-                            <option value="IELTS - 5.5 Overall">IELTS - 5.5 Band</option>
-                            <option value="IELTS - 6.0 Overall">IELTS - 6.0 Band</option>
-                            <option value="IELTS - 6.5 Overall">IELTS - 6.5 Band</option>
-                            <option value="IELTS - 7.0+ Overall">IELTS - 7.0+ Band</option>
-                            <option value="PTE - 65+ Score">PTE - 65+ Score</option>
-                            <option value="TOEFL - 90+ Score">TOEFL - 90+ Score</option>
-                            <option value="Not Appeared Yet">Not Appeared Yet</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={languageScore}
+                          onChange={setLanguageScore}
+                          options={languageScoreOptions}
+                        />
                       </div>
                     </div>
 
@@ -437,19 +553,11 @@ export default function VisaReadinessEngine() {
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Sponsor Details *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={sponsorDetails}
-                            onChange={(e) => setSponsorDetails(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer truncate shadow-2xs font-sora"
-                          >
-                            <option value="Parents Co-Sponsor (Verified Funds)">Parents (Verified Funds)</option>
-                            <option value="Self-Funded Savings">Self-Funded Savings</option>
-                            <option value="Education Loan Approval">Education Loan Approval</option>
-                            <option value="Govt / University Scholarship">Govt / University Scholarship</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={sponsorDetails}
+                          onChange={setSponsorDetails}
+                          options={sponsorDetailsOptions}
+                        />
                       </div>
                     </div>
                   </div>
@@ -463,38 +571,22 @@ export default function VisaReadinessEngine() {
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Work Experience *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={workExperienceYears}
-                            onChange={(e) => setWorkExperienceYears(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer shadow-2xs font-sora"
-                          >
-                            <option value="Fresher / < 1 Year">Fresher / &lt; 1 Year</option>
-                            <option value="1 - 2 Years">1 - 2 Years</option>
-                            <option value="3 - 5 Years">3 - 5 Years</option>
-                            <option value="5 - 10 Years">5 - 10 Years</option>
-                            <option value="10+ Years">10+ Years</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={workExperienceYears}
+                          onChange={setWorkExperienceYears}
+                          options={workExperienceOptions}
+                        />
                       </div>
 
                       <div>
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Job Offer Status *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={jobOfferStatus}
-                            onChange={(e) => setJobOfferStatus(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer truncate shadow-2xs font-sora"
-                          >
-                            <option value="Confirmed Job Offer">Confirmed Job Offer</option>
-                            <option value="Awaiting Job Offer">Awaiting Job Offer</option>
-                            <option value="Applying as Job Seeker">Applying as Job Seeker</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={jobOfferStatus}
+                          onChange={setJobOfferStatus}
+                          options={jobOfferOptions}
+                        />
                       </div>
                     </div>
 
@@ -503,18 +595,11 @@ export default function VisaReadinessEngine() {
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Degree ECA (WES) *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={ecaStatus}
-                            onChange={(e) => setEcaStatus(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer shadow-2xs font-sora"
-                          >
-                            <option value="Yes">Yes (Evaluated)</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="No">No</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={ecaStatus}
+                          onChange={setEcaStatus}
+                          options={ecaOptions}
+                        />
                       </div>
 
                       <div>
@@ -545,36 +630,22 @@ export default function VisaReadinessEngine() {
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Bank Stability (6Mo) *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={bankBalance6MonthAvg}
-                            onChange={(e) => setBankBalance6MonthAvg(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer truncate shadow-2xs font-sora"
-                          >
-                            <option value="6 Months Stable Balance">6 Months Stable Balance</option>
-                            <option value="Variable Income Balance">Variable Income Balance</option>
-                            <option value="Recent Lump Sum Deposit">Recent Lump Sum Deposit</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={bankBalance6MonthAvg}
+                          onChange={setBankBalance6MonthAvg}
+                          options={bankStabilityOptions}
+                        />
                       </div>
 
                       <div>
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Home Country Ties *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={homeTiesProof}
-                            onChange={(e) => setHomeTiesProof(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer truncate shadow-2xs font-sora"
-                          >
-                            <option value="Employer NOC & Property Deed">Employer NOC & Property</option>
-                            <option value="Registered Business License">Business License</option>
-                            <option value="Family Affidavit Ties Only">Family Affidavit Only</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={homeTiesProof}
+                          onChange={setHomeTiesProof}
+                          options={homeTiesOptions}
+                        />
                       </div>
                     </div>
 
@@ -583,36 +654,22 @@ export default function VisaReadinessEngine() {
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Invitation Status *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={invitationStatus}
-                            onChange={(e) => setInvitationStatus(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer truncate shadow-2xs font-sora"
-                          >
-                            <option value="Official Host Invitation">Official Host Invitation</option>
-                            <option value="Confirmed Hotel Booking">Confirmed Hotel Booking</option>
-                            <option value="Self-sponsored Travel">Self-sponsored Travel</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={invitationStatus}
+                          onChange={setInvitationStatus}
+                          options={invitationOptions}
+                        />
                       </div>
 
                       <div>
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Travel Stamps *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={travelStamps}
-                            onChange={(e) => setTravelStamps(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer shadow-2xs font-sora"
-                          >
-                            <option value="0 Visas">0 Visas (Blank)</option>
-                            <option value="1-3 Visas">1-3 Visas</option>
-                            <option value="4+ Visas">4+ Visas (Frequent)</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={travelStamps}
+                          onChange={setTravelStamps}
+                          options={travelStampsOptions}
+                        />
                       </div>
                     </div>
                   </div>
@@ -640,18 +697,11 @@ export default function VisaReadinessEngine() {
                         <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Skill Assessment *
                         </label>
-                        <div className="relative">
-                          <select
-                            value={skillAssessmentResult}
-                            onChange={(e) => setSkillAssessmentResult(e.target.value)}
-                            className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer shadow-2xs font-sora"
-                          >
-                            <option value="Yes">Yes (Positively Assessed)</option>
-                            <option value="Pending">Pending</option>
-                            <option value="No">No</option>
-                          </select>
-                          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-3 pointer-events-none" />
-                        </div>
+                        <CustomSelect
+                          value={skillAssessmentResult}
+                          onChange={setSkillAssessmentResult}
+                          options={skillAssessmentOptions}
+                        />
                       </div>
                     </div>
 
@@ -703,6 +753,7 @@ export default function VisaReadinessEngine() {
                     </div>
                   )}
                 </div>
+
                 {/* Submit Button */}
                 <button
                   type="submit"
@@ -973,7 +1024,7 @@ export default function VisaReadinessEngine() {
             </div>
           )}
 
-          {/* Footer Brand Trust Badge */}
+          {/* Footer Brand Trust Badge (Single clean footer) */}
           <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-center font-sora">
             <Lock className="w-4 h-4 text-[#00a896]" />
             <span className="text-xs font-bold text-slate-800 font-sora">100% Secure & Encrypted</span>
@@ -1012,7 +1063,7 @@ export default function VisaReadinessEngine() {
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-extrabold text-[#0F172A] font-sora font-sora">Comprehensive Breakdown</h4>
+                <h4 className="font-extrabold text-[#0F172A] font-sora">Comprehensive Breakdown</h4>
                 <div className="grid grid-cols-2 gap-3 font-sora">
                   <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
                     <span className="font-bold text-slate-800 block font-sora">Financial Adequacy ({financialScore} / 35)</span>

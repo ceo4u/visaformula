@@ -846,7 +846,7 @@ export function FindExpertsPortal() {
                                                 <button 
                                                     type="button"
                                                     onClick={() => handleExpertCardClick(e)} 
-                                                    className="w-full sm:w-auto text-center bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white px-5 py-2.5 rounded-2xl text-xs font-bold shadow-md transition-all cursor-pointer font-sans"
+                                                    className="w-full sm:w-auto text-center bg-slate-900 hover:bg-slate-700 active:scale-95 text-white px-5 py-2.5 rounded-2xl text-xs font-bold shadow-md transition-all cursor-pointer font-sans"
                                                 >
                                                     Book Consultation
                                                 </button>

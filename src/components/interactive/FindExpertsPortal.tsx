@@ -8,104 +8,8 @@ const cityFilters = ["All Cities", "Hyderabad", "Mumbai", "Delhi", "Bangalore", 
 const ratingFilters = ["Any", "4★+", "4.5★+", "Top Rated"];
 const availFilters = ["Anytime", "Today", "This Week", "Emergency 24/7"];
 
-// Realistic dummy & registered database consultants
+// Sample platform consultants — shown alongside real DB experts
 const dummyExperts: any[] = [
-  {
-    id: "db_real_1",
-    name: "Risingat Sports",
-    role: "Sports & Athlete Visa Consultant",
-    city: "Mumbai",
-    bio: "Official sports visa & athlete immigration consultancy. Specializing in UK Sportsperson Visa, US P-1 Visa, Schengen sports delegations & athlete mobility.",
-    tags: ["Sports Visa", "P-1 Visa", "Athlete Mobility", "Schengen Sports", "Work Permit"],
-    countries: ["United Kingdom", "United States", "Spain", "Germany"],
-    rating: 5.0,
-    reviews: 142,
-    isVerified: true,
-    isRemote: true,
-    govReg: "REG-RS-9921",
-    email: "contact@risingatsports.com",
-    image: "/experts/arjun_mehta.jpg"
-  },
-  {
-    id: "db_real_2",
-    name: "Chaitanya N",
-    role: "Senior Immigration Consultant",
-    city: "Hyderabad",
-    bio: "Certified immigration advisor providing end-to-end guidance for Canada PR Express Entry, UK Skilled Worker, PNP streams, and Australian PR visas.",
-    tags: ["Canada PR", "Express Entry", "UK Skilled Worker", "Australia PR", "Student Visa"],
-    countries: ["Canada", "United Kingdom", "Australia"],
-    rating: 4.9,
-    reviews: 218,
-    isVerified: true,
-    isRemote: true,
-    govReg: "REG-CN-4412",
-    email: "chaitanya@visaformula.com",
-    image: "/experts/karthik_reddy.jpg"
-  },
-  {
-    id: "db_real_3",
-    name: "Travel & Play Ltd",
-    role: "Global Travel & Mobility Agency",
-    city: "London",
-    bio: "Corporate mobility and international travel consultancy. Specialists in Schengen tourist visas, UK visitor visas, corporate event relocation & fast-track filing.",
-    tags: ["Tourist Visa", "Schengen Visa", "Corporate Travel", "UK Visitor", "Business Mobility"],
-    countries: ["United Kingdom", "France", "Germany", "UAE", "Italy"],
-    rating: 5.0,
-    reviews: 310,
-    isVerified: true,
-    isRemote: true,
-    govReg: "UK-TPL-8832",
-    email: "info@travelandplayltd.com",
-    image: "/experts/priya_sharma.jpg"
-  },
-  {
-    id: "db_real_4",
-    name: "Akash CO",
-    role: "Work Permit & Corporate Advisory",
-    city: "Delhi",
-    bio: "Experienced corporate visa and employment permit advisor. Helping skilled professionals and companies navigate LMIA, EU Blue Card, and Gulf work visas.",
-    tags: ["Work Permit", "LMIA", "EU Blue Card", "Gulf Work Visa", "Visa Filing"],
-    countries: ["Canada", "Germany", "UAE", "Qatar"],
-    rating: 4.8,
-    reviews: 175,
-    isVerified: true,
-    isRemote: true,
-    govReg: "REG-ACO-5521",
-    email: "akash@akashco.com",
-    image: "/experts/rahul_kapoor.jpg"
-  },
-  {
-    id: "db_real_5",
-    name: "Travel Play",
-    role: "International Student & Youth Specialist",
-    city: "Bangalore",
-    bio: "Comprehensive study visa advisory and youth travel consultant. Expert assistance with university applications, GIC setup, SOP reviews, and visa filing.",
-    tags: ["Student Visa", "Study Permit", "SOP Review", "University Admission", "Youth Mobility"],
-    countries: ["Canada", "United Kingdom", "Australia", "New Zealand"],
-    rating: 4.9,
-    reviews: 264,
-    isVerified: true,
-    isRemote: true,
-    govReg: "REG-TP-3319",
-    email: "support@travelplay.com",
-    image: "/experts/nisha_agarwal.jpg"
-  },
-  {
-    id: "db_real_6",
-    name: "Lellwyn Edwin",
-    role: "Immigration Legal & Visa Advisor",
-    city: "Goa",
-    bio: "Legal immigration consultant specializing in visa appeals, refusal reviews, Digital Nomad visas, and European PR pathways.",
-    tags: ["Digital Nomad", "Visa Appeals", "Refusal Review", "Portugal Golden Visa", "Spain Non-Lucrative"],
-    countries: ["Portugal", "Spain", "Germany", "United Kingdom"],
-    rating: 5.0,
-    reviews: 189,
-    isVerified: true,
-    isRemote: true,
-    govReg: "REG-LE-7701",
-    email: "lellwyn.edwin@visaformula.com",
-    image: "/experts/deepa_nair.jpg"
-  },
   {
     id: "d1", name: "Arjun Mehta", role: "Canada Immigration Consultant",
     city: "Hyderabad", bio: "10+ years helping Indian students and professionals get Canadian PR, Study Permits & PGWP. 850+ successful cases across Ontario and BC.",
@@ -877,12 +781,16 @@ export function FindExpertsPortal() {
                                         {/* Avatar */}
                                         <div className="relative w-20 h-20 shrink-0 mx-auto md:mx-0">
                                             {e.image ? (
-                                                <img src={e.image} alt={e.name} className="w-full h-full object-cover rounded-2xl border border-slate-200 shadow-2xs" />
-                                            ) : (
-                                                <div className="w-full h-full rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 text-white font-black text-2xl flex items-center justify-center border border-slate-800 shadow-sm">
-                                                    {(e.name || "E").charAt(0).toUpperCase()}
-                                                </div>
-                                            )}
+                                                <img
+                                                    src={e.image}
+                                                    alt={e.name}
+                                                    className="w-full h-full object-cover rounded-2xl border border-slate-200 shadow-2xs"
+                                                    onError={(ev) => { (ev.target as HTMLImageElement).style.display = 'none'; (ev.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden'); }}
+                                                />
+                                            ) : null}
+                                            <div className={`w-full h-full rounded-2xl bg-gradient-to-br from-[#00a896] to-slate-800 text-white font-black text-xl flex items-center justify-center border border-slate-700 shadow-sm tracking-tight select-none ${e.image ? 'hidden' : ''}`}>
+                                                {(e.name || 'VF').split(' ').slice(0, 2).map((w: string) => w.charAt(0).toUpperCase()).join('')}
+                                            </div>
                                             {e.isVerified && (
                                                 <span className="absolute -top-1.5 -right-1.5 bg-slate-900 text-white text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full border-2 border-white shadow-xs">
                                                     ✓ Verified

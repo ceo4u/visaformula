@@ -269,7 +269,7 @@ export default function VisaReadinessEngine() {
 
           <div className="mb-4 border-b border-slate-100 pb-3 text-center font-sora">
             <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight font-sora">
-              AI Multi-Persona Visa Readiness Engine
+              AI Visa Readiness Engine
             </h2>
             <p className="text-xs text-slate-500 font-semibold mt-0.5 font-sora">
               Get your AI-powered visa approval assessment in minutes

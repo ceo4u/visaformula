@@ -143,48 +143,67 @@ export function FindExpertsPortal() {
             if (purpose) params.set("purpose", purpose);
             if (cityParam && cityParam !== "All Cities") params.set("city", cityParam);
 
+            // 1. Fetch from DB (source of truth — always shown)
             let dbExperts: any[] = [];
             try {
                 const res = await fetch(`/api/experts?${params.toString()}`);
                 const data = await res.json();
                 if (data.success && Array.isArray(data.experts)) {
                     dbExperts = data.experts;
+                } else {
+                    console.warn("[FindExpertsPortal] API returned:", data);
                 }
-            } catch (err) {}
+            } catch (err) {
+                console.error("[FindExpertsPortal] Failed to fetch /api/experts:", err);
+            }
 
-            // Get experts registered in LocalStorage (from signup flow)
+            // 2. Build a set of names/emails already covered by DB
+            const dbKeys = new Set<string>(
+                dbExperts.map(e => (e.name || e.email || '').toLowerCase().trim()).filter(Boolean)
+            );
+
+            // 3. Read localStorage registered experts — only add if NOT already in DB
             let localRegisteredExperts: any[] = [];
             if (typeof window !== "undefined") {
                 try {
                     const storedAll = localStorage.getItem("visaformula_all_experts");
-                    if (storedAll) localRegisteredExperts = JSON.parse(storedAll);
+                    if (storedAll) {
+                        const parsed = JSON.parse(storedAll);
+                        localRegisteredExperts = parsed.filter((e: any) => {
+                            const key = (e.name || e.email || '').toLowerCase().trim();
+                            return key && !dbKeys.has(key);
+                        });
+                    }
                 } catch(e) {}
 
-                // Also check if current logged-in expert profile exists
+                // Also check current logged-in expert — only if not already in DB
                 const currExpertName = localStorage.getItem("expert_businessName") || `${localStorage.getItem("expert_firstName") || ''} ${localStorage.getItem("expert_lastName") || ''}`.trim();
                 const currExpertEmail = localStorage.getItem("expert_email");
                 if (currExpertName && currExpertEmail) {
-                    const currExpertObj = {
-                        id: `curr-expert-${Date.now()}`,
-                        name: currExpertName,
-                        role: localStorage.getItem("expert_advisorType") || "Visa Consultant",
-                        city: localStorage.getItem("expert_city") || "Remote",
-                        bio: localStorage.getItem("expert_businessDescription") || "Verified VisaFormula Immigration Consultant.",
-                        tags: JSON.parse(localStorage.getItem("expert_services") || '["Visa Consultation", "Immigration"]'),
-                        countries: [localStorage.getItem("expert_country") || "Canada"],
-                        rating: 5.0,
-                        reviews: 1,
-                        isVerified: true,
-                        isRemote: true,
-                        email: currExpertEmail,
-                        contact_number: localStorage.getItem("expert_contactNumber") || "",
-                        image: localStorage.getItem("expert_profilePhoto") || ""
-                    };
-                    localRegisteredExperts.unshift(currExpertObj);
+                    const currKey = currExpertName.toLowerCase().trim();
+                    if (!dbKeys.has(currKey)) {
+                        const currExpertObj = {
+                            id: `curr-expert-${Date.now()}`,
+                            name: currExpertName,
+                            role: localStorage.getItem("expert_advisorType") || "Visa Consultant",
+                            city: localStorage.getItem("expert_city") || "Remote",
+                            bio: localStorage.getItem("expert_businessDescription") || "Verified VisaFormula Immigration Consultant.",
+                            tags: JSON.parse(localStorage.getItem("expert_services") || '["Visa Consultation", "Immigration"]'),
+                            countries: [localStorage.getItem("expert_country") || "Canada"],
+                            rating: 5.0,
+                            reviews: 1,
+                            isVerified: true,
+                            isRemote: true,
+                            email: currExpertEmail,
+                            contact_number: localStorage.getItem("expert_contactNumber") || "",
+                            image: localStorage.getItem("expert_profilePhoto") || ""
+                        };
+                        localRegisteredExperts.unshift(currExpertObj);
+                    }
                 }
             }
 
-            // Read any active profile updates saved locally (e.g. DP photo change, bio change)
+            // 4. Read any active profile updates saved locally (e.g. DP photo change, bio change)
             let expertUpdates: Record<string, any> = {};
             if (typeof window !== "undefined") {
                 try {
@@ -193,8 +212,8 @@ export function FindExpertsPortal() {
                 } catch (e) {}
             }
 
-            // Combine candidate pools and apply real-time profile updates
-            const combinedPool = [...localRegisteredExperts, ...dbExperts, ...dummyExperts].map(e => {
+            // 5. Combine: DB experts FIRST (source of truth), then local-only, then sample dummies
+            const combinedPool = [...dbExperts, ...localRegisteredExperts, ...dummyExperts].map(e => {
                 const key = (e.name || e.business_name || '').toLowerCase().trim();
                 if (expertUpdates[key]) {
                     const updateObj = expertUpdates[key];
@@ -213,10 +232,9 @@ export function FindExpertsPortal() {
                 return e;
             });
 
-            // Perform accurate multi-field search filtering
+            // 6. Search filtering
             let filtered = combinedPool;
 
-            // 1. Search Query (q)
             if (q && q.trim()) {
                 const searchLower = q.toLowerCase().trim();
                 const searchWords = searchLower.split(/\s+/).filter(Boolean);
@@ -231,12 +249,10 @@ export function FindExpertsPortal() {
                         ...(Array.isArray(e.tags) ? e.tags : [e.tags || '']),
                         ...(Array.isArray(e.countries) ? e.countries : [e.countries || '']),
                     ].join(' ').toLowerCase();
-
                     return searchWords.every(word => text.includes(word));
                 });
             }
 
-            // 2. Destination Country
             if (country && country !== "All") {
                 const cLower = country.toLowerCase();
                 filtered = filtered.filter(e => {
@@ -245,7 +261,6 @@ export function FindExpertsPortal() {
                 });
             }
 
-            // 3. City
             if (cityParam && cityParam !== "All Cities") {
                 const cityLower = cityParam.toLowerCase();
                 filtered = filtered.filter(e => {
@@ -254,11 +269,12 @@ export function FindExpertsPortal() {
                 });
             }
 
-            // Deduplicate by lowercased name/email
+            // 7. Deduplicate by name/email — keep first occurrence (DB experts are first so they win)
             const seenIdentifiers = new Set<string>();
             const deduplicated = filtered.filter(e => {
-                const identifier = (e.name || e.business_name || e.email || '').toLowerCase().trim();
-                if (!identifier || seenIdentifiers.has(identifier)) return false;
+                const identifier = (e.name || e.business_name || e.email || String(e.id) || '').toLowerCase().trim();
+                if (!identifier) return true; // keep records even with no identifier
+                if (seenIdentifiers.has(identifier)) return false;
                 seenIdentifiers.add(identifier);
                 return true;
             });

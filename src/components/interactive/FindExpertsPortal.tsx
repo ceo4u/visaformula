@@ -682,66 +682,68 @@ export function FindExpertsPortal() {
                                         {/* Avatar */}
                                         <div className="relative w-20 h-20 shrink-0 mx-auto md:mx-0">
                                             {e.image ? (
-                                                <img src={e.image} alt={e.name} className="w-full h-full object-cover rounded-2xl border border-slate-100" />
+                                                <img src={e.image} alt={e.name} className="w-full h-full object-cover rounded-2xl border border-slate-200 shadow-2xs" />
                                             ) : (
-                                                <div className="w-full h-full rounded-2xl bg-gradient-to-br from-[#00a896] to-[#006b5e] text-white font-black text-2xl flex items-center justify-center border border-teal-200">
+                                                <div className="w-full h-full rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 text-white font-black text-2xl flex items-center justify-center border border-slate-800 shadow-sm">
                                                     {(e.name || "E").charAt(0).toUpperCase()}
                                                 </div>
                                             )}
                                             {e.isVerified && (
-                                                <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white text-[9px] font-black tracking-wider px-2 py-0.5 rounded-full border-2 border-white">
+                                                <span className="absolute -top-1.5 -right-1.5 bg-slate-900 text-white text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full border-2 border-white shadow-xs">
                                                     ✓ Verified
                                                 </span>
                                             )}
                                         </div>
 
                                         {/* Info */}
-                                        <div className="flex-1">
-                                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2 text-center sm:text-left">
+                                        <div className="flex-1 font-sans">
+                                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2 text-center sm:text-left font-sans">
                                                 <div>
-                                                    <h3 className="text-lg font-bold font-sora text-navy group-hover:text-[#00a896] transition-colors flex items-center justify-center sm:justify-start gap-2 leading-tight">
-                                                        {e.name} <CheckCircle className="w-4 h-4 text-[#00a896] fill-teal-50" />
+                                                    <h3 className="text-lg font-extrabold font-sans text-slate-900 group-hover:text-[#00a896] transition-colors flex items-center justify-center sm:justify-start gap-2 leading-tight">
+                                                        {e.name} <CheckCircle className="w-4.5 h-4.5 text-sky-500 fill-sky-50 shrink-0" />
                                                     </h3>
-                                                    <p className="text-xs text-gray-400 mt-0.5">{e.role}</p>
+                                                    <p className="text-xs font-semibold text-slate-600 mt-0.5 font-sans">{e.role}</p>
                                                 </div>
-                                                <div className="text-center sm:text-right shrink-0">
+                                                <div className="text-center sm:text-right shrink-0 font-sans">
                                                     <div className="flex items-center gap-1 justify-center sm:justify-end">
                                                         <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                                                        <span className="font-bold text-sm text-navy">{e.rating?.toFixed(1)}</span>
-                                                        {e.reviews > 0 && <span className="text-[10px] text-gray-400">({e.reviews} reviews)</span>}
+                                                        <span className="font-bold text-sm text-slate-900">{e.rating?.toFixed(1)}</span>
+                                                        {e.reviews > 0 && <span className="text-[10px] text-slate-400 font-semibold">({e.reviews} reviews)</span>}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             {/* Bio */}
                                             {e.bio && (
-                                                <p className="text-xs text-gray-500 mb-3 line-clamp-2 text-center sm:text-left">{e.bio}</p>
+                                                <p className="text-xs text-slate-600 font-normal mb-3 line-clamp-2 text-center sm:text-left font-sans leading-relaxed">{e.bio}</p>
                                             )}
 
                                             {/* Meta */}
-                                            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 text-xs font-semibold text-gray-500 mb-3">
-                                                <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-slate-400" /> {e.city}</span>
-                                                {e.isRemote && <span className="text-emerald-600">· Remote available</span>}
-                                                {e.govReg && <span className="text-blue-600">· Govt. Registered</span>}
-                                                <span className="text-[#00a896] font-bold hover:underline ml-auto text-xs flex items-center gap-0.5">View Profile →</span>
+                                            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 text-xs font-semibold text-slate-500 mb-3 font-sans">
+                                                <span className="flex items-center gap-1 text-slate-600"><MapPin className="w-3.5 h-3.5 text-slate-400" /> {e.city}</span>
+                                                {e.isRemote && <span className="text-slate-600 font-medium">· Remote available</span>}
+                                                {e.govReg && <span className="text-indigo-600 font-semibold">· Govt. Registered</span>}
+                                                <span className="text-slate-900 hover:text-[#00a896] font-bold ml-auto text-xs flex items-center gap-1 transition-colors">View Profile →</span>
                                             </div>
 
                                             {/* Tags */}
                                             {e.tags && e.tags.length > 0 && (
-                                                <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-4">
+                                                <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-4 font-sans">
                                                     {e.tags.slice(0, 5).map((tag: string) => (
-                                                        <span key={tag} className="bg-teal-50 text-teal-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-teal-100">{tag}</span>
+                                                        <span key={tag} className="bg-slate-100 text-slate-700 hover:bg-slate-200 text-[11px] font-bold px-3 py-1 rounded-xl transition-colors font-sans border border-slate-200/60">{tag}</span>
                                                     ))}
                                                 </div>
                                             )}
 
                                             {/* Footer */}
-                                            <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-100 gap-3" onClick={(e) => e.stopPropagation()}>
-                                                <span className="text-xs font-bold text-[#00a896]">🌍 {e.countries?.join(", ")}</span>
+                                            <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-100 gap-3 font-sans" onClick={(e) => e.stopPropagation()}>
+                                                <span className="text-xs font-bold text-slate-800 bg-slate-100 border border-slate-200/70 px-3 py-1 rounded-xl flex items-center gap-1.5 font-sans">
+                                                    🌍 {e.countries?.join(", ")}
+                                                </span>
                                                 <button 
                                                     type="button"
                                                     onClick={() => handleExpertCardClick(e)} 
-                                                    className="w-full sm:w-auto text-center bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all cursor-pointer"
+                                                    className="w-full sm:w-auto text-center bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white px-5 py-2.5 rounded-2xl text-xs font-bold shadow-md transition-all cursor-pointer font-sans"
                                                 >
                                                     Book Consultation
                                                 </button>

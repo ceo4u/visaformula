@@ -627,7 +627,7 @@ export function FindExpertsPortal() {
 
                     <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
                         {loading ? (
-                            <p className="text-xs font-black tracking-wider text-slate-400 flex items-center gap-2"><Loader2 className="w-3.5 h-3.5 animate-spin" /> Loading experts from database...</p>
+                            <p className="text-xs font-extrabold tracking-wider text-slate-400 flex items-center gap-2 font-sans"><Loader2 className="w-3.5 h-3.5 animate-spin text-[#00a896]" /> Loading verified experts...</p>
                         ) : (
                             <p className="text-xs font-extrabold tracking-wider text-slate-500 font-sans">{sorted.length} expert{sorted.length !== 1 ? "s" : ""} found</p>
                         )}

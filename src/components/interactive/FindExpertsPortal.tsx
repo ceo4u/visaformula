@@ -390,8 +390,8 @@ export function FindExpertsPortal() {
         else if (name.includes(q)) score += name.startsWith(q) ? 120 : 80;
 
         if (role.includes(q)) score += role.startsWith(q) ? 100 : 60;
-        if (tags.some(t => t.includes(q))) score += 70;
-        if (countries.some(c => c.includes(q))) score += 40;
+        if (tags.some((t: string) => t.includes(q))) score += 70;
+        if (countries.some((c: string) => c.includes(q))) score += 40;
         if (bio.includes(q)) score += 30;
         if (cityStr.includes(q)) score += 20;
         if (e.isVerified) score += 10;

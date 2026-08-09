@@ -265,7 +265,7 @@ export function FindExpertsPortal() {
 
             // --- q: free text search ---
             const textQuery = params.get("q") || params.get("query") || "";
-            if (textQuery) { setSearchText(textQuery); initQ = textQuery; }
+            if (textQuery) { setSearchText(textQuery); initQ = textQuery; setSortBy("relevance"); }
 
             // --- country: destination country ---
             const countryQuery = params.get("country") || "";
@@ -374,12 +374,44 @@ export function FindExpertsPortal() {
         return true;
     });
 
+    // Relevance Scoring Helper for search matches
+    const getRelevanceScore = (e: any, query: string) => {
+        if (!query || !query.trim()) return (e.rating || 0);
+        const q = query.toLowerCase().trim();
+        let score = 0;
+        const name = (e.name || e.business_name || '').toLowerCase();
+        const role = (e.role || e.advisor_type || '').toLowerCase();
+        const tags = (Array.isArray(e.tags) ? e.tags : [e.tags || '']).map((t: string) => String(t).toLowerCase());
+        const bio = (e.bio || e.about_me || '').toLowerCase();
+        const cityStr = (e.city || '').toLowerCase();
+        const countries = (Array.isArray(e.countries) ? e.countries : [e.countries || '']).map((c: string) => String(c).toLowerCase());
+
+        if (name === q) score += 200;
+        else if (name.includes(q)) score += name.startsWith(q) ? 120 : 80;
+
+        if (role.includes(q)) score += role.startsWith(q) ? 100 : 60;
+        if (tags.some(t => t.includes(q))) score += 70;
+        if (countries.some(c => c.includes(q))) score += 40;
+        if (bio.includes(q)) score += 30;
+        if (cityStr.includes(q)) score += 20;
+        if (e.isVerified) score += 10;
+        score += (e.rating || 0);
+
+        return score;
+    };
+
     // Sorting Logic
     const sorted = [...filtered].sort((a, b) => {
-        if (sortBy === "rating") return b.rating - a.rating;
-        if (sortBy === "price-low") return a.price - b.price;
-        if (sortBy === "price-high") return b.price - a.price;
-        return 0;
+        if (sortBy === "relevance") {
+            const scoreA = getRelevanceScore(a, searchText);
+            const scoreB = getRelevanceScore(b, searchText);
+            if (scoreB !== scoreA) return scoreB - scoreA;
+            return (b.rating || 0) - (a.rating || 0);
+        }
+        if (sortBy === "rating") return (b.rating || 0) - (a.rating || 0);
+        if (sortBy === "price-low") return (a.price || 0) - (b.price || 0);
+        if (sortBy === "price-high") return (b.price || 0) - (a.price || 0);
+        return (b.rating || 0) - (a.rating || 0); // Recommended default
     });
 
     const FilterSidebar = () => (
@@ -508,7 +540,7 @@ export function FindExpertsPortal() {
                             <input
                                 value={searchText}
                                 onChange={e => setSearchText(e.target.value)}
-                                onKeyDown={e => { if (e.key === 'Enter') fetchExperts(searchText, selectedCountry); }}
+                                onKeyDown={e => { if (e.key === 'Enter') { if (searchText.trim()) setSortBy("relevance"); fetchExperts(searchText, selectedCountry); } }}
                                 placeholder="Search by name, country, specialty..."
                                 className="bg-transparent outline-none text-xs w-full font-medium"
                             />
@@ -519,7 +551,7 @@ export function FindExpertsPortal() {
                             )}
                         </div>
                         <button
-                            onClick={() => fetchExperts(searchText, selectedCountry)}
+                            onClick={() => { if (searchText.trim()) setSortBy("relevance"); fetchExperts(searchText, selectedCountry); }}
                             className="shrink-0 bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5"
                         >
                             <Search className="w-3.5 h-3.5" /> Search
@@ -531,6 +563,7 @@ export function FindExpertsPortal() {
                                     className="appearance-none bg-slate-50 border border-slate-100 rounded-xl py-2.5 pl-4 pr-10 text-xs font-bold text-navy outline-none cursor-pointer flex items-center justify-between min-w-[140px] text-left"
                                 >
                                     <span>
+                                        {sortBy === "relevance" && "Relevance"}
                                         {sortBy === "recommended" && "Recommended"}
                                         {sortBy === "rating" && "Highest Rated"}
                                         {sortBy === "price-low" && "Price: Low → High"}
@@ -539,28 +572,34 @@ export function FindExpertsPortal() {
                                     <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                                 </button>
                                 {sortOpen && (
-                                    <div className="absolute top-full right-0 bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 min-w-[150px] font-sora">
+                                    <div className="absolute top-full right-0 bg-white border border-slate-200 rounded-xl shadow-xl mt-1 py-1 z-50 min-w-[150px] font-sans">
+                                        <button
+                                            onClick={() => { setSortBy("relevance"); setSortOpen(false); }}
+                                            className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-[#00a896] hover:text-white transition-colors"
+                                        >
+                                            Relevance
+                                        </button>
                                         <button
                                             onClick={() => { setSortBy("recommended"); setSortOpen(false); }}
-                                            className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                            className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-[#00a896] hover:text-white transition-colors"
                                         >
                                             Recommended
                                         </button>
                                         <button
                                             onClick={() => { setSortBy("rating"); setSortOpen(false); }}
-                                            className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                            className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-[#00a896] hover:text-white transition-colors"
                                         >
                                             Highest Rated
                                         </button>
                                         <button
                                             onClick={() => { setSortBy("price-low"); setSortOpen(false); }}
-                                            className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                            className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-[#00a896] hover:text-white transition-colors"
                                         >
                                             Price: Low → High
                                         </button>
                                         <button
                                             onClick={() => { setSortBy("price-high"); setSortOpen(false); }}
-                                            className="w-full text-left px-4 py-2 text-xs font-medium text-slate-700 hover:bg-black hover:text-white transition-colors"
+                                            className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-[#00a896] hover:text-white transition-colors"
                                         >
                                             Price: High → Low
                                         </button>

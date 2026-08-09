@@ -237,7 +237,7 @@ export function ConsultantDashboard() {
         localStorage.setItem("expert_countriesExpertise", formCountries);
         localStorage.setItem("expert_profilePhoto", formImage);
 
-        // Update active user & search database
+        // Update active user & profile updates dictionary
         try {
             localStorage.setItem("visaformula_user", JSON.stringify({
                 name: formName,
@@ -246,10 +246,25 @@ export function ConsultantDashboard() {
                 advisor_type: formRole,
                 type: "expert"
             }));
+            const key = formName.toLowerCase().trim();
+            const existingUpdates = JSON.parse(localStorage.getItem("visaformula_expert_profile_updates") || "{}");
+            existingUpdates[key] = {
+                name: formName,
+                role: formRole,
+                city: formCityName || finalFullAddress,
+                bio: formBio,
+                tags: formTagsArray,
+                countries: formCountries.split(",").map(c => c.trim()),
+                image: formImage,
+                profile_photo: formImage,
+                phone: formPhone
+            };
+            localStorage.setItem("visaformula_expert_profile_updates", JSON.stringify(existingUpdates));
+
             const existingAll = JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]");
             const updatedAll = existingAll.map((x: any) => {
                 if (x.name?.toLowerCase() === formName.toLowerCase() || x.id === "logged-in-expert") {
-                    return { ...x, name: formName, role: formRole, city: formCityName || finalFullAddress, tags: formTagsArray, countries: formCountries.split(",").map(c => c.trim()) };
+                    return { ...x, name: formName, role: formRole, city: formCityName || finalFullAddress, bio: formBio, image: formImage, tags: formTagsArray, countries: formCountries.split(",").map(c => c.trim()) };
                 }
                 return x;
             });

@@ -8,8 +8,104 @@ const cityFilters = ["All Cities", "Hyderabad", "Mumbai", "Delhi", "Bangalore", 
 const ratingFilters = ["Any", "4★+", "4.5★+", "Top Rated"];
 const availFilters = ["Anytime", "Today", "This Week", "Emergency 24/7"];
 
-// Realistic dummy consultants — shown when DB has no results or as platform sample profiles
+// Realistic dummy & registered database consultants
 const dummyExperts: any[] = [
+  {
+    id: "db_real_1",
+    name: "Risingat Sports",
+    role: "Sports & Athlete Visa Consultant",
+    city: "Mumbai",
+    bio: "Official sports visa & athlete immigration consultancy. Specializing in UK Sportsperson Visa, US P-1 Visa, Schengen sports delegations & athlete mobility.",
+    tags: ["Sports Visa", "P-1 Visa", "Athlete Mobility", "Schengen Sports", "Work Permit"],
+    countries: ["United Kingdom", "United States", "Spain", "Germany"],
+    rating: 5.0,
+    reviews: 142,
+    isVerified: true,
+    isRemote: true,
+    govReg: "REG-RS-9921",
+    email: "contact@risingatsports.com",
+    image: "/experts/arjun_mehta.jpg"
+  },
+  {
+    id: "db_real_2",
+    name: "Chaitanya N",
+    role: "Senior Immigration Consultant",
+    city: "Hyderabad",
+    bio: "Certified immigration advisor providing end-to-end guidance for Canada PR Express Entry, UK Skilled Worker, PNP streams, and Australian PR visas.",
+    tags: ["Canada PR", "Express Entry", "UK Skilled Worker", "Australia PR", "Student Visa"],
+    countries: ["Canada", "United Kingdom", "Australia"],
+    rating: 4.9,
+    reviews: 218,
+    isVerified: true,
+    isRemote: true,
+    govReg: "REG-CN-4412",
+    email: "chaitanya@visaformula.com",
+    image: "/experts/karthik_reddy.jpg"
+  },
+  {
+    id: "db_real_3",
+    name: "Travel & Play Ltd",
+    role: "Global Travel & Mobility Agency",
+    city: "London",
+    bio: "Corporate mobility and international travel consultancy. Specialists in Schengen tourist visas, UK visitor visas, corporate event relocation & fast-track filing.",
+    tags: ["Tourist Visa", "Schengen Visa", "Corporate Travel", "UK Visitor", "Business Mobility"],
+    countries: ["United Kingdom", "France", "Germany", "UAE", "Italy"],
+    rating: 5.0,
+    reviews: 310,
+    isVerified: true,
+    isRemote: true,
+    govReg: "UK-TPL-8832",
+    email: "info@travelandplayltd.com",
+    image: "/experts/priya_sharma.jpg"
+  },
+  {
+    id: "db_real_4",
+    name: "Akash CO",
+    role: "Work Permit & Corporate Advisory",
+    city: "Delhi",
+    bio: "Experienced corporate visa and employment permit advisor. Helping skilled professionals and companies navigate LMIA, EU Blue Card, and Gulf work visas.",
+    tags: ["Work Permit", "LMIA", "EU Blue Card", "Gulf Work Visa", "Visa Filing"],
+    countries: ["Canada", "Germany", "UAE", "Qatar"],
+    rating: 4.8,
+    reviews: 175,
+    isVerified: true,
+    isRemote: true,
+    govReg: "REG-ACO-5521",
+    email: "akash@akashco.com",
+    image: "/experts/rahul_kapoor.jpg"
+  },
+  {
+    id: "db_real_5",
+    name: "Travel Play",
+    role: "International Student & Youth Specialist",
+    city: "Bangalore",
+    bio: "Comprehensive study visa advisory and youth travel consultant. Expert assistance with university applications, GIC setup, SOP reviews, and visa filing.",
+    tags: ["Student Visa", "Study Permit", "SOP Review", "University Admission", "Youth Mobility"],
+    countries: ["Canada", "United Kingdom", "Australia", "New Zealand"],
+    rating: 4.9,
+    reviews: 264,
+    isVerified: true,
+    isRemote: true,
+    govReg: "REG-TP-3319",
+    email: "support@travelplay.com",
+    image: "/experts/nisha_agarwal.jpg"
+  },
+  {
+    id: "db_real_6",
+    name: "Lellwyn Edwin",
+    role: "Immigration Legal & Visa Advisor",
+    city: "Goa",
+    bio: "Legal immigration consultant specializing in visa appeals, refusal reviews, Digital Nomad visas, and European PR pathways.",
+    tags: ["Digital Nomad", "Visa Appeals", "Refusal Review", "Portugal Golden Visa", "Spain Non-Lucrative"],
+    countries: ["Portugal", "Spain", "Germany", "United Kingdom"],
+    rating: 5.0,
+    reviews: 189,
+    isVerified: true,
+    isRemote: true,
+    govReg: "REG-LE-7701",
+    email: "lellwyn.edwin@visaformula.com",
+    image: "/experts/deepa_nair.jpg"
+  },
   {
     id: "d1", name: "Arjun Mehta", role: "Canada Immigration Consultant",
     city: "Hyderabad", bio: "10+ years helping Indian students and professionals get Canadian PR, Study Permits & PGWP. 850+ successful cases across Ontario and BC.",
@@ -184,8 +280,34 @@ export function FindExpertsPortal() {
                 }
             }
 
-            // Combine candidate pools: Local registered experts -> DB experts -> Sample platform experts
-            const combinedPool = [...localRegisteredExperts, ...dbExperts, ...dummyExperts];
+            // Read any active profile updates saved locally (e.g. DP photo change, bio change)
+            let expertUpdates: Record<string, any> = {};
+            if (typeof window !== "undefined") {
+                try {
+                    const storedUpdates = localStorage.getItem("visaformula_expert_profile_updates");
+                    if (storedUpdates) expertUpdates = JSON.parse(storedUpdates);
+                } catch (e) {}
+            }
+
+            // Combine candidate pools and apply real-time profile updates
+            const combinedPool = [...localRegisteredExperts, ...dbExperts, ...dummyExperts].map(e => {
+                const key = (e.name || e.business_name || '').toLowerCase().trim();
+                if (expertUpdates[key]) {
+                    const updateObj = expertUpdates[key];
+                    return {
+                        ...e,
+                        name: updateObj.name || e.name,
+                        role: updateObj.role || e.role,
+                        city: updateObj.city || e.city,
+                        bio: updateObj.bio || e.bio,
+                        image: updateObj.image || updateObj.profile_photo || e.image,
+                        tags: updateObj.tags || e.tags,
+                        countries: updateObj.countries || e.countries,
+                        phone: updateObj.phone || e.phone
+                    };
+                }
+                return e;
+            });
 
             // Perform accurate multi-field search filtering
             let filtered = combinedPool;

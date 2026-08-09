@@ -148,13 +148,19 @@ export function FindExpertsPortal() {
             try {
                 const res = await fetch(`/api/experts?${params.toString()}`);
                 const data = await res.json();
+                console.log(`[FindExpertsPortal] /api/experts → success=${data.success}, count=${data.experts?.length ?? 0}, error=${data.error || 'none'}`);
                 if (data.success && Array.isArray(data.experts)) {
                     dbExperts = data.experts;
                 } else {
-                    console.warn("[FindExpertsPortal] API returned:", data);
+                    // Surface the server error so we can diagnose it
+                    const errMsg = data.error || `API returned success=false (HTTP ${res.status})`;
+                    console.error("[FindExpertsPortal] API error:", errMsg);
+                    setFetchError(`Database error: ${errMsg}`);
                 }
-            } catch (err) {
-                console.error("[FindExpertsPortal] Failed to fetch /api/experts:", err);
+            } catch (err: any) {
+                const errMsg = err?.message || String(err);
+                console.error("[FindExpertsPortal] Failed to fetch /api/experts:", errMsg);
+                setFetchError(`Could not reach API: ${errMsg}`);
             }
 
             // 2. Build a set of names/emails already covered by DB
@@ -742,9 +748,11 @@ export function FindExpertsPortal() {
 
                     {/* Error state */}
                     {!loading && fetchError && (
-                        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
-                            <p className="text-red-600 font-bold text-sm">{fetchError}</p>
-                            <button onClick={() => fetchExperts(searchText, selectedCountry)} className="mt-3 text-xs font-bold text-red-500 underline">Retry</button>
+                        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center space-y-2">
+                            <p className="text-red-700 font-bold text-sm">⚠️ Could not load experts from database</p>
+                            <p className="text-red-500 text-xs font-mono break-all">{fetchError}</p>
+                            <p className="text-red-400 text-xs">Check that DATABASE_URL is set in your server environment variables.</p>
+                            <button onClick={() => fetchExperts(searchText, selectedCountry)} className="mt-3 text-xs font-bold text-red-500 underline">↻ Retry</button>
                         </div>
                     )}
 

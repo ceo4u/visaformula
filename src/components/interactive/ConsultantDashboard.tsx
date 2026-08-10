@@ -50,12 +50,51 @@ export function ConsultantDashboard() {
     const [formPortfolio, setFormPortfolio] = useState("");
     const [formTagsArray, setFormTagsArray] = useState<string[]>([]);
 
-    // Real Data States (Initialized clean / from localStorage)
-    const [leadsList, setLeadsList] = useState<any[]>([]);
-    const [enquiriesList, setEnquiriesList] = useState<any[]>([]);
-    const [classifiedsList, setClassifiedsList] = useState<any[]>([]);
-    const [reviewsList, setReviewsList] = useState<any[]>([]);
-    const [disputesList, setDisputesList] = useState<any[]>([]);
+    // Real Data States (Initialized with dummy data / from localStorage)
+    const DUMMY_LEADS = [
+        { id: 1, name: "Rahul Sharma", visa: "Canada Study Visa", country: "Canada 🇨🇦", phone: "+91 98765 43210", status: "New" },
+        { id: 2, name: "Priya Mehta", visa: "UK Skilled Worker", country: "UK 🇬🇧", phone: "+91 87654 32109", status: "Contacted" },
+        { id: 3, name: "Arjun Nair", visa: "Australia PR", country: "Australia 🇦🇺", phone: "+91 76543 21098", status: "In Progress" },
+        { id: 4, name: "Sneha Kapoor", visa: "USA F1 Student", country: "USA 🇺🇸", phone: "+91 65432 10987", status: "New" },
+        { id: 5, name: "Vikram Joshi", visa: "Germany Job Seeker", country: "Germany 🇩🇪", phone: "+91 54321 09876", status: "Qualified" },
+        { id: 6, name: "Anjali Singh", visa: "Canada Express Entry", country: "Canada 🇨🇦", phone: "+91 43210 98765", status: "New" },
+        { id: 7, name: "Rohan Verma", visa: "Australia Student Visa", country: "Australia 🇦🇺", phone: "+91 32109 87654", status: "Contacted" },
+        { id: 8, name: "Divya Patel", visa: "UK Tourist Visa", country: "UK 🇬🇧", phone: "+91 21098 76543", status: "Closed" },
+        { id: 9, name: "Karthik Rao", visa: "Canada Work Permit", country: "Canada 🇨🇦", phone: "+91 10987 65432", status: "In Progress" },
+        { id: 10, name: "Meera Iyer", visa: "New Zealand PR", country: "NZ 🇳🇿", phone: "+91 90876 54321", status: "New" },
+        { id: 11, name: "Aakash Gupta", visa: "UAE Work Visa", country: "UAE 🇦🇪", phone: "+91 80765 43210", status: "Qualified" },
+        { id: 12, name: "Pooja Mishra", visa: "Canada Study Permit", country: "Canada 🇨🇦", phone: "+91 70654 32109", status: "New" },
+    ];
+    const DUMMY_ENQUIRIES = [
+        { id: 1, name: "Canada Study Visa", visa: "Enquired May 30, 2025", flag: "🇨🇦", status: "New" },
+        { id: 2, name: "UK Visitor Visa", visa: "Enquired May 29, 2025", flag: "🇬🇧", status: "New" },
+        { id: 3, name: "Australia PR", visa: "Enquired May 28, 2025", flag: "🇦🇺", status: "Contacted" },
+        { id: 4, name: "USA Tourist Visa", visa: "Enquired May 21, 2025", flag: "🇺🇸", status: "Closed" },
+        { id: 5, name: "Germany Job Seeker", visa: "Enquired May 18, 2025", flag: "🇩🇪", status: "New" },
+        { id: 6, name: "Canada Express Entry", visa: "Enquired May 15, 2025", flag: "🇨🇦", status: "New" },
+        { id: 7, name: "NZ Skilled Migrant", visa: "Enquired May 12, 2025", flag: "🇳🇿", status: "Contacted" },
+        { id: 8, name: "UAE Work Visa", visa: "Enquired May 10, 2025", flag: "🇦🇪", status: "New" },
+    ];
+    const DUMMY_CLASSIFIEDS = [
+        { id: 1, title: "Study in Canada 2025 Intake Open", category: "Study Abroad", price: "₹ Free", views: 124, status: "Active", img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop" },
+        { id: 2, title: "Caregiver Jobs in Toronto", category: "Job Abroad", price: "₹ Free", views: 98, status: "Active", img: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?q=80&w=400&auto=format&fit=crop" },
+        { id: 3, title: "Shared Accommodation in Toronto", category: "Accommodation", price: "₹650 CAD / Month", views: 76, status: "Active", img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=400&auto=format&fit=crop" },
+        { id: 4, title: "Visa Consultancy Business for Sale", category: "Business Opportunity", price: "₹12,00,000", views: 61, status: "Active", img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=400&auto=format&fit=crop" },
+    ];
+    const DUMMY_REVIEWS = [
+        { id: 1, name: "Rahul S.", rating: 5, comment: "Excellent service! Got my Canada visa in record time.", date: "May 28, 2025" },
+        { id: 2, name: "Priya M.", rating: 4, comment: "Very professional and knowledgeable consultant.", date: "May 20, 2025" },
+        { id: 3, name: "Arjun N.", rating: 5, comment: "Highly recommend for Australia PR. Amazing support!", date: "May 10, 2025" },
+    ];
+    const DUMMY_DISPUTES = [
+        { id: "D-2025-0012", client: "Rahul Sharma", issue: "Service not as described", status: "Under Review", date: "May 22, 2025" },
+        { id: "D-2025-0008", client: "Neha Verma", issue: "Refund not processed", status: "In Progress", date: "May 18, 2025" },
+    ];
+    const [leadsList, setLeadsList] = useState<any[]>(DUMMY_LEADS);
+    const [enquiriesList, setEnquiriesList] = useState<any[]>(DUMMY_ENQUIRIES);
+    const [classifiedsList, setClassifiedsList] = useState<any[]>(DUMMY_CLASSIFIEDS);
+    const [reviewsList, setReviewsList] = useState<any[]>(DUMMY_REVIEWS);
+    const [disputesList, setDisputesList] = useState<any[]>(DUMMY_DISPUTES);
     const [supportTickets, setSupportTickets] = useState<any[]>([]);
     const [ticketSubject, setTicketSubject] = useState("");
     const [ticketQuery, setTicketQuery] = useState("");
@@ -652,7 +691,7 @@ export function ConsultantDashboard() {
                                     <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] mb-3">
                                         <Eye className="w-5 h-5" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">1</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">5</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">Profile Views<br/><span className="text-[10px] font-medium text-slate-400">This Month</span></span>
                                 </div>
 
@@ -660,7 +699,7 @@ export function ConsultantDashboard() {
                                     <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 mb-3">
                                         <Star className="w-5 h-5 fill-amber-400" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">{reviewsList.length > 0 ? "4.5" : "0.0"}</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">4.3</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">Avg. Rating</span>
                                 </div>
 
@@ -673,84 +712,91 @@ export function ConsultantDashboard() {
                                 </div>
                             </div>
 
-                            {/* Section 2: Middle Row 1 */}
+                            {/* Section 2: Chart + Enquiries + Profile Strength */}
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                                <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
+
+                                {/* Bar Chart — Leads & Enquiries Activity */}
+                                <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-3">
                                     <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-extrabold text-slate-900">Leads & Enquiries Activity</h3>
+                                        <h3 className="text-sm font-extrabold text-slate-900">Leads Overview</h3>
                                         <div className="flex items-center gap-3 text-[10.5px] font-bold">
-                                            <span className="flex items-center gap-1.5 text-cyan-600"><span className="w-2 h-2 rounded-full bg-cyan-500" /> Enquiries</span>
+                                            <span className="flex items-center gap-1.5 text-cyan-600"><span className="w-2 h-2 rounded-full bg-cyan-500" /> New Enquiries</span>
                                             <span className="flex items-center gap-1.5 text-indigo-600"><span className="w-2 h-2 rounded-full bg-indigo-500" /> Qualified Leads</span>
                                         </div>
                                     </div>
-
-                                    <div className="h-44 w-full relative pt-2 flex flex-col items-center justify-center border border-dashed border-slate-200 rounded-xl bg-slate-50/50">
-                                        <BarChart3 className="w-8 h-8 text-slate-300 mb-1" />
-                                        <p className="text-xs font-bold text-slate-600">Activity Analytics Live</p>
-                                        <p className="text-[11px] text-slate-400 font-medium mt-0.5">Line chart updates automatically as leads & enquiries grow.</p>
+                                    {/* SVG Bar Chart */}
+                                    <div className="w-full h-44 relative">
+                                        <svg viewBox="0 0 300 150" className="w-full h-full" preserveAspectRatio="none">
+                                            {/* Y-axis grid lines */}
+                                            {[0,1,2,3,4].map(i => (
+                                                <line key={i} x1="30" y1={10 + i*28} x2="295" y2={10 + i*28} stroke="#f1f5f9" strokeWidth="1" />
+                                            ))}
+                                            {/* Y labels */}
+                                            {[20,15,10,5,0].map((v,i) => (
+                                                <text key={i} x="25" y={14 + i*28} textAnchor="end" fontSize="7" fill="#94a3b8">{v}</text>
+                                            ))}
+                                            {/* Bars — Enquiries (cyan) */}
+                                            {[8,12,6,15,10,18,9,14,11,7].map((v,i) => (
+                                                <rect key={i} x={33 + i*27} y={122 - v*5.6} width="10" height={v*5.6} rx="2" fill="#06b6d4" opacity="0.85" />
+                                            ))}
+                                            {/* Bars — Qualified Leads (indigo) */}
+                                            {[4,7,3,9,6,11,5,8,7,4].map((v,i) => (
+                                                <rect key={i} x={44 + i*27} y={122 - v*5.6} width="10" height={v*5.6} rx="2" fill="#6366f1" opacity="0.85" />
+                                            ))}
+                                            {/* X axis labels */}
+                                            {["May 1","May 8","May 15","May 22","May 29"].map((l,i) => (
+                                                <text key={i} x={38 + i*54} y="138" textAnchor="middle" fontSize="6.5" fill="#94a3b8">{l}</text>
+                                            ))}
+                                            {/* X axis line */}
+                                            <line x1="30" y1="122" x2="295" y2="122" stroke="#e2e8f0" strokeWidth="1" />
+                                        </svg>
                                     </div>
                                 </div>
 
-                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
+                                {/* Recent Enquiries */}
+                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-3">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-extrabold text-slate-900">Recent Enquiries</h3>
                                         <button onClick={() => setActiveTab("enquiries")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
                                     </div>
-
-                                    {enquiriesList.length > 0 ? (
-                                        <div className="space-y-3">
-                                            {enquiriesList.map((enq, idx) => (
-                                                <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
+                                    <div className="space-y-2">
+                                        {enquiriesList.slice(0,4).map((enq, idx) => (
+                                            <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
+                                                <div className="flex items-center gap-2.5">
+                                                    <span className="text-lg leading-none">{enq.flag}</span>
                                                     <div>
                                                         <h4 className="text-xs font-extrabold text-slate-900">{enq.name}</h4>
                                                         <span className="text-[10px] font-medium text-slate-400">{enq.visa}</span>
                                                     </div>
-                                                    <span className="bg-amber-500 text-white text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">New</span>
                                                 </div>
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <div className="p-6 text-center border border-dashed border-slate-200 rounded-xl bg-slate-50/50 space-y-1">
-                                            <p className="text-xs font-bold text-slate-600">No Recent Enquiries Yet</p>
-                                            <p className="text-[11px] text-slate-400 font-medium">Inquiries submitted on your listing will appear here.</p>
-                                        </div>
-                                    )}
+                                                <span className={`text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md ${
+                                                    enq.status === "New" ? "bg-amber-500 text-white" :
+                                                    enq.status === "Contacted" ? "bg-blue-500 text-white" :
+                                                    "bg-slate-200 text-slate-600"
+                                                }`}>{enq.status}</span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
 
+                                {/* Profile Strength */}
                                 <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs flex flex-col justify-between items-center text-center">
                                     <div className="w-full text-left">
                                         <h3 className="text-sm font-extrabold text-slate-900">Profile Strength</h3>
                                     </div>
-
                                     <div className="relative w-28 h-28 my-2 flex items-center justify-center">
                                         <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                                            <path
-                                                className="text-slate-100"
-                                                strokeWidth="3.5"
-                                                stroke="currentColor"
-                                                fill="none"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                            />
-                                            <path
-                                                className="text-[#00a896]"
-                                                strokeDasharray="85, 100"
-                                                strokeWidth="3.5"
-                                                strokeLinecap="round"
-                                                stroke="currentColor"
-                                                fill="none"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                            />
+                                            <path className="text-slate-100" strokeWidth="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            <path className="text-[#00a896]" strokeDasharray="70, 100" strokeWidth="3.5" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                                         </svg>
-                                        <span className="absolute text-xl font-black text-slate-900">85%</span>
+                                        <span className="absolute text-xl font-black text-slate-900">70%</span>
                                     </div>
-
                                     <div className="space-y-1">
-                                        <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block">Excellent</span>
-                                        <p className="text-[11px] font-medium text-slate-500 max-w-[180px] mx-auto">Profile details verified.</p>
+                                        <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block">Good</span>
+                                        <p className="text-[11px] font-medium text-slate-500 max-w-[180px] mx-auto">Improve your profile to get more leads.</p>
                                     </div>
-
                                     <button onClick={() => setIsEditingProfile(true)} className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1 mt-2">
-                                        <span>Edit Profile</span>
+                                        <span>Improve Profile</span>
                                         <span>&rarr;</span>
                                     </button>
                                 </div>
@@ -803,7 +849,85 @@ export function ConsultantDashboard() {
                                 </button>
                             </div>
 
-                            {/* Section 4: Business Details Footer Card */}
+                            {/* Section 4: Reviews + Disputes + Promote Your Business */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                                {/* Reviews & Ratings */}
+                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-3">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-sm font-extrabold text-slate-900">Reviews & Ratings</h3>
+                                        <button onClick={() => setActiveTab("reviews")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-4xl font-black text-slate-900">4.3</span>
+                                        <div>
+                                            <div className="flex items-center gap-0.5">
+                                                {[1,2,3,4,5].map(s => (
+                                                    <Star key={s} className={`w-4 h-4 ${s <= 4 ? "text-amber-400 fill-amber-400" : "text-amber-200 fill-amber-100"}`} />
+                                                ))}
+                                            </div>
+                                            <p className="text-[11px] text-slate-400 font-medium mt-0.5">{reviewsList.length} Reviews</p>
+                                        </div>
+                                    </div>
+                                    {/* Star breakdown bars */}
+                                    <div className="space-y-1.5">
+                                        {[{s:5,count:18},{s:4,count:8},{s:3,count:4},{s:2,count:2},{s:1,count:1}].map(({s,count}) => (
+                                            <div key={s} className="flex items-center gap-2 text-[10.5px] font-bold text-slate-500">
+                                                <span className="w-3 text-right">{s}</span>
+                                                <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
+                                                <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-amber-400 rounded-full" style={{width: `${(count/33)*100}%`}} />
+                                                </div>
+                                                <span className="w-4 text-right">{count}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Ongoing Disputes */}
+                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-3">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-sm font-extrabold text-slate-900">Ongoing Disputes</h3>
+                                        <button onClick={() => setActiveTab("disputes")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
+                                    </div>
+                                    <div className="space-y-3">
+                                        {disputesList.map((d) => (
+                                            <div key={d.id} className="p-3 rounded-xl border border-slate-100 bg-slate-50/50 space-y-1.5">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-[10.5px] font-extrabold text-slate-700">Dispute #{d.id}</span>
+                                                    <span className={`text-[9.5px] font-extrabold px-2 py-0.5 rounded-md ${
+                                                        d.status === "Under Review" ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"
+                                                    }`}>{d.status}</span>
+                                                </div>
+                                                <p className="text-[10.5px] font-bold text-slate-900">Client: {d.client}</p>
+                                                <p className="text-[10px] text-slate-500 font-medium">Issue: {d.issue}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Promote Your Business */}
+                                <div className="lg:col-span-4 bg-gradient-to-br from-[#00a896] to-[#007a6e] rounded-2xl p-5 shadow-md space-y-3 text-white">
+                                    <div className="flex items-center gap-2">
+                                        <Megaphone className="w-5 h-5 text-white/80" />
+                                        <h3 className="text-sm font-extrabold">Promote Your Business</h3>
+                                    </div>
+                                    <p className="text-[11px] font-medium text-white/80 leading-relaxed">Get more visibility on VisaFormula homepage page</p>
+                                    <ul className="space-y-1.5 text-xs font-semibold text-white/90">
+                                        <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-white" /> Featured Listing</li>
+                                        <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-white" /> Top Position</li>
+                                        <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-white" /> More Leads</li>
+                                    </ul>
+                                    <button
+                                        onClick={() => setActiveTab("promotions")}
+                                        className="w-full bg-white text-[#00a896] font-extrabold text-xs py-2.5 rounded-xl hover:bg-slate-50 transition-all shadow-sm"
+                                    >
+                                        🚀 Promote Now
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Section 5: Business Details Footer */}
                             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
                                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                                     <h3 className="text-sm font-extrabold text-slate-900">Business Details</h3>
@@ -811,32 +935,27 @@ export function ConsultantDashboard() {
                                         <Edit2 className="w-3.5 h-3.5" /> Edit Details
                                     </button>
                                 </div>
-
                                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 text-xs">
                                     <div>
                                         <div className="flex items-center gap-1.5">
                                             <span className="font-extrabold text-slate-900">{profile.name}</span>
-                                            <span className="bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-1.5 py-0.2 rounded border border-emerald-200">✔ Verified</span>
+                                            <span className="bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded border border-emerald-200">✔ Verified</span>
                                         </div>
                                         <span className="text-slate-500 font-medium mt-0.5 block">{profile.city}</span>
                                     </div>
-
                                     <div>
                                         <span className="text-slate-400 font-bold block text-[10.5px]">Agency Type</span>
                                         <span className="font-extrabold text-slate-900 block mt-0.5">{profile.role}</span>
                                     </div>
-
                                     <div>
                                         <span className="text-slate-400 font-bold block text-[10.5px]">Countries Covered</span>
                                         <span className="font-extrabold text-slate-900 block mt-0.5">{profile.countries}</span>
                                     </div>
-
                                     <div>
                                         <span className="text-slate-400 font-bold block text-[10.5px]">Specializations</span>
                                         <span className="font-extrabold text-slate-900 block mt-0.5 truncate">{profile.specializations}</span>
                                     </div>
                                 </div>
-
                                 <div className="border-t border-slate-100 pt-3 text-center text-xs font-semibold text-slate-500">
                                     Need help? Visit our <button onClick={() => setActiveTab("help")} className="text-[#00a896] font-bold hover:underline">Help Center</button> or <button onClick={() => setActiveTab("help")} className="text-[#00a896] font-bold hover:underline">Contact Support</button>
                                 </div>

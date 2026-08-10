@@ -1225,6 +1225,9 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         }
         currentStep = step;
         updateUI(step);
+        if (step >= 3) {
+          saveSelfApplyToDB();
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setTimeout(() => {
           isTransitioning = false;
@@ -1438,6 +1441,65 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
     }
 
     // ==========================================
+    // SAVE SELF APPLY DETAILS TO NEON DATABASE
+    // ==========================================
+    async function saveSelfApplyToDB(paymentId = null, paymentStatus = 'submitted') {
+      try {
+        const visaType = selectedVisa || document.querySelector('#visaTypeTrigger span')?.textContent?.trim() || "Canada Student Visa";
+        const destinationCountry = selectedCountry || document.querySelector('#destTrigger span')?.textContent?.trim() || "Canada";
+        const travelDate = document.getElementById('travelDate')?.value || "";
+        const firstName = document.getElementById('firstName')?.value || "";
+        const lastName = document.getElementById('lastName')?.value || "";
+        const dob = document.getElementById('dob')?.value || "";
+        const passportNo = document.getElementById('passportNo')?.value || "";
+        const passportExpiry = document.getElementById('passportExpiry')?.value || "";
+        const nationality = document.getElementById('nationality')?.value || "Indian";
+        const emailAddress = document.getElementById('emailAddress')?.value || localStorage.getItem("seeker_email") || "";
+        const mobileNumber = document.getElementById('mobileNumber')?.value || localStorage.getItem("seeker_phone") || "";
+
+        const selectedServices = [];
+        document.querySelectorAll('.service-card.selected, .suggested-service-card.selected').forEach(card => {
+          const title = card.querySelector('.title, div:nth-child(2)')?.textContent?.trim();
+          if (title) selectedServices.push(title);
+        });
+
+        const payload = {
+          visaType,
+          destinationCountry,
+          travelDate,
+          firstName,
+          lastName,
+          dob,
+          passportNo,
+          passportExpiry,
+          nationality,
+          emailAddress,
+          mobileNumber,
+          selectedServices,
+          totalAmount: 2997,
+          paymentStatus: paymentId ? 'paid' : paymentStatus,
+          paymentId
+        };
+
+        // Save to localStorage for instant client state
+        localStorage.setItem("latest_self_application", JSON.stringify(payload));
+
+        const res = await fetch('/api/self-apply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          console.log('[Self Apply DB] Saved application ID:', data.id);
+        }
+      } catch (err) {
+        console.error('[Self Apply DB] Save error:', err);
+      }
+    }
+
+    // ==========================================
     // SUBMIT APPLICATION (RAZORPAY INTEGRATION)
     // ==========================================
     function submitApplication() {
@@ -1447,6 +1509,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
       const phone = document.getElementById('mobileNumber').value || "9999999999";
       const name = `${document.getElementById('firstName').value || 'Seeker'} ${document.getElementById('lastName').value || ''}`.trim();
 
+      saveSelfApplyToDB(null, 'pending_payment');
       toast('💳 Connecting to secure payment checkout...');
 
       const options = {
@@ -1458,6 +1521,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         image: "/logo.png?v=3",
         handler: function (response) {
           toast('💳 Payment successful! Reference: ' + response.razorpay_payment_id);
+          saveSelfApplyToDB(response.razorpay_payment_id, 'paid');
           goToStep(5);
         },
         prefill: {
@@ -1481,6 +1545,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
       } catch (e) {
         console.error('Razorpay Error:', e);
         toast('⚠️ Payment checkout failed to launch. Proceeding with demo validation.');
+        saveSelfApplyToDB('demo_payment_' + Date.now(), 'paid');
         setTimeout(() => {
           goToStep(5);
         }, 1500);

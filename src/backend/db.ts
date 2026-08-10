@@ -259,6 +259,31 @@ export async function runMigrations() {
   `);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_ad_click_ad_type ON ad_click_analytics (ad_type);`);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_ad_click_user_email ON ad_click_analytics (user_email);`);
+
+  // 11. Self Applications Table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS self_applications (
+      id SERIAL PRIMARY KEY,
+      visa_type VARCHAR(150),
+      destination_country VARCHAR(150),
+      travel_date VARCHAR(50),
+      first_name VARCHAR(100),
+      last_name VARCHAR(100),
+      dob VARCHAR(50),
+      passport_number VARCHAR(100),
+      passport_expiry VARCHAR(50),
+      nationality VARCHAR(100),
+      email VARCHAR(255),
+      mobile_number VARCHAR(50),
+      selected_services TEXT,
+      total_amount NUMERIC(10,2),
+      payment_status VARCHAR(50) DEFAULT 'submitted',
+      payment_id VARCHAR(255),
+      status VARCHAR(50) DEFAULT 'in_progress',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_self_app_email ON self_applications (email);`);
   })();
   return migrationsPromise;
 }

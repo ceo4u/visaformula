@@ -91,7 +91,7 @@ function LoginPortalContent() {
                     <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
                 </a>
                 <a href="/" className="shrink-0">
-                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none" />
+                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-10 sm:h-14 w-auto object-contain max-w-[160px] sm:max-w-none" />
                 </a>
             </div>
 
@@ -100,7 +100,7 @@ function LoginPortalContent() {
                 
                 {/* Logo Centered */}
                 <div className="flex justify-center pt-1">
-                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-10 sm:h-12 w-auto max-h-[50px] object-contain mx-auto" />
                 </div>
 
                 {/* Title */}

@@ -29,7 +29,7 @@ function LoginPortalContent() {
                 return;
             }
             // Fallback: read from localStorage
-            const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+            const userStr = typeof window !== "undefined" ? localStorage.getItem("Trawell IQ_user") : null;
             if (userStr) {
                 try {
                     const parsed = JSON.parse(userStr);
@@ -64,7 +64,7 @@ function LoginPortalContent() {
         setLoading(true);
         try {
             await signIn(email, password);
-            const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+            const userStr = typeof window !== "undefined" ? localStorage.getItem("Trawell IQ_user") : null;
             if (userStr) {
                 try {
                     const userObj = JSON.parse(userStr);
@@ -91,7 +91,7 @@ function LoginPortalContent() {
                     <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
                 </a>
                 <a href="/" className="shrink-0">
-                    <img src="/logo-white.png" alt="VisaFormula" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none" />
+                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none" />
                 </a>
             </div>
 
@@ -100,13 +100,13 @@ function LoginPortalContent() {
                 
                 {/* Logo Centered */}
                 <div className="flex justify-center pt-1">
-                    <img src="/logo.png" alt="VisaFormula" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
                 </div>
 
                 {/* Title */}
                 <div className="text-center space-y-1.5">
                     <h1 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight max-w-[280px] sm:max-w-xs mx-auto">
-                        Sign in to get started with VisaFormula
+                        Sign in to get started with Trawell IQ
                     </h1>
                     {/* Step indicator dots */}
                     <div className="flex items-center justify-center gap-1.5 pt-1">

@@ -1410,7 +1410,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         currency: "INR",
         name: "VisaFormula",
         description: "Smart Visa Application Suite",
-        image: "/logo.png",
+        image: "/trawell-logo.png",
         handler: function (response) {
           toast('💳 Payment successful! Reference: ' + response.razorpay_payment_id);
           goToStep(5);

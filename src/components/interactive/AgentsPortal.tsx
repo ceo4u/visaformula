@@ -22,13 +22,13 @@ const perks = [
   { emoji: "🧑‍💼", title: "Verify Expert Profiles",   desc: "Review consultant, lawyer, IELTS trainer and recruiter profiles. Check credentials, licences and KYC documents.",     bg: "bg-slate-50"    },
   { emoji: "📦",    title: "Review Tour Packages",    desc: "Check holiday packages, cruise listings, sport tour packages and event deals for accuracy and fraud.",                 bg: "bg-emerald-50"},
   { emoji: "💼",    title: "Verify Job Listings",     desc: "Review overseas job postings — verify employer details, visa claims, salary accuracy and recruiter legitimacy.",       bg: "bg-slate-50"  },
-  { emoji: "⭐",    title: "Quality Review",           desc: "Flag spam, incorrect info, or fake listings. Keep the VisaFormula platform trusted and high-quality for all users.",      bg: "bg-violet-50" },
+  { emoji: "⭐",    title: "Quality Review",           desc: "Flag spam, incorrect info, or fake listings. Keep the Trawell IQ platform trusted and high-quality for all users.",      bg: "bg-violet-50" },
 ];
 
 const joinSteps = [
   { num: "1", emoji: "📝", title: "Fill Application",    desc: "Name, city, language skills, work availability and why you want to join."                              },
   { num: "2", emoji: "🪪", title: "Upload ID & KYC",    desc: "Aadhar or PAN card. Quick identity verification for trust and payout setup."                           },
-  { num: "3", emoji: "✅", title: "VisaFormula Approval",     desc: "Our team reviews your application within 48 hours and activates your agent account."                   },
+  { num: "3", emoji: "✅", title: "Trawell IQ Approval",     desc: "Our team reviews your application within 48 hours and activates your agent account."                   },
   { num: "4", emoji: "💰", title: "Start & Earn",        desc: "Log in to your dashboard, pick tasks, verify and get paid every week."                                 },
 ];
 
@@ -193,7 +193,7 @@ export function AgentsPortal() {
               </div>
               <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-white leading-[1.07] mb-5 tracking-tight">
                 Become a<br />
-                VisaFormula Agent.<br />
+                Trawell IQ Agent.<br />
                 <span className="bg-gradient-to-r from-white to-[#7dd3fc] bg-clip-text text-transparent">
                   Verify. Earn. Grow.
                 </span>
@@ -281,7 +281,7 @@ export function AgentsPortal() {
         {/* WHAT AGENTS DO */}
         <div>
           <span className="text-[11px] font-extrabold text-[#0c1a2e] tracking-widest block mb-2">Your Role</span>
-          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl mb-2">What Does a VisaFormula Agent Do?</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl mb-2">What Does a Trawell IQ Agent Do?</h2>
           <p className="text-sm text-[#475569] mb-8">Agents are the quality backbone of VisaFormula — they verify everything before it goes live.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {perks.map(p => (
@@ -382,7 +382,7 @@ export function AgentsPortal() {
           <div className="text-center mb-8">
             <a href="/" className="inline-flex items-center gap-2 mb-3">
               <Globe className="w-6 h-6 text-red-500" />
-              <span className="text-2xl font-extrabold tracking-tight text-[#0c1a2e]">VisaFormula</span>
+              <span className="text-2xl font-extrabold tracking-tight text-[#0c1a2e]">Trawell IQ</span>
             </a>
             <h1 className="font-sans text-3xl font-extrabold text-black mb-1.5">Create Your Agent Account</h1>
             <p className="text-sm text-gray-500">Takes 5 minutes · Approved within 48 hours</p>
@@ -443,7 +443,7 @@ export function AgentsPortal() {
                     ))}
                   </div>
                 </div>
-                <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Why do you want to become a VisaFormula Agent?</label>
+                <div className="mb-4"><label className="text-[10px] font-medium tracking-normal text-[#94B0C4] block mb-1.5">Why do you want to become a Trawell IQ Agent?</label>
                   <textarea className="w-full bg-[#fff5f5] border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-[#0c1a2e] outline-none focus:border-[#0c1a2e] transition-all resize-none h-24 placeholder:text-gray-300" placeholder="Tell us a bit about yourself and why you'd be a great agent…" /></div>
               </div>
             )}
@@ -568,7 +568,7 @@ export function AgentsPortal() {
               <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-white font-bold shadow-md">RM</div>
               <div>
                 <div className="font-sans font-bold text-sm text-[#0c1a2e]">Riya Mehta</div>
-                <div className="text-[10px] text-[#475569]">VisaFormula Agent · Pune</div>
+                <div className="text-[10px] text-[#475569]">Trawell IQ Agent · Pune</div>
                 <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full px-2 py-0.5 text-[9px] font-bold mt-0.5">
                   <BadgeCheck className="w-2.5 h-2.5" /> Verified
                 </span>
@@ -692,7 +692,7 @@ export function AgentsPortal() {
               </div>
               <VerifyCard
                 initials="PS" gradient="bg-gradient-to-br from-slate-700 to-slate-900"
-                name="Priya Sharma" type="Immigration Consultant · Applies to list on VisaFormula"
+                name="Priya Sharma" type="Immigration Consultant · Applies to list on Trawell IQ"
                 location="Mumbai" exp="8 yrs experience" badge="🎓 Student Visa · PR"
                 earn="+₹150" earnLabel="on approval"
                 desc={`"I am a certified RCIC with 8 years of experience helping Indian students apply to Canadian universities. I have helped 400+ clients get their study permits."`}
@@ -704,7 +704,7 @@ export function AgentsPortal() {
               />
               <VerifyCard
                 initials="AM" gradient="bg-gradient-to-br from-[#A78BFA] to-[#7C3AED]"
-                name="Aryan Mathur" type="IELTS Training Institute · Applies to list on VisaFormula"
+                name="Aryan Mathur" type="IELTS Training Institute · Applies to list on Trawell IQ"
                 location="Delhi" exp="Institute since 2018" badge="📚 IELTS · PTE"
                 earn="+₹120" earnLabel="on approval"
                 desc={`"Aryan's IELTS Academy has trained 2,000+ students since 2018. We offer classroom and online batches with a 95% band 7+ success rate."`}
@@ -900,7 +900,7 @@ export function AgentsPortal() {
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-white font-sans font-bold text-2xl shadow-md">RM</div>
                   <div>
                     <div className="font-sans font-bold text-lg text-[#0c1a2e]">Riya Mehta</div>
-                    <div className="text-sm text-[#475569]">VisaFormula Agent · Pune, Maharashtra</div>
+                    <div className="text-sm text-[#475569]">Trawell IQ Agent · Pune, Maharashtra</div>
                     <div className="flex gap-2 mt-1">
                       <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full px-2 py-0.5 text-[10px] font-bold flex items-center gap-1"><BadgeCheck className="w-2.5 h-2.5" /> KYC Verified</span>
                       <span className="bg-slate-50 text-[#b91c1c] border border-slate-200 rounded-full px-2 py-0.5 text-[10px] font-bold">Agent since Jan 2026</span>

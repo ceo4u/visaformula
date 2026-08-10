@@ -88,7 +88,7 @@ export function ResetPasswordPortal() {
                         {/* Centered Logo */}
                         <div className="text-center mb-4">
                             <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
-                                <img src="/logo.png" alt="VisaFormula" className="h-28 w-auto object-contain mx-auto" />
+                                <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-28 w-auto object-contain mx-auto" />
                             </a>
                         </div>
 
@@ -204,7 +204,7 @@ export function ResetPasswordPortal() {
 
             {/* Footer */}
             <footer className="py-6 text-center text-xs text-slate-400 font-semibold border-t border-slate-100">
-                © 2026 VisaFormula. All rights reserved.
+                © 2026 Trawell IQ. All rights reserved.
             </footer>
         </div>
     );

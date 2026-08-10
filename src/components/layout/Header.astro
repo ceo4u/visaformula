@@ -11,7 +11,7 @@ const isHome = pathname === '/' || pathname === '';
         <!-- Logo - Left corner -->
         <div class="flex items-center shrink-0 py-2">
             <a href="/" class="flex items-center focus:outline-none -ml-2 lg:-ml-4">
-                <img id="header-logo-img" src="/logo.png?v=3" class="h-9 sm:h-10 lg:h-11 max-h-[46px] w-auto object-contain transition-all duration-200" alt="VisaFormula Logo" />
+                <img id="header-logo-img" src="/logo.png?v=3" class="h-9 sm:h-10 lg:h-11 max-h-[46px] w-auto object-contain transition-all duration-200" alt="Trawell IQ Logo" />
             </a>
         </div>
 
@@ -334,7 +334,7 @@ const isHome = pathname === '/' || pathname === '';
                 closeIcon.classList.remove('block');
                 if (window.scrollY <= 10 && (window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('/'))) {
                     headerElement.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/85 via-black/40 to-transparent border-none text-white";
-                    if (logoImgElement) logoImgElement.setAttribute("src", "/logo-white.png");
+                    if (logoImgElement) logoImgElement.setAttribute("src", "/trawell-logo.png");
                     mobileMenuBtn.style.color = "white";
                 }
             } else {
@@ -347,7 +347,7 @@ const isHome = pathname === '/' || pathname === '';
                 if (headerElement) {
                     headerElement.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 scrolled-header bg-white shadow-sm border-b border-slate-200/80 text-slate-800";
                 }
-                if (logoImgElement) logoImgElement.setAttribute("src", "/logo.png");
+                if (logoImgElement) logoImgElement.setAttribute("src", "/trawell-logo.png");
                 mobileMenuBtn.style.color = "#0c1a2e";
             }
         });
@@ -405,7 +405,7 @@ const isHome = pathname === '/' || pathname === '';
     // Dynamic Auth Header Button & Profile Dropdown Updates
     const seekerFirst = localStorage.getItem("seeker_firstName");
     const expertBusiness = localStorage.getItem("expert_businessName");
-    const userStr = localStorage.getItem("visaformula_user");
+    const userStr = localStorage.getItem("Trawell IQ_user");
 
     const isLoggedIn = seekerFirst || expertBusiness || (userStr && userStr !== "null");
 
@@ -519,7 +519,7 @@ const isHome = pathname === '/' || pathname === '';
         // Handle Logout triggers
         const handleLogout = (e) => {
             e.preventDefault();
-            localStorage.removeItem("visaformula_user");
+            localStorage.removeItem("Trawell IQ_user");
             localStorage.removeItem("seeker_firstName");
             localStorage.removeItem("seeker_lastName");
             localStorage.removeItem("seeker_email");

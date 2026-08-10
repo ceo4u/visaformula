@@ -33,7 +33,7 @@ export default function RegisterStart() {
       // Save user session in localStorage for frontend continuity
       if (typeof window !== "undefined") {
         if (data.user) {
-          localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+          localStorage.setItem("Trawell IQ_user", JSON.stringify(data.user));
         }
         if (formData.role === "expert") {
           localStorage.setItem("expert_isLoggedIn", "true");
@@ -53,7 +53,7 @@ export default function RegisterStart() {
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-xl border border-slate-200 font-sora">
       <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">Create Account</h2>
-      <p className="text-xs text-slate-500 text-center mb-6">Enter your details to get started with VisaFormula</p>
+      <p className="text-xs text-slate-500 text-center mb-6">Enter your details to get started with Trawell IQ</p>
 
       {errorMessage && (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl text-center animate-premium-fade">

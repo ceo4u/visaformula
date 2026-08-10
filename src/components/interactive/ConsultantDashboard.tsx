@@ -94,7 +94,7 @@ export function ConsultantDashboard() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const userStr = localStorage.getItem("visaformula_user");
+            const userStr = localStorage.getItem("Trawell IQ_user");
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
 
             let parsedUser: any = null;
@@ -239,7 +239,7 @@ export function ConsultantDashboard() {
 
         // Update active user & profile updates dictionary
         try {
-            localStorage.setItem("visaformula_user", JSON.stringify({
+            localStorage.setItem("Trawell IQ_user", JSON.stringify({
                 name: formName,
                 email: localStorage.getItem("expert_email") || "",
                 role: "expert",
@@ -247,7 +247,7 @@ export function ConsultantDashboard() {
                 type: "expert"
             }));
             const key = formName.toLowerCase().trim();
-            const existingUpdates = JSON.parse(localStorage.getItem("visaformula_expert_profile_updates") || "{}");
+            const existingUpdates = JSON.parse(localStorage.getItem("Trawell IQ_expert_profile_updates") || "{}");
             existingUpdates[key] = {
                 name: formName,
                 role: formRole,
@@ -259,16 +259,16 @@ export function ConsultantDashboard() {
                 profile_photo: formImage,
                 phone: formPhone
             };
-            localStorage.setItem("visaformula_expert_profile_updates", JSON.stringify(existingUpdates));
+            localStorage.setItem("Trawell IQ_expert_profile_updates", JSON.stringify(existingUpdates));
 
-            const existingAll = JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]");
+            const existingAll = JSON.parse(localStorage.getItem("Trawell IQ_all_experts") || "[]");
             const updatedAll = existingAll.map((x: any) => {
                 if (x.name?.toLowerCase() === formName.toLowerCase() || x.id === "logged-in-expert") {
                     return { ...x, name: formName, role: formRole, city: formCityName || finalFullAddress, bio: formBio, image: formImage, tags: formTagsArray, countries: formCountries.split(",").map(c => c.trim()) };
                 }
                 return x;
             });
-            localStorage.setItem("visaformula_all_experts", JSON.stringify(updatedAll));
+            localStorage.setItem("Trawell IQ_all_experts", JSON.stringify(updatedAll));
         } catch (e) {}
 
         setIsProfileIncomplete(false);
@@ -336,7 +336,7 @@ export function ConsultantDashboard() {
 
         setIsSubmittingTicket(true);
         const ticketId = `TK-${Math.floor(1000 + Math.random() * 9000)}`;
-        const userEmail = localStorage.getItem("expert_email") || "consultant@visaformula.com";
+        const userEmail = localStorage.getItem("expert_email") || "consultant@trawelliq.com";
         const userName = profile.name || "Registered Expert";
 
         const newTicket = {
@@ -371,7 +371,7 @@ export function ConsultantDashboard() {
         if (typeof window !== "undefined") {
             localStorage.removeItem("expert_isLoggedIn");
             localStorage.removeItem("expert_email");
-            localStorage.removeItem("visaformula_user");
+            localStorage.removeItem("Trawell IQ_user");
             window.location.href = "/signup/expert";
         }
     };
@@ -409,7 +409,7 @@ export function ConsultantDashboard() {
             <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-2xs">
                 <div className="flex items-center gap-3">
                     <a href="/" className="flex items-center">
-                        <img src="/logo.png" alt="VisaFormula Logo" className="h-8 sm:h-9 max-h-[36px] w-auto object-contain" />
+                        <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-8 sm:h-9 max-h-[36px] w-auto object-contain" />
                     </a>
                     
                     <button 
@@ -505,7 +505,7 @@ export function ConsultantDashboard() {
                     <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-4 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
                         <div className="space-y-4">
                             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                                <img src="/logo.png" alt="VisaFormula" className="h-7 w-auto object-contain" />
+                                <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-7 w-auto object-contain" />
                                 <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1 rounded-lg hover:bg-slate-100 text-slate-500">
                                     <X className="w-5 h-5" />
                                 </button>
@@ -790,7 +790,7 @@ export function ConsultantDashboard() {
                                     <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-2">
                                         <LayoutGrid className="w-8 h-8 text-slate-300 mx-auto" />
                                         <h4 className="text-sm font-extrabold text-slate-800">No Active Classified Ads Yet</h4>
-                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of visa seekers on VisaFormula.</p>
+                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of visa seekers on Trawell IQ.</p>
                                     </div>
                                 )}
 
@@ -958,7 +958,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Client Enquiries ({enquiriesList.length})</h2>
-                                    <p className="text-xs font-medium text-slate-500">Incoming inquiries submitted from your VisaFormula listing</p>
+                                    <p className="text-xs font-medium text-slate-500">Incoming inquiries submitted from your Trawell IQ listing</p>
                                 </div>
                             </div>
 
@@ -978,7 +978,7 @@ export function ConsultantDashboard() {
                                 <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
                                     <MessageSquare className="w-10 h-10 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-extrabold text-slate-800">No Client Enquiries Yet</h3>
-                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When prospective clients send inquiries from your VisaFormula listing, they will appear here in real-time.</p>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When prospective clients send inquiries from your Trawell IQ listing, they will appear here in real-time.</p>
                                 </div>
                             )}
                         </div>
@@ -1020,7 +1020,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">My Active Classifieds & Offers ({classifiedsList.length})</h2>
-                                    <p className="text-xs font-medium text-slate-500">Manage public listings shown on VisaFormula homepage</p>
+                                    <p className="text-xs font-medium text-slate-500">Manage public listings shown on Trawell IQ homepage</p>
                                 </div>
                                 <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
                                     <Plus className="w-4 h-4" /> Post New Ad
@@ -1045,7 +1045,7 @@ export function ConsultantDashboard() {
                                 <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
                                     <LayoutGrid className="w-10 h-10 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-extrabold text-slate-800">No Active Classified Ads</h3>
-                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on VisaFormula.</p>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on Trawell IQ.</p>
                                     <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
                                         + Post New Classified / Offer
                                     </button>
@@ -1095,7 +1095,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Promotions & Home Page Boost</h2>
-                                    <p className="text-xs font-medium text-slate-500">Boost your agency listing to the top position on VisaFormula homepage</p>
+                                    <p className="text-xs font-medium text-slate-500">Boost your agency listing to the top position on Trawell IQ homepage</p>
                                 </div>
                             </div>
 
@@ -1308,7 +1308,7 @@ export function ConsultantDashboard() {
                             <div className="space-y-4 max-w-lg">
                                 <div>
                                     <label className="text-xs font-bold text-slate-700 mb-1 block">Account Email Address</label>
-                                    <input type="email" disabled value={localStorage.getItem("expert_email") || "consultant@visaformula.com"} className="w-full px-3.5 py-2.5 bg-slate-100 border rounded-xl text-xs font-bold text-slate-500" />
+                                    <input type="email" disabled value={localStorage.getItem("expert_email") || "consultant@trawelliq.com"} className="w-full px-3.5 py-2.5 bg-slate-100 border rounded-xl text-xs font-bold text-slate-500" />
                                 </div>
 
                                 <div>
@@ -1329,7 +1329,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Help & Support Desk</h2>
-                                    <p className="text-xs font-medium text-slate-500">Get assistance from VisaFormula support team & track your queries</p>
+                                    <p className="text-xs font-medium text-slate-500">Get assistance from Trawell IQ support team & track your queries</p>
                                 </div>
                             </div>
 

@@ -122,7 +122,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     return;
                 }
 
-                const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+                const userStr = typeof window !== "undefined" ? localStorage.getItem("Trawell IQ_user") : null;
                 if (userStr) {
                     try {
                         const parsed = JSON.parse(userStr);
@@ -155,7 +155,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         setLoginLoading(true);
         try {
             await signIn(loginEmail, loginPassword);
-            const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
+            const userStr = typeof window !== "undefined" ? localStorage.getItem("Trawell IQ_user") : null;
             if (userStr) {
                 try {
                     const userObj = JSON.parse(userStr);
@@ -256,7 +256,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             if (response.ok) {
                 const data = await response.json();
                 if (data.user && typeof window !== "undefined") {
-                    localStorage.setItem("visaformula_user", JSON.stringify(data.user));
+                    localStorage.setItem("Trawell IQ_user", JSON.stringify(data.user));
                 }
             }
         } catch (err) {
@@ -285,7 +285,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 displayName: `${firstName} ${lastName}`.trim() || "Seeker User",
                 type: "seeker"
             };
-            localStorage.setItem("visaformula_user", JSON.stringify(seekerUser));
+            localStorage.setItem("Trawell IQ_user", JSON.stringify(seekerUser));
             localStorage.setItem("seeker_firstName", firstName);
             localStorage.setItem("seeker_lastName", lastName);
             localStorage.setItem("seeker_phone", `${countryCode} ${phone}`);
@@ -378,7 +378,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
                 </a>
                 <a href="/" className="shrink-0">
-                    <img src="/logo-white.png" alt="VisaFormula" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none" />
+                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none" />
                 </a>
             </div>
 
@@ -516,7 +516,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     )}
 
                     {/* ========================================================================= */}
-                    {/* CREATE ACCOUNT FORM VIEW (VisaHQ Match + Exact VisaFormula Collected Details) */}
+                    {/* CREATE ACCOUNT FORM VIEW (VisaHQ Match + Exact Trawell IQ Collected Details) */}
                     {/* ========================================================================= */}
                     {activeTab === "signup" && (
                         <form onSubmit={handleSignupSubmit} className="space-y-4">
@@ -866,7 +866,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                 <div>
                                     <h3 className="text-xl font-black text-slate-900">Registration Successful! 🎉</h3>
                                     <p className="text-xs text-slate-500 mt-1 font-semibold">
-                                        Welcome to VisaFormula! Redirecting to your dashboard...
+                                        Welcome to Trawell IQ! Redirecting to your dashboard...
                                     </p>
                                 </div>
                                 <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden mt-2">

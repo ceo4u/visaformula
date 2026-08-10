@@ -72,10 +72,28 @@ export default {
           DEFAULT: "hsl(var(--outline))",
           variant: "hsl(var(--outline-variant))",
         },
-        // New VisaFormula design system colors
+        // Trawell IQ Brand System Colors (Purple + Persian Green + White)
         navy: "#0C1A2E",
         ink: "#1A3347",
         hint: "#8FAEC4",
+        purple: {
+          DEFAULT: "#581C87",
+          dark: "#3B0764",
+          light: "#6B21A8",
+          accent: "#7E22CE",
+          soft: "#F3E8FF",
+        },
+        teal: {
+          DEFAULT: "#00A896",
+          dark: "#008F80",
+          light: "#2DD4BF",
+          soft: "#F0FDFA",
+        },
+        persian: {
+          DEFAULT: "#00A896",
+          dark: "#008577",
+          light: "#14B8A6",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

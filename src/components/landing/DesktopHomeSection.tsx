@@ -201,13 +201,13 @@ export function DesktopHomeSection() {
         {/* 1. FLIGHT AD BANNER — full width, right below header */}
         {/* ======================================================= */}
         <div className="relative rounded-2xl overflow-hidden flex items-center justify-between px-6 py-4 min-h-[86px] shadow-md text-white"
-          style={{ background: 'linear-gradient(90deg, #1c3570 0%, #2b4890 55%, #3a5ba0 100%)' }}
+          style={{ background: 'linear-gradient(90deg, #3b0764 0%, #581c87 45%, #6b21a8 75%, #00a896 100%)' }}
         >
           {/* Left */}
           <div className="relative z-10">
-            <p className="text-[10px] font-bold text-blue-200 tracking-wider uppercase mb-0.5">✈ SPONSORED</p>
+            <p className="text-[10px] font-bold text-teal-200 tracking-wider uppercase mb-0.5">✈ SPONSORED</p>
             <h3 className="text-white font-bold text-xl leading-tight">Fly High with Your Dreams</h3>
-            <p className="text-blue-200 text-xs font-medium mt-0.5">Best Deals on Flight Tickets</p>
+            <p className="text-purple-200 text-xs font-medium mt-0.5">Best Deals on Flight Tickets</p>
           </div>
 
           {/* Center plane thumb */}
@@ -223,13 +223,13 @@ export function DesktopHomeSection() {
 
           {/* Right */}
           <div className="relative z-10 flex items-center gap-5">
-            <a href="#" className="bg-white text-[#1c3570] font-bold text-sm px-5 py-2.5 rounded-xl shadow hover:bg-blue-50 transition whitespace-nowrap">
+            <a href="#" className="bg-white text-[#581c87] font-bold text-sm px-5 py-2.5 rounded-xl shadow hover:bg-teal-50 hover:text-[#00a896] transition whitespace-nowrap">
               Book Now
             </a>
             <div className="text-right">
-              <p className="text-blue-200 text-[10px] font-bold uppercase tracking-wider">UP TO</p>
+              <p className="text-purple-200 text-[10px] font-bold uppercase tracking-wider">UP TO</p>
               <p className="text-white font-black text-3xl leading-none">20% OFF</p>
-              <p className="text-blue-200 text-[10px] font-semibold">On International Flights</p>
+              <p className="text-teal-200 text-[10px] font-semibold">On International Flights</p>
             </div>
           </div>
         </div>

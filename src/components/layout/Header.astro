@@ -148,10 +148,10 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="text-[#00a896] border border-[#00a896] hover:bg-teal-50/50 px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200">
+                <a href="/login" id="login-btn" class="text-[#581c87] border border-[#581c87] hover:bg-purple-50/50 px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200">
                     Log in
                 </a>
-                <a href="/signup" id="signup-btn" class="bg-[#00a896] hover:bg-[#009485] text-white px-5 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200 shadow-md">
+                <a href="/signup" id="signup-btn" class="bg-[#581c87] hover:bg-[#4c1d95] text-white px-5 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200 shadow-md">
                     Sign Up
                 </a>
             </div>
@@ -189,7 +189,7 @@ const isHome = pathname === '/' || pathname === '';
 
         <!-- Mobile Menu Toggler (Hamburger + Mobile Sign Up Button / Logged In Profile Icon) -->
         <div class="flex items-center gap-2 lg:hidden z-50">
-            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#00a896] hover:bg-[#009485] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 shadow-sm">
+            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#581c87] hover:bg-[#4c1d95] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 shadow-sm">
                 Sign Up
             </a>
             <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 rounded-full border border-slate-300 bg-[#00a896] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm">
@@ -392,8 +392,8 @@ const isHome = pathname === '/' || pathname === '';
             // Always 100% Solid Pure White Header
             headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 scrolled-header bg-white shadow-2xs border-b border-slate-200/80 text-slate-800";
             if (logoImgEl) logoImgEl.setAttribute("src", "/trawell-logo.png");
-            if (loginBtnEl) loginBtnEl.className = "text-[#00a896] border-[#00a896] hover:bg-teal-50/50 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
-            if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#00a896] transition-colors focus:outline-none";
+            if (loginBtnEl) loginBtnEl.className = "text-[#581c87] border-[#581c87] hover:bg-purple-50/50 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
+            if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#581c87] transition-colors focus:outline-none";
             if (mobileMenuBtn) mobileMenuBtn.style.color = "#0c1a2e";
         };
 

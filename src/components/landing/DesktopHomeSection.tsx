@@ -263,7 +263,7 @@ export function DesktopHomeSection() {
 
             {/* Buttons */}
             <div className="flex flex-wrap gap-3">
-              <a href="/services/apply-visa"
+              <a href="/readiness"
                 className="bg-[#581c87] hover:bg-[#4c1d95] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]"
               >
                 Check Visa Readiness

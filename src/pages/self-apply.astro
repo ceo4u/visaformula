@@ -1,11 +1,12 @@
 ---
 // src/pages/self-apply.astro
 import Layout from '../layouts/Layout.astro';
+import LandingPage from '../components/landing/LandingPage';
 
 const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'dummy_razorpay_key';
 ---
 
-<Layout title="Self Apply — Your Visa, Your Way" description="Fill your application yourself. Get AI-powered suggestions and add our services if you need help." hideHeader={false}>
+<Layout title="Self Apply — Your Visa, Your Way" description="Fill your application yourself. Get AI-powered suggestions and add our services if you need help." hideHeader={true} hideFooter={true}>
   <script src="https://checkout.razorpay.com/v1/checkout.js" is:inline></script>
   <div id="razorpay-config" data-key={razorpayKeyId} style="display: none;"></div>
   <!-- CSS Styles directly copied from source -->
@@ -86,17 +87,16 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
     }
 
     .self-apply-container {
-      max-width: 1140px;
+      max-width: 100%;
       margin: 0 auto;
-      padding: 32px 24px;
+      padding: 24px 28px;
     }
 
     /* Hero */
     .self-apply-hero {
       text-align: center;
-      padding: 56px 24px 44px;
-      background: linear-gradient(135deg, #0C1A2E 0%, #061120 100%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 44px 24px 36px;
+      background: linear-gradient(135deg, #3b0764 0%, #581c87 45%, #6b21a8 75%, #00a896 100%);
       color: #FFFFFF;
       position: relative;
       overflow: hidden;
@@ -824,27 +824,44 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
     }
   </style>
 
-  <div class="self-apply-body">
-    <!-- ========== TOAST ========== -->
-    <div class="toast" id="toast">Message</div>
+  <!-- Main Home Page rendered in the background (blurred) -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <LandingPage client:only="react" />
+  </div>
 
-    <!-- ========== HERO ========== -->
-    <section class="self-apply-hero">
-      <div class="trust-badge">
-        <div class="dot"></div>
-        ✈️ Apply online directly. No expert required.
-      </div>
-      <h1>Self Apply — <span>Your Visa, Your Way</span></h1>
-      <p>Fill your application yourself. Get AI-powered suggestions and add our services if you need help.</p>
-      <div class="stats-row">
-        <div class="item"><div class="num">500+</div><div class="label">Applications Today</div></div>
-        <div class="item"><div class="num">98%</div><div class="label">Approval Rate</div></div>
-        <div class="item"><div class="num">24hr</div><div class="label">Avg Processing</div></div>
-      </div>
-    </section>
+  <!-- Dark Overlay with backdrop blur -->
+  <div class="fixed inset-0 z-10 bg-slate-900/50 backdrop-blur-sm pointer-events-none"></div>
 
-    <!-- ========== MAIN CONTAINER ========== -->
-    <div class="self-apply-container">
+  <!-- Toast -->
+  <div class="toast" id="toast">Message</div>
+
+  <!-- Self Apply Registration Wizard Modal Box -->
+  <div class="fixed inset-0 z-30 overflow-y-auto pointer-events-auto">
+    <div class="flex min-h-full items-center justify-center px-3 py-6 sm:px-4 sm:py-12">
+      <div class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden relative font-plus-jakarta my-auto">
+
+        <!-- ========== HERO HEADER ========== -->
+        <section class="self-apply-hero relative">
+          <!-- Close / Back to Home Button -->
+          <a href="/" class="absolute top-4 right-4 text-white/80 hover:text-white bg-white/15 hover:bg-white/25 p-2 rounded-full transition cursor-pointer z-20" title="Close / Back to Home">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </a>
+
+          <div class="trust-badge">
+            <div class="dot"></div>
+            ✈️ Apply online directly. No expert required.
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Self Apply — <span class="text-teal-300 underline decoration-teal-300 underline-offset-4">Your Visa, Your Way</span></h1>
+          <p class="text-purple-100 text-xs sm:text-sm max-w-md mx-auto mt-2 font-medium">Fill your application yourself. Get AI-powered suggestions and add our services if you need help.</p>
+          <div class="stats-row mt-4">
+            <div class="item"><div class="num text-teal-300">500+</div><div class="label text-purple-200">Applications Today</div></div>
+            <div class="item"><div class="num text-teal-300">98%</div><div class="label text-purple-200">Approval Rate</div></div>
+            <div class="item"><div class="num text-teal-300">24hr</div><div class="label text-purple-200">Avg Processing</div></div>
+          </div>
+        </section>
+
+        <!-- ========== MAIN CONTAINER ========== -->
+        <div class="self-apply-container">
 
       <!-- ===== STEP INDICATOR ===== -->
       <div class="step-indicator" id="stepIndicator">
@@ -1160,6 +1177,8 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         </div>
       </div>
 
+        </div>
+      </div>
     </div>
   </div>
 

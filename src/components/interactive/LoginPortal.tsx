@@ -100,7 +100,7 @@ function LoginPortalContent() {
                 
                 {/* Logo Centered */}
                 <div className="flex justify-center pt-1">
-                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-10 sm:h-12 w-auto max-h-[50px] object-contain mx-auto" />
+                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-14 sm:h-16 w-auto max-h-[70px] object-contain mx-auto" />
                 </div>
 
                 {/* Title */}

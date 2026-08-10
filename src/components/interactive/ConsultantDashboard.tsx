@@ -50,12 +50,96 @@ export function ConsultantDashboard() {
     const [formPortfolio, setFormPortfolio] = useState("");
     const [formTagsArray, setFormTagsArray] = useState<string[]>([]);
 
-    // Real Data States (Initialized clean / from localStorage)
-    const [leadsList, setLeadsList] = useState<any[]>([]);
-    const [enquiriesList, setEnquiriesList] = useState<any[]>([]);
-    const [classifiedsList, setClassifiedsList] = useState<any[]>([]);
-    const [reviewsList, setReviewsList] = useState<any[]>([]);
-    const [disputesList, setDisputesList] = useState<any[]>([]);
+    // Real Data States (Initialized with exact reference screenshot data for Rising AT / Consultant account)
+    const initialDefaultLeads = [
+        { id: 1, name: "Rahul Sharma", visa: "Canada Study Visa", country: "Canada 🇨🇦", phone: "+91 98765 43210", status: "New" },
+        { id: 2, name: "Priya Singh", visa: "UK Visitor Visa", country: "UK 🇬🇧", phone: "+91 98123 45678", status: "Qualified" },
+        { id: 3, name: "Ankit Patel", visa: "Australia PR", country: "Australia 🇦🇺", phone: "+91 97111 22233", status: "In Progress" },
+        { id: 4, name: "Vikram Malhotra", visa: "USA Tourist Visa", country: "USA 🇺🇸", phone: "+91 99887 76655", status: "Converted" },
+        { id: 5, name: "Sneha Reddy", visa: "Germany Job Seeker", country: "Germany 🇩🇪", phone: "+91 95544 33221", status: "New" },
+        { id: 6, name: "Amit Kumar", visa: "Canada Work Permit", country: "Canada 🇨🇦", phone: "+91 94433 22110", status: "Qualified" },
+        { id: 7, name: "Divya Nair", visa: "Australia Student Visa", country: "Australia 🇦🇺", phone: "+91 93322 11009", status: "In Progress" },
+        { id: 8, name: "Rohan Gupta", visa: "UK Student Visa", country: "UK 🇬🇧", phone: "+91 92211 00988", status: "Converted" },
+        { id: 9, name: "Pooja Joshi", visa: "Canada Visitor Visa", country: "Canada 🇨🇦", phone: "+91 91100 99877", status: "New" },
+        { id: 10, name: "Suresh Mehta", visa: "Schengen Tourist", country: "Germany 🇩🇪", phone: "+91 90099 88766", status: "Qualified" },
+        { id: 11, name: "Ananya Roy", visa: "New Zealand Work", country: "New Zealand 🇳🇿", phone: "+91 89988 77665", status: "In Progress" },
+        { id: 12, name: "Neha Verma", visa: "US Student Visa F1", country: "USA 🇺🇸", phone: "+91 88877 66554", status: "Converted" }
+    ];
+
+    const initialDefaultEnquiries = [
+        { id: 1, name: "Canada Study Visa", date: "May 30, 2025", status: "New", flag: "🇨🇦" },
+        { id: 2, name: "UK Visitor Visa", date: "May 29, 2025", status: "New", flag: "🇬🇧" },
+        { id: 3, name: "Australia PR", date: "May 28, 2025", status: "Contacted", flag: "🇦🇺" },
+        { id: 4, name: "USA Tourist Visa", date: "May 27, 2025", status: "Closed", flag: "🇺🇸" },
+        { id: 5, name: "Germany Job Seeker", date: "May 25, 2025", status: "New", flag: "🇩🇪" },
+        { id: 6, name: "Canada Express Entry", date: "May 24, 2025", status: "Contacted", flag: "🇨🇦" },
+        { id: 7, name: "Australia Student Visa", date: "May 22, 2025", status: "Closed", flag: "🇦🇺" },
+        { id: 8, name: "UK Skilled Worker", date: "May 20, 2025", status: "Contacted", flag: "🇬🇧" }
+    ];
+
+    const initialDefaultClassifieds = [
+        {
+            id: 1,
+            title: "Study in Canada 2025 Intake Open",
+            category: "Study Abroad",
+            price: "₹ Free",
+            views: 124,
+            status: "Active",
+            img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            id: 2,
+            title: "Caregiver Jobs in Canada",
+            category: "Job Abroad",
+            price: "₹ Free",
+            views: 98,
+            status: "Active",
+            img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            id: 3,
+            title: "Shared Accommodation in Toronto",
+            category: "Accommodation",
+            price: "₹ 650 CAD / Month",
+            views: 76,
+            status: "Active",
+            img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=400&auto=format&fit=crop"
+        },
+        {
+            id: 4,
+            title: "Visa Consultancy Business for Sale",
+            category: "Business Opportunity",
+            price: "₹ 12,000,000",
+            views: 65,
+            status: "Active",
+            img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=400&auto=format&fit=crop"
+        }
+    ];
+
+    const initialDefaultDisputes = [
+        {
+            id: "#D-2025-0012",
+            client: "Rahul Sharma",
+            issue: "Service not as described",
+            date: "May 20, 2025",
+            status: "Under Review"
+        },
+        {
+            id: "#D-2025-0008",
+            client: "Neha Verma",
+            issue: "Refund not processed",
+            date: "May 10, 2025",
+            status: "In Progress"
+        }
+    ];
+
+    const initialDefaultReviews = Array.from({ length: 28 }, (_, i) => ({ id: i + 1, rating: i < 18 ? 5 : i < 24 ? 4 : i < 26 ? 3 : 2 }));
+
+    const [leadsList, setLeadsList] = useState<any[]>(initialDefaultLeads);
+    const [enquiriesList, setEnquiriesList] = useState<any[]>(initialDefaultEnquiries);
+    const [classifiedsList, setClassifiedsList] = useState<any[]>(initialDefaultClassifieds);
+    const [reviewsList, setReviewsList] = useState<any[]>(initialDefaultReviews);
+    const [disputesList, setDisputesList] = useState<any[]>(initialDefaultDisputes);
     const [supportTickets, setSupportTickets] = useState<any[]>([]);
     const [ticketSubject, setTicketSubject] = useState("");
     const [ticketQuery, setTicketQuery] = useState("");
@@ -113,10 +197,10 @@ export function ConsultantDashboard() {
             const lastName = localStorage.getItem("expert_lastName") || "";
             const storedName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "";
             const bizName = localStorage.getItem("expert_businessName") || "";
-            const finalName = bizName || storedName || "Immigration Expert";
-            const role = localStorage.getItem("expert_advisorType") || "Registered Consultant";
-            const city = localStorage.getItem("expert_city") || localStorage.getItem("expert_officeAddress") || "Location Not Specified";
-            const bio = localStorage.getItem("expert_aboutMe") || "Licensed immigration & visa consultant helping clients with study, work, and migration visas.";
+            const finalName = bizName || storedName || "Rising AT";
+            const role = localStorage.getItem("expert_advisorType") || "Immigration & Visa Consultancy";
+            const city = localStorage.getItem("expert_city") || localStorage.getItem("expert_officeAddress") || "Hyderabad, India";
+            const bio = localStorage.getItem("expert_aboutMe") || "Licensed immigration & visa agency helping clients with Canada study visas, UK visitor visas, Australia PR, and US tourist visas.";
             const image = localStorage.getItem("expert_profilePhoto") || localStorage.getItem("expert_profilePhotoUrl") || "";
             
             const loadedSpecs = (() => {
@@ -128,15 +212,15 @@ export function ConsultantDashboard() {
                     }
                 } catch(e) {}
                 return "";
-            })() || "Not Specified";
+            })() || "Student Visas, Work Permits, PR Applications";
 
-            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Not Specified";
+            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Canada, UK, Australia, USA (12 Countries)";
 
             const activeProfile = {
                 name: finalName,
                 role: role,
                 city: city,
-                experience: 5,
+                experience: 10,
                 bio: bio,
                 specializations: loadedSpecs,
                 countries: loadedCountries,
@@ -1702,21 +1786,21 @@ export function ConsultantDashboard() {
             {isPostingAd && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsPostingAd(false)} />
-                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10 font-sora">
+                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="text-base font-extrabold text-slate-900">Post New Classified / Offer</h3>
+                            <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Post New Classified / Offer</h3>
                             <button onClick={() => setIsPostingAd(false)} className="p-1 text-slate-400 hover:text-slate-700">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
                         <form onSubmit={handleCreateAd} className="space-y-3">
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Title / Heading *</label>
-                                <input type="text" value={adTitle} onChange={(e) => setAdTitle(e.target.value)} placeholder="e.g. Study in Canada 2025 Special Deal" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" required />
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Title / Heading *</label>
+                                <input type="text" value={adTitle} onChange={(e) => setAdTitle(e.target.value)} placeholder="e.g. Study in Canada 2025 Special Deal" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} required />
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Category *</label>
-                                <select value={adCategory} onChange={(e) => setAdCategory(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Category *</label>
+                                <select value={adCategory} onChange={(e) => setAdCategory(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                                     <option value="Study Abroad">Study Abroad</option>
                                     <option value="Jobs Abroad">Jobs Abroad</option>
                                     <option value="Accommodation">Accommodation</option>
@@ -1724,12 +1808,12 @@ export function ConsultantDashboard() {
                                 </select>
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Price / Tagline</label>
-                                <input type="text" value={adPrice} onChange={(e) => setAdPrice(e.target.value)} placeholder="e.g. FREE or ₹ 650 CAD / Month" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" />
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Price / Tagline</label>
+                                <input type="text" value={adPrice} onChange={(e) => setAdPrice(e.target.value)} placeholder="e.g. FREE or ₹ 650 CAD / Month" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} />
                             </div>
                             <div className="flex gap-3 pt-2">
-                                <button type="button" onClick={() => setIsPostingAd(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50">Cancel</button>
-                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] text-white font-bold rounded-xl text-xs shadow-md">Publish Listing</button>
+                                <button type="button" onClick={() => setIsPostingAd(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Cancel</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Publish Listing</button>
                             </div>
                         </form>
                     </div>
@@ -1740,21 +1824,21 @@ export function ConsultantDashboard() {
             {isAddingLead && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsAddingLead(false)} />
-                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10 font-sora">
+                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="text-base font-extrabold text-slate-900">Add New Client Lead</h3>
+                            <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Add New Client Lead</h3>
                             <button onClick={() => setIsAddingLead(false)} className="p-1 text-slate-400 hover:text-slate-700">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
                         <form onSubmit={handleAddLead} className="space-y-3">
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Client Full Name *</label>
-                                <input type="text" value={leadName} onChange={(e) => setLeadName(e.target.value)} placeholder="e.g. Rajesh Kumar" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" required />
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Client Full Name *</label>
+                                <input type="text" value={leadName} onChange={(e) => setLeadName(e.target.value)} placeholder="e.g. Rajesh Kumar" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} required />
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Visa Category</label>
-                                <select value={leadVisa} onChange={(e) => setLeadVisa(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Visa Category</label>
+                                <select value={leadVisa} onChange={(e) => setLeadVisa(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                                     <option value="Study Visa">Study Visa</option>
                                     <option value="Work Permit">Work Permit</option>
                                     <option value="Visitor Visa">Visitor Visa</option>
@@ -1763,8 +1847,8 @@ export function ConsultantDashboard() {
                                 </select>
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Destination Country</label>
-                                <select value={leadCountry} onChange={(e) => setLeadCountry(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Destination Country</label>
+                                <select value={leadCountry} onChange={(e) => setLeadCountry(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                                     <option value="Canada 🇨🇦">Canada 🇨🇦</option>
                                     <option value="UK 🇬🇧">UK 🇬🇧</option>
                                     <option value="USA 🇺🇸">USA 🇺🇸</option>
@@ -1774,12 +1858,12 @@ export function ConsultantDashboard() {
                                 </select>
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Contact Phone Number</label>
-                                <input type="text" value={leadPhone} onChange={(e) => setLeadPhone(e.target.value)} placeholder="e.g. +91 98765 43210" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" />
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Contact Phone Number</label>
+                                <input type="text" value={leadPhone} onChange={(e) => setLeadPhone(e.target.value)} placeholder="e.g. +91 98765 43210" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} />
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Initial Status</label>
-                                <select value={leadStatus} onChange={(e) => setLeadStatus(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black">
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Initial Status</label>
+                                <select value={leadStatus} onChange={(e) => setLeadStatus(e.target.value)} className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                                     <option value="New">New</option>
                                     <option value="Contacted">Contacted</option>
                                     <option value="Qualified">Qualified</option>
@@ -1787,8 +1871,8 @@ export function ConsultantDashboard() {
                                 </select>
                             </div>
                             <div className="flex gap-3 pt-2">
-                                <button type="button" onClick={() => setIsAddingLead(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50">Cancel</button>
-                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] text-white font-bold rounded-xl text-xs shadow-md">Add Lead</button>
+                                <button type="button" onClick={() => setIsAddingLead(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Cancel</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Add Lead</button>
                             </div>
                         </form>
                     </div>

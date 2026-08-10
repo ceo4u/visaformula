@@ -266,7 +266,7 @@ export function DesktopHomeSection() {
               <a href="/services/apply-visa"
                 className="bg-[#00a896] hover:bg-[#009485] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]"
               >
-                Find Visa Help
+                Check Visa Readiness
               </a>
               <a href="/find-experts"
                 className="bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-bold text-sm px-6 py-3 rounded-xl transition-all hover:scale-[1.02]"

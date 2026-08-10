@@ -50,51 +50,12 @@ export function ConsultantDashboard() {
     const [formPortfolio, setFormPortfolio] = useState("");
     const [formTagsArray, setFormTagsArray] = useState<string[]>([]);
 
-    // Real Data States (Initialized with dummy data / from localStorage)
-    const DUMMY_LEADS = [
-        { id: 1, name: "Rahul Sharma", visa: "Canada Study Visa", country: "Canada 🇨🇦", phone: "+91 98765 43210", status: "New" },
-        { id: 2, name: "Priya Mehta", visa: "UK Skilled Worker", country: "UK 🇬🇧", phone: "+91 87654 32109", status: "Contacted" },
-        { id: 3, name: "Arjun Nair", visa: "Australia PR", country: "Australia 🇦🇺", phone: "+91 76543 21098", status: "In Progress" },
-        { id: 4, name: "Sneha Kapoor", visa: "USA F1 Student", country: "USA 🇺🇸", phone: "+91 65432 10987", status: "New" },
-        { id: 5, name: "Vikram Joshi", visa: "Germany Job Seeker", country: "Germany 🇩🇪", phone: "+91 54321 09876", status: "Qualified" },
-        { id: 6, name: "Anjali Singh", visa: "Canada Express Entry", country: "Canada 🇨🇦", phone: "+91 43210 98765", status: "New" },
-        { id: 7, name: "Rohan Verma", visa: "Australia Student Visa", country: "Australia 🇦🇺", phone: "+91 32109 87654", status: "Contacted" },
-        { id: 8, name: "Divya Patel", visa: "UK Tourist Visa", country: "UK 🇬🇧", phone: "+91 21098 76543", status: "Closed" },
-        { id: 9, name: "Karthik Rao", visa: "Canada Work Permit", country: "Canada 🇨🇦", phone: "+91 10987 65432", status: "In Progress" },
-        { id: 10, name: "Meera Iyer", visa: "New Zealand PR", country: "NZ 🇳🇿", phone: "+91 90876 54321", status: "New" },
-        { id: 11, name: "Aakash Gupta", visa: "UAE Work Visa", country: "UAE 🇦🇪", phone: "+91 80765 43210", status: "Qualified" },
-        { id: 12, name: "Pooja Mishra", visa: "Canada Study Permit", country: "Canada 🇨🇦", phone: "+91 70654 32109", status: "New" },
-    ];
-    const DUMMY_ENQUIRIES = [
-        { id: 1, name: "Canada Study Visa", visa: "Enquired May 30, 2025", flag: "🇨🇦", status: "New" },
-        { id: 2, name: "UK Visitor Visa", visa: "Enquired May 29, 2025", flag: "🇬🇧", status: "New" },
-        { id: 3, name: "Australia PR", visa: "Enquired May 28, 2025", flag: "🇦🇺", status: "Contacted" },
-        { id: 4, name: "USA Tourist Visa", visa: "Enquired May 21, 2025", flag: "🇺🇸", status: "Closed" },
-        { id: 5, name: "Germany Job Seeker", visa: "Enquired May 18, 2025", flag: "🇩🇪", status: "New" },
-        { id: 6, name: "Canada Express Entry", visa: "Enquired May 15, 2025", flag: "🇨🇦", status: "New" },
-        { id: 7, name: "NZ Skilled Migrant", visa: "Enquired May 12, 2025", flag: "🇳🇿", status: "Contacted" },
-        { id: 8, name: "UAE Work Visa", visa: "Enquired May 10, 2025", flag: "🇦🇪", status: "New" },
-    ];
-    const DUMMY_CLASSIFIEDS = [
-        { id: 1, title: "Study in Canada 2025 Intake Open", category: "Study Abroad", price: "₹ Free", views: 124, status: "Active", img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop" },
-        { id: 2, title: "Caregiver Jobs in Toronto", category: "Job Abroad", price: "₹ Free", views: 98, status: "Active", img: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?q=80&w=400&auto=format&fit=crop" },
-        { id: 3, title: "Shared Accommodation in Toronto", category: "Accommodation", price: "₹650 CAD / Month", views: 76, status: "Active", img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=400&auto=format&fit=crop" },
-        { id: 4, title: "Visa Consultancy Business for Sale", category: "Business Opportunity", price: "₹12,00,000", views: 61, status: "Active", img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=400&auto=format&fit=crop" },
-    ];
-    const DUMMY_REVIEWS = [
-        { id: 1, name: "Rahul S.", rating: 5, comment: "Excellent service! Got my Canada visa in record time.", date: "May 28, 2025" },
-        { id: 2, name: "Priya M.", rating: 4, comment: "Very professional and knowledgeable consultant.", date: "May 20, 2025" },
-        { id: 3, name: "Arjun N.", rating: 5, comment: "Highly recommend for Australia PR. Amazing support!", date: "May 10, 2025" },
-    ];
-    const DUMMY_DISPUTES = [
-        { id: "D-2025-0012", client: "Rahul Sharma", issue: "Service not as described", status: "Under Review", date: "May 22, 2025" },
-        { id: "D-2025-0008", client: "Neha Verma", issue: "Refund not processed", status: "In Progress", date: "May 18, 2025" },
-    ];
-    const [leadsList, setLeadsList] = useState<any[]>(DUMMY_LEADS);
-    const [enquiriesList, setEnquiriesList] = useState<any[]>(DUMMY_ENQUIRIES);
-    const [classifiedsList, setClassifiedsList] = useState<any[]>(DUMMY_CLASSIFIEDS);
-    const [reviewsList, setReviewsList] = useState<any[]>(DUMMY_REVIEWS);
-    const [disputesList, setDisputesList] = useState<any[]>(DUMMY_DISPUTES);
+    // Real Data States (Initialized clean / from localStorage)
+    const [leadsList, setLeadsList] = useState<any[]>([]);
+    const [enquiriesList, setEnquiriesList] = useState<any[]>([]);
+    const [classifiedsList, setClassifiedsList] = useState<any[]>([]);
+    const [reviewsList, setReviewsList] = useState<any[]>([]);
+    const [disputesList, setDisputesList] = useState<any[]>([]);
     const [supportTickets, setSupportTickets] = useState<any[]>([]);
     const [ticketSubject, setTicketSubject] = useState("");
     const [ticketQuery, setTicketQuery] = useState("");
@@ -691,7 +652,7 @@ export function ConsultantDashboard() {
                                     <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] mb-3">
                                         <Eye className="w-5 h-5" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">5</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">1</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">Profile Views<br/><span className="text-[10px] font-medium text-slate-400">This Month</span></span>
                                 </div>
 
@@ -699,7 +660,7 @@ export function ConsultantDashboard() {
                                     <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 mb-3">
                                         <Star className="w-5 h-5 fill-amber-400" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">4.3</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">{reviewsList.length > 0 ? "4.5" : "0.0"}</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">Avg. Rating</span>
                                 </div>
 
@@ -712,91 +673,84 @@ export function ConsultantDashboard() {
                                 </div>
                             </div>
 
-                            {/* Section 2: Chart + Enquiries + Profile Strength */}
+                            {/* Section 2: Middle Row 1 */}
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-                                {/* Bar Chart — Leads & Enquiries Activity */}
-                                <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-3">
+                                <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-extrabold text-slate-900">Leads Overview</h3>
+                                        <h3 className="text-sm font-extrabold text-slate-900">Leads & Enquiries Activity</h3>
                                         <div className="flex items-center gap-3 text-[10.5px] font-bold">
-                                            <span className="flex items-center gap-1.5 text-cyan-600"><span className="w-2 h-2 rounded-full bg-cyan-500" /> New Enquiries</span>
+                                            <span className="flex items-center gap-1.5 text-cyan-600"><span className="w-2 h-2 rounded-full bg-cyan-500" /> Enquiries</span>
                                             <span className="flex items-center gap-1.5 text-indigo-600"><span className="w-2 h-2 rounded-full bg-indigo-500" /> Qualified Leads</span>
                                         </div>
                                     </div>
-                                    {/* SVG Bar Chart */}
-                                    <div className="w-full h-44 relative">
-                                        <svg viewBox="0 0 300 150" className="w-full h-full" preserveAspectRatio="none">
-                                            {/* Y-axis grid lines */}
-                                            {[0,1,2,3,4].map(i => (
-                                                <line key={i} x1="30" y1={10 + i*28} x2="295" y2={10 + i*28} stroke="#f1f5f9" strokeWidth="1" />
-                                            ))}
-                                            {/* Y labels */}
-                                            {[20,15,10,5,0].map((v,i) => (
-                                                <text key={i} x="25" y={14 + i*28} textAnchor="end" fontSize="7" fill="#94a3b8">{v}</text>
-                                            ))}
-                                            {/* Bars — Enquiries (cyan) */}
-                                            {[8,12,6,15,10,18,9,14,11,7].map((v,i) => (
-                                                <rect key={i} x={33 + i*27} y={122 - v*5.6} width="10" height={v*5.6} rx="2" fill="#06b6d4" opacity="0.85" />
-                                            ))}
-                                            {/* Bars — Qualified Leads (indigo) */}
-                                            {[4,7,3,9,6,11,5,8,7,4].map((v,i) => (
-                                                <rect key={i} x={44 + i*27} y={122 - v*5.6} width="10" height={v*5.6} rx="2" fill="#6366f1" opacity="0.85" />
-                                            ))}
-                                            {/* X axis labels */}
-                                            {["May 1","May 8","May 15","May 22","May 29"].map((l,i) => (
-                                                <text key={i} x={38 + i*54} y="138" textAnchor="middle" fontSize="6.5" fill="#94a3b8">{l}</text>
-                                            ))}
-                                            {/* X axis line */}
-                                            <line x1="30" y1="122" x2="295" y2="122" stroke="#e2e8f0" strokeWidth="1" />
-                                        </svg>
+
+                                    <div className="h-44 w-full relative pt-2 flex flex-col items-center justify-center border border-dashed border-slate-200 rounded-xl bg-slate-50/50">
+                                        <BarChart3 className="w-8 h-8 text-slate-300 mb-1" />
+                                        <p className="text-xs font-bold text-slate-600">Activity Analytics Live</p>
+                                        <p className="text-[11px] text-slate-400 font-medium mt-0.5">Line chart updates automatically as leads & enquiries grow.</p>
                                     </div>
                                 </div>
 
-                                {/* Recent Enquiries */}
-                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-3">
+                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-4">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-extrabold text-slate-900">Recent Enquiries</h3>
                                         <button onClick={() => setActiveTab("enquiries")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
                                     </div>
-                                    <div className="space-y-2">
-                                        {enquiriesList.slice(0,4).map((enq, idx) => (
-                                            <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
-                                                <div className="flex items-center gap-2.5">
-                                                    <span className="text-lg leading-none">{enq.flag}</span>
+
+                                    {enquiriesList.length > 0 ? (
+                                        <div className="space-y-3">
+                                            {enquiriesList.map((enq, idx) => (
+                                                <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">
                                                     <div>
                                                         <h4 className="text-xs font-extrabold text-slate-900">{enq.name}</h4>
                                                         <span className="text-[10px] font-medium text-slate-400">{enq.visa}</span>
                                                     </div>
+                                                    <span className="bg-amber-500 text-white text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md">New</span>
                                                 </div>
-                                                <span className={`text-[9.5px] font-extrabold px-2.5 py-0.5 rounded-md ${
-                                                    enq.status === "New" ? "bg-amber-500 text-white" :
-                                                    enq.status === "Contacted" ? "bg-blue-500 text-white" :
-                                                    "bg-slate-200 text-slate-600"
-                                                }`}>{enq.status}</span>
-                                            </div>
-                                        ))}
-                                    </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="p-6 text-center border border-dashed border-slate-200 rounded-xl bg-slate-50/50 space-y-1">
+                                            <p className="text-xs font-bold text-slate-600">No Recent Enquiries Yet</p>
+                                            <p className="text-[11px] text-slate-400 font-medium">Inquiries submitted on your listing will appear here.</p>
+                                        </div>
+                                    )}
                                 </div>
 
-                                {/* Profile Strength */}
                                 <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs flex flex-col justify-between items-center text-center">
                                     <div className="w-full text-left">
                                         <h3 className="text-sm font-extrabold text-slate-900">Profile Strength</h3>
                                     </div>
+
                                     <div className="relative w-28 h-28 my-2 flex items-center justify-center">
                                         <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                                            <path className="text-slate-100" strokeWidth="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            <path className="text-[#00a896]" strokeDasharray="70, 100" strokeWidth="3.5" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            <path
+                                                className="text-slate-100"
+                                                strokeWidth="3.5"
+                                                stroke="currentColor"
+                                                fill="none"
+                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            />
+                                            <path
+                                                className="text-[#00a896]"
+                                                strokeDasharray="85, 100"
+                                                strokeWidth="3.5"
+                                                strokeLinecap="round"
+                                                stroke="currentColor"
+                                                fill="none"
+                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            />
                                         </svg>
-                                        <span className="absolute text-xl font-black text-slate-900">70%</span>
+                                        <span className="absolute text-xl font-black text-slate-900">85%</span>
                                     </div>
+
                                     <div className="space-y-1">
-                                        <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block">Good</span>
-                                        <p className="text-[11px] font-medium text-slate-500 max-w-[180px] mx-auto">Improve your profile to get more leads.</p>
+                                        <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block">Excellent</span>
+                                        <p className="text-[11px] font-medium text-slate-500 max-w-[180px] mx-auto">Profile details verified.</p>
                                     </div>
+
                                     <button onClick={() => setIsEditingProfile(true)} className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1 mt-2">
-                                        <span>Improve Profile</span>
+                                        <span>Edit Profile</span>
                                         <span>&rarr;</span>
                                     </button>
                                 </div>
@@ -849,85 +803,7 @@ export function ConsultantDashboard() {
                                 </button>
                             </div>
 
-                            {/* Section 4: Reviews + Disputes + Promote Your Business */}
-                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-                                {/* Reviews & Ratings */}
-                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-3">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-extrabold text-slate-900">Reviews & Ratings</h3>
-                                        <button onClick={() => setActiveTab("reviews")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <span className="text-4xl font-black text-slate-900">4.3</span>
-                                        <div>
-                                            <div className="flex items-center gap-0.5">
-                                                {[1,2,3,4,5].map(s => (
-                                                    <Star key={s} className={`w-4 h-4 ${s <= 4 ? "text-amber-400 fill-amber-400" : "text-amber-200 fill-amber-100"}`} />
-                                                ))}
-                                            </div>
-                                            <p className="text-[11px] text-slate-400 font-medium mt-0.5">{reviewsList.length} Reviews</p>
-                                        </div>
-                                    </div>
-                                    {/* Star breakdown bars */}
-                                    <div className="space-y-1.5">
-                                        {[{s:5,count:18},{s:4,count:8},{s:3,count:4},{s:2,count:2},{s:1,count:1}].map(({s,count}) => (
-                                            <div key={s} className="flex items-center gap-2 text-[10.5px] font-bold text-slate-500">
-                                                <span className="w-3 text-right">{s}</span>
-                                                <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
-                                                <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                                    <div className="h-full bg-amber-400 rounded-full" style={{width: `${(count/33)*100}%`}} />
-                                                </div>
-                                                <span className="w-4 text-right">{count}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Ongoing Disputes */}
-                                <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs space-y-3">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-extrabold text-slate-900">Ongoing Disputes</h3>
-                                        <button onClick={() => setActiveTab("disputes")} className="text-xs font-bold text-[#00a896] hover:underline">View All</button>
-                                    </div>
-                                    <div className="space-y-3">
-                                        {disputesList.map((d) => (
-                                            <div key={d.id} className="p-3 rounded-xl border border-slate-100 bg-slate-50/50 space-y-1.5">
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-[10.5px] font-extrabold text-slate-700">Dispute #{d.id}</span>
-                                                    <span className={`text-[9.5px] font-extrabold px-2 py-0.5 rounded-md ${
-                                                        d.status === "Under Review" ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"
-                                                    }`}>{d.status}</span>
-                                                </div>
-                                                <p className="text-[10.5px] font-bold text-slate-900">Client: {d.client}</p>
-                                                <p className="text-[10px] text-slate-500 font-medium">Issue: {d.issue}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Promote Your Business */}
-                                <div className="lg:col-span-4 bg-gradient-to-br from-[#00a896] to-[#007a6e] rounded-2xl p-5 shadow-md space-y-3 text-white">
-                                    <div className="flex items-center gap-2">
-                                        <Megaphone className="w-5 h-5 text-white/80" />
-                                        <h3 className="text-sm font-extrabold">Promote Your Business</h3>
-                                    </div>
-                                    <p className="text-[11px] font-medium text-white/80 leading-relaxed">Get more visibility on VisaFormula homepage page</p>
-                                    <ul className="space-y-1.5 text-xs font-semibold text-white/90">
-                                        <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-white" /> Featured Listing</li>
-                                        <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-white" /> Top Position</li>
-                                        <li className="flex items-center gap-2"><CheckCircle className="w-3.5 h-3.5 text-white" /> More Leads</li>
-                                    </ul>
-                                    <button
-                                        onClick={() => setActiveTab("promotions")}
-                                        className="w-full bg-white text-[#00a896] font-extrabold text-xs py-2.5 rounded-xl hover:bg-slate-50 transition-all shadow-sm"
-                                    >
-                                        🚀 Promote Now
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Section 5: Business Details Footer */}
+                            {/* Section 4: Business Details Footer Card */}
                             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
                                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                                     <h3 className="text-sm font-extrabold text-slate-900">Business Details</h3>
@@ -935,27 +811,32 @@ export function ConsultantDashboard() {
                                         <Edit2 className="w-3.5 h-3.5" /> Edit Details
                                     </button>
                                 </div>
+
                                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 text-xs">
                                     <div>
                                         <div className="flex items-center gap-1.5">
                                             <span className="font-extrabold text-slate-900">{profile.name}</span>
-                                            <span className="bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded border border-emerald-200">✔ Verified</span>
+                                            <span className="bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-1.5 py-0.2 rounded border border-emerald-200">✔ Verified</span>
                                         </div>
                                         <span className="text-slate-500 font-medium mt-0.5 block">{profile.city}</span>
                                     </div>
+
                                     <div>
                                         <span className="text-slate-400 font-bold block text-[10.5px]">Agency Type</span>
                                         <span className="font-extrabold text-slate-900 block mt-0.5">{profile.role}</span>
                                     </div>
+
                                     <div>
                                         <span className="text-slate-400 font-bold block text-[10.5px]">Countries Covered</span>
                                         <span className="font-extrabold text-slate-900 block mt-0.5">{profile.countries}</span>
                                     </div>
+
                                     <div>
                                         <span className="text-slate-400 font-bold block text-[10.5px]">Specializations</span>
                                         <span className="font-extrabold text-slate-900 block mt-0.5 truncate">{profile.specializations}</span>
                                     </div>
                                 </div>
+
                                 <div className="border-t border-slate-100 pt-3 text-center text-xs font-semibold text-slate-500">
                                     Need help? Visit our <button onClick={() => setActiveTab("help")} className="text-[#00a896] font-bold hover:underline">Help Center</button> or <button onClick={() => setActiveTab("help")} className="text-[#00a896] font-bold hover:underline">Contact Support</button>
                                 </div>
@@ -1537,9 +1418,9 @@ export function ConsultantDashboard() {
             {isEditingProfile && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
                     <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsEditingProfile(false)} />
-                    <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-5 sm:p-7 space-y-4 z-10 font-sora max-h-[88vh] overflow-y-auto">
+                    <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-5 sm:p-7 space-y-4 z-10 max-h-[88vh] overflow-y-auto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="text-base sm:text-lg font-extrabold text-slate-900">Edit Business & Profile Details</h3>
+                            <h3 className="text-base sm:text-lg font-extrabold text-slate-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Edit Business & Profile Details</h3>
                             <button onClick={() => setIsEditingProfile(false)} className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors">
                                 <X className="w-5 h-5" />
                             </button>
@@ -1548,7 +1429,7 @@ export function ConsultantDashboard() {
                             
                             {/* Profile Photo / Business Logo */}
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Profile Photo / Business Logo</label>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Profile Photo / Business Logo</label>
                                 <div className="flex items-center gap-3">
                                     {formImage && !formImage.includes("unsplash.com") ? (
                                         <img src={formImage} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" />
@@ -1580,7 +1461,7 @@ export function ConsultantDashboard() {
                             {/* Business Name & Type of Business */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
-                                    <label className="text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+                                    <label className="text-xs font-bold text-slate-700 mb-1 flex items-center justify-between" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                                         <span>Business / Consultancy Name *</span>
                                         <span className="text-[10px] text-slate-400 font-semibold flex items-center gap-1"><Lock className="w-3 h-3 text-slate-400" /> Non-editable</span>
                                     </label>
@@ -1594,11 +1475,12 @@ export function ConsultantDashboard() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Type of Business *</label>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Type of Business *</label>
                                     <select 
                                         value={formRole} 
                                         onChange={(e) => setFormRole(e.target.value)}
                                         className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
+                                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                     >
                                         <option value="Registered Consultant">Registered Consultant</option>
                                         <option value="Authorised immigration / visa appeal lawyer">Authorised immigration / visa appeal lawyer</option>
@@ -1613,86 +1495,92 @@ export function ConsultantDashboard() {
 
                             {/* Contact / WhatsApp Number */}
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Contact / WhatsApp Number *</label>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Contact / WhatsApp Number *</label>
                                 <input 
                                     type="tel" 
                                     required
                                     value={formPhone} 
                                     onChange={(e) => setFormPhone(e.target.value)} 
                                     placeholder="e.g. +91 98765 43210"
-                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
+                                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                 />
                             </div>
 
                             {/* Office / Practice Location Address (Granular 5 Fields) */}
-                            <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 space-y-3 font-sans">
-                                <label className="text-xs font-bold text-slate-900 block font-sans">Office / Practice Location Address *</label>
+                            <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 space-y-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                <label className="text-xs font-bold text-slate-900 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Office / Practice Location Address *</label>
                                 <div>
-                                    <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">Area / Locality / Street Address *</label>
+                                    <label className="text-[11px] font-semibold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Area / Locality / Street Address *</label>
                                     <input 
                                         type="text" 
                                         required
                                         value={formArea} 
                                         onChange={(e) => setFormArea(e.target.value)} 
                                         placeholder="e.g. Suite 402, MG Road"
-                                        className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
+                                        className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs"
+                                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                     />
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
                                     <div>
-                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">City / District / Town *</label>
+                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>City / District / Town *</label>
                                         <input 
                                             type="text" 
                                             required
                                             value={formCityName} 
                                             onChange={(e) => setFormCityName(e.target.value)} 
                                             placeholder="e.g. Mumbai"
-                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
+                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs"
+                                            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                         />
                                     </div>
                                     <div>
-                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">State / Province *</label>
+                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>State / Province *</label>
                                         <input 
                                             type="text" 
                                             required
                                             value={formState} 
                                             onChange={(e) => setFormState(e.target.value)} 
                                             placeholder="e.g. Maharashtra"
-                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
+                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs"
+                                            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                         />
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
                                     <div>
-                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">Country *</label>
+                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Country *</label>
                                         <input 
                                             type="text" 
                                             required
                                             value={formCountry} 
                                             onChange={(e) => setFormCountry(e.target.value)} 
                                             placeholder="e.g. India"
-                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
+                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs"
+                                            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                         />
                                     </div>
                                     <div>
-                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block font-sans">ZIP / Postal Code *</label>
+                                        <label className="text-[11px] font-semibold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>ZIP / Postal Code *</label>
                                         <input 
                                             type="text" 
                                             required
                                             value={formZip} 
                                             onChange={(e) => setFormZip(e.target.value)} 
                                             placeholder="e.g. 400001"
-                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs font-sans" 
+                                            className="w-full px-3.5 py-2.5 border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-900 bg-white outline-none focus:border-[#00a896] shadow-2xs"
+                                            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                         />
                                     </div>
                                 </div>
                             </div>
 
                             {/* Field of Expertise / Study Pills */}
-                            <div className="font-sans">
-                                <label className="text-xs font-bold text-slate-900 block mb-1 font-sans">Field of Expertise / Study *</label>
-                                <span className="text-[11px] text-slate-500 font-semibold block mb-2 font-sans">Select one or more services:</span>
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-sans">
+                            <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                <label className="text-xs font-bold text-slate-900 block mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Field of Expertise / Study *</label>
+                                <span className="text-[11px] text-slate-500 font-semibold block mb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Select one or more services:</span>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                                     {[
                                         { id: "VISIT", label: "Visit Visa" },
                                         { id: "WORK", label: "Work Permit" },
@@ -1715,11 +1603,12 @@ export function ConsultantDashboard() {
                                                         setFormTagsArray(prev => [...prev, service.id]);
                                                     }
                                                 }}
-                                                className={`px-3 py-2.5 rounded-2xl border text-xs font-semibold text-center transition-all cursor-pointer font-sans ${
+                                                className={`px-3 py-2.5 rounded-2xl border text-xs font-semibold text-center transition-all cursor-pointer ${
                                                     isChecked 
                                                         ? "bg-[#00a896] border-[#00a896] text-white shadow-xs font-bold" 
                                                         : "bg-white border-slate-200/90 text-slate-700 hover:bg-teal-50/50 hover:border-[#00a896]"
                                                 }`}
+                                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                             >
                                                 {service.label}
                                             </button>
@@ -1730,7 +1619,7 @@ export function ConsultantDashboard() {
 
                             {/* Countries Covered */}
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">Countries Covered *</label>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Countries Covered *</label>
                                 <select
                                     onChange={(e) => {
                                         const val = e.target.value;
@@ -1767,7 +1656,7 @@ export function ConsultantDashboard() {
                             {/* Government Registration & Portfolio */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
-                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Government Registration Number / License (Optional)</label>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Government Registration Number / License (Optional)</label>
                                     <input 
                                         type="text" 
                                         value={formGovReg} 
@@ -1777,7 +1666,7 @@ export function ConsultantDashboard() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Portfolio / Website Link (Optional)</label>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Portfolio / Website Link (Optional)</label>
                                     <input 
                                         type="url" 
                                         value={formPortfolio} 
@@ -1790,18 +1679,19 @@ export function ConsultantDashboard() {
 
                             {/* About Consultancy & Bio */}
                             <div>
-                                <label className="text-xs font-bold text-slate-700 mb-1 block">About Consultancy & Bio</label>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>About Consultancy & Bio</label>
                                 <textarea 
                                     rows={3} 
                                     value={formBio} 
                                     onChange={(e) => setFormBio(e.target.value)} 
-                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 outline-none focus:border-black" 
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 outline-none focus:border-black"
+                                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                 />
                             </div>
 
                             <div className="flex gap-3 pt-2 border-t border-slate-100">
-                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-colors">Cancel</button>
-                                <button type="submit" className="flex-1 py-3 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md transition-all">Save Changes</button>
+                                <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Cancel</button>
+                                <button type="submit" className="flex-1 py-3 bg-[#00a896] hover:bg-[#008f80] text-white font-bold rounded-xl text-xs shadow-md transition-all" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Save Changes</button>
                             </div>
                         </form>
                     </div>

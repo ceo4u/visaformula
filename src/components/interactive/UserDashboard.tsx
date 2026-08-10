@@ -34,7 +34,7 @@ export function UserDashboard() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const userStr = localStorage.getItem("Trawell IQ_user");
+            const userStr = localStorage.getItem("visaformula_user");
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
             if (isLoggedInExpert === "true") {
                 window.location.href = "/consultant/dashboard";
@@ -206,7 +206,7 @@ export function UserDashboard() {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("Trawell IQ_user");
+        localStorage.removeItem("visaformula_user");
         localStorage.removeItem("seeker_firstName");
         localStorage.removeItem("seeker_lastName");
         localStorage.removeItem("seeker_email");

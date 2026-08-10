@@ -29,7 +29,7 @@ function LoginPortalContent() {
                 return;
             }
             // Fallback: read from localStorage
-            const userStr = typeof window !== "undefined" ? localStorage.getItem("Trawell IQ_user") : null;
+            const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
             if (userStr) {
                 try {
                     const parsed = JSON.parse(userStr);
@@ -64,7 +64,7 @@ function LoginPortalContent() {
         setLoading(true);
         try {
             await signIn(email, password);
-            const userStr = typeof window !== "undefined" ? localStorage.getItem("Trawell IQ_user") : null;
+            const userStr = typeof window !== "undefined" ? localStorage.getItem("visaformula_user") : null;
             if (userStr) {
                 try {
                     const userObj = JSON.parse(userStr);

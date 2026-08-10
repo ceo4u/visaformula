@@ -94,7 +94,7 @@ export function ConsultantDashboard() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const userStr = localStorage.getItem("Trawell IQ_user");
+            const userStr = localStorage.getItem("visaformula_user");
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
 
             let parsedUser: any = null;
@@ -239,7 +239,7 @@ export function ConsultantDashboard() {
 
         // Update active user & profile updates dictionary
         try {
-            localStorage.setItem("Trawell IQ_user", JSON.stringify({
+            localStorage.setItem("visaformula_user", JSON.stringify({
                 name: formName,
                 email: localStorage.getItem("expert_email") || "",
                 role: "expert",
@@ -247,7 +247,7 @@ export function ConsultantDashboard() {
                 type: "expert"
             }));
             const key = formName.toLowerCase().trim();
-            const existingUpdates = JSON.parse(localStorage.getItem("Trawell IQ_expert_profile_updates") || "{}");
+            const existingUpdates = JSON.parse(localStorage.getItem("visaformula_expert_profile_updates") || "{}");
             existingUpdates[key] = {
                 name: formName,
                 role: formRole,
@@ -259,16 +259,16 @@ export function ConsultantDashboard() {
                 profile_photo: formImage,
                 phone: formPhone
             };
-            localStorage.setItem("Trawell IQ_expert_profile_updates", JSON.stringify(existingUpdates));
+            localStorage.setItem("visaformula_expert_profile_updates", JSON.stringify(existingUpdates));
 
-            const existingAll = JSON.parse(localStorage.getItem("Trawell IQ_all_experts") || "[]");
+            const existingAll = JSON.parse(localStorage.getItem("visaformula_all_experts") || "[]");
             const updatedAll = existingAll.map((x: any) => {
                 if (x.name?.toLowerCase() === formName.toLowerCase() || x.id === "logged-in-expert") {
                     return { ...x, name: formName, role: formRole, city: formCityName || finalFullAddress, bio: formBio, image: formImage, tags: formTagsArray, countries: formCountries.split(",").map(c => c.trim()) };
                 }
                 return x;
             });
-            localStorage.setItem("Trawell IQ_all_experts", JSON.stringify(updatedAll));
+            localStorage.setItem("visaformula_all_experts", JSON.stringify(updatedAll));
         } catch (e) {}
 
         setIsProfileIncomplete(false);
@@ -371,7 +371,7 @@ export function ConsultantDashboard() {
         if (typeof window !== "undefined") {
             localStorage.removeItem("expert_isLoggedIn");
             localStorage.removeItem("expert_email");
-            localStorage.removeItem("Trawell IQ_user");
+            localStorage.removeItem("visaformula_user");
             window.location.href = "/signup/expert";
         }
     };

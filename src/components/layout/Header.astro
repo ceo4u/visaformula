@@ -11,7 +11,7 @@ const isHome = pathname === '/' || pathname === '';
         <!-- Logo - Left corner -->
         <div class="flex items-center shrink-0 py-2">
             <a href="/" class="flex items-center focus:outline-none -ml-2 lg:-ml-4">
-                <img id="header-logo-img" src="/logo.png?v=3" class="h-9 sm:h-10 lg:h-11 max-h-[46px] w-auto object-contain transition-all duration-200" alt="Trawell IQ Logo" />
+                <img id="header-logo-img" src="/trawell-logo.png" class="h-9 sm:h-10 lg:h-11 max-h-[46px] w-auto object-contain transition-all duration-200" alt="Trawell IQ Logo" />
             </a>
         </div>
 
@@ -391,7 +391,7 @@ const isHome = pathname === '/' || pathname === '';
         const updateHeaderStyle = () => {
             // Always 100% Solid Pure White Header
             headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 scrolled-header bg-white shadow-2xs border-b border-slate-200/80 text-slate-800";
-            if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png?v=3");
+            if (logoImgEl) logoImgEl.setAttribute("src", "/trawell-logo.png");
             if (loginBtnEl) loginBtnEl.className = "text-[#00a896] border-[#00a896] hover:bg-teal-50/50 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
             if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#00a896] transition-colors focus:outline-none";
             if (mobileMenuBtn) mobileMenuBtn.style.color = "#0c1a2e";
@@ -405,7 +405,7 @@ const isHome = pathname === '/' || pathname === '';
     // Dynamic Auth Header Button & Profile Dropdown Updates
     const seekerFirst = localStorage.getItem("seeker_firstName");
     const expertBusiness = localStorage.getItem("expert_businessName");
-    const userStr = localStorage.getItem("Trawell IQ_user");
+    const userStr = localStorage.getItem("visaformula_user");
 
     const isLoggedIn = seekerFirst || expertBusiness || (userStr && userStr !== "null");
 
@@ -519,7 +519,7 @@ const isHome = pathname === '/' || pathname === '';
         // Handle Logout triggers
         const handleLogout = (e) => {
             e.preventDefault();
-            localStorage.removeItem("Trawell IQ_user");
+            localStorage.removeItem("visaformula_user");
             localStorage.removeItem("seeker_firstName");
             localStorage.removeItem("seeker_lastName");
             localStorage.removeItem("seeker_email");

@@ -427,14 +427,14 @@ function ExpertSignupPortalContent() {
 
         let existingList: any[] = [];
         try {
-          const stored = localStorage.getItem("Trawell IQ_all_experts");
+          const stored = localStorage.getItem("visaformula_all_experts");
           if (stored) existingList = JSON.parse(stored);
         } catch(e) {}
 
         const alreadyExists = existingList.some((e: any) => e.name?.toLowerCase() === fullName.toLowerCase());
         if (!alreadyExists) {
           existingList = [newExpert, ...existingList];
-          localStorage.setItem("Trawell IQ_all_experts", JSON.stringify(existingList));
+          localStorage.setItem("visaformula_all_experts", JSON.stringify(existingList));
         }
 
         // Complete Expert DB Registration

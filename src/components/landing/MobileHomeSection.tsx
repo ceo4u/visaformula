@@ -19,7 +19,7 @@ const destinations = [
 ];
 
 const tools = [
-  { icon: <ShieldCheck className="w-6 h-6 text-[#00a896]" />, name: 'Visa Readiness\nCheck', href: '/services/apply-visa', bg: 'bg-teal-50' },
+  { icon: <ShieldCheck className="w-6 h-6 text-[#00a896]" />, name: 'Visa Readiness\nCheck', href: '/readiness', bg: 'bg-teal-50' },
   { icon: <FileText className="w-6 h-6 text-[#2563eb]" />, name: 'Visa Document\nChecklist', href: '/services/visa-documentation', bg: 'bg-blue-50' },
   { icon: <DollarSign className="w-6 h-6 text-[#7c3aed]" />, name: 'Visa Cost\nCalculator', href: '/services', bg: 'bg-purple-50' },
   { icon: <Activity className="w-6 h-6 text-[#ea580c]" />, name: 'Track Visa\nProcess', href: '/services', bg: 'bg-orange-50' },

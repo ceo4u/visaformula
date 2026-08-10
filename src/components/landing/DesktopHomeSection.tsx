@@ -639,7 +639,7 @@ export function DesktopHomeSection() {
             <div className="space-y-3 max-w-[220px] relative z-10">
               <h3 className="font-extrabold text-xl leading-tight">Check Your Visa Readiness<br />in Just 2 Minutes</h3>
               <p className="text-teal-100 text-xs font-medium">Get your free score now!</p>
-              <a href="/services/apply-visa"
+              <a href="/readiness"
                 className="inline-block bg-white text-[#00a896] hover:bg-teal-50 font-bold text-xs px-5 py-2.5 rounded-xl shadow transition-all">
                 Check Now
               </a>

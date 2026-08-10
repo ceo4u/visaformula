@@ -48,3 +48,9 @@ scratch/
 
 # astro build output
 dist/
+
+# diagnostic / one-off scripts (may contain credentials)
+diag_db.js
+diag_*.js
+debug_*.js
+test_db.js

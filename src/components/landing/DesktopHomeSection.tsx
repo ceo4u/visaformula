@@ -252,9 +252,9 @@ export function DesktopHomeSection() {
           {/* LEFT: Hero text content */}
           <div className="relative z-10 px-8 sm:px-12 py-10 max-w-[530px] space-y-5">
             <div className="space-y-2">
-              <h1 className="text-4xl sm:text-[44px] font-semibold text-gray-900 leading-[1.12] tracking-tight">
+              <h1 className="text-4xl sm:text-[44px] font-bold text-gray-900 leading-[1.12] tracking-tight">
                 Your Journey<br />
-                Abroad <span style={{ color: '#00a896' }}>Starts Here</span>
+                Abroad <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#581c87] to-[#00a896]">Starts Here</span>
               </h1>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
                 Find the right visa information, trusted consultants &amp; everything you need for your journey.
@@ -264,27 +264,27 @@ export function DesktopHomeSection() {
             {/* Buttons */}
             <div className="flex flex-wrap gap-3">
               <a href="/services/apply-visa"
-                className="bg-[#00a896] hover:bg-[#009485] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]"
+                className="bg-[#581c87] hover:bg-[#4c1d95] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]"
               >
                 Check Visa Readiness
               </a>
               <a href="/find-experts"
-                className="bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-bold text-sm px-6 py-3 rounded-xl transition-all hover:scale-[1.02]"
+                className="bg-white hover:bg-purple-50 text-[#581c87] border border-purple-200 font-bold text-sm px-6 py-3 rounded-xl transition-all hover:scale-[1.02]"
               >
                 Find a Consultant
               </a>
             </div>
 
-            {/* 4 trust badges */}
+            {/* 4 trust badges (Purple + Persian Green accents) */}
             <div className="flex gap-6 pt-2 border-t border-gray-100">
               {[
-                { icon: <ShieldCheck className="w-[18px] h-[18px]" />, top: 'Trusted', bot: 'Consultants' },
-                { icon: <FileText className="w-[18px] h-[18px]" />, top: 'Accurate', bot: 'Information' },
-                { icon: <Users className="w-[18px] h-[18px]" />, top: 'Millions of', bot: 'Users' },
-                { icon: <CheckCircle2 className="w-[18px] h-[18px]" />, top: 'Secure &', bot: 'Reliable' },
+                { icon: <ShieldCheck className="w-[18px] h-[18px]" />, top: 'Trusted', bot: 'Consultants', bg: 'bg-purple-50 text-[#581c87]' },
+                { icon: <FileText className="w-[18px] h-[18px]" />, top: 'Accurate', bot: 'Information', bg: 'bg-teal-50 text-[#00a896]' },
+                { icon: <Users className="w-[18px] h-[18px]" />, top: 'Millions of', bot: 'Users', bg: 'bg-purple-50 text-[#581c87]' },
+                { icon: <CheckCircle2 className="w-[18px] h-[18px]" />, top: 'Secure &', bot: 'Reliable', bg: 'bg-teal-50 text-[#00a896]' },
               ].map((b, i) => (
                 <div key={i} className="flex flex-col items-center text-center gap-1">
-                  <div className="w-9 h-9 rounded-full bg-teal-50 flex items-center justify-center text-[#00a896]">
+                  <div className={`w-9 h-9 rounded-full ${b.bg} flex items-center justify-center`}>
                     {b.icon}
                   </div>
                   <p className="text-[10px] font-bold text-gray-700 leading-tight">{b.top}<br /><span className="font-normal text-gray-400">{b.bot}</span></p>
@@ -515,7 +515,7 @@ export function DesktopHomeSection() {
                 <button
                   type="button"
                   onClick={() => handleSearch()}
-                  className="w-full sm:w-auto min-w-[280px] sm:min-w-[320px] px-10 py-3.5 bg-[#008f80] hover:bg-[#007a6d] active:scale-95 text-white rounded-2xl shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2.5 font-extrabold text-sm cursor-pointer transition-all mx-auto"
+                  className="w-full sm:w-auto min-w-[280px] sm:min-w-[320px] px-10 py-3.5 bg-gradient-to-r from-[#581c87] via-[#6b21a8] to-[#00a896] hover:from-[#4c1d95] hover:to-[#008f80] active:scale-95 text-white rounded-2xl shadow-lg shadow-purple-900/20 flex items-center justify-center gap-2.5 font-extrabold text-sm cursor-pointer transition-all mx-auto"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   <Search className="w-5 h-5" />

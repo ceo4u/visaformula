@@ -201,13 +201,13 @@ export function DesktopHomeSection() {
         {/* 1. FLIGHT AD BANNER — full width, right below header */}
         {/* ======================================================= */}
         <div className="relative rounded-2xl overflow-hidden flex items-center justify-between px-6 py-4 min-h-[86px] shadow-md text-white"
-          style={{ background: 'linear-gradient(90deg, #3b0764 0%, #581c87 45%, #6b21a8 75%, #00a896 100%)' }}
+          style={{ background: 'linear-gradient(90deg, #1c3570 0%, #2b4890 55%, #3a5ba0 100%)' }}
         >
           {/* Left */}
           <div className="relative z-10">
-            <p className="text-[10px] font-bold text-teal-200 tracking-wider uppercase mb-0.5">✈ SPONSORED</p>
+            <p className="text-[10px] font-bold text-blue-200 tracking-wider uppercase mb-0.5">✈ SPONSORED</p>
             <h3 className="text-white font-bold text-xl leading-tight">Fly High with Your Dreams</h3>
-            <p className="text-purple-200 text-xs font-medium mt-0.5">Best Deals on Flight Tickets</p>
+            <p className="text-blue-200 text-xs font-medium mt-0.5">Best Deals on Flight Tickets</p>
           </div>
 
           {/* Center plane thumb */}
@@ -223,13 +223,13 @@ export function DesktopHomeSection() {
 
           {/* Right */}
           <div className="relative z-10 flex items-center gap-5">
-            <a href="#" className="bg-white text-[#581c87] font-bold text-sm px-5 py-2.5 rounded-xl shadow hover:bg-teal-50 hover:text-[#00a896] transition whitespace-nowrap">
+            <a href="#" className="bg-white text-[#1c3570] font-bold text-sm px-5 py-2.5 rounded-xl shadow hover:bg-blue-50 transition whitespace-nowrap">
               Book Now
             </a>
             <div className="text-right">
-              <p className="text-purple-200 text-[10px] font-bold uppercase tracking-wider">UP TO</p>
+              <p className="text-blue-200 text-[10px] font-bold uppercase tracking-wider">UP TO</p>
               <p className="text-white font-black text-3xl leading-none">20% OFF</p>
-              <p className="text-teal-200 text-[10px] font-semibold">On International Flights</p>
+              <p className="text-blue-200 text-[10px] font-semibold">On International Flights</p>
             </div>
           </div>
         </div>
@@ -252,9 +252,9 @@ export function DesktopHomeSection() {
           {/* LEFT: Hero text content */}
           <div className="relative z-10 px-8 sm:px-12 py-10 max-w-[530px] space-y-5">
             <div className="space-y-2">
-              <h1 className="text-4xl sm:text-[44px] font-bold text-gray-900 leading-[1.12] tracking-tight">
+              <h1 className="text-4xl sm:text-[44px] font-semibold text-gray-900 leading-[1.12] tracking-tight">
                 Your Journey<br />
-                Abroad <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#581c87] to-[#00a896]">Starts Here</span>
+                Abroad <span style={{ color: '#00a896' }}>Starts Here</span>
               </h1>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
                 Find the right visa information, trusted consultants &amp; everything you need for your journey.
@@ -264,27 +264,27 @@ export function DesktopHomeSection() {
             {/* Buttons */}
             <div className="flex flex-wrap gap-3">
               <a href="/readiness"
-                className="bg-[#581c87] hover:bg-[#4c1d95] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]"
+                className="bg-[#00a896] hover:bg-[#009485] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]"
               >
-                Check Visa Readiness
+                Find Visa Help
               </a>
               <a href="/find-experts"
-                className="bg-white hover:bg-purple-50 text-[#581c87] border border-purple-200 font-bold text-sm px-6 py-3 rounded-xl transition-all hover:scale-[1.02]"
+                className="bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-bold text-sm px-6 py-3 rounded-xl transition-all hover:scale-[1.02]"
               >
                 Find a Consultant
               </a>
             </div>
 
-            {/* 4 trust badges (Purple + Persian Green accents) */}
+            {/* 4 trust badges */}
             <div className="flex gap-6 pt-2 border-t border-gray-100">
               {[
-                { icon: <ShieldCheck className="w-[18px] h-[18px]" />, top: 'Trusted', bot: 'Consultants', bg: 'bg-purple-50 text-[#581c87]' },
-                { icon: <FileText className="w-[18px] h-[18px]" />, top: 'Accurate', bot: 'Information', bg: 'bg-teal-50 text-[#00a896]' },
-                { icon: <Users className="w-[18px] h-[18px]" />, top: 'Millions of', bot: 'Users', bg: 'bg-purple-50 text-[#581c87]' },
-                { icon: <CheckCircle2 className="w-[18px] h-[18px]" />, top: 'Secure &', bot: 'Reliable', bg: 'bg-teal-50 text-[#00a896]' },
+                { icon: <ShieldCheck className="w-[18px] h-[18px]" />, top: 'Trusted', bot: 'Consultants' },
+                { icon: <FileText className="w-[18px] h-[18px]" />, top: 'Accurate', bot: 'Information' },
+                { icon: <Users className="w-[18px] h-[18px]" />, top: 'Millions of', bot: 'Users' },
+                { icon: <CheckCircle2 className="w-[18px] h-[18px]" />, top: 'Secure &', bot: 'Reliable' },
               ].map((b, i) => (
                 <div key={i} className="flex flex-col items-center text-center gap-1">
-                  <div className={`w-9 h-9 rounded-full ${b.bg} flex items-center justify-center`}>
+                  <div className="w-9 h-9 rounded-full bg-teal-50 flex items-center justify-center text-[#00a896]">
                     {b.icon}
                   </div>
                   <p className="text-[10px] font-bold text-gray-700 leading-tight">{b.top}<br /><span className="font-normal text-gray-400">{b.bot}</span></p>
@@ -515,7 +515,7 @@ export function DesktopHomeSection() {
                 <button
                   type="button"
                   onClick={() => handleSearch()}
-                  className="w-full sm:w-auto min-w-[280px] sm:min-w-[320px] px-10 py-3.5 bg-gradient-to-r from-[#581c87] via-[#6b21a8] to-[#00a896] hover:from-[#4c1d95] hover:to-[#008f80] active:scale-95 text-white rounded-2xl shadow-lg shadow-purple-900/20 flex items-center justify-center gap-2.5 font-extrabold text-sm cursor-pointer transition-all mx-auto"
+                  className="w-full sm:w-auto min-w-[280px] sm:min-w-[320px] px-10 py-3.5 bg-[#008f80] hover:bg-[#007a6d] active:scale-95 text-white rounded-2xl shadow-lg shadow-teal-700/20 flex items-center justify-center gap-2.5 font-extrabold text-sm cursor-pointer transition-all mx-auto"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   <Search className="w-5 h-5" />

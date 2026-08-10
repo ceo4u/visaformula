@@ -378,7 +378,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
                 </a>
                 <a href="/" className="shrink-0">
-                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none" />
+                    <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-7 sm:h-10 w-auto object-contain max-w-[120px] sm:max-w-none" />
                 </a>
             </div>
 
@@ -516,7 +516,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     )}
 
                     {/* ========================================================================= */}
-                    {/* CREATE ACCOUNT FORM VIEW (VisaHQ Match + Exact Trawell IQ Collected Details) */}
+                    {/* CREATE ACCOUNT FORM VIEW (VisaHQ Match + Exact VisaFormula Collected Details) */}
                     {/* ========================================================================= */}
                     {activeTab === "signup" && (
                         <form onSubmit={handleSignupSubmit} className="space-y-4">
@@ -866,7 +866,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                 <div>
                                     <h3 className="text-xl font-black text-slate-900">Registration Successful! 🎉</h3>
                                     <p className="text-xs text-slate-500 mt-1 font-semibold">
-                                        Welcome to Trawell IQ! Redirecting to your dashboard...
+                                        Welcome to VisaFormula! Redirecting to your dashboard...
                                     </p>
                                 </div>
                                 <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden mt-2">

@@ -155,9 +155,9 @@ export function MobileHomeSection() {
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-2 pt-1">
                 <a href="/readiness"
-                  className="flex items-center justify-center gap-2 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm active:scale-95 transition-all bg-[#581c87] hover:bg-[#4c1d95]"
-                >
-                  <Search className="w-4 h-4" /> Check Visa Readiness
+                  className="flex items-center justify-center gap-2 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm active:scale-95 transition-all"
+                  style={{ backgroundColor: '#00a896' }}>
+                  <Search className="w-4 h-4" /> Find Visa Help
                 </a>
                 <a href="/find-experts"
                   className="flex items-center justify-center gap-2 text-slate-800 text-xs font-bold py-2.5 px-4 rounded-xl border border-slate-300 bg-white active:scale-95 transition-all">

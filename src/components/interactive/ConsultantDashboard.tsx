@@ -409,7 +409,7 @@ export function ConsultantDashboard() {
             <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-2xs">
                 <div className="flex items-center gap-3">
                     <a href="/" className="flex items-center">
-                        <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-10 sm:h-12 max-h-[50px] w-auto object-contain" />
+                        <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-10 sm:h-12 max-h-[50px] w-auto object-contain" />
                     </a>
                     
                     <button 
@@ -505,7 +505,7 @@ export function ConsultantDashboard() {
                     <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-4 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
                         <div className="space-y-4">
                             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                                <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-9 sm:h-10 max-h-[42px] w-auto object-contain" />
+                                <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-9 sm:h-10 max-h-[42px] w-auto object-contain" />
                                 <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1 rounded-lg hover:bg-slate-100 text-slate-500">
                                     <X className="w-5 h-5" />
                                 </button>
@@ -790,7 +790,7 @@ export function ConsultantDashboard() {
                                     <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-2">
                                         <LayoutGrid className="w-8 h-8 text-slate-300 mx-auto" />
                                         <h4 className="text-sm font-extrabold text-slate-800">No Active Classified Ads Yet</h4>
-                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of visa seekers on Trawell IQ.</p>
+                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of visa seekers on VisaFormula.</p>
                                     </div>
                                 )}
 
@@ -958,7 +958,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Client Enquiries ({enquiriesList.length})</h2>
-                                    <p className="text-xs font-medium text-slate-500">Incoming inquiries submitted from your Trawell IQ listing</p>
+                                    <p className="text-xs font-medium text-slate-500">Incoming inquiries submitted from your VisaFormula listing</p>
                                 </div>
                             </div>
 
@@ -978,7 +978,7 @@ export function ConsultantDashboard() {
                                 <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
                                     <MessageSquare className="w-10 h-10 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-extrabold text-slate-800">No Client Enquiries Yet</h3>
-                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When prospective clients send inquiries from your Trawell IQ listing, they will appear here in real-time.</p>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When prospective clients send inquiries from your VisaFormula listing, they will appear here in real-time.</p>
                                 </div>
                             )}
                         </div>
@@ -1020,7 +1020,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">My Active Classifieds & Offers ({classifiedsList.length})</h2>
-                                    <p className="text-xs font-medium text-slate-500">Manage public listings shown on Trawell IQ homepage</p>
+                                    <p className="text-xs font-medium text-slate-500">Manage public listings shown on VisaFormula homepage</p>
                                 </div>
                                 <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
                                     <Plus className="w-4 h-4" /> Post New Ad
@@ -1045,7 +1045,7 @@ export function ConsultantDashboard() {
                                 <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
                                     <LayoutGrid className="w-10 h-10 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-extrabold text-slate-800">No Active Classified Ads</h3>
-                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on Trawell IQ.</p>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on VisaFormula.</p>
                                     <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
                                         + Post New Classified / Offer
                                     </button>
@@ -1095,7 +1095,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Promotions & Home Page Boost</h2>
-                                    <p className="text-xs font-medium text-slate-500">Boost your agency listing to the top position on Trawell IQ homepage</p>
+                                    <p className="text-xs font-medium text-slate-500">Boost your agency listing to the top position on VisaFormula homepage</p>
                                 </div>
                             </div>
 
@@ -1329,7 +1329,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Help & Support Desk</h2>
-                                    <p className="text-xs font-medium text-slate-500">Get assistance from Trawell IQ support team & track your queries</p>
+                                    <p className="text-xs font-medium text-slate-500">Get assistance from VisaFormula support team & track your queries</p>
                                 </div>
                             </div>
 

@@ -129,7 +129,7 @@ export function MobileNativeAppUI() {
         {/* ===================================================== */}
         <header className="sticky top-0 z-40 bg-white border-b border-gray-100 px-4 pt-3 pb-3 flex items-center justify-between shadow-sm">
           <a href="/" className="flex items-center gap-2">
-            <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-8 w-auto object-contain" />
+            <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-8 w-auto object-contain" />
             <div>
               <div className="font-extrabold text-[15px] text-gray-900 leading-none">VisaFormula</div>
               <div className="text-[9px] text-gray-400 leading-tight">The Global Immigration & Mobility Platform</div>

@@ -369,7 +369,7 @@ function ExpertSignupPortalContent() {
         localStorage.setItem("expert_isLoggedIn", "true");
         localStorage.setItem("expert_firstName", firstName);
         localStorage.setItem("expert_lastName", lastName);
-        localStorage.setItem("expert_businessName", businessName || `${firstName} ${lastName}`.trim() || "Trawell IQ Consultant");
+        localStorage.setItem("expert_businessName", businessName || `${firstName} ${lastName}`.trim() || "VisaFormula Consultant");
         localStorage.setItem("expert_businessType", businessType);
         localStorage.setItem("expert_yearsInBusiness", yearsInBusiness);
         localStorage.setItem("expert_businessWebsite", businessWebsite);
@@ -400,7 +400,7 @@ function ExpertSignupPortalContent() {
         localStorage.setItem("expert_advisorType", businessType || "Visa Consultant");
 
         // Add to global experts list for FindExpertsPortal
-        const fullName = businessName || `${firstName} ${lastName}`.trim() || "Trawell IQ Consultant";
+        const fullName = businessName || `${firstName} ${lastName}`.trim() || "VisaFormula Consultant";
         const newExpert = {
           id: `expert-${Date.now()}`,
           name: fullName,
@@ -584,11 +584,11 @@ function ExpertSignupPortalContent() {
               </p>
             </div>
 
-            {/* Right "Why register on Trawell IQ?" Card */}
+            {/* Right "Why register on VisaFormula?" Card */}
             <div className="md:col-span-5 bg-teal-50/60 border border-teal-200/60 rounded-3xl p-6 space-y-4">
               <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 <Shield className="w-4.5 h-4.5 text-[#00a896] shrink-0" />
-                <span>Why register on Trawell IQ?</span>
+                <span>Why register on VisaFormula?</span>
               </h3>
 
               <ul className="space-y-3 text-xs font-bold text-slate-700">
@@ -1408,7 +1408,7 @@ function ExpertSignupPortalContent() {
             <div>
               <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Congratulations!</h2>
               <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1.5 max-w-md mx-auto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Your account has been created successfully. Your profile is now live on Trawell IQ.
+                Your account has been created successfully. Your profile is now live on VisaFormula.
               </p>
             </div>
 

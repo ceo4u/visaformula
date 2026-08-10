@@ -52,7 +52,7 @@ export function EscrowPortal() {
             {/* 4-Step Visual Flow */}
             <section className="max-w-4xl mx-auto px-4 -mt-10 relative z-10 mb-14">
                 <div className="bg-white rounded-2xl shadow-xl border border-yellow-100 p-8">
-                    <h2 className="font-sora text-xl font-bold text-navy mb-8 text-center">How Trawell IQ Escrow Works</h2>
+                    <h2 className="font-sora text-xl font-bold text-navy mb-8 text-center">How VisaFormula Escrow Works</h2>
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-2">
                         {steps.map((step, i) => (
                             <div key={step.num} className="flex-1 flex flex-col items-center text-center relative">

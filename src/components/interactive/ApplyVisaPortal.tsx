@@ -164,7 +164,7 @@ export function ApplyVisaPortal() {
           </div>
           
           <a href="/" className="block w-full bg-black hover:bg-slate-900 text-white font-bold py-4 rounded-xl text-center hover:shadow-lg transition-all">
-            Back to Trawell IQ Home
+            Back to VisaFormula Home
           </a>
         </div>
       </div>

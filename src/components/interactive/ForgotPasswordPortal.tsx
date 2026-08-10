@@ -132,7 +132,7 @@ export function ForgotPasswordPortal() {
                     <ArrowLeft className="w-3.5 h-3.5" /> <span>Back to Login</span>
                 </a>
                 <a href="/" className="shrink-0">
-                    <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
+                    <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
                 </a>
             </div>
 
@@ -142,7 +142,7 @@ export function ForgotPasswordPortal() {
                 {/* Centered Logo */}
                 <div className="flex justify-center pt-1">
                     <a href="/" className="inline-block">
-                        <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+                        <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
                     </a>
                 </div>
 

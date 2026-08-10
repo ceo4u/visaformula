@@ -20,7 +20,7 @@ export function AIAssistantPortal() {
     const [messages, setMessages] = useState<Message[]>([
         {
             sender: "bot",
-            text: "Hello! I am your Trawell IQ Digital Diplomat. I can help you evaluate your eligibility for study permits, skilled worker visas, and permanent residency. Which destination country are you planning to relocate to?",
+            text: "Hello! I am your VisaFormula Digital Diplomat. I can help you evaluate your eligibility for study permits, skilled worker visas, and permanent residency. Which destination country are you planning to relocate to?",
             type: "choices",
             choices: ["???? Canada", "???? United Kingdom", "???? Australia", "???? United States"]
         }
@@ -116,7 +116,7 @@ export function AIAssistantPortal() {
                         <Sparkles className="w-5 h-5 text-purple-300 animate-pulse" />
                     </div>
                     <div>
-                        <h2 className="font-sora font-extrabold text-sm text-white">Trawell IQ AI Assistant</h2>
+                        <h2 className="font-sora font-extrabold text-sm text-white">VisaFormula AI Assistant</h2>
                         <p className="text-[10px] text-white/60 font-semibold">Legal Grade Migration Advisor</p>
                     </div>
                 </div>

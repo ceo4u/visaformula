@@ -43,7 +43,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                         <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back to </span>Home
                     </a>
                     <a href="/" className="shrink-0">
-                        <img src="/trawell-logo.png" alt="Trawell IQ Logo" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
+                        <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
                     </a>
                 </div>
 
@@ -74,7 +74,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                                 I want to join as
                             </h1>
                             <p className="text-xs sm:text-sm font-medium text-slate-500">
-                                Select your role to get started with Trawell IQ
+                                Select your role to get started with VisaFormula
                             </p>
                         </div>
 

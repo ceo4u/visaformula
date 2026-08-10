@@ -92,36 +92,37 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
       padding: 24px 28px;
     }
 
-    /* Hero Header */
+    /* Hero Header - Professional Executive Design */
     .self-apply-hero {
       text-align: center;
-      padding: 48px 24px 38px;
-      background: linear-gradient(135deg, #2e0754 0%, #4c1d95 40%, #581c87 70%, #00a896 100%);
+      padding: 40px 24px 32px;
+      background: linear-gradient(135deg, #0c1a2e 0%, #1e1b4b 55%, #2a0845 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       color: #FFFFFF;
       position: relative;
       overflow: hidden;
     }
 
     .self-apply-hero h1 {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 800;
       color: #FFFFFF;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       letter-spacing: -0.02em;
     }
 
     .self-apply-hero h1 span {
-      color: #5eead4;
+      color: #00a896;
       text-decoration: underline;
-      text-decoration-color: #2dd4bf;
+      text-decoration-color: #00a896;
       text-underline-offset: 6px;
     }
 
     .self-apply-hero p {
       font-size: 14px;
-      color: #e9d5ff;
+      color: #cbd5e1;
       max-width: 520px;
-      margin: 0 auto 20px;
+      margin: 0 auto 16px;
       font-weight: 500;
     }
 
@@ -129,61 +130,49 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: var(--pill);
-      padding: 6px 20px;
+      padding: 5px 18px;
       font-size: 12px;
-      font-weight: 700;
-      color: #5eead4;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 16px;
     }
 
     .trust-badge .dot {
-      width: 8px;
-      height: 8px;
-      background: #2dd4bf;
+      width: 7px;
+      height: 7px;
+      background: #00a896;
       border-radius: 50%;
-      box-shadow: 0 0 10px #2dd4bf;
-      animation: pulse-dot 2s infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .5; transform: scale(.7); }
+      box-shadow: 0 0 8px #00a896;
     }
 
     .stats-row {
       display: flex;
       justify-content: center;
-      gap: 16px;
+      gap: 24px;
       flex-wrap: wrap;
-      margin-top: 20px;
+      margin-top: 16px;
     }
 
     .stats-row .item {
       text-align: center;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 16px;
-      padding: 10px 22px;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px 20px;
     }
 
     .stats-row .item .num {
       font-weight: 800;
-      font-size: 20px;
-      color: #2dd4bf;
+      font-size: 18px;
+      color: #00a896;
     }
 
     .stats-row .item .label {
       font-size: 11px;
-      color: #e9d5ff;
+      color: #94a3b8;
       font-weight: 600;
     }
 
@@ -852,27 +841,18 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
 
         <!-- ========== HERO HEADER ========== -->
         <section class="self-apply-hero relative">
-          <!-- Background Glow Orbs -->
-          <div class="absolute -top-20 -left-20 w-72 h-72 bg-[#9333ea]/35 rounded-full blur-3xl pointer-events-none"></div>
-          <div class="absolute -bottom-20 -right-20 w-72 h-72 bg-[#00a896]/40 rounded-full blur-3xl pointer-events-none"></div>
-
-          <!-- Decorative Flight Line Arc (SVG) -->
-          <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-25" xmlns="http://www.w3.org/2000/svg">
-            <path d="M-50 100 Q 250 -40 650 160 T 1300 30" fill="none" stroke="#5eead4" stroke-width="2" stroke-dasharray="6 6" />
-          </svg>
-
           <!-- Close / Back to Home Button -->
-          <a href="/" class="absolute top-4 right-4 text-white/80 hover:text-white bg-white/15 hover:bg-white/30 p-2.5 rounded-full transition cursor-pointer z-20 shadow-md backdrop-blur-md" title="Close / Back to Home">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+          <a href="/" class="absolute top-4 right-4 text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition cursor-pointer z-20" title="Close / Back to Home">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </a>
 
-          <div class="trust-badge relative z-10">
+          <div class="trust-badge">
             <div class="dot"></div>
             ✈️ Apply online directly. No expert required.
           </div>
-          <h1 class="relative z-10">Self Apply — <span>Your Visa, Your Way</span></h1>
-          <p class="relative z-10">Fill your application yourself. Get AI-powered suggestions and add our services if you need help.</p>
-          <div class="stats-row relative z-10">
+          <h1>Self Apply — <span>Your Visa, Your Way</span></h1>
+          <p>Fill your application yourself. Get AI-powered suggestions and add our services if you need help.</p>
+          <div class="stats-row">
             <div class="item"><div class="num">500+</div><div class="label">Applications Today</div></div>
             <div class="item"><div class="num">98%</div><div class="label">Approval Rate</div></div>
             <div class="item"><div class="num">24hr</div><div class="label">Avg Processing</div></div>

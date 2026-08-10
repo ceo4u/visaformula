@@ -50,96 +50,12 @@ export function ConsultantDashboard() {
     const [formPortfolio, setFormPortfolio] = useState("");
     const [formTagsArray, setFormTagsArray] = useState<string[]>([]);
 
-    // Real Data States (Initialized with exact reference screenshot data for Rising AT / Consultant account)
-    const initialDefaultLeads = [
-        { id: 1, name: "Rahul Sharma", visa: "Canada Study Visa", country: "Canada 🇨🇦", phone: "+91 98765 43210", status: "New" },
-        { id: 2, name: "Priya Singh", visa: "UK Visitor Visa", country: "UK 🇬🇧", phone: "+91 98123 45678", status: "Qualified" },
-        { id: 3, name: "Ankit Patel", visa: "Australia PR", country: "Australia 🇦🇺", phone: "+91 97111 22233", status: "In Progress" },
-        { id: 4, name: "Vikram Malhotra", visa: "USA Tourist Visa", country: "USA 🇺🇸", phone: "+91 99887 76655", status: "Converted" },
-        { id: 5, name: "Sneha Reddy", visa: "Germany Job Seeker", country: "Germany 🇩🇪", phone: "+91 95544 33221", status: "New" },
-        { id: 6, name: "Amit Kumar", visa: "Canada Work Permit", country: "Canada 🇨🇦", phone: "+91 94433 22110", status: "Qualified" },
-        { id: 7, name: "Divya Nair", visa: "Australia Student Visa", country: "Australia 🇦🇺", phone: "+91 93322 11009", status: "In Progress" },
-        { id: 8, name: "Rohan Gupta", visa: "UK Student Visa", country: "UK 🇬🇧", phone: "+91 92211 00988", status: "Converted" },
-        { id: 9, name: "Pooja Joshi", visa: "Canada Visitor Visa", country: "Canada 🇨🇦", phone: "+91 91100 99877", status: "New" },
-        { id: 10, name: "Suresh Mehta", visa: "Schengen Tourist", country: "Germany 🇩🇪", phone: "+91 90099 88766", status: "Qualified" },
-        { id: 11, name: "Ananya Roy", visa: "New Zealand Work", country: "New Zealand 🇳🇿", phone: "+91 89988 77665", status: "In Progress" },
-        { id: 12, name: "Neha Verma", visa: "US Student Visa F1", country: "USA 🇺🇸", phone: "+91 88877 66554", status: "Converted" }
-    ];
-
-    const initialDefaultEnquiries = [
-        { id: 1, name: "Canada Study Visa", date: "May 30, 2025", status: "New", flag: "🇨🇦" },
-        { id: 2, name: "UK Visitor Visa", date: "May 29, 2025", status: "New", flag: "🇬🇧" },
-        { id: 3, name: "Australia PR", date: "May 28, 2025", status: "Contacted", flag: "🇦🇺" },
-        { id: 4, name: "USA Tourist Visa", date: "May 27, 2025", status: "Closed", flag: "🇺🇸" },
-        { id: 5, name: "Germany Job Seeker", date: "May 25, 2025", status: "New", flag: "🇩🇪" },
-        { id: 6, name: "Canada Express Entry", date: "May 24, 2025", status: "Contacted", flag: "🇨🇦" },
-        { id: 7, name: "Australia Student Visa", date: "May 22, 2025", status: "Closed", flag: "🇦🇺" },
-        { id: 8, name: "UK Skilled Worker", date: "May 20, 2025", status: "Contacted", flag: "🇬🇧" }
-    ];
-
-    const initialDefaultClassifieds = [
-        {
-            id: 1,
-            title: "Study in Canada 2025 Intake Open",
-            category: "Study Abroad",
-            price: "₹ Free",
-            views: 124,
-            status: "Active",
-            img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop"
-        },
-        {
-            id: 2,
-            title: "Caregiver Jobs in Canada",
-            category: "Job Abroad",
-            price: "₹ Free",
-            views: 98,
-            status: "Active",
-            img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400&auto=format&fit=crop"
-        },
-        {
-            id: 3,
-            title: "Shared Accommodation in Toronto",
-            category: "Accommodation",
-            price: "₹ 650 CAD / Month",
-            views: 76,
-            status: "Active",
-            img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=400&auto=format&fit=crop"
-        },
-        {
-            id: 4,
-            title: "Visa Consultancy Business for Sale",
-            category: "Business Opportunity",
-            price: "₹ 12,000,000",
-            views: 65,
-            status: "Active",
-            img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=400&auto=format&fit=crop"
-        }
-    ];
-
-    const initialDefaultDisputes = [
-        {
-            id: "#D-2025-0012",
-            client: "Rahul Sharma",
-            issue: "Service not as described",
-            date: "May 20, 2025",
-            status: "Under Review"
-        },
-        {
-            id: "#D-2025-0008",
-            client: "Neha Verma",
-            issue: "Refund not processed",
-            date: "May 10, 2025",
-            status: "In Progress"
-        }
-    ];
-
-    const initialDefaultReviews = Array.from({ length: 28 }, (_, i) => ({ id: i + 1, rating: i < 18 ? 5 : i < 24 ? 4 : i < 26 ? 3 : 2 }));
-
-    const [leadsList, setLeadsList] = useState<any[]>(initialDefaultLeads);
-    const [enquiriesList, setEnquiriesList] = useState<any[]>(initialDefaultEnquiries);
-    const [classifiedsList, setClassifiedsList] = useState<any[]>(initialDefaultClassifieds);
-    const [reviewsList, setReviewsList] = useState<any[]>(initialDefaultReviews);
-    const [disputesList, setDisputesList] = useState<any[]>(initialDefaultDisputes);
+    // Clean Real Data States (Starts empty for launch; populates dynamically from user actions & localStorage)
+    const [leadsList, setLeadsList] = useState<any[]>([]);
+    const [enquiriesList, setEnquiriesList] = useState<any[]>([]);
+    const [classifiedsList, setClassifiedsList] = useState<any[]>([]);
+    const [reviewsList, setReviewsList] = useState<any[]>([]);
+    const [disputesList, setDisputesList] = useState<any[]>([]);
     const [supportTickets, setSupportTickets] = useState<any[]>([]);
     const [ticketSubject, setTicketSubject] = useState("");
     const [ticketQuery, setTicketQuery] = useState("");
@@ -197,10 +113,10 @@ export function ConsultantDashboard() {
             const lastName = localStorage.getItem("expert_lastName") || "";
             const storedName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "";
             const bizName = localStorage.getItem("expert_businessName") || "";
-            const finalName = bizName || storedName || "Rising AT";
+            const finalName = bizName || storedName || "Registered Consultant";
             const role = localStorage.getItem("expert_advisorType") || "Immigration & Visa Consultancy";
-            const city = localStorage.getItem("expert_city") || localStorage.getItem("expert_officeAddress") || "Hyderabad, India";
-            const bio = localStorage.getItem("expert_aboutMe") || "Licensed immigration & visa agency helping clients with Canada study visas, UK visitor visas, Australia PR, and US tourist visas.";
+            const city = localStorage.getItem("expert_city") || localStorage.getItem("expert_officeAddress") || "Location Not Specified";
+            const bio = localStorage.getItem("expert_aboutMe") || "Licensed immigration & visa consultant helping clients with study, work, and migration visas.";
             const image = localStorage.getItem("expert_profilePhoto") || localStorage.getItem("expert_profilePhotoUrl") || "";
             
             const loadedSpecs = (() => {
@@ -214,13 +130,13 @@ export function ConsultantDashboard() {
                 return "";
             })() || "Student Visas, Work Permits, PR Applications";
 
-            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Canada, UK, Australia, USA (12 Countries)";
+            const loadedCountries = localStorage.getItem("expert_countriesExpertise") || "Canada, UK, Australia, USA";
 
             const activeProfile = {
                 name: finalName,
                 role: role,
                 city: city,
-                experience: 10,
+                experience: 5,
                 bio: bio,
                 specializations: loadedSpecs,
                 countries: loadedCountries,
@@ -261,12 +177,48 @@ export function ConsultantDashboard() {
 
             setIsProfileIncomplete(!hasBizName || !hasOfficeAddress || !hasPhone || !hasCountries);
 
+            // Load real Leads from localStorage
+            try {
+                const savedLeads = localStorage.getItem("expert_leads");
+                if (savedLeads) {
+                    const parsedLeads = JSON.parse(savedLeads);
+                    if (Array.isArray(parsedLeads)) setLeadsList(parsedLeads);
+                }
+            } catch(e) {}
+
+            // Load real Enquiries from localStorage
+            try {
+                const savedEnquiries = localStorage.getItem("expert_enquiries");
+                if (savedEnquiries) {
+                    const parsedEnquiries = JSON.parse(savedEnquiries);
+                    if (Array.isArray(parsedEnquiries)) setEnquiriesList(parsedEnquiries);
+                }
+            } catch(e) {}
+
             // Load real Classified Ads from localStorage
             try {
                 const savedAds = localStorage.getItem("expert_activeAds");
                 if (savedAds) {
                     const parsedAds = JSON.parse(savedAds);
                     if (Array.isArray(parsedAds)) setClassifiedsList(parsedAds);
+                }
+            } catch(e) {}
+
+            // Load real Disputes from localStorage
+            try {
+                const savedDisputes = localStorage.getItem("expert_disputes");
+                if (savedDisputes) {
+                    const parsedDisputes = JSON.parse(savedDisputes);
+                    if (Array.isArray(parsedDisputes)) setDisputesList(parsedDisputes);
+                }
+            } catch(e) {}
+
+            // Load real Reviews from localStorage
+            try {
+                const savedReviews = localStorage.getItem("expert_reviews");
+                if (savedReviews) {
+                    const parsedReviews = JSON.parse(savedReviews);
+                    if (Array.isArray(parsedReviews)) setReviewsList(parsedReviews);
                 }
             } catch(e) {}
 
@@ -736,7 +688,7 @@ export function ConsultantDashboard() {
                                     <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00a896] mb-3">
                                         <Eye className="w-5 h-5" />
                                     </div>
-                                    <span className="text-2xl font-black text-slate-900 leading-tight">1</span>
+                                    <span className="text-2xl font-black text-slate-900 leading-tight">{typeof window !== "undefined" ? (localStorage.getItem("expert_profileViews") || "0") : "0"}</span>
                                     <span className="text-xs font-bold text-slate-500 mt-1">Profile Views<br/><span className="text-[10px] font-medium text-slate-400">This Month</span></span>
                                 </div>
 

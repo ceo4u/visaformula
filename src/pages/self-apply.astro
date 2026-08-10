@@ -1027,26 +1027,26 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
           <div style="font-weight:700;font-size:15px;margin-bottom:8px;">💡 Suggested Services for You</div>
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">Based on your visa type (Canada Student Visa), we recommend:</p>
           <div class="service-grid" style="grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));">
-            <div style="background:var(--white);border:1px solid var(--gray-200);border-radius:10px;padding:12px;text-align:center;">
-              <div style="font-size:24px;">📄</div>
-              <div style="font-weight:700;font-size:13px;">Documentation</div>
-              <div style="font-size:12px;font-weight:700;">₹999</div>
-              <button class="btn btn-sm btn-secondary" style="margin-top:6px;" onclick="toast('📄 Documentation added!')">Add</button>
+            <div class="suggested-service-card" onclick="toggleSuggestedService(this)" style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s ease;">
+              <div style="font-size:26px;margin-bottom:4px;">📄</div>
+              <div style="font-weight:700;font-size:13px;color:var(--slate-900);">Documentation</div>
+              <div style="font-size:12px;font-weight:700;color:var(--slate-700);margin-top:2px;">₹999</div>
+              <button class="btn btn-sm suggested-add-btn" style="margin-top:8px;width:100%;font-weight:700;border-radius:8px;transition:all 0.2s;background:white;color:#0f172a;border:1px solid #cbd5e1;" onclick="event.stopPropagation();toggleSuggestedService(this.closest('.suggested-service-card'))">Add</button>
             </div>
-            <div style="background:var(--white);border:1px solid var(--gray-200);border-radius:10px;padding:12px;text-align:center;">
-              <div style="font-size:24px;">📝</div>
-              <div style="font-weight:700;font-size:13px;">Form Filing</div>
-              <div style="font-size:12px;font-weight:700;">₹1,499</div>
-              <button class="btn btn-sm btn-secondary" style="margin-top:6px;" onclick="toast('📝 Form Filing added!')">Add</button>
+            <div class="suggested-service-card" onclick="toggleSuggestedService(this)" style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s ease;">
+              <div style="font-size:26px;margin-bottom:4px;">📝</div>
+              <div style="font-weight:700;font-size:13px;color:var(--slate-900);">Form Filing</div>
+              <div style="font-size:12px;font-weight:700;color:var(--slate-700);margin-top:2px;">₹1,499</div>
+              <button class="btn btn-sm suggested-add-btn" style="margin-top:8px;width:100%;font-weight:700;border-radius:8px;transition:all 0.2s;background:white;color:#0f172a;border:1px solid #cbd5e1;" onclick="event.stopPropagation();toggleSuggestedService(this.closest('.suggested-service-card'))">Add</button>
             </div>
-            <div style="background:var(--white);border:1px solid var(--gray-200);border-radius:10px;padding:12px;text-align:center;">
-              <div style="font-size:24px;">🗓️</div>
-              <div style="font-weight:700;font-size:13px;">VFS Appointment</div>
-              <div style="font-size:12px;font-weight:700;">₹499</div>
-              <button class="btn btn-sm btn-secondary" style="margin-top:6px;" onclick="toast('🗓️ VFS Appointment added!')">Add</button>
+            <div class="suggested-service-card" onclick="toggleSuggestedService(this)" style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s ease;">
+              <div style="font-size:26px;margin-bottom:4px;">🗓️</div>
+              <div style="font-weight:700;font-size:13px;color:var(--slate-900);">VFS Appointment</div>
+              <div style="font-size:12px;font-weight:700;color:var(--slate-700);margin-top:2px;">₹499</div>
+              <button class="btn btn-sm suggested-add-btn" style="margin-top:8px;width:100%;font-weight:700;border-radius:8px;transition:all 0.2s;background:white;color:#0f172a;border:1px solid #cbd5e1;" onclick="event.stopPropagation();toggleSuggestedService(this.closest('.suggested-service-card'))">Add</button>
             </div>
           </div>
-          <div style="margin-top:8px;font-size:12px;color:var(--gray-400);text-align:center;">
+          <div style="margin-top:10px;font-size:12px;color:var(--gray-500);text-align:center;">
             👨💼 Expert Consultation — <strong style="color:var(--green);">Free</strong> (Book below)
           </div>
         </div>
@@ -1406,6 +1406,33 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         btn.classList.add('added');
         btn.textContent = '✓ Added';
         card.classList.add('selected');
+        toast('✅ Service added to your package');
+      }
+    }
+
+    function toggleSuggestedService(card) {
+      const btn = card.querySelector('button');
+      if (!btn) return;
+      const isAdded = btn.classList.contains('added');
+      if (isAdded) {
+        btn.classList.remove('added');
+        btn.textContent = 'Add';
+        btn.style.background = '#ffffff';
+        btn.style.color = '#0f172a';
+        btn.style.borderColor = '#cbd5e1';
+        card.style.borderColor = 'var(--gray-200)';
+        card.style.background = 'var(--white)';
+        card.style.boxShadow = 'none';
+        toast('❌ Service removed');
+      } else {
+        btn.classList.add('added');
+        btn.textContent = '✓ Added';
+        btn.style.background = '#00a896';
+        btn.style.color = '#ffffff';
+        btn.style.borderColor = '#00a896';
+        card.style.borderColor = '#00a896';
+        card.style.background = '#f0fdfa';
+        card.style.boxShadow = '0 4px 12px rgba(0,168,150,0.15)';
         toast('✅ Service added to your package');
       }
     }

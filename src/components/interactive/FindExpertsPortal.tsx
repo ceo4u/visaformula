@@ -152,15 +152,10 @@ export function FindExpertsPortal() {
                 if (data.success && Array.isArray(data.experts)) {
                     dbExperts = data.experts;
                 } else {
-                    // Surface the server error so we can diagnose it
-                    const errMsg = data.error || `API returned success=false (HTTP ${res.status})`;
-                    console.error("[FindExpertsPortal] API error:", errMsg);
-                    setFetchError(`Database error: ${errMsg}`);
+                    console.warn("[FindExpertsPortal] API returned success=false, using fallback experts:", data.error);
                 }
             } catch (err: any) {
-                const errMsg = err?.message || String(err);
-                console.error("[FindExpertsPortal] Failed to fetch /api/experts:", errMsg);
-                setFetchError(`Could not reach API: ${errMsg}`);
+                console.warn("[FindExpertsPortal] Could not reach DB API, using fallback experts:", err?.message);
             }
 
             // 2. Build a set of names/emails already covered by DB

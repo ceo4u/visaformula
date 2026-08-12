@@ -5,7 +5,7 @@ import type { APIRoute } from 'astro';
 export const prerender = false;
 
 export const GET: APIRoute = async () => {
-  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL || '';
+  const dbUrl = (process.env.DATABASE_URL || import.meta.env.DATABASE_URL || '').trim();
   
   if (!dbUrl) {
     return new Response(JSON.stringify({

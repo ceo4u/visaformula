@@ -154,14 +154,28 @@ export async function runMigrations() {
   await p.query(`
     CREATE TABLE IF NOT EXISTS bookings (
       id SERIAL PRIMARY KEY,
-      seeker_id INTEGER NOT NULL,
-      expert_id INTEGER NOT NULL,
-      booking_date TIMESTAMP NOT NULL,
+      seeker_id INTEGER DEFAULT 0,
+      expert_id INTEGER DEFAULT 0,
+      seeker_name VARCHAR(100),
+      seeker_email VARCHAR(255),
+      seeker_phone VARCHAR(50),
+      expert_name VARCHAR(100),
+      expert_email VARCHAR(255),
+      visa_category VARCHAR(100),
+      booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       status VARCHAR(50) DEFAULT 'pending', -- 'pending', 'confirmed', 'completed', 'cancelled'
       details TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
+  await p.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS seeker_name VARCHAR(100);`);
+  await p.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS seeker_email VARCHAR(255);`);
+  await p.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS seeker_phone VARCHAR(50);`);
+  await p.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS expert_name VARCHAR(100);`);
+  await p.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS expert_email VARCHAR(255);`);
+  await p.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS visa_category VARCHAR(100);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_bookings_expert_email ON bookings (expert_email);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_bookings_seeker_email ON bookings (seeker_email);`);
 
   // 5. Documents Table
   await p.query(`

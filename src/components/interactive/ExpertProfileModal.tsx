@@ -35,6 +35,14 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
 
   const [isSaved, setIsSaved] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showBookingForm, setShowBookingForm] = useState(false);
+  const [bookingName, setBookingName] = useState(() => typeof window !== 'undefined' ? (localStorage.getItem("seeker_firstName") ? `${localStorage.getItem("seeker_firstName")} ${localStorage.getItem("seeker_lastName") || ""}`.trim() : "") : "");
+  const [bookingEmail, setBookingEmail] = useState(() => typeof window !== 'undefined' ? (localStorage.getItem("seeker_email") || "") : "");
+  const [bookingPhone, setBookingPhone] = useState(() => typeof window !== 'undefined' ? (localStorage.getItem("seeker_phone") || "") : "");
+  const [bookingVisa, setBookingVisa] = useState("Student Visa");
+  const [bookingNotes, setBookingNotes] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
 
   const handleShare = () => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -48,7 +56,41 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
     if (onBookClick) {
       onBookClick(expert);
     } else {
-      onClose();
+      setShowBookingForm(true);
+    }
+  };
+
+  const handleSubmitBooking = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!bookingEmail) return;
+    setIsSubmitting(true);
+
+    try {
+      const payload = {
+        seekerName: bookingName || "Applicant",
+        seekerEmail: bookingEmail,
+        seekerPhone: bookingPhone,
+        expertName: expert.name,
+        expertEmail: expert.email || "consultant@trawelliq.com",
+        visaCategory: bookingVisa,
+        details: bookingNotes || "Consultation session request",
+        bookingDate: new Date().toISOString()
+      };
+
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setBookingSuccess(true);
+      }
+    } catch(err) {
+      console.error('[ExpertProfileModal] Booking error:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -302,6 +344,127 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
           </button>
         </div>
       </div>
+
+      {showBookingForm && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn font-sans">
+          <div className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 border border-slate-100 font-sans text-slate-900">
+            <button
+              onClick={() => { setShowBookingForm(false); setBookingSuccess(false); }}
+              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {bookingSuccess ? (
+              <div className="text-center space-y-4 py-4">
+                <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto text-2xl font-bold">
+                  ✓
+                </div>
+                <h3 className="text-xl font-black text-slate-900">Consultation Booked! 📅</h3>
+                <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                  Your inquiry has been submitted directly to <strong>{expert.name}</strong>. They will contact you shortly via email/phone.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => { setShowBookingForm(false); setBookingSuccess(false); onClose(); }}
+                  className="bg-slate-900 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-md hover:bg-slate-800 transition-all"
+                >
+                  Done & Close
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmitBooking} className="space-y-4">
+                <div className="space-y-1">
+                  <h3 className="text-lg font-black text-slate-900">Book Session with {expert.name}</h3>
+                  <p className="text-xs text-slate-500 font-medium">Fill in your details to schedule a 1-on-1 consultation.</p>
+                </div>
+
+                <div className="space-y-3 text-left">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Your Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={bookingName}
+                      onChange={(e) => setBookingName(e.target.value)}
+                      placeholder="e.g. Rahul Sharma"
+                      className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 focus:border-[#00a896] outline-none"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+                      <input
+                        type="email"
+                        required
+                        value={bookingEmail}
+                        onChange={(e) => setBookingEmail(e.target.value)}
+                        placeholder="yourname@gmail.com"
+                        className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 focus:border-[#00a896] outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Phone Number</label>
+                      <input
+                        type="tel"
+                        required
+                        value={bookingPhone}
+                        onChange={(e) => setBookingPhone(e.target.value)}
+                        placeholder="+91 9876543210"
+                        className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 focus:border-[#00a896] outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Visa Category</label>
+                    <select
+                      value={bookingVisa}
+                      onChange={(e) => setBookingVisa(e.target.value)}
+                      className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 focus:border-[#00a896] outline-none bg-white"
+                    >
+                      <option value="Student Visa">Student Visa / Study Permit</option>
+                      <option value="Work Permit">Work Permit / Job Visa</option>
+                      <option value="Tourist Visa">Tourist / Visitor Visa</option>
+                      <option value="Permanent Residency">PR / Migration</option>
+                      <option value="Business Visa">Business / Investment Visa</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Message / Key Requirements</label>
+                    <textarea
+                      rows={3}
+                      value={bookingNotes}
+                      onChange={(e) => setBookingNotes(e.target.value)}
+                      placeholder="Briefly describe your profile, destination, or questions..."
+                      className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 focus:border-[#00a896] outline-none"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div className="pt-2 flex items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowBookingForm(false)}
+                    className="px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="bg-[#581c87] hover:bg-[#4c1d95] text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-1.5"
+                  >
+                    {isSubmitting ? 'Submitting...' : 'Confirm & Submit Enquiry →'}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

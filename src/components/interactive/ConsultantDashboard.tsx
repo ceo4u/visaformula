@@ -195,6 +195,39 @@ export function ConsultantDashboard() {
                 }
             } catch(e) {}
 
+            // Fetch live consultation bookings & enquiries from Neon DB via /api/bookings
+            const expertEmail = localStorage.getItem("expert_email") || parsedUser?.email || "";
+            if (expertEmail) {
+                fetch(`/api/bookings?expertEmail=${encodeURIComponent(expertEmail)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success && Array.isArray(data.bookings) && data.bookings.length > 0) {
+                            const dbEnquiries = data.bookings.map((b: any) => ({
+                                id: `db-b-${b.id}`,
+                                name: b.seekerName || "Visa Applicant",
+                                email: b.seekerEmail || "",
+                                phone: b.seekerPhone || "Protected",
+                                visa: b.visaCategory || "Visa Consultation",
+                                date: b.createdAt ? new Date(b.createdAt).toLocaleDateString() : "Recent",
+                                message: b.details || "Inquiry request submitted from website."
+                            }));
+                            setEnquiriesList(prev => [...dbEnquiries, ...prev.filter(p => !p.id.toString().startsWith('db-b-'))]);
+
+                            const dbLeads = data.bookings.map((b: any) => ({
+                                id: `db-l-${b.id}`,
+                                name: b.seekerName || "Visa Applicant",
+                                visa: b.visaCategory || "General Visa",
+                                country: "Target Country",
+                                phone: b.seekerPhone || "Protected",
+                                status: b.status === "confirmed" ? "In Progress" : "New",
+                                date: b.createdAt ? new Date(b.createdAt).toLocaleDateString() : "Today"
+                            }));
+                            setLeadsList(prev => [...dbLeads, ...prev.filter(p => !p.id.toString().startsWith('db-l-'))]);
+                        }
+                    })
+                    .catch(err => console.warn("[ConsultantDashboard] API bookings fetch error:", err));
+            }
+
             // Load real Classified Ads from localStorage
             try {
                 const savedAds = localStorage.getItem("expert_activeAds");

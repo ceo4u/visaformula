@@ -188,7 +188,7 @@ export function FindExpertsPortal() {
                             name: currExpertName,
                             role: localStorage.getItem("expert_advisorType") || "Visa Consultant",
                             city: localStorage.getItem("expert_city") || "Remote",
-                            bio: localStorage.getItem("expert_businessDescription") || "Verified VisaFormula Immigration Consultant.",
+                            bio: localStorage.getItem("expert_businessDescription") || "Verified Travltik Immigration Consultant.",
                             tags: JSON.parse(localStorage.getItem("expert_services") || '["Visa Consultation", "Immigration"]'),
                             countries: [localStorage.getItem("expert_country") || "Canada"],
                             rating: 5.0,

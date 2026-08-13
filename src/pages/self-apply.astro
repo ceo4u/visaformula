@@ -1558,7 +1558,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
 
       const razorpayKey = document.getElementById('razorpay-config').getAttribute('data-key');
       const amount = 2997 * 100; // in paisa (₹2,997)
-      const email = document.getElementById('emailAddress').value || "seeker@visaformula.com";
+      const email = document.getElementById('emailAddress').value || "seeker@travltik.com";
       const phone = document.getElementById('mobileNumber').value || "9999999999";
       const name = `${document.getElementById('firstName').value || 'Seeker'} ${document.getElementById('lastName').value || ''}`.trim();
 
@@ -1569,7 +1569,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         key: razorpayKey,
         amount: amount,
         currency: "INR",
-        name: "VisaFormula",
+        name: "Travltik",
         description: "Smart Visa Application Suite",
         image: "/logo.png?v=3",
         handler: function (response) {

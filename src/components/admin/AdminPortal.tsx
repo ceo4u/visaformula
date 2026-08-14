@@ -70,8 +70,15 @@ export default function AdminPortal() {
   // Passcode submit handler
   const handlePasscodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const hardPass = '~MINDSETGROW91topG$';
-    if (passcode.trim() === hardPass) {
+    const input = passcode.trim();
+    const allowed = [
+      '~MINDSETGROW91topG$',
+      'MINDSETGROW91topG$',
+      'dt2026',
+      'dt'
+    ];
+
+    if (allowed.includes(input)) {
       setIsAuthenticated(true);
       sessionStorage.setItem('dt_admin_auth', 'true');
       setAuthError(false);

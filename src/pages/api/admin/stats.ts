@@ -38,8 +38,8 @@ export const GET: APIRoute = async ({ request }) => {
     const clicksRes = await pool.query(`SELECT COUNT(*) as count FROM ad_click_analytics`);
     const totalAdClicks = parseInt(clicksRes.rows[0]?.count || '0', 10);
 
-    // Estimated Platform Revenue Calculation
-    const totalRevenue = selfApplyRevenue + (totalBookings * 1499) + (totalAds * 2999);
+    // Exact Real Platform Revenue Calculation from Neon DB
+    const totalRevenue = selfApplyRevenue;
 
     return new Response(
       JSON.stringify({

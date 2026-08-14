@@ -85,6 +85,6 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
   </main>
   {!hideFooter && <Footer />}
 
-  <TalkToUs client:idle />
+  <TalkToUs client:only="react" />
 </body>
 </html>

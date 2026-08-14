@@ -86,7 +86,7 @@ export function Header() {
           <img
             src="/logo.png?v=3"
             alt="VisaFormula Logo"
-            className="h-9 sm:h-10 lg:h-11 max-h-[46px] w-auto object-contain"
+            className="h-11 sm:h-12 lg:h-14 max-h-[58px] sm:max-h-[64px] w-auto object-contain"
           />
         </a>
 

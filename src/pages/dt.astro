@@ -1,0 +1,14 @@
+---
+// src/pages/dt.astro
+import Layout from '../layouts/Layout.astro';
+import AdminPortal from '../components/admin/AdminPortal';
+---
+
+<Layout 
+  title="Travltik Master Admin Control Room" 
+  description="Secret Admin Management Portal for Travltik"
+  hideHeader={true}
+  hideFooter={true}
+>
+  <AdminPortal client:only="react" />
+</Layout>

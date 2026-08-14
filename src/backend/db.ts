@@ -137,6 +137,8 @@ export async function runMigrations() {
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS city VARCHAR(150);`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS state VARCHAR(150);`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS country VARCHAR(150);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS verification_status VARCHAR(50) DEFAULT 'pending';`);
 
 
   // 3. Sessions Table

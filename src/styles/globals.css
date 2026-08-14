@@ -26,22 +26,22 @@ select {
 
 @layer base {
   *::selection {
-    background-color: #581C87 !important;
+    background-color: #481268 !important;
     color: #ffffff !important;
   }
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 0%;
-    --primary: 273 66% 32%; /* #581C87 Royal Purple */
-    --primary-rgb: 88, 28, 135;
+    --primary: 278 70% 25%; /* #481268 TavlTik Deep Purple */
+    --primary-rgb: 72, 18, 104;
     --primary-foreground: 0 0% 100%;
-    --primary-container: 273 66% 95%;
-    --secondary: 173 100% 33%; /* #00A896 Persian Green */
+    --primary-container: 278 60% 95%;
+    --secondary: 163 100% 33%; /* #00A878 TavlTik Emerald Teal */
     --secondary-foreground: 0 0% 100%;
-    --tertiary: 173 100% 33%; /* #00A896 Persian Green */
+    --tertiary: 163 100% 33%; /* #00A878 TavlTik Emerald Teal */
     --tertiary-foreground: 0 0% 100%;
-    --tertiary-container: 173 100% 95%;
-    --accent: 173 100% 33%; /* #00A896 Persian Green */
+    --tertiary-container: 163 100% 95%;
+    --accent: 163 100% 33%; /* #00A878 TavlTik Emerald Teal */
     --accent-foreground: 0 0% 100%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 40%;

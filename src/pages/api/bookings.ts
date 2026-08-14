@@ -67,7 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: 'Travltik <noreply@travltik.com>',
+            from: 'Tavltik <noreply@travltik.com>',
             to: [expertEmail],
             subject: `🎉 New Client Enquiry from ${seekerName || 'Applicant'} (${visaCategory})`,
             html: `

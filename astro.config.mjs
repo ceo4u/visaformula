@@ -9,7 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://visaformula.com',
+  site: 'https://tavltik.com',
   output: 'server',
   adapter: node({
     mode: 'standalone'
@@ -24,25 +24,11 @@ export default defineConfig({
     envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_', 'RESEND_', 'EMAIL_', 'DATABASE_'],
     ssr: {
       external: ['resend', 'pg', 'bcryptjs', 'nodemailer', 'firebase-admin', 'firebase-admin/app', 'firebase-admin/auth'],
-      noExternal: ['framer-motion', 'lucide-react'],
     },
     resolve: {
-      dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
-    },
-    optimizeDeps: {
-      include: [
-        'lucide-react',
-        'react',
-        'react-dom',
-        'react/jsx-runtime',
-        'react/jsx-dev-runtime',
-        'firebase/app',
-        'firebase/auth',
-      ],
-      exclude: ['firebase-admin'],
     },
   },
 });

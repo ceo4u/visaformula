@@ -86,7 +86,7 @@ export function Header() {
           <img
             src="/logo.png?v=3"
             alt="Tavltik Logo"
-            className="h-10 sm:h-12 lg:h-13 max-h-[52px] sm:max-h-[58px] w-auto object-contain"
+            className="h-12 sm:h-14 lg:h-16 max-h-[62px] sm:max-h-[70px] w-auto object-contain"
           />
         </a>
 

@@ -13,6 +13,24 @@ function LoginPortalContent() {
     const [googleLoading, setGoogleLoading] = useState(false);
     const [googleLoadingText, setGoogleLoadingText] = useState("");
 
+    const formatAuthError = (errMessage?: string) => {
+        if (!errMessage) return "";
+        const msg = String(errMessage);
+        if (msg.includes("popup-closed") || msg.includes("closed-by-user") || msg.includes("cancelled-popup-request") || msg.includes("user-cancelled")) {
+            return "";
+        }
+        if (msg.includes("auth/invalid-credential") || msg.includes("auth/wrong-password") || msg.includes("auth/user-not-found")) {
+            return "Invalid email address or password.";
+        }
+        if (msg.includes("auth/email-already-in-use")) {
+            return "An account with this email already exists.";
+        }
+        if (msg.includes("auth/weak-password")) {
+            return "Password should be at least 6 characters long.";
+        }
+        return msg.replace(/^Firebase:\s*Error\s*\(auth\//i, '').replace(/\)\.$/, '').replace(/-/g, ' ');
+    };
+
     const handleGoogleLogin = async () => {
         setError("");
         setGoogleLoading(true);
@@ -39,7 +57,8 @@ function LoginPortalContent() {
                 window.location.href = "/dashboard";
             }
         } catch (e: any) {
-            setError(e.message || "Google Login failed.");
+            const cleanErr = formatAuthError(e?.message || e?.code);
+            if (cleanErr) setError(cleanErr);
             setGoogleLoading(false);
         }
     };
@@ -76,7 +95,8 @@ function LoginPortalContent() {
             }
             window.location.href = "/dashboard";
         } catch (err: any) {
-            setError(err?.message?.includes("invalid") ? "Invalid email or password." : err?.message || "Login failed.");
+            const cleanErr = formatAuthError(err?.message || err?.code);
+            setError(cleanErr || "Invalid email or password.");
         } finally {
             setLoading(false);
         }
@@ -106,7 +126,7 @@ function LoginPortalContent() {
                 {/* Title */}
                 <div className="text-center space-y-1.5">
                     <h1 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight max-w-[280px] sm:max-w-xs mx-auto">
-                        Sign in to get started with VisaFormula
+                        Sign in to get started with Tavltik
                     </h1>
                     {/* Step indicator dots */}
                     <div className="flex items-center justify-center gap-1.5 pt-1">

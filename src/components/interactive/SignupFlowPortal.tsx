@@ -74,7 +74,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                                 I want to join as
                             </h1>
                             <p className="text-xs sm:text-sm font-medium text-slate-500">
-                                Select your role to get started with VisaFormula
+                                Select your role to get started with Tavltik
                             </p>
                         </div>
 

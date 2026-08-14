@@ -79,14 +79,14 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-slate-200/80 shadow-2xs">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 lg:h-20">
 
         {/* Logo */}
         <a href="/" className="flex items-center shrink-0">
           <img
             src="/logo.png?v=3"
-            alt="VisaFormula Logo"
-            className="h-11 sm:h-12 lg:h-14 max-h-[58px] sm:max-h-[64px] w-auto object-contain"
+            alt="Tavltik Logo"
+            className="h-14 sm:h-16 lg:h-20 max-h-[72px] sm:max-h-[82px] w-auto object-contain"
           />
         </a>
 

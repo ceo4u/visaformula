@@ -103,12 +103,19 @@ export default function VisaReadinessEngine() {
   const [captchaToken, setCaptchaToken] = useState<string | null>('mock-token');
   const [captchaSolved, setCaptchaSolved] = useState<boolean>(true);
 
-  // ── Common Mandatory Inputs (All Users) ──
   const [targetCountry, setTargetCountry] = useState('Canada');
   const [residenceCountry, setResidenceCountry] = useState('India');
   const [passportValidMonths, setPassportValidMonths] = useState('36');
   const [hasRefusals, setHasRefusals] = useState(false);
   const [refusalDetails, setRefusalDetails] = useState('');
+  const [budgetRange, setBudgetRange] = useState('₹20–30 lakh');
+  const [helpNeeds, setHelpNeeds] = useState<string[]>(['university', 'immigration', 'accommodation', 'insurance']);
+
+  const toggleHelpNeed = (id: string) => {
+    setHelpNeeds(prev => 
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
 
   // ── Persona 1: Student Visa Inputs ──
   const [academicLevel, setAcademicLevel] = useState("Master's Degree");
@@ -539,51 +546,31 @@ export default function VisaReadinessEngine() {
 
           {/* Centered Logo & Title Banner */}
           <div className="flex justify-center pt-1 mb-2">
-            <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+            <img src="/logo.png?v=3" alt="Travltik Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
           </div>
 
           <div className="mb-4 border-b border-slate-100 pb-3 text-center font-sans">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight font-sans">
-              AI Visa Readiness Engine
+            <span className="inline-flex items-center gap-1 bg-[#f0fdfa] text-[#00a896] border border-[#ccfbf1] text-[11px] font-extrabold px-3 py-1 rounded-full mb-1.5 shadow-2xs font-sans">
+              ✨ AI Guided Journey & Provider Matching
+            </span>
+            <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight font-sans">
+              Tell us what you're trying to do.
             </h2>
-            <p className="text-xs text-slate-500 font-medium mt-0.5 font-sans">
-              Get your AI-powered visa approval assessment in minutes
+            <p className="text-xs text-slate-500 font-medium mt-1 max-w-md mx-auto font-sans">
+              We'll build your recommended journey and match you with the right verified providers — skip searching hundreds of consultants manually.
             </p>
           </div>
 
-          {/* ── STEP 1: PERSONA INPUT FORM ── */}
+          {/* ── STEP 1: GUIDED JOURNEY QUESTIONNAIRE ── */}
           {!isEvaluated ? (
             <div className="space-y-4 font-sans">
-              
-              {/* Category Persona Tabs */}
-              <div className="grid grid-cols-4 gap-1 bg-slate-100/90 p-1 rounded-2xl mb-3 font-sans">
-                {categories.map((cat) => {
-                  const IconComponent = cat.icon;
-                  const isActive = activeTab === cat.id;
-                  return (
-                    <button
-                      key={cat.id}
-                      onClick={() => handleCategoryChange(cat.id as any)}
-                      className={`flex flex-col items-center justify-center py-2.5 px-1 rounded-xl transition-all cursor-pointer font-sans ${
-                        isActive
-                          ? 'bg-white text-[#00a896] shadow-xs font-semibold'
-                          : 'text-slate-500 hover:text-slate-800 font-medium'
-                      }`}
-                    >
-                      <IconComponent className={`w-4 h-4 mb-1 ${isActive ? 'text-[#00a896]' : 'text-slate-400'}`} />
-                      <span className="text-[11px] text-center leading-tight font-sans font-semibold">{cat.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Input Form */}
-              <form onSubmit={handleSubmitEvaluation} className="space-y-3.5 font-sans">
+              <form onSubmit={handleSubmitEvaluation} className="space-y-4 font-sans">
                 
-                {/* 1. Target Destination Country */}
+                {/* 1. Where do you want to go? */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-900 mb-1 font-sans">
-                    1. Target Destination Country *
+                  <label className="block text-xs font-bold text-slate-900 mb-1.5 font-sans flex items-center justify-between">
+                    <span>1. Where do you want to go? ✈️</span>
+                    <span className="text-[10px] font-semibold text-slate-400">Select Destination</span>
                   </label>
                   <CustomSelect
                     value={targetCountry}
@@ -592,11 +579,107 @@ export default function VisaReadinessEngine() {
                   />
                 </div>
 
-                {/* 2. Residence & Passport Validity Row */}
-                <div className="grid grid-cols-2 gap-3 font-sans">
+                {/* 2. What do you want to do? */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-900 mb-1.5 font-sans">
+                    2. What do you want to do? 🎯
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl font-sans">
+                    {categories.map((cat) => {
+                      const IconComponent = cat.icon;
+                      const isActive = activeTab === cat.id;
+                      return (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => handleCategoryChange(cat.id as any)}
+                          className={`flex flex-col items-center justify-center py-2.5 px-2 rounded-xl transition-all cursor-pointer font-sans ${
+                            isActive
+                              ? 'bg-white text-[#00a896] shadow-xs font-bold ring-2 ring-[#00a896]/20'
+                              : 'text-slate-600 hover:text-slate-900 font-semibold hover:bg-white/50'
+                          }`}
+                        >
+                          <IconComponent className={`w-4 h-4 mb-1 ${isActive ? 'text-[#00a896]' : 'text-slate-400'}`} />
+                          <span className="text-[11px] text-center leading-tight font-sans font-bold">{cat.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 3. Your Qualification / Profile & Budget */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-sans">
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
-                      2. Current Residence *
+                    <label className="block text-xs font-bold text-slate-900 mb-1 font-sans">
+                      3. Your Highest Qualification? 📜
+                    </label>
+                    <CustomSelect
+                      value={academicLevel}
+                      onChange={setAcademicLevel}
+                      options={academicLevelOptions}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-900 mb-1 font-sans">
+                      4. Total Estimated Budget? 💰
+                    </label>
+                    <select
+                      value={budgetRange}
+                      onChange={(e) => setBudgetRange(e.target.value)}
+                      className="w-full bg-white border border-slate-200/90 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] shadow-2xs font-sans"
+                    >
+                      <option value="Under ₹10 lakh">Under ₹10 lakh</option>
+                      <option value="₹10–20 lakh">₹10–20 lakh</option>
+                      <option value="₹20–30 lakh">₹20–30 lakh</option>
+                      <option value="₹30+ lakh / Sponsored">₹30+ lakh / Sponsored</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* 5. Need help with? (Multi-select Checkboxes) */}
+                <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-3.5 space-y-2 font-sans">
+                  <label className="block text-xs font-bold text-slate-900 font-sans">
+                    5. Need help with? (Select all that apply) 🛠️
+                  </label>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1 font-sans">
+                    {[
+                      { id: 'university', label: 'University & Admission', icon: '🎓' },
+                      { id: 'immigration', label: 'Immigration & Filing', icon: '🛂' },
+                      { id: 'accommodation', label: 'Accommodation & Stay', icon: '🏡' },
+                      { id: 'insurance', label: 'Travel & Health Insurance', icon: '🛡️' },
+                      { id: 'sponsorship', label: 'Financial & Loan Proof', icon: '💳' },
+                    ].map((item) => {
+                      const isSelected = helpNeeds.includes(item.id);
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => toggleHelpNeed(item.id)}
+                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-left transition-all border font-sans cursor-pointer ${
+                            isSelected
+                              ? 'bg-emerald-50 text-emerald-900 border-emerald-300 shadow-2xs'
+                              : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                          }`}
+                        >
+                          <span className={`w-4 h-4 rounded flex items-center justify-center text-[10px] font-extrabold shrink-0 border ${
+                            isSelected ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-slate-100 text-slate-400 border-slate-300'
+                          }`}>
+                            {isSelected ? '✓' : ''}
+                          </span>
+                          <span className="truncate">{item.icon} {item.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Mandatory Residence & Passport Row */}
+                <div className="grid grid-cols-2 gap-3 font-sans pt-1">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1 font-sans">
+                      Current Residence *
                     </label>
                     <input
                       type="text"
@@ -609,8 +692,8 @@ export default function VisaReadinessEngine() {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
-                      3. Passport Validity *
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1 font-sans">
+                      Passport Validity *
                     </label>
                     <CustomSelect
                       value={passportValidMonths}
@@ -882,12 +965,11 @@ export default function VisaReadinessEngine() {
                   {isEvaluating ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Evaluating Against Embassy Criteria...</span>
+                      <span>Building Your Personalized Recommended Journey...</span>
                     </>
                   ) : (
                     <>
-                      <span>Evaluate My Score Now</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <span>Build My Recommended Journey & Match Providers →</span>
                     </>
                   )}
                 </button>
@@ -1098,6 +1180,88 @@ export default function VisaReadinessEngine() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* ── RECOMMENDED JOURNEY ROADMAP & MATCHED PROVIDERS ── */}
+              <div className="bg-gradient-to-br from-purple-900 to-slate-900 text-white rounded-3xl p-6 shadow-xl space-y-5 font-sans border border-purple-500/30">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-purple-800/80 pb-4">
+                  <div>
+                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-teal-300 block font-sans">Custom Roadmap Generated</span>
+                    <h3 className="text-base sm:text-lg font-black text-white font-sans flex items-center gap-2">
+                      🗺️ Your Recommended Journey for {targetCountry}
+                    </h3>
+                  </div>
+                  <span className="bg-teal-500/20 text-teal-300 border border-teal-400/30 text-xs font-bold px-3 py-1 rounded-full self-start sm:self-center font-sans">
+                    Budget: {budgetRange}
+                  </span>
+                </div>
+
+                {/* 3-Step Journey Timeline */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-sans">
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 space-y-1.5 font-sans">
+                    <span className="text-xs font-black text-teal-300 font-sans">Step 1: Baseline Check</span>
+                    <h4 className="text-xs font-bold text-white font-sans">Academic & Financial Audit</h4>
+                    <p className="text-[11px] text-slate-300 font-sans">Score: <strong>{readinessScore}%</strong>. Verified for {academicLevel} pathway.</p>
+                  </div>
+
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 space-y-1.5 font-sans">
+                    <span className="text-xs font-black text-amber-300 font-sans">Step 2: Document Filing</span>
+                    <h4 className="text-xs font-bold text-white font-sans">SOP & Critical Gap Resolution</h4>
+                    <p className="text-[11px] text-slate-300 font-sans">{criticalGaps.length} profile gaps identified requiring expert review.</p>
+                  </div>
+
+                  <div className="bg-teal-500/20 backdrop-blur-md rounded-2xl p-4 border border-teal-400/40 space-y-1.5 font-sans">
+                    <span className="text-xs font-black text-teal-200 font-sans">Step 3: Provider Onboarding</span>
+                    <h4 className="text-xs font-bold text-white font-sans">Matched Verified Partners</h4>
+                    <p className="text-[11px] text-teal-100 font-sans">Ready for 1-on-1 consultation & service onboarding.</p>
+                  </div>
+                </div>
+
+                {/* Matched Providers List */}
+                <div className="pt-2 font-sans space-y-3">
+                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-teal-300 font-sans flex items-center justify-between">
+                    <span>🎉 Top Verified Providers Matched For You ({targetCountry})</span>
+                    <span className="text-[10px] text-slate-300 normal-case font-normal">Matched based on your target country & services</span>
+                  </h4>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-sans">
+                    <div className="bg-white/10 hover:bg-white/15 transition-all p-3.5 rounded-2xl border border-white/10 flex items-center justify-between font-sans">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-teal-500/30 text-teal-200 font-bold flex items-center justify-center text-sm border border-teal-400/40">
+                          🌐
+                        </div>
+                        <div>
+                          <h5 className="text-xs font-bold text-white font-sans">Apex {targetCountry} Immigration Lawyers</h5>
+                          <span className="text-[11px] text-slate-300 font-sans">⭐ 4.9 (120+ Verified Visas) • Licensed Legal Team</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setBookingModalOpen(true)}
+                        className="px-3 py-1.5 bg-[#00a896] hover:bg-[#008f80] text-white text-[11px] font-bold rounded-xl shadow-xs transition-all cursor-pointer whitespace-nowrap font-sans"
+                      >
+                        Book Session
+                      </button>
+                    </div>
+
+                    <div className="bg-white/10 hover:bg-white/15 transition-all p-3.5 rounded-2xl border border-white/10 flex items-center justify-between font-sans">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-purple-500/30 text-purple-200 font-bold flex items-center justify-center text-sm border border-purple-400/40">
+                          🎓
+                        </div>
+                        <div>
+                          <h5 className="text-xs font-bold text-white font-sans">Global EduAdvisors & Housing</h5>
+                          <span className="text-[11px] text-slate-300 font-sans">⭐ 4.8 (85+ Admissions) • Stay & Insurance Partner</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setBookingModalOpen(true)}
+                        className="px-3 py-1.5 bg-white text-slate-900 hover:bg-slate-100 text-[11px] font-bold rounded-xl shadow-xs transition-all cursor-pointer whitespace-nowrap font-sans"
+                      >
+                        Book Session
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 

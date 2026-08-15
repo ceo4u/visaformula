@@ -126,7 +126,7 @@ function LoginPortalContent() {
                 {/* Title */}
                 <div className="text-center space-y-1.5">
                     <h1 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight max-w-[280px] sm:max-w-xs mx-auto">
-                        Sign in to get started with Tavltik
+                        Sign in to get started with TravlTik
                     </h1>
                     {/* Step indicator dots */}
                     <div className="flex items-center justify-center gap-1.5 pt-1">

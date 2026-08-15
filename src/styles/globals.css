@@ -152,17 +152,20 @@ select {
   /* ── HEADINGS ── */
   h1, h2, h3, h4, h5, h6,
   .title-class {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 700;
-    color: #111111;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
+    color: #0f172a;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
-  h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
-  h2 { font-size: clamp(1.5rem, 3.5vw, 2.25rem); }
-  h3 { font-size: clamp(1.125rem, 2.5vw, 1.5rem); }
-  h4 { font-size: 1.125rem; }
+  h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
+  h2 { font-size: clamp(1.6rem, 3.5vw, 2.5rem); }
+  h3 { font-size: clamp(1.2rem, 2.5vw, 1.65rem); }
+  h4 { font-size: 1.15rem; }
   h5 { font-size: 1rem; }
   h6 { font-size: 0.875rem; }
 
@@ -170,10 +173,11 @@ select {
   header a,
   nav a,
   .nav-link {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
     font-weight: 600;
     font-size: 15px;
-    color: #2b2b2b;
+    color: #1e293b;
+    -webkit-font-smoothing: antialiased;
   }
 
   /* ── FOOTER & METADATA ── */
@@ -182,17 +186,147 @@ select {
   .text-meta,
   .text-timestamp,
   .text-date {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
     font-weight: 400;
     font-size: 14px;
-    color: #666666;
+    color: #64748b;
   }
 }
 
 /* =============================================
-   PREMIUM MICRO-INTERACTION UTILITIES
+   HIGH DEFINITION (HD) LUXURY UI SYSTEM & UTILITIES
    ============================================= */
 @layer utilities {
+  /* HD Font Antialiasing */
+  .hd-text {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* HD Glassmorphism Card */
+  .hd-glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05), 0 0 15px 0 rgba(0, 0, 0, 0.02);
+  }
+
+  /* Crisp Premium Card Elevation */
+  .hd-card {
+    background: #ffffff;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(226, 232, 240, 0.7);
+    box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hd-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 168, 150, 0.3);
+    box-shadow: 0 22px 45px -12px rgba(0, 168, 150, 0.12), 0 8px 16px -4px rgba(15, 23, 42, 0.04);
+  }
+
+  /* HD Input Focus Ring & Styling */
+  .hd-input {
+    background-color: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 0.875rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #0f172a;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hd-input:focus {
+    outline: none;
+    background-color: #ffffff;
+    border-color: #00a896;
+    box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.12);
+  }
+
+  /* HD Button Primary */
+  .hd-btn-primary {
+    background: linear-gradient(135deg, #00a896 0%, #028090 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 0.875rem;
+    box-shadow: 0 8px 20px -4px rgba(0, 168, 150, 0.35);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+
+  .hd-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -4px rgba(0, 168, 150, 0.45);
+    background: linear-gradient(135deg, #00bfa5 0%, #0294a5 100%);
+  }
+
+  .hd-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px -2px rgba(0, 168, 150, 0.3);
+  }
+
+  /* HD Button Purple Accent */
+  .hd-btn-purple {
+    background: linear-gradient(135deg, #581c87 0%, #4c1d95 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 0.875rem;
+    box-shadow: 0 8px 20px -4px rgba(88, 28, 135, 0.35);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+
+  .hd-btn-purple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -4px rgba(88, 28, 135, 0.45);
+    background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%);
+  }
+
+  /* HD Badge */
+  .hd-badge-teal {
+    background: rgba(0, 168, 150, 0.1);
+    color: #008073;
+    border: 1px solid rgba(0, 168, 150, 0.2);
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .hd-badge-purple {
+    background: rgba(88, 28, 135, 0.08);
+    color: #581c87;
+    border: 1px solid rgba(88, 28, 135, 0.18);
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
   .editorial-shadow {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   }
@@ -202,7 +336,7 @@ select {
   }
 
   .glass-card {
-    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800/50;
+    @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/50 shadow-lg;
   }
 
   .text-balance {
@@ -218,29 +352,45 @@ select {
     scrollbar-width: none;
   }
 
+  /* Custom Slim HD Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
   /* ── CTA BUTTONS & BADGES ── */
   .btn-cta,
   .badge-cta {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
     font-weight: 600;
     font-size: 16px;
     text-transform: none;
     letter-spacing: 0;
   }
 
-  /* ── PREMIUM CARD ELEVATION (Yelp-style lift) ── */
+  /* ── PREMIUM CARD ELEVATION (HD lift) ── */
   .premium-card {
     background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
-    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: 20px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform, box-shadow;
   }
 
   .premium-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 38px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.06);
+    box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.12), 0 8px 16px -4px rgba(15, 23, 42, 0.04);
   }
 
   /* ── BUTTON INVERSION FILL ── */
@@ -249,28 +399,25 @@ select {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
     font-weight: 600;
     font-size: 15px;
     text-transform: none;
-    padding: 0.6rem 1.4rem;
-    border-radius: 10px;
-    border: 2px solid #111111;
-    background-color: #111111;
+    padding: 0.65rem 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #0f172a;
+    background-color: #0f172a;
     color: #ffffff;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out,
-                color 0.3s ease-in-out,
-                border-color 0.3s ease-in-out,
-                box-shadow 0.3s ease-in-out;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: background-color, color;
   }
 
   .btn-invert:hover {
     background-color: #ffffff;
-    color: #111111;
-    border-color: #111111;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    color: #0f172a;
+    border-color: #0f172a;
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.15);
   }
 
   .btn-invert-outline {
@@ -278,26 +425,25 @@ select {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
     font-weight: 600;
     font-size: 15px;
     text-transform: none;
-    padding: 0.6rem 1.4rem;
-    border-radius: 10px;
-    border: 2px solid #111111;
+    padding: 0.65rem 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
     background-color: #ffffff;
-    color: #111111;
+    color: #0f172a;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out,
-                color 0.3s ease-in-out,
-                box-shadow 0.3s ease-in-out;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: background-color, color;
   }
 
   .btn-invert-outline:hover {
-    background-color: #111111;
+    background-color: #0f172a;
     color: #ffffff;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    border-color: #0f172a;
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.15);
   }
 
   /* ── IMAGE ZOOM (Overflow reveal) ── */
@@ -312,20 +458,20 @@ select {
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
   }
 
   .img-zoom-container:hover .img-zoom-image,
   .group:hover .img-zoom-image {
-    transform: scale(1.06);
+    transform: scale(1.05);
   }
 
   /* ── TEXT LINK EXPANDING UNDERLINE ── */
   .link-underline {
     position: relative;
     display: inline-block;
-    color: #111111;
+    color: #0f172a;
     font-weight: 600;
     font-size: 14px;
     text-decoration: none;
@@ -339,10 +485,10 @@ select {
     left: 50%;
     right: 50%;
     height: 2px;
-    background-color: #111111;
+    background-color: #00a896;
     transform-origin: bottom center;
-    transition: left 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                right 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .link-underline:hover::after {
@@ -351,14 +497,14 @@ select {
   }
 
   .link-underline:hover {
-    color: #000000;
+    color: #00a896;
   }
 
   /* ── TEAM SOCIAL OVERLAY SHIFT ── */
   .team-card {
     position: relative;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 20px;
   }
 
   .team-social-overlay {
@@ -368,11 +514,10 @@ select {
     align-items: flex-end;
     justify-content: center;
     padding-bottom: 1.25rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.75) 0%, transparent 60%);
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
   }
 
@@ -382,3 +527,4 @@ select {
     transform: translateY(0);
   }
 }
+

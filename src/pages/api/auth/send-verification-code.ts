@@ -95,7 +95,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       status: 'success',
-      message: 'Verification code sent! Please check your email.',
+      message: 'Verification code sent! Please check your inbox and spam folder.',
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

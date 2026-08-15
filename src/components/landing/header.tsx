@@ -85,7 +85,7 @@ export function Header() {
         <a href="/" className="flex items-center shrink-0">
           <img
             src="/logo.png?v=3"
-            alt="Tavltik Logo"
+            alt="TravlTik Logo"
             className="h-12 sm:h-14 lg:h-16 max-h-[62px] sm:max-h-[70px] w-auto object-contain"
           />
         </a>

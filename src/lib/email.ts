@@ -88,7 +88,7 @@ export async function sendVerificationOTP(data: VerificationEmailData): Promise<
   return sendEmail(
     {
       to: data.email,
-      subject: 'Verify your Visa Formula account',
+      subject: 'Your TravlTik Verification Code',
       html: generateVerificationEmailHtml(data),
     },
     'otp_verification'

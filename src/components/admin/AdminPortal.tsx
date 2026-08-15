@@ -162,7 +162,7 @@ export default function AdminPortal() {
             <div className="w-14 h-14 rounded-2xl bg-[#00a896]/10 border border-[#00a896]/30 flex items-center justify-center mx-auto text-[#00a896]">
               <Lock className="w-7 h-7" />
             </div>
-            <h1 className="text-xl font-black tracking-tight text-white font-sans">Tavltik Admin Control Panel</h1>
+            <h1 className="text-xl font-black tracking-tight text-white font-sans">TravlTik Admin Control Panel</h1>
             <p className="text-xs text-slate-400 font-medium font-sans">Secret Management Portal (`/dt`)</p>
           </div>
 
@@ -216,7 +216,7 @@ export default function AdminPortal() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-black text-white tracking-tight font-sans">Tavltik Master Admin</h1>
+                <h1 className="text-base sm:text-lg font-black text-white tracking-tight font-sans">TravlTik Master Admin</h1>
                 <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full font-sans flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Neon DB
                 </span>

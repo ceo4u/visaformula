@@ -97,11 +97,11 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     // Password Strength Score (0 to 4)
     const passedCriteriaCount = [hasMinLength, hasLowercase, hasUppercase, hasNumber].filter(Boolean).length;
     const getStrengthLabel = () => {
-        if (!signupPassword) return { text: "Too Short", color: "bg-slate-200 text-slate-400", width: "w-1/4" };
-        if (passedCriteriaCount <= 1) return { text: "Too Short", color: "bg-red-500 text-red-600", width: "w-1/4" };
-        if (passedCriteriaCount === 2) return { text: "Weak", color: "bg-amber-500 text-amber-600", width: "w-2/4" };
-        if (passedCriteriaCount === 3) return { text: "Good", color: "bg-[#00a896] text-[#00a896]", width: "w-3/4" };
-        return { text: "Strong", color: "bg-emerald-500 text-emerald-600", width: "w-full" };
+        if (!signupPassword) return { text: "Too Short", barColor: "bg-slate-200", textColor: "text-slate-400", width: "w-1/4" };
+        if (passedCriteriaCount <= 1) return { text: "Too Short", barColor: "bg-red-500", textColor: "text-red-500", width: "w-1/4" };
+        if (passedCriteriaCount === 2) return { text: "Weak", barColor: "bg-amber-500", textColor: "text-amber-500", width: "w-2/4" };
+        if (passedCriteriaCount === 3) return { text: "Good", barColor: "bg-[#00a896]", textColor: "text-[#00a896]", width: "w-3/4" };
+        return { text: "Strong", barColor: "bg-emerald-500", textColor: "text-emerald-600", width: "w-full" };
     };
     const strength = getStrengthLabel();
 
@@ -182,6 +182,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             return;
         }
         setSendingCode(true);
+        setOtpDigits(Array(6).fill(""));
         try {
             const res = await fetch("/api/auth/send-verification-code", {
                 method: "POST",
@@ -190,6 +191,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             });
             const data = await res.json();
             if (res.ok) {
+                setOtpDigits(Array(6).fill(""));
                 setShowOtpModal(true);
             } else {
                 setSignupError(data.message || "Failed to send OTP code.");
@@ -311,7 +313,6 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     // --- SIGNUP FINAL SUBMIT HANDLER ---
     const handleSignupSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("STEP 1 Button clicked (handleSignupSubmit)", { email: signupEmail });
         setSignupError("");
 
         if (!firstName || !lastName) {
@@ -323,7 +324,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             return;
         }
         if (!isPasswordValid) {
-            setSignupError("Password does not meet all security requirements.");
+            setSignupError("Password must be at least 6 characters long.");
             return;
         }
         if (!passwordsMatch) {
@@ -332,6 +333,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
         }
 
         setSignupLoading(true);
+        setOtpDigits(Array(6).fill(""));
 
         // Dispatch 6-digit OTP code to user's email and open verification modal
         try {
@@ -342,20 +344,18 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             });
 
             const data = await res.json();
-            if (data.otp) {
-                setDevOtp(data.otp);
-                if (data.otp.length === 6) {
-                    setOtpDigits(data.otp.split(""));
-                }
-            }
             if (res.ok) {
+                setOtpDigits(Array(6).fill(""));
                 setShowOtpModal(true);
             } else {
-
-                setSignupError(data.message || "Failed to send OTP code.");
+                if (data.code === 'EMAIL_ALREADY_EXISTS') {
+                    setSignupError("This email is already registered. Please log in.");
+                } else {
+                    setSignupError(data.message || "Failed to send verification code. Please check your email address.");
+                }
             }
         } catch (err) {
-            setShowOtpModal(true);
+            setSignupError("Connection error. Please try again.");
         } finally {
             setSignupLoading(false);
         }
@@ -599,11 +599,11 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                 {signupPassword && (
                                     <div className="mt-2 space-y-1">
                                         <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                                            <div className={`h-full transition-all duration-300 ${strength.color} ${strength.width}`} />
+                                            <div className={`h-full transition-all duration-300 ${strength.barColor} ${strength.width}`} />
                                         </div>
                                         <div className="flex justify-between text-[10px] font-bold text-slate-400">
                                             <span>Password Strength</span>
-                                            <span className={strength.color}>{strength.text}</span>
+                                            <span className={`${strength.textColor} bg-transparent`}>{strength.text}</span>
                                         </div>
                                     </div>
                                 )}
@@ -818,6 +818,12 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     </div>
                                 </div>
                             </div>
+
+                            {signupError && (
+                                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-bold mt-2">
+                                    {signupError}
+                                </div>
+                            )}
 
                             {/* 7. Submit Action Button */}
                             <button

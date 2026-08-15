@@ -134,134 +134,194 @@ export default function LandingPage() {
         {/* ── HOMEPAGE AUTO CONSULTATION / EXPERT MATCHING POPUP MODAL ── */}
         {showLeadModal && (
           <div 
-            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn font-sans"
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/45 animate-fadeIn font-sans"
             onClick={handleClose}
           >
             <div 
-              className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 border border-purple-100 font-sans" 
+              className="relative w-full max-w-sm sm:max-w-md bg-white rounded-3xl p-5 sm:p-6 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.4)] border border-slate-100 font-sans text-left" 
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
-              <button 
-                onClick={handleClose}
-                className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
-              >
-                ✕
-              </button>
+              {/* Close Button & Header Bar */}
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#00a896] animate-pulse"></span>
+                  <span className="text-[11px] font-extrabold text-[#00a896] tracking-wider uppercase">
+                    Step {step} of 3 • Quick Match
+                  </span>
+                </div>
+                <button 
+                  onClick={handleClose}
+                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors cursor-pointer text-sm font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Progress Line */}
+              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                <div 
+                  className="bg-[#00a896] h-full transition-all duration-300 rounded-full"
+                  style={{ width: `${(step / 3) * 100}%` }}
+                ></div>
+              </div>
 
               {!submitted ? (
                 <>
-                  <div className="space-y-1.5 text-center sm:text-left">
-                    <span className="inline-block px-3 py-1 bg-teal-50 text-[#00a896] text-[11px] font-extrabold rounded-full tracking-wider uppercase">
-                      ⚡ Free Instant Visa Guidance
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                      Connect with Verified Visa Experts ✈️
-                    </h3>
-                    <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                      Get matched with top embassy-licensed consultants for high approval success rates.
-                    </p>
-                  </div>
+                  {/* STEP 1: Country Selection */}
+                  {step === 1 && (
+                    <div className="space-y-4 animate-fadeIn">
+                      <div>
+                        <h3 className="text-lg font-black text-slate-900 leading-snug">
+                          Where do you want to travel? ✈️
+                        </h3>
+                        <p className="text-xs text-slate-500 font-medium">Select your target destination to get started.</p>
+                      </div>
 
-                  <form onSubmit={handleSubmitLead} className="space-y-4 pt-1">
-                    {/* Country Selector */}
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700 block">Target Destination</label>
-                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                      <div className="grid grid-cols-2 gap-2">
                         {[
                           { name: "Canada", flag: "🇨🇦" },
                           { name: "USA", flag: "🇺🇸" },
                           { name: "UK", flag: "🇬🇧" },
                           { name: "Australia", flag: "🇦🇺" },
                           { name: "Germany", flag: "🇩🇪" },
-                          { name: "Schengen", flag: "🇪🇺" },
-                          { name: "UAE", flag: "🇦🇪" }
+                          { name: "Schengen", flag: "🇪🇺" }
                         ].map(c => (
                           <button
                             key={c.name}
                             type="button"
-                            onClick={() => setTargetCountry(c.name)}
-                            className={`p-2 rounded-xl border text-center transition-all text-xs cursor-pointer ${
+                            onClick={() => {
+                              setTargetCountry(c.name);
+                              setStep(2);
+                            }}
+                            className={`p-3 rounded-2xl border text-left transition-all flex items-center gap-2.5 cursor-pointer hover:scale-[1.02] ${
                               targetCountry === c.name 
-                                ? "border-[#00a896] bg-teal-50 font-extrabold text-slate-900 ring-2 ring-[#00a896]/20" 
-                                : "border-slate-200 hover:border-slate-300 text-slate-600"
+                                ? "border-[#00a896] bg-teal-50/60 font-extrabold text-slate-900 shadow-sm" 
+                                : "border-slate-200 hover:border-[#00a896]/50 bg-slate-50/50 text-slate-700"
                             }`}
                           >
-                            <span className="text-base block">{c.flag}</span>
-                            <span className="text-[11px] font-bold block truncate">{c.name}</span>
+                            <span className="text-xl">{c.flag}</span>
+                            <span className="text-xs font-bold">{c.name}</span>
                           </button>
                         ))}
                       </div>
                     </div>
+                  )}
 
-                    {/* Visa Type Selector */}
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-700 block">Visa Purpose</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {["Student Visa", "Work Permit", "Tourist / Visit", "PR / Migration"].map(v => (
-                          <button
-                            key={v}
-                            type="button"
-                            onClick={() => setVisaType(v)}
-                            className={`p-2.5 rounded-xl border text-xs font-bold transition-all text-left cursor-pointer ${
-                              visaType === v 
-                                ? "border-[#00a896] bg-teal-50 text-[#00a896] font-extrabold" 
-                                : "border-slate-200 text-slate-600 hover:border-slate-300"
-                            }`}
-                          >
-                            {v}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Contact Inputs */}
-                    <div className="space-y-2 pt-1">
+                  {/* STEP 2: Visa Purpose */}
+                  {step === 2 && (
+                    <div className="space-y-4 animate-fadeIn">
                       <div>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Your Full Name *"
-                          value={fullName}
-                          onChange={(e) => setFullName(e.target.value)}
-                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
-                        />
+                        <h3 className="text-lg font-black text-slate-900 leading-snug">
+                          What is your purpose for {targetCountry}? 🎯
+                        </h3>
+                        <p className="text-xs text-slate-500 font-medium">Select your visa category for accurate guidance.</p>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <input
-                          type="tel"
-                          required
-                          placeholder="Mobile / WhatsApp *"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
-                        />
-                        <input
-                          type="email"
-                          placeholder="Email Address (Optional)"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
-                        />
-                      </div>
-                    </div>
 
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer tracking-wide"
-                    >
-                      {loading ? "Connecting with Experts..." : "✨ Request Call Back & Free Evaluation"}
-                    </button>
-                  </form>
+                      <div className="space-y-2">
+                        {[
+                          { title: "Student Visa", icon: "🎓", desc: "University, College & Course Admissions" },
+                          { title: "Work Permit", icon: "💼", desc: "Job Offers, Employer Sponsorship & Work Visas" },
+                          { title: "Tourist / Visit", icon: "🏝️", desc: "Holidays, Business Visits & Family Meetings" },
+                          { title: "PR & Settlement", icon: "🏡", desc: "Express Entry, PR Pathways & Migration" }
+                        ].map(v => (
+                          <button
+                            key={v.title}
+                            type="button"
+                            onClick={() => {
+                              setVisaType(v.title);
+                              setStep(3);
+                            }}
+                            className={`w-full p-3 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer hover:scale-[1.01] ${
+                              visaType === v.title 
+                                ? "border-[#00a896] bg-teal-50/60 font-extrabold text-slate-900 shadow-sm" 
+                                : "border-slate-200 hover:border-[#00a896]/50 bg-slate-50/50 text-slate-700"
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="text-xl">{v.icon}</span>
+                              <div>
+                                <div className="text-xs font-bold text-slate-900">{v.title}</div>
+                                <div className="text-[10px] text-slate-500 font-medium">{v.desc}</div>
+                              </div>
+                            </div>
+                            <span className="text-slate-400 font-bold text-xs">→</span>
+                          </button>
+                        ))}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setStep(1)}
+                        className="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-1 cursor-pointer pt-1"
+                      >
+                        ← Back to Destination
+                      </button>
+                    </div>
+                  )}
+
+                  {/* STEP 3: Contact Info & Submit */}
+                  {step === 3 && (
+                    <form onSubmit={handleSubmitLead} className="space-y-4 animate-fadeIn">
+                      <div>
+                        <h3 className="text-lg font-black text-slate-900 leading-snug">
+                          Get Matched with Top Experts 📞
+                        </h3>
+                        <p className="text-xs text-slate-500 font-medium">
+                          Selected: <span className="font-extrabold text-slate-800">{targetCountry} ({visaType})</span>
+                        </p>
+                      </div>
+
+                      <div className="space-y-2.5">
+                        <div>
+                          <label className="text-[11px] font-bold text-slate-700 block mb-1">Your Name *</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Prashant Sharma"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[11px] font-bold text-slate-700 block mb-1">Mobile / WhatsApp Number *</label>
+                          <input
+                            type="tel"
+                            required
+                            placeholder="e.g. +91 98765 43210"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-1">
+                        <button
+                          type="button"
+                          onClick={() => setStep(2)}
+                          className="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
+                        >
+                          ← Back
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer"
+                        >
+                          {loading ? "Submitting..." : "✨ Get Free Evaluation"}
+                        </button>
+                      </div>
+                    </form>
+                  )}
                 </>
               ) : (
-                <div className="py-6 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center mx-auto text-2xl">
+                <div className="py-5 text-center space-y-3 animate-fadeIn">
+                  <div className="w-14 h-14 rounded-full bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center mx-auto text-xl font-bold">
                     ✓
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-xl font-black text-slate-900">Request Received! 🎉</h3>
+                    <h3 className="text-lg font-black text-slate-900">Request Submitted! 🎉</h3>
                     <p className="text-xs text-slate-500 font-medium">
                       Our top verified {targetCountry} consultants have been notified and will reach out shortly.
                     </p>

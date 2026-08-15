@@ -133,7 +133,7 @@ function evaluateReadinessAlgorithmic(data: {
       id: 'clean-sop',
       severity: 'moderate',
       text: `Ensure your Statement of Purpose (SOP) clearly articulates academic/professional goals and return ties.`,
-      solution: `Have a certified Travltik consultant audit your complete document checklist prior to embassy submission.`
+      solution: `Have a certified VisaFormula consultant audit your complete document checklist prior to embassy submission.`
     });
   }
 

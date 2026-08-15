@@ -29,7 +29,7 @@ interface GapItem {
   solution: string;
 }
 
-// ── Custom Select Component (Clean font-sans typography matching Registration & Login) ──
+// ── Custom Select Component (Replaces native browser dropdown to eliminate blue highlight) ──
 interface CustomSelectProps {
   value: string;
   onChange: (val: string) => void;
@@ -52,18 +52,18 @@ function CustomSelect({ value, onChange, options, className = "" }: CustomSelect
   const selected = options.find(o => o.value === value) || options[0];
 
   return (
-    <div ref={ref} className={`relative font-sans ${className}`}>
+    <div ref={ref} className={`relative font-sora ${className}`}>
       <button
         type="button"
         onClick={() => setOpen(prev => !prev)}
-        className="w-full flex items-center justify-between bg-white border border-slate-200/90 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 outline-none hover:border-[#00a896] focus:border-[#00a896] transition-colors cursor-pointer shadow-2xs font-sans text-left"
+        className="w-full flex items-center justify-between bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 outline-none hover:border-[#00a896] focus:border-[#00a896] transition-colors cursor-pointer shadow-2xs font-sora text-left"
       >
         <span className="truncate">{selected?.label || value}</span>
         <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-[#00a896]' : ''}`} />
       </button>
 
       {open && (
-        <div className="absolute z-50 top-full mt-1.5 left-0 right-0 bg-white border border-slate-200/90 rounded-2xl shadow-xl overflow-hidden max-h-56 overflow-y-auto font-sans animate-fade-in">
+        <div className="absolute z-50 top-full mt-1.5 left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden max-h-56 overflow-y-auto font-sora animate-fade-in">
           {options.map((opt) => {
             const isSelected = opt.value === value;
             return (
@@ -74,14 +74,14 @@ function CustomSelect({ value, onChange, options, className = "" }: CustomSelect
                   onChange(opt.value);
                   setOpen(false);
                 }}
-                className={`w-full text-left px-4 py-2.5 text-xs transition-all cursor-pointer flex items-center justify-between ${
+                className={`w-full text-left px-3.5 py-2.5 text-xs font-bold transition-all cursor-pointer flex items-center justify-between ${
                   isSelected
-                    ? 'bg-[#00a896] text-white font-bold'
-                    : 'text-slate-700 hover:bg-teal-50 hover:text-[#00a896] font-medium'
+                    ? 'bg-slate-900 text-white font-extrabold'
+                    : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                 }`}
               >
                 <span>{opt.label}</span>
-                {isSelected && <span className="text-white font-bold ml-1">✓</span>}
+                {isSelected && <span className="text-teal-400 font-bold ml-1">✓</span>}
               </button>
             );
           })}
@@ -103,19 +103,12 @@ export default function VisaReadinessEngine() {
   const [captchaToken, setCaptchaToken] = useState<string | null>('mock-token');
   const [captchaSolved, setCaptchaSolved] = useState<boolean>(true);
 
+  // ── Common Mandatory Inputs (All Users) ──
   const [targetCountry, setTargetCountry] = useState('Canada');
   const [residenceCountry, setResidenceCountry] = useState('India');
   const [passportValidMonths, setPassportValidMonths] = useState('36');
   const [hasRefusals, setHasRefusals] = useState(false);
   const [refusalDetails, setRefusalDetails] = useState('');
-  const [budgetRange, setBudgetRange] = useState('₹20–30 lakh');
-  const [helpNeeds, setHelpNeeds] = useState<string[]>(['university', 'immigration', 'accommodation', 'insurance']);
-
-  const toggleHelpNeed = (id: string) => {
-    setHelpNeeds(prev => 
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
-    );
-  };
 
   // ── Persona 1: Student Visa Inputs ──
   const [academicLevel, setAcademicLevel] = useState("Master's Degree");
@@ -392,148 +385,29 @@ export default function VisaReadinessEngine() {
     }, 2000);
   };
 
-  // ── PDF Generation and Download Handler ──
-  const handleDownloadPdfReport = () => {
-    const reportDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    const reportTitle = `VisaFormula_Visa_Readiness_Report_${targetCountry.replace(/\s+/g, '_')}`;
-
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>${reportTitle}</title>
-        <style>
-          body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; color: #0f172a; margin: 0; padding: 40px; background: #fff; }
-          .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00a896; padding-bottom: 20px; margin-bottom: 30px; }
-          .logo { height: 40px; }
-          .title-badge { background: #00a896; color: white; font-size: 10px; font-weight: 800; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; }
-          .score-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-          .score-num { font-size: 48px; font-weight: 900; color: #00a896; line-height: 1; }
-          .badge { font-size: 12px; font-weight: 800; padding: 6px 14px; border-radius: 20px; text-transform: uppercase; display: inline-block; }
-          .badge-ready { background: #d1fae5; color: #065f46; }
-          .badge-mod { background: #fef3c7; color: #92400e; }
-          .badge-high { background: #ffe4e6; color: #9f1239; }
-          .section-title { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 14px; border-left: 4px solid #00a896; padding-left: 10px; }
-          .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 30px; }
-          .card { background: #f1f5f9; border-radius: 12px; padding: 16px; font-size: 13px; }
-          .card-title { font-weight: 800; color: #1e293b; margin-bottom: 4px; }
-          .card-sub { color: #64748b; font-size: 12px; }
-          .gap-list { margin-bottom: 30px; }
-          .gap-item { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 14px; margin-bottom: 10px; font-size: 13px; }
-          .gap-text { font-weight: 700; color: #881337; margin-bottom: 4px; }
-          .gap-sol { color: #475569; font-size: 12px; }
-          .footer { border-top: 1px solid #e2e8f0; padding-top: 20px; font-size: 11px; color: #94a3b8; text-align: center; }
-          @media print {
-            body { padding: 20px; }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <div>
-            <span class="title-badge">Official AI Audit</span>
-            <h1 style="font-size: 20px; margin: 8px 0 4px 0; font-weight: 800;">Visa Readiness Evaluation Report</h1>
-            <p style="font-size: 12px; color: #64748b; margin: 0;">Target Country: <strong>${targetCountry}</strong> | Visa Category: <strong>${activeTab.toUpperCase()}</strong> | Issued: ${reportDate}</p>
-          </div>
-          <img src="${typeof window !== 'undefined' ? window.location.origin : ''}/logo.png" class="logo" alt="VisaFormula Logo" />
-        </div>
-
-        <div class="score-card">
-          <div>
-            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Overall Readiness Score</div>
-            <div class="score-num">${readinessScore} / 100</div>
-          </div>
-          <div>
-            <span class="badge ${status === 'READY' ? 'badge-ready' : status === 'MODERATE_RISK' ? 'badge-mod' : 'badge-high'}">
-              ${status === 'READY' ? '🟢 READY' : status === 'MODERATE_RISK' ? '🟡 MODERATE RISK' : '🔴 HIGH REJECTION RISK'}
-            </span>
-          </div>
-        </div>
-
-        <div class="section-title">Parameter Strength Breakdown</div>
-        <div class="grid">
-          <div class="card">
-            <div class="card-title">Financial Adequacy (${financialScore} / 35)</div>
-            <div class="card-sub">Liquid funds & proof of income evaluated for ${targetCountry}.</div>
-          </div>
-          <div class="card">
-            <div class="card-title">Credential Match (${credentialScore} / 30)</div>
-            <div class="card-sub">Academic & professional credentials verified.</div>
-          </div>
-          <div class="card">
-            <div class="card-title">Home Ties Proof (${homeTiesScore} / 20)</div>
-            <div class="card-sub">Employment NOC & property deeds checked.</div>
-          </div>
-          <div class="card">
-            <div class="card-title">Travel History (${historyScore} / 15)</div>
-            <div class="card-sub">International visas & refusal history assessed.</div>
-          </div>
-        </div>
-
-        <div class="section-title">Critical Gaps & Recommended Solutions</div>
-        <div class="gap-list">
-          ${criticalGaps.map(g => `
-            <div class="gap-item">
-              <div class="gap-text">⚠️ ${g.text}</div>
-              <div class="gap-sol"><strong>Action Required:</strong> ${g.solution}</div>
-            </div>
-          `).join('')}
-        </div>
-
-        <div class="footer">
-          🔒 VisaFormula Official Verification Certificate | 100% Encrypted & Authenticated | Reference ID: VF-AUDIT-${Date.now().toString().slice(-8)}
-        </div>
-
-        <script>
-          window.onload = function() {
-            setTimeout(function() {
-              window.print();
-            }, 300);
-          }
-        </script>
-      </body>
-      </html>
-    `;
-
-    const printWindow = window.open('', '_blank', 'width=900,height=1000');
-    if (printWindow) {
-      printWindow.document.write(htmlContent);
-      printWindow.document.close();
-    } else {
-      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${reportTitle}.html`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  };
-
   return (
     <div
       onClick={(e) => {
         if (e.target === e.currentTarget) window.location.href = "/";
       }}
-      className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto selection:bg-[#00a896] selection:text-white"
+      className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sora overflow-y-auto selection:bg-[#00a896] selection:text-white"
     >
-      <div className={`relative z-10 w-full flex flex-col items-center justify-center my-auto py-4 font-sans transition-all ${
+      <div className={`relative z-10 w-full flex flex-col items-center justify-center my-auto py-4 font-sora transition-all ${
         isEvaluated ? 'max-w-5xl' : 'max-w-md'
       }`}>
         
         {/* Top Navigation Header */}
-        <div className="w-full flex items-center justify-between mb-3 px-1 shrink-0 gap-2 font-sans">
-          <a href="/" className="flex items-center gap-1.5 text-xs font-semibold text-white bg-white/20 hover:bg-white/30 transition-all px-4 py-2 rounded-full border border-white/30 backdrop-blur-md shadow-md shrink-0">
+        <div className="w-full flex items-center justify-between mb-3 px-1 shrink-0 gap-2 font-sora">
+          <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white bg-white/20 hover:bg-white/30 transition-all px-4 py-2 rounded-full border border-white/30 backdrop-blur-md shadow-md shrink-0">
             <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back to </span>Home
           </a>
           <a href="/" className="shrink-0">
-            <img src="/logo-white.png" alt="VisaFormula Logo" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
+            <img src="/logo-white.png" alt="VisaFormula" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
           </a>
         </div>
 
         {/* Modal Container Card */}
-        <div className="bg-white border border-slate-200/90 rounded-[32px] shadow-2xl relative w-full p-5 sm:p-7 font-sans max-h-[88vh] overflow-y-auto text-slate-900">
+        <div className="bg-white border border-slate-200/90 rounded-[32px] shadow-2xl relative w-full p-5 sm:p-7 font-sora max-h-[88vh] overflow-y-auto text-slate-900">
           
           {/* Close Button */}
           <button 
@@ -546,31 +420,51 @@ export default function VisaReadinessEngine() {
 
           {/* Centered Logo & Title Banner */}
           <div className="flex justify-center pt-1 mb-2">
-            <img src="/logo.png?v=3" alt="Travltik Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+            <img src="/logo.png" alt="VisaFormula" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
           </div>
 
-          <div className="mb-4 border-b border-slate-100 pb-3 text-center font-sans">
-            <span className="inline-flex items-center gap-1 bg-[#f0fdfa] text-[#00a896] border border-[#ccfbf1] text-[11px] font-extrabold px-3 py-1 rounded-full mb-1.5 shadow-2xs font-sans">
-              ✨ AI Guided Journey & Provider Matching
-            </span>
-            <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight font-sans">
-              Tell us what you're trying to do.
+          <div className="mb-4 border-b border-slate-100 pb-3 text-center font-sora">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight font-sora">
+              AI Visa Readiness Engine
             </h2>
-            <p className="text-xs text-slate-500 font-medium mt-1 max-w-md mx-auto font-sans">
-              We'll build your recommended journey and match you with the right verified providers — skip searching hundreds of consultants manually.
+            <p className="text-xs text-slate-500 font-semibold mt-0.5 font-sora">
+              Get your AI-powered visa approval assessment in minutes
             </p>
           </div>
 
-          {/* ── STEP 1: GUIDED JOURNEY QUESTIONNAIRE ── */}
+          {/* ── STEP 1: PERSONA INPUT FORM ── */}
           {!isEvaluated ? (
-            <div className="space-y-4 font-sans">
-              <form onSubmit={handleSubmitEvaluation} className="space-y-4 font-sans">
+            <div className="space-y-4 font-sora">
+              
+              {/* Category Persona Tabs */}
+              <div className="grid grid-cols-4 gap-1 bg-slate-100/90 p-1 rounded-xl mb-3 font-sora">
+                {categories.map((cat) => {
+                  const IconComponent = cat.icon;
+                  const isActive = activeTab === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => handleCategoryChange(cat.id as any)}
+                      className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all cursor-pointer font-sora ${
+                        isActive
+                          ? 'bg-white text-[#00a896] shadow-xs font-bold'
+                          : 'text-slate-500 hover:text-slate-800 font-medium'
+                      }`}
+                    >
+                      <IconComponent className={`w-4 h-4 mb-1 ${isActive ? 'text-[#00a896]' : 'text-slate-400'}`} />
+                      <span className="text-[10px] text-center leading-tight font-sora">{cat.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Input Form */}
+              <form onSubmit={handleSubmitEvaluation} className="space-y-3.5 font-sora">
                 
-                {/* 1. Where do you want to go? */}
+                {/* 1. Target Destination Country */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-900 mb-1.5 font-sans flex items-center justify-between">
-                    <span>1. Where do you want to go? ✈️</span>
-                    <span className="text-[10px] font-semibold text-slate-400">Select Destination</span>
+                  <label className="block text-xs font-bold text-slate-900 mb-1 font-sora">
+                    1. Target Destination Country *
                   </label>
                   <CustomSelect
                     value={targetCountry}
@@ -579,107 +473,11 @@ export default function VisaReadinessEngine() {
                   />
                 </div>
 
-                {/* 2. What do you want to do? */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-900 mb-1.5 font-sans">
-                    2. What do you want to do? 🎯
-                  </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl font-sans">
-                    {categories.map((cat) => {
-                      const IconComponent = cat.icon;
-                      const isActive = activeTab === cat.id;
-                      return (
-                        <button
-                          key={cat.id}
-                          type="button"
-                          onClick={() => handleCategoryChange(cat.id as any)}
-                          className={`flex flex-col items-center justify-center py-2.5 px-2 rounded-xl transition-all cursor-pointer font-sans ${
-                            isActive
-                              ? 'bg-white text-[#00a896] shadow-xs font-bold ring-2 ring-[#00a896]/20'
-                              : 'text-slate-600 hover:text-slate-900 font-semibold hover:bg-white/50'
-                          }`}
-                        >
-                          <IconComponent className={`w-4 h-4 mb-1 ${isActive ? 'text-[#00a896]' : 'text-slate-400'}`} />
-                          <span className="text-[11px] text-center leading-tight font-sans font-bold">{cat.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* 3. Your Qualification / Profile & Budget */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-sans">
+                {/* 2. Residence & Passport Validity Row */}
+                <div className="grid grid-cols-2 gap-3 font-sora">
                   <div>
-                    <label className="block text-xs font-bold text-slate-900 mb-1 font-sans">
-                      3. Your Highest Qualification? 📜
-                    </label>
-                    <CustomSelect
-                      value={academicLevel}
-                      onChange={setAcademicLevel}
-                      options={academicLevelOptions}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-900 mb-1 font-sans">
-                      4. Total Estimated Budget? 💰
-                    </label>
-                    <select
-                      value={budgetRange}
-                      onChange={(e) => setBudgetRange(e.target.value)}
-                      className="w-full bg-white border border-slate-200/90 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] shadow-2xs font-sans"
-                    >
-                      <option value="Under ₹10 lakh">Under ₹10 lakh</option>
-                      <option value="₹10–20 lakh">₹10–20 lakh</option>
-                      <option value="₹20–30 lakh">₹20–30 lakh</option>
-                      <option value="₹30+ lakh / Sponsored">₹30+ lakh / Sponsored</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* 5. Need help with? (Multi-select Checkboxes) */}
-                <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-3.5 space-y-2 font-sans">
-                  <label className="block text-xs font-bold text-slate-900 font-sans">
-                    5. Need help with? (Select all that apply) 🛠️
-                  </label>
-
-                  <div className="grid grid-cols-2 gap-2 pt-1 font-sans">
-                    {[
-                      { id: 'university', label: 'University & Admission', icon: '🎓' },
-                      { id: 'immigration', label: 'Immigration & Filing', icon: '🛂' },
-                      { id: 'accommodation', label: 'Accommodation & Stay', icon: '🏡' },
-                      { id: 'insurance', label: 'Travel & Health Insurance', icon: '🛡️' },
-                      { id: 'sponsorship', label: 'Financial & Loan Proof', icon: '💳' },
-                    ].map((item) => {
-                      const isSelected = helpNeeds.includes(item.id);
-                      return (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => toggleHelpNeed(item.id)}
-                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-left transition-all border font-sans cursor-pointer ${
-                            isSelected
-                              ? 'bg-emerald-50 text-emerald-900 border-emerald-300 shadow-2xs'
-                              : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
-                          }`}
-                        >
-                          <span className={`w-4 h-4 rounded flex items-center justify-center text-[10px] font-extrabold shrink-0 border ${
-                            isSelected ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-slate-100 text-slate-400 border-slate-300'
-                          }`}>
-                            {isSelected ? '✓' : ''}
-                          </span>
-                          <span className="truncate">{item.icon} {item.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Mandatory Residence & Passport Row */}
-                <div className="grid grid-cols-2 gap-3 font-sans pt-1">
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-700 mb-1 font-sans">
-                      Current Residence *
+                    <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
+                      2. Current Residence *
                     </label>
                     <input
                       type="text"
@@ -687,13 +485,13 @@ export default function VisaReadinessEngine() {
                       value={residenceCountry}
                       onChange={(e) => setResidenceCountry(e.target.value)}
                       placeholder="e.g. India"
-                      className="w-full bg-white border border-slate-200/90 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] shadow-2xs font-sans"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] shadow-2xs font-sora"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-700 mb-1 font-sans">
-                      Passport Validity *
+                    <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
+                      3. Passport Validity *
                     </label>
                     <CustomSelect
                       value={passportValidMonths}
@@ -707,10 +505,10 @@ export default function VisaReadinessEngine() {
                 
                 {/* PERSONA A: STUDENT VISA */}
                 {activeTab === 'student' && (
-                  <div className="space-y-3 pt-1 border-t border-slate-100 font-sans">
-                    <div className="grid grid-cols-2 gap-3 font-sans">
+                  <div className="space-y-3 pt-1 border-t border-slate-100 font-sora">
+                    <div className="grid grid-cols-2 gap-3 font-sora">
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Academic Level *
                         </label>
                         <CustomSelect
@@ -721,7 +519,7 @@ export default function VisaReadinessEngine() {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Language Score *
                         </label>
                         <CustomSelect
@@ -732,13 +530,13 @@ export default function VisaReadinessEngine() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 font-sans">
+                    <div className="grid grid-cols-2 gap-3 font-sora">
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Liquid Funds (USD) *
                         </label>
                         <div className="relative">
-                          <span className="absolute left-3.5 top-2.5 text-xs font-semibold text-slate-400">$</span>
+                          <span className="absolute left-3 top-2.5 text-xs font-bold text-slate-400">$</span>
                           <input
                             type="number"
                             required
@@ -746,13 +544,13 @@ export default function VisaReadinessEngine() {
                             placeholder="e.g. 25000"
                             value={bankBalanceUsd}
                             onChange={(e) => setBankBalanceUsd(e.target.value)}
-                            className="w-full bg-white border border-slate-200/90 rounded-2xl pl-8 pr-3 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] shadow-2xs font-sans"
+                            className="w-full bg-white border border-slate-200 rounded-xl pl-7 pr-2 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] shadow-2xs font-sora"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Sponsor Details *
                         </label>
                         <CustomSelect
@@ -767,10 +565,10 @@ export default function VisaReadinessEngine() {
 
                 {/* PERSONA B: WORK & JOB SEEKER VISA */}
                 {activeTab === 'work' && (
-                  <div className="space-y-3 pt-1 border-t border-slate-100 font-sans">
-                    <div className="grid grid-cols-2 gap-3 font-sans">
+                  <div className="space-y-3 pt-1 border-t border-slate-100 font-sora">
+                    <div className="grid grid-cols-2 gap-3 font-sora">
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Work Experience *
                         </label>
                         <CustomSelect
@@ -781,7 +579,7 @@ export default function VisaReadinessEngine() {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Job Offer Status *
                         </label>
                         <CustomSelect
@@ -792,9 +590,9 @@ export default function VisaReadinessEngine() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 font-sans">
+                    <div className="grid grid-cols-2 gap-3 font-sora">
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Degree ECA (WES) *
                         </label>
                         <CustomSelect
@@ -805,18 +603,18 @@ export default function VisaReadinessEngine() {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Monthly Salary (USD) *
                         </label>
                         <div className="relative">
-                          <span className="absolute left-3.5 top-2.5 text-xs font-semibold text-slate-400">$</span>
+                          <span className="absolute left-3 top-2.5 text-xs font-bold text-slate-400">$</span>
                           <input
                             type="number"
                             required
                             placeholder="e.g. 3500"
                             value={monthlySalaryUsd}
                             onChange={(e) => setMonthlySalaryUsd(e.target.value)}
-                            className="w-full bg-white border border-slate-200/90 rounded-2xl pl-8 pr-3 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] shadow-2xs font-sans"
+                            className="w-full bg-white border border-slate-200 rounded-xl pl-7 pr-2 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] shadow-2xs font-sora"
                           />
                         </div>
                       </div>
@@ -826,10 +624,10 @@ export default function VisaReadinessEngine() {
 
                 {/* PERSONA C: TOURIST & VISITOR VISA */}
                 {activeTab === 'tourist' && (
-                  <div className="space-y-3 pt-1 border-t border-slate-100 font-sans">
-                    <div className="grid grid-cols-2 gap-3 font-sans">
+                  <div className="space-y-3 pt-1 border-t border-slate-100 font-sora">
+                    <div className="grid grid-cols-2 gap-3 font-sora">
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Bank Stability (6Mo) *
                         </label>
                         <CustomSelect
@@ -840,7 +638,7 @@ export default function VisaReadinessEngine() {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Home Country Ties *
                         </label>
                         <CustomSelect
@@ -851,9 +649,9 @@ export default function VisaReadinessEngine() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 font-sans">
+                    <div className="grid grid-cols-2 gap-3 font-sora">
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Invitation Status *
                         </label>
                         <CustomSelect
@@ -864,7 +662,7 @@ export default function VisaReadinessEngine() {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Travel Stamps *
                         </label>
                         <CustomSelect
@@ -879,10 +677,10 @@ export default function VisaReadinessEngine() {
 
                 {/* PERSONA D: PR & SKILLED MIGRATION */}
                 {activeTab === 'pr' && (
-                  <div className="space-y-3 pt-1 border-t border-slate-100 font-sans">
-                    <div className="grid grid-cols-2 gap-3 font-sans">
+                  <div className="space-y-3 pt-1 border-t border-slate-100 font-sora">
+                    <div className="grid grid-cols-2 gap-3 font-sora">
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Points Score (CRS) *
                         </label>
                         <input
@@ -891,12 +689,12 @@ export default function VisaReadinessEngine() {
                           placeholder="e.g. 470 CRS"
                           value={pointsBenchmark}
                           onChange={(e) => setPointsBenchmark(e.target.value)}
-                          className="w-full bg-white border border-slate-200/90 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] shadow-2xs font-sans"
+                          className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] shadow-2xs font-sora"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                        <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                           Skill Assessment *
                         </label>
                         <CustomSelect
@@ -908,18 +706,18 @@ export default function VisaReadinessEngine() {
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-slate-900 mb-1 font-sans">
+                      <label className="block text-[11px] font-bold text-slate-900 mb-1 font-sora">
                         Settlement Funds (USD) *
                       </label>
                       <div className="relative">
-                        <span className="absolute left-3.5 top-2.5 text-xs font-semibold text-slate-400">$</span>
+                        <span className="absolute left-3 top-2.5 text-xs font-bold text-slate-400">$</span>
                         <input
                           type="number"
                           required
                           placeholder="e.g. 18000"
                           value={settlementFundsUsd}
                           onChange={(e) => setSettlementFundsUsd(e.target.value)}
-                          className="w-full bg-white border border-slate-200/90 rounded-2xl pl-8 pr-3 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] shadow-2xs font-sans"
+                          className="w-full bg-white border border-slate-200 rounded-xl pl-7 pr-2 py-2 text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] shadow-2xs font-sora"
                         />
                       </div>
                     </div>
@@ -927,30 +725,30 @@ export default function VisaReadinessEngine() {
                 )}
 
                 {/* Refusal History Toggle */}
-                <div className="pt-2 border-t border-slate-100 font-sans">
+                <div className="pt-2 border-t border-slate-100 font-sora">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-slate-900 font-sans">Previous Refusal History?</span>
+                    <span className="text-xs font-bold text-slate-900 font-sora">Previous Refusal History?</span>
                     <button
                       type="button"
                       onClick={() => setHasRefusals(!hasRefusals)}
-                      className="flex items-center gap-2 cursor-pointer select-none font-sans"
+                      className="flex items-center gap-2 cursor-pointer select-none font-sora"
                     >
                       <div className={`w-8 h-4.5 rounded-full p-0.5 transition-colors ${hasRefusals ? 'bg-rose-500' : 'bg-[#00a896]'}`}>
                         <div className={`w-3.5 h-3.5 bg-white rounded-full transition-transform ${hasRefusals ? 'translate-x-3.5' : 'translate-x-0'}`} />
                       </div>
-                      <span className="text-xs font-semibold text-slate-800 font-sans">{hasRefusals ? 'Yes' : 'No'}</span>
+                      <span className="text-xs font-bold text-slate-800 font-sora">{hasRefusals ? 'Yes' : 'No'}</span>
                     </button>
                   </div>
 
                   {hasRefusals && (
-                    <div className="mt-2 font-sans">
+                    <div className="mt-2 font-sora">
                       <input
                         type="text"
                         required
                         value={refusalDetails}
                         onChange={(e) => setRefusalDetails(e.target.value)}
                         placeholder="Specify country & refusal reason e.g. Canada Student Visa Refusal Section 216(1)"
-                        className="w-full bg-rose-50/50 border border-rose-200 rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-rose-950 outline-none focus:border-rose-400 font-sans"
+                        className="w-full bg-rose-50/50 border border-rose-200 rounded-xl px-3 py-2 text-xs font-semibold text-rose-950 outline-none focus:border-rose-400 font-sora"
                       />
                     </div>
                   )}
@@ -960,16 +758,17 @@ export default function VisaReadinessEngine() {
                 <button
                   type="submit"
                   disabled={isEvaluating}
-                  className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-3.5 px-4 rounded-2xl text-xs sm:text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98 mt-4 font-sans"
+                  className="w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98 mt-4 font-sora"
                 >
                   {isEvaluating ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Building Your Personalized Recommended Journey...</span>
+                      <span>Evaluating Against Embassy Criteria...</span>
                     </>
                   ) : (
                     <>
-                      <span>Build My Recommended Journey & Match Providers →</span>
+                      <span>Evaluate My Score Now</span>
+                      <ArrowRight className="w-4 h-4" />
                     </>
                   )}
                 </button>
@@ -978,21 +777,21 @@ export default function VisaReadinessEngine() {
           ) : (
 
             /* ── STEP 2: OUTPUT RESULTS DASHBOARD (AFTER EVALUATION) ── */
-            <div className="space-y-6 animate-premium-fade font-sans">
+            <div className="space-y-6 animate-premium-fade font-sora">
               
               {/* Top Control Bar */}
-              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center justify-between font-sans">
+              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center justify-between font-sora">
                 <div className="flex items-center gap-3">
                   <span className="w-3 h-3 rounded-full bg-[#00a896] animate-ping" />
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block font-sans">AI Assessment Complete</span>
-                    <h3 className="text-sm font-bold text-slate-900 font-sans">{targetCountry} — {activeTab.toUpperCase()} VISA</h3>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block font-sora">AI Assessment Complete</span>
+                    <h3 className="text-sm font-extrabold text-slate-900 font-sora">{targetCountry} — {activeTab.toUpperCase()} VISA</h3>
                   </div>
                 </div>
 
                 <button
                   onClick={() => setIsEvaluated(false)}
-                  className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs font-sans"
+                  className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs font-sora"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Modify Details / Re-Evaluate</span>
@@ -1000,12 +799,12 @@ export default function VisaReadinessEngine() {
               </div>
 
               {/* ── TOP TWO PANELS GRID ── */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 font-sans">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 font-sora">
 
                 {/* ── PANEL 1: OVERALL READINESS SCORE HEADER (md:col-span-7) ── */}
-                <div className="md:col-span-7 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-4 flex flex-col justify-between font-sans">
+                <div className="md:col-span-7 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-4 flex flex-col justify-between font-sora">
                   <div>
-                    <h3 className="text-sm font-bold text-[#0F172A] mb-3 font-sans">
+                    <h3 className="text-sm font-extrabold text-[#0F172A] mb-3 font-sora">
                       Your AI Assessment Summary
                     </h3>
 
@@ -1037,14 +836,14 @@ export default function VisaReadinessEngine() {
                           />
                         </svg>
                         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                          <span className="text-2xl font-black text-[#0F172A] leading-none font-sans">{readinessScore}%</span>
+                          <span className="text-2xl font-extrabold text-[#0F172A] leading-none font-sora">{readinessScore}%</span>
                           <div className="mt-1 flex items-center gap-0.5 text-[8px] font-bold text-slate-400">
-                            <span className="font-sans">Visa Readiness Score</span>
+                            <span className="font-sora">Visa Readiness Score</span>
                             <Info className="w-2.5 h-2.5 text-slate-400" />
                           </div>
                           
                           {/* Color-Coded Status Badge */}
-                          <span className={`mt-1 inline-block text-[9px] font-extrabold px-2 py-0.5 rounded-full border font-sans ${
+                          <span className={`mt-1 inline-block text-[9px] font-extrabold px-2 py-0.5 rounded-full border font-sora ${
                             status === 'READY'
                               ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                               : status === 'MODERATE_RISK'
@@ -1058,7 +857,7 @@ export default function VisaReadinessEngine() {
 
                       {/* Summary Narrative */}
                       <div className="space-y-1">
-                        <p className="text-xs text-slate-600 font-medium leading-relaxed font-sans">
+                        <p className="text-xs text-slate-600 font-medium leading-relaxed font-sora">
                           {recommendationSummary || `Your profile evaluation for ${targetCountry} (${activeTab.toUpperCase()}) is complete.`}
                         </p>
                       </div>
@@ -1066,11 +865,11 @@ export default function VisaReadinessEngine() {
                   </div>
 
                   {/* Dynamic AI Recommendation Box */}
-                  <div className="bg-[#f0fdfa] border border-[#ccfbf1] p-3.5 rounded-xl flex items-start gap-3 font-sans">
+                  <div className="bg-[#f0fdfa] border border-[#ccfbf1] p-3.5 rounded-xl flex items-start gap-3 font-sora">
                     <Lightbulb className="w-4 h-4 text-[#00a896] shrink-0 mt-0.5" />
-                    <div className="text-xs font-sans">
-                      <span className="font-bold text-[#0F172A] block mb-0.5 font-sans">AI Recommendation</span>
-                      <span className="text-slate-600 font-medium font-sans">
+                    <div className="text-xs font-sora">
+                      <span className="font-extrabold text-[#0F172A] block mb-0.5 font-sora">AI Recommendation</span>
+                      <span className="text-slate-600 font-medium font-sora">
                         {status === 'HIGH_RISK'
                           ? `Critical gaps detected. Consult with a licensed ${targetCountry} visa attorney before filing.`
                           : status === 'MODERATE_RISK'
@@ -1082,14 +881,14 @@ export default function VisaReadinessEngine() {
                 </div>
 
                 {/* ── PANEL 2: PARAMETER STRENGTH PROGRESS BARS (md:col-span-5) ── */}
-                <div className="md:col-span-5 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-4 flex flex-col justify-between font-sans">
+                <div className="md:col-span-5 bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-4 flex flex-col justify-between font-sora">
                   <div>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
                         <ShieldCheck className="w-4 h-4 text-[#00a896]" />
-                        <h3 className="text-sm font-bold text-[#0F172A] font-sans">Parameter Strength</h3>
+                        <h3 className="text-sm font-extrabold text-[#0F172A] font-sora">Parameter Strength</h3>
                       </div>
-                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border font-sans ${
+                      <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border font-sora ${
                         readinessScore >= 80
                           ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                           : 'bg-amber-50 text-amber-700 border-amber-200'
@@ -1098,7 +897,7 @@ export default function VisaReadinessEngine() {
                       </span>
                     </div>
 
-                    <div className="space-y-3 font-sans text-xs">
+                    <div className="space-y-3 font-sora text-xs">
                       {/* Financial Adequacy / 35 */}
                       <div>
                         <div className="flex justify-between font-bold text-slate-800 mb-1">
@@ -1147,7 +946,7 @@ export default function VisaReadinessEngine() {
 
                   <button
                     onClick={() => setShowFullReportModal(true)}
-                    className="w-full bg-white hover:bg-slate-50 border border-[#00a896] text-[#00a896] font-bold py-2.5 px-4 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-2xs font-sans mt-2"
+                    className="w-full bg-white hover:bg-slate-50 border border-[#00a896] text-[#00a896] font-extrabold py-2.5 px-4 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-2xs font-sora mt-2"
                   >
                     <FileText className="w-4 h-4 text-[#00a896]" />
                     <span>View Full PDF Audit Report</span>
@@ -1156,26 +955,26 @@ export default function VisaReadinessEngine() {
               </div>
 
               {/* ── CRITICAL GAPS & RED FLAGS CHECKLIST ── */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-3.5 font-sans">
-                <h3 className="text-sm font-bold text-[#0F172A] flex items-center gap-2 mb-1 font-sans">
+              <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm space-y-3.5 font-sora">
+                <h3 className="text-sm font-extrabold text-[#0F172A] flex items-center gap-2 mb-1 font-sora">
                   <AlertTriangle className="w-4 h-4 text-rose-500" />
                   <span>Critical Gaps & Red Flags Checklist</span>
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-sans">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-sora">
                   {criticalGaps.map((gap) => (
                     <div
                       key={gap.id}
                       onClick={() => setSelectedGap(gap)}
-                      className="p-3.5 rounded-xl border border-rose-100 bg-rose-50/50 hover:bg-rose-100/50 text-rose-950 transition-all cursor-pointer flex items-start justify-between gap-3 font-sans"
+                      className="p-3.5 rounded-xl border border-rose-100 bg-rose-50/50 hover:bg-rose-100/50 text-rose-950 transition-all cursor-pointer flex items-start justify-between gap-3 font-sora"
                     >
                       <div className="flex items-start gap-2.5">
                         <div className="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center text-white shrink-0 mt-0.5">
                           <span className="text-[10px] font-bold">!</span>
                         </div>
                         <div>
-                          <span className="font-bold text-xs leading-snug block font-sans">{gap.text}</span>
-                          <span className="text-[11px] text-slate-600 font-medium block mt-1 font-sans">Solution: {gap.solution}</span>
+                          <span className="font-bold text-xs leading-snug block font-sora">{gap.text}</span>
+                          <span className="text-[11px] text-slate-600 font-medium block mt-1 font-sora">Solution: {gap.solution}</span>
                         </div>
                       </div>
                     </div>
@@ -1183,96 +982,14 @@ export default function VisaReadinessEngine() {
                 </div>
               </div>
 
-              {/* ── RECOMMENDED JOURNEY ROADMAP & MATCHED PROVIDERS ── */}
-              <div className="bg-gradient-to-br from-purple-900 to-slate-900 text-white rounded-3xl p-6 shadow-xl space-y-5 font-sans border border-purple-500/30">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-purple-800/80 pb-4">
-                  <div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-teal-300 block font-sans">Custom Roadmap Generated</span>
-                    <h3 className="text-base sm:text-lg font-black text-white font-sans flex items-center gap-2">
-                      🗺️ Your Recommended Journey for {targetCountry}
-                    </h3>
-                  </div>
-                  <span className="bg-teal-500/20 text-teal-300 border border-teal-400/30 text-xs font-bold px-3 py-1 rounded-full self-start sm:self-center font-sans">
-                    Budget: {budgetRange}
-                  </span>
-                </div>
-
-                {/* 3-Step Journey Timeline */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-sans">
-                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 space-y-1.5 font-sans">
-                    <span className="text-xs font-black text-teal-300 font-sans">Step 1: Baseline Check</span>
-                    <h4 className="text-xs font-bold text-white font-sans">Academic & Financial Audit</h4>
-                    <p className="text-[11px] text-slate-300 font-sans">Score: <strong>{readinessScore}%</strong>. Verified for {academicLevel} pathway.</p>
-                  </div>
-
-                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 space-y-1.5 font-sans">
-                    <span className="text-xs font-black text-amber-300 font-sans">Step 2: Document Filing</span>
-                    <h4 className="text-xs font-bold text-white font-sans">SOP & Critical Gap Resolution</h4>
-                    <p className="text-[11px] text-slate-300 font-sans">{criticalGaps.length} profile gaps identified requiring expert review.</p>
-                  </div>
-
-                  <div className="bg-teal-500/20 backdrop-blur-md rounded-2xl p-4 border border-teal-400/40 space-y-1.5 font-sans">
-                    <span className="text-xs font-black text-teal-200 font-sans">Step 3: Provider Onboarding</span>
-                    <h4 className="text-xs font-bold text-white font-sans">Matched Verified Partners</h4>
-                    <p className="text-[11px] text-teal-100 font-sans">Ready for 1-on-1 consultation & service onboarding.</p>
-                  </div>
-                </div>
-
-                {/* Matched Providers List */}
-                <div className="pt-2 font-sans space-y-3">
-                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-teal-300 font-sans flex items-center justify-between">
-                    <span>🎉 Top Verified Providers Matched For You ({targetCountry})</span>
-                    <span className="text-[10px] text-slate-300 normal-case font-normal">Matched based on your target country & services</span>
-                  </h4>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-sans">
-                    <div className="bg-white/10 hover:bg-white/15 transition-all p-3.5 rounded-2xl border border-white/10 flex items-center justify-between font-sans">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-teal-500/30 text-teal-200 font-bold flex items-center justify-center text-sm border border-teal-400/40">
-                          🌐
-                        </div>
-                        <div>
-                          <h5 className="text-xs font-bold text-white font-sans">Apex {targetCountry} Immigration Lawyers</h5>
-                          <span className="text-[11px] text-slate-300 font-sans">⭐ 4.9 (120+ Verified Visas) • Licensed Legal Team</span>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => setBookingModalOpen(true)}
-                        className="px-3 py-1.5 bg-[#00a896] hover:bg-[#008f80] text-white text-[11px] font-bold rounded-xl shadow-xs transition-all cursor-pointer whitespace-nowrap font-sans"
-                      >
-                        Book Session
-                      </button>
-                    </div>
-
-                    <div className="bg-white/10 hover:bg-white/15 transition-all p-3.5 rounded-2xl border border-white/10 flex items-center justify-between font-sans">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-purple-500/30 text-purple-200 font-bold flex items-center justify-center text-sm border border-purple-400/40">
-                          🎓
-                        </div>
-                        <div>
-                          <h5 className="text-xs font-bold text-white font-sans">Global EduAdvisors & Housing</h5>
-                          <span className="text-[11px] text-slate-300 font-sans">⭐ 4.8 (85+ Admissions) • Stay & Insurance Partner</span>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => setBookingModalOpen(true)}
-                        className="px-3 py-1.5 bg-white text-slate-900 hover:bg-slate-100 text-[11px] font-bold rounded-xl shadow-xs transition-all cursor-pointer whitespace-nowrap font-sans"
-                      >
-                        Book Session
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* ── MONETIZATION ACTION BANNERS ── */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-sans">
+              {/* ── MONETIZATION ACTION BANNERS (TRIGGERED FOR SCORES < 80%) ── */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-sora">
                 
                 {/* Action 1: Fix Gaps with Verified Expert */}
-                <div className="bg-[#00a896] text-white p-4 sm:p-5 rounded-2xl space-y-2 flex flex-col justify-between shadow-md font-sans">
+                <div className="bg-[#00a896] text-white p-4 sm:p-5 rounded-2xl space-y-2 flex flex-col justify-between shadow-md font-sora">
                   <button
                     onClick={() => setBookingModalOpen(true)}
-                    className="w-full bg-[#008f80] hover:bg-[#007a6d] text-white px-4 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer font-sans"
+                    className="w-full bg-[#008f80] hover:bg-[#007a6d] text-white px-4 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer font-sora"
                   >
                     <Users className="w-4 h-4" />
                     <span>Fix Gaps with Verified Expert</span>
@@ -1284,22 +1001,22 @@ export default function VisaReadinessEngine() {
                       <img className="inline-block h-6 w-6 rounded-full ring-2 ring-[#00a896]" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" alt="Expert Avatar" />
                       <img className="inline-block h-6 w-6 rounded-full ring-2 ring-[#00a896]" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="Expert Avatar" />
                     </div>
-                    <span className="text-[11px] font-bold text-teal-50 font-sans">Connect with 500+ Verified Migration Lawyers</span>
+                    <span className="text-[11px] font-bold text-teal-50 font-sora">Connect with 500+ Verified Migration Lawyers</span>
                   </div>
                 </div>
 
                 {/* Action 2: Browse Destination Classifieds */}
-                <div className="bg-white border border-[#00a896] p-4 sm:p-5 rounded-2xl space-y-2 flex flex-col justify-between shadow-xs font-sans">
+                <div className="bg-white border border-[#00a896] p-4 sm:p-5 rounded-2xl space-y-2 flex flex-col justify-between shadow-xs font-sora">
                   <a
                     href={`/find-experts?country=${encodeURIComponent(targetCountry)}`}
-                    className="w-full bg-white hover:bg-teal-50/50 text-[#00a896] border border-[#00a896] px-4 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer font-sans"
+                    className="w-full bg-white hover:bg-teal-50/50 text-[#00a896] border border-[#00a896] px-4 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer font-sora"
                   >
                     <Building2 className="w-4 h-4 text-[#00a896]" />
                     <span>Browse Destination Classifieds</span>
                     <ArrowRight className="w-4 h-4" />
                   </a>
 
-                  <p className="text-center text-[11px] font-semibold text-slate-500 pt-1 font-sans">
+                  <p className="text-center text-[11px] font-semibold text-slate-500 pt-1 font-sora">
                     Explore verified ads, accommodation & jobs in {targetCountry}
                   </p>
                 </div>
@@ -1307,10 +1024,10 @@ export default function VisaReadinessEngine() {
             </div>
           )}
 
-          {/* Footer Brand Trust Badge */}
-          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-center font-sans">
+          {/* Footer Brand Trust Badge (Single clean footer) */}
+          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-center font-sora">
             <Lock className="w-4 h-4 text-[#00a896]" />
-            <span className="text-xs font-semibold text-slate-800 font-sans">100% Secure & Encrypted</span>
+            <span className="text-xs font-bold text-slate-800 font-sora">100% Secure & Encrypted</span>
           </div>
         </div>
       </div>
@@ -1318,26 +1035,26 @@ export default function VisaReadinessEngine() {
       {/* ── MODAL: VIEW FULL PDF REPORT ── */}
       {showFullReportModal && (
         <div className="fixed inset-0 z-[10000] bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-slate-200 space-y-5 relative font-sans max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl border border-slate-200 space-y-5 relative font-sora max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
-                <span className="text-[10px] font-bold text-[#00a896] uppercase tracking-wider font-sans">Official AI Audit</span>
-                <h3 className="text-lg font-bold text-[#0F172A] font-sans">Full Visa Readiness Report — {targetCountry} ({activeTab.toUpperCase()})</h3>
+                <span className="text-[10px] font-bold text-[#00a896] uppercase tracking-wider font-sora">Official AI Audit</span>
+                <h3 className="text-lg font-extrabold text-[#0F172A] font-sora">Full Visa Readiness Report — {targetCountry} ({activeTab.toUpperCase()})</h3>
               </div>
               <button onClick={() => setShowFullReportModal(false)} className="p-1.5 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-4 text-xs text-slate-700 font-sans">
+            <div className="space-y-4 text-xs text-slate-700 font-sora">
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 flex items-center justify-between">
                 <div>
-                  <span className="text-slate-400 font-bold block text-[10px] font-sans">READINESS SCORE</span>
-                  <span className="text-2xl font-black text-[#00a896] font-sans">{readinessScore} / 100</span>
+                  <span className="text-slate-400 font-bold block text-[10px] font-sora">READINESS SCORE</span>
+                  <span className="text-2xl font-black text-[#00a896] font-sora">{readinessScore} / 100</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-slate-400 font-bold block text-[10px] font-sans">RISK STATUS</span>
-                  <span className={`text-xs font-bold px-3 py-1 rounded-full border font-sans ${
+                  <span className="text-slate-400 font-bold block text-[10px] font-sora">RISK STATUS</span>
+                  <span className={`text-xs font-black px-3 py-1 rounded-full border font-sora ${
                     status === 'READY' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'
                   }`}>
                     {status}
@@ -1346,41 +1063,43 @@ export default function VisaReadinessEngine() {
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-bold text-[#0F172A] font-sans">Comprehensive Breakdown</h4>
-                <div className="grid grid-cols-2 gap-3 font-sans">
+                <h4 className="font-extrabold text-[#0F172A] font-sora">Comprehensive Breakdown</h4>
+                <div className="grid grid-cols-2 gap-3 font-sora">
                   <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
-                    <span className="font-bold text-slate-800 block font-sans">Financial Adequacy ({financialScore} / 35)</span>
-                    <span className="text-slate-600 font-semibold font-sans">Liquid funds & proof of income evaluated for {targetCountry}.</span>
+                    <span className="font-bold text-slate-800 block font-sora">Financial Adequacy ({financialScore} / 35)</span>
+                    <span className="text-slate-600 font-semibold font-sora">Liquid funds & proof of income evaluated for {targetCountry}.</span>
                   </div>
                   <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
-                    <span className="font-bold text-slate-800 block font-sans">Credential Match ({credentialScore} / 30)</span>
-                    <span className="text-slate-600 font-semibold font-sans">Academic & professional credentials verified.</span>
+                    <span className="font-bold text-slate-800 block font-sora">Credential Match ({credentialScore} / 30)</span>
+                    <span className="text-slate-600 font-semibold font-sora">Academic & professional credentials verified.</span>
                   </div>
                   <div className="p-3 bg-amber-50/50 border border-amber-100 rounded-xl">
-                    <span className="font-bold text-slate-800 block font-sans">Home Ties Proof ({homeTiesScore} / 20)</span>
-                    <span className="text-slate-600 font-semibold font-sans">Employment NOC & property deeds checked.</span>
+                    <span className="font-bold text-slate-800 block font-sora">Home Ties Proof ({homeTiesScore} / 20)</span>
+                    <span className="text-slate-600 font-semibold font-sora">Employment NOC & property deeds checked.</span>
                   </div>
                   <div className="p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
-                    <span className="font-bold text-slate-800 block font-sans">Travel History ({historyScore} / 15)</span>
-                    <span className="text-slate-600 font-semibold font-sans">International visas & refusal history assessed.</span>
+                    <span className="font-bold text-slate-800 block font-sora">Travel History ({historyScore} / 15)</span>
+                    <span className="text-slate-600 font-semibold font-sora">International visas & refusal history assessed.</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2 pt-2">
-                <h4 className="font-bold text-[#0F172A] font-sans">Actionable Solutions</h4>
-                <ol className="list-decimal list-inside space-y-1.5 font-semibold text-slate-600 pl-1 font-sans">
+                <h4 className="font-extrabold text-[#0F172A] font-sora">Actionable Solutions</h4>
+                <ol className="list-decimal list-inside space-y-1.5 font-semibold text-slate-600 pl-1 font-sora">
                   {criticalGaps.map((gap, i) => (
-                    <li key={i} className="font-sans">{gap.solution}</li>
+                    <li key={i} className="font-sora">{gap.solution}</li>
                   ))}
                 </ol>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 pt-4 border-t border-slate-100 font-sans">
+            <div className="flex items-center gap-3 pt-4 border-t border-slate-100 font-sora">
               <button
-                onClick={handleDownloadPdfReport}
-                className="flex-1 bg-[#00a896] hover:bg-[#008f80] text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer font-sans"
+                onClick={() => {
+                  alert(`Downloading Official PDF Visa Readiness Report for ${targetCountry}...`);
+                }}
+                className="flex-1 bg-[#00a896] hover:bg-[#008f80] text-white py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer font-sora"
               >
                 <Download className="w-4 h-4" />
                 <span>Download PDF Report</span>
@@ -1390,7 +1109,7 @@ export default function VisaReadinessEngine() {
                   setBookingModalOpen(true);
                   setShowFullReportModal(false);
                 }}
-                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer font-sans"
+                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer font-sora"
               >
                 <UserCheck className="w-4 h-4" />
                 <span>Connect With Expert</span>
@@ -1402,26 +1121,26 @@ export default function VisaReadinessEngine() {
 
       {/* ── MODAL: RISK GAP DETAIL ── */}
       {selectedGap && (
-        <div className="fixed inset-0 z-[10000] bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 font-sans">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 space-y-4 relative font-sans">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 font-sans">
-              <div className="flex items-center gap-2 font-sans">
+        <div className="fixed inset-0 z-[10000] bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 font-sora">
+          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 space-y-4 relative font-sora">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 font-sora">
+              <div className="flex items-center gap-2 font-sora">
                 <AlertTriangle className="w-4 h-4 text-rose-500" />
-                <h3 className="text-sm font-bold text-[#0F172A] font-sans">Risk Gap Resolution</h3>
+                <h3 className="text-sm font-extrabold text-[#0F172A] font-sora">Risk Gap Resolution</h3>
               </div>
               <button onClick={() => setSelectedGap(null)} className="p-1 text-slate-400 hover:text-slate-700">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs font-sans">
-              <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl font-bold text-rose-900 font-sans">
+            <div className="space-y-3 text-xs font-sora">
+              <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl font-bold text-rose-900 font-sora">
                 "{selectedGap.text}"
               </div>
 
-              <div className="space-y-1 font-sans">
-                <span className="font-bold text-[#0F172A] block font-sans">Recommended Action:</span>
-                <p className="text-slate-600 font-medium leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200 font-sans">
+              <div className="space-y-1 font-sora">
+                <span className="font-extrabold text-[#0F172A] block font-sora">Recommended Action:</span>
+                <p className="text-slate-600 font-medium leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200 font-sora">
                   {selectedGap.solution}
                 </p>
               </div>
@@ -1432,7 +1151,7 @@ export default function VisaReadinessEngine() {
                 setSelectedGap(null);
                 setBookingModalOpen(true);
               }}
-              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white py-3 rounded-xl text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer font-sans"
+              className="w-full bg-[#00a896] hover:bg-[#008f80] text-white py-3 rounded-xl text-xs font-extrabold shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer font-sora"
             >
               <UserCheck className="w-4 h-4" />
               <span>Fix This Gap with a Verified Consultant</span>
@@ -1443,49 +1162,49 @@ export default function VisaReadinessEngine() {
 
       {/* ── MODAL: QUICK CONSULTATION LEAD BOOKING ── */}
       {bookingModalOpen && (
-        <div className="fixed inset-0 z-[10000] bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 font-sans">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 space-y-4 relative font-sans">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 font-sans">
-              <h3 className="text-base font-bold text-[#0F172A] font-sans">Book Instant Expert Call</h3>
+        <div className="fixed inset-0 z-[10000] bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 font-sora">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 space-y-4 relative font-sora">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 font-sora">
+              <h3 className="text-base font-extrabold text-[#0F172A] font-sora">Book Instant Expert Call</h3>
               <button onClick={() => setBookingModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-700">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {leadSuccess ? (
-              <div className="p-6 text-center space-y-3 font-sans">
+              <div className="p-6 text-center space-y-3 font-sora">
                 <CheckCircle2 className="w-12 h-12 text-[#00a896] mx-auto animate-bounce" />
-                <h4 className="text-lg font-black text-[#0F172A] font-sans">Consultation Booked! 🎉</h4>
-                <p className="text-xs text-slate-600 font-medium font-sans">A verified {targetCountry} migration specialist will call you on {leadPhone} within 15 minutes.</p>
+                <h4 className="text-lg font-black text-[#0F172A] font-sora">Consultation Booked! 🎉</h4>
+                <p className="text-xs text-slate-600 font-medium font-sora">A verified {targetCountry} migration specialist will call you on {leadPhone} within 15 minutes.</p>
               </div>
             ) : (
-              <form onSubmit={handleLeadSubmit} className="space-y-3.5 font-sans">
-                <p className="text-xs text-slate-500 font-semibold font-sans">Connect with top-rated {targetCountry} visa experts to fix your application gaps.</p>
+              <form onSubmit={handleLeadSubmit} className="space-y-3.5 font-sora">
+                <p className="text-xs text-slate-500 font-semibold font-sora">Connect with top-rated {targetCountry} visa experts to fix your application gaps.</p>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-800 mb-1 font-sans">Your Full Name *</label>
+                  <label className="block text-xs font-bold text-slate-800 mb-1 font-sora">Your Full Name *</label>
                   <input
                     type="text"
                     required
                     value={leadName}
                     onChange={(e) => setLeadName(e.target.value)}
                     placeholder="e.g. Rahul Sharma"
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold outline-none focus:border-[#00a896] font-sans"
+                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold outline-none focus:border-[#00a896] font-sora"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-800 mb-1 font-sans">Phone / WhatsApp Number *</label>
+                  <label className="block text-xs font-bold text-slate-800 mb-1 font-sora">Phone / WhatsApp Number *</label>
                   <input
                     type="tel"
                     required
                     value={leadPhone}
                     onChange={(e) => setLeadPhone(e.target.value)}
                     placeholder="e.g. +91 98765 43210"
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold outline-none focus:border-[#00a896] font-sans"
+                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold outline-none focus:border-[#00a896] font-sora"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3 bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer font-sans"
+                  className="w-full py-3 bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-extrabold rounded-xl shadow-md transition-all cursor-pointer font-sora"
                 >
                   Confirm Instant Call Request
                 </button>

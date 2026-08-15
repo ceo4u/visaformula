@@ -154,50 +154,54 @@ export default function LandingPage() {
         {/* ── HOMEPAGE AUTO CONSULTATION / EXPERT MATCHING POPUP MODAL ── */}
         {showLeadModal && (
           <div 
-            className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/45 animate-fadeIn font-sans"
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md animate-fadeIn font-sans"
             onClick={handleClose}
           >
             <div 
-              className="relative w-full max-w-sm sm:max-w-md bg-white rounded-3xl p-5 sm:p-6 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.4)] border border-slate-100 font-sans text-left" 
+              className="relative w-full max-w-md bg-white rounded-[32px] p-6 sm:p-8 shadow-[0_30px_90px_-15px_rgba(0,0,0,0.4)] border border-slate-100 font-sans text-center overflow-hidden" 
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button & Header Bar */}
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#00a896] animate-pulse"></span>
-                  <span className="text-[11px] font-extrabold text-[#00a896] tracking-wider uppercase">
-                    Step {step} of 3 • Quick Match
-                  </span>
-                </div>
-                <button 
-                  onClick={handleClose}
-                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors cursor-pointer text-sm font-bold"
-                >
-                  ✕
-                </button>
-              </div>
-
-              {/* Progress Line */}
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div 
-                  className="bg-[#00a896] h-full transition-all duration-300 rounded-full"
-                  style={{ width: `${(step / 3) * 100}%` }}
-                ></div>
-              </div>
+              {/* Close Button */}
+              <button 
+                onClick={handleClose}
+                className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-800 rounded-full hover:bg-slate-100 transition-colors cursor-pointer text-sm font-bold z-10"
+              >
+                ✕
+              </button>
 
               {!submitted ? (
                 <>
+                  {/* Step Indicator Badge */}
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-100 text-[#00a896] text-[11px] font-black tracking-wide uppercase mb-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00a896] animate-pulse"></span>
+                    Step {step} of 3 • Quick Evaluation
+                  </div>
+
+                  {/* Progress Line */}
+                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-6">
+                    <div 
+                      className="bg-[#00a896] h-full transition-all duration-300 rounded-full"
+                      style={{ width: `${(step / 3) * 100}%` }}
+                    ></div>
+                  </div>
+
                   {/* STEP 1: Country Selection */}
                   {step === 1 && (
-                    <div className="space-y-4 animate-fadeIn">
-                      <div>
-                        <h3 className="text-lg font-black text-slate-900 leading-snug">
-                          Where do you want to travel? ✈️
-                        </h3>
-                        <p className="text-xs text-slate-500 font-medium">Select your target destination to get started.</p>
+                    <div className="space-y-5 animate-fadeIn">
+                      <div className="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-sm border border-teal-100/60">
+                        ✈️
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <h3 className="text-xl font-extrabold text-slate-900 tracking-tight mb-1">
+                          Where do you want to travel?
+                        </h3>
+                        <p className="text-xs text-slate-500 font-medium max-w-xs mx-auto">
+                          Select your target destination country to get matched with certified visa experts.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2.5 pt-1">
                         {[
                           { name: "Canada", flag: "🇨🇦" },
                           { name: "USA", flag: "🇺🇸" },
@@ -213,14 +217,14 @@ export default function LandingPage() {
                               setTargetCountry(c.name);
                               setStep(2);
                             }}
-                            className={`p-3 rounded-2xl border text-left transition-all flex items-center gap-2.5 cursor-pointer hover:scale-[1.02] ${
+                            className={`p-3.5 rounded-2xl border text-left transition-all flex items-center gap-3 cursor-pointer hover:scale-[1.02] ${
                               targetCountry === c.name 
-                                ? "border-[#00a896] bg-teal-50/60 font-extrabold text-slate-900 shadow-sm" 
+                                ? "border-[#00a896] bg-teal-50/70 font-extrabold text-slate-900 shadow-sm ring-1 ring-[#00a896]" 
                                 : "border-slate-200 hover:border-[#00a896]/50 bg-slate-50/50 text-slate-700"
                             }`}
                           >
-                            <span className="text-xl">{c.flag}</span>
-                            <span className="text-xs font-bold">{c.name}</span>
+                            <span className="text-2xl">{c.flag}</span>
+                            <span className="text-xs font-extrabold text-slate-800">{c.name}</span>
                           </button>
                         ))}
                       </div>
@@ -229,20 +233,26 @@ export default function LandingPage() {
 
                   {/* STEP 2: Visa Purpose */}
                   {step === 2 && (
-                    <div className="space-y-4 animate-fadeIn">
-                      <div>
-                        <h3 className="text-lg font-black text-slate-900 leading-snug">
-                          What is your purpose for {targetCountry}? 🎯
-                        </h3>
-                        <p className="text-xs text-slate-500 font-medium">Select your visa category for accurate guidance.</p>
+                    <div className="space-y-5 animate-fadeIn">
+                      <div className="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-sm border border-teal-100/60">
+                        🎯
                       </div>
 
-                      <div className="space-y-2">
+                      <div>
+                        <h3 className="text-xl font-extrabold text-slate-900 tracking-tight mb-1">
+                          What is your travel purpose?
+                        </h3>
+                        <p className="text-xs text-slate-500 font-medium">
+                          Target Country: <span className="font-extrabold text-[#00a896]">{targetCountry}</span>
+                        </p>
+                      </div>
+
+                      <div className="space-y-2.5 text-left">
                         {[
-                          { title: "Student Visa", icon: "🎓", desc: "University, College & Course Admissions" },
-                          { title: "Work Permit", icon: "💼", desc: "Job Offers, Employer Sponsorship & Work Visas" },
-                          { title: "Tourist / Visit", icon: "🏝️", desc: "Holidays, Business Visits & Family Meetings" },
-                          { title: "PR & Settlement", icon: "🏡", desc: "Express Entry, PR Pathways & Migration" }
+                          { title: "Student Visa", icon: "🎓", desc: "University & College Admissions" },
+                          { title: "Work Permit", icon: "💼", desc: "Job Offers & Work Sponsorship" },
+                          { title: "Tourist / Visit", icon: "🏝️", desc: "Holidays & Family Meetings" },
+                          { title: "PR & Settlement", icon: "🏡", desc: "Express Entry & PR Pathways" }
                         ].map(v => (
                           <button
                             key={v.title}
@@ -251,68 +261,74 @@ export default function LandingPage() {
                               setVisaType(v.title);
                               setStep(3);
                             }}
-                            className={`w-full p-3 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer hover:scale-[1.01] ${
+                            className={`w-full p-3.5 rounded-2xl border transition-all flex items-center justify-between cursor-pointer hover:scale-[1.01] ${
                               visaType === v.title 
-                                ? "border-[#00a896] bg-teal-50/60 font-extrabold text-slate-900 shadow-sm" 
+                                ? "border-[#00a896] bg-teal-50/70 font-extrabold text-slate-900 shadow-sm ring-1 ring-[#00a896]" 
                                 : "border-slate-200 hover:border-[#00a896]/50 bg-slate-50/50 text-slate-700"
                             }`}
                           >
                             <div className="flex items-center gap-3">
-                              <span className="text-xl">{v.icon}</span>
+                              <span className="text-2xl">{v.icon}</span>
                               <div>
-                                <div className="text-xs font-bold text-slate-900">{v.title}</div>
+                                <div className="text-xs font-extrabold text-slate-900">{v.title}</div>
                                 <div className="text-[10px] text-slate-500 font-medium">{v.desc}</div>
                               </div>
                             </div>
-                            <span className="text-slate-400 font-bold text-xs">→</span>
+                            <span className="text-[#00a896] font-extrabold text-sm">→</span>
                           </button>
                         ))}
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => setStep(1)}
-                        className="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-1 cursor-pointer pt-1"
-                      >
-                        ← Back to Destination
-                      </button>
+                      <div className="pt-1">
+                        <button
+                          type="button"
+                          onClick={() => setStep(1)}
+                          className="w-full py-2.5 rounded-2xl border border-slate-200 text-xs font-extrabold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all cursor-pointer"
+                        >
+                          ← Back to Destination
+                        </button>
+                      </div>
                     </div>
                   )}
 
                   {/* STEP 3: Contact Info & Submit */}
                   {step === 3 && (
-                    <form onSubmit={handleSubmitLead} className="space-y-4 animate-fadeIn">
+                    <form onSubmit={handleSubmitLead} className="space-y-5 animate-fadeIn">
+                      <div className="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-sm border border-teal-100/60">
+                        ✨
+                      </div>
+
                       <div>
-                        <h3 className="text-lg font-black text-slate-900 leading-snug">
-                          Get Matched with Top Experts 📞
+                        <h3 className="text-xl font-extrabold text-slate-900 tracking-tight mb-1">
+                          Get Matched with Experts
                         </h3>
                         <p className="text-xs text-slate-500 font-medium">
-                          Selected: <span className="font-extrabold text-slate-800">{targetCountry} ({visaType})</span>
+                          Selected: <span className="font-extrabold text-slate-900">{targetCountry} ({visaType})</span>
                         </p>
                       </div>
 
-                      <div className="space-y-2.5">
+                      <div className="space-y-3 text-left">
                         <div>
-                          <label className="text-[11px] font-bold text-slate-700 block mb-1">Your Name *</label>
+                          <label className="text-[11px] font-extrabold text-slate-700 block mb-1">Your Full Name *</label>
                           <input
                             type="text"
                             required
                             placeholder="e.g. Prashant Sharma"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
+                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 font-bold focus:outline-none focus:border-[#00a896] focus:bg-white focus:ring-2 focus:ring-[#00a896]/15 transition-all"
                           />
                         </div>
                         <div>
-                          <label className="text-[11px] font-bold text-slate-700 block mb-1">Mobile / WhatsApp Number *</label>
+                          <label className="text-[11px] font-extrabold text-slate-700 block mb-1">Mobile / WhatsApp Number *</label>
                           <div className="relative">
                             <div className="flex items-center bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden focus-within:border-[#00a896] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#00a896]/15 transition-all">
                               <button
                                 type="button"
                                 onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                                className="flex items-center gap-1.5 px-3 py-2.5 bg-slate-100/90 hover:bg-slate-200/80 text-slate-800 font-extrabold text-xs border-r border-slate-200 transition-colors cursor-pointer shrink-0"
+                                className="flex items-center gap-1.5 px-3.5 py-3 bg-slate-100/90 hover:bg-slate-200/80 text-slate-800 font-extrabold text-xs border-r border-slate-200 transition-colors cursor-pointer shrink-0"
                               >
-                                <span className="text-sm">{selectedCountry.flag}</span>
+                                <span className="text-base">{selectedCountry.flag}</span>
                                 <span>{selectedCountry.code}</span>
                                 <span className="text-[9px] text-slate-500 font-extrabold">▼</span>
                               </button>
@@ -322,13 +338,13 @@ export default function LandingPage() {
                                 placeholder="98765 43210"
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
-                                className="w-full px-3.5 py-2.5 bg-transparent text-xs text-slate-900 font-bold focus:outline-none placeholder:text-slate-400 placeholder:font-medium"
+                                className="w-full px-4 py-3 bg-transparent text-xs text-slate-900 font-bold focus:outline-none placeholder:text-slate-400 placeholder:font-medium"
                               />
                             </div>
 
                             {/* Custom High-Quality Popover Menu */}
                             {showCountryDropdown && (
-                              <div className="absolute left-0 bottom-full mb-1 z-50 w-56 max-h-48 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 space-y-0.5 animate-fadeIn">
+                              <div className="absolute left-0 bottom-full mb-1.5 z-50 w-60 max-h-52 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-2xl p-1.5 space-y-0.5 animate-fadeIn">
                                 {COUNTRY_CODES.map((c, idx) => (
                                   <button
                                     key={`${c.iso}-${idx}`}
@@ -338,14 +354,14 @@ export default function LandingPage() {
                                       setCountryDialCode(c.code);
                                       setShowCountryDropdown(false);
                                     }}
-                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-left font-bold transition-all cursor-pointer ${
+                                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs text-left font-bold transition-all cursor-pointer ${
                                       selectedCountry.iso === c.iso && selectedCountry.code === c.code
                                         ? "bg-teal-50 text-[#00a896] font-extrabold"
                                         : "hover:bg-slate-50 text-slate-700"
                                     }`}
                                   >
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-sm">{c.flag}</span>
+                                    <div className="flex items-center gap-2.5">
+                                      <span className="text-base">{c.flag}</span>
                                       <span className="text-xs">{c.country}</span>
                                     </div>
                                     <span className="text-slate-400 text-[11px] font-mono">{c.code}</span>
@@ -357,43 +373,57 @@ export default function LandingPage() {
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between pt-1">
-                        <button
-                          type="button"
-                          onClick={() => setStep(2)}
-                          className="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
-                        >
-                          ← Back
-                        </button>
+                      <div className="space-y-2 pt-1">
                         <button
                           type="submit"
                           disabled={loading}
-                          className="bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer"
+                          className="w-full bg-[#00a896] hover:bg-[#008f80] active:scale-[0.99] text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-lg shadow-[#00a896]/25 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2"
                         >
-                          {loading ? "Submitting..." : "✨ Get Free Evaluation"}
+                          {loading ? (
+                            <span>Submitting Request...</span>
+                          ) : (
+                            <>
+                              <span>Get Free Evaluation</span>
+                              <span className="text-base">🚀</span>
+                            </>
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setStep(2)}
+                          className="w-full py-2.5 rounded-2xl text-xs font-bold text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                        >
+                          Cancel / Back
                         </button>
                       </div>
                     </form>
                   )}
                 </>
               ) : (
-                <div className="py-5 text-center space-y-3 animate-fadeIn">
-                  <div className="w-14 h-14 rounded-full bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center mx-auto text-xl font-bold">
+                <div className="py-4 text-center space-y-4 animate-fadeIn">
+                  <div className="w-16 h-16 rounded-full bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center mx-auto text-2xl font-black shadow-inner">
                     ✓
                   </div>
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-black text-slate-900">Request Submitted! 🎉</h3>
-                    <p className="text-xs text-slate-500 font-medium">
-                      Our top verified {targetCountry} consultants have been notified and will reach out shortly.
+                  <div>
+                    <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Request Submitted! 🎉</h3>
+                    <p className="text-xs text-slate-500 font-medium mt-1 max-w-xs mx-auto">
+                      Our top verified {targetCountry} experts have received your request and will reach out shortly.
                     </p>
                   </div>
-                  <div className="pt-2">
+                  <div className="pt-2 space-y-2">
                     <a
                       href={`/find-experts?country=${encodeURIComponent(targetCountry)}`}
-                      className="block w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs py-3 rounded-xl transition-all"
+                      className="block w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-lg shadow-[#00a896]/20 transition-all"
                     >
                       Browse Verified {targetCountry} Experts Now →
                     </a>
+                    <button
+                      type="button"
+                      onClick={handleClose}
+                      className="block w-full py-2.5 text-xs font-bold text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                    >
+                      Close Window
+                    </button>
                   </div>
                 </div>
               )}

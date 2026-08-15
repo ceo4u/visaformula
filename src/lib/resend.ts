@@ -53,12 +53,15 @@ export const sendEmail = async ({
   subject,
   html,
   text,
-  from = process.env.EMAIL_FROM || 'Tavltik <noreply@travltik.com>',
+  from,
   emailType = 'transactional'
 }: SendEmailOptions) => {
   const apiKey = getApiKey();
   const apiKeyAvailable = Boolean(apiKey) ? 'YES' : 'NO';
-  const sender = from || 'Tavltik <noreply@travltik.com>';
+  let sender = from || process.env.EMAIL_FROM || 'TravlTik <noreply@travltik.com>';
+  if (!sender || sender.includes('visaformula.com') || sender.includes('onboarding@resend.dev') || !sender.includes('@travltik.com')) {
+    sender = 'TravlTik <noreply@travltik.com>';
+  }
   const toArray = Array.isArray(to) ? to : [to];
   const maskedTo = toArray.map(addr => addr.replace(/^(.{2}).*(@.*)$/, "$1***$2")).join(', ');
 

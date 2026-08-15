@@ -126,6 +126,7 @@ export function FindExpertsPortal() {
     const [showWizardModal, setShowWizardModal] = useState(false);
     const [wizardStep, setWizardStep] = useState(1);
     const [wizardAnswers, setWizardAnswers] = useState<WizardAnswers | null>(null);
+    const [isConsultantUser, setIsConsultantUser] = useState(false);
 
     // Temporary step choices
     const [tempCountry, setTempCountry] = useState("Canada");
@@ -140,6 +141,25 @@ export function FindExpertsPortal() {
         const seekerEmail = localStorage.getItem("seeker_email");
         const expertLoggedIn = localStorage.getItem("expert_isLoggedIn") === "true";
         return !!(user || seekerEmail || expertLoggedIn);
+    };
+
+    // Check if logged-in user is a Consultant / Expert
+    const checkIsConsultant = () => {
+        if (typeof window === "undefined") return false;
+        try {
+            const expertLoggedIn = localStorage.getItem("expert_isLoggedIn") === "true";
+            const expertEmail = localStorage.getItem("expert_email");
+            if (expertLoggedIn || expertEmail) return true;
+
+            const userStr = localStorage.getItem("visaformula_user");
+            if (userStr) {
+                const u = JSON.parse(userStr);
+                if (u && (u.type === "expert" || u.role === "expert" || u.role === "consultant" || u.isExpert)) {
+                    return true;
+                }
+            }
+        } catch (e) {}
+        return false;
     };
 
     const handleExpertCardClick = (expertObj: any) => {
@@ -324,7 +344,16 @@ export function FindExpertsPortal() {
         let initPurpose = "";
 
         if (typeof window !== "undefined") {
+            const isExp = checkIsConsultant();
+            setIsConsultantUser(isExp);
+
             const params = new URLSearchParams(window.location.search);
+
+            // Auto trigger wizard popup for Seekers/Users ONLY if requested via URL
+            if (!isExp && (params.get("wizard") === "true" || params.get("match") === "true" || params.get("guided") === "true")) {
+                setWizardStep(1);
+                setShowWizardModal(true);
+            }
 
             // --- q: free text search ---
             const textQuery = params.get("q") || params.get("query") || "";
@@ -605,27 +634,29 @@ export function FindExpertsPortal() {
                 {/* Main Content */}
                 <section className="flex-1">
 
-                    {/* ── GUIDED MATCHING TRIGGER BANNER ── */}
-                    <div className="bg-gradient-to-r from-[#481268] via-purple-900 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-xl mb-6 border border-purple-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-sans">
-                        <div className="space-y-1.5 font-sans">
-                            <span className="bg-teal-500/20 text-teal-300 border border-teal-400/30 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full inline-block font-sans">
-                                Guided Provider Matcher
-                            </span>
-                            <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2 font-sans">
-                                ✨ Find Your Ideal Matched Providers in 30 Seconds
-                            </h3>
-                            <p className="text-xs text-purple-200/90 max-w-xl font-sans leading-relaxed">
-                                Instead of browsing hundreds of consultants, tell us what you're trying to do. We'll help you find the right verified providers.
-                            </p>
+                    {/* ── GUIDED MATCHING TRIGGER BANNER (SEEKERS & USERS ONLY) ── */}
+                    {!isConsultantUser && (
+                        <div className="bg-gradient-to-r from-[#481268] via-purple-900 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-xl mb-6 border border-purple-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-sans">
+                            <div className="space-y-1.5 font-sans">
+                                <span className="bg-teal-500/20 text-teal-300 border border-teal-400/30 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full inline-block font-sans">
+                                    Guided Provider Matcher
+                                </span>
+                                <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2 font-sans">
+                                    ✨ Find Your Ideal Matched Providers in 30 Seconds
+                                </h3>
+                                <p className="text-xs text-purple-200/90 max-w-xl font-sans leading-relaxed">
+                                    Instead of browsing hundreds of consultants, tell us what you're trying to do. We'll help you find the right verified providers.
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => { setWizardStep(1); setShowWizardModal(true); }}
+                                className="bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-extrabold px-5 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 cursor-pointer shrink-0 font-sans tracking-wide"
+                            >
+                                <span>Start Matching Wizard</span>
+                                <ArrowRight className="w-4 h-4" />
+                            </button>
                         </div>
-                        <button
-                            onClick={() => { setWizardStep(1); setShowWizardModal(true); }}
-                            className="bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-extrabold px-5 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 cursor-pointer shrink-0 font-sans tracking-wide"
-                        >
-                            <span>Start Matching Wizard</span>
-                            <ArrowRight className="w-4 h-4" />
-                        </button>
-                    </div>
+                    )}
 
                     {/* ── RECOMMENDED JOURNEY HERO CARD (WHEN WIZARD SUBMITTED) ── */}
                     {wizardAnswers && (
@@ -1022,6 +1053,252 @@ export function FindExpertsPortal() {
                                 Create Free Account
                             </a>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ── 5-STEP GUIDED PROVIDER MATCHING POPUP WIZARD (FOR SEEKERS / USERS ONLY) ── */}
+            {showWizardModal && !isConsultantUser && (
+                <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn" onClick={() => setShowWizardModal(false)}>
+                    <div className="relative w-full max-w-xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 border border-purple-100 font-sans" onClick={(e) => e.stopPropagation()}>
+                        
+                        {/* Close button */}
+                        <button 
+                            onClick={() => setShowWizardModal(false)}
+                            className="absolute top-5 right-5 p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+
+                        {/* Wizard Header & Progress Bar */}
+                        <div className="space-y-3 font-sans">
+                            <div className="flex items-center justify-between font-sans">
+                                <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#00a896] bg-teal-50 px-3 py-1 rounded-full font-sans">
+                                    Step {wizardStep} of 5 • Guided Provider Matcher
+                                </span>
+                                <span className="text-xs font-bold text-slate-400 font-sans">{Math.round((wizardStep / 5) * 100)}% Completed</span>
+                            </div>
+
+                            {/* Progress bar line */}
+                            <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div 
+                                    className="h-full bg-gradient-to-r from-[#00a896] to-purple-600 transition-all duration-300 rounded-full"
+                                    style={{ width: `${(wizardStep / 5) * 100}%` }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* ── STEP 1: DESTINATION COUNTRY ── */}
+                        {wizardStep === 1 && (
+                            <div className="space-y-4 animate-fadeIn font-sans">
+                                <div className="space-y-1">
+                                    <h3 className="text-xl font-black text-slate-900 font-sans">Which country are you targeting? 🌐</h3>
+                                    <p className="text-xs text-slate-500 font-medium font-sans">Select your primary destination country so we can match consultants with active embassy licenses.</p>
+                                </div>
+
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 font-sans">
+                                    {[
+                                        { name: "Canada", flag: "🇨🇦" },
+                                        { name: "USA", flag: "🇺🇸" },
+                                        { name: "UK", flag: "🇬🇧" },
+                                        { name: "Australia", flag: "🇦🇺" },
+                                        { name: "Germany", flag: "🇩🇪" },
+                                        { name: "Schengen", flag: "🇪🇺" },
+                                        { name: "UAE", flag: "🇦🇪" },
+                                        { name: "New Zealand", flag: "🇳🇿" }
+                                    ].map(c => (
+                                        <button
+                                            key={c.name}
+                                            onClick={() => {
+                                                setTempCountry(c.name);
+                                                setWizardStep(2);
+                                            }}
+                                            className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer font-sans ${
+                                                tempCountry === c.name 
+                                                    ? "border-[#00a896] bg-teal-50/60 ring-2 ring-[#00a896]/30 shadow-md" 
+                                                    : "border-slate-200 hover:border-teal-400 hover:bg-slate-50"
+                                            }`}
+                                        >
+                                            <span className="text-2xl block mb-1">{c.flag}</span>
+                                            <span className="text-xs font-extrabold text-slate-900 block">{c.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ── STEP 2: VISA / MIGRATION GOAL ── */}
+                        {wizardStep === 2 && (
+                            <div className="space-y-4 animate-fadeIn font-sans">
+                                <div className="space-y-1">
+                                    <h3 className="text-xl font-black text-slate-900 font-sans">What is your primary goal for {tempCountry}? 🎯</h3>
+                                    <p className="text-xs text-slate-500 font-medium font-sans">We'll filter experts who specialize in this specific category.</p>
+                                </div>
+
+                                <div className="space-y-2 pt-2 font-sans">
+                                    {[
+                                        { title: "Study Abroad & University Admission", icon: "🎓", desc: "Top Universities, Study Permits & Post-Study Work Visas" },
+                                        { title: "Work Permit & Overseas Employment", icon: "💼", desc: "Employer Sponsorship, Skilled Worker & LMIA/Job Visas" },
+                                        { title: "Tourist, Visitor & Family Visit", icon: "🏖️", desc: "Short-term visits, Super Visas & Family Reunion" },
+                                        { title: "PR, Express Entry & Permanent Residency", icon: "🌐", desc: "Points calculation, Express Entry & Provincial Nominations" },
+                                        { title: "Business, Investor & Golden Visa", icon: "🏢", desc: "Startup Visas, Business Expansion & Investment Pathways" }
+                                    ].map(g => (
+                                        <button
+                                            key={g.title}
+                                            onClick={() => {
+                                                setTempGoal(g.title.split(" ")[0]);
+                                                setWizardStep(3);
+                                            }}
+                                            className="w-full text-left p-3.5 rounded-2xl border border-slate-200 hover:border-[#00a896] hover:bg-teal-50/40 transition-all cursor-pointer flex items-center gap-3.5 group font-sans"
+                                        >
+                                            <span className="text-2xl p-2 bg-slate-100 rounded-xl group-hover:bg-teal-100 transition-colors">{g.icon}</span>
+                                            <div className="flex-1 font-sans">
+                                                <h4 className="text-xs font-extrabold text-slate-900 group-hover:text-[#00a896] transition-colors">{g.title}</h4>
+                                                <p className="text-[11px] text-slate-500 font-medium">{g.desc}</p>
+                                            </div>
+                                            <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#00a896] transition-colors" />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ── STEP 3: QUALIFICATION / PROFILE AUDIT ── */}
+                        {wizardStep === 3 && (
+                            <div className="space-y-4 animate-fadeIn font-sans">
+                                <div className="space-y-1 font-sans">
+                                    <h3 className="text-xl font-black text-slate-900 font-sans">What is your current profile level? 🎓</h3>
+                                    <p className="text-xs text-slate-500 font-medium font-sans">Helps us gauge eligibility for programs and university tiers.</p>
+                                </div>
+
+                                <div className="space-y-2 pt-2 font-sans">
+                                    {[
+                                        "High School / 12th Grade Passed",
+                                        "Bachelor's Degree Holder",
+                                        "Master's / Post Graduate Degree",
+                                        "3+ Years Skilled Work Experience",
+                                        "Senior Executive / Business Founder"
+                                    ].map(q => (
+                                        <button
+                                            key={q}
+                                            onClick={() => {
+                                                setTempQual(q);
+                                                setWizardStep(4);
+                                            }}
+                                            className="w-full text-left p-3.5 rounded-2xl border border-slate-200 hover:border-[#00a896] hover:bg-teal-50/40 font-extrabold text-xs text-slate-900 transition-all cursor-pointer flex items-center justify-between font-sans"
+                                        >
+                                            <span>{q}</span>
+                                            <ArrowRight className="w-4 h-4 text-slate-400" />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ── STEP 4: BUDGET RANGE ── */}
+                        {wizardStep === 4 && (
+                            <div className="space-y-4 animate-fadeIn font-sans">
+                                <div className="space-y-1 font-sans">
+                                    <h3 className="text-xl font-black text-slate-900 font-sans">What is your total estimated budget? 💰</h3>
+                                    <p className="text-xs text-slate-500 font-medium font-sans">Includes tuition/proof of funds + consultancy fees.</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 font-sans">
+                                    {[
+                                        "Under ₹10 lakh",
+                                        "₹10–20 lakh",
+                                        "₹20–30 lakh",
+                                        "₹30–50 lakh",
+                                        "₹50 lakh+"
+                                    ].map(b => (
+                                        <button
+                                            key={b}
+                                            onClick={() => {
+                                                setTempBudget(b);
+                                                setWizardStep(5);
+                                            }}
+                                            className="p-4 rounded-2xl border border-slate-200 hover:border-[#00a896] hover:bg-teal-50/50 text-left font-extrabold text-xs text-slate-900 transition-all cursor-pointer flex items-center justify-between font-sans"
+                                        >
+                                            <span>{b}</span>
+                                            <CheckCircle className="w-4 h-4 text-slate-300" />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ── STEP 5: ASSISTANCE REQUIRED ── */}
+                        {wizardStep === 5 && (
+                            <div className="space-y-4 animate-fadeIn font-sans">
+                                <div className="space-y-1 font-sans">
+                                    <h3 className="text-xl font-black text-slate-900 font-sans">Which specific services do you need? 🛠️</h3>
+                                    <p className="text-xs text-slate-500 font-medium font-sans">Select all that apply for your {tempCountry} application.</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 font-sans">
+                                    {[
+                                        "University Admissions & SOP",
+                                        "Immigration & Visa Filing",
+                                        "Accommodation & Stay",
+                                        "Health & Travel Insurance",
+                                        "Document Audit & VFS Appointment"
+                                    ].map(srv => {
+                                        const isSel = tempNeeds.includes(srv);
+                                        return (
+                                            <button
+                                                key={srv}
+                                                onClick={() => {
+                                                    if (isSel) setTempNeeds(tempNeeds.filter(x => x !== srv));
+                                                    else setTempNeeds([...tempNeeds, srv]);
+                                                }}
+                                                className={`p-3 rounded-2xl border text-left text-xs font-bold transition-all cursor-pointer flex items-center justify-between font-sans ${
+                                                    isSel 
+                                                        ? "border-[#00a896] bg-teal-50 text-teal-900 font-extrabold" 
+                                                        : "border-slate-200 text-slate-700 hover:border-slate-300"
+                                                }`}
+                                            >
+                                                <span>{srv}</span>
+                                                <span className={`w-4 h-4 rounded-full border flex items-center justify-center text-[10px] ${isSel ? "bg-[#00a896] border-[#00a896] text-white" : "border-slate-300"}`}>
+                                                    {isSel ? "✓" : ""}
+                                                </span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                <button
+                                    onClick={() => {
+                                        const answers: WizardAnswers = {
+                                            country: tempCountry,
+                                            goal: tempGoal,
+                                            qualification: tempQual,
+                                            budget: tempBudget,
+                                            needs: tempNeeds
+                                        };
+                                        setWizardAnswers(answers);
+                                        setSelectedCountry(tempCountry);
+                                        fetchExperts("", tempCountry);
+                                        setShowWizardModal(false);
+                                    }}
+                                    className="w-full mt-4 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer font-sans tracking-wide"
+                                >
+                                    ✨ Complete Matching & Show Best Verified Providers
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Back navigation button */}
+                        {wizardStep > 1 && (
+                            <div className="pt-2 border-t border-slate-100 flex justify-between items-center font-sans">
+                                <button
+                                    onClick={() => setWizardStep(prev => prev - 1)}
+                                    className="text-xs font-bold text-slate-500 hover:text-slate-900 underline cursor-pointer font-sans"
+                                >
+                                    ← Back to Step {wizardStep - 1}
+                                </button>
+                            </div>
+                        )}
+
                     </div>
                 </div>
             )}

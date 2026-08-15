@@ -349,8 +349,9 @@ export function FindExpertsPortal() {
 
             const params = new URLSearchParams(window.location.search);
 
-            // Auto trigger wizard popup for Seekers/Users ONLY if requested via URL
-            if (!isExp && (params.get("wizard") === "true" || params.get("match") === "true" || params.get("guided") === "true")) {
+            // Auto trigger wizard popup for Seekers/Users on page load unless explicitly disabled
+            const disableWizard = params.get("guided") === "false" || params.get("skip_wizard") === "true";
+            if (!isExp && !disableWizard) {
                 setWizardStep(1);
                 setShowWizardModal(true);
             }

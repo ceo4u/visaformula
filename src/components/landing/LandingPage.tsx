@@ -51,6 +51,7 @@ export default function LandingPage() {
   const [targetCountry, setTargetCountry] = React.useState("Canada");
   const [visaType, setVisaType] = React.useState("Student Visa");
   const [fullName, setFullName] = React.useState("");
+  const [countryDialCode, setCountryDialCode] = React.useState("+91");
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
@@ -94,6 +95,7 @@ export default function LandingPage() {
     e.preventDefault();
     if (!fullName || !phone) return;
     setLoading(true);
+    const fullPhone = phone.startsWith("+") ? phone : `${countryDialCode} ${phone}`;
     try {
       await fetch("/api/bookings", {
         method: "POST",
@@ -101,7 +103,7 @@ export default function LandingPage() {
         body: JSON.stringify({
           seekerName: fullName,
           seekerEmail: email || `${phone.replace(/\D/g, '')}@trawelliq.guest`,
-          seekerPhone: phone,
+          seekerPhone: fullPhone,
           expertName: "Verified Top Expert",
           expertEmail: "support@trawelliq.com",
           visaCategory: `${targetCountry} - ${visaType}`,
@@ -285,14 +287,34 @@ export default function LandingPage() {
                         </div>
                         <div>
                           <label className="text-[11px] font-bold text-slate-700 block mb-1">Mobile / WhatsApp Number *</label>
-                          <input
-                            type="tel"
-                            required
-                            placeholder="e.g. +91 98765 43210"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
-                          />
+                          <div className="flex gap-2">
+                            <select
+                              value={countryDialCode}
+                              onChange={(e) => setCountryDialCode(e.target.value)}
+                              className="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2.5 text-xs font-extrabold text-slate-800 focus:outline-none focus:border-[#00a896] focus:bg-white cursor-pointer shrink-0"
+                            >
+                              <option value="+91">🇮🇳 +91</option>
+                              <option value="+1">🇨🇦/🇺🇸 +1</option>
+                              <option value="+44">🇬🇧 +44</option>
+                              <option value="+61">🇦🇺 +61</option>
+                              <option value="+49">🇩🇪 +49</option>
+                              <option value="+971">🇦🇪 +971</option>
+                              <option value="+33">🇫🇷 +33</option>
+                              <option value="+65">🇸🇬 +65</option>
+                              <option value="+92">🇵🇰 +92</option>
+                              <option value="+880">🇧🇩 +880</option>
+                              <option value="+977">🇳🇵 +977</option>
+                              <option value="+94">🇱🇰 +94</option>
+                            </select>
+                            <input
+                              type="tel"
+                              required
+                              placeholder="98765 43210"
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
+                            />
+                          </div>
                         </div>
                       </div>
 

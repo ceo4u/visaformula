@@ -62,10 +62,13 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                             <X className="w-5 h-5" />
                         </button>
 
-                        {/* Top Badge */}
-                        <div className="inline-flex items-center gap-2 bg-[#f0fdfa] border border-[#ccfbf1] rounded-full px-4 py-1.5 shadow-2xs">
-                            <Sparkles className="w-3.5 h-3.5 text-[#00a896]" />
-                            <span className="text-xs font-bold text-[#00a896] tracking-wide">Join 50,000+ users</span>
+                        {/* Site Logo */}
+                        <div className="flex items-center justify-center pt-2">
+                            <img 
+                                src="/logo.png?v=3" 
+                                alt="TravlTik Logo" 
+                                className="h-12 sm:h-14 w-auto object-contain" 
+                            />
                         </div>
 
                         {/* Title & Subtitle */}
@@ -74,7 +77,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                                 I want to join as
                             </h1>
                             <p className="text-xs sm:text-sm font-medium text-slate-500">
-                                Select your role to get started with Tavltik
+                                Select your role to get started with TravlTik
                             </p>
                         </div>
 

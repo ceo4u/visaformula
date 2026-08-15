@@ -141,7 +141,7 @@ export default function LandingPage() {
 
   return (
     <ErrorBoundary>
-      <div className="w-full bg-[#f3f4f6] text-black font-sans antialiased selection:bg-[#2563eb]/20 selection:text-[#2563eb]">
+      <div className="w-full bg-[#f3f4f6] text-black font-sans antialiased selection:bg-[#00a896]/20 selection:text-[#00a896]">
         {/* Desktop: shown on lg+ screens */}
         <div className="hidden lg:block">
           <DesktopHomeSection />
@@ -154,7 +154,7 @@ export default function LandingPage() {
         {/* ── HOMEPAGE AUTO CONSULTATION / EXPERT MATCHING POPUP MODAL ── */}
         {showLeadModal && (
           <div 
-            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md animate-fadeIn font-sans"
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/40 animate-fadeIn font-sans"
             onClick={handleClose}
           >
             <div 

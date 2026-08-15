@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Search, Filter, X, Loader2, Users } from "lucide-react";
+import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Search, Filter, X, Loader2, Users, Sparkles, ArrowRight, ArrowLeft, CheckCircle2, Globe, Building2, GraduationCap, Briefcase } from "lucide-react";
 import { ExpertProfileModal } from "./ExpertProfileModal";
 
 
@@ -7,6 +7,14 @@ const categoryFilters = ["All", "Student Visa", "Work Permit", "PR", "Local Expe
 const cityFilters = ["All Cities", "Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Remote"];
 const ratingFilters = ["Any", "4★+", "4.5★+", "Top Rated"];
 const availFilters = ["Anytime", "Today", "This Week", "Emergency 24/7"];
+
+interface WizardAnswers {
+  country: string;
+  goal: string;
+  qualification: string;
+  budget: string;
+  needs: string[];
+}
 
 // Sample platform consultants — shown alongside real DB experts
 const dummyExperts: any[] = [
@@ -113,6 +121,18 @@ export function FindExpertsPortal() {
     const [sortOpen, setSortOpen] = useState(false);
     const [selectedProfileExpert, setSelectedProfileExpert] = useState<any>(null);
     const [showLoginModal, setShowLoginModal] = useState(false);
+
+    // ── 1-by-1 Guided Matching Wizard State ──
+    const [showWizardModal, setShowWizardModal] = useState(false);
+    const [wizardStep, setWizardStep] = useState(1);
+    const [wizardAnswers, setWizardAnswers] = useState<WizardAnswers | null>(null);
+
+    // Temporary step choices
+    const [tempCountry, setTempCountry] = useState("Canada");
+    const [tempGoal, setTempGoal] = useState("Study");
+    const [tempQual, setTempQual] = useState("Bachelor's Degree");
+    const [tempBudget, setTempBudget] = useState("₹20–30 lakh");
+    const [tempNeeds, setTempNeeds] = useState<string[]>(["University", "Immigration", "Accommodation", "Insurance"]);
 
     const isUserLoggedIn = () => {
         if (typeof window === "undefined") return false;
@@ -574,7 +594,7 @@ export function FindExpertsPortal() {
                         <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-6 max-h-[80vh] overflow-auto shadow-2xl">
                             <div className="flex justify-between items-center mb-4">
                                 <h3 className="font-sora font-bold text-navy">Filters</h3>
-                                <button onClick={() => setShowMobileFilters(false)}><X className="w-5 h-5 text-gray-400" /></button>
+<button onClick={() => setShowMobileFilters(false)}><X className="w-5 h-5 text-gray-400" /></button>
                             </div>
                             <FilterSidebar />
                             <button onClick={() => setShowMobileFilters(false)} className="w-full mt-6 bg-slate-900 text-white py-3.5 rounded-xl font-bold text-xs tracking-wider">Apply Filters</button>
@@ -584,6 +604,72 @@ export function FindExpertsPortal() {
 
                 {/* Main Content */}
                 <section className="flex-1">
+
+                    {/* ── GUIDED MATCHING TRIGGER BANNER ── */}
+                    <div className="bg-gradient-to-r from-[#481268] via-purple-900 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-xl mb-6 border border-purple-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-sans">
+                        <div className="space-y-1.5 font-sans">
+                            <span className="bg-teal-500/20 text-teal-300 border border-teal-400/30 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full inline-block font-sans">
+                                Guided Provider Matcher
+                            </span>
+                            <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2 font-sans">
+                                ✨ Find Your Ideal Matched Providers in 30 Seconds
+                            </h3>
+                            <p className="text-xs text-purple-200/90 max-w-xl font-sans leading-relaxed">
+                                Instead of browsing hundreds of consultants, tell us what you're trying to do. We'll help you find the right verified providers.
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => { setWizardStep(1); setShowWizardModal(true); }}
+                            className="bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-extrabold px-5 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 cursor-pointer shrink-0 font-sans tracking-wide"
+                        >
+                            <span>Start Matching Wizard</span>
+                            <ArrowRight className="w-4 h-4" />
+                        </button>
+                    </div>
+
+                    {/* ── RECOMMENDED JOURNEY HERO CARD (WHEN WIZARD SUBMITTED) ── */}
+                    {wizardAnswers && (
+                        <div className="bg-white rounded-3xl border border-teal-500/40 p-5 sm:p-6 shadow-xl mb-6 relative overflow-hidden font-sans border-l-4 border-l-[#00a896] animate-fade-in">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 font-sans">
+                                <div className="space-y-1 font-sans">
+                                    <div className="flex items-center gap-2 flex-wrap font-sans">
+                                        <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#00a896] bg-teal-50 px-2.5 py-0.5 rounded-full font-sans">
+                                            Recommended Journey Generated
+                                        </span>
+                                        <span className="text-xs text-slate-500 font-semibold font-sans">Budget: {wizardAnswers.budget}</span>
+                                    </div>
+                                    <h3 className="text-base sm:text-lg font-black text-slate-900 mt-1 flex items-center gap-2 font-sans">
+                                        🗺️ Your Recommended Journey & Matched Providers for {wizardAnswers.country} ({wizardAnswers.goal})
+                                    </h3>
+                                </div>
+                                <button
+                                    onClick={() => { setWizardStep(1); setShowWizardModal(true); }}
+                                    className="text-xs font-bold text-[#00a896] hover:underline flex items-center gap-1 cursor-pointer font-sans"
+                                >
+                                    <span>Edit My Answers</span>
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 font-sans">
+                                <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/70 space-y-1 font-sans">
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-sans">Step 1: Profile</span>
+                                    <h4 className="text-xs font-bold text-slate-900 font-sans">Qualification Audit</h4>
+                                    <p className="text-[11px] text-slate-600 font-sans">{wizardAnswers.qualification} • {wizardAnswers.budget}</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/70 space-y-1 font-sans">
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-sans">Step 2: Services</span>
+                                    <h4 className="text-xs font-bold text-slate-900 font-sans">Requested Support</h4>
+                                    <p className="text-[11px] text-slate-600 font-sans">{wizardAnswers.needs.join(", ") || "Full Visa & Admission Package"}</p>
+                                </div>
+                                <div className="bg-teal-50/80 rounded-2xl p-3.5 border border-teal-200 space-y-1 font-sans">
+                                    <span className="text-[10px] font-bold text-[#00a896] uppercase tracking-wider font-sans">Step 3: Matched Experts</span>
+                                    <h4 className="text-xs font-bold text-slate-900 font-sans">{sorted.length} Verified Providers Found</h4>
+                                    <p className="text-[11px] text-teal-800 font-medium font-sans">Filtered to match your exact {wizardAnswers.country} requirements</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Search + Sort Bar */}
                     <div className="bg-white rounded-3xl border border-slate-100 p-4 shadow-xl mb-6 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                         <div className="flex items-center gap-2.5 bg-slate-50/50 border border-slate-100/70 rounded-2xl px-4 py-2.5 flex-1 w-full sm:w-auto">

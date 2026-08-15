@@ -114,22 +114,42 @@ export default function LandingPage() {
     if (!fullName || !phone) return;
     setLoading(true);
     const fullPhone = phone.startsWith("+") ? phone : `${countryDialCode} ${phone}`;
+    const cleanEmail = email || `${phone.replace(/\D/g, '') || 'lead'}@travltik.com`;
+    const leadDetails = `Quick Evaluation Lead for ${targetCountry} (${visaType}) - Contact: ${fullPhone}`;
+    
     try {
       await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           seekerName: fullName,
-          seekerEmail: email || `${phone.replace(/\D/g, '')}@trawelliq.guest`,
+          seekerEmail: cleanEmail,
           seekerPhone: fullPhone,
-          expertName: "Verified Top Expert",
-          expertEmail: "support@trawelliq.com",
+          expertName: "TravlTik Platform Expert",
+          expertEmail: "support@travltik.com",
           visaCategory: `${targetCountry} - ${visaType}`,
-          preferredDate: new Date().toISOString().split("T")[0],
-          preferredTime: "11:00 AM",
-          notes: `Homepage Lead Request for ${targetCountry} (${visaType})`
+          details: leadDetails,
+          bookingDate: new Date().toISOString()
         })
       });
+
+      // Save locally to expert leads feed for immediate consultant dashboard sync
+      if (typeof window !== "undefined") {
+        try {
+          const existingLeads = JSON.parse(localStorage.getItem("expert_leads") || "[]");
+          const newLead = {
+            id: Date.now(),
+            name: fullName,
+            visa: `${targetCountry} - ${visaType}`,
+            country: targetCountry,
+            phone: fullPhone,
+            status: "New",
+            date: "Today"
+          };
+          localStorage.setItem("expert_leads", JSON.stringify([newLead, ...existingLeads]));
+        } catch (e) {}
+      }
+
       setSubmitted(true);
     } catch (err) {
       console.error("Lead submission error:", err);

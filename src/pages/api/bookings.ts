@@ -31,6 +31,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     const result = await pool.query(
       `INSERT INTO bookings (
+        seeker_id,
+        expert_id,
         seeker_name,
         seeker_email,
         seeker_phone,
@@ -40,17 +42,19 @@ export const POST: APIRoute = async ({ request }) => {
         details,
         booking_date,
         status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, COALESCE($8::timestamp, CURRENT_TIMESTAMP), 'pending')
+      ) VALUES (COALESCE($1, 0), COALESCE($2, 0), $3, $4, $5, $6, $7, $8, $9, COALESCE($10::timestamp, CURRENT_TIMESTAMP), 'pending')
       RETURNING id, created_at`,
       [
+        body.seekerId || 0,
+        body.expertId || 0,
         seekerName,
         seekerEmail,
         seekerPhone,
         expertName,
         expertEmail,
         visaCategory,
-        details,
-        bookingDate
+        details || body.notes || '',
+        bookingDate || body.preferredDate || null
       ]
     );
 

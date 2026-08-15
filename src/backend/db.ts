@@ -176,6 +176,10 @@ export async function runMigrations() {
   await p.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS expert_name VARCHAR(100);`);
   await p.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS expert_email VARCHAR(255);`);
   await p.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS visa_category VARCHAR(100);`);
+  await p.query(`ALTER TABLE bookings ALTER COLUMN seeker_id DROP NOT NULL;`);
+  await p.query(`ALTER TABLE bookings ALTER COLUMN expert_id DROP NOT NULL;`);
+  await p.query(`ALTER TABLE bookings ALTER COLUMN seeker_id SET DEFAULT 0;`);
+  await p.query(`ALTER TABLE bookings ALTER COLUMN expert_id SET DEFAULT 0;`);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_bookings_expert_email ON bookings (expert_email);`);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_bookings_seeker_email ON bookings (seeker_email);`);
 

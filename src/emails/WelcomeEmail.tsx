@@ -13,7 +13,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Visa Formula</title>
+    <title>Welcome to TravlTik</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; width: 100% !important;">
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f3f4f6; padding: 40px 10px;">
@@ -23,7 +23,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                     
                     <!-- Decorative Top Header Gradient Strip -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); height: 8px; line-height: 8px; font-size: 1px;">
+                        <td style="background: linear-gradient(135deg, #00a896 0%, #0284c7 100%); height: 8px; line-height: 8px; font-size: 1px;">
                             &nbsp;
                         </td>
                     </tr>
@@ -31,7 +31,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                     <!-- Logo Header -->
                     <tr>
                         <td align="center" style="padding: 40px 40px 24px 40px;">
-                            <img src="https://visaformula.com/logo.png" alt="Visa Formula Logo" style="height: 64px; width: auto; max-width: 100%; display: block;" />
+                            <img src="https://travltik.com/logo.png" alt="TravlTik Logo" style="height: 64px; width: auto; max-width: 100%; display: block;" />
                         </td>
                     </tr>
                     
@@ -39,10 +39,10 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                     <tr>
                         <td style="padding: 0 40px 40px 40px; text-align: left;">
                             <h1 style="color: #111827; font-size: 26px; font-weight: 800; margin: 0 0 12px 0; line-height: 36px; text-align: center; letter-spacing: -0.5px;">
-                                Welcome to Visa Formula 👋
+                                Welcome to TravlTik 👋
                             </h1>
                             <p style="color: #4b5563; font-size: 16px; font-weight: 500; margin: 0 0 36px 0; line-height: 24px; text-align: center;">
-                                Your immigration portal is ready. Let's make your visa journey stress-free.
+                                Your visa & travel portal is ready. Let's make your global journey seamless.
                             </p>
                             
                             <p style="color: #1f2937; font-size: 15px; margin: 0 0 24px 0; line-height: 24px; font-weight: 600;">
@@ -50,7 +50,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                             </p>
                             
                             <p style="color: #4b5563; font-size: 15px; margin: 0 0 24px 0; line-height: 24px;">
-                                We're thrilled to help you navigate your immigration path. Here is what you can now explore on the platform:
+                                We're thrilled to have you on board. Here is what you can now explore on the platform:
                             </p>
                             
                             <!-- Features checklist (Card format) -->
@@ -58,25 +58,25 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                                     <tr>
                                         <td valign="top" style="padding: 8px 0; width: 28px;">
-                                            <div style="color: #2563eb; font-weight: bold; font-size: 18px; line-height: 20px;">✓</div>
+                                            <div style="color: #00a896; font-weight: bold; font-size: 18px; line-height: 20px;">✓</div>
                                         </td>
                                         <td style="padding: 8px 0; color: #1f2937; font-size: 15px; line-height: 22px; font-weight: 600;">
-                                            Verified Visa Experts
-                                            <div style="color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 2px;">Consult directly with top registered immigration attorneys.</div>
+                                            Verified Visa & Travel Experts
+                                            <div style="color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 2px;">Consult directly with top registered immigration advisors.</div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td valign="top" style="padding: 16px 0 8px 0; width: 28px;">
-                                            <div style="color: #2563eb; font-weight: bold; font-size: 18px; line-height: 20px;">✓</div>
+                                            <div style="color: #00a896; font-weight: bold; font-size: 18px; line-height: 20px;">✓</div>
                                         </td>
                                         <td style="padding: 16px 0 8px 0; color: #1f2937; font-size: 15px; line-height: 22px; font-weight: 600;">
-                                            Secure Document Manager
+                                            Secure Document Vault
                                             <div style="color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 2px;">Keep your passport, transcripts and files safe in one encrypted vault.</div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td valign="top" style="padding: 16px 0 8px 0; width: 28px;">
-                                            <div style="color: #2563eb; font-weight: bold; font-size: 18px; line-height: 20px;">✓</div>
+                                            <div style="color: #00a896; font-weight: bold; font-size: 18px; line-height: 20px;">✓</div>
                                         </td>
                                         <td style="padding: 16px 0 8px 0; color: #1f2937; font-size: 15px; line-height: 22px; font-weight: 600;">
                                             Real-time Case Tracking
@@ -90,14 +90,14 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin: 0 0 36px 0;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://visaformula.com/dashboard" style="background-color: #2563eb; color: #ffffff; padding: 16px 36px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.3); border: 1px solid #1d4ed8; text-align: center; width: 80%; max-width: 320px;">
+                                        <a href="https://travltik.com/dashboard" style="background-color: #00a896; color: #ffffff; padding: 16px 36px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px 0 rgba(0, 168, 150, 0.3); border: 1px solid #008f80; text-align: center; width: 80%; max-width: 320px;">
                                             Complete Your Profile
                                         </a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="center" style="padding-top: 20px;">
-                                        <a href="https://visaformula.com/find-experts" style="color: #2563eb; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 2px solid #dbeafe; padding-bottom: 2px;">
+                                        <a href="https://travltik.com/find-experts" style="color: #00a896; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 2px solid #ccfbf1; padding-bottom: 2px;">
                                             Find Verified Visa Experts &rarr;
                                         </a>
                                     </td>
@@ -108,12 +108,12 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                             
                             <!-- Support Section -->
                             <p style="color: #6b7280; font-size: 13px; line-height: 20px; margin: 0; text-align: center; font-weight: 500;">
-                                Have questions? We're here to help. Reach out to <a href="mailto:support@visaformula.com" style="color: #2563eb; text-decoration: none; font-weight: 700;">support@visaformula.com</a>
+                                Have questions? We're here to help. Reach out to <a href="mailto:support@travltik.com" style="color: #00a896; text-decoration: none; font-weight: 700;">support@travltik.com</a>
                             </p>
                             
                             <!-- Footer Details -->
                             <p style="color: #9ca3af; font-size: 12px; line-height: 18px; margin: 16px 0 0 0; text-align: center;">
-                                &copy; 2026 Visa Formula. The Global Immigration Platform.<br/>
+                                &copy; ${new Date().getFullYear()} TravlTik. The Global Visa & Travel Platform.<br/>
                                 All rights reserved.
                             </p>
                         </td>

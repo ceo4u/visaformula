@@ -95,7 +95,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       status: 'success',
-      otp: otpCode,
       message: 'A 6-digit verification code has been sent to your email address.',
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 

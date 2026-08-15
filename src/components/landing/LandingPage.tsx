@@ -45,12 +45,30 @@ class ErrorBoundary extends Component<Props, State> {
   }
 }
 
+const COUNTRY_CODES = [
+  { code: "+91", flag: "🇮🇳", country: "India", iso: "IN" },
+  { code: "+1", flag: "🇨🇦", country: "Canada", iso: "CA" },
+  { code: "+1", flag: "🇺🇸", country: "USA", iso: "US" },
+  { code: "+44", flag: "🇬🇧", country: "UK", iso: "GB" },
+  { code: "+61", flag: "🇦🇺", country: "Australia", iso: "AU" },
+  { code: "+49", flag: "🇩🇪", country: "Germany", iso: "DE" },
+  { code: "+971", flag: "🇦🇪", country: "UAE", iso: "AE" },
+  { code: "+33", flag: "🇫🇷", country: "France", iso: "FR" },
+  { code: "+65", flag: "🇸🇬", country: "Singapore", iso: "SG" },
+  { code: "+92", flag: "🇵🇰", country: "Pakistan", iso: "PK" },
+  { code: "+880", flag: "🇧🇩", country: "Bangladesh", iso: "BD" },
+  { code: "+977", flag: "🇳🇵", country: "Nepal", iso: "NP" },
+  { code: "+94", flag: "🇱🇰", country: "Sri Lanka", iso: "LK" },
+];
+
 export default function LandingPage() {
   const [showLeadModal, setShowLeadModal] = React.useState(false);
   const [step, setStep] = React.useState(1);
   const [targetCountry, setTargetCountry] = React.useState("Canada");
   const [visaType, setVisaType] = React.useState("Student Visa");
   const [fullName, setFullName] = React.useState("");
+  const [selectedCountry, setSelectedCountry] = React.useState(COUNTRY_CODES[0]);
+  const [showCountryDropdown, setShowCountryDropdown] = React.useState(false);
   const [countryDialCode, setCountryDialCode] = React.useState("+91");
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -287,33 +305,54 @@ export default function LandingPage() {
                         </div>
                         <div>
                           <label className="text-[11px] font-bold text-slate-700 block mb-1">Mobile / WhatsApp Number *</label>
-                          <div className="flex gap-2">
-                            <select
-                              value={countryDialCode}
-                              onChange={(e) => setCountryDialCode(e.target.value)}
-                              className="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2.5 text-xs font-extrabold text-slate-800 focus:outline-none focus:border-[#00a896] focus:bg-white cursor-pointer shrink-0"
-                            >
-                              <option value="+91">🇮🇳 +91</option>
-                              <option value="+1">🇨🇦/🇺🇸 +1</option>
-                              <option value="+44">🇬🇧 +44</option>
-                              <option value="+61">🇦🇺 +61</option>
-                              <option value="+49">🇩🇪 +49</option>
-                              <option value="+971">🇦🇪 +971</option>
-                              <option value="+33">🇫🇷 +33</option>
-                              <option value="+65">🇸🇬 +65</option>
-                              <option value="+92">🇵🇰 +92</option>
-                              <option value="+880">🇧🇩 +880</option>
-                              <option value="+977">🇳🇵 +977</option>
-                              <option value="+94">🇱🇰 +94</option>
-                            </select>
-                            <input
-                              type="tel"
-                              required
-                              placeholder="98765 43210"
-                              value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
-                              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-semibold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
-                            />
+                          <div className="relative">
+                            <div className="flex items-center bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden focus-within:border-[#00a896] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#00a896]/15 transition-all">
+                              <button
+                                type="button"
+                                onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                                className="flex items-center gap-1.5 px-3 py-2.5 bg-slate-100/90 hover:bg-slate-200/80 text-slate-800 font-extrabold text-xs border-r border-slate-200 transition-colors cursor-pointer shrink-0"
+                              >
+                                <span className="text-sm">{selectedCountry.flag}</span>
+                                <span>{selectedCountry.code}</span>
+                                <span className="text-[9px] text-slate-500 font-extrabold">▼</span>
+                              </button>
+                              <input
+                                type="tel"
+                                required
+                                placeholder="98765 43210"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                className="w-full px-3.5 py-2.5 bg-transparent text-xs text-slate-900 font-bold focus:outline-none placeholder:text-slate-400 placeholder:font-medium"
+                              />
+                            </div>
+
+                            {/* Custom High-Quality Popover Menu */}
+                            {showCountryDropdown && (
+                              <div className="absolute left-0 bottom-full mb-1 z-50 w-56 max-h-48 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 space-y-0.5 animate-fadeIn">
+                                {COUNTRY_CODES.map((c, idx) => (
+                                  <button
+                                    key={`${c.iso}-${idx}`}
+                                    type="button"
+                                    onClick={() => {
+                                      setSelectedCountry(c);
+                                      setCountryDialCode(c.code);
+                                      setShowCountryDropdown(false);
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-left font-bold transition-all cursor-pointer ${
+                                      selectedCountry.iso === c.iso && selectedCountry.code === c.code
+                                        ? "bg-teal-50 text-[#00a896] font-extrabold"
+                                        : "hover:bg-slate-50 text-slate-700"
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-sm">{c.flag}</span>
+                                      <span className="text-xs">{c.country}</span>
+                                    </div>
+                                    <span className="text-slate-400 text-[11px] font-mono">{c.code}</span>
+                                  </button>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>

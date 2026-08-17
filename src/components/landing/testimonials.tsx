@@ -6,7 +6,7 @@ const testimonials = [
   {
     name: 'Priya S.',
     service: 'Canada PR Visa',
-    quote: '"VisaFormula connected me with an amazing immigration lawyer who won my visa appeal. Highly recommended platform!"',
+    quote: '"TravlTik connected me with an amazing immigration lawyer who won my visa appeal. Highly recommended platform!"',
     avatar: '/priya.png',
     rating: 5,
   },
@@ -20,7 +20,7 @@ const testimonials = [
   {
     name: 'Ayesha K.',
     service: 'USA Visa Appeal',
-    quote: '"I found the right lawyer for my deportation case. They saved my future. Thank you VisaFormula!!"',
+    quote: '"I found the right lawyer for my deportation case. They saved my future. Thank you TravlTik!!"',
     avatar: '/ayesha.png',
     rating: 5,
   },

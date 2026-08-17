@@ -13,7 +13,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
     const booking = {
         expert: "Marcus Thorne, JD",
         service: "H-1B Visa Consultation (60 min)",
-        date: "Apr 25, 2025 • 10:00 AM IST",
+        date: "Apr 25, 2025 ï¿½ 10:00 AM IST",
         consultFee: 12500,
         platformFee: 625,
         total: 13125,
@@ -43,7 +43,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
                     </div>
                     
                     <a href="/" className="block w-full bg-gradient-to-r from-[#fef08a] to-[#f59e0b] text-white font-bold py-4 rounded-xl text-center hover:shadow-lg transition-all">
-                        Back to VisaFormula Home
+                        Back to TravlTik Home
                     </a>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 // ============================================================
 // src/emails/VerificationEmail.ts
-// Premium light-themed OTP verification email matching VisaFormula branding
+// Premium light-themed OTP verification email matching TravlTik branding
 // ============================================================
 
 export function generateVerificationEmailHtml(data: {

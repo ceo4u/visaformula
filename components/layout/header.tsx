@@ -30,12 +30,12 @@ export function Header() {
             {/* Top Row: Logo + Yelp-Style Split Search Bar + User Portal Links */}
             <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-20 gap-4">
                 
-                {/* VisaFormula Logo */}
+                {/* TravlTik Logo */}
                 <Link href="/" className="flex items-center gap-2 group shrink-0">
                     <div className="w-9 h-9 bg-gradient-to-tr from-[#0ea5e9] to-[#0284c7] rounded-xl flex items-center justify-center shadow-md shadow-sky-100 group-hover:rotate-12 transition-transform duration-300">
                         <Globe className="w-5 h-5 text-white" />
                     </div>
-                    <span className="text-2xl font-extrabold tracking-tight text-navy">VisaFormula</span>
+                    <span className="text-2xl font-extrabold tracking-tight text-navy">TravlTik</span>
                     <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
                 </Link>
 
@@ -359,7 +359,7 @@ export function Header() {
                         Legal
                     </Link>
 
-                    {/* VisaFormula for Experts */}
+                    {/* TravlTik for Experts */}
                     <Link href="/agents"
                         className={`block px-4 py-3.5 border-b border-gray-50 font-semibold text-sm ${pathname === "/agents" ? "text-[#0ea5e9] bg-sky-50/50" : "text-gray-700 hover:bg-gray-50"} transition-colors`}
                         onClick={() => setIsMobileMenuOpen(false)}>

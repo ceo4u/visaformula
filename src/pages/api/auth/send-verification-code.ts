@@ -17,7 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
   
   try {
     const body = await request.json();
-    const { email } = body;
+    const { email, mode = 'registration', allowExisting = false } = body;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email || !emailRegex.test(email)) {
       return new Response(JSON.stringify({ status: 'error', message: 'Please provide a valid email address.' }), {
@@ -36,22 +36,24 @@ export const POST: APIRoute = async ({ request }) => {
     const rl = checkRateLimit(rlKey, RATE_LIMITS.SEND_OTP);
     if (!rl.allowed) return rateLimitErrorResponse(rl.resetAt);
 
-    // ── Check if already registered ─────────────────────────
-    try {
-      await runMigrations();
-      const pool = getPool();
-      const [seekerCheck, expertCheck] = await Promise.all([
-        pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]),
-        pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]),
-      ]);
-      if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
-        return new Response(JSON.stringify({ status: 'error', code: 'EMAIL_ALREADY_EXISTS', message: 'This email is already registered.' }), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        });
+    // ── Check if already registered (only for exclusive registration) ───
+    if (mode === 'registration' && !allowExisting) {
+      try {
+        await runMigrations();
+        const pool = getPool();
+        const [seekerCheck, expertCheck] = await Promise.all([
+          pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]),
+          pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]),
+        ]);
+        if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
+          return new Response(JSON.stringify({ status: 'error', code: 'EMAIL_ALREADY_EXISTS', message: 'This email is already registered.' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+      } catch (dbErr) {
+        console.warn('[send-verification-code] DB check fallback during high load:', dbErr);
       }
-    } catch (dbErr) {
-      console.warn('[send-verification-code] DB check fallback during high load:', dbErr);
     }
 
     // ── Generate & store OTP ─────────────────────────────────

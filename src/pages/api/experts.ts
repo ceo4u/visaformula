@@ -116,10 +116,10 @@ export const GET: APIRoute = async ({ url }) => {
 
       return {
         id: `db_${row.id}`,
-        name: row.business_name || (row.email ? row.email.split('@')[0] : 'VisaFormula Consultant'),
+        name: row.business_name || (row.email ? row.email.split('@')[0] : 'TravlTik Consultant'),
         role: row.advisor_type || 'Immigration Consultant',
         city: row.office_address || 'Remote',
-        bio: row.about_me || 'Verified VisaFormula Immigration Consultant.',
+        bio: row.about_me || 'Verified TravlTik Immigration Consultant.',
         email: row.email || '',
         phone: row.contact_number || '',
         govReg: row.gov_registration_number || '',

@@ -3,13 +3,16 @@ import {
     DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
     Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
     Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronDown, Bell, Search, Lock, 
-    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User, Send, Filter, CheckCircle2, RefreshCw
+    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User, Send, Filter, CheckCircle2, RefreshCw, BadgeCheck
 } from "lucide-react";
+import { ProviderVerificationModal } from "./ProviderVerificationModal";
 
 export function ConsultantDashboard() {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("overview");
+    const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
+    const [verificationStatus, setVerificationStatus] = useState("pending");
     const [timePeriod, setTimePeriod] = useState("This Month");
     const [timePeriodOpen, setTimePeriodOpen] = useState(false);
 
@@ -498,6 +501,15 @@ export function ConsultantDashboard() {
                         <Bell className="w-4.5 h-4.5" />
                     </button>
 
+                    <button
+                        type="button"
+                        onClick={() => setIsVerificationModalOpen(true)}
+                        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-teal-50 border border-teal-200 text-[#00a896] hover:bg-teal-100 text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                    >
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        <span>Verify Account</span>
+                    </button>
+
                     <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200 cursor-pointer" onClick={() => setActiveTab("profile")}>
                         {profile.image && !profile.image.includes("unsplash.com") ? (
                             <img src={profile.image} alt={profile.name} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
@@ -574,7 +586,7 @@ export function ConsultantDashboard() {
                     <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-4 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
                         <div className="space-y-4">
                             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                                <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-9 sm:h-10 max-h-[42px] w-auto object-contain" />
+                                <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-9 sm:h-10 max-h-[42px] w-auto object-contain" />
                                 <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1 rounded-lg hover:bg-slate-100 text-slate-500">
                                     <X className="w-5 h-5" />
                                 </button>
@@ -859,7 +871,7 @@ export function ConsultantDashboard() {
                                     <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-2">
                                         <LayoutGrid className="w-8 h-8 text-slate-300 mx-auto" />
                                         <h4 className="text-sm font-extrabold text-slate-800">No Active Classified Ads Yet</h4>
-                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of visa seekers on VisaFormula.</p>
+                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of visa seekers on TravlTik.</p>
                                     </div>
                                 )}
 
@@ -1027,7 +1039,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Client Enquiries ({enquiriesList.length})</h2>
-                                    <p className="text-xs font-medium text-slate-500">Incoming inquiries submitted from your VisaFormula listing</p>
+                                    <p className="text-xs font-medium text-slate-500">Incoming inquiries submitted from your TravlTik listing</p>
                                 </div>
                             </div>
 
@@ -1047,7 +1059,7 @@ export function ConsultantDashboard() {
                                 <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
                                     <MessageSquare className="w-10 h-10 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-extrabold text-slate-800">No Client Enquiries Yet</h3>
-                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When prospective clients send inquiries from your VisaFormula listing, they will appear here in real-time.</p>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When prospective clients send inquiries from your TravlTik listing, they will appear here in real-time.</p>
                                 </div>
                             )}
                         </div>
@@ -1089,7 +1101,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">My Active Classifieds & Offers ({classifiedsList.length})</h2>
-                                    <p className="text-xs font-medium text-slate-500">Manage public listings shown on VisaFormula homepage</p>
+                                    <p className="text-xs font-medium text-slate-500">Manage public listings shown on TravlTik homepage</p>
                                 </div>
                                 <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
                                     <Plus className="w-4 h-4" /> Post New Ad
@@ -1114,7 +1126,7 @@ export function ConsultantDashboard() {
                                 <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
                                     <LayoutGrid className="w-10 h-10 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-extrabold text-slate-800">No Active Classified Ads</h3>
-                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on VisaFormula.</p>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on TravlTik.</p>
                                     <button onClick={() => setIsPostingAd(true)} className="bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
                                         + Post New Classified / Offer
                                     </button>
@@ -1164,7 +1176,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Promotions & Home Page Boost</h2>
-                                    <p className="text-xs font-medium text-slate-500">Boost your agency listing to the top position on VisaFormula homepage</p>
+                                    <p className="text-xs font-medium text-slate-500">Boost your agency listing to the top position on TravlTik homepage</p>
                                 </div>
                             </div>
 
@@ -1398,7 +1410,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Help & Support Desk</h2>
-                                    <p className="text-xs font-medium text-slate-500">Get assistance from VisaFormula support team & track your queries</p>
+                                    <p className="text-xs font-medium text-slate-500">Get assistance from TravlTik support team & track your queries</p>
                                 </div>
                             </div>
 
@@ -1863,6 +1875,14 @@ export function ConsultantDashboard() {
                     </div>
                 </div>
             )}
+
+            {/* Provider Verification Modal */}
+            <ProviderVerificationModal
+                isOpen={isVerificationModalOpen}
+                onClose={() => setIsVerificationModalOpen(false)}
+                expertEmail={typeof window !== 'undefined' ? localStorage.getItem("expert_email") || "" : ""}
+                expertName={profile.name}
+            />
         </div>
     );
 }

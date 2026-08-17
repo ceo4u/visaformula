@@ -61,7 +61,7 @@ const historyRows = [
 
 const processSteps = [
   { emoji: "1️⃣", title: "Collect Client Docs",  desc: "Passport, photo, visa application form."                             },
-  { emoji: "2️⃣", title: "Book Slot via VisaFormula",  desc: "Fill form below — we check real-time VFS availability."              },
+  { emoji: "2️⃣", title: "Book Slot via TravlTik",  desc: "Fill form below — we check real-time VFS availability."              },
   { emoji: "3️⃣", title: "Share Confirmation",    desc: "Send appointment slip to client (PDF / WhatsApp)."                   },
   { emoji: "4️⃣", title: "Track & Update",        desc: "Mark completed and earn ₹75 agent commission per booking."           },
 ];
@@ -124,7 +124,7 @@ export function VFSBookingPortal() {
             VFS Global <span className="text-[#ef4444]">Booking Services</span>
           </h1>
           <p className="text-[#475569] text-sm md:text-base max-w-2xl mx-auto mb-7 leading-relaxed">
-            Book biometrics, visa appointments, passport submission and collection slots for UK, Canada, Schengen, Australia and more — directly via VisaFormula Agent Portal.
+            Book biometrics, visa appointments, passport submission and collection slots for UK, Canada, Schengen, Australia and more — directly via TravlTik Agent Portal.
           </p>
 
           {/* Stats row */}
@@ -133,7 +133,7 @@ export function VFSBookingPortal() {
               { value: "18+",    label: "VFS Centres" },
               { value: "12K+",   label: "Appointments" },
               { value: "98%",    label: "On-time slots" },
-              { value: "₹0 extra", label: "for VisaFormula Agents" },
+              { value: "₹0 extra", label: "for TravlTik Agents" },
             ].map(s => (
               <div key={s.label} className="text-center">
                 <div className="font-sora font-extrabold text-3xl text-[#ef4444]">{s.value}</div>
@@ -380,7 +380,7 @@ export function VFSBookingPortal() {
         {/* ── VFS PROCESS GUIDE ─────────────────────────── */}
         <div className="bg-white border border-slate-100 rounded-3xl p-7 mb-8 shadow-sm">
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-1">VFS Process Guide</span>
-          <h2 className="font-sora font-extrabold text-xl text-[#0C1A2E] mb-7">Step-by-Step for VisaFormula Agents</h2>
+          <h2 className="font-sora font-extrabold text-xl text-[#0C1A2E] mb-7">Step-by-Step for TravlTik Agents</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
             {processSteps.map((step, i) => (

@@ -1,6 +1,6 @@
 // ============================================================
 // src/emails/PasswordResetEmail.ts
-// Premium light-themed password reset email matching VisaFormula branding
+// Premium light-themed password reset email matching TravlTik branding
 // ============================================================
 
 export function generatePasswordResetEmailHtml(data: {

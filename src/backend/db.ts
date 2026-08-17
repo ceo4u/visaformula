@@ -7,7 +7,7 @@ function createPoolInstance(forceNoSSL = false) {
   if (pool) {
     try { pool.end(); } catch(e) {}
   }
-  let connStr = (import.meta.env.DATABASE_URL || process.env.DATABASE_URL || '').trim();
+  let connStr = (import.meta?.env?.DATABASE_URL as string || process.env.DATABASE_URL || '').trim();
   if (forceNoSSL || !useSSL) {
     connStr = connStr.replace('sslmode=require', 'sslmode=disable');
     pool = new pg.Pool({
@@ -195,6 +195,11 @@ export async function runMigrations() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS document_type VARCHAR(100);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS file_name VARCHAR(255);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS file_size VARCHAR(50);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS mime_type VARCHAR(100);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS notes TEXT;`);
 
   // 6. Email Verifications Table
   await p.query(`
@@ -304,6 +309,123 @@ export async function runMigrations() {
     );
   `);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_self_app_email ON self_applications (email);`);
+
+  // 12. Document & Expert Verification Enhancements (Non-destructive)
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS verification_tier VARCHAR(50) DEFAULT 'email_verified';`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS business_doc_url TEXT;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS identity_doc_url TEXT;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS hourly_rate NUMERIC(10,2) DEFAULT 49.00;`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS document_type VARCHAR(50);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS file_name VARCHAR(255);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS file_size VARCHAR(50);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS mime_type VARCHAR(100);`);
+  await p.query(`ALTER TABLE documents ADD COLUMN IF NOT EXISTS notes TEXT;`);
+
+  // 13. Visa Quick Evaluations Table (Dedicated table - never pollutes bookings)
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS visa_evaluations (
+      id SERIAL PRIMARY KEY,
+      full_name VARCHAR(150) NOT NULL,
+      email VARCHAR(255),
+      phone VARCHAR(50) NOT NULL,
+      destination_country VARCHAR(100) NOT NULL,
+      visa_type VARCHAR(100) NOT NULL,
+      age_range VARCHAR(50),
+      education_level VARCHAR(100),
+      work_experience VARCHAR(50),
+      english_test VARCHAR(50),
+      english_score VARCHAR(50),
+      budget VARCHAR(50),
+      status VARCHAR(50) DEFAULT 'new',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_visa_eval_dest ON visa_evaluations (destination_country);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_visa_eval_phone ON visa_evaluations (phone);`);
+
+  // 14. Quotes & Provider Leads Table (Supports matching & routing)
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS quotes (
+      id SERIAL PRIMARY KEY,
+      seeker_id INTEGER DEFAULT 0,
+      seeker_name VARCHAR(150),
+      seeker_email VARCHAR(255) NOT NULL,
+      seeker_phone VARCHAR(50),
+      expert_id INTEGER DEFAULT 0,
+      expert_name VARCHAR(150),
+      expert_email VARCHAR(255),
+      destination_country VARCHAR(100) NOT NULL,
+      visa_category VARCHAR(100) NOT NULL,
+      specific_pathway VARCHAR(150),
+      budget_range VARCHAR(100),
+      preferred_channel VARCHAR(50) DEFAULT 'email',
+      preferred_time VARCHAR(100),
+      message TEXT NOT NULL,
+      status VARCHAR(50) DEFAULT 'new',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_quotes_seeker_email ON quotes (seeker_email);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_quotes_expert_id ON quotes (expert_id);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_quotes_dest_visa ON quotes (destination_country, visa_category);`);
+
+  // 15. Reviews & Ratings Table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS reviews (
+      id SERIAL PRIMARY KEY,
+      expert_id INTEGER NOT NULL,
+      expert_name VARCHAR(150),
+      seeker_id INTEGER DEFAULT 0,
+      seeker_name VARCHAR(150) NOT NULL,
+      seeker_email VARCHAR(255) NOT NULL,
+      rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+      feedback TEXT NOT NULL,
+      tags TEXT,
+      is_verified_transaction BOOLEAN DEFAULT FALSE,
+      booking_id INTEGER DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_reviews_expert_id ON reviews (expert_id);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_reviews_seeker_email ON reviews (seeker_email);`);
+
+  // 16. Dispute & Fraud Reports Table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS reports (
+      id SERIAL PRIMARY KEY,
+      reporter_email VARCHAR(255) NOT NULL,
+      reporter_name VARCHAR(150),
+      reporter_role VARCHAR(50) DEFAULT 'seeker',
+      target_type VARCHAR(50) NOT NULL,
+      target_id VARCHAR(255),
+      target_name VARCHAR(150),
+      reason VARCHAR(100) NOT NULL,
+      description TEXT NOT NULL,
+      evidence_url TEXT,
+      status VARCHAR(50) DEFAULT 'Open',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_reports_status ON reports (status);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_reports_reporter_email ON reports (reporter_email);`);
+
+  // 17. Payment Orders Table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS payment_orders (
+      id SERIAL PRIMARY KEY,
+      order_id VARCHAR(255) UNIQUE NOT NULL,
+      booking_id INTEGER NOT NULL,
+      amount NUMERIC(10,2) NOT NULL,
+      currency VARCHAR(10) DEFAULT 'INR',
+      provider VARCHAR(50) DEFAULT 'razorpay',
+      status VARCHAR(50) DEFAULT 'created',
+      payment_id VARCHAR(255),
+      signature VARCHAR(255),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_payment_orders_booking ON payment_orders (booking_id);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_payment_orders_order_id ON payment_orders (order_id);`);
   })();
   return migrationsPromise;
 }

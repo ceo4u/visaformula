@@ -144,7 +144,7 @@ export function VisaDocumentationPortal() {
               <div className="h-px bg-slate-100 my-4" />
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 font-bold">✓</div>
-                <div className="text-xs text-gray-500">Verified by VisaFormula Audit Operations</div>
+                <div className="text-xs text-gray-500">Verified by TravlTik Audit Operations</div>
               </div>
             </div>
           </div>

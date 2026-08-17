@@ -1205,7 +1205,7 @@ export function ToursPortal() {
                             <div>
                                 <h4 className="font-sora font-bold text-navy text-xs sm:text-sm mb-1">Multi-Port Visa — We Handle It All</h4>
                                 <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed font-medium">
-                                    Multi-country cruises require separate transit visas for each port country. VisaFormula's expert travel coordinators submit and secure all required port visas for you in a single unified booking.
+                                    Multi-country cruises require separate transit visas for each port country. TravlTik's expert travel coordinators submit and secure all required port visas for you in a single unified booking.
                                 </p>
                             </div>
                         </div>
@@ -1345,7 +1345,7 @@ export function ToursPortal() {
 
                             <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row gap-3 items-center justify-between">
                                 <div className="text-xs font-bold text-slate-600 text-center sm:text-left">
-                                    Organized by: <span className="text-black">{selectedTour.organizer || "VisaFormula Verified Partner"}</span>
+                                    Organized by: <span className="text-black">{selectedTour.organizer || "TravlTik Verified Partner"}</span>
                                 </div>
                                 <a
                                     href={`https://wa.me/91${selectedTour.contactPhone || "76611989366"}?text=Hi%20Risingat%20Sports,%20I%20am%20interested%20in%20the%20${encodeURIComponent(selectedTour.name)}`}

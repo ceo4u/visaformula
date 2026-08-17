@@ -341,7 +341,7 @@ export default function VisaReadinessEngine() {
             return {
               id: `gap-${idx}`,
               text: parts[0] || gapStr,
-              solution: parts[1] || 'Consult with a verified VisaFormula migration expert to rectify this gap.'
+              solution: parts[1] || 'Consult with a verified TravlTik migration expert to rectify this gap.'
             };
           });
           setCriticalGaps(mapped);
@@ -402,7 +402,7 @@ export default function VisaReadinessEngine() {
             <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back to </span>Home
           </a>
           <a href="/" className="shrink-0">
-            <img src="/logo-white.png" alt="VisaFormula" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
+            <img src="/logo-white.png" alt="TravlTik" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
           </a>
         </div>
 
@@ -420,7 +420,7 @@ export default function VisaReadinessEngine() {
 
           {/* Centered Logo & Title Banner */}
           <div className="flex justify-center pt-1 mb-2">
-            <img src="/logo.png" alt="VisaFormula" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+            <img src="/logo.png" alt="TravlTik" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
           </div>
 
           <div className="mb-4 border-b border-slate-100 pb-3 text-center font-sora">

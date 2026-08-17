@@ -121,8 +121,8 @@ export function SupportPortal() {
                             <Mail className="w-5 h-5 text-teal-300" />
                         </div>
                         <span className="text-[10px] font-black text-teal-300 tracking-widest block mb-1">Email Us</span>
-                        <a href="mailto:support@visaformula.com" className="text-lg font-extrabold hover:text-teal-200 transition-colors hover:underline">
-                            support@visaformula.com
+                        <a href="mailto:support@travltik.com" className="text-lg font-extrabold hover:text-teal-200 transition-colors hover:underline">
+                            support@travltik.com
                         </a>
                     </div>
                 </div>

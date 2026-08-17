@@ -111,7 +111,7 @@ function LoginPortalContent() {
                     <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
                 </a>
                 <a href="/" className="shrink-0">
-                    <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-10 sm:h-14 w-auto object-contain max-w-[160px] sm:max-w-none" />
+                    <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-10 sm:h-14 w-auto object-contain max-w-[160px] sm:max-w-none" />
                 </a>
             </div>
 
@@ -120,7 +120,7 @@ function LoginPortalContent() {
                 
                 {/* Logo Centered */}
                 <div className="flex justify-center pt-1">
-                    <img src="/logo.png?v=3" alt="VisaFormula Logo" className="h-14 sm:h-16 w-auto max-h-[70px] object-contain mx-auto" />
+                    <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-14 sm:h-16 w-auto max-h-[70px] object-contain mx-auto" />
                 </div>
 
                 {/* Title */}

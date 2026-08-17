@@ -156,7 +156,7 @@ const { id } = Astro.params;
 const classified = Astro.props.classified || allClassifieds.find(c => c.id === id) || allClassifieds[0];
 ---
 
-<Layout title={`${classified.title} | VisaFormula Classifieds`}>
+<Layout title={`${classified.title} | TravlTik Classifieds`}>
   {/* Modal Overlay Box with Dark Blurred Background (matching Registration/Readiness modal style) */}
   <div 
     id="classified-modal-backdrop"
@@ -170,7 +170,7 @@ const classified = Astro.props.classified || allClassifieds.find(c => c.id === i
           <ArrowLeft class="w-4 h-4" /> <span class="hidden sm:inline">Back to </span>Home
         </a>
         <a href="/" class="shrink-0">
-          <img src="/logo-white.png" alt="VisaFormula" class="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
+          <img src="/logo-white.png" alt="TravlTik" class="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
         </a>
       </div>
 
@@ -284,7 +284,7 @@ const classified = Astro.props.classified || allClassifieds.find(c => c.id === i
 
               <p class="text-[10px] font-semibold text-slate-400 text-center flex items-center justify-center gap-1.5 pt-1">
                 <ShieldCheck class="w-3.5 h-3.5 text-[#00a896]" />
-                <span>Verified Listing — Powered by VisaFormula Security Guard</span>
+                <span>Verified Listing — Powered by TravlTik Security Guard</span>
               </p>
             </div>
           </div>

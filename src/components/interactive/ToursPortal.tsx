@@ -1203,7 +1203,7 @@ export function ToursPortal() {
                         <div className="bg-slate-50 border border-slate-150 rounded-3xl p-5 flex gap-4 items-start shadow-sm">
                             <div className="text-3xl shrink-0">🛂</div>
                             <div>
-                                <h4 className="font-sora font-bold text-navy text-xs sm:text-sm mb-1">Multi-Port Visa — We Handle It All</h4>
+                                <h4 className="font-sans font-bold text-navy text-xs sm:text-sm mb-1">Multi-Port Visa — We Handle It All</h4>
                                 <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed font-medium">
                                     Multi-country cruises require separate transit visas for each port country. TravlTik's expert travel coordinators submit and secure all required port visas for you in a single unified booking.
                                 </p>
@@ -1310,20 +1310,20 @@ export function ToursPortal() {
                                 <span className="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider inline-block">
                                     {selectedTour.sport ? `${selectedTour.sport.toUpperCase()} TOUR` : "FEATURED PACKAGE"}
                                 </span>
-                                <h2 className="font-sora font-extrabold text-lg sm:text-xl text-[#0c1a2e] mt-2 leading-snug">{selectedTour.name}</h2>
+                                <h2 className="font-sans font-extrabold text-lg sm:text-xl text-[#0c1a2e] mt-2 leading-snug">{selectedTour.name}</h2>
                                 <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">{selectedTour.description}</p>
                             </div>
 
                             <div className="grid grid-cols-2 gap-3 bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-100">
                                 <div>
                                     <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">Package Price</span>
-                                    <span className="font-sora font-black text-base sm:text-lg text-[#0c1a2e]">₹{selectedTour.price?.toLocaleString()}</span>
+                                    <span className="font-sans font-black text-base sm:text-lg text-[#0c1a2e]">₹{selectedTour.price?.toLocaleString()}</span>
                                     <span className="text-[10px] text-slate-400 font-bold block">All Inclusive Cost</span>
                                 </div>
                                 {selectedTour.registrationFee && (
                                     <div>
                                         <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">Registration Fee</span>
-                                        <span className="font-sora font-extrabold text-sm sm:text-base text-emerald-600">{selectedTour.registrationFee}</span>
+                                        <span className="font-sans font-extrabold text-sm sm:text-base text-emerald-600">{selectedTour.registrationFee}</span>
                                         <span className="text-[10px] text-slate-400 font-bold block">Seat Booking Fee</span>
                                     </div>
                                 )}

@@ -414,7 +414,7 @@ export function UniversitiesPortal() {
                   return (
                     <div key={s.label} className="flex items-center gap-2">
                       <Icon className="w-4 h-4 text-black" />
-                      <span className="font-sora font-extrabold text-black text-base">{s.value}</span>
+                      <span className="font-sans font-extrabold text-black text-base">{s.value}</span>
                       <span className="text-[11px] font-bold text-[#475569]">{s.label}</span>
                     </div>
                   );
@@ -428,7 +428,7 @@ export function UniversitiesPortal() {
             <div className="flex items-end justify-between mb-6">
               <div>
                 <span className="text-[11px] font-semibold text-[#ef4444] tracking-wider block mb-1">Browse by Destination</span>
-                <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Study?</h2>
+                <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Study?</h2>
               </div>
               <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">View All →</button>
             </div>
@@ -446,7 +446,7 @@ export function UniversitiesPortal() {
                     <img src={`https://flagcdn.com/w40/${c.code}.png`} alt="flag" className="h-3 rounded" />
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <div className="text-white font-sora font-extrabold text-sm leading-snug">{c.name}</div>
+                    <div className="text-white font-sans font-extrabold text-sm leading-snug">{c.name}</div>
                     <div className="text-indigo-100 text-xs font-bold mt-0.5">{c.jobs}</div>
                   </div>
                 </div>
@@ -460,7 +460,7 @@ export function UniversitiesPortal() {
             <aside className="lg:col-span-3">
               <div className="bg-white border border-black/20 rounded-2xl p-5 shadow-sm sticky top-28 space-y-5">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-sora font-bold text-sm text-navy flex items-center gap-1.5">
+                  <h3 className="font-sans font-bold text-sm text-navy flex items-center gap-1.5">
                     <Filter className="w-3.5 h-3.5 text-black" /> Filters
                   </h3>
                   <button onClick={clearFilters} className="text-xs font-bold text-black hover:underline outline-none">Clear all</button>
@@ -609,7 +609,7 @@ export function UniversitiesPortal() {
                     <BadgeCheck className="w-4 h-4 text-emerald-500" /> Verified Pathway
                   </span>
                 </div>
-                <h2 className="font-sora font-extrabold text-lg sm:text-xl text-[#0c1a2e] leading-snug">{activeUniv.name}</h2>
+                <h2 className="font-sans font-extrabold text-lg sm:text-xl text-[#0c1a2e] leading-snug">{activeUniv.name}</h2>
                 <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">{activeUniv.desc}</p>
               </div>
 
@@ -619,17 +619,17 @@ export function UniversitiesPortal() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs">
                     <span className="text-[10px] font-bold text-slate-400 uppercase block">Foundation Program</span>
-                    <span className="font-sora font-extrabold text-base text-[#159BB8]">€ 3,300</span>
+                    <span className="font-sans font-extrabold text-base text-[#159BB8]">€ 3,300</span>
                     <span className="text-[10px] text-slate-400 block font-normal">per year</span>
                   </div>
                   <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs">
                     <span className="text-[10px] font-bold text-slate-400 uppercase block">Bachelor's Program</span>
-                    <span className="font-sora font-extrabold text-base text-[#159BB8]">€ 3,800</span>
+                    <span className="font-sans font-extrabold text-base text-[#159BB8]">€ 3,800</span>
                     <span className="text-[10px] text-slate-400 block font-normal">per year</span>
                   </div>
                   <div className="bg-white p-3 rounded-xl border border-slate-100 shadow-2xs">
                     <span className="text-[10px] font-bold text-slate-400 uppercase block">Master's Program</span>
-                    <span className="font-sora font-extrabold text-base text-[#159BB8]">€ 5,000</span>
+                    <span className="font-sans font-extrabold text-base text-[#159BB8]">€ 5,000</span>
                     <span className="text-[10px] text-slate-400 block font-normal">per year</span>
                   </div>
                 </div>

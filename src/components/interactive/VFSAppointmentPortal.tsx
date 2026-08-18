@@ -67,7 +67,7 @@ export function VFSAppointmentPortal() {
             <div className="inline-flex items-center gap-2 bg-red-50 border border-red-100 rounded-full px-4 py-1.5 text-xs font-bold text-red-600 mb-6">
               🗓️ VFS Appointment Booking
             </div>
-            <h1 className="font-sora font-extrabold text-4xl sm:text-5xl md:text-6xl text-[#0c1a2e] leading-[1.1] mb-5 tracking-tight">
+            <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-[#0c1a2e] leading-[1.1] mb-5 tracking-tight">
               Book Your VFS<br />
               <span className="bg-gradient-to-r from-red-500 to-[#b91c1c] bg-clip-text text-transparent">
                 Biometric Appointment.
@@ -85,7 +85,7 @@ export function VFSAppointmentPortal() {
           </div>
           <div className="lg:col-span-5 hidden lg:block">
             <div className="bg-white rounded-3xl border border-slate-250 p-7 shadow-2xl">
-              <div className="font-sora font-bold text-[#0c1a2e] mb-4 flex items-center gap-2">
+              <div className="font-sans font-bold text-[#0c1a2e] mb-4 flex items-center gap-2">
                 <span>⚡</span> Instant Slot Monitoring
               </div>
               <p className="text-sm text-gray-500 leading-relaxed mb-4">
@@ -110,7 +110,7 @@ export function VFSAppointmentPortal() {
             { value: "98%", label: "On-Time Slot Success" },
           ].map((stat, i) => (
             <div key={stat.label} className={i > 0 ? "pl-4" : ""}>
-              <div className="font-sora font-extrabold text-2xl md:text-3xl text-red-500">{stat.value}</div>
+              <div className="font-sans font-extrabold text-2xl md:text-3xl text-red-500">{stat.value}</div>
               <div className="text-xs text-gray-400 font-semibold mt-0.5">{stat.label}</div>
             </div>
           ))}
@@ -121,7 +121,7 @@ export function VFSAppointmentPortal() {
         {/* Process Guide */}
         <div>
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">VFS Process</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">What happens at VFS Global?</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">What happens at VFS Global?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { icon: "🖐️", title: "Biometrics Collection", desc: "Fingerprints and photo captured for official visa processing databases." },
@@ -130,7 +130,7 @@ export function VFSAppointmentPortal() {
             ].map((f) => (
               <div key={f.title} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
                 <div className="text-3xl mb-4">{f.icon}</div>
-                <div className="font-sora font-bold text-sm text-[#0c1a2e] mb-2">{f.title}</div>
+                <div className="font-sans font-bold text-sm text-[#0c1a2e] mb-2">{f.title}</div>
                 <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
               </div>
             ))}
@@ -140,7 +140,7 @@ export function VFSAppointmentPortal() {
         {/* VFS Centre Selection */}
         <div>
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Centre Selection</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-6">Select Your Nearest VFS Centre</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-6">Select Your Nearest VFS Centre</h2>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {(Object.keys(centresData) as City[]).map((city) => {
@@ -168,7 +168,7 @@ export function VFSAppointmentPortal() {
         {/* Booking Form and Slots */}
         <div id="vfs-booking-form" className="pt-8">
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Slot Booking</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">Schedule Your Biometric Slot</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">Schedule Your Biometric Slot</h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-7">
@@ -178,7 +178,7 @@ export function VFSAppointmentPortal() {
                     <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
                       <CheckCircle className="w-8 h-8 text-emerald-600" />
                     </div>
-                    <h3 className="font-sora font-bold text-lg text-black mb-2">Appointment Request Submitted!</h3>
+                    <h3 className="font-sans font-bold text-lg text-black mb-2">Appointment Request Submitted!</h3>
                     <p className="text-sm text-gray-500 mb-6">We have initiated VFS slot tracking for {fullName} in VFS {selectedCity}. Our operations team will alert you via email once slot is locked.</p>
                     <button
                       onClick={() => {
@@ -304,7 +304,7 @@ export function VFSAppointmentPortal() {
 
             <div className="lg:col-span-5 space-y-6">
               <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6">
-                <h3 className="font-sora font-bold text-sm text-[#0c1a2e] mb-3">Appointment Checklist</h3>
+                <h3 className="font-sans font-bold text-sm text-[#0c1a2e] mb-3">Appointment Checklist</h3>
                 <p className="text-xs text-gray-400 mb-4">Ensure you bring the following files to VFS centre:</p>
                 <div className="space-y-3 text-xs font-semibold text-gray-500">
                   <div className="flex items-center gap-2">

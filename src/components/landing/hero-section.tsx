@@ -377,7 +377,7 @@ export function HeroSection() {
               <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/80">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <h3 className="font-sora font-extrabold text-xs text-[#0c1a2e] uppercase tracking-wider">Latest Offers</h3>
+                  <h3 className="font-sans font-extrabold text-xs text-[#0c1a2e] uppercase tracking-wider">Latest Offers</h3>
                 </div>
                 <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                   Visa Categories & Offers

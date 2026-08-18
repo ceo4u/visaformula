@@ -152,7 +152,7 @@ export function ApplyVisaPortal() {
           <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
             <CheckCircle className="w-10 h-10 text-emerald-500" />
           </div>
-          <h1 className="font-sora text-3xl font-extrabold text-slate-900 mb-2">Application Submitted! 🎉</h1>
+          <h1 className="font-sans text-3xl font-extrabold text-slate-900 mb-2">Application Submitted! 🎉</h1>
           <p className="text-gray-500 text-sm mb-1">Your visa request for <strong>{selected?.flag} {selected?.name}</strong> is under official embassy review.</p>
           <p className="text-gray-400 text-xs mb-6">Visa delivery details and real-time tracking will be shared to all traveler contacts.</p>
           
@@ -248,7 +248,7 @@ export function ApplyVisaPortal() {
                 <p className="text-slate-500 text-base md:text-lg mb-6 max-w-2xl mx-auto font-semibold leading-relaxed">Select your destination, fill the form — we get your visa on time. Expert support included.</p>
               </div>
 
-              <h2 className="font-sora text-xl font-bold text-slate-900 mb-1">Where are you going?</h2>
+              <h2 className="font-sans text-xl font-bold text-slate-900 mb-1">Where are you going?</h2>
               <p className="text-xs text-gray-500 mb-5">Select the country you want to apply a visa for.</p>
 
               {/* Search + filter bar */}
@@ -334,7 +334,7 @@ export function ApplyVisaPortal() {
             <div className="max-w-2xl mx-auto space-y-6 transition-all duration-300">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="font-sora text-2xl font-extrabold text-slate-900">Enter Traveler Details</h2>
+                  <h2 className="font-sans text-2xl font-extrabold text-slate-900">Enter Traveler Details</h2>
                   <p className="text-xs text-gray-500 mt-1">Make sure names match exactly as written on the passport.</p>
                 </div>
                 <button onClick={() => setStep(0)} className="text-xs text-slate-700 font-bold hover:underline flex items-center gap-1">
@@ -376,7 +376,7 @@ export function ApplyVisaPortal() {
 
               {/* Active Traveler Form Card */}
               <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 space-y-4">
-                <h3 className="font-sora text-xs font-black text-slate-900 tracking-wider flex items-center gap-2">
+                <h3 className="font-sans text-xs font-black text-slate-900 tracking-wider flex items-center gap-2">
                   <span className="w-2 h-2 bg-black rounded-full" />
                   Editing Details for Traveler #{activeTravelerIdx + 1}
                 </h3>
@@ -467,7 +467,7 @@ export function ApplyVisaPortal() {
           {step === 2 && selected && (
             <div className="max-w-2xl mx-auto space-y-6 transition-all duration-300">
               <div className="text-center">
-                <h2 className="font-sora text-3xl font-extrabold text-slate-900">The Essential Documents</h2>
+                <h2 className="font-sans text-3xl font-extrabold text-slate-900">The Essential Documents</h2>
                 <p className="text-xs text-gray-500 mt-2 max-w-lg mx-auto">These are as per the official {selected.name} embassy requirements for visa processing.</p>
               </div>
 
@@ -550,7 +550,7 @@ export function ApplyVisaPortal() {
           {step === 3 && selected && (
             <div className="max-w-2xl mx-auto space-y-6 transition-all duration-300">
               <div>
-                <h2 className="font-sora text-2xl font-extrabold text-slate-900">Enhance Your Application</h2>
+                <h2 className="font-sans text-2xl font-extrabold text-slate-900">Enhance Your Application</h2>
                 <p className="text-xs text-gray-500 mt-1">Unlock fast processing and premium traveler protections.</p>
               </div>
 
@@ -621,7 +621,7 @@ export function ApplyVisaPortal() {
           {step === 4 && selected && (
             <div className="max-w-2xl mx-auto space-y-6 transition-all duration-300">
               <div>
-                <h2 className="font-sora text-2xl font-extrabold text-slate-900">Checkout & Pay</h2>
+                <h2 className="font-sans text-2xl font-extrabold text-slate-900">Checkout & Pay</h2>
                 <p className="text-xs text-gray-500 mt-1">Review your summary and make secure payment.</p>
               </div>
 

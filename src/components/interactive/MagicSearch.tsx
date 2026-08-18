@@ -51,7 +51,7 @@ function CustomSelect({
                     <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
                 </button>
                 {isOpen && (
-                    <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1.5 py-1.5 z-50 max-h-56 overflow-y-auto font-sora">
+                    <div className="absolute top-full left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1.5 py-1.5 z-50 max-h-56 overflow-y-auto font-sans">
                         {options.map(o => (
                             <button
                                 key={o}
@@ -131,7 +131,7 @@ export function MagicSearch({ className = "" }: { className?: string }) {
 
     return (
         <div className={`bg-white rounded-2xl shadow-card border border-red-100 p-6 ${className}`}>
-            <h3 className="font-sora font-bold text-lg text-navy mb-5">Find the right expert for your visa journey</h3>
+            <h3 className="font-sans font-bold text-lg text-navy mb-5">Find the right expert for your visa journey</h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 {/* Passport */}
@@ -199,7 +199,7 @@ export function MagicSearch({ className = "" }: { className?: string }) {
             </div>
 
             {validationError && (
-                <p className="text-red-500 text-[11px] font-bold text-center mb-3.5 animate-pulse font-sora">
+                <p className="text-red-500 text-[11px] font-bold text-center mb-3.5 animate-pulse font-sans">
                     ⚠️ Please select all options (Passport, Residing, Looking for & Destination) before searching.
                 </p>
             )}

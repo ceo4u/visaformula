@@ -250,9 +250,27 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
                       {story.icon}
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-600 tracking-tight">{story.label}</span>
+                  <span className="text-[10px] font-medium text-slate-600 tracking-tight">{story.label}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Transparent Fixed Pricing Banner */}
+            <div className="flex items-center justify-between bg-teal-50/80 border border-teal-200/80 rounded-2xl p-3.5 mb-5 shadow-2xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-[#00a896]/10 flex items-center justify-center text-[#00a896] shrink-0">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-900 font-sans">Transparent Direct Pricing</p>
+                  <p className="text-[11px] text-slate-500 font-normal">Includes 15-min initial case evaluation &amp; document roadmap</p>
+                </div>
+              </div>
+              <div className="text-right shrink-0">
+                <span className="text-[10px] uppercase font-medium text-teal-800 tracking-wider block">Starting from</span>
+                <span className="text-base font-bold text-slate-950 font-sans">{expert.price ? `$${expert.price}` : '$49'}</span>
+                <span className="text-[10px] text-slate-500 font-normal"> / session</span>
+              </div>
             </div>
 
             {/* About Bio Section */}

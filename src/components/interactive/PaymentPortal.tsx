@@ -31,7 +31,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
                     <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
                         <CheckCircle className="w-10 h-10 text-emerald-500" />
                     </div>
-                    <h1 className="font-sora text-3xl font-extrabold text-navy mb-2">Payment Successful! ??</h1>
+                    <h1 className="font-sans text-3xl font-extrabold text-navy mb-2">Payment Successful! ??</h1>
                     <p className="text-gray-500 text-sm mb-1">Your payment for Booking <strong>{bookingId}</strong> has been secured in Escrow.</p>
                     <p className="text-gray-400 text-xs mb-6">Consultation details and the meet link have been sent to your registered email.</p>
                     
@@ -53,7 +53,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
     return (
         <div className="bg-[#fff5f5] min-h-screen py-16 px-4">
             <div className="max-w-4xl mx-auto">
-                <h1 className="font-sora text-3xl font-extrabold text-navy mb-2">Checkout</h1>
+                <h1 className="font-sans text-3xl font-extrabold text-navy mb-2">Checkout</h1>
                 <p className="text-sm text-gray-500 mb-8">Complete your payment to confirm your booking (ID: {bookingId})</p>
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -137,7 +137,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
                     {/* Order Summary */}
                     <div className="lg:col-span-2">
                         <div className="bg-white rounded-3xl border border-yellow-100 p-6 shadow-xl sticky top-24">
-                            <h3 className="font-sora font-bold text-navy text-lg mb-5">Order Summary</h3>
+                            <h3 className="font-sans font-bold text-navy text-lg mb-5">Order Summary</h3>
                             <div className="flex items-center gap-3 mb-5 pb-5 border-b border-gray-100">
                                 <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
                                     <CreditCard className="w-5 h-5 text-[#f59e0b]" />

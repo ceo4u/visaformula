@@ -76,7 +76,7 @@ export function SmartSearchPortal() {
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(239,68,68,0.06),transparent_60%)]"></div>
                 </div>
                 <div className="max-w-5xl mx-auto text-center relative z-10">
-                    <h1 className="font-sora text-3xl md:text-5xl font-extrabold mb-3">Smart Expert Search</h1>
+                    <h1 className="font-sans text-3xl md:text-5xl font-extrabold mb-3">Smart Expert Search</h1>
                     <p className="text-white/80 text-base max-w-xl mx-auto font-medium">Tell us about your situation and we&apos;ll find the best immigration experts for you.</p>
                 </div>
             </section>
@@ -176,7 +176,7 @@ export function SmartSearchPortal() {
                     <div className="bg-gradient-to-br from-red-50 to-white border border-red-200 rounded-2xl p-6">
                         <div className="flex items-center gap-2 mb-4">
                             <Calculator className="w-5 h-5 text-red-500" />
-                            <h3 className="font-sora font-bold text-navy">CRS Score Calculator</h3>
+                            <h3 className="font-sans font-bold text-navy">CRS Score Calculator</h3>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                             <div>
@@ -198,7 +198,7 @@ export function SmartSearchPortal() {
                         </div>
                         <div className="bg-white rounded-xl p-4 border border-red-100 flex items-center justify-between">
                             <span className="text-sm font-semibold text-gray-600">Estimated CRS Score:</span>
-                            <span className="font-sora text-3xl font-extrabold text-red-500">{crsScore}</span>
+                            <span className="font-sans text-3xl font-extrabold text-red-500">{crsScore}</span>
                         </div>
                     </div>
                 </section>
@@ -220,7 +220,7 @@ export function SmartSearchPortal() {
 
             {/* Results */}
             <section className="max-w-6xl mx-auto px-4 pb-16">
-                <h2 className="font-sora text-xl font-bold text-navy mb-6">{filteredExperts.length} Experts Found</h2>
+                <h2 className="font-sans text-xl font-bold text-navy mb-6">{filteredExperts.length} Experts Found</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredExperts.map((expert, i) => (
                         <ExpertCard key={i} expert={expert} />

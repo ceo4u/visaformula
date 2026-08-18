@@ -13,6 +13,7 @@ const findConsultantsItems = [
 ]
 
 const visaServicesItems = [
+  { title: 'Relocation Assistance (Housing & SIM)', href: '/classifieds' },
   { title: 'Visa Documentation Filing', href: '/services/visa-documentation' },
   { title: 'Apply Visa Online', href: '/services/apply-visa' },
   { title: 'IELTS & Language Prep', href: '/services/ielts-prep' },

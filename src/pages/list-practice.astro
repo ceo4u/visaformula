@@ -92,7 +92,7 @@ const faqs = [
                 <span class="bg-white/10 text-red-400 text-[10px] font-bold tracking-widest px-3.5 py-1.5 rounded-full border border-white/20 mb-5 inline-block backdrop-blur-md">
                     💼 For Immigration & Visa Experts
                 </span>
-                <h1 class="font-sora text-4xl sm:text-5xl md:text-6xl font-extrabold mb-5 leading-tight tracking-tight text-white">
+                <h1 class="font-sans text-4xl sm:text-5xl md:text-6xl font-extrabold mb-5 leading-tight tracking-tight text-white">
                     Grow Your Practice.<br /><span class="bg-gradient-to-r from-red-400 to-rose-500 bg-clip-text text-transparent">Reach Clients Globally.</span>
                 </h1>
                 <p class="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium mb-8">
@@ -118,7 +118,7 @@ const faqs = [
                                     <IconComponent class="w-5 h-5 text-black" />
                                 </div>
                             </div>
-                            <div class="font-sora font-extrabold text-navy text-2xl md:text-3xl">{stat.value}</div>
+                            <div class="font-sans font-extrabold text-navy text-2xl md:text-3xl">{stat.value}</div>
                             <div class="text-[10px] font-bold text-gray-400 tracking-wider">{stat.label}</div>
                         </div>
                     );
@@ -130,7 +130,7 @@ const faqs = [
         <section class="max-w-5xl mx-auto px-4 py-8 mb-20">
             <div class="text-center max-w-2xl mx-auto mb-16">
                 <span class="text-[10px] font-black text-red-500 tracking-widest block mb-1">TravlTik Benefits</span>
-                <h2 class="font-sora font-extrabold text-navy text-3xl">Designed to Scale Your Business</h2>
+                <h2 class="font-sans font-extrabold text-navy text-3xl">Designed to Scale Your Business</h2>
                 <p class="text-xs text-gray-400 mt-1">We provide the technical infrastructure so you can focus on legal consultations.</p>
             </div>
             
@@ -142,7 +142,7 @@ const faqs = [
                             <div class="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center mx-auto border border-slate-100">
                                 <IconComponent class="w-6 h-6 text-black" />
                             </div>
-                            <h3 class="font-sora font-bold text-navy text-base">{benefit.title}</h3>
+                            <h3 class="font-sans font-bold text-navy text-base">{benefit.title}</h3>
                             <p class="text-xs text-gray-500 leading-relaxed font-medium">{benefit.description}</p>
                         </div>
                     );
@@ -155,7 +155,7 @@ const faqs = [
             <div class="max-w-5xl mx-auto">
                 <div class="text-center max-w-2xl mx-auto mb-16">
                     <span class="text-[10px] font-black text-red-500 tracking-widest block mb-1">Steps</span>
-                    <h2 class="font-sora font-extrabold text-navy text-3xl">How It Works</h2>
+                    <h2 class="font-sans font-extrabold text-navy text-3xl">How It Works</h2>
                     <p class="text-xs text-gray-400 mt-1">Four simple steps to connect with global clients and start consulting.</p>
                 </div>
                 
@@ -163,7 +163,7 @@ const faqs = [
                     {steps.map(step => (
                         <div class="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-3 relative overflow-hidden group">
                             <div class="text-3xl font-black text-slate-100 group-hover:text-red-50 transition-colors absolute top-3 right-3">{step.num}</div>
-                            <h3 class="font-sora font-bold text-navy text-sm pt-4">{step.title}</h3>
+                            <h3 class="font-sans font-bold text-navy text-sm pt-4">{step.title}</h3>
                             <p class="text-xs text-gray-500 leading-relaxed font-medium">{step.desc}</p>
                         </div>
                     ))}
@@ -175,13 +175,13 @@ const faqs = [
         <section class="max-w-3xl mx-auto px-4 py-8 mb-20">
             <div class="text-center mb-12">
                 <span class="text-[10px] font-black text-red-500 tracking-widest block mb-1">FAQ</span>
-                <h2 class="font-sora font-extrabold text-navy text-3xl">Frequently Asked Questions</h2>
+                <h2 class="font-sans font-extrabold text-navy text-3xl">Frequently Asked Questions</h2>
             </div>
             
             <div class="space-y-6">
                 {faqs.map(faq => (
                     <div class="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
-                        <h3 class="font-sora font-bold text-navy text-sm mb-2">❓ {faq.q}</h3>
+                        <h3 class="font-sans font-bold text-navy text-sm mb-2">❓ {faq.q}</h3>
                         <p class="text-xs text-gray-500 leading-relaxed font-medium">{faq.a}</p>
                     </div>
                 ))}
@@ -193,7 +193,7 @@ const faqs = [
             <div class="bg-black text-white rounded-3xl p-12 text-center relative overflow-hidden shadow-2xl border border-slate-900">
                 <div class="absolute -right-16 -bottom-16 w-48 h-48 bg-white/5 rounded-full blur-3xl"></div>
                 <div class="relative z-10 max-w-xl mx-auto space-y-6">
-                    <h2 class="font-sora font-extrabold text-2xl md:text-3xl leading-tight">Ready to Grow Your Global Practice?</h2>
+                    <h2 class="font-sans font-extrabold text-2xl md:text-3xl leading-tight">Ready to Grow Your Global Practice?</h2>
                     <p class="text-xs text-white/75 leading-relaxed max-w-md mx-auto font-medium">
                         Join verified immigration experts, consult international applicants, and handle casework securely.
                     </p>

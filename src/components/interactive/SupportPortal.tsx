@@ -267,7 +267,7 @@ export function SupportPortal() {
             <div className="max-w-6xl mx-auto px-4 border-t border-gray-200/50 pt-16">
                 <div className="text-center max-w-2xl mx-auto mb-10">
                     <span className="text-[10px] font-black text-slate-500 tracking-widest block mb-1">FAQs</span>
-                    <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl">Frequently Asked Questions</h2>
+                    <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl">Frequently Asked Questions</h2>
                 </div>
                 
                 <div className="max-w-2xl mx-auto space-y-3">

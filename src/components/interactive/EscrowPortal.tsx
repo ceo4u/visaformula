@@ -44,7 +44,7 @@ export function EscrowPortal() {
                     <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-semibold mb-6">
                         <Shield className="w-4 h-4" /> Escrow Protected Payments
                     </div>
-                    <h1 className="font-sora text-4xl md:text-5xl font-extrabold mb-4">Pay Safe, Get Service</h1>
+                    <h1 className="font-sans text-4xl md:text-5xl font-extrabold mb-4">Pay Safe, Get Service</h1>
                     <p className="text-white/80 text-lg max-w-2xl mx-auto">Your money is held securely until you confirm the service is complete. Zero extra charge.</p>
                 </div>
             </section>
@@ -52,7 +52,7 @@ export function EscrowPortal() {
             {/* 4-Step Visual Flow */}
             <section className="max-w-4xl mx-auto px-4 -mt-10 relative z-10 mb-14">
                 <div className="bg-white rounded-2xl shadow-xl border border-yellow-100 p-8">
-                    <h2 className="font-sora text-xl font-bold text-navy mb-8 text-center">How TravlTik Escrow Works</h2>
+                    <h2 className="font-sans text-xl font-bold text-navy mb-8 text-center">How TravlTik Escrow Works</h2>
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-2">
                         {steps.map((step, i) => (
                             <div key={step.num} className="flex-1 flex flex-col items-center text-center relative">
@@ -76,7 +76,7 @@ export function EscrowPortal() {
 
             {/* Protections */}
             <section className="max-w-5xl mx-auto px-4 mb-14">
-                <h2 className="font-sora text-2xl font-bold text-navy mb-8 text-center">What Escrow Protects You From</h2>
+                <h2 className="font-sans text-2xl font-bold text-navy mb-8 text-center">What Escrow Protects You From</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {protections.map(p => (
                         <div key={p.title} className={`rounded-2xl border p-6 flex items-start gap-4 ${p.color}`}>
@@ -94,7 +94,7 @@ export function EscrowPortal() {
 
             {/* Active Bookings */}
             <section className="max-w-5xl mx-auto px-4 mb-14">
-                <h2 className="font-sora text-2xl font-bold text-navy mb-6">Your Active Escrow Bookings</h2>
+                <h2 className="font-sans text-2xl font-bold text-navy mb-6">Your Active Escrow Bookings</h2>
                 <div className="space-y-4">
                     {mockBookings.map(b => (
                         <div key={b.id} className="bg-white rounded-2xl border border-yellow-100 p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">

@@ -120,7 +120,7 @@ export function VFSBookingPortal() {
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-red-400 rounded-full opacity-[0.02] blur-3xl pointer-events-none" />
 
           <div className="text-5xl mb-4">🛂📅</div>
-          <h1 className="font-sora font-extrabold text-3xl md:text-4xl text-[#0C1A2E] mb-3 leading-tight">
+          <h1 className="font-sans font-extrabold text-3xl md:text-4xl text-[#0C1A2E] mb-3 leading-tight">
             VFS Global <span className="text-[#ef4444]">Booking Services</span>
           </h1>
           <p className="text-[#475569] text-sm md:text-base max-w-2xl mx-auto mb-7 leading-relaxed">
@@ -136,7 +136,7 @@ export function VFSBookingPortal() {
               { value: "₹0 extra", label: "for TravlTik Agents" },
             ].map(s => (
               <div key={s.label} className="text-center">
-                <div className="font-sora font-extrabold text-3xl text-[#ef4444]">{s.value}</div>
+                <div className="font-sans font-extrabold text-3xl text-[#ef4444]">{s.value}</div>
                 <div className="text-xs text-[#475569] font-semibold mt-0.5">{s.label}</div>
               </div>
             ))}
@@ -170,7 +170,7 @@ export function VFSBookingPortal() {
         {/* ── UPCOMING APPOINTMENTS ─────────────────────── */}
         <div className="mb-8">
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-1">Upcoming & Pending</span>
-          <h2 className="font-sora font-extrabold text-xl text-[#0C1E2E] mb-5">Your Booked Appointments</h2>
+          <h2 className="font-sans font-extrabold text-xl text-[#0C1E2E] mb-5">Your Booked Appointments</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {upcomingCards.map((card, i) => (
@@ -190,7 +190,7 @@ export function VFSBookingPortal() {
                 </div>
 
                 {/* Title */}
-                <h3 className="font-sora font-bold text-base text-[#0C1A2E] mb-2 group-hover:text-red-500 transition-colors leading-snug">{card.title}</h3>
+                <h3 className="font-sans font-bold text-base text-[#0C1A2E] mb-2 group-hover:text-red-500 transition-colors leading-snug">{card.title}</h3>
 
                 {/* Centre & date */}
                 <div className="text-xs text-[#475569] flex items-center gap-1.5 mb-1.5 font-medium">
@@ -223,13 +223,13 @@ export function VFSBookingPortal() {
         {/* ── BOOKING FORM ──────────────────────────────── */}
         <div id="book-section" className="bg-gradient-to-br from-[#fff5f5] to-white border border-red-100 rounded-3xl p-7 md:p-9 mb-8 shadow-sm">
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-1">Agent Booking Panel</span>
-          <h2 className="font-sora font-extrabold text-xl text-[#0C1A2E] mb-1">Book New VFS Appointment</h2>
+          <h2 className="font-sans font-extrabold text-xl text-[#0C1A2E] mb-1">Book New VFS Appointment</h2>
           <p className="text-sm text-[#475569] mb-7">For your client — biometrics, passport submission, visa interview, or document collection.</p>
 
           {submitted ? (
             <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-6 text-center mb-6">
               <CheckCircle className="w-10 h-10 text-emerald-500 mx-auto mb-3" />
-              <div className="font-sora font-bold text-base text-[#0C1A2E] mb-1">Booking Request Submitted!</div>
+              <div className="font-sans font-bold text-base text-[#0C1A2E] mb-1">Booking Request Submitted!</div>
               <p className="text-xs text-[#475569]">We'll confirm availability and send the appointment slip within <strong>30 minutes</strong>.</p>
             </div>
           ) : null}
@@ -344,7 +344,7 @@ export function VFSBookingPortal() {
         {/* ── BOOKING HISTORY TABLE ─────────────────────── */}
         <div className="mb-8">
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-1">Booking History</span>
-          <h2 className="font-sora font-extrabold text-xl text-[#0C1A2E] mb-5">Recent Appointments Booked by You</h2>
+          <h2 className="font-sans font-extrabold text-xl text-[#0C1A2E] mb-5">Recent Appointments Booked by You</h2>
 
           <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
             {/* Table header */}
@@ -380,7 +380,7 @@ export function VFSBookingPortal() {
         {/* ── VFS PROCESS GUIDE ─────────────────────────── */}
         <div className="bg-white border border-slate-100 rounded-3xl p-7 mb-8 shadow-sm">
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-1">VFS Process Guide</span>
-          <h2 className="font-sora font-extrabold text-xl text-[#0C1A2E] mb-7">Step-by-Step for TravlTik Agents</h2>
+          <h2 className="font-sans font-extrabold text-xl text-[#0C1A2E] mb-7">Step-by-Step for TravlTik Agents</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
             {processSteps.map((step, i) => (
@@ -388,7 +388,7 @@ export function VFSBookingPortal() {
                 <div className="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform shadow-sm">
                   {step.emoji}
                 </div>
-                <div className="font-sora font-bold text-sm text-[#0C1A2E] mb-2">{step.title}</div>
+                <div className="font-sans font-bold text-sm text-[#0C1A2E] mb-2">{step.title}</div>
                 <p className="text-xs text-[#475569] leading-relaxed">{step.desc}</p>
               </div>
             ))}

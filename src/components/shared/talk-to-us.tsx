@@ -68,25 +68,25 @@ export function TalkToUs() {
     <>
       {/* Modal */}
       {open && (
-        <div className="fixed bottom-[144px] sm:bottom-24 right-4 sm:right-6 w-[320px] sm:w-[370px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden z-50 flex flex-col font-sans" style={{ maxHeight: "560px" }}>
+        <div className="fixed bottom-[144px] md:bottom-24 right-4 md:right-6 w-[320px] sm:w-[370px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden z-50 flex flex-col font-sans" style={{ maxHeight: "560px" }}>
           
           {/* Options View */}
           {view === "options" && (
             <>
-              <div className="bg-black p-4 flex items-center gap-3">
-                <div className="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center text-white shrink-0"><MessageSquare className="w-5 h-5 text-white" /></div>
+              <div className="bg-gradient-to-r from-[#481268] via-[#5b1983] to-[#340a4d] p-4 flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center text-white shrink-0"><MessageSquare className="w-5 h-5 text-white" /></div>
                 <div className="flex-1">
-                  <div className="font-sora font-bold text-white text-sm">Talk to TravlTik</div>
-                  <div className="flex items-center gap-1.5 text-slate-300 text-xs"><span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />8 experts online now</div>
+                  <div className="font-sans font-bold text-white text-sm">Talk to TravlTik</div>
+                  <div className="flex items-center gap-1.5 text-purple-200 text-xs"><span className="w-2 h-2 bg-[#00e5a3] rounded-full animate-pulse" />8 experts online now</div>
                 </div>
-                <button onClick={() => setOpen(false)} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><X className="w-4 h-4" /></button>
+                <button onClick={() => setOpen(false)} className="w-7 h-7 bg-white/15 rounded-full flex items-center justify-center text-white hover:bg-white/25 transition-all"><X className="w-4 h-4" /></button>
               </div>
               <div className="p-3 overflow-y-auto flex-1">
                 <div className="text-xs font-bold text-gray-400 tracking-wider mb-2 px-1">How can we help?</div>
                 {options.map((opt, i) => {
                   const IconComponent = opt.icon;
                   return (
-                    <button key={i} onClick={opt.action} className="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-150 transition-all text-left mb-1.5 cursor-pointer">
+                    <button key={i} onClick={opt.action} className="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-purple-50/50 border border-transparent hover:border-purple-100 transition-all text-left mb-1.5 cursor-pointer">
                       <div className={`w-10 h-10 ${opt.bg} rounded-xl flex items-center justify-center shrink-0`}>
                         <IconComponent className={`w-5 h-5 ${opt.iconColor}`} />
                       </div>
@@ -105,20 +105,20 @@ export function TalkToUs() {
           {/* Chat View */}
           {view === "chat" && (
             <>
-              <div className="bg-black p-4 flex items-center gap-3">
-                <button onClick={() => setView("options")} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><ArrowLeft className="w-4 h-4" /></button>
-                <div className="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center text-white shrink-0"><Bot className="w-4 h-4 text-white" /></div>
+              <div className="bg-gradient-to-r from-[#481268] via-[#5b1983] to-[#340a4d] p-4 flex items-center gap-3">
+                <button onClick={() => setView("options")} className="w-7 h-7 bg-white/15 rounded-full flex items-center justify-center text-white hover:bg-white/25 transition-all"><ArrowLeft className="w-4 h-4" /></button>
+                <div className="w-8 h-8 bg-[#00e5a3] rounded-xl flex items-center justify-center text-[#481268] shrink-0 font-bold"><Bot className="w-4 h-4 text-[#481268]" /></div>
                 <div className="flex-1">
-                  <div className="font-sora font-bold text-white text-xs">TravlTik Assistant</div>
-                  <div className="text-emerald-400 text-[10px] flex items-center gap-1"><span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />Online · Instant</div>
+                  <div className="font-sans font-bold text-white text-xs">TravlTik Assistant</div>
+                  <div className="text-teal-300 text-[10px] flex items-center gap-1"><span className="w-1.5 h-1.5 bg-[#00e5a3] rounded-full animate-pulse" />Online · Instant</div>
                 </div>
-                <button onClick={() => setOpen(false)} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><X className="w-4 h-4" /></button>
+                <button onClick={() => setOpen(false)} className="w-7 h-7 bg-white/15 rounded-full flex items-center justify-center text-white hover:bg-white/25 transition-all"><X className="w-4 h-4" /></button>
               </div>
 
               <div ref={bodyRef} className="p-3.5 overflow-y-auto flex-1 flex flex-col gap-3 bg-slate-50">
                 {msgs.map((m, i) => (
                   <div key={i} className={`flex flex-col ${m.role === "user" ? "items-end" : "items-start"}`}>
-                    <div className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${m.role === "user" ? "bg-black text-white font-medium rounded-br-none" : "bg-white text-slate-800 shadow-sm border border-slate-100 rounded-bl-none"}`}>
+                    <div className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${m.role === "user" ? "bg-[#481268] text-white font-medium rounded-br-none" : "bg-white text-slate-800 shadow-sm border border-slate-100 rounded-bl-none"}`}>
                       {m.text.split("\n").map((line, j) => (
                         <p key={j} className={j > 0 ? "mt-1" : ""}>{line}</p>
                       ))}
@@ -126,7 +126,7 @@ export function TalkToUs() {
                     {m.quickReplies && m.quickReplies.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mt-2 max-w-[90%]">
                         {m.quickReplies.map((qr, k) => (
-                          <button key={k} onClick={() => sendMsg(qr)} className="bg-white hover:bg-black hover:text-white text-slate-700 text-[11px] font-semibold px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs transition-all text-left">
+                          <button key={k} onClick={() => sendMsg(qr)} className="bg-white hover:bg-[#481268] hover:text-white text-slate-700 text-[11px] font-semibold px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs transition-all text-left">
                             {qr}
                           </button>
                         ))}
@@ -152,12 +152,12 @@ export function TalkToUs() {
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && input.trim() && sendMsg(input.trim())}
                   placeholder="Type a message..."
-                  className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-black font-medium"
+                  className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#481268] font-medium"
                 />
                 <button
                   onClick={() => input.trim() && sendMsg(input.trim())}
                   disabled={!input.trim()}
-                  className="w-8 h-8 bg-black disabled:bg-slate-200 text-white disabled:text-slate-400 rounded-xl flex items-center justify-center transition-all shrink-0 cursor-pointer"
+                  className="w-8 h-8 bg-[#481268] hover:bg-[#5b1983] disabled:bg-slate-200 text-white disabled:text-slate-400 rounded-xl flex items-center justify-center transition-all shrink-0 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                 </button>
@@ -168,13 +168,13 @@ export function TalkToUs() {
           {/* Call View */}
           {view === "call" && (
             <>
-              <div className="bg-black p-4 flex items-center gap-3">
-                <button onClick={() => setView("options")} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><ArrowLeft className="w-4 h-4" /></button>
+              <div className="bg-gradient-to-r from-[#481268] via-[#5b1983] to-[#340a4d] p-4 flex items-center gap-3">
+                <button onClick={() => setView("options")} className="w-7 h-7 bg-white/15 rounded-full flex items-center justify-center text-white hover:bg-white/25 transition-all"><ArrowLeft className="w-4 h-4" /></button>
                 <div className="flex-1">
-                  <div className="font-sora font-bold text-white text-sm">Direct Contact</div>
-                  <div className="text-slate-300 text-xs">Reach out directly</div>
+                  <div className="font-sans font-bold text-white text-sm">Direct Contact</div>
+                  <div className="text-purple-200 text-xs">Reach out directly</div>
                 </div>
-                <button onClick={() => setOpen(false)} className="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-slate-700 transition-all"><X className="w-4 h-4" /></button>
+                <button onClick={() => setOpen(false)} className="w-7 h-7 bg-white/15 rounded-full flex items-center justify-center text-white hover:bg-white/25 transition-all"><X className="w-4 h-4" /></button>
               </div>
               <div className="p-4 space-y-3">
                 <a href={whatsappUrl} target="_blank" rel="noreferrer" className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl p-4 flex items-center justify-between transition-all shadow-md">
@@ -189,11 +189,11 @@ export function TalkToUs() {
                 </a>
 
                 <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center gap-4">
-                  <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center"><Phone className="w-5 h-5 text-black" /></div>
+                  <div className="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center"><Phone className="w-5 h-5 text-[#481268]" /></div>
                   <div><div className="font-bold text-black text-sm">Phone Support</div><div className="text-black font-extrabold text-sm">+91 766 1989 366</div><div className="text-xs text-gray-400">Mon–Sat · 9AM–8PM IST</div></div>
                 </div>
                 <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center gap-4">
-                  <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center"><Mail className="w-5 h-5 text-black" /></div>
+                  <div className="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center"><Mail className="w-5 h-5 text-[#481268]" /></div>
                   <div><div className="font-bold text-black text-sm">Email Support</div><div className="text-black font-extrabold text-sm">support@travltik.com</div><div className="text-xs text-gray-400">Response within 2–4 hours</div></div>
                 </div>
               </div>
@@ -202,15 +202,21 @@ export function TalkToUs() {
         </div>
       )}
 
-      {/* FAB Button - Clean Icon-Only Floating Button */}
+      {/* FAB Button - TravlTik iOS App Icon Style Floating Chat Button */}
       <button
         onClick={() => { setOpen(!open); setView("options"); }}
         aria-label="Talk to Us"
-        className="fixed bottom-[84px] sm:bottom-6 right-4 sm:right-6 z-50 w-12 h-12 rounded-full bg-[#0c1a2e] text-white shadow-xl hover:bg-black transition-all active:scale-[0.95] flex items-center justify-center border border-slate-700/60 cursor-pointer"
+        className="fixed bottom-[88px] md:bottom-6 right-3.5 md:right-6 z-50 w-11 h-11 md:w-14 md:h-14 rounded-2xl md:rounded-[22px] bg-gradient-to-b from-[#00bda8] to-[#008f80] text-white shadow-[0_10px_25px_-4px_rgba(0,168,150,0.5),0_4px_10px_-2px_rgba(0,0,0,0.12),inset_0_1.5px_0_rgba(255,255,255,0.45),inset_0_-1.5px_0_rgba(0,0,0,0.15)] hover:shadow-[0_14px_30px_-4px_rgba(0,168,150,0.65),0_6px_12px_-2px_rgba(0,0,0,0.18),inset_0_2px_0_rgba(255,255,255,0.6)] hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0 flex items-center justify-center border border-white/25 cursor-pointer group backdrop-blur-sm"
       >
-        <span className="relative flex items-center justify-center">
-          {open ? <X className="w-5 h-5 text-white" /> : <MessageSquare className="w-5 h-5 text-white" />}
-          {!open && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-[#0c1a2e] animate-pulse" />}
+        <span className="relative flex items-center justify-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
+          {open ? (
+            <X className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:scale-110 transition-transform stroke-[2.4]" />
+          ) : (
+            <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:scale-110 transition-transform stroke-[2.4]" />
+          )}
+          {!open && (
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 md:w-3 md:h-3 bg-white rounded-full border-2 border-[#008f80] shadow-sm animate-pulse" />
+          )}
         </span>
       </button>
     </>

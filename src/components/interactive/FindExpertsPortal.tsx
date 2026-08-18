@@ -7,10 +7,13 @@ import { DisputeReportModal } from "./DisputeReportModal";
 import { PaymentCheckoutModal } from "./PaymentCheckoutModal";
 
 
-const categoryFilters = ["All", "Student Visa", "Work Permit", "PR", "Local Expert"];
+const categoryFilters = ["All", "Study", "Visit", "Work", "Visa Appeals", "Digital Nomad", "PR", "Student Visa", "Work Permit"];
+const countryFilters = ["All", "Canada", "USA", "UK", "Australia", "Germany", "UAE", "New Zealand", "Europe", "Singapore"];
 const cityFilters = ["All Cities", "Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Remote"];
 const ratingFilters = ["Any", "4★+", "4.5★+", "Top Rated"];
 const availFilters = ["Anytime", "Today", "This Week", "Emergency 24/7"];
+const typeFilters = ["All", "Freelancer", "Registered Agency"];
+const modeFilters = ["All", "Online", "Offline"];
 
 interface WizardAnswers {
   country: string;
@@ -122,6 +125,8 @@ export function FindExpertsPortal() {
     const [searchText, setSearchText] = useState("");
     const [showMobileFilters, setShowMobileFilters] = useState(false);
     const [selectedCountry, setSelectedCountry] = useState("All");
+    const [consultantType, setConsultantType] = useState("All");
+    const [consultantMode, setConsultantMode] = useState("All");
     const [sortOpen, setSortOpen] = useState(false);
     const [selectedProfileExpert, setSelectedProfileExpert] = useState<any>(null);
     const [showLoginModal, setShowLoginModal] = useState(false);
@@ -428,17 +433,44 @@ export function FindExpertsPortal() {
         const cityStr = String(expert.city || expert.office_address || '');
         const name = String(expert.name || expert.business_name || '');
         const bio = String(expert.bio || expert.about_me || '');
+        const advisorType = String(expert.advisor_type || expert.role || '').toLowerCase();
 
-        if (category !== "All") {
+        // Check if query is matching name directly
+        let isDirectNameMatch = false;
+        if (searchText && searchText.trim() !== "") {
+            const qLower = searchText.toLowerCase().trim();
+            isDirectNameMatch = name.toLowerCase().includes(qLower);
+        }
+
+        // If not matching directly by name, enforce Category filter
+        if (!isDirectNameMatch && category !== "All") {
             const catLower = category.toLowerCase();
             const hasCategoryMatch = expert.category?.toLowerCase() === catLower ||
                 role.toLowerCase().includes(catLower) ||
                 tags.some((t: string) => String(t).toLowerCase().includes(catLower));
 
+            if (category === "Study" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("stud") || String(t).toLowerCase().includes("education"))) return false;
             if (category === "Student Visa" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("stud") || String(t).toLowerCase().includes("education"))) return false;
+            if (category === "Work" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("work") || String(t).toLowerCase().includes("job"))) return false;
             if (category === "Work Permit" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("work") || String(t).toLowerCase().includes("job"))) return false;
-            if (category === "PR" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("pr") || String(t).toLowerCase().includes("migrat") || String(t).toLowerCase().includes("express"))) return false;
-            if (category === "Local Expert" && (cityStr === "Remote" || expert.isRemote)) return false;
+            if (category === "Visit" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("visit") || String(t).toLowerCase().includes("tourist"))) return false;
+            if (category === "Visa Appeals" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("appeal") || String(t).toLowerCase().includes("refusal") || String(t).toLowerCase().includes("tribunal"))) return false;
+            if (category === "Digital Nomad" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("nomad") || String(t).toLowerCase().includes("remote"))) return false;
+            if (category === "PR" && !hasCategoryMatch && !tags.some((t: string) => String(t).toLowerCase().includes("pr") || String(t).toLowerCase().includes("migrat") || String(t).toLowerCase().includes("express") || String(t).toLowerCase().includes("permanent"))) return false;
+        }
+
+        // Consultant Type Filter (Freelancer vs Registered Agency)
+        if (consultantType !== "All") {
+            if (consultantType === "Freelancer" && !advisorType.includes("freelance") && !expert.isFreelancer) return false;
+            if (consultantType === "Registered Agency" && (advisorType.includes("freelance") || expert.isFreelancer)) return false;
+        }
+
+        // Consultant Mode Filter (Online vs Offline)
+        if (consultantMode !== "All") {
+            const isOnline = expert.isRemote || expert.consultation_mode === "Online" || expert.consultation_mode === "Both";
+            const isOffline = expert.consultation_mode === "In Office" || expert.consultation_mode === "Both" || !expert.isRemote;
+            if (consultantMode === "Online" && !isOnline) return false;
+            if (consultantMode === "Offline" && !isOffline) return false;
         }
 
         if (city !== "All Cities") {
@@ -458,7 +490,7 @@ export function FindExpertsPortal() {
             if (avail === "Emergency 24/7" && !expert.isEmergency) return false;
         }
 
-        if (selectedCountry !== "All") {
+        if (selectedCountry !== "All" && !isDirectNameMatch) {
             const hasCountry = countries.some((c: string) => String(c).toLowerCase().includes(selectedCountry.toLowerCase()));
             if (!hasCountry) return false;
         }
@@ -515,16 +547,17 @@ export function FindExpertsPortal() {
 
     const FilterSidebar = () => (
         <div className="space-y-6">
+            {/* Service Category */}
             <div>
-                <h3 className="font-sora font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-3">Service Category</h3>
-                <div className="space-y-1.5">
+                <h3 className="font-sans font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-2.5">Visa Category</h3>
+                <div className="space-y-1">
                     {categoryFilters.map(cat => (
                         <button
                             key={cat}
                             onClick={() => setCategory(cat)}
-                            className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                            className={`w-full text-left px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                 category === cat
-                                    ? "bg-slate-900 text-white shadow-md"
+                                    ? "bg-[#00a896] text-white shadow-xs"
                                     : "text-slate-600 hover:bg-slate-100"
                             }`}
                         >
@@ -534,16 +567,71 @@ export function FindExpertsPortal() {
                 </div>
             </div>
 
+            {/* Destination Country */}
             <div>
-                <h3 className="font-sora font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-3">Location</h3>
-                <div className="space-y-1.5">
+                <h3 className="font-sans font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-2.5">Destination Country</h3>
+                <select
+                    value={selectedCountry}
+                    onChange={(e) => setSelectedCountry(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
+                >
+                    {countryFilters.map(c => (
+                        <option key={c} value={c}>{c === "All" ? "All Countries" : c}</option>
+                    ))}
+                </select>
+            </div>
+
+            {/* Consultant Type */}
+            <div>
+                <h3 className="font-sans font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-2.5">Consultant Type</h3>
+                <div className="grid grid-cols-3 gap-1 bg-slate-100 p-1 rounded-xl">
+                    {typeFilters.map(t => (
+                        <button
+                            key={t}
+                            onClick={() => setConsultantType(t)}
+                            className={`py-1.5 rounded-lg text-[11px] font-bold text-center transition-all cursor-pointer ${
+                                consultantType === t
+                                    ? "bg-white text-[#00a896] shadow-xs"
+                                    : "text-slate-600 hover:text-slate-900"
+                            }`}
+                        >
+                            {t}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Consultant Mode */}
+            <div>
+                <h3 className="font-sans font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-2.5">Consultation Mode</h3>
+                <div className="grid grid-cols-3 gap-1 bg-slate-100 p-1 rounded-xl">
+                    {modeFilters.map(m => (
+                        <button
+                            key={m}
+                            onClick={() => setConsultantMode(m)}
+                            className={`py-1.5 rounded-lg text-[11px] font-bold text-center transition-all cursor-pointer ${
+                                consultantMode === m
+                                    ? "bg-white text-[#00a896] shadow-xs"
+                                    : "text-slate-600 hover:text-slate-900"
+                            }`}
+                        >
+                            {m}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Location (City) */}
+            <div>
+                <h3 className="font-sans font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-2.5">Location</h3>
+                <div className="space-y-1">
                     {cityFilters.map(c => (
                         <button
                             key={c}
                             onClick={() => setCity(c)}
-                            className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                            className={`w-full text-left px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                 city === c
-                                    ? "bg-slate-900 text-white shadow-md"
+                                    ? "bg-slate-900 text-white shadow-xs"
                                     : "text-slate-600 hover:bg-slate-100"
                             }`}
                         >
@@ -553,16 +641,17 @@ export function FindExpertsPortal() {
                 </div>
             </div>
 
+            {/* Rating */}
             <div>
-                <h3 className="font-sora font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-3">Rating</h3>
-                <div className="space-y-1.5">
+                <h3 className="font-sans font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-2.5">Rating</h3>
+                <div className="space-y-1">
                     {ratingFilters.map(r => (
                         <button
                             key={r}
                             onClick={() => setRating(r)}
-                            className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                            className={`w-full text-left px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                 rating === r
-                                    ? "bg-slate-900 text-white shadow-md"
+                                    ? "bg-slate-900 text-white shadow-xs"
                                     : "text-slate-600 hover:bg-slate-100"
                             }`}
                         >
@@ -572,27 +661,8 @@ export function FindExpertsPortal() {
                 </div>
             </div>
 
-            <div>
-                <h3 className="font-sora font-extrabold text-xs text-[#0C1A2E] uppercase tracking-wider mb-3">Availability</h3>
-                <div className="space-y-1.5">
-                    {availFilters.map(a => (
-                        <button
-                            key={a}
-                            onClick={() => setAvail(a)}
-                            className={`w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
-                                avail === a
-                                    ? "bg-slate-900 text-white shadow-md"
-                                    : "text-slate-600 hover:bg-slate-100"
-                            }`}
-                        >
-                            {a}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            <button onClick={() => { setCategory("All"); setCity("All Cities"); setRating("Any"); setAvail("Anytime"); setSelectedCountry("All"); }}
-                className="w-full text-xs font-black tracking-wider text-slate-900 hover:underline mt-2">Clear All Filters</button>
+            <button onClick={() => { setCategory("All"); setSelectedCountry("All"); setConsultantType("All"); setConsultantMode("All"); setCity("All Cities"); setRating("Any"); setAvail("Anytime"); setSearchText(""); }}
+                className="w-full text-xs font-black tracking-wider text-[#00a896] hover:underline mt-2 cursor-pointer text-center">Reset All Filters</button>
         </div>
     );
 
@@ -621,7 +691,7 @@ export function FindExpertsPortal() {
                         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowMobileFilters(false)} />
                         <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-6 max-h-[80vh] overflow-auto shadow-2xl">
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="font-sora font-bold text-navy">Filters</h3>
+                                <h3 className="font-sans font-bold text-navy">Filters</h3>
 <button onClick={() => setShowMobileFilters(false)}><X className="w-5 h-5 text-gray-400" /></button>
                             </div>
                             <FilterSidebar />
@@ -843,79 +913,100 @@ export function FindExpertsPortal() {
 
                     {viewMode === "list" && !loading ? (
                         <div className="space-y-4">
-                            {sorted.map(e => (
+                            {sorted.map(e => {
+                                const startingPrice = e.price || (e.role?.includes('Attorney') || e.role?.includes('Lawyer') ? '$89' : '$49');
+                                return (
                                 <div key={e.id} onClick={() => handleExpertCardClick(e)} className="block group cursor-pointer">
-                                    <div className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col md:flex-row gap-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div className="bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-6 flex flex-col md:flex-row gap-5 shadow-xs hover:shadow-xl hover:border-teal-400/40 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                                        
+                                        {/* Subtle top-right accent glow on hover */}
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl pointer-events-none group-hover:bg-teal-500/10 transition-colors" />
+
                                         {/* Avatar */}
-                                        <div className="relative w-20 h-20 shrink-0 mx-auto md:mx-0">
+                                        <div className="relative w-20 h-20 sm:w-22 sm:h-22 shrink-0 mx-auto md:mx-0">
                                             {e.image ? (
                                                 <img
                                                     src={e.image}
                                                     alt={e.name}
-                                                    className="w-full h-full object-cover rounded-2xl border border-slate-200 shadow-2xs"
+                                                    className="w-full h-full object-cover rounded-2xl border border-slate-200 shadow-xs"
                                                     onError={(ev) => { (ev.target as HTMLImageElement).style.display = 'none'; (ev.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden'); }}
                                                 />
                                             ) : null}
-                                            <div className={`w-full h-full rounded-2xl bg-gradient-to-br from-[#00a896] to-slate-800 text-white font-black text-xl flex items-center justify-center border border-slate-700 shadow-sm tracking-tight select-none ${e.image ? 'hidden' : ''}`}>
+                                            <div className={`w-full h-full rounded-2xl bg-gradient-to-br from-[#0B0F17] via-slate-800 to-teal-900 text-white font-semibold text-xl flex items-center justify-center border border-slate-700 shadow-xs tracking-tight select-none font-sans ${e.image ? 'hidden' : ''}`}>
                                                 {(e.name || 'VF').split(' ').slice(0, 2).map((w: string) => w.charAt(0).toUpperCase()).join('')}
                                             </div>
                                             {e.isVerified && (
-                                                <span className="absolute -top-1.5 -right-1.5 bg-slate-900 text-white text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full border-2 border-white shadow-xs">
-                                                    ✓ Verified
+                                                <span className="absolute -top-1.5 -right-1.5 bg-slate-950 text-teal-300 text-[9px] font-medium tracking-wider px-2 py-0.5 rounded-full border border-teal-400/30 shadow-xs flex items-center gap-1">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-teal-400 radar-live-dot" /> Verified
                                                 </span>
                                             )}
                                         </div>
 
                                         {/* Info */}
                                         <div className="flex-1 font-sans">
-                                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2 text-center sm:text-left font-sans">
+                                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-2 text-center sm:text-left">
                                                 <div>
-                                                    <h3 className="text-lg font-extrabold font-sans text-slate-900 group-hover:text-[#00a896] transition-colors flex items-center justify-center sm:justify-start gap-2 leading-tight">
-                                                        {e.name} <CheckCircle className="w-4.5 h-4.5 text-sky-500 fill-sky-50 shrink-0" />
-                                                    </h3>
-                                                    <p className="text-xs font-semibold text-slate-600 mt-0.5 font-sans">{e.role}</p>
+                                                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                                        <h3 className="text-lg font-semibold text-slate-950 group-hover:text-[#00a896] transition-colors flex items-center gap-1.5 leading-tight font-sans">
+                                                            {e.name} <CheckCircle className="w-4 h-4 text-teal-600 shrink-0" />
+                                                        </h3>
+                                                        {e.govReg && (
+                                                            <span className="text-[10px] font-medium text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">
+                                                                {e.govReg}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <p className="text-xs font-medium text-slate-600 mt-0.5">{e.role}</p>
                                                 </div>
-                                                <div className="text-center sm:text-right shrink-0 font-sans">
-                                                    <div className="flex items-center gap-1 justify-center sm:justify-end">
+
+                                                {/* Price & Rating Badge Group */}
+                                                <div className="flex flex-col items-center sm:items-end gap-1 shrink-0">
+                                                    {/* Transparent Price Tag */}
+                                                    <div className="inline-flex items-center gap-1.5 bg-teal-50/90 border border-teal-200/80 px-2.5 py-1 rounded-xl shadow-2xs">
+                                                        <span className="text-[10px] uppercase font-medium text-teal-800 tracking-wider">Starting from</span>
+                                                        <span className="text-sm font-semibold text-slate-950 font-sans">{startingPrice}</span>
+                                                        <span className="text-[10px] text-teal-700 font-normal">/ session</span>
+                                                    </div>
+
+                                                    <div className="flex items-center gap-1 mt-0.5">
                                                         <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                                                        <span className="font-bold text-sm text-slate-900">{e.rating?.toFixed(1)}</span>
-                                                        {e.reviews > 0 && <span className="text-[10px] text-slate-400 font-semibold">({e.reviews} reviews)</span>}
+                                                        <span className="font-semibold text-xs text-slate-900">{e.rating?.toFixed(1)}</span>
+                                                        {e.reviews > 0 && <span className="text-[10px] text-slate-400 font-normal">({e.reviews} verified reviews)</span>}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             {/* Bio */}
                                             {e.bio && (
-                                                <p className="text-xs text-slate-600 font-normal mb-3 line-clamp-2 text-center sm:text-left font-sans leading-relaxed">{e.bio}</p>
+                                                <p className="text-xs text-slate-600 font-normal mb-3 line-clamp-2 text-center sm:text-left leading-relaxed">{e.bio}</p>
                                             )}
 
                                             {/* Meta */}
-                                            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 text-xs font-semibold text-slate-500 mb-3 font-sans">
-                                                <span className="flex items-center gap-1 text-slate-600"><MapPin className="w-3.5 h-3.5 text-slate-400" /> {e.city}</span>
-                                                {e.isRemote && <span className="text-slate-600 font-medium">· Remote available</span>}
-                                                {e.govReg && <span className="text-indigo-600 font-semibold">· Govt. Registered</span>}
-                                                <span className="text-slate-900 hover:text-[#00a896] font-bold ml-auto text-xs flex items-center gap-1 transition-colors">View Profile →</span>
+                                            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 text-xs font-normal text-slate-500 mb-3">
+                                                <span className="flex items-center gap-1 text-slate-700"><MapPin className="w-3.5 h-3.5 text-teal-600" /> {e.city}</span>
+                                                {e.isRemote && <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[11px] font-medium border border-emerald-200/60">⚡ Instant Video Consultation</span>}
+                                                <span className="text-[#00a896] hover:text-teal-700 font-medium ml-auto text-xs flex items-center gap-1 transition-colors">View Profile &amp; Case History →</span>
                                             </div>
 
                                             {/* Tags */}
                                             {e.tags && e.tags.length > 0 && (
-                                                <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-4 font-sans">
+                                                <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-4">
                                                     {e.tags.slice(0, 5).map((tag: string) => (
-                                                        <span key={tag} className="bg-slate-100 text-slate-700 hover:bg-slate-200 text-[11px] font-bold px-3 py-1 rounded-xl transition-colors font-sans border border-slate-200/60">{tag}</span>
+                                                        <span key={tag} className="bg-slate-50 text-slate-700 hover:bg-slate-100 text-[11px] font-medium px-2.5 py-1 rounded-lg transition-colors border border-slate-200/80">{tag}</span>
                                                     ))}
                                                 </div>
                                             )}
 
                                             {/* Footer Actions */}
-                                            <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-100 gap-3 font-sans" onClick={(e) => e.stopPropagation()}>
+                                            <div className="flex flex-col sm:flex-row items-center justify-between pt-3.5 border-t border-slate-100 gap-3" onClick={(e) => e.stopPropagation()}>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs font-bold text-slate-800 bg-slate-100 border border-slate-200/70 px-3 py-1 rounded-xl flex items-center gap-1.5 font-sans">
+                                                    <span className="text-xs font-medium text-slate-800 bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl flex items-center gap-1.5">
                                                         🌍 {e.countries?.join(", ")}
                                                     </span>
                                                     <button
                                                         type="button"
                                                         onClick={() => {
-                                                            setReportExpert(e);
+                                                             setReportExpert(e);
                                                             setReportModalOpen(true);
                                                         }}
                                                         className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
@@ -932,9 +1023,9 @@ export function FindExpertsPortal() {
                                                             setQuoteExpert(e);
                                                             setQuoteModalOpen(true);
                                                         }}
-                                                        className="flex-1 sm:flex-initial text-center bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer font-sans border border-slate-200"
+                                                        className="flex-1 sm:flex-initial text-center bg-slate-50 hover:bg-slate-100 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer border border-slate-200 hover-spring"
                                                     >
-                                                        Get Quote
+                                                        Get Free Quote
                                                     </button>
 
                                                     <button
@@ -943,7 +1034,7 @@ export function FindExpertsPortal() {
                                                             setReviewExpert(e);
                                                             setReviewModalOpen(true);
                                                         }}
-                                                        className="flex-1 sm:flex-initial text-center bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer font-sans border border-slate-200 flex items-center justify-center gap-1"
+                                                        className="flex-1 sm:flex-initial text-center bg-slate-50 hover:bg-slate-100 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer border border-slate-200 flex items-center justify-center gap-1 hover-spring"
                                                     >
                                                         <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                                                         <span>Review</span>
@@ -955,16 +1046,17 @@ export function FindExpertsPortal() {
                                                             setPaymentExpert(e);
                                                             setPaymentModalOpen(true);
                                                         }} 
-                                                        className="flex-1 sm:flex-initial text-center bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm transition-all cursor-pointer font-sans"
+                                                        className="flex-1 sm:flex-initial text-center bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white px-4.5 py-2 rounded-xl text-xs font-medium shadow-xs transition-all cursor-pointer hover-spring flex items-center justify-center gap-1.5"
                                                     >
-                                                        Book Session
+                                                        <span>Book Session</span>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     ) : !loading ? (
                         <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center space-y-4 shadow-xl">

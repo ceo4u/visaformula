@@ -865,19 +865,26 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 z-[9999]">
                     <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center space-y-4 shadow-2xl border border-slate-200">
                         {isRegistrationSuccess ? (
-                            <div className="py-6 space-y-4 animate-fade-up">
-                                <div className="w-16 h-16 rounded-full bg-teal-50 border-2 border-[#00a896] text-[#00a896] flex items-center justify-center mx-auto shadow-md">
-                                    <CheckCircle className="w-10 h-10 animate-bounce text-[#00a896]" />
+                            <div className="py-4 space-y-4 animate-scale-up text-center">
+                                <div className="w-16 h-16 rounded-full bg-emerald-50 text-[#00a896] flex items-center justify-center mx-auto border border-emerald-200 shadow-sm">
+                                    <CheckCircle className="w-10 h-10 text-[#00a896]" />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-black text-slate-900">Registration Successful! 🎉</h3>
+                                    <span className="text-[10px] font-black tracking-widest text-[#00a896] uppercase bg-teal-50 px-3 py-1 rounded-full border border-teal-200">
+                                        VERIFIED & COMPLETE
+                                    </span>
+                                    <h3 className="text-2xl font-black text-slate-900 mt-2">SUCCESS!! 🎉</h3>
                                     <p className="text-xs text-slate-500 mt-1 font-semibold">
-                                        Welcome to TravlTik! Redirecting to your dashboard...
+                                        Welcome to TravlTik! Your account is active.
                                     </p>
                                 </div>
-                                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden mt-2">
-                                    <div className="bg-[#00a896] h-full animate-pulse w-full"></div>
-                                </div>
+                                <a
+                                    href="/dashboard"
+                                    className="w-full inline-flex items-center justify-center gap-2 bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-3.5 px-6 rounded-2xl text-xs transition-all shadow-md active:scale-95 cursor-pointer"
+                                >
+                                    <span>Go to Dashboard</span>
+                                    <ArrowRight className="w-4 h-4" />
+                                </a>
                             </div>
                         ) : (
                             <>

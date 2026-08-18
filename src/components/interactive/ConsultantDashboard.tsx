@@ -696,7 +696,7 @@ export function ConsultantDashboard() {
                                         <Calendar className="w-3.5 h-3.5 text-slate-400" />
                                     </button>
                                     {timePeriodOpen && (
-                                        <div className="absolute right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl py-1 z-50 w-44 font-sora text-xs">
+                                        <div className="absolute right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl py-1 z-50 w-44 font-sans text-xs">
                                             {["This Month", "Last 7 Days", "Last 30 Days", "This Year"].map(p => (
                                                 <button 
                                                     key={p} 
@@ -1466,7 +1466,7 @@ export function ConsultantDashboard() {
                                 {supportTickets.length > 0 ? (
                                     <div className="space-y-2.5">
                                         {supportTickets.map((ticket: any, idx: number) => (
-                                            <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-sora">
+                                            <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-sans">
                                                 <div className="space-y-1">
                                                     <div className="flex items-center gap-2">
                                                         <span className="bg-teal-100 text-[#00a896] text-[10px] font-black px-2 py-0.5 rounded-md border border-teal-200">

@@ -124,7 +124,7 @@ export function ForgotPasswordPortal() {
     };
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar font-sora">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto no-scrollbar font-sans">
             
             {/* Top Back Button & Logo Header */}
             <div className="w-full max-w-md flex items-center justify-between mb-3 px-1 shrink-0 gap-2">

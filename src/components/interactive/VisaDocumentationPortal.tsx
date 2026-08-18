@@ -117,7 +117,7 @@ export function VisaDocumentationPortal() {
             <div className="inline-flex items-center gap-2 bg-sky-50 border border-sky-100 rounded-full px-4 py-1.5 text-xs font-bold text-[#359FC2] mb-6">
               <Sparkles className="w-3.5 h-3.5" /> 📂 Visa Documentation Filing
             </div>
-            <h1 className="font-sora font-extrabold text-4xl sm:text-5xl md:text-6xl text-[#0c1a2e] leading-[1.1] mb-5 tracking-tight">
+            <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-[#0c1a2e] leading-[1.1] mb-5 tracking-tight">
               We Prepare Your<br />
               <span className="bg-gradient-to-r from-[#359FC2] to-[#1e82a3] bg-clip-text text-transparent">
                 Visa Documents.
@@ -135,7 +135,7 @@ export function VisaDocumentationPortal() {
           </div>
           <div className="lg:col-span-5 hidden lg:block">
             <div className="bg-white rounded-3xl border border-slate-250 p-7 shadow-2xl">
-              <div className="font-sora font-bold text-[#0c1a2e] mb-4 flex items-center gap-2">
+              <div className="font-sans font-bold text-[#0c1a2e] mb-4 flex items-center gap-2">
                 <span>🛡️</span> Free Redo Guarantee
               </div>
               <p className="text-sm text-gray-500 leading-relaxed mb-4">
@@ -161,7 +161,7 @@ export function VisaDocumentationPortal() {
             { value: "99.4%", label: "Accuracy Rate" },
           ].map((stat, i) => (
             <div key={stat.label} className={i > 0 ? "pl-4" : ""}>
-              <div className="font-sora font-extrabold text-2xl md:text-3xl text-[#359FC2]">{stat.value}</div>
+              <div className="font-sans font-extrabold text-2xl md:text-3xl text-[#359FC2]">{stat.value}</div>
               <div className="text-xs text-gray-400 font-semibold mt-0.5">{stat.label}</div>
             </div>
           ))}
@@ -172,7 +172,7 @@ export function VisaDocumentationPortal() {
         {/* Features Grid */}
         <div>
           <span className="text-[11px] font-extrabold text-[#359FC2] tracking-widest block mb-2">Our Service Features</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">What is included in Documentation?</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">What is included in Documentation?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { icon: "🔍", title: "AI Document Check", desc: "Upload your documents — our AI scans for errors, missing items, incorrect formats instantly." },
@@ -184,7 +184,7 @@ export function VisaDocumentationPortal() {
             ].map((f) => (
               <div key={f.title} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className="text-3xl mb-4">{f.icon}</div>
-                <div className="font-sora font-bold text-sm text-[#0c1a2e] mb-2">{f.title}</div>
+                <div className="font-sans font-bold text-sm text-[#0c1a2e] mb-2">{f.title}</div>
                 <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
               </div>
             ))}
@@ -194,7 +194,7 @@ export function VisaDocumentationPortal() {
         {/* Interactive Document Checklist */}
         <div>
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Interactive Tool</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-2">What Documents Do You Need?</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-2">What Documents Do You Need?</h2>
           <p className="text-sm text-gray-500 mb-6">Select your destination and visa type to preview the required documentation. Click items to toggle status.</p>
 
           <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-hide">
@@ -248,7 +248,7 @@ export function VisaDocumentationPortal() {
             </div>
 
             <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6">
-              <h3 className="font-sora font-bold text-sm text-[#0c1a2e] mb-3">Checklist Progress</h3>
+              <h3 className="font-sans font-bold text-sm text-[#0c1a2e] mb-3">Checklist Progress</h3>
               <div className="flex justify-between text-xs text-gray-400 font-bold mb-2">
                 <span>Documents Ready</span>
                 <span>{readyCount} of {totalCount}</span>
@@ -269,7 +269,7 @@ export function VisaDocumentationPortal() {
         {/* Order Section */}
         <div id="doc-order" className="pt-8">
           <span className="text-[11px] font-extrabold text-[#359FC2] tracking-widest block mb-2">Order Service</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">Start Your Documentation Service</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">Start Your Documentation Service</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-7">
@@ -279,7 +279,7 @@ export function VisaDocumentationPortal() {
                     <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
                       <CheckCircle className="w-8 h-8 text-emerald-600" />
                     </div>
-                    <h3 className="font-sora font-bold text-lg text-black mb-2">Order Received!</h3>
+                    <h3 className="font-sans font-bold text-lg text-black mb-2">Order Received!</h3>
                     <p className="text-sm text-gray-500 mb-6">A document filing expert is analyzing your details and will connect via WhatsApp within 2 hours.</p>
                     <button
                       onClick={() => setOrderDone(false)}
@@ -380,7 +380,7 @@ export function VisaDocumentationPortal() {
 
             <div className="lg:col-span-5 space-y-6">
               <div className="bg-slate-50 border border-slate-250 rounded-3xl p-6">
-                <h3 className="font-sora font-bold text-sm text-[#0c1a2e] mb-4">What Happens After You Order</h3>
+                <h3 className="font-sans font-bold text-sm text-[#0c1a2e] mb-4">What Happens After You Order</h3>
                 <div className="space-y-4">
                   {[
                     { step: "1", title: "Order placed & expert assigned", time: "Within 2 hours" },

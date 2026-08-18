@@ -285,19 +285,19 @@ export function VisaMatchWidget() {
 
   return (
     <>
-      {/* ── FLOATING VISA ICON BUTTON ON LEFT SIDE ── */}
+      {/* ── FLOATING VISA ICON BUTTON ON LEFT SIDE (Premium iOS App Icon Aesthetic) ── */}
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Visa Score"
-        className="fixed bottom-[84px] sm:bottom-6 left-4 sm:left-6 z-50 flex items-center gap-2.5 px-4 py-2.5 sm:py-3 rounded-full bg-[#0c1a2e] hover:bg-black text-white shadow-2xl transition-all active:scale-95 border border-slate-700/70 hover:border-teal-500/50 cursor-pointer group font-sans backdrop-blur-md"
+        aria-label="Visa"
+        className="fixed bottom-[88px] md:bottom-6 left-3.5 md:left-6 z-50 inline-flex items-center justify-center gap-2 md:gap-2.5 px-3.5 py-2 md:px-5 md:py-3 rounded-2xl md:rounded-[20px] bg-gradient-to-b from-[#00bda8] to-[#008f80] text-white shadow-[0_10px_25px_-4px_rgba(0,168,150,0.5),0_4px_10px_-2px_rgba(0,0,0,0.12),inset_0_1.5px_0_rgba(255,255,255,0.45),inset_0_-1.5px_0_rgba(0,0,0,0.15)] hover:shadow-[0_14px_30px_-4px_rgba(0,168,150,0.65),0_6px_12px_-2px_rgba(0,0,0,0.18),inset_0_2px_0_rgba(255,255,255,0.6)] hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0 border border-white/25 cursor-pointer group font-sans shrink-0 select-none backdrop-blur-sm"
       >
-        <span className="relative flex items-center justify-center shrink-0">
-          <FileCheck2 className="w-4.5 h-4.5 text-[#00a896] group-hover:scale-110 transition-transform stroke-[2.2]" />
-          <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#00a896] rounded-full border border-[#0c1a2e] animate-pulse" />
+        <span className="relative flex items-center justify-center shrink-0 w-4 h-4 md:w-5 md:h-5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
+          <FileCheck2 className="w-4 h-4 md:w-5 md:h-5 text-white group-hover:scale-110 transition-transform stroke-[2.4]" />
+          <span className="absolute -top-1 -right-1 w-2 h-2 md:w-2.5 md:h-2.5 bg-white rounded-full border-2 border-[#008f80] shadow-sm animate-pulse" />
         </span>
-        <span className="text-xs font-bold text-white tracking-wide whitespace-nowrap">
-          Visa Score
+        <span className="text-xs md:text-[15px] font-extrabold text-white tracking-wide leading-none whitespace-nowrap drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
+          Visa
         </span>
       </button>
 

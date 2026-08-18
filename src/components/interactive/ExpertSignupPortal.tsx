@@ -124,6 +124,7 @@ function ExpertSignupPortalContent() {
 
   // Available options
   const defaultServices = [
+    "Study", "Visit", "Work", "Visa Appeals", "Digital Nomad", "PR",
     "Student Visa", "Visitor Visa", "PR / Permanent Residency", "Work Visa", 
     "Business Visa", "Dependent Visa", "Investor Visa", "Citizenship", 
     "Appeals / Tribunal", "University Admissions", "Jobs Abroad", "Travel Insurance"
@@ -140,6 +141,7 @@ function ExpertSignupPortalContent() {
     { name: "UAE", flag: "🇦🇪" },
     { name: "Europe", flag: "🇪🇺" },
     { name: "Singapore", flag: "🇸🇬" },
+    { name: "Ireland", flag: "🇮🇪" },
     { name: "Other", flag: "🌐" }
   ];
 
@@ -224,7 +226,12 @@ function ExpertSignupPortalContent() {
       const res = await signInWithGoogle();
       if (res) {
         if (res.email) setEmailAddress(res.email);
-        if (res.name) setBusinessName(res.name);
+        // Do NOT auto-fill business name blindly from Gmail - user enters explicit Admin Name
+        if (res.name && !firstName) {
+          const parts = res.name.split(" ");
+          setFirstName(parts[0] || "");
+          setLastName(parts.slice(1).join(" ") || "");
+        }
         setCurrentStep(1);
       }
     } catch (e: any) {

@@ -105,7 +105,7 @@ export function ExhibitionsPortal() {
                     <span className="bg-white/10 text-white text-[10px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
                         🏛️ Exhibition Packages
                     </span>
-                    <h1 className="font-sora text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-white leading-tight">
+                    <h1 className="font-sans text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-white leading-tight">
                         Global Exhibitions. <br /><span className="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">Visa Sorted Before You Go.</span>
                     </h1>
                     <p className="text-white/60 text-base md:text-lg max-w-xl mx-auto mb-8 leading-relaxed font-medium">
@@ -157,19 +157,19 @@ export function ExhibitionsPortal() {
             <div className="bg-slate-50/50 border-y border-slate-100 py-4">
                 <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                     <div className="border-r border-slate-100 last:border-0">
-                        <div className="font-sora font-extrabold text-navy text-2xl">240+</div>
+                        <div className="font-sans font-extrabold text-navy text-2xl">240+</div>
                         <div className="text-[10px] font-bold text-gray-400 mt-0.5">Exhibitions Listed</div>
                     </div>
                     <div className="border-r border-slate-100 last:border-0">
-                        <div className="font-sora font-extrabold text-navy text-2xl">45+</div>
+                        <div className="font-sans font-extrabold text-navy text-2xl">45+</div>
                         <div className="text-[10px] font-bold text-gray-400 mt-0.5">Countries Covered</div>
                     </div>
                     <div className="border-r border-slate-100 last:border-0">
-                        <div className="font-sora font-extrabold text-slate-900 text-2xl">Business Visa</div>
+                        <div className="font-sans font-extrabold text-slate-900 text-2xl">Business Visa</div>
                         <div className="text-[10px] font-bold text-gray-400 mt-0.5">Included in Package</div>
                     </div>
                     <div>
-                        <div className="font-sora font-extrabold text-emerald-500 text-2xl">48 Hours</div>
+                        <div className="font-sans font-extrabold text-emerald-500 text-2xl">48 Hours</div>
                         <div className="text-[10px] font-bold text-gray-400 mt-0.5">Avg Visa Processing</div>
                     </div>
                 </div>
@@ -201,7 +201,7 @@ export function ExhibitionsPortal() {
 
                 <div className="mb-6">
                     <span className="text-[10px] font-bold text-slate-800 tracking-widest block mb-1">Featured Exhibitions</span>
-                    <h2 className="font-sora font-bold text-navy text-xl">Upcoming Global Exhibitions</h2>
+                    <h2 className="font-sans font-bold text-navy text-xl">Upcoming Global Exhibitions</h2>
                     <p className="text-xs text-gray-400 mt-0.5">All packages include business visa assistance + delegation pass registration + premium hotel stay + airport transfers.</p>
                 </div>
 
@@ -231,7 +231,7 @@ export function ExhibitionsPortal() {
                                         {/* Overlaid Title */}
                                         <div className="absolute bottom-4 left-5 right-5 z-10">
                                             <span className="text-rose-400 font-medium tracking-normal text-[9px] block mb-1">GLOBAL EXHIBITION</span>
-                                            <h3 className="font-sora font-extrabold text-white text-base leading-snug">{ex.name}</h3>
+                                            <h3 className="font-sans font-extrabold text-white text-base leading-snug">{ex.name}</h3>
                                         </div>
                                     </div>
 
@@ -268,7 +268,7 @@ export function ExhibitionsPortal() {
                                     <div>
                                         <div className="text-[8px] text-slate-500 font-medium tracking-normal">STARTING FROM</div>
                                         <div className="flex items-baseline gap-1.5">
-                                            <span className="font-sora font-extrabold text-white text-base">₹{ex.price.toLocaleString()}</span>
+                                            <span className="font-sans font-extrabold text-white text-base">₹{ex.price.toLocaleString()}</span>
                                             <span className="text-[9px] text-slate-500 font-medium">/ delegate</span>
                                         </div>
                                     </div>
@@ -288,7 +288,7 @@ export function ExhibitionsPortal() {
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex gap-4 items-start shadow-sm mt-8">
                     <div className="text-3xl shrink-0">🛂</div>
                     <div>
-                        <h4 className="font-sora font-bold text-navy text-xs sm:text-sm mb-1">Business Visa Included in Every Exhibition Package</h4>
+                        <h4 className="font-sans font-bold text-navy text-xs sm:text-sm mb-1">Business Visa Included in Every Exhibition Package</h4>
                         <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed">
                             TravlTik assigns a verified business visa coordinator for every delegation booking. We handle local sponsor invitations, event registration confirmation documents, premium hotel bookings, and fast-track processing.
                         </p>

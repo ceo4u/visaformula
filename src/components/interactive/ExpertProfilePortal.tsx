@@ -129,7 +129,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                     {/* Headline Detail */}
                     <div className="flex-1 text-center md:text-left">
                         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 mb-2 justify-center md:justify-start">
-                            <h1 className="text-2xl md:text-3xl font-extrabold font-sora text-navy leading-tight flex items-center justify-center md:justify-start gap-2">
+                            <h1 className="text-2xl md:text-3xl font-extrabold font-sans text-navy leading-tight flex items-center justify-center md:justify-start gap-2">
                                 {currentExpert.name} <CheckCircle className="w-5 h-5 text-red-500 fill-red-50 shrink-0" />
                             </h1>
                             <span className="inline-block bg-red-50 text-red-600 text-[10px] font-black tracking-wider px-2.5 py-1 rounded-full border border-red-100 mx-auto md:mx-0 w-max">
@@ -180,7 +180,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                     <div className="lg:col-span-2 space-y-8">
                         {/* Profile Info Details */}
                         <section className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm">
-                            <h2 className="font-sora text-lg font-bold text-navy mb-4 flex items-center gap-2">
+                            <h2 className="font-sans text-lg font-bold text-navy mb-4 flex items-center gap-2">
                                 <Award className="w-5 h-5 text-red-500" /> About & Bio
                             </h2>
                             <p className="text-slate-600 text-sm leading-relaxed mb-4">
@@ -200,7 +200,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
 
                         {/* Services List */}
                         <section className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm">
-                            <h2 className="font-sora text-lg font-bold text-navy mb-4 flex items-center gap-2">
+                            <h2 className="font-sans text-lg font-bold text-navy mb-4 flex items-center gap-2">
                                 <BookOpen className="w-5 h-5 text-red-500" /> Services & Packages
                             </h2>
                             <div className="space-y-4">
@@ -231,7 +231,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
 
                         {/* Success Stories */}
                         <section className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm">
-                            <h2 className="font-sora text-lg font-bold text-navy mb-5 flex items-center gap-2">
+                            <h2 className="font-sans text-lg font-bold text-navy mb-5 flex items-center gap-2">
                                 <CheckCircle className="w-5 h-5 text-red-500" /> Success Stories & Cases
                             </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -247,7 +247,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
 
                         {/* Reviews */}
                         <section className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm">
-                            <h2 className="font-sora text-lg font-bold text-navy mb-5 flex items-center gap-2">
+                            <h2 className="font-sans text-lg font-bold text-navy mb-5 flex items-center gap-2">
                                 <MessageSquare className="w-5 h-5 text-red-500" /> Client Testimonials ({reviewsList.length})
                             </h2>
                             <div className="space-y-4 divide-y divide-slate-50">
@@ -272,7 +272,7 @@ export function ExpertProfilePortal({ expert }: ExpertProfilePortalProps) {
                     {/* Right Column (Booking Widget Panel) */}
                     <div id="booking-section" className="space-y-6">
                         <div className="bg-white border-2 border-slate-100 rounded-3xl p-6 shadow-xl sticky top-24">
-                            <h3 className="font-sora font-extrabold text-navy text-base mb-2 flex items-center gap-1.5">
+                            <h3 className="font-sans font-extrabold text-navy text-base mb-2 flex items-center gap-1.5">
                                 <Calendar className="w-5 h-5 text-red-500" /> Choose Booking Slot
                             </h3>
                             <p className="text-xs text-gray-400 mb-5 leading-normal">

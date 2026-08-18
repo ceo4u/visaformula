@@ -63,7 +63,7 @@ export function VisaFormFilingPortal() {
             <div className="inline-flex items-center gap-2 bg-red-50 border border-red-100 rounded-full px-4 py-1.5 text-xs font-bold text-red-600 mb-6">
               📝 Visa Form Filing
             </div>
-            <h1 className="font-sora font-extrabold text-4xl sm:text-5xl md:text-6xl text-[#0c1a2e] leading-[1.1] mb-5 tracking-tight">
+            <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-[#0c1a2e] leading-[1.1] mb-5 tracking-tight">
               We Fill Your Visa<br />
               <span className="bg-gradient-to-r from-red-500 to-[#b91c1c] bg-clip-text text-transparent">
                 Application Form.
@@ -81,7 +81,7 @@ export function VisaFormFilingPortal() {
           </div>
           <div className="lg:col-span-5 hidden lg:block">
             <div className="bg-white rounded-3xl border border-slate-250 p-7 shadow-2xl">
-              <div className="font-sora font-bold text-[#0c1a2e] mb-4 flex items-center gap-2">
+              <div className="font-sans font-bold text-[#0c1a2e] mb-4 flex items-center gap-2">
                 <span>⏱️</span> 12-Hour Delivery Promise
               </div>
               <p className="text-sm text-gray-500 leading-relaxed mb-4">
@@ -107,7 +107,7 @@ export function VisaFormFilingPortal() {
           ].map((f) => (
             <div key={f.title} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
               <div className="text-3xl mb-4">{f.icon}</div>
-              <div className="font-sora font-bold text-sm text-[#0c1a2e] mb-2">{f.title}</div>
+              <div className="font-sans font-bold text-sm text-[#0c1a2e] mb-2">{f.title}</div>
               <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
             </div>
           ))}
@@ -116,7 +116,7 @@ export function VisaFormFilingPortal() {
         {/* Stepper Form Section */}
         <div id="form-order" className="pt-8">
           <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Form Order Filing</span>
-          <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-2">Tell Us About Your Application</h2>
+          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-2">Tell Us About Your Application</h2>
           <p className="text-sm text-gray-500 mb-8">Follow our simple 4-step secure panel to get started.</p>
 
           {/* Step Indicator */}
@@ -164,7 +164,7 @@ export function VisaFormFilingPortal() {
                     <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
                       <CheckCircle className="w-8 h-8 text-emerald-600" />
                     </div>
-                    <h3 className="font-sora font-bold text-lg text-black mb-2">Application Received!</h3>
+                    <h3 className="font-sans font-bold text-lg text-black mb-2">Application Received!</h3>
                     <p className="text-sm text-gray-500 mb-6">Our form filling specialist has been assigned. We will compile the details and send the review draft via email.</p>
                     <button
                       onClick={() => {
@@ -188,7 +188,7 @@ export function VisaFormFilingPortal() {
                     {/* Step 1 */}
                     {step === 1 && (
                       <div className="space-y-4">
-                        <h3 className="font-sora font-bold text-base text-[#0c1a2e] mb-4">Step 1 — Personal Information</h3>
+                        <h3 className="font-sans font-bold text-base text-[#0c1a2e] mb-4">Step 1 — Personal Information</h3>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">First Name</label>
@@ -271,7 +271,7 @@ export function VisaFormFilingPortal() {
                     {/* Step 2 */}
                     {step === 2 && (
                       <div className="space-y-4">
-                        <h3 className="font-sora font-bold text-base text-[#0c1a2e] mb-4">Step 2 — Visa & Travel Details</h3>
+                        <h3 className="font-sans font-bold text-base text-[#0c1a2e] mb-4">Step 2 — Visa & Travel Details</h3>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Destination</label>
@@ -333,7 +333,7 @@ export function VisaFormFilingPortal() {
                     {/* Step 3 */}
                     {step === 3 && (
                       <div className="space-y-4">
-                        <h3 className="font-sora font-bold text-base text-[#0c1a2e] mb-2">Step 3 — Upload Documents</h3>
+                        <h3 className="font-sans font-bold text-base text-[#0c1a2e] mb-2">Step 3 — Upload Documents</h3>
                         <p className="text-xs text-gray-400 mb-4">Please upload scanned copies of your passport bio page and passport-size photo.</p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
@@ -373,7 +373,7 @@ export function VisaFormFilingPortal() {
                     {/* Step 4 */}
                     {step === 4 && (
                       <div className="space-y-4">
-                        <h3 className="font-sora font-bold text-base text-[#0c1a2e] mb-4">Step 4 — Confirm & Start</h3>
+                        <h3 className="font-sans font-bold text-base text-[#0c1a2e] mb-4">Step 4 — Confirm & Start</h3>
                         <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-2.5 text-sm font-semibold">
                           <div className="flex justify-between text-gray-500">
                             <span>Service Type</span>

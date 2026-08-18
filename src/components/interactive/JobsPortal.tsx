@@ -256,7 +256,7 @@ export function JobsPortal() {
             <div className="flex gap-4 items-start mb-6">
               <img src={activeJob.logo} alt={activeJob.company} className="w-16 h-16 rounded-2xl object-cover border border-red-100 bg-white shrink-0 shadow-sm" />
               <div>
-                <h2 className="font-sora text-2xl font-extrabold text-[#0c1a2e] mb-1.5">{activeJob.title}</h2>
+                <h2 className="font-sans text-2xl font-extrabold text-[#0c1a2e] mb-1.5">{activeJob.title}</h2>
                 <div className="flex flex-wrap items-center gap-2 text-sm text-[#475569]">
                   <span className="font-bold text-[#0c1a2e]">{activeJob.company}</span>
                   <BadgeCheck className="w-4 h-4 text-emerald-500" />
@@ -277,7 +277,7 @@ export function JobsPortal() {
               ].map(item => (
                 <div key={item.label} className="bg-red-50/30 border border-red-100 rounded-2xl p-3.5 text-center">
                   <div className="text-[10px] text-[#94b0c4] font-medium tracking-normal mb-1">{item.label}</div>
-                  <div className="font-sora font-extrabold text-sm text-[#0c1a2e]">{item.value}</div>
+                  <div className="font-sans font-extrabold text-sm text-[#0c1a2e]">{item.value}</div>
                   {item.sub && <div className="text-[10px] text-gray-400 font-semibold">{item.sub}</div>}
                 </div>
               ))}
@@ -494,7 +494,7 @@ export function JobsPortal() {
                   return (
                     <div key={s.label} className="flex items-center gap-2">
                       <Icon className="w-4 h-4 text-black" />
-                      <span className="font-sora font-extrabold text-black text-base">{s.value}</span>
+                      <span className="font-sans font-extrabold text-black text-base">{s.value}</span>
                       <span className="text-[11px] font-bold text-[#475569]">{s.label}</span>
                     </div>
                   );
@@ -512,7 +512,7 @@ export function JobsPortal() {
             <div className="flex items-end justify-between mb-6">
               <div>
                 <span className="text-[11px] font-semibold text-[#ef4444] tracking-wider block mb-1">Browse by Destination</span>
-                <h2 className="font-sora font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Work?</h2>
+                <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Work?</h2>
               </div>
               <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">View All →</button>
             </div>
@@ -530,7 +530,7 @@ export function JobsPortal() {
                     <img src={`https://flagcdn.com/w40/${c.code}.png`} alt="flag" className="h-3 rounded" />
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <div className="text-white font-sora font-extrabold text-sm leading-snug">{c.name}</div>
+                    <div className="text-white font-sans font-extrabold text-sm leading-snug">{c.name}</div>
                     <div className="text-red-100 text-xs font-bold mt-0.5">{c.jobs}</div>
                   </div>
                 </div>
@@ -544,7 +544,7 @@ export function JobsPortal() {
             <aside className="lg:col-span-3">
               <div className="bg-white border border-red-100 rounded-2xl p-5 shadow-sm sticky top-28 space-y-5">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-sora font-bold text-sm text-navy flex items-center gap-1.5">
+                  <h3 className="font-sans font-bold text-sm text-navy flex items-center gap-1.5">
                     <Filter className="w-3.5 h-3.5 text-[#ef4444]" /> Filters
                   </h3>
                   <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">Clear all</button>
@@ -646,7 +646,7 @@ export function JobsPortal() {
               {jobs.length === 0 ? (
                 <div className="bg-white border border-red-100 rounded-2xl p-16 text-center shadow-sm">
                   <Briefcase className="w-10 h-10 text-red-100 mx-auto mb-3" />
-                  <h3 className="font-sora font-extrabold text-[#0c1a2e] text-sm mb-1">No Jobs Found</h3>
+                  <h3 className="font-sans font-extrabold text-[#0c1a2e] text-sm mb-1">No Jobs Found</h3>
                   <p className="text-xs text-[#94b0c4] font-semibold mb-4">Try clearing filters to broaden your search.</p>
                   <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">Clear All Filters</button>
                 </div>
@@ -695,7 +695,7 @@ export function JobsPortal() {
                         )}
 
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-sora font-semibold text-base text-[#0c1a2e] leading-snug group-hover:text-[#ef4444] transition-colors mb-1">
+                          <h3 className="font-sans font-semibold text-base text-[#0c1a2e] leading-snug group-hover:text-[#ef4444] transition-colors mb-1">
                             {job.title}
                           </h3>
                           <div className="flex items-center gap-1.5 text-xs text-[#475569] font-semibold">
@@ -707,7 +707,7 @@ export function JobsPortal() {
                         </div>
 
                         <div className="text-right shrink-0">
-                          <div className="font-sora font-semibold text-sm text-[#0c1a2e]">{job.salary}</div>
+                          <div className="font-sans font-semibold text-sm text-[#0c1a2e]">{job.salary}</div>
                           <div className="text-[10px] text-[#94b0c4] font-semibold">{job.salaryNote}</div>
                         </div>
                       </div>

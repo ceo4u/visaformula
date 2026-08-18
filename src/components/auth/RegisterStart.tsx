@@ -51,7 +51,7 @@ export default function RegisterStart() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-xl border border-slate-200 font-sora">
+    <div className="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-xl border border-slate-200 font-sans">
       <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">Create Account</h2>
       <p className="text-xs text-slate-500 text-center mb-6">Enter your details to get started with TravlTik</p>
 

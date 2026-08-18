@@ -18,7 +18,7 @@ export function CrisisSelector() {
         <div className="bg-white rounded-3xl border border-yellow-100 shadow-sm p-8">
             <div className="mb-6">
                 <span className="text-[10px] font-black text-amber-600 tracking-widest block mb-1">Status Restoration</span>
-                <h2 className="font-sora font-bold text-navy text-xl">What is your current immigration situation?</h2>
+                <h2 className="font-sans font-bold text-navy text-xl">What is your current immigration situation?</h2>
                 <p className="text-xs text-gray-400 mt-1">Select the option below so our emergency coordinators can matching-assign you to the right attorney immediately.</p>
             </div>
 
@@ -41,7 +41,7 @@ export function CrisisSelector() {
             {showForm && (
                 <div className="mt-8 space-y-4 animate-fade-up">
                     <hr className="border-yellow-50" />
-                    <h4 className="font-sora font-bold text-navy text-sm">Brief Situation Description & Contact</h4>
+                    <h4 className="font-sans font-bold text-navy text-sm">Brief Situation Description & Contact</h4>
                     <textarea
                         placeholder="Describe your case briefly... (e.g. 'My visa expired 1 week ago, I received an inquiry email')"
                         rows={3}

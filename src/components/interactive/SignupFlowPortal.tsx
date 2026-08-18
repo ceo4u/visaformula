@@ -33,12 +33,12 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                     window.location.href = "/";
                 }
             }}
-            className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sora overflow-y-auto selection:bg-[#00a896] selection:text-white"
+            className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto selection:bg-[#00a896] selection:text-white"
         >
-            <div className="relative z-10 w-full max-w-2xl flex flex-col items-center justify-center my-auto py-4 font-sora">
+            <div className="relative z-10 w-full max-w-2xl flex flex-col items-center justify-center my-auto py-4 font-sans">
                 
                 {/* Top Navigation Header */}
-                <div className="w-full max-w-2xl flex items-center justify-between mb-3 px-1 shrink-0 gap-2 font-sora">
+                <div className="w-full max-w-2xl flex items-center justify-between mb-3 px-1 shrink-0 gap-2 font-sans">
                     <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white bg-white/20 hover:bg-white/30 transition-all px-4 py-2 rounded-full border border-white/30 backdrop-blur-md shadow-md shrink-0">
                         <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back to </span>Home
                     </a>
@@ -51,7 +51,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                 {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") - Unified Sora Font */}
                 {/* ========================================================================= */}
                 {mode === "selection" ? (
-                    <div className="text-slate-900 max-w-2xl w-[94vw] sm:w-full p-6 sm:p-9 text-center space-y-6 sm:space-y-8 animate-fade-up relative my-auto bg-white border border-slate-200/90 rounded-[32px] shadow-2xl font-sora max-h-[85vh] overflow-y-auto">
+                    <div className="text-slate-900 max-w-2xl w-[94vw] sm:w-full p-6 sm:p-9 text-center space-y-6 sm:space-y-8 animate-fade-up relative my-auto bg-white border border-slate-200/90 rounded-[32px] shadow-2xl font-sans max-h-[85vh] overflow-y-auto">
                         
                         {/* Top-Right X Close Button */}
                         <button 
@@ -87,7 +87,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                             {/* Seeker Option */}
                             <div 
                                 onClick={() => setMode("seeker")}
-                                className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-[#f0fdfa]/60 hover:bg-[#f0fdfa] p-6 rounded-2xl border border-teal-100 hover:border-[#00a896] hover:shadow-xl transition-all font-sora"
+                                className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-[#f0fdfa]/60 hover:bg-[#f0fdfa] p-6 rounded-2xl border border-teal-100 hover:border-[#00a896] hover:shadow-xl transition-all font-sans"
                             >
                                 <div className="relative circle-float-1">
                                     <div className="absolute inset-[-6px] rounded-full border-2 border-[#00a896]/30 pulse-ring" />
@@ -113,7 +113,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                             </div>
 
                             {/* Divider */}
-                            <div className="flex flex-row sm:flex-col items-center gap-2 text-slate-400 font-bold text-xs tracking-widest font-sora">
+                            <div className="flex flex-row sm:flex-col items-center gap-2 text-slate-400 font-bold text-xs tracking-widest font-sans">
                                 <div className="w-12 sm:w-px h-px sm:h-10 bg-slate-200" />
                                 <span>OR</span>
                                 <div className="w-12 sm:w-px h-px sm:h-10 bg-slate-200" />
@@ -122,7 +122,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                             {/* Expert Option */}
                             <a 
                                 href="/signup/expert"
-                                className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-slate-50 hover:bg-slate-100/80 p-6 rounded-2xl border border-slate-200 hover:border-slate-400 hover:shadow-xl transition-all font-sora"
+                                className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-slate-50 hover:bg-slate-100/80 p-6 rounded-2xl border border-slate-200 hover:border-slate-400 hover:shadow-xl transition-all font-sans"
                             >
                                 <div className="relative circle-float-2">
                                     <div className="absolute inset-[-6px] rounded-full border-2 border-slate-300 pulse-ring" />
@@ -150,7 +150,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
 
                         </div>
 
-                        <div className="text-xs font-medium text-slate-500 pt-4 border-t border-slate-100 font-sora">
+                        <div className="text-xs font-medium text-slate-500 pt-4 border-t border-slate-100 font-sans">
                             Already a member? <a href="/login" className="text-[#00a896] font-bold hover:underline">Log in</a>
                         </div>
                     </div>
@@ -158,10 +158,10 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                     /* ========================================================================= */
                     /* VIEW 2: SEEKER REGISTRATION MODAL FORM */
                     /* ========================================================================= */
-                    <div className="w-full flex flex-col items-center font-sora">
+                    <div className="w-full flex flex-col items-center font-sans">
                         <button 
                             onClick={() => setMode("selection")} 
-                            className="mb-3 text-xs font-bold text-white/90 hover:text-white flex items-center gap-1.5 bg-white/15 hover:bg-white/25 px-3.5 py-1.5 rounded-full backdrop-blur-md cursor-pointer border border-white/25 shadow-sm font-sora"
+                            className="mb-3 text-xs font-bold text-white/90 hover:text-white flex items-center gap-1.5 bg-white/15 hover:bg-white/25 px-3.5 py-1.5 rounded-full backdrop-blur-md cursor-pointer border border-white/25 shadow-sm font-sans"
                         >
                             &larr; Change Account Role
                         </button>

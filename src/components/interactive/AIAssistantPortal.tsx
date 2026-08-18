@@ -116,7 +116,7 @@ export function AIAssistantPortal() {
                         <Sparkles className="w-5 h-5 text-purple-300 animate-pulse" />
                     </div>
                     <div>
-                        <h2 className="font-sora font-extrabold text-sm text-white">TravlTik AI Assistant</h2>
+                        <h2 className="font-sans font-extrabold text-sm text-white">TravlTik AI Assistant</h2>
                         <p className="text-[10px] text-white/60 font-semibold">Legal Grade Migration Advisor</p>
                     </div>
                 </div>
@@ -167,11 +167,11 @@ export function AIAssistantPortal() {
                                 <div className="bg-white w-full max-w-xl rounded-3xl border border-yellow-100 p-6 shadow-md mt-3 space-y-5">
                                     <div className="flex justify-between items-start">
                                         <div>
-                                            <h3 className="font-sora font-extrabold text-navy text-sm">Eligibility Assessment</h3>
+                                            <h3 className="font-sans font-extrabold text-navy text-sm">Eligibility Assessment</h3>
                                             <p className="text-[9px] text-[#f59e0b] font-bold mt-0.5">{msg.cardData.program}</p>
                                         </div>
                                         <div className="text-right">
-                                            <span className="font-sora font-black text-3xl text-purple-600">{msg.cardData.score}%</span>
+                                            <span className="font-sans font-black text-3xl text-purple-600">{msg.cardData.score}%</span>
                                             <p className="text-[9px] text-gray-400 font-bold">Match Rate</p>
                                         </div>
                                     </div>

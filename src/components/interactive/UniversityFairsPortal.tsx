@@ -115,7 +115,7 @@ export function UniversityFairsPortal() {
                     <span className="bg-white/10 text-slate-300 text-[10px] font-bold tracking-wider px-3.5 py-1.5 rounded-full border border-white/20 mb-4 inline-block backdrop-blur-md">
                         🎓 Universities Fairs
                     </span>
-                    <h1 className="font-sora text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-white leading-tight">
+                    <h1 className="font-sans text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-white leading-tight">
                         Meet Top Universities. <br /><span className="text-slate-300">Get Your Student Visa Ready.</span>
                     </h1>
                     <p className="text-white/60 text-base md:text-lg max-w-xl mx-auto mb-8 leading-relaxed font-medium">
@@ -166,19 +166,19 @@ export function UniversityFairsPortal() {
             <div className="bg-slate-100/50 border-y border-slate-200 py-4">
                 <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                     <div className="border-r border-slate-200 last:border-0">
-                        <div className="font-sora font-extrabold text-slate-900 text-2xl">120+</div>
+                        <div className="font-sans font-extrabold text-slate-900 text-2xl">120+</div>
                         <div className="text-[10px] font-bold text-gray-400 mt-0.5">Fairs Every Year</div>
                     </div>
                     <div className="border-r border-slate-200 last:border-0">
-                        <div className="font-sora font-extrabold text-slate-900 text-2xl">500+</div>
+                        <div className="font-sans font-extrabold text-slate-900 text-2xl">500+</div>
                         <div className="text-[10px] font-bold text-gray-400 mt-0.5">Universities Attend</div>
                     </div>
                     <div className="border-r border-slate-200 last:border-0">
-                        <div className="font-sora font-extrabold text-slate-900 text-2xl">Free Entry</div>
+                        <div className="font-sans font-extrabold text-slate-900 text-2xl">Free Entry</div>
                         <div className="text-[10px] font-bold text-gray-400 mt-0.5">To Most Fairs</div>
                     </div>
                     <div>
-                        <div className="font-sora font-extrabold text-slate-900 text-2xl">Spot Check</div>
+                        <div className="font-sans font-extrabold text-slate-900 text-2xl">Spot Check</div>
                         <div className="text-[10px] font-bold text-gray-400 mt-0.5">Student Visa Assistance</div>
                     </div>
                 </div>
@@ -210,7 +210,7 @@ export function UniversityFairsPortal() {
 
                 <div className="mb-6">
                     <span className="text-[10px] font-bold text-slate-900 tracking-widest block mb-1">Upcoming Fairs</span>
-                    <h2 className="font-sora font-bold text-slate-900 text-xl">University Fairs Near You</h2>
+                    <h2 className="font-sans font-bold text-slate-900 text-xl">University Fairs Near You</h2>
                     <p className="text-xs text-gray-400 mt-0.5">Register for free. Meet verified international admissions officers directly.</p>
                 </div>
 
@@ -228,7 +228,7 @@ export function UniversityFairsPortal() {
                                     />
                                     {/* Date overlay badge */}
                                     <div className="absolute top-4 left-4 bg-black/90 backdrop-blur-md border border-white/20 text-white rounded-2xl w-14 h-14 flex flex-col items-center justify-center shrink-0 shadow-lg">
-                                        <span className="font-sora font-extrabold text-lg leading-none">{fair.date}</span>
+                                        <span className="font-sans font-extrabold text-lg leading-none">{fair.date}</span>
                                         <span className="text-[9px] font-bold tracking-widest mt-1">{fair.monthName}</span>
                                     </div>
                                 </div>
@@ -237,7 +237,7 @@ export function UniversityFairsPortal() {
                                     <span className="inline-block text-[9px] font-extrabold px-2 py-0.5 rounded-full mb-2.5 bg-slate-100 text-slate-800 border border-slate-200">
                                         ⭐ {fair.rating} · {fair.registered} spots
                                     </span>
-                                    <h3 className="font-sora font-bold text-slate-900 text-sm group-hover:text-black transition-colors leading-snug mb-4">{fair.name}</h3>
+                                    <h3 className="font-sans font-bold text-slate-900 text-sm group-hover:text-black transition-colors leading-snug mb-4">{fair.name}</h3>
 
                                     {/* Middle: Location & Time */}
                                     <div className="text-xs text-slate-600 space-y-1.5 mb-4 font-medium">
@@ -281,7 +281,7 @@ export function UniversityFairsPortal() {
                                     {fair.logo}
                                 </div>
                                 <div>
-                                    <h4 className="font-sora font-bold text-slate-900 text-xs sm:text-sm leading-snug group-hover:text-black transition-colors">{fair.name}</h4>
+                                    <h4 className="font-sans font-bold text-slate-900 text-xs sm:text-sm leading-snug group-hover:text-black transition-colors">{fair.name}</h4>
                                     <div className="text-[10px] text-gray-400 mt-0.5 leading-normal">{fair.organizer}</div>
                                     <div className="text-[10px] text-slate-700 font-bold mt-1">{fair.unis}</div>
                                 </div>
@@ -292,7 +292,7 @@ export function UniversityFairsPortal() {
                             <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                                 <div className="text-[10px] text-gray-400 font-bold">{fair.dates}</div>
                                 <div className="flex items-center gap-3">
-                                    <span className="font-sora font-extrabold text-slate-900 text-sm">₹{fair.price}</span>
+                                    <span className="font-sans font-extrabold text-slate-900 text-sm">₹{fair.price}</span>
                                     <button 
                                         onClick={(e) => { e.stopPropagation(); handleBooking(fair.name); }}
                                         className="bg-black hover:bg-slate-900 text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:shadow-md transition-all active:scale-[0.97]"
@@ -309,7 +309,7 @@ export function UniversityFairsPortal() {
                 <div className="bg-slate-100/50 border border-slate-200 rounded-2xl p-5 flex gap-4 items-start shadow-sm mt-8">
                     <div className="text-3xl shrink-0">✓</div>
                     <div>
-                        <h4 className="font-sora font-bold text-slate-900 text-xs sm:text-sm mb-1">Free Entry to Most Fairs — You Only Pay for Premium Visa Prep</h4>
+                        <h4 className="font-sans font-bold text-slate-900 text-xs sm:text-sm mb-1">Free Entry to Most Fairs — You Only Pay for Premium Visa Prep</h4>
                         <p className="text-[11px] sm:text-xs text-slate-500 leading-relaxed">
                             While fair entrance is officially free, TravlTik's ₹999 premium prep package saves months of effort: includes pre-fair profiles and transcript checks, post-fair student visa consults with certified advisors, and customized application checklists.
                         </p>

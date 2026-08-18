@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FileCheck2, Sparkles, X, ChevronRight } from "lucide-react";
 
 const COUNTRY_CODES = [
   { code: "+91", flag: "🇮🇳", country: "India", iso: "IN" },
@@ -288,15 +289,15 @@ export function VisaMatchWidget() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Visa Readiness Score & Match"
-        className="fixed bottom-[84px] sm:bottom-6 left-4 sm:left-6 z-50 flex items-center gap-2.5 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full bg-[#00a896] hover:bg-[#008f80] text-white shadow-xl hover:shadow-2xl transition-all active:scale-95 border border-teal-300/40 cursor-pointer group font-sans"
+        aria-label="Visa Score"
+        className="fixed bottom-[84px] sm:bottom-6 left-4 sm:left-6 z-50 flex items-center gap-2.5 px-4 py-2.5 sm:py-3 rounded-full bg-[#0c1a2e] hover:bg-black text-white shadow-2xl transition-all active:scale-95 border border-slate-700/70 hover:border-teal-500/50 cursor-pointer group font-sans backdrop-blur-md"
       >
-        <span className="relative flex items-center justify-center text-lg sm:text-xl shrink-0">
-          🛂
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-[#00a896] animate-pulse" />
+        <span className="relative flex items-center justify-center shrink-0">
+          <FileCheck2 className="w-4.5 h-4.5 text-[#00a896] group-hover:scale-110 transition-transform stroke-[2.2]" />
+          <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#00a896] rounded-full border border-[#0c1a2e] animate-pulse" />
         </span>
-        <span className="text-xs font-black tracking-tight whitespace-nowrap">
-          Visa Score & Match
+        <span className="text-xs font-bold text-white tracking-wide whitespace-nowrap">
+          Visa Score
         </span>
       </button>
 

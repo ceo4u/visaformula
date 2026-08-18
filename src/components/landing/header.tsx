@@ -28,7 +28,7 @@ const latestNewsItems = [
 ]
 
 const aiToolsItems = [
-  { title: 'Visa Readiness Checker', href: '/services/apply-visa' },
+  { title: 'Travel Readiness Checker', href: '/readiness' },
   { title: 'Document Checklist AI', href: '/services/visa-documentation' },
   { title: 'Visa Cost Calculator', href: '/migration-tools' },
   { title: 'AI Assistant', href: '/ai-assistant' },

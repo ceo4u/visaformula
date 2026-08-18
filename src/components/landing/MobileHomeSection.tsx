@@ -19,7 +19,7 @@ const destinations = [
 ];
 
 const tools = [
-  { icon: <ShieldCheck className="w-6 h-6 text-[#00a896]" />, name: 'Visa Readiness\nCheck', href: '/readiness', bg: 'bg-teal-50' },
+  { icon: <ShieldCheck className="w-6 h-6 text-[#00a896]" />, name: 'Travel Readiness\nCheck', href: '/readiness', bg: 'bg-teal-50' },
   { icon: <FileText className="w-6 h-6 text-[#2563eb]" />, name: 'Visa Document\nChecklist', href: '/services/visa-documentation', bg: 'bg-blue-50' },
   { icon: <DollarSign className="w-6 h-6 text-[#7c3aed]" />, name: 'Visa Cost\nCalculator', href: '/services', bg: 'bg-purple-50' },
   { icon: <Activity className="w-6 h-6 text-[#ea580c]" />, name: 'Track Visa\nProcess', href: '/services', bg: 'bg-orange-50' },
@@ -157,7 +157,7 @@ export function MobileHomeSection() {
                 <a href="/readiness"
                   className="flex items-center justify-center gap-2 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm active:scale-95 transition-all"
                   style={{ backgroundColor: '#00a896' }}>
-                  <Search className="w-4 h-4" /> Check Visa Readiness
+                  <Search className="w-4 h-4" /> Check Travel Readiness
                 </a>
                 <a href="/find-experts"
                   className="flex items-center justify-center gap-2 text-slate-800 text-xs font-bold py-2.5 px-4 rounded-xl border border-slate-300 bg-white active:scale-95 transition-all">

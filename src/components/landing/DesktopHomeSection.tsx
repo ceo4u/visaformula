@@ -266,7 +266,7 @@ export function DesktopHomeSection() {
               <a href="/readiness"
                 className="bg-[#00a896] hover:bg-[#009485] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]"
               >
-                Check Visa Readiness
+                Check Travel Readiness
               </a>
               <a href="/find-experts"
                 className="bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-bold text-sm px-6 py-3 rounded-xl transition-all hover:scale-[1.02]"
@@ -634,10 +634,10 @@ export function DesktopHomeSection() {
         {/* ======================================================= */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          {/* Visa Readiness */}
+          {/* Travel Readiness */}
           <div className="bg-[#00a896] rounded-3xl p-6 flex items-center justify-between shadow-md text-white relative overflow-hidden">
             <div className="space-y-3 max-w-[220px] relative z-10">
-              <h3 className="font-extrabold text-xl leading-tight">Check Your Visa Readiness<br />in Just 2 Minutes</h3>
+              <h3 className="font-extrabold text-xl leading-tight">Check Your Travel Readiness<br />in Just 2 Minutes</h3>
               <p className="text-teal-100 text-xs font-medium">Get your free score now!</p>
               <a href="/readiness"
                 className="inline-block bg-white text-[#00a896] hover:bg-teal-50 font-bold text-xs px-5 py-2.5 rounded-xl shadow transition-all">

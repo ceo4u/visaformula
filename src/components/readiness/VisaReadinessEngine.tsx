@@ -425,7 +425,7 @@ export default function VisaReadinessEngine() {
 
           <div className="mb-4 border-b border-slate-100 pb-3 text-center font-sora">
             <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight font-sora">
-              AI Visa Readiness Engine
+              AI Travel Readiness Engine
             </h2>
             <p className="text-xs text-slate-500 font-semibold mt-0.5 font-sora">
               Get your AI-powered visa approval assessment in minutes
@@ -838,7 +838,7 @@ export default function VisaReadinessEngine() {
                         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                           <span className="text-2xl font-extrabold text-[#0F172A] leading-none font-sora">{readinessScore}%</span>
                           <div className="mt-1 flex items-center gap-0.5 text-[8px] font-bold text-slate-400">
-                            <span className="font-sora">Visa Readiness Score</span>
+                            <span className="font-sora">Travel Readiness Score</span>
                             <Info className="w-2.5 h-2.5 text-slate-400" />
                           </div>
                           

@@ -1,9 +1,8 @@
 import React, { Component, type ErrorInfo, type ReactNode } from 'react';
-import { DesktopHomeSection } from './DesktopHomeSection';
-import { MobileHomeSection } from './MobileHomeSection';
+import { AITripPlannerLanding } from './AITripPlannerLanding';
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 interface State {
@@ -28,7 +27,7 @@ class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="w-full min-h-[400px] flex items-center justify-center p-8 bg-white text-center">
           <div className="max-w-md space-y-4">
-            <h2 className="text-xl font-bold text-gray-900">Loading Landing Page...</h2>
+            <h2 className="text-xl font-bold text-gray-900">Loading Trip Planner...</h2>
             <p className="text-sm text-gray-500">Refreshing components to display optimal view.</p>
             <button 
               onClick={() => window.location.reload()}
@@ -48,16 +47,8 @@ class ErrorBoundary extends Component<Props, State> {
 export default function LandingPage() {
   return (
     <ErrorBoundary>
-      <div className="w-full bg-[#f3f4f6] text-black font-sans antialiased selection:bg-[#00a896]/20 selection:text-[#00a896]">
-        {/* Desktop: shown on lg+ screens */}
-        <div className="hidden lg:block">
-          <DesktopHomeSection />
-        </div>
-        {/* Mobile: shown on screens smaller than lg */}
-        <div className="block lg:hidden">
-          <MobileHomeSection />
-        </div>
-      </div>
+      <AITripPlannerLanding />
     </ErrorBoundary>
   );
 }
+

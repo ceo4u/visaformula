@@ -5,6 +5,7 @@ import Footer from '../components/layout/Footer.astro';
 import MobileNav from '../components/layout/MobileNav.astro';
 
 import { TalkToUs } from '../components/shared/talk-to-us';
+import { VisaMatchWidget } from '../components/shared/VisaMatchWidget';
 import '../styles/globals.css';
 
 export interface Props {
@@ -86,6 +87,7 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
   </main>
   {!hideFooter && <Footer />}
 
+  <VisaMatchWidget client:only="react" />
   <TalkToUs client:only="react" />
 </body>
 </html>

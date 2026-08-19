@@ -285,16 +285,16 @@ export function VisaMatchWidget() {
 
   return (
     <>
-      {/* ── FLOATING VISA ICON BUTTON ON LEFT SIDE (Premium iOS App Icon Aesthetic) ── */}
+      {/* ── FLOATING VISA ICON BUTTON ON LEFT SIDE (Sleek Black) ── */}
       <button
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Visa"
-        className="fixed bottom-[88px] md:bottom-6 left-3.5 md:left-6 z-50 inline-flex items-center justify-center gap-2 md:gap-2.5 px-3.5 py-2 md:px-5 md:py-3 rounded-2xl md:rounded-[20px] bg-gradient-to-b from-[#00bda8] to-[#008f80] text-white shadow-[0_10px_25px_-4px_rgba(0,168,150,0.5),0_4px_10px_-2px_rgba(0,0,0,0.12),inset_0_1.5px_0_rgba(255,255,255,0.45),inset_0_-1.5px_0_rgba(0,0,0,0.15)] hover:shadow-[0_14px_30px_-4px_rgba(0,168,150,0.65),0_6px_12px_-2px_rgba(0,0,0,0.18),inset_0_2px_0_rgba(255,255,255,0.6)] hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0 border border-white/25 cursor-pointer group font-sans shrink-0 select-none backdrop-blur-sm"
+        className="fixed bottom-[88px] md:bottom-6 left-3.5 md:left-6 z-50 inline-flex items-center justify-center gap-2 md:gap-2.5 px-3.5 py-2 md:px-5 md:py-3 rounded-2xl md:rounded-[20px] bg-slate-900 hover:bg-black text-white shadow-[0_10px_25px_-4px_rgba(0,0,0,0.5),0_4px_10px_-2px_rgba(0,0,0,0.2),inset_0_1.5px_0_rgba(255,255,255,0.25)] hover:shadow-[0_14px_30px_-4px_rgba(0,0,0,0.65),0_6px_12px_-2px_rgba(0,0,0,0.25),inset_0_2px_0_rgba(255,255,255,0.4)] hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0 border border-white/20 cursor-pointer group font-sans shrink-0 select-none backdrop-blur-sm"
       >
         <span className="relative flex items-center justify-center shrink-0 w-4 h-4 md:w-5 md:h-5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
           <FileCheck2 className="w-4 h-4 md:w-5 md:h-5 text-white group-hover:scale-110 transition-transform stroke-[2.4]" />
-          <span className="absolute -top-1 -right-1 w-2 h-2 md:w-2.5 md:h-2.5 bg-white rounded-full border-2 border-[#008f80] shadow-sm animate-pulse" />
+          <span className="absolute -top-1 -right-1 w-2 h-2 md:w-2.5 md:h-2.5 bg-emerald-400 rounded-full border-2 border-black shadow-sm animate-pulse" />
         </span>
         <span className="text-xs md:text-[15px] font-extrabold text-white tracking-wide leading-none whitespace-nowrap drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
           Visa
@@ -757,7 +757,7 @@ export function VisaMatchWidget() {
                       <button
                         type="submit"
                         disabled={loading || (!isSeekerLoggedIn && !isEmailVerified)}
-                        className="w-full bg-[#00a896] hover:bg-[#008f80] disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold text-xs py-3.5 rounded-xl shadow-lg shadow-[#00a896]/25 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2"
+                        className="w-full bg-[#00A86B] hover:bg-[#008f5a] disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold text-xs py-3.5 rounded-xl shadow-lg shadow-[#00A86B]/25 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2"
                       >
                         {loading ? (
                           <span>Processing & Calculating Score...</span>
@@ -785,7 +785,7 @@ export function VisaMatchWidget() {
               </>
             ) : (
               <div className="py-4 text-center space-y-4 animate-fadeIn">
-                <div className="w-16 h-16 rounded-full bg-teal-50 border border-teal-200 text-[#00a896] flex items-center justify-center mx-auto text-2xl font-black shadow-inner">
+                <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 text-[#00A86B] flex items-center justify-center mx-auto text-2xl font-black shadow-inner">
                   {readinessScore}%
                 </div>
                 <div>
@@ -801,11 +801,11 @@ export function VisaMatchWidget() {
                   </p>
                   <ul className="space-y-1.5 text-slate-600 text-[11px] font-medium">
                     <li className="flex items-center gap-1.5">
-                      <span className="text-teal-600 font-bold">✓</span>
+                      <span className="text-[#00A86B] font-bold">✓</span>
                       <span>Verified Immigration Lawyers with active embassy licenses</span>
                     </li>
                     <li className="flex items-center gap-1.5">
-                      <span className="text-teal-600 font-bold">✓</span>
+                      <span className="text-[#00A86B] font-bold">✓</span>
                       <span>100% Escrow Milestone Payment Protection</span>
                     </li>
                   </ul>
@@ -814,7 +814,7 @@ export function VisaMatchWidget() {
                 <div className="space-y-2 pt-2">
                   <a
                     href={`/find-experts?country=${encodeURIComponent(targetCountry || "Canada")}`}
-                    className="block w-full bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs py-3.5 rounded-xl shadow-lg transition-all text-center cursor-pointer"
+                    className="block w-full bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs py-3.5 rounded-xl shadow-lg transition-all text-center cursor-pointer"
                   >
                     View Top Matched Consultants Now →
                   </a>

@@ -129,7 +129,6 @@ export function FindExpertsPortal() {
     const [consultantMode, setConsultantMode] = useState("All");
     const [sortOpen, setSortOpen] = useState(false);
     const [selectedProfileExpert, setSelectedProfileExpert] = useState<any>(null);
-    const [showLoginModal, setShowLoginModal] = useState(false);
 
     // New Production Modals State
     const [quoteModalOpen, setQuoteModalOpen] = useState(false);
@@ -143,6 +142,7 @@ export function FindExpertsPortal() {
 
     const [paymentModalOpen, setPaymentModalOpen] = useState(false);
     const [paymentExpert, setPaymentExpert] = useState<any>(null);
+    const [showLoginModal, setShowLoginModal] = useState(false);
     const [isConsultantUser, setIsConsultantUser] = useState(false);
 
     const isUserLoggedIn = () => {
@@ -173,11 +173,7 @@ export function FindExpertsPortal() {
     };
 
     const handleExpertCardClick = (expertObj: any) => {
-        if (!isUserLoggedIn()) {
-            setShowLoginModal(true);
-        } else {
-            setSelectedProfileExpert(expertObj);
-        }
+        setSelectedProfileExpert(expertObj);
     };
 
 

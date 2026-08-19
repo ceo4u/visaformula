@@ -202,11 +202,11 @@ export function TalkToUs() {
         </div>
       )}
 
-      {/* FAB Button - TravlTik iOS App Icon Style Floating Chat Button */}
+      {/* FAB Button - TravlTik iOS App Icon Style Floating Chat Button (Sleek Black) */}
       <button
         onClick={() => { setOpen(!open); setView("options"); }}
         aria-label="Talk to Us"
-        className="fixed bottom-[88px] md:bottom-6 right-3.5 md:right-6 z-50 w-11 h-11 md:w-14 md:h-14 rounded-2xl md:rounded-[22px] bg-gradient-to-b from-[#00bda8] to-[#008f80] text-white shadow-[0_10px_25px_-4px_rgba(0,168,150,0.5),0_4px_10px_-2px_rgba(0,0,0,0.12),inset_0_1.5px_0_rgba(255,255,255,0.45),inset_0_-1.5px_0_rgba(0,0,0,0.15)] hover:shadow-[0_14px_30px_-4px_rgba(0,168,150,0.65),0_6px_12px_-2px_rgba(0,0,0,0.18),inset_0_2px_0_rgba(255,255,255,0.6)] hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0 flex items-center justify-center border border-white/25 cursor-pointer group backdrop-blur-sm"
+        className="fixed bottom-[88px] md:bottom-6 right-3.5 md:right-6 z-50 w-11 h-11 md:w-14 md:h-14 rounded-2xl md:rounded-[22px] bg-slate-900 hover:bg-black text-white shadow-[0_10px_25px_-4px_rgba(0,0,0,0.5),0_4px_10px_-2px_rgba(0,0,0,0.2),inset_0_1.5px_0_rgba(255,255,255,0.25)] hover:shadow-[0_14px_30px_-4px_rgba(0,0,0,0.65),0_6px_12px_-2px_rgba(0,0,0,0.25),inset_0_2px_0_rgba(255,255,255,0.4)] hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0 flex items-center justify-center border border-white/20 cursor-pointer group backdrop-blur-sm"
       >
         <span className="relative flex items-center justify-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
           {open ? (
@@ -215,7 +215,7 @@ export function TalkToUs() {
             <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:scale-110 transition-transform stroke-[2.4]" />
           )}
           {!open && (
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 md:w-3 md:h-3 bg-white rounded-full border-2 border-[#008f80] shadow-sm animate-pulse" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 md:w-3 md:h-3 bg-emerald-400 rounded-full border-2 border-black shadow-sm animate-pulse" />
           )}
         </span>
       </button>

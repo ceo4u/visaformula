@@ -1,6 +1,6 @@
 ---
 // src/components/layout/Header.astro
-import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare, Sparkles } from 'lucide-react';
+import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare, Sparkles, Bell } from 'lucide-react';
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/' || pathname === '';
 ---
@@ -8,10 +8,22 @@ const isHome = pathname === '/' || pathname === '';
 <header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
     <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex items-center justify-between h-16 lg:h-20">
         
-        <!-- Logo - Left corner -->
-        <div class="flex items-center shrink-0 py-2">
-            <a href="/" class="flex items-center focus:outline-none -ml-2 lg:-ml-4">
-                <img id="header-logo-img" src="/logo.png?v=3" class="h-12 sm:h-14 lg:h-16 max-h-[62px] sm:max-h-[70px] w-auto object-contain transition-all duration-200" alt="TravlTik Logo" />
+        <!-- Left Mobile Menu Button (Hamburger) -->
+        <div class="flex items-center lg:hidden">
+            <button id="mobile-menu-btn" class="p-2 -ml-2 rounded-xl text-slate-700 hover:text-slate-900 transition-colors flex items-center justify-center focus:outline-none" aria-label="Toggle Menu">
+                <span id="menu-icon" class="block">
+                    <Menu class="w-6 h-6 stroke-[2]" />
+                </span>
+                <span id="close-icon" class="hidden">
+                    <X class="w-6 h-6 stroke-[2]" />
+                </span>
+            </button>
+        </div>
+
+        <!-- Logo - Centered on Mobile, Left-aligned on Desktop -->
+        <div class="flex items-center shrink-0 py-1 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
+            <a href="/" class="flex flex-col items-center lg:items-start focus:outline-none -ml-0 lg:-ml-2">
+                <img id="header-logo-img" src="/logo.png?v=6" class="h-12 sm:h-13 lg:h-[64px] max-h-[66px] w-auto object-contain transition-all duration-200" alt="TravlTik Logo" />
             </a>
         </div>
 
@@ -138,7 +150,7 @@ const isHome = pathname === '/' || pathname === '';
         <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
         <div class="hidden lg:flex items-center gap-3.5 xl:gap-5 shrink-0 z-50 font-plus-jakarta">
             <!-- Contact Link (Replaces Globe selector) -->
-            <a href="/support" id="contact-btn" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#00a896] transition-colors focus:outline-none">
+            <a href="/support" id="contact-btn" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#00A86B] transition-colors focus:outline-none">
                 <MessageSquare class="w-4.5 h-4.5 text-slate-500" />
                 <span>Contact</span>
             </a>
@@ -148,10 +160,10 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="text-[#00a896] border border-[#00a896] hover:bg-teal-50/50 px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200">
+                <a href="/login" id="login-btn" class="inline-flex items-center justify-center text-[#00A86B] border-2 border-[#00A86B] hover:bg-emerald-50/70 px-5 py-2 rounded-xl text-[14px] font-extrabold transition-all duration-200 whitespace-nowrap active:scale-95">
                     Log in
                 </a>
-                <a href="/signup" id="signup-btn" class="bg-[#00a896] hover:bg-[#009485] text-white px-5 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200 shadow-md">
+                <a href="/signup" id="signup-btn" class="inline-flex items-center justify-center bg-[#00A86B] hover:bg-[#008f5a] text-white !text-white px-6 py-2.5 rounded-xl text-[14px] font-extrabold transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap">
                     Sign Up
                 </a>
             </div>
@@ -159,7 +171,7 @@ const isHome = pathname === '/' || pathname === '';
             <!-- Desktop Profile Dropdown (visible when logged in) -->
             <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta">
                 <button id="nav-profile-trigger" class="flex items-center gap-2.5 pl-1.5 pr-3.5 py-1.5 border rounded-full transition-all focus:outline-none shadow-2xs bg-slate-50 hover:bg-slate-100 text-slate-900 border-slate-200">
-                    <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#00a896] text-white shadow-2xs shrink-0" id="nav-profile-avatar-container">
+                    <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#00A86B] text-white shadow-2xs shrink-0" id="nav-profile-avatar-container">
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                         <span class="font-bold text-xs" id="nav-profile-avatar-letters">U</span>
                     </div>
@@ -174,12 +186,12 @@ const isHome = pathname === '/' || pathname === '';
                             <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
                             <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name">User Profile</div>
                         </div>
-                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#00a896] hover:bg-teal-50/70 transition-all group/item">
-                            <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
+                        <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#00A86B] hover:bg-emerald-50/70 transition-all group/item">
+                            <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-[#00A86B] transition-colors" />
                             <span>My Dashboard</span>
                         </a>
-                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#00a896] hover:bg-teal-50/70 transition-all w-full text-left cursor-pointer border-none bg-transparent group/item">
-                            <LogOut class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
+                        <button id="nav-profile-logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#00A86B] hover:bg-emerald-50/70 transition-all w-full text-left cursor-pointer border-none bg-transparent group/item">
+                            <LogOut class="w-4 h-4 text-slate-400 group-hover/item:text-[#00A86B] transition-colors" />
                             <span>Log Out</span>
                         </button>
                     </div>
@@ -187,23 +199,18 @@ const isHome = pathname === '/' || pathname === '';
             </div>
         </div>
 
-        <!-- Mobile Menu Toggler (Hamburger + Mobile Sign Up Button / Logged In Profile Icon) -->
-        <div class="flex items-center gap-2 lg:hidden z-50">
-            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#00a896] hover:bg-[#009485] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 shadow-sm">
+        <!-- Right Mobile Actions (Notification Bell + Profile/Signup) -->
+        <div class="flex items-center gap-1.5 lg:hidden z-50">
+            <a href="/notifications" class="p-2 text-slate-700 hover:text-slate-900 transition-colors focus:outline-none flex items-center justify-center" aria-label="Notifications">
+                <Bell class="w-5 h-5 stroke-[2] text-slate-700" />
+            </a>
+            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#00A86B] hover:bg-[#008f5a] text-white px-4 py-1.5 rounded-xl text-xs font-extrabold transition-all duration-200 shadow-xs hidden sm:inline-flex">
                 Sign Up
             </a>
-            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 rounded-full border border-slate-300 bg-[#00a896] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm">
+            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-8 h-8 rounded-full border border-slate-300 bg-[#00A86B] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-xs">
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                <span class="font-black text-xs text-white bg-[#00a896] w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">D</span>
+                <span class="font-black text-xs text-white bg-[#00A86B] w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">D</span>
             </a>
-            <button id="mobile-menu-btn" class={`p-2 rounded-xl transition-colors flex items-center justify-center focus:outline-none ${isHome ? 'text-white' : 'text-slate-800'}`}>
-                <span id="menu-icon" class="block">
-                    <Menu class="w-6.5 h-6.5 stroke-[2.2]" />
-                </span>
-                <span id="close-icon" class="hidden">
-                    <X class="w-6.5 h-6.5 stroke-[2.2]" />
-                </span>
-            </button>
         </div>
     </div>
 
@@ -227,7 +234,7 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Mobile Self Apply Link -->
             <div class="border-b border-gray-50 py-2.5">
-                <a href="/self-apply" class="block py-1 text-sm font-semibold text-navy hover:text-[#00a896] transition-colors">
+                <a href="/self-apply" class="block py-1 text-sm font-semibold text-navy hover:text-[#00A86B] transition-colors">
                     Self Apply
                 </a>
             </div>
@@ -247,8 +254,6 @@ const isHome = pathname === '/' || pathname === '';
                     <a href="/services/airfares" class="block py-1.5 text-xs text-slate-600 font-medium">Airfares Booking</a>
                 </div>
             </div>
-
-
 
             <!-- Mobile Latest offers Accordion -->
             <div class="border-b border-gray-50 py-1.5">
@@ -278,7 +283,7 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Mobile Contact Link (Replaces Globe Lang Selector) -->
             <div class="border-b border-gray-50 py-2.5">
-                <a href="/support" class="flex items-center gap-2 text-sm font-semibold text-navy hover:text-[#00a896] transition-colors">
+                <a href="/support" class="flex items-center gap-2 text-sm font-semibold text-navy hover:text-[#00A86B] transition-colors">
                     <MessageSquare class="w-4.5 h-4.5 text-slate-500" />
                     <span>Contact</span>
                 </a>
@@ -286,14 +291,12 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Mobile Portal Auth Actions -->
             <div id="mobile-nav-auth-buttons" class="py-4 flex flex-col gap-2">
-                <a href="/login" class="block text-center py-2.5 border border-[#00a896] text-[#00a896] font-semibold text-sm rounded-xl hover:bg-teal-50/50 transition-colors">
+                <a href="/login" class="block text-center py-2.5 border-2 border-[#00A86B] text-[#00A86B] font-bold text-sm rounded-xl hover:bg-emerald-50/50 transition-colors">
                     Log in
                 </a>
-                <a href="/signup" class="block text-center py-2.5 bg-[#00a896] hover:bg-[#009485] text-white font-semibold text-sm rounded-xl transition-colors shadow-md">
+                <a href="/signup" class="block text-center py-2.5 bg-[#00A86B] hover:bg-[#008f5a] text-white font-bold text-sm rounded-xl transition-colors shadow-md">
                     Sign Up
                 </a>
-            </div>
-
             <!-- Mobile Profile Actions (Visible when logged in) -->
             <div id="mobile-nav-profile-block" class="hidden py-4 border-t border-slate-200/60 flex flex-col gap-2 font-sans">
                 <div class="px-2 py-1">
@@ -310,8 +313,6 @@ const isHome = pathname === '/' || pathname === '';
         </div>
     </div>
 </header>
-
-
 
 <script>
     // Toggle Mobile Drawer Menu & Sync Header Background
@@ -391,7 +392,7 @@ const isHome = pathname === '/' || pathname === '';
         const updateHeaderStyle = () => {
             // Always 100% Solid Pure White Header
             headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 scrolled-header bg-white shadow-2xs border-b border-slate-200/80 text-slate-800";
-            if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png?v=3");
+            if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png?v=6");
             if (loginBtnEl) loginBtnEl.className = "text-[#00a896] border-[#00a896] hover:bg-teal-50/50 border px-4 py-1.5 rounded-lg text-[14px] font-bold transition-all duration-200";
             if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#00a896] transition-colors focus:outline-none";
             if (mobileMenuBtn) mobileMenuBtn.style.color = "#0c1a2e";

@@ -550,23 +550,23 @@ export function AITripPlannerLanding() {
               Tell TravlTik your budget, time &amp; vibe. We&apos;ll craft the perfect trip pathway for you.
             </p>
 
-            {/* FLOATING PROMPT INPUT */}
-            <div className="w-full max-w-3xl mt-7 mx-auto">
-              <form onSubmit={handleSearchSubmit} className="relative flex items-center bg-white border border-purple-200/90 rounded-full pl-6 pr-2.5 py-2.5 shadow-[0_10px_35px_rgb(91,44,111,0.08)] hover:shadow-[0_12px_40px_rgb(91,44,111,0.14)] transition-all">
-                <span className="text-purple-600 mr-3 text-xl shrink-0">✨</span>
+            {/* FLOATING PROMPT INPUT (MOBILE-OPTIMIZED AIRY LAYOUT) */}
+            <div className="w-full max-w-3xl mt-7 mx-auto px-1 sm:px-0">
+              <form onSubmit={handleSearchSubmit} className="relative flex items-center bg-white border border-purple-200/90 rounded-full pl-3.5 sm:pl-6 pr-1.5 sm:pr-2.5 py-1.5 sm:py-2.5 shadow-[0_10px_35px_rgb(91,44,111,0.08)] hover:shadow-[0_12px_40px_rgb(91,44,111,0.14)] transition-all">
+                <span className="text-purple-600 mr-2 sm:mr-3 text-base sm:text-xl shrink-0">✨</span>
                 <input 
                   type="text" 
                   value={searchPrompt}
                   onChange={(e) => setSearchPrompt(e.target.value)}
-                  placeholder="5 days in Goa under ₹30,000 with beaches" 
-                  className="w-full bg-transparent border-none text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-0 text-sm sm:text-base md:text-lg font-medium"
+                  placeholder="5 days in Goa under ₹30k with beaches" 
+                  className="w-full bg-transparent border-none text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-0 text-xs sm:text-base md:text-lg font-medium mr-2 sm:mr-3 truncate"
                 />
                 <button 
                   type="submit"
                   disabled={isGenerating}
-                  className="w-11 h-11 md:w-12 md:h-12 rounded-full bg-[#00A86B] hover:bg-[#008f5a] text-white flex items-center justify-center shadow-md hover:shadow-lg transition-transform active:scale-95 shrink-0 cursor-pointer disabled:opacity-70"
+                  className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-[#00A86B] hover:bg-[#008f5a] text-white flex items-center justify-center shadow-md hover:shadow-lg transition-transform active:scale-95 shrink-0 cursor-pointer disabled:opacity-70"
                 >
-                  <ArrowRight className="w-5 h-5 stroke-[2.5]" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
                 </button>
               </form>
             </div>

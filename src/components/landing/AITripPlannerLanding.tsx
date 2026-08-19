@@ -97,15 +97,105 @@ const countryOptions = [
   { value: 'UAE', label: 'UAE / Dubai', icon: '🇦🇪', desc: 'Tax-free & Fast Processing' },
 ];
 
-const locationOptions = [
-  { value: 'delhi', label: 'Delhi NCR', icon: '📍', desc: 'Capital Region' },
-  { value: 'mumbai', label: 'Mumbai', icon: '📍', desc: 'Maharashtra' },
-  { value: 'bengaluru', label: 'Bengaluru', icon: '📍', desc: 'Karnataka' },
-  { value: 'punjab', label: 'Punjab / Chandigarh', icon: '📍', desc: 'North Hub' },
-  { value: 'hyderabad', label: 'Hyderabad', icon: '📍', desc: 'Telangana' },
-  { value: 'gujarat', label: 'Gujarat', icon: '📍', desc: 'Ahmedabad & Surat' },
-  { value: 'remote', label: 'Online / Pan India', icon: '🌐', desc: 'Virtual Consultation' },
-];
+const getLocationsByCountry = (country: string) => {
+  const c = (country || '').toLowerCase().trim();
+  if (c === 'canada') {
+    return [
+      { value: 'ontario', label: 'Ontario (Toronto, Ottawa)', icon: '🇨🇦', desc: 'Top universities & tech hub' },
+      { value: 'bc', label: 'British Columbia (Vancouver, Victoria)', icon: '🇨🇦', desc: 'Pacific gateway & top colleges' },
+      { value: 'alberta', label: 'Alberta (Calgary, Edmonton)', icon: '🇨🇦', desc: 'Energy, tech & fast PNP pathways' },
+      { value: 'quebec', label: 'Quebec (Montreal, Quebec City)', icon: '🇨🇦', desc: 'Bilingual cultural & research hub' },
+      { value: 'manitoba', label: 'Manitoba (Winnipeg)', icon: '🇨🇦', desc: 'Affordable study & high PR success' },
+      { value: 'novascotia', label: 'Nova Scotia (Halifax)', icon: '🇨🇦', desc: 'Atlantic Immigration Program (AIP)' },
+      { value: 'saskatchewan', label: 'Saskatchewan (Saskatoon, Regina)', icon: '🇨🇦', desc: 'High demand tech & agriculture PNP' },
+      { value: 'newbrunswick', label: 'New Brunswick (Moncton, Fredericton)', icon: '🇨🇦', desc: 'Atlantic growth stream' },
+      { value: 'all_canada', label: 'All Canada / Nationwide', icon: '🍁', desc: 'Pan Canada search' },
+    ];
+  }
+  if (c === 'usa' || c === 'united states') {
+    return [
+      { value: 'california', label: 'California (Silicon Valley, LA, SF)', icon: '🇺🇸', desc: 'Tech & innovation capital' },
+      { value: 'newyork', label: 'New York (NYC, Buffalo)', icon: '🇺🇸', desc: 'Global finance & Ivy League' },
+      { value: 'texas', label: 'Texas (Austin, Dallas, Houston)', icon: '🇺🇸', desc: 'Booming tech & zero state income tax' },
+      { value: 'massachusetts', label: 'Massachusetts (Boston, Cambridge)', icon: '🇺🇸', desc: 'Harvard & MIT education hub' },
+      { value: 'washington', label: 'Washington (Seattle)', icon: '🇺🇸', desc: 'Amazon & Microsoft tech center' },
+      { value: 'illinois', label: 'Illinois (Chicago)', icon: '🇺🇸', desc: 'Midwest economic center' },
+      { value: 'florida', label: 'Florida (Miami, Orlando, Tampa)', icon: '🇺🇸', desc: 'International commerce & tech' },
+      { value: 'all_usa', label: 'All USA / Nationwide', icon: '🗽', desc: 'Pan USA search' },
+    ];
+  }
+  if (c === 'uk' || c === 'united kingdom') {
+    return [
+      { value: 'london', label: 'Greater London', icon: '🇬🇧', desc: 'World financial & education capital' },
+      { value: 'manchester', label: 'Manchester & North West', icon: '🇬🇧', desc: 'Top student city & tech hub' },
+      { value: 'birmingham', label: 'West Midlands (Birmingham)', icon: '🇬🇧', desc: 'UK manufacturing & central hub' },
+      { value: 'scotland', label: 'Scotland (Edinburgh, Glasgow)', icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', desc: 'Prestigious historic universities' },
+      { value: 'wales', label: 'Wales (Cardiff, Swansea)', icon: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', desc: 'Affordable study & scenic coasts' },
+      { value: 'yorkshire', label: 'Yorkshire (Leeds, Sheffield)', icon: '🇬🇧', desc: 'Healthcare, engineering & AI' },
+      { value: 'all_uk', label: 'All UK / Nationwide', icon: '🏰', desc: 'Pan UK search' },
+    ];
+  }
+  if (c === 'australia') {
+    return [
+      { value: 'nsw', label: 'New South Wales (Sydney)', icon: '🇦🇺', desc: 'Top global universities & finance' },
+      { value: 'victoria', label: 'Victoria (Melbourne)', icon: '🇦🇺', desc: 'Cultural & tech capital' },
+      { value: 'queensland', label: 'Queensland (Brisbane, Gold Coast)', icon: '🇦🇺', desc: 'High quality life & tourism hub' },
+      { value: 'wa', label: 'Western Australia (Perth)', icon: '🇦🇺', desc: 'Mining, engineering & regional PR' },
+      { value: 'sa', label: 'South Australia (Adelaide)', icon: '🇦🇺', desc: 'Designated regional migration benefits' },
+      { value: 'act', label: 'ACT (Canberra)', icon: '🇦🇺', desc: 'Government, policy & research' },
+      { value: 'all_au', label: 'All Australia / Nationwide', icon: '🦘', desc: 'Pan Australia search' },
+    ];
+  }
+  if (c === 'germany') {
+    return [
+      { value: 'bavaria', label: 'Bavaria (Munich, Nuremberg)', icon: '🇩🇪', desc: 'Automotive, aerospace & high tech' },
+      { value: 'berlin', label: 'Berlin', icon: '🇩🇪', desc: 'Startup hub & vibrant cultural capital' },
+      { value: 'nrw', label: 'North Rhine-Westphalia (Cologne, Düsseldorf)', icon: '🇩🇪', desc: 'Largest industrial economic zone' },
+      { value: 'baden', label: 'Baden-Württemberg (Stuttgart)', icon: '🇩🇪', desc: 'Engineering & Mercedes/Porsche hub' },
+      { value: 'hesse', label: 'Hesse (Frankfurt)', icon: '🇩🇪', desc: 'European Central Bank & fintech' },
+      { value: 'hamburg', label: 'Hamburg', icon: '🇩🇪', desc: 'Port logistics & media center' },
+      { value: 'all_de', label: 'All Germany / Nationwide', icon: '🍺', desc: 'Pan Germany search' },
+    ];
+  }
+  if (c === 'ireland') {
+    return [
+      { value: 'dublin', label: 'Dublin', icon: '🇮🇪', desc: 'European tech HQ & Silicon Docks' },
+      { value: 'cork', label: 'Cork', icon: '🇮🇪', desc: 'Biotech & pharmaceutical powerhouse' },
+      { value: 'galway', label: 'Galway', icon: '🇮🇪', desc: 'Medical devices & arts capital' },
+      { value: 'limerick', label: 'Limerick', icon: '🇮🇪', desc: 'Aviation & STEM innovation' },
+      { value: 'all_ie', label: 'All Ireland / Nationwide', icon: '☘️', desc: 'Pan Ireland search' },
+    ];
+  }
+  if (c === 'new zealand') {
+    return [
+      { value: 'auckland', label: 'Auckland', icon: '🇳🇿', desc: 'Major economic & university city' },
+      { value: 'wellington', label: 'Wellington', icon: '🇳🇿', desc: 'Government, film & creative capital' },
+      { value: 'canterbury', label: 'Canterbury (Christchurch)', icon: '🇳🇿', desc: 'South Island innovation center' },
+      { value: 'otago', label: 'Otago (Dunedin, Queenstown)', icon: '🇳🇿', desc: 'Historic medical & student hub' },
+      { value: 'all_nz', label: 'All New Zealand', icon: '🥝', desc: 'Pan New Zealand search' },
+    ];
+  }
+  if (c === 'uae') {
+    return [
+      { value: 'dubai', label: 'Dubai', icon: '🇦🇪', desc: 'Global business, tax-free & tourism' },
+      { value: 'abudhabi', label: 'Abu Dhabi', icon: '🇦🇪', desc: 'Capital city & clean energy hub' },
+      { value: 'sharjah', label: 'Sharjah', icon: '🇦🇪', desc: 'University City & cultural center' },
+      { value: 'ajman', label: 'Ajman & RAK', icon: '🇦🇪', desc: 'Free zone business & maritime' },
+      { value: 'all_ae', label: 'All UAE / Nationwide', icon: '🐪', desc: 'Pan UAE search' },
+    ];
+  }
+  // Default when no destination country is chosen
+  return [
+    { value: 'delhi', label: 'Delhi NCR', icon: '📍', desc: 'Capital Region' },
+    { value: 'mumbai', label: 'Mumbai', icon: '📍', desc: 'Maharashtra' },
+    { value: 'bengaluru', label: 'Bengaluru', icon: '📍', desc: 'Karnataka' },
+    { value: 'punjab', label: 'Punjab / Chandigarh', icon: '📍', desc: 'North Hub' },
+    { value: 'hyderabad', label: 'Hyderabad', icon: '📍', desc: 'Telangana' },
+    { value: 'gujarat', label: 'Gujarat', icon: '📍', desc: 'Ahmedabad & Surat' },
+    { value: 'chennai', label: 'Chennai', icon: '📍', desc: 'Tamil Nadu' },
+    { value: 'remote', label: 'Online / Pan India', icon: '🌐', desc: 'Virtual Consultation' },
+  ];
+};
 
 const visaCategoryOptions = [
   { value: 'student', label: 'Student Visa', icon: '🎓', desc: 'Study Abroad & Intake' },
@@ -210,6 +300,9 @@ export function AITripPlannerLanding() {
   const visaCategoryRef = useRef<HTMLDivElement>(null);
   const experienceLevelRef = useRef<HTMLDivElement>(null);
   const lawyerSpecRef = useRef<HTMLDivElement>(null);
+
+  // Dynamically resolve state/province locations based on chosen destination country
+  const activeLocations = getLocationsByCountry(searchCountry);
 
   // Active modifier pills
   const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
@@ -1249,7 +1342,7 @@ export function AITripPlannerLanding() {
                         <div className="space-y-0.5">
                           <button
                             type="button"
-                            onClick={() => { setSearchCountry(''); setIsCountryOpen(false); }}
+                            onClick={() => { setSearchCountry(''); setSearchLocation(''); setIsCountryOpen(false); }}
                             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                               searchCountry === '' ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                             }`}
@@ -1263,7 +1356,7 @@ export function AITripPlannerLanding() {
                               <button
                                 key={opt.value}
                                 type="button"
-                                onClick={() => { setSearchCountry(opt.value); setIsCountryOpen(false); }}
+                                onClick={() => { setSearchCountry(opt.value); setSearchLocation(''); setIsCountryOpen(false); }}
                                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                   isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                                 }`}
@@ -1284,7 +1377,7 @@ export function AITripPlannerLanding() {
 
                 {/* Location */}
                 <div className="relative">
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location / State</label>
                   <div
                     ref={locationRef}
                     className="relative bg-slate-50/80 hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
@@ -1295,9 +1388,9 @@ export function AITripPlannerLanding() {
                     }}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                      <span className="text-sm shrink-0">📍</span>
+                      <span className="text-sm shrink-0">{activeLocations.find(o => o.value === searchLocation)?.icon || '📍'}</span>
                       <span className={`text-sm font-semibold truncate ${searchLocation ? 'text-slate-800 font-bold' : 'text-slate-400'}`}>
-                        {locationOptions.find(o => o.value === searchLocation)?.label || 'State / City'}
+                        {activeLocations.find(o => o.value === searchLocation)?.label || (searchCountry ? `Select ${searchCountry} State / Province` : 'State / City')}
                       </span>
                     </div>
                     <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isLocationOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
@@ -1307,7 +1400,9 @@ export function AITripPlannerLanding() {
                         className="absolute bottom-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[230px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Choose City / Region</div>
+                        <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                          {searchCountry ? `${searchCountry} States & Provinces` : 'Choose State / Region'}
+                        </div>
                         <div className="space-y-0.5">
                           <button
                             type="button"
@@ -1319,7 +1414,7 @@ export function AITripPlannerLanding() {
                             <span>All Locations</span>
                             {searchLocation === '' && <Check className="w-3.5 h-3.5 text-[#00A86B]" />}
                           </button>
-                          {locationOptions.map((opt) => {
+                          {activeLocations.map((opt) => {
                             const isSelected = searchLocation === opt.value;
                             return (
                               <button
@@ -1331,8 +1426,11 @@ export function AITripPlannerLanding() {
                                 }`}
                               >
                                 <div className="flex items-center gap-2 min-w-0">
-                                  <span className="text-base">{opt.icon}</span>
-                                  <span className="truncate">{opt.label}</span>
+                                  <span className="text-base shrink-0">{opt.icon}</span>
+                                  <div className="truncate text-left">
+                                    <span className="block truncate font-bold text-slate-800 text-xs sm:text-sm">{opt.label}</span>
+                                    {opt.desc && <span className="block text-[10px] text-slate-400 truncate font-normal">{opt.desc}</span>}
+                                  </div>
                                 </div>
                                 {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
                               </button>
@@ -1405,7 +1503,7 @@ export function AITripPlannerLanding() {
                         <div className="space-y-0.5">
                           <button
                             type="button"
-                            onClick={() => { setSearchCountry(''); setIsCountryOpen(false); }}
+                            onClick={() => { setSearchCountry(''); setSearchLocation(''); setIsCountryOpen(false); }}
                             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                               searchCountry === '' ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                             }`}
@@ -1419,7 +1517,7 @@ export function AITripPlannerLanding() {
                               <button
                                 key={opt.value}
                                 type="button"
-                                onClick={() => { setSearchCountry(opt.value); setIsCountryOpen(false); }}
+                                onClick={() => { setSearchCountry(opt.value); setSearchLocation(''); setIsCountryOpen(false); }}
                                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                   isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                                 }`}
@@ -1440,7 +1538,7 @@ export function AITripPlannerLanding() {
 
                 {/* Location */}
                 <div className="relative">
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location / State</label>
                   <div
                     ref={locationRef}
                     className="relative bg-slate-50/80 hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
@@ -1451,9 +1549,9 @@ export function AITripPlannerLanding() {
                     }}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                      <span className="text-sm shrink-0">📍</span>
+                      <span className="text-sm shrink-0">{activeLocations.find(o => o.value === searchLocation)?.icon || '📍'}</span>
                       <span className={`text-sm font-semibold truncate ${searchLocation ? 'text-slate-800 font-bold' : 'text-slate-400'}`}>
-                        {locationOptions.find(o => o.value === searchLocation)?.label || 'State / City'}
+                        {activeLocations.find(o => o.value === searchLocation)?.label || (searchCountry ? `Select ${searchCountry} State / Province` : 'State / City')}
                       </span>
                     </div>
                     <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isLocationOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
@@ -1463,7 +1561,9 @@ export function AITripPlannerLanding() {
                         className="absolute bottom-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[230px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Choose City / Region</div>
+                        <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                          {searchCountry ? `${searchCountry} States & Provinces` : 'Choose State / Region'}
+                        </div>
                         <div className="space-y-0.5">
                           <button
                             type="button"
@@ -1475,7 +1575,7 @@ export function AITripPlannerLanding() {
                             <span>All Locations</span>
                             {searchLocation === '' && <Check className="w-3.5 h-3.5 text-[#00A86B]" />}
                           </button>
-                          {locationOptions.map((opt) => {
+                          {activeLocations.map((opt) => {
                             const isSelected = searchLocation === opt.value;
                             return (
                               <button
@@ -1487,8 +1587,11 @@ export function AITripPlannerLanding() {
                                 }`}
                               >
                                 <div className="flex items-center gap-2 min-w-0">
-                                  <span className="text-base">{opt.icon}</span>
-                                  <span className="truncate">{opt.label}</span>
+                                  <span className="text-base shrink-0">{opt.icon}</span>
+                                  <div className="truncate text-left">
+                                    <span className="block truncate font-bold text-slate-800 text-xs sm:text-sm">{opt.label}</span>
+                                    {opt.desc && <span className="block text-[10px] text-slate-400 truncate font-normal">{opt.desc}</span>}
+                                  </div>
                                 </div>
                                 {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
                               </button>
@@ -1622,7 +1725,7 @@ export function AITripPlannerLanding() {
                         <div className="space-y-0.5">
                           <button
                             type="button"
-                            onClick={() => { setSearchCountry(''); setIsCountryOpen(false); }}
+                            onClick={() => { setSearchCountry(''); setSearchLocation(''); setIsCountryOpen(false); }}
                             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                               searchCountry === '' ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                             }`}
@@ -1636,7 +1739,7 @@ export function AITripPlannerLanding() {
                               <button
                                 key={opt.value}
                                 type="button"
-                                onClick={() => { setSearchCountry(opt.value); setIsCountryOpen(false); }}
+                                onClick={() => { setSearchCountry(opt.value); setSearchLocation(''); setIsCountryOpen(false); }}
                                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                   isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                                 }`}
@@ -1657,7 +1760,7 @@ export function AITripPlannerLanding() {
 
                 {/* Location */}
                 <div className="relative">
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location / State</label>
                   <div
                     ref={locationRef}
                     className="relative bg-slate-50/80 hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
@@ -1667,9 +1770,9 @@ export function AITripPlannerLanding() {
                     }}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                      <span className="text-sm shrink-0">📍</span>
+                      <span className="text-sm shrink-0">{activeLocations.find(o => o.value === searchLocation)?.icon || '📍'}</span>
                       <span className={`text-sm font-semibold truncate ${searchLocation ? 'text-slate-800 font-bold' : 'text-slate-400'}`}>
-                        {locationOptions.find(o => o.value === searchLocation)?.label || 'State / City'}
+                        {activeLocations.find(o => o.value === searchLocation)?.label || (searchCountry ? `Select ${searchCountry} State / Province` : 'State / City')}
                       </span>
                     </div>
                     <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isLocationOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
@@ -1679,7 +1782,9 @@ export function AITripPlannerLanding() {
                         className="absolute bottom-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[230px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Choose City / Region</div>
+                        <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                          {searchCountry ? `${searchCountry} States & Provinces` : 'Choose State / Region'}
+                        </div>
                         <div className="space-y-0.5">
                           <button
                             type="button"
@@ -1691,7 +1796,7 @@ export function AITripPlannerLanding() {
                             <span>All Locations</span>
                             {searchLocation === '' && <Check className="w-3.5 h-3.5 text-[#00A86B]" />}
                           </button>
-                          {locationOptions.map((opt) => {
+                          {activeLocations.map((opt) => {
                             const isSelected = searchLocation === opt.value;
                             return (
                               <button
@@ -1703,8 +1808,11 @@ export function AITripPlannerLanding() {
                                 }`}
                               >
                                 <div className="flex items-center gap-2 min-w-0">
-                                  <span className="text-base">{opt.icon}</span>
-                                  <span className="truncate">{opt.label}</span>
+                                  <span className="text-base shrink-0">{opt.icon}</span>
+                                  <div className="truncate text-left">
+                                    <span className="block truncate font-bold text-slate-800 text-xs sm:text-sm">{opt.label}</span>
+                                    {opt.desc && <span className="block text-[10px] text-slate-400 truncate font-normal">{opt.desc}</span>}
+                                  </div>
                                 </div>
                                 {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
                               </button>
@@ -1772,7 +1880,7 @@ export function AITripPlannerLanding() {
                         <div className="space-y-0.5">
                           <button
                             type="button"
-                            onClick={() => { setSearchCountry(''); setIsCountryOpen(false); }}
+                            onClick={() => { setSearchCountry(''); setSearchLocation(''); setIsCountryOpen(false); }}
                             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                               searchCountry === '' ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                             }`}
@@ -1786,7 +1894,7 @@ export function AITripPlannerLanding() {
                               <button
                                 key={opt.value}
                                 type="button"
-                                onClick={() => { setSearchCountry(opt.value); setIsCountryOpen(false); }}
+                                onClick={() => { setSearchCountry(opt.value); setSearchLocation(''); setIsCountryOpen(false); }}
                                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                   isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                                 }`}
@@ -1962,7 +2070,7 @@ export function AITripPlannerLanding() {
                         <div className="space-y-0.5">
                           <button
                             type="button"
-                            onClick={() => { setSearchCountry(''); setIsCountryOpen(false); }}
+                            onClick={() => { setSearchCountry(''); setSearchLocation(''); setIsCountryOpen(false); }}
                             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                               searchCountry === '' ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                             }`}
@@ -1976,7 +2084,7 @@ export function AITripPlannerLanding() {
                               <button
                                 key={opt.value}
                                 type="button"
-                                onClick={() => { setSearchCountry(opt.value); setIsCountryOpen(false); }}
+                                onClick={() => { setSearchCountry(opt.value); setSearchLocation(''); setIsCountryOpen(false); }}
                                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                   isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                                 }`}
@@ -1997,7 +2105,7 @@ export function AITripPlannerLanding() {
 
                 {/* Location */}
                 <div className="relative">
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location / State</label>
                   <div
                     ref={locationRef}
                     className="relative bg-slate-50/80 hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
@@ -2008,9 +2116,9 @@ export function AITripPlannerLanding() {
                     }}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                      <span className="text-sm shrink-0">📍</span>
+                      <span className="text-sm shrink-0">{activeLocations.find(o => o.value === searchLocation)?.icon || '📍'}</span>
                       <span className={`text-sm font-semibold truncate ${searchLocation ? 'text-slate-800 font-bold' : 'text-slate-400'}`}>
-                        {locationOptions.find(o => o.value === searchLocation)?.label || 'State / City'}
+                        {activeLocations.find(o => o.value === searchLocation)?.label || (searchCountry ? `Select ${searchCountry} State / Province` : 'State / City')}
                       </span>
                     </div>
                     <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isLocationOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
@@ -2020,7 +2128,9 @@ export function AITripPlannerLanding() {
                         className="absolute bottom-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[230px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Choose City / Region</div>
+                        <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                          {searchCountry ? `${searchCountry} States & Provinces` : 'Choose State / Region'}
+                        </div>
                         <div className="space-y-0.5">
                           <button
                             type="button"
@@ -2032,7 +2142,7 @@ export function AITripPlannerLanding() {
                             <span>All Locations</span>
                             {searchLocation === '' && <Check className="w-3.5 h-3.5 text-[#00A86B]" />}
                           </button>
-                          {locationOptions.map((opt) => {
+                          {activeLocations.map((opt) => {
                             const isSelected = searchLocation === opt.value;
                             return (
                               <button
@@ -2044,8 +2154,11 @@ export function AITripPlannerLanding() {
                                 }`}
                               >
                                 <div className="flex items-center gap-2 min-w-0">
-                                  <span className="text-base">{opt.icon}</span>
-                                  <span className="truncate">{opt.label}</span>
+                                  <span className="text-base shrink-0">{opt.icon}</span>
+                                  <div className="truncate text-left">
+                                    <span className="block truncate font-bold text-slate-800 text-xs sm:text-sm">{opt.label}</span>
+                                    {opt.desc && <span className="block text-[10px] text-slate-400 truncate font-normal">{opt.desc}</span>}
+                                  </div>
                                 </div>
                                 {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
                               </button>

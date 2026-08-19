@@ -97,6 +97,7 @@ export function VisaMatchWidget() {
     }
 
     setOtpSending(true);
+    setOtpSent(true); // Show OTP input box immediately for smooth UX
     try {
       const res = await fetch("/api/auth/send-verification-code", {
         method: "POST",
@@ -109,9 +110,8 @@ export function VisaMatchWidget() {
       });
       const data = await res.json();
       if (res.ok && data.status === "success") {
-        setOtpSent(true);
         setOtpCountdown(60);
-        setAuthSuccess(`Verification code sent to ${cleanEmail}! Please check inbox.`);
+        setAuthSuccess(`Verification code sent to ${cleanEmail}! Please check your inbox.`);
       } else {
         setAuthError(data.message || "Failed to send verification code. Please try again.");
       }
@@ -144,17 +144,28 @@ export function VisaMatchWidget() {
       const data = await res.json();
       if (res.ok && data.status === "success") {
         setIsEmailVerified(true);
-        setAuthSuccess("Email verified successfully! ✅");
+        setAuthSuccess("Email verified and logged in successfully! ✅");
 
-        if (data.user) {
-          setIsSeekerLoggedIn(true);
-          if (data.user.displayName || data.user.name) setFullName(data.user.displayName || data.user.name);
-          if (data.user.phone) setPhone(data.user.phone);
-          if (typeof window !== "undefined") {
-            localStorage.setItem("visaformula_user", JSON.stringify(data.user));
-            localStorage.setItem("travltik_user", JSON.stringify(data.user));
-            localStorage.setItem("isLoggedIn", "true");
-          }
+        const seekerUser = data.user || {
+          uid: `seeker_${Date.now()}`,
+          email: cleanEmail,
+          displayName: fullName || cleanEmail.split("@")[0],
+          name: fullName || cleanEmail.split("@")[0],
+          phone: phone || '',
+          type: "seeker",
+          role: "seeker",
+          isEmailVerified: true
+        };
+
+        setIsSeekerLoggedIn(true);
+        if (seekerUser.displayName || seekerUser.name) setFullName(seekerUser.displayName || seekerUser.name);
+        if (seekerUser.phone) setPhone(seekerUser.phone);
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem("visaformula_user", JSON.stringify(seekerUser));
+          localStorage.setItem("travltik_user", JSON.stringify(seekerUser));
+          localStorage.setItem("isLoggedIn", "true");
+          window.dispatchEvent(new Event('auth-state-change'));
         }
       } else {
         setAuthError(data.message || "Invalid or expired verification code.");
@@ -620,7 +631,7 @@ export function VisaMatchWidget() {
                           <input
                             type="text"
                             required
-                            placeholder="e.g. Prashant Sharma"
+                            placeholder="Enter your full name"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                             className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all"
@@ -643,7 +654,7 @@ export function VisaMatchWidget() {
                             type="email"
                             required
                             disabled={isEmailVerified}
-                            placeholder="e.g. prashant@example.com"
+                            placeholder="name@example.com"
                             value={email}
                             onChange={(e) => { setEmail(e.target.value); setIsEmailVerified(false); setOtpSent(false); }}
                             className={`flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-[#00a896] focus:bg-white transition-all ${
@@ -663,13 +674,13 @@ export function VisaMatchWidget() {
                         </div>
                       </div>
 
-                      {!isSeekerLoggedIn && !isEmailVerified && otpSent && (
-                        <div className="p-3 bg-purple-50/60 border border-purple-200 rounded-2xl space-y-2 animate-fadeIn">
+                      {!isSeekerLoggedIn && !isEmailVerified && (otpSent || email.length > 5) && (
+                        <div className="p-3 bg-purple-50/80 border border-purple-200 rounded-2xl space-y-2 animate-fadeIn">
                           <div className="flex items-center justify-between">
                             <label className="text-[10px] font-extrabold text-purple-900">
                               Enter 6-Digit Email Code *
                             </label>
-                            <span className="text-[10px] text-purple-700 font-medium">Check Inbox/Spam</span>
+                            <span className="text-[10px] text-purple-700 font-medium">Check Inbox / Spam</span>
                           </div>
                           <div className="flex gap-1.5">
                             <input
@@ -677,16 +688,31 @@ export function VisaMatchWidget() {
                               maxLength={6}
                               placeholder="123456"
                               value={otp}
-                              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                              className="w-full px-3.5 py-2 bg-white border border-purple-200 rounded-xl text-center text-sm font-mono font-bold tracking-widest text-slate-900 focus:outline-none focus:border-[#481268]"
+                              onChange={(e) => {
+                                const val = e.target.value.replace(/\D/g, '');
+                                setOtp(val);
+                                if (val.length === 6) {
+                                  // Auto trigger verification when 6 digits are typed
+                                  setTimeout(() => {
+                                    handleVerifyOtp();
+                                  }, 100);
+                                }
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handleVerifyOtp();
+                                }
+                              }}
+                              className="w-full px-3.5 py-2.5 bg-white border border-purple-200 rounded-xl text-center text-sm font-mono font-bold tracking-widest text-slate-900 focus:outline-none focus:border-[#481268] focus:ring-1 focus:ring-[#481268]/20"
                             />
                             <button
                               type="button"
                               onClick={handleVerifyOtp}
                               disabled={otpVerifying || otp.length < 6}
-                              className="px-4 py-2 bg-[#00a896] hover:bg-[#008f80] disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold text-xs rounded-xl transition-all cursor-pointer shrink-0 shadow-sm"
+                              className="px-4 py-2.5 bg-[#00A86B] hover:bg-[#008f5a] disabled:bg-slate-200 disabled:text-slate-400 text-white font-extrabold text-xs rounded-xl transition-all cursor-pointer shrink-0 shadow-sm"
                             >
-                              {otpVerifying ? "Checking..." : "Verify Code"}
+                              {otpVerifying ? "Verifying..." : (seekerAuthMode === "login" ? "Verify & Login 🚀" : "Verify Code ✓")}
                             </button>
                           </div>
                         </div>

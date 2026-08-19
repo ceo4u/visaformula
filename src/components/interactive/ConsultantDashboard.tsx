@@ -481,7 +481,7 @@ export function ConsultantDashboard() {
             <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-2xs">
                 <div className="flex items-center gap-3">
                     <a href="/" className="flex items-center">
-                        <img src="/trawell-logo.png" alt="TravlTik Logo" className="h-12 sm:h-16 max-h-[64px] sm:max-h-[72px] w-auto object-contain transition-all hover:scale-105" />
+                        <img src="/logo.png?v=8" alt="TravlTik Logo" className="h-9 sm:h-10 max-h-[44px] w-auto object-contain transition-all hover:scale-105" />
                     </a>
                     
                     <button 

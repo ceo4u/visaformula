@@ -65,9 +65,9 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                         {/* Site Logo */}
                         <div className="flex items-center justify-center pt-2 pb-1">
                             <img 
-                                src="/logo.png?v=3" 
+                                src="/logo.png?v=8" 
                                 alt="TravlTik Logo" 
-                                className="h-20 sm:h-24 md:h-28 max-h-[110px] w-auto object-contain transition-all duration-200" 
+                                className="h-12 sm:h-14 md:h-16 max-h-[64px] w-auto object-contain transition-all duration-200" 
                             />
                         </div>
 

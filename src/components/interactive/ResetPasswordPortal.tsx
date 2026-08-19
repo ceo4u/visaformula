@@ -88,7 +88,7 @@ export function ResetPasswordPortal() {
                         {/* Centered Logo */}
                         <div className="text-center mb-4">
                             <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
-                                <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-28 w-auto object-contain mx-auto" />
+                                <img src="/logo.png?v=8" alt="TravlTik Logo" className="h-12 sm:h-14 w-auto object-contain mx-auto" />
                             </a>
                         </div>
 

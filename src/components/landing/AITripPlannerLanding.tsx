@@ -41,15 +41,15 @@ import {
 
 // Pill data for hero category quick-filters
 const categoryPills = [
-  { id: 'cheap', emoji: '✈️', label: 'Cheap Trip' },
-  { id: 'romantic', emoji: '❤️', label: 'Romantic' },
+  { id: 'study', emoji: '🎓', label: 'Study' },
+  { id: 'holiday', emoji: '🏖️', label: 'Holiday' },
+  { id: 'business', emoji: '💼', label: 'Business' },
+  { id: 'work', emoji: '🛠️', label: 'Work' },
+  { id: 'pr', emoji: '🍁', label: 'PR' },
+  { id: 'tourist', emoji: '✈️', label: 'Tourist' },
   { id: 'family', emoji: '👨‍👩‍👧', label: 'Family' },
-  { id: 'adventure', emoji: '🏔️', label: 'Adventure' },
-  { id: 'beach', emoji: '🏖️', label: 'Beach' },
-  { id: 'food', emoji: '🍜', label: 'Food' },
-  { id: 'relaxation', emoji: '🧘', label: 'Relaxation' },
-  { id: 'under10k', emoji: '💰', label: 'Under ₹10,000' },
-  { id: 'international', emoji: '🌏', label: 'International' },
+  { id: 'investor', emoji: '🏢', label: 'Investor' },
+  { id: 'citizenship', emoji: '🛂', label: 'Citizenship' },
 ];
 
 // Curated iPhone-styled dropdown options
@@ -536,28 +536,32 @@ export function AITripPlannerLanding() {
 
   const handlePillClick = (pillId: string, label: string) => {
     setSelectedPill(pillId);
-    let newDest = destination || 'Goa';
-    let newVibe = vibe || 'Beach';
-    let newBudget = budget || '30,000';
+    let newDest = destination || 'Canada';
+    let newVibe = 'Study';
+    let newBudget = budget || '15,00,000';
 
-    if (pillId === 'cheap' || pillId === 'under10k') {
-      newBudget = '10,000';
-      newVibe = 'Budget Friendly';
-    } else if (pillId === 'romantic') {
-      newVibe = 'Romantic';
-      newDest = 'Udaipur';
+    if (pillId === 'study') {
+      newVibe = 'Study';
+      newDest = 'Canada';
+      newBudget = '15,00,000';
+    } else if (pillId === 'holiday' || pillId === 'tourist') {
+      newVibe = 'Holiday';
+      newDest = 'Dubai';
+      newBudget = '75,000';
+    } else if (pillId === 'business' || pillId === 'investor') {
+      newVibe = 'Business';
+      newDest = 'USA';
+      newBudget = '30,00,000';
+    } else if (pillId === 'work') {
+      newVibe = 'Work';
+      newDest = 'Germany';
+      newBudget = '5,00,000';
+    } else if (pillId === 'pr' || pillId === 'citizenship') {
+      newVibe = 'PR';
+      newDest = 'Australia';
+      newBudget = '10,00,000';
     } else if (pillId === 'family') {
       newVibe = 'Family';
-      newDest = 'Kerala';
-    } else if (pillId === 'adventure') {
-      newVibe = 'Adventure';
-      newDest = 'Manali';
-    } else if (pillId === 'beach') {
-      newVibe = 'Beach';
-      newDest = 'Goa';
-    } else if (pillId === 'international') {
-      newVibe = 'International';
-      newDest = 'Dubai';
       newBudget = '65,000';
     }
 

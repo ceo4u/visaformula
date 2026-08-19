@@ -402,7 +402,7 @@ export default function VisaReadinessEngine() {
             <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back to </span>Home
           </a>
           <a href="/" className="shrink-0">
-            <img src="/logo-white.png" alt="TravlTik" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
+            <img src="/logo.png?v=8" alt="TravlTik" className="h-6 sm:h-7 w-auto object-contain" />
           </a>
         </div>
 

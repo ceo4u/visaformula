@@ -132,7 +132,7 @@ export function ForgotPasswordPortal() {
                     <ArrowLeft className="w-3.5 h-3.5" /> <span>Back to Login</span>
                 </a>
                 <a href="/" className="shrink-0">
-                    <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-7 sm:h-9 w-auto object-contain max-w-[120px] sm:max-w-none" />
+                    <img src="/logo.png?v=8" alt="TravlTik Logo" className="h-6 sm:h-7 w-auto object-contain" />
                 </a>
             </div>
 

@@ -1,5 +1,43 @@
 import React, { useState, useEffect } from "react";
-import { FileCheck2, Sparkles, X, ChevronRight } from "lucide-react";
+import { FileCheck2, Sparkles, X, ChevronRight, ChevronDown, Check } from "lucide-react";
+
+const AGE_OPTIONS = [
+  { value: "18-22", label: "18–22 years", icon: "🌱" },
+  { value: "23-28", label: "23–28 years (Max Points)", icon: "⭐" },
+  { value: "29-35", label: "29–35 years", icon: "🎯" },
+  { value: "36-45", label: "36–45 years", icon: "💼" },
+  { value: "46+", label: "46+ years", icon: "🏆" }
+];
+
+const EDUCATION_OPTIONS = [
+  { value: "High School / 12th", label: "High School / 12th Grade", icon: "🏫" },
+  { value: "Diploma / Certificate", label: "Diploma / 2-Year Certificate", icon: "📜" },
+  { value: "Bachelor's Degree", label: "Bachelor's Degree (3–4 years)", icon: "🎓" },
+  { value: "Master's Degree", label: "Master's / Post Graduate", icon: "🏛️" },
+  { value: "PhD / Doctorate", label: "PhD / Doctorate", icon: "🔬" }
+];
+
+const EXPERIENCE_OPTIONS = [
+  { value: "Fresher / 0 years", label: "Fresher (0 yrs)", icon: "🚀" },
+  { value: "1-2 years", label: "1–2 years", icon: "💼" },
+  { value: "3-5 years", label: "3–5 years", icon: "⭐" },
+  { value: "6+ years", label: "6+ years", icon: "🏆" }
+];
+
+const ENGLISH_TEST_OPTIONS = [
+  { value: "IELTS", label: "IELTS", icon: "🇬🇧" },
+  { value: "PTE", label: "PTE Academic", icon: "🇦🇺" },
+  { value: "TOEFL", label: "TOEFL", icon: "🇺🇸" },
+  { value: "Not Given Yet", label: "Planning to give", icon: "📝" }
+];
+
+const BUDGET_OPTIONS = [
+  { value: "Under ₹10 Lakhs", label: "Under ₹10 Lakhs", icon: "🪙" },
+  { value: "₹10 - ₹20 Lakhs", label: "₹10 – ₹20 Lakhs", icon: "💵" },
+  { value: "₹20 - ₹35 Lakhs", label: "₹20 – ₹35 Lakhs", icon: "💳" },
+  { value: "₹35 Lakhs+", label: "₹35 Lakhs+", icon: "💰" },
+  { value: "Need Educational Loan", label: "Need Educational Loan", icon: "🏦" }
+];
 
 const COUNTRY_CODES = [
   { code: "+91", flag: "🇮🇳", country: "India", iso: "IN" },
@@ -28,6 +66,7 @@ export function VisaMatchWidget() {
   const [englishTest, setEnglishTest] = useState("");
   const [englishScore, setEnglishScore] = useState("");
   const [budget, setBudget] = useState("");
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const [fullName, setFullName] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(COUNTRY_CODES[0]);
@@ -464,100 +503,258 @@ export function VisaMatchWidget() {
                       </p>
                     </div>
 
-                    <div className="space-y-2.5 text-xs">
-                      <div>
-                        <label className="text-[10px] font-bold text-slate-700 block mb-1">Your Age Group</label>
-                        <select
-                          value={ageRange}
-                          onChange={(e) => setAgeRange(e.target.value)}
-                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-[#00a896]"
+                    <div className="space-y-3 text-xs">
+                      {/* 1. Custom Age Group Dropdown */}
+                      <div className="relative">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Your Age Group</label>
+                        <div
+                          onClick={() => setOpenDropdown(openDropdown === 'age' ? null : 'age')}
+                          className="bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                         >
-                          <option value="">Select Age Range</option>
-                          <option value="18-22">18–22 years</option>
-                          <option value="23-28">23–28 years (Max points)</option>
-                          <option value="29-35">29–35 years</option>
-                          <option value="36-45">36–45 years</option>
-                          <option value="46+">46+ years</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="text-[10px] font-bold text-slate-700 block mb-1">Highest Education Completed</label>
-                        <select
-                          value={educationLevel}
-                          onChange={(e) => setEducationLevel(e.target.value)}
-                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-[#00a896]"
-                        >
-                          <option value="">Select Education Level</option>
-                          <option value="High School / 12th">High School / 12th Grade</option>
-                          <option value="Diploma / Certificate">Diploma / 2-Year Certificate</option>
-                          <option value="Bachelor's Degree">Bachelor's Degree (3–4 years)</option>
-                          <option value="Master's Degree">Master's / Post Graduate</option>
-                          <option value="PhD / Doctorate">PhD / Doctorate</option>
-                        </select>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <label className="text-[10px] font-bold text-slate-700 block mb-1">Work Experience</label>
-                          <select
-                            value={workExperience}
-                            onChange={(e) => setWorkExperience(e.target.value)}
-                            className="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-[#00a896]"
-                          >
-                            <option value="">Select Exp</option>
-                            <option value="Fresher / 0 years">Fresher (0 yrs)</option>
-                            <option value="1-2 years">1–2 years</option>
-                            <option value="3-5 years">3–5 years</option>
-                            <option value="6+ years">6+ years</option>
-                          </select>
+                          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                            <span className="text-base shrink-0">{AGE_OPTIONS.find(o => o.value === ageRange)?.icon || '🎂'}</span>
+                            <span className={`text-xs font-bold truncate ${ageRange ? 'text-slate-900' : 'text-slate-400'}`}>
+                              {AGE_OPTIONS.find(o => o.value === ageRange)?.label || 'Select Age Range'}
+                            </span>
+                          </div>
+                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${openDropdown === 'age' ? 'rotate-180 text-[#00A86B]' : ''}`} />
                         </div>
 
-                        <div>
-                          <label className="text-[10px] font-bold text-slate-700 block mb-1">English Test</label>
-                          <select
-                            value={englishTest}
-                            onChange={(e) => setEnglishTest(e.target.value)}
-                            className="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-[#00a896]"
+                        {openDropdown === 'age' && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-full z-[9999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 space-y-0.5 animate-fadeIn max-h-52 overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
                           >
-                            <option value="">Select Test</option>
-                            <option value="IELTS">IELTS</option>
-                            <option value="PTE">PTE Academic</option>
-                            <option value="TOEFL">TOEFL</option>
-                            <option value="Not Given Yet">Planning to give</option>
-                          </select>
+                            {AGE_OPTIONS.map((opt) => {
+                              const isSelected = ageRange === opt.value;
+                              return (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setAgeRange(opt.value);
+                                    setOpenDropdown(null);
+                                  }}
+                                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-colors cursor-pointer ${
+                                    isSelected ? 'bg-emerald-50 text-[#00A86B]' : 'text-slate-700 hover:bg-slate-50'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2.5 min-w-0">
+                                    <span className="text-base">{opt.icon}</span>
+                                    <span className="truncate">{opt.label}</span>
+                                  </div>
+                                  {isSelected && <Check className="w-4 h-4 text-[#00A86B] shrink-0" />}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* 2. Custom Highest Education Completed Dropdown */}
+                      <div className="relative">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Highest Education Completed</label>
+                        <div
+                          onClick={() => setOpenDropdown(openDropdown === 'education' ? null : 'education')}
+                          className="bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                            <span className="text-base shrink-0">{EDUCATION_OPTIONS.find(o => o.value === educationLevel)?.icon || '🎓'}</span>
+                            <span className={`text-xs font-bold truncate ${educationLevel ? 'text-slate-900' : 'text-slate-400'}`}>
+                              {EDUCATION_OPTIONS.find(o => o.value === educationLevel)?.label || 'Select Education Level'}
+                            </span>
+                          </div>
+                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${openDropdown === 'education' ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                        </div>
+
+                        {openDropdown === 'education' && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-full z-[9999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 space-y-0.5 animate-fadeIn max-h-52 overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {EDUCATION_OPTIONS.map((opt) => {
+                              const isSelected = educationLevel === opt.value;
+                              return (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setEducationLevel(opt.value);
+                                    setOpenDropdown(null);
+                                  }}
+                                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-colors cursor-pointer ${
+                                    isSelected ? 'bg-emerald-50 text-[#00A86B]' : 'text-slate-700 hover:bg-slate-50'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2.5 min-w-0">
+                                    <span className="text-base">{opt.icon}</span>
+                                    <span className="truncate">{opt.label}</span>
+                                  </div>
+                                  {isSelected && <Check className="w-4 h-4 text-[#00A86B] shrink-0" />}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* 3 & 4. Work Experience and English Test (2 Columns) */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {/* Work Experience */}
+                        <div className="relative">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Work Experience</label>
+                          <div
+                            onClick={() => setOpenDropdown(openDropdown === 'experience' ? null : 'experience')}
+                            className="bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[48px] px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
+                          >
+                            <div className="flex items-center gap-2 min-w-0 flex-1">
+                              <span className="text-base shrink-0">{EXPERIENCE_OPTIONS.find(o => o.value === workExperience)?.icon || '💼'}</span>
+                              <span className={`text-xs font-bold truncate ${workExperience ? 'text-slate-900' : 'text-slate-400'}`}>
+                                {EXPERIENCE_OPTIONS.find(o => o.value === workExperience)?.label || 'Select Exp'}
+                              </span>
+                            </div>
+                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${openDropdown === 'experience' ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                          </div>
+
+                          {openDropdown === 'experience' && (
+                            <div
+                              className="absolute top-[calc(100%+6px)] left-0 w-full z-[9999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 space-y-0.5 animate-fadeIn max-h-52 overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {EXPERIENCE_OPTIONS.map((opt) => {
+                                const isSelected = workExperience === opt.value;
+                                return (
+                                  <button
+                                    key={opt.value}
+                                    type="button"
+                                    onClick={() => {
+                                      setWorkExperience(opt.value);
+                                      setOpenDropdown(null);
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-left transition-colors cursor-pointer ${
+                                      isSelected ? 'bg-emerald-50 text-[#00A86B]' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <span className="text-base">{opt.icon}</span>
+                                      <span className="truncate">{opt.label}</span>
+                                    </div>
+                                    {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* English Test */}
+                        <div className="relative">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">English Test</label>
+                          <div
+                            onClick={() => setOpenDropdown(openDropdown === 'english' ? null : 'english')}
+                            className="bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[48px] px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
+                          >
+                            <div className="flex items-center gap-2 min-w-0 flex-1">
+                              <span className="text-base shrink-0">{ENGLISH_TEST_OPTIONS.find(o => o.value === englishTest)?.icon || '🗣️'}</span>
+                              <span className={`text-xs font-bold truncate ${englishTest ? 'text-slate-900' : 'text-slate-400'}`}>
+                                {ENGLISH_TEST_OPTIONS.find(o => o.value === englishTest)?.label || 'Select Test'}
+                              </span>
+                            </div>
+                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${openDropdown === 'english' ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                          </div>
+
+                          {openDropdown === 'english' && (
+                            <div
+                              className="absolute top-[calc(100%+6px)] left-0 w-full z-[9999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 space-y-0.5 animate-fadeIn max-h-52 overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {ENGLISH_TEST_OPTIONS.map((opt) => {
+                                const isSelected = englishTest === opt.value;
+                                return (
+                                  <button
+                                    key={opt.value}
+                                    type="button"
+                                    onClick={() => {
+                                      setEnglishTest(opt.value);
+                                      setOpenDropdown(null);
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-left transition-colors cursor-pointer ${
+                                      isSelected ? 'bg-emerald-50 text-[#00A86B]' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <span className="text-base">{opt.icon}</span>
+                                      <span className="truncate">{opt.label}</span>
+                                    </div>
+                                    {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
                         </div>
                       </div>
 
-                      <div>
-                        <label className="text-[10px] font-bold text-slate-700 block mb-1">Estimated Budget (Tuition + Fund + Fee)</label>
-                        <select
-                          value={budget}
-                          onChange={(e) => setBudget(e.target.value)}
-                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-[#00a896]"
+                      {/* 5. Custom Estimated Budget Dropdown */}
+                      <div className="relative">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Estimated Budget (Tuition + Fund + Fee)</label>
+                        <div
+                          onClick={() => setOpenDropdown(openDropdown === 'budget' ? null : 'budget')}
+                          className="bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                         >
-                          <option value="">Select Budget Range</option>
-                          <option value="Under ₹10 Lakhs">Under ₹10 Lakhs</option>
-                          <option value="₹10 - ₹20 Lakhs">₹10 – ₹20 Lakhs</option>
-                          <option value="₹20 - ₹35 Lakhs">₹20 – ₹35 Lakhs</option>
-                          <option value="₹35 Lakhs+">₹35 Lakhs+</option>
-                          <option value="Need Educational Loan">Need Educational Loan</option>
-                        </select>
+                          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                            <span className="text-base shrink-0">{BUDGET_OPTIONS.find(o => o.value === budget)?.icon || '💰'}</span>
+                            <span className={`text-xs font-bold truncate ${budget ? 'text-slate-900' : 'text-slate-400'}`}>
+                              {BUDGET_OPTIONS.find(o => o.value === budget)?.label || 'Select Budget Range'}
+                            </span>
+                          </div>
+                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${openDropdown === 'budget' ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                        </div>
+
+                        {openDropdown === 'budget' && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-full z-[9999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 space-y-0.5 animate-fadeIn max-h-52 overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {BUDGET_OPTIONS.map((opt) => {
+                              const isSelected = budget === opt.value;
+                              return (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setBudget(opt.value);
+                                    setOpenDropdown(null);
+                                  }}
+                                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-colors cursor-pointer ${
+                                    isSelected ? 'bg-emerald-50 text-[#00A86B]' : 'text-slate-700 hover:bg-slate-50'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2.5 min-w-0">
+                                    <span className="text-base">{opt.icon}</span>
+                                    <span className="truncate">{opt.label}</span>
+                                  </div>
+                                  {isSelected && <Check className="w-4 h-4 text-[#00A86B] shrink-0" />}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    <div className="pt-2 flex items-center gap-2">
+                    <div className="pt-3 flex items-center gap-2.5">
                       <button
                         type="button"
-                        onClick={() => setStep(2)}
-                        className="w-1/3 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all cursor-pointer"
+                        onClick={() => { setOpenDropdown(null); setStep(2); }}
+                        className="w-1/3 py-3 rounded-2xl border border-slate-200 text-xs font-extrabold text-slate-600 hover:bg-slate-50 transition-all cursor-pointer"
                       >
                         ← Back
                       </button>
                       <button
                         type="button"
-                        onClick={() => setStep(4)}
-                        className="w-2/3 py-2.5 rounded-xl bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-extrabold shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                        onClick={() => { setOpenDropdown(null); setStep(4); }}
+                        className="w-2/3 py-3 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-extrabold shadow-md shadow-[#00A86B]/25 hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2"
                       >
                         <span>Continue to Match</span>
                         <span>→</span>

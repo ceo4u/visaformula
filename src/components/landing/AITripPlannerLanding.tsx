@@ -483,6 +483,12 @@ export function AITripPlannerLanding() {
   const visaFileInputRef = useRef<HTMLInputElement>(null);
   const ticketFileInputRef = useRef<HTMLInputElement>(null);
   
+  // Step 3: On-Arrival Settlement States
+  const [bankAppointmentBooked, setBankAppointmentBooked] = useState(false);
+  const [campusCheckInConfirmed, setCampusCheckInConfirmed] = useState(false);
+  const [transitPassGuideOpen, setTransitPassGuideOpen] = useState(false);
+  const [gpDoctorRegistered, setGpDoctorRegistered] = useState(false);
+
   // Action Checklist Checklist States
   const [ticketScanning, setTicketScanning] = useState(false);
   const [uploadedTicketFileName, setUploadedTicketFileName] = useState('');
@@ -2283,6 +2289,187 @@ Official URL: https://travltik.com
                       >
                         Read Arrival Guide →
                       </a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* STEP 3: ON-ARRIVAL SETTLEMENT & FIRST 30 DAYS */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00A86B]">
+                      <HomeIcon className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
+                        Step 3: On-Arrival Settlement &amp; First 30 Days
+                      </h4>
+                      <p className="text-xs text-slate-500 font-medium">
+                        Crucial steps to complete within your first week of landing at your destination.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold shrink-0">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B]" />
+                    <span>Post-Landing Settlement Hub</span>
+                  </div>
+                </div>
+
+                {/* 4 Essential Settlement Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  
+                  {/* Card 1: Local Phone Number & Banking */}
+                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-2xl">🏦</span>
+                        <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${bankAppointmentBooked ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-purple-50 text-purple-700 border border-purple-100'}`}>
+                          {bankAppointmentBooked ? 'Booked ✓' : 'Day 1–3'}
+                        </span>
+                      </div>
+                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">
+                        Bank Account &amp; SIN / NIN Registration
+                      </h5>
+                      <p className="text-xs text-slate-500 font-medium mt-1">
+                        Book a priority slot to open a local student/work bank account and apply for Social Insurance / National Insurance Number.
+                      </p>
+
+                      {bankAppointmentBooked && (
+                        <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
+                          ✓ Appointment slot reserved with verified banking partner in {journeyDestination}.
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => setBankAppointmentBooked(!bankAppointmentBooked)}
+                        className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
+                          bankAppointmentBooked
+                            ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
+                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white active:scale-95'
+                        }`}
+                      >
+                        <span>{bankAppointmentBooked ? 'Appointment Reserved ✓' : 'Book Bank Appointment →'}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Card 2: Campus / Workplace Check-In */}
+                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-2xl">🎓</span>
+                        <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${campusCheckInConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-blue-50 text-blue-700 border border-blue-100'}`}>
+                          {campusCheckInConfirmed ? 'Verified ✓' : 'Day 3–7'}
+                        </span>
+                      </div>
+                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">
+                        Institutional Orientation &amp; Enrollment
+                      </h5>
+                      <p className="text-xs text-slate-500 font-medium mt-1">
+                        Upload landing confirmation to receive your university ID, course schedule, or employer onboarding checklist.
+                      </p>
+
+                      {campusCheckInConfirmed && (
+                        <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
+                          ✓ Check-in verified. Student/Employee ID badge queue assigned.
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => setCampusCheckInConfirmed(!campusCheckInConfirmed)}
+                        className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
+                          campusCheckInConfirmed
+                            ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
+                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white active:scale-95'
+                        }`}
+                      >
+                        <span>{campusCheckInConfirmed ? 'Check-In Confirmed ✓' : 'Confirm Check-In'}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Card 3: Local Transit & Student Card */}
+                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-2xl">🚆</span>
+                        <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${transitPassGuideOpen ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
+                          {transitPassGuideOpen ? '30% Discount Active' : 'Concession Pass'}
+                        </span>
+                      </div>
+                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">
+                        Public Transport Pass &amp; Discounts
+                      </h5>
+                      <p className="text-xs text-slate-500 font-medium mt-1">
+                        Activate student concession passes for local metro, buses, and regional transit networks.
+                      </p>
+
+                      {transitPassGuideOpen && (
+                        <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
+                          ✓ Concession card registration active: Apply with university enrollment letter.
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => setTransitPassGuideOpen(!transitPassGuideOpen)}
+                        className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
+                          transitPassGuideOpen
+                            ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
+                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white active:scale-95'
+                        }`}
+                      >
+                        <span>{transitPassGuideOpen ? 'Concession Guide Loaded ✓' : 'Get Transit Pass Guide'}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Card 4: Emergency & Healthcare Registration */}
+                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-2xl">🏥</span>
+                        <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${gpDoctorRegistered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-100'}`}>
+                          {gpDoctorRegistered ? 'Registered ✓' : 'Essential Care'}
+                        </span>
+                      </div>
+                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">
+                        Health Insurance &amp; Local GP Doctor Registration
+                      </h5>
+                      <p className="text-xs text-slate-500 font-medium mt-1">
+                        Register with local health services (e.g., NHS / Provincial Health) using your visa health cover (OSHC / IHS).
+                      </p>
+
+                      {gpDoctorRegistered && (
+                        <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
+                          ✓ Local GP Clinic surgery linked to your foreign student/worker health policy.
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => setGpDoctorRegistered(!gpDoctorRegistered)}
+                        className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
+                          gpDoctorRegistered
+                            ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
+                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white active:scale-95'
+                        }`}
+                      >
+                        <span>{gpDoctorRegistered ? 'Doctor Registered ✓' : 'Register Local Doctor'}</span>
+                      </button>
                     </div>
                   </div>
 

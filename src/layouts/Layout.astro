@@ -66,10 +66,14 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
   
-  <!-- Google Fonts Preconnect & Fetch (Apple-grade Typography) -->
+  <!-- Google Fonts Preconnect & Fetch (Optimized Non-blocking) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  </noscript>
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -87,7 +91,7 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
   </main>
   {!hideFooter && <Footer />}
 
-  <VisaMatchWidget client:only="react" />
-  <TalkToUs client:only="react" />
+  <VisaMatchWidget client:idle />
+  <TalkToUs client:idle />
 </body>
 </html>

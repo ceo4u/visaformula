@@ -200,12 +200,12 @@ const isHome = pathname === '/' || pathname === '';
         </div>
 
         <!-- Right Mobile Actions (Notification Bell + Profile/Signup) -->
-        <div class="flex items-center gap-1.5 lg:hidden z-50">
-            <a href="/notifications" class="p-2 text-slate-700 hover:text-slate-900 transition-colors focus:outline-none flex items-center justify-center" aria-label="Notifications">
-                <Bell class="w-5 h-5 stroke-[2] text-slate-700" />
+        <div class="flex items-center gap-1.5 sm:gap-2 lg:hidden z-50">
+            <a href="/notifications" class="p-1.5 sm:p-2 text-slate-700 hover:text-slate-900 transition-colors focus:outline-none flex items-center justify-center" aria-label="Notifications">
+                <Bell class="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[2] text-slate-700" />
             </a>
-            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#00A86B] hover:bg-[#008f5a] text-white px-4 py-1.5 rounded-xl text-xs font-extrabold transition-all duration-200 shadow-xs hidden sm:inline-flex">
-                Sign Up
+            <a href="/signup" id="mobile-top-signup-btn" class="bg-[#00A86B] hover:bg-[#008f5a] text-white px-3 sm:px-4 py-1.5 rounded-xl text-xs font-extrabold transition-all duration-200 shadow-xs inline-flex items-center justify-center whitespace-nowrap">
+                Sign In / Up
             </a>
             <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-8 h-8 rounded-full border border-slate-300 bg-[#00A86B] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-xs">
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />

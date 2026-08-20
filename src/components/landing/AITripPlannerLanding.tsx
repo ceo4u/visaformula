@@ -5,7 +5,6 @@ import {
   Sparkles,
   ArrowRight,
   MapPin,
-  IndianRupee,
   Calendar,
   Smile,
   ChevronDown,
@@ -48,10 +47,12 @@ import {
   Shield,
   AlertTriangle,
   Send,
-  Building
+  Building,
+  CheckSquare,
+  Award
 } from 'lucide-react';
 
-// Quick-Pill Intent Tags (Visa & Overseas Journey Categories)
+// Quick-Pill Intent Tags (8 Visa & Overseas Journey Categories)
 const categoryPills = [
   { id: 'student', emoji: '🎓', label: 'Student Visa' },
   { id: 'work', emoji: '💼', label: 'Work Permit' },
@@ -102,7 +103,15 @@ const travelPurposeOptions = [
   { value: 'transit', label: 'Transit & Layover Visa', icon: '✈️', desc: 'Airport transit & Stopover Visas' },
 ];
 
-// Search Filter Custom Dropdown Options
+// Journey Modifiers config (Replacing old budget modifiers)
+const journeyModifiers = [
+  { id: 'docs', icon: '📄', label: 'Document Checklist', desc: 'SOP, Financials & Police Clearance' },
+  { id: 'match', icon: '🎓', label: 'University/Job Match', desc: 'Designated Institutions & LMIA Employers' },
+  { id: 'transit', icon: '✈️', label: 'Transit Visa Guide', desc: 'Layover Exemptions & Airport Transfer' },
+  { id: 'relocation', icon: '🏠', label: 'Relocation & SIM', desc: 'Housing Escrow & 5G eSIM' },
+  { id: 'network', icon: '👥', label: 'Student/Expat Network', desc: 'Community & Peer Connections' },
+];
+
 const courseLevelOptions = [
   { value: 'bachelors', label: "Bachelor's Degree", icon: '🎓', desc: 'Undergraduate Degree' },
   { value: 'masters', label: "Master's / PG", icon: '📜', desc: 'Postgraduate & MBA' },
@@ -143,81 +152,45 @@ const getLocationsByCountry = (country: string) => {
       { value: 'newyork', label: 'New York (NYC, Buffalo)', icon: '🇺🇸', desc: 'Global finance & Ivy League' },
       { value: 'texas', label: 'Texas (Austin, Dallas, Houston)', icon: '🇺🇸', desc: 'Booming tech & zero state income tax' },
       { value: 'massachusetts', label: 'Massachusetts (Boston, Cambridge)', icon: '🇺🇸', desc: 'Harvard & MIT education hub' },
-      { value: 'washington', label: 'Washington (Seattle)', icon: '🇺🇸', desc: 'Amazon & Microsoft tech center' },
-      { value: 'illinois', label: 'Illinois (Chicago)', icon: '🇺🇸', desc: 'Midwest economic center' },
-      { value: 'florida', label: 'Florida (Miami, Orlando, Tampa)', icon: '🇺🇸', desc: 'International commerce & tech' },
-      { value: 'all_usa', label: 'All USA / Nationwide', icon: '🗽', desc: 'Pan USA search' },
+      { value: 'illinois', label: 'Illinois (Chicago)', icon: '🇺🇸', desc: 'Midwest finance & top universities' },
+      { value: 'washington', label: 'Washington (Seattle)', icon: '🇺🇸', desc: 'Amazon & Microsoft hub' },
+      { value: 'all_usa', label: 'All USA / Nationwide', icon: '🇺🇸', desc: 'Pan America search' },
     ];
   }
   if (c === 'uk' || c === 'united kingdom') {
     return [
-      { value: 'london', label: 'Greater London', icon: '🇬🇧', desc: 'World financial & education capital' },
-      { value: 'manchester', label: 'Manchester & North West', icon: '🇬🇧', desc: 'Top student city & tech hub' },
-      { value: 'birmingham', label: 'West Midlands (Birmingham)', icon: '🇬🇧', desc: 'UK manufacturing & central hub' },
-      { value: 'scotland', label: 'Scotland (Edinburgh, Glasgow)', icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', desc: 'Prestigious historic universities' },
-      { value: 'wales', label: 'Wales (Cardiff, Swansea)', icon: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', desc: 'Affordable study & scenic coasts' },
-      { value: 'yorkshire', label: 'Yorkshire (Leeds, Sheffield)', icon: '🇬🇧', desc: 'Healthcare, engineering & AI' },
-      { value: 'all_uk', label: 'All UK / Nationwide', icon: '🏰', desc: 'Pan UK search' },
+      { value: 'london', label: 'Greater London (London, Greenwich)', icon: '🇬🇧', desc: 'Global capital & finance hub' },
+      { value: 'manchester', label: 'Manchester / North West', icon: '🇬🇧', desc: 'Tech, media & vibrant student life' },
+      { value: 'birmingham', label: 'West Midlands (Birmingham)', icon: '🇬🇧', desc: 'Major commercial & industrial hub' },
+      { value: 'scotland', label: 'Scotland (Edinburgh, Glasgow)', icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', desc: 'Historic top-tier research universities' },
+      { value: 'all_uk', label: 'All UK / Nationwide', icon: '🇬🇧', desc: 'Pan UK search' },
     ];
   }
   if (c === 'australia') {
     return [
-      { value: 'nsw', label: 'New South Wales (Sydney)', icon: '🇦🇺', desc: 'Top global universities & finance' },
-      { value: 'victoria', label: 'Victoria (Melbourne)', icon: '🇦🇺', desc: 'Cultural & tech capital' },
-      { value: 'queensland', label: 'Queensland (Brisbane, Gold Coast)', icon: '🇦🇺', desc: 'High quality life & tourism hub' },
-      { value: 'wa', label: 'Western Australia (Perth)', icon: '🇦🇺', desc: 'Mining, engineering & regional PR' },
-      { value: 'sa', label: 'South Australia (Adelaide)', icon: '🇦🇺', desc: 'Designated regional migration benefits' },
-      { value: 'act', label: 'ACT (Canberra)', icon: '🇦🇺', desc: 'Government, policy & research' },
-      { value: 'all_au', label: 'All Australia / Nationwide', icon: '🦘', desc: 'Pan Australia search' },
+      { value: 'nsw', label: 'New South Wales (Sydney)', icon: '🇦🇺', desc: 'Financial capital & Group of 8' },
+      { value: 'victoria', label: 'Victoria (Melbourne)', icon: '🇦🇺', desc: "World's most liveable student city" },
+      { value: 'queensland', label: 'Queensland (Brisbane, Gold Coast)', icon: '🇦🇺', desc: 'Sunny climate & post-study bonus' },
+      { value: 'wa', label: 'Western Australia (Perth)', icon: '🇦🇺', desc: 'High wage regional immigration bonus' },
+      { value: 'all_aus', label: 'All Australia / Nationwide', icon: '🇦🇺', desc: 'Pan Australia search' },
     ];
   }
   if (c === 'germany') {
     return [
-      { value: 'bavaria', label: 'Bavaria (Munich, Nuremberg)', icon: '🇩🇪', desc: 'Automotive, aerospace & high tech' },
-      { value: 'berlin', label: 'Berlin', icon: '🇩🇪', desc: 'Startup hub & vibrant cultural capital' },
-      { value: 'nrw', label: 'North Rhine-Westphalia (Cologne, Düsseldorf)', icon: '🇩🇪', desc: 'Largest industrial economic zone' },
-      { value: 'baden', label: 'Baden-Württemberg (Stuttgart)', icon: '🇩🇪', desc: 'Engineering & Mercedes/Porsche hub' },
-      { value: 'hesse', label: 'Hesse (Frankfurt)', icon: '🇩🇪', desc: 'European Central Bank & fintech' },
-      { value: 'hamburg', label: 'Hamburg', icon: '🇩🇪', desc: 'Port logistics & media center' },
-      { value: 'all_de', label: 'All Germany / Nationwide', icon: '🍺', desc: 'Pan Germany search' },
+      { value: 'berlin', label: 'Berlin / Brandenburg', icon: '🇩🇪', desc: 'Startup capital & tuition-free tech' },
+      { value: 'bavaria', label: 'Bavaria (Munich, Nuremberg)', icon: '🇩🇪', desc: 'Engineering, automotive & TUM hub' },
+      { value: 'nrw', label: 'North Rhine-Westphalia (Cologne, Dusseldorf)', icon: '🇩🇪', desc: 'Dense economic & university belt' },
+      { value: 'all_germany', label: 'All Germany / Nationwide', icon: '🇩🇪', desc: 'Pan Germany search' },
     ];
   }
-  if (c === 'ireland') {
-    return [
-      { value: 'dublin', label: 'Dublin', icon: '🇮🇪', desc: 'European tech HQ & Silicon Docks' },
-      { value: 'cork', label: 'Cork', icon: '🇮🇪', desc: 'Biotech & pharmaceutical powerhouse' },
-      { value: 'galway', label: 'Galway', icon: '🇮🇪', desc: 'Medical devices & arts capital' },
-      { value: 'limerick', label: 'Limerick', icon: '🇮🇪', desc: 'Aviation & STEM innovation' },
-      { value: 'all_ie', label: 'All Ireland / Nationwide', icon: '☘️', desc: 'Pan Ireland search' },
-    ];
-  }
-  if (c === 'new zealand') {
-    return [
-      { value: 'auckland', label: 'Auckland', icon: '🇳🇿', desc: 'Major economic & university city' },
-      { value: 'wellington', label: 'Wellington', icon: '🇳🇿', desc: 'Government, film & creative capital' },
-      { value: 'canterbury', label: 'Canterbury (Christchurch)', icon: '🇳🇿', desc: 'South Island innovation center' },
-      { value: 'otago', label: 'Otago (Dunedin, Queenstown)', icon: '🇳🇿', desc: 'Historic medical & student hub' },
-      { value: 'all_nz', label: 'All New Zealand', icon: '🥝', desc: 'Pan New Zealand search' },
-    ];
-  }
-  if (c === 'uae') {
-    return [
-      { value: 'dubai', label: 'Dubai', icon: '🇦🇪', desc: 'Global business, tax-free & tourism' },
-      { value: 'abudhabi', label: 'Abu Dhabi', icon: '🇦🇪', desc: 'Capital city & clean energy hub' },
-      { value: 'sharjah', label: 'Sharjah', icon: '🇦🇪', desc: 'University City & cultural center' },
-      { value: 'ajman', label: 'Ajman & RAK', icon: '🇦🇪', desc: 'Free zone business & maritime' },
-      { value: 'all_ae', label: 'All UAE / Nationwide', icon: '🐪', desc: 'Pan UAE search' },
-    ];
-  }
-  // Default when no destination country is chosen
   return [
-    { value: 'delhi', label: 'Delhi NCR', icon: '📍', desc: 'Capital Region' },
-    { value: 'mumbai', label: 'Mumbai', icon: '📍', desc: 'Maharashtra' },
-    { value: 'bengaluru', label: 'Bengaluru', icon: '📍', desc: 'Karnataka' },
-    { value: 'punjab', label: 'Punjab / Chandigarh', icon: '📍', desc: 'North Hub' },
-    { value: 'hyderabad', label: 'Hyderabad', icon: '📍', desc: 'Telangana' },
-    { value: 'gujarat', label: 'Gujarat', icon: '📍', desc: 'Ahmedabad & Surat' },
-    { value: 'chennai', label: 'Chennai', icon: '📍', desc: 'Tamil Nadu' },
+    { value: 'delhi', label: 'Delhi NCR (Connaught Place, Nehru Place)', icon: '🇮🇳', desc: 'Embassy zone & certified agents' },
+    { value: 'mumbai', label: 'Mumbai (BKC, Andheri, Nariman Point)', icon: '🇮🇳', desc: 'Commercial & financial hub' },
+    { value: 'bangalore', label: 'Bangalore (Indiranagar, Koramangala)', icon: '🇮🇳', desc: 'Tech migration & STEM visas' },
+    { value: 'hyderabad', label: 'Hyderabad (Hitec City, Banjara Hills)', icon: '🇮🇳', desc: 'US/UK high volume visa consultants' },
+    { value: 'punjab', label: 'Punjab & Chandigarh (Sector 17, 34)', icon: '🇮🇳', desc: 'Canada & Australia study capital' },
+    { value: 'ahmedabad', label: 'Gujarat (Ahmedabad, Surat, Vadodara)', icon: '🇮🇳', desc: 'High success investor & PR experts' },
+    { value: 'chennai', label: 'Chennai & Tamil Nadu', icon: '🇮🇳', desc: 'Engineering & Singapore/EU migration' },
     { value: 'remote', label: 'Online / Pan India', icon: '🌐', desc: 'Virtual Consultation' },
   ];
 };
@@ -225,8 +198,8 @@ const getLocationsByCountry = (country: string) => {
 const visaCategoryOptions = [
   { value: 'student', label: 'Student Visa', icon: '🎓', desc: 'Study Abroad & Intake' },
   { value: 'work', label: 'Work & Job Visa', icon: '💼', desc: 'Permits & Sponsorship' },
-  { value: 'pr', label: 'PR & Permanent Residency', icon: '🛡️', desc: 'Express Entry & PNP' },
-  { value: 'tourist', label: 'Tourist & Visitor', icon: '✈️', desc: 'Holiday & Family Visit' },
+  { value: 'pr', label: 'PR & Permanent Residency', icon: '🏡', desc: 'Express Entry & PNP' },
+  { value: 'tourist', label: 'Tourist & Visitor', icon: '🏝️', desc: 'Holiday & Family Visit' },
   { value: 'business', label: 'Business & Investor', icon: '🏢', desc: 'Startup & Investment' },
   { value: 'family', label: 'Spouse & Dependent', icon: '👨‍👩‍👧', desc: 'Family Reunification' },
 ];
@@ -234,7 +207,7 @@ const visaCategoryOptions = [
 const experienceLevelOptions = [
   { value: 'entry', label: 'Entry Level (0-2 yrs)', icon: '🌱', desc: 'Graduate & Fresher' },
   { value: 'mid', label: 'Mid Level (2-5 yrs)', icon: '⚡', desc: 'Intermediate Specialist' },
-  { value: 'senior', label: 'Senior Level (5-8 yrs)', icon: '💼', desc: 'Lead / Expert' },
+  { value: 'senior', label: 'Senior Level (5-8 yrs)', icon: '⭐', desc: 'Lead / Expert' },
   { value: 'executive', label: 'Executive (8+ yrs)', icon: '👑', desc: 'Manager & Director' },
 ];
 
@@ -246,14 +219,224 @@ const lawyerSpecializationOptions = [
   { value: 'citizenship', label: 'Citizenship & Complex Filings', icon: '📜', desc: 'Status Inadmissibility' },
 ];
 
-// Modifiers config with state mutators
-const modifiers = [
-  { id: 'cheaper', icon: '💡', label: 'Make it cheaper' },
-  { id: 'luxurious', icon: '👑', label: 'Make it luxurious' },
-  { id: 'children', icon: '👶', label: 'Add Children' },
-  { id: 'veg', icon: '🥗', label: 'Find Vegetarian Options' },
-  { id: 'late_start', icon: '⏰', label: "Don't wake up early" },
-];
+const destinationPathwayKnowledge: Record<string, { image: string; fallbackDays: Array<{ title: string; summary: string; morning: string; afternoon: string; evening: string }> }> = {
+  canada: {
+    image: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?q=80&w=600&auto=format&fit=crop',
+    fallbackDays: [
+      {
+        title: 'Stage 1: Documentation & Eligibility Assessment',
+        summary: 'Audit of academic transcripts, WES credential evaluation, and IELTS/PTE language scores.',
+        morning: 'Comprehensive profile assessment & Provincial Nominee / Express Entry eligibility check.',
+        afternoon: 'Verification of proof of funds (CAD $20,635+ living expenses & tuition GIC account).',
+        evening: 'Statement of Purpose (SOP) & Letter of Explanation (LOE) drafting with certified advisor.'
+      },
+      {
+        title: 'Stage 2: Institutional Offer / Job Acceptance & CAQ',
+        summary: 'Securing official Designated Learning Institution (DLI) Letter of Acceptance (LOA) / LMIA.',
+        morning: 'Submit formal application to DLI institutions in Ontario, BC, or Alberta.',
+        afternoon: 'Pay first semester tuition deposit & receive Provincial Attestation Letter (PAL) / CAQ.',
+        evening: 'Initiate Scotiabank / CIBC Student GIC program verification & deposit confirmation.'
+      },
+      {
+        title: 'Stage 3: Upfront Medical Exam & Biometrics Filing',
+        summary: 'IRCC panel physician health clearance and biometric appointment at VFS Global.',
+        morning: 'Complete mandatory Immigration Medical Examination (IME) with empanelled physician.',
+        afternoon: 'Submit online IRCC visa application with complete digital document package.',
+        evening: 'Book and attend biometric capture (fingerprinting & digital photo) at VFS center.'
+      },
+      {
+        title: 'Stage 4: Visa Grant & Pre-Flight Transit Verification',
+        summary: 'Download Letter of Introduction (Port of Entry Letter) and book flight routes.',
+        morning: 'Receive official IRCC Study / Work Permit Approval & Port of Entry (POE) letter.',
+        afternoon: 'Book international flight tickets & verify direct transit rules (UK/Europe/Qatar layovers).',
+        evening: 'Enroll in mandatory international student/expat health insurance coverage.'
+      },
+      {
+        title: 'Stage 5: Housing Escrow, Forex & Border Clearance',
+        summary: 'Secure campus accommodation, multi-currency card, and seamless border landing.',
+        morning: 'Reserve verified student housing / short-stay apartment with escrow protection.',
+        afternoon: 'Activate Zero-Forex multi-currency card & get Canadian 5G eSIM for arrival.',
+        evening: 'Border CBSA interview clearance at Toronto (YYZ) or Vancouver (YVR) and SIN issuance.'
+      }
+    ]
+  },
+  usa: {
+    image: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?q=80&w=600&auto=format&fit=crop',
+    fallbackDays: [
+      {
+        title: 'Stage 1: University Acceptance & Form I-20 Issuance',
+        summary: 'Secure official SEVP-certified institution admission and Form I-20.',
+        morning: 'University admission confirmation and submission of affidavit of support & bank statements.',
+        afternoon: 'Receive digital Form I-20 with SEVIS ID and designated university advisor details.',
+        evening: 'Pay mandatory SEVIS I-901 fee online and save payment confirmation receipt.'
+      },
+      {
+        title: 'Stage 2: DS-160 Filing & Visa Appointment Scheduling',
+        summary: 'Complete Online Nonimmigrant Visa Application (DS-160) and schedule VAC biometrics.',
+        morning: 'Fill out DS-160 barcode form accurately with educational and travel history.',
+        afternoon: 'Pay US visa application fee and book two-stage appointment (OFC Biometrics + Consular Interview).',
+        evening: 'Prepare structured interview document folder with academic, financial, and home-tie proofs.'
+      },
+      {
+        title: 'Stage 3: OFC Biometrics & US Embassy Consular Interview',
+        summary: 'Attend biometric fingerprinting and face-to-face visa officer interview.',
+        morning: 'Attend OFC (Offsite Facilitation Center) for photo and fingerprint scanning.',
+        afternoon: 'Attend Consular Visa Interview at US Embassy/Consulate with clear intent and confidence.',
+        evening: 'Visa approval confirmation: Passport submitted for visa stamping & issuance.'
+      },
+      {
+        title: 'Stage 4: Flight Ticketing & Transit Clearance',
+        summary: 'Confirm transpacific/transatlantic flight routing and transit visa exemptions.',
+        morning: 'Book air ticket arriving up to 30 days prior to I-20 program start date.',
+        afternoon: 'Verify direct airside transit exemptions for European and Middle Eastern hub layovers.',
+        evening: 'Register university mandatory immunization records & health insurance.'
+      },
+      {
+        title: 'Stage 5: Forex, US eSIM & CBP Port of Entry Arrival',
+        summary: 'Landing at US airport, CBP border inspection, and I-94 arrival record.',
+        morning: 'Load USD Forex Card & activate US 5G eSIM before boarding flight.',
+        afternoon: 'Present Passport, Visa, and I-20 at CBP border inspection at JFK / SFO / ORD.',
+        evening: 'Download electronic Form I-94 arrival record and check-in to campus housing.'
+      }
+    ]
+  },
+  uk: {
+    image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=600&auto=format&fit=crop',
+    fallbackDays: [
+      {
+        title: 'Stage 1: CAS Issuance & Financial Verification',
+        summary: 'Obtaining Confirmation of Acceptance for Studies (CAS) and 28-day fund maturation.',
+        morning: 'Fulfill university conditional offer & accept official unconditional CAS letter.',
+        afternoon: 'Verify 28-day maintenance funds in approved bank account (London vs Outer London).',
+        evening: 'Complete mandatory UK TB (Tuberculosis) screening at approved IOM diagnostic clinic.'
+      },
+      {
+        title: 'Stage 2: UKVI Online Application & IHS Health Surcharge',
+        summary: 'Complete UK Visas & Immigration application and pay NHS health surcharge.',
+        morning: 'Fill out UKVI digital application form referencing CAS number and travel dates.',
+        afternoon: 'Pay Immigration Health Surcharge (IHS) for full NHS medical coverage during stay.',
+        evening: 'Upload supporting academic certificates, bank statements, and TB certificate.'
+      },
+      {
+        title: 'Stage 3: VFS Biometrics & Digital Visa Decision',
+        summary: 'Submit biometric scans and receive digital eVisa / vignette passport sticker.',
+        morning: 'Attend VFS Global / TLScontact appointment for biometrics and passport submission.',
+        afternoon: 'Option for Priority / Super Priority visa processing (decisions in 24-48 hours).',
+        evening: 'Receive UKVI decision letter and collect passport with entry vignette.'
+      },
+      {
+        title: 'Stage 4: Flight Route & London Transit Alignment',
+        summary: 'Book flights into London Heathrow / Manchester and secure student luggage allowance.',
+        morning: 'Book student flight ticket with double 23kg baggage allowance.',
+        afternoon: 'Confirm airport arrival train / National Express coach direct to university city.',
+        evening: 'Complete UK digital Passenger Locator checks & university arrival registration.'
+      },
+      {
+        title: 'Stage 5: BRP / UKVI eVisa Account, Housing & Bank Account',
+        summary: 'Set up UKVI digital status, Monzo/Revolut bank account, and student dorm check-in.',
+        morning: 'Arrive at UK border with digital eVisa share code and passport.',
+        afternoon: 'Check-in to university student hall / private accommodation with verified contract.',
+        evening: 'Open UK bank account, set up UK mobile SIM, and complete university on-campus enrolment.'
+      }
+    ]
+  },
+  australia: {
+    image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=600&auto=format&fit=crop',
+    fallbackDays: [
+      {
+        title: 'Stage 1: Confirmation of Enrolment (CoE) & Genuine Student (GS)',
+        summary: 'Secure CRICOS CoE and complete Genuine Student requirement evaluation.',
+        morning: 'Accept university offer letter and satisfy Genuine Student (GS) assessment criteria.',
+        afternoon: 'Pay initial tuition deposit and receive official electronic Confirmation of Enrolment (CoE).',
+        evening: 'Purchase mandatory Overseas Student Health Cover (OSHC) with Medibank / Bupa / Allianz.'
+      },
+      {
+        title: 'Stage 2: ImmiAccount Filing & Financial Evidence',
+        summary: 'Submit Subclass 500 / 482 visa application through Australian Department of Home Affairs.',
+        morning: 'Create ImmiAccount and fill out Student Visa (Subclass 500) application.',
+        afternoon: 'Upload financial capacity evidence (AUD $29,710 living cost + tuition) & English test scores.',
+        evening: 'Pay Department of Home Affairs visa application fee.'
+      },
+      {
+        title: 'Stage 3: HAP ID Health Assessment & Biometrics',
+        summary: 'Complete Bupa Medical Visa Services health examination and VFS biometrics.',
+        morning: 'Generate eMedical referral letter with HAP ID and book panel physician exam.',
+        afternoon: 'Complete chest X-ray and medical examination at authorized medical clinic.',
+        evening: 'Attend VFS Global Australian Biometric Collection Centre for fingerprinting.'
+      },
+      {
+        title: 'Stage 4: Visa Grant & Flight Routing via Asian Hubs',
+        summary: 'Receive Department of Home Affairs visa grant notification & flight confirmation.',
+        morning: 'Download Visa Grant Notice containing VEVO visa conditions (Work Condition 8105).',
+        afternoon: 'Book international flight to Sydney (SYD), Melbourne (MEL), or Brisbane (BNE).',
+        evening: 'Confirm transit rules for Singapore (SIN), Kuala Lumpur (KUL), or Bangkok (BKK) layovers.'
+      },
+      {
+        title: 'Stage 5: TFN / Bank Setup, Housing & Australia Arrival',
+        summary: 'Arrival in Australia, Australian Tax File Number (TFN) application, and campus start.',
+        morning: 'Clear Australian SmartGate border entry with valid passport.',
+        afternoon: 'Check-in to student accommodation or homestay in destination city.',
+        evening: 'Apply for Tax File Number (TFN), open Commonwealth/ANZ bank account, and buy Opal/Myki card.'
+      }
+    ]
+  },
+  germany: {
+    image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=600&auto=format&fit=crop',
+    fallbackDays: [
+      {
+        title: 'Stage 1: University Zulassung & Blocked Account Setup',
+        summary: 'Secure German university admission and fund Sperrkonto (Blocked Account).',
+        morning: 'Receive official admission letter (Zulassungsbescheid) or Opportunity Card assessment.',
+        afternoon: 'Open German Blocked Account (Sperrkonto) with Coracle / Expatrio / Fintiba (€11,208/yr).',
+        evening: 'Enroll in mandatory statutory health insurance (TK / Barmer) or private expat cover.'
+      },
+      {
+        title: 'Stage 2: German National Visa (D-Visa) Application',
+        summary: 'Book VFS / German Embassy appointment and assemble German standard dossier.',
+        morning: 'Complete digital VIDEX application for German National Long-Stay Visa (Category D).',
+        afternoon: 'Compile chronological Europass CV, German motivation letter, and academic transcripts with APS certificate.',
+        evening: 'Schedule VFS German Visa Application Centre appointment slot.'
+      },
+      {
+        title: 'Stage 3: VFS Document Submission & Embassy Verification',
+        summary: 'Attend appointment, submit biometrics, and track Alien Authority clearance.',
+        morning: 'Submit dossier and biometrics at VFS German Application Centre.',
+        afternoon: 'Application forwarded to German Federal Foreign Office and local Ausländerbehörde.',
+        evening: 'Track visa dispatch and receive passport stamped with German National D-Visa.'
+      },
+      {
+        title: 'Stage 4: Flight Booking & Schengen Entry Alignment',
+        summary: 'Confirm direct flight to Frankfurt (FRA), Munich (MUC), or Berlin (BER).',
+        morning: 'Book air ticket arriving ahead of German semester start date (Winter/Summer semester).',
+        afternoon: 'Verify Schengen transit rules and baggage allowances for student travel.',
+        evening: 'Secure temporary accommodation / WG-Zimmer (flatshare) with Wohnungsgeberbestätigung.'
+      },
+      {
+        title: 'Stage 5: City Registration (Anmeldung), Bank & Residence Permit',
+        summary: 'Complete local Bürgeramt Anmeldung, unblock Sperrkonto, and university matriculation.',
+        morning: 'Arrive in Germany and register address at local Bürgeramt within 14 days (Anmeldung).',
+        afternoon: 'Activate blocked account monthly payouts with German IBAN bank account.',
+        evening: 'Complete university matriculation (Immatrikulation) and receive Semesterticket.'
+      }
+    ]
+  }
+};
+
+const getDestinationImage = (dest: string) => {
+  const d = (dest || '').toLowerCase();
+  if (d.includes('canada')) return 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('usa') || d.includes('united states') || d.includes('america')) return 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('uk') || d.includes('united kingdom') || d.includes('london') || d.includes('britain')) return 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('australia') || d.includes('sydney') || d.includes('melbourne')) return 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('germany') || d.includes('berlin') || d.includes('frankfurt') || d.includes('munich')) return 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('ireland') || d.includes('dublin')) return 'https://images.unsplash.com/photo-1590089415225-401ed6f9db8e?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('new zealand') || d.includes('auckland')) return 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('uae') || d.includes('dubai')) return 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('singapore')) return 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('france') || d.includes('paris')) return 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=600&auto=format&fit=crop';
+  if (d.includes('japan') || d.includes('tokyo')) return 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=600&auto=format&fit=crop';
+  return 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=600&auto=format&fit=crop';
+};
 
 // Popular destinations with high-res circular country flag images
 const popularDestinations = [
@@ -267,20 +450,12 @@ const popularDestinations = [
   { name: 'More', flagImg: '', isMore: true, code: 'ALL' },
 ];
 
-interface BudgetItem {
-  category: string;
-  amount: number;
-  pct: number;
-  color: string;
-  icon: any;
-}
-
 export function AITripPlannerLanding() {
   // Input search state
   const [searchPrompt, setSearchPrompt] = useState('');
   const [selectedPill, setSelectedPill] = useState<string>('student');
 
-  // Journey Engine Form State (Replacing holiday budget/vibe/duration)
+  // Journey Engine Form State
   const [passportCountry, setPassportCountry] = useState('India');
   const [journeyDestination, setJourneyDestination] = useState('Canada');
   const [travelPurpose, setTravelPurpose] = useState('study');
@@ -323,13 +498,20 @@ export function AITripPlannerLanding() {
     docs: true,
   });
 
-  // Interactive Form State
-  const [destination, setDestination] = useState('');
-  const [budget, setBudget] = useState('');
-  const [duration, setDuration] = useState('');
-  const [vibe, setVibe] = useState('');
+  // Generator & Pathway States
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
+  const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
+  const [expandedDay, setExpandedDay] = useState<number>(1);
+  const [itineraryDays, setItineraryDays] = useState<Array<{
+    dayNumber: number;
+    title: string;
+    summary?: string;
+    image: string;
+    morning: string;
+    afternoon: string;
+    evening: string;
+  }>>([]);
 
   // Global Multi-Tab Search Widget State
   const [activeSearchTab, setActiveSearchTab] = useState<'universities' | 'consultants' | 'relocation' | 'jobs' | 'lawyers'>('universities');
@@ -372,32 +554,16 @@ export function AITripPlannerLanding() {
   // Dynamically resolve state/province locations based on chosen destination country
   const activeLocations = getLocationsByCountry(searchCountry);
 
-  // Active modifier pills
-  const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
+  // Dynamic AI Generation Loading Step State
+  const [loadingStep, setLoadingStep] = useState<number>(0);
+  const [loadingProgress, setLoadingProgress] = useState<number>(15);
 
-  // Itinerary accordion expanded day (1 - 5)
-  const [expandedDay, setExpandedDay] = useState<number>(1);
-
-  // Budget Breakdown dynamic data
-  const [budgetTotal, setBudgetTotal] = useState<number>(0);
-  const [budgetBreakdown, setBudgetBreakdown] = useState<BudgetItem[]>([]);
-
-  // Itinerary days list (AI generated)
-  const [itineraryDays, setItineraryDays] = useState<Array<{
-    dayNumber: number;
-    title: string;
-    summary?: string;
-    image: string;
-    morning: string;
-    afternoon: string;
-    evening: string;
-  }>>([]);
-
-  // Custom Dropdown Open States & Refs
-  const [isDurationOpen, setIsDurationOpen] = useState(false);
-  const [isVibeOpen, setIsVibeOpen] = useState(false);
-  const durationRef = useRef<HTMLDivElement>(null);
-  const vibeRef = useRef<HTMLDivElement>(null);
+  const loadingSteps = [
+    { icon: '🌐', title: 'Connecting to Global Visa & Immigration Hub...', desc: `Analyzing ${passportCountry} to ${journeyDestination} eligibility` },
+    { icon: '📑', title: 'Structuring Required Documentation & Stages...', desc: 'Optimizing SOP, Financials, Medicals & Biometrics' },
+    { icon: '🎓', title: 'Matching Institutional & Regulatory Clearances...', desc: 'Verifying DLI acceptance, VFS slots & work entitlements' },
+    { icon: '✨', title: 'Finalizing Your Overseas Preparation Pathway...', desc: 'Synthesizing stage-by-stage departure roadmap' }
+  ];
 
   // Close custom dropdowns on click outside
   useEffect(() => {
@@ -406,8 +572,6 @@ export function AITripPlannerLanding() {
       if (passportRef.current && !passportRef.current.contains(target)) setIsPassportOpen(false);
       if (journeyDestRef.current && !journeyDestRef.current.contains(target)) setIsJourneyDestOpen(false);
       if (purposeRef.current && !purposeRef.current.contains(target)) setIsPurposeOpen(false);
-      if (durationRef.current && !durationRef.current.contains(target)) setIsDurationOpen(false);
-      if (vibeRef.current && !vibeRef.current.contains(target)) setIsVibeOpen(false);
       if (courseLevelRef.current && !courseLevelRef.current.contains(target)) setIsCourseLevelOpen(false);
       if (countryRef.current && !countryRef.current.contains(target)) setIsCountryOpen(false);
       if (locationRef.current && !locationRef.current.contains(target)) setIsLocationOpen(false);
@@ -442,7 +606,7 @@ export function AITripPlannerLanding() {
       window.location.href = `/classifieds${queryStr}`;
     } else if (activeSearchTab === 'jobs') {
       if (jobKeyword.trim()) params.set('q', jobKeyword.trim());
-      if (experienceLevel) params.set('exp', experienceLevel);
+      if (experienceLevel) params.set('experience', experienceLevel);
       if (jobType !== 'all') params.set('type', jobType);
       const queryStr = params.toString() ? `?${params.toString()}` : '';
       window.location.href = `/jobs${queryStr}`;
@@ -454,50 +618,29 @@ export function AITripPlannerLanding() {
     }
   };
 
-  // Map category icon
-  const getCategoryIcon = (catName: string) => {
-    switch (catName?.toLowerCase()) {
-      case 'transport': return Car;
-      case 'hotel': return Hotel;
-      case 'food': return UtensilsCrossed;
-      case 'activities': return Compass;
-      case 'reserve': return ShieldAlert;
-      default: return Tag;
-    }
-  };
-
-  // Dynamic AI Generation Loading Step State
-  const [loadingStep, setLoadingStep] = useState<number>(0);
-  const [loadingProgress, setLoadingProgress] = useState<number>(15);
-
-  const loadingSteps = [
-    { icon: '🌐', title: 'Connecting to Travel Intelligence Hub...', desc: 'Analyzing destination vibes & best spots' },
-    { icon: '🗺️', title: 'Structuring Daily Route & Attractions...', desc: 'Optimizing morning, afternoon & evening plans' },
-    { icon: '💰', title: 'Calculating Dynamic Budget Allocations...', desc: 'Balancing Transport, Hotels, Food & Activities' },
-    { icon: '✨', title: 'Finalizing Your AI Pathway...', desc: 'Generating instant booking & itinerary cards' }
-  ];
-
-  // Trigger Gemini API trip plan generation
-  const fetchAITrip = async (payload: {
+  // Trigger Gemini API Pathway generation
+  const fetchAIPathway = async (payload: {
     destination?: string;
-    budget?: number;
-    duration?: number;
-    vibe?: string;
+    passport?: string;
+    purpose?: string;
     modifiers?: string[];
   }) => {
     setIsGenerating(true);
     setLoadingStep(0);
     setLoadingProgress(15);
 
+    const targetDest = payload.destination || journeyDestination || 'Canada';
+    const targetPassport = payload.passport || passportCountry || 'India';
+    const targetPurpose = payload.purpose || travelPurpose || 'study';
+
     // Scroll to loading card
     setTimeout(() => {
-      const loadingEl = document.getElementById('trip-generator-status');
+      const loadingEl = document.getElementById('pathway-generator-status');
       if (loadingEl) {
         loadingEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }, 50);
 
-    // Step progress interval
     const stepInterval = setInterval(() => {
       setLoadingStep((prev) => {
         if (prev < 3) return prev + 1;
@@ -507,77 +650,90 @@ export function AITripPlannerLanding() {
         if (prev < 85) return prev + 25;
         return 95;
       });
-    }, 450);
+    }, 400);
 
     try {
       const response = await fetch('/api/generate-trip', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          destination: targetDest,
+          vibe: targetPurpose,
+          duration: 5,
+          modifiers: payload.modifiers || activeModifiers
+        }),
       });
       const data = await response.json();
-      if (data && data.success && data.plan) {
-        const plan = data.plan;
-        setBudgetTotal(plan.totalBudget || (payload.budget || 30000));
-        
-        if (plan.budgetBreakdown && Array.isArray(plan.budgetBreakdown)) {
-          const formattedBreakdown: BudgetItem[] = plan.budgetBreakdown.map((b: any) => ({
-            category: b.category,
-            amount: b.amount,
-            pct: b.pct,
-            color: b.color || '#00A86B',
-            icon: getCategoryIcon(b.category)
-          }));
-          setBudgetBreakdown(formattedBreakdown);
-        }
-
-        if (plan.days && Array.isArray(plan.days)) {
-          setItineraryDays(plan.days.map((d: any) => ({
-            dayNumber: d.dayNumber,
-            title: d.title,
-            summary: d.summary || (d.morning ? d.morning.substring(0, 45) + '...' : ''),
-            image: d.image || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=400&q=80',
-            morning: d.morning || '',
-            afternoon: d.afternoon || '',
-            evening: d.evening || '',
-          })));
-          setExpandedDay(1);
-        }
-
-        setLoadingProgress(100);
-        setHasGenerated(true);
-
-        setTimeout(() => {
-          const dashboardElement = document.getElementById('trip-dashboard');
-          if (dashboardElement) {
-            dashboardElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }, 150);
+      
+      let stages: any[] = [];
+      if (data && data.success && data.plan && data.plan.days && Array.isArray(data.plan.days) && data.plan.days.length > 0) {
+        stages = data.plan.days.map((d: any, idx: number) => ({
+          dayNumber: d.dayNumber || (idx + 1),
+          title: d.title || `Stage ${idx + 1}: Overseas Journey Preparation`,
+          summary: d.summary || (d.morning ? d.morning.substring(0, 70) + '...' : 'Key preparatory milestone and compliance check.'),
+          image: d.image || getDestinationImage(targetDest),
+          morning: d.morning || 'Review documents and fulfill regulatory criteria.',
+          afternoon: d.afternoon || 'Submit forms and process requisite verification deposits.',
+          evening: d.evening || 'Confirm approvals, transit readiness, and airport arrival plan.'
+        }));
+      } else {
+        const normDest = targetDest.toLowerCase().replace(/[^a-z]/g, '');
+        const fallbackObj = destinationPathwayKnowledge[normDest] || destinationPathwayKnowledge['canada'];
+        stages = fallbackObj.fallbackDays.map((d, idx) => ({
+          dayNumber: idx + 1,
+          title: d.title,
+          summary: d.summary,
+          image: fallbackObj.image,
+          morning: d.morning,
+          afternoon: d.afternoon,
+          evening: d.evening
+        }));
       }
+
+      setItineraryDays(stages);
+      setExpandedDay(1);
+      setLoadingProgress(100);
+      setHasGenerated(true);
+
+      setTimeout(() => {
+        const dashboardElement = document.getElementById('overseas-pathway-dashboard');
+        if (dashboardElement) {
+          dashboardElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
     } catch (err) {
-      console.error('Failed to generate AI trip:', err);
+      console.error('Failed to generate AI pathway:', err);
+      const normDest = targetDest.toLowerCase().replace(/[^a-z]/g, '');
+      const fallbackObj = destinationPathwayKnowledge[normDest] || destinationPathwayKnowledge['canada'];
+      setItineraryDays(fallbackObj.fallbackDays.map((d, idx) => ({
+        dayNumber: idx + 1,
+        title: d.title,
+        summary: d.summary,
+        image: fallbackObj.image,
+        morning: d.morning,
+        afternoon: d.afternoon,
+        evening: d.evening
+      })));
+      setExpandedDay(1);
+      setLoadingProgress(100);
+      setHasGenerated(true);
+      setTimeout(() => {
+        const dashboardElement = document.getElementById('overseas-pathway-dashboard');
+        if (dashboardElement) {
+          dashboardElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
     } finally {
       clearInterval(stepInterval);
       setIsGenerating(false);
     }
   };
 
-  const handleGenerateTrip = () => {
-    const rawBudget = parseInt(budget.replace(/[^0-9]/g, ''), 10) || 30000;
-    const rawDuration = parseInt(duration.replace(/[^0-9]/g, ''), 10) || 5;
-    const dest = destination || 'Goa';
-    const chosenVibe = vibe || 'Beach';
-    
-    if (!destination) setDestination(dest);
-    if (!budget) setBudget(rawBudget.toLocaleString('en-IN'));
-    if (!duration) setDuration(`${rawDuration} Days`);
-    if (!vibe) setVibe(chosenVibe);
-
-    fetchAITrip({
-      destination: dest,
-      budget: rawBudget,
-      duration: rawDuration,
-      vibe: chosenVibe,
+  const handleGeneratePathway = () => {
+    fetchAIPathway({
+      destination: journeyDestination || 'Canada',
+      passport: passportCountry || 'India',
+      purpose: travelPurpose || 'study',
       modifiers: activeModifiers
     });
   };
@@ -585,69 +741,64 @@ export function AITripPlannerLanding() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchPrompt.trim()) return;
-    const destMatch = searchPrompt.match(/(?:in|to)\s+([A-Za-z]+)/i);
-    const dest = destMatch ? destMatch[1] : (destination || 'Goa');
-    const budgMatch = searchPrompt.match(/(?:₹|rs\.?|inr)?\s*([0-9,]+)/i);
-    const budg = budgMatch ? parseInt(budgMatch[1].replace(/,/g, ''), 10) : 30000;
-    const durMatch = searchPrompt.match(/([0-9]+)\s*(?:days|day)/i);
-    const dur = durMatch ? parseInt(durMatch[1], 10) : 5;
 
-    setDestination(dest);
-    setBudget(budg.toLocaleString('en-IN'));
-    setDuration(`${dur} Days`);
+    const promptLower = searchPrompt.toLowerCase();
+    let foundDest = journeyDestination;
+    for (const opt of journeyDestinationOptions) {
+      if (promptLower.includes(opt.value.toLowerCase())) {
+        foundDest = opt.value;
+        break;
+      }
+    }
+    setJourneyDestination(foundDest);
 
-    fetchAITrip({
-      destination: dest,
-      budget: budg,
-      duration: dur,
-      vibe: vibe || 'Beach',
+    fetchAIPathway({
+      destination: foundDest,
+      passport: passportCountry,
+      purpose: travelPurpose,
       modifiers: activeModifiers
     });
   };
 
   const handlePillClick = (pillId: string, label: string) => {
     setSelectedPill(pillId);
-    let newDest = destination || 'Canada';
-    let newVibe = 'Study';
-    let newBudget = budget || '15,00,000';
+    let targetCountry = journeyDestination || 'Canada';
+    let targetPurpose = 'study';
 
-    if (pillId === 'study') {
-      newVibe = 'Study';
-      newDest = 'Canada';
-      newBudget = '15,00,000';
-    } else if (pillId === 'holiday' || pillId === 'tourist') {
-      newVibe = 'Holiday';
-      newDest = 'Dubai';
-      newBudget = '75,000';
-    } else if (pillId === 'business' || pillId === 'investor') {
-      newVibe = 'Business';
-      newDest = 'USA';
-      newBudget = '30,00,000';
+    if (pillId === 'student') {
+      targetPurpose = 'study';
+      targetCountry = 'Canada';
     } else if (pillId === 'work') {
-      newVibe = 'Work';
-      newDest = 'Germany';
-      newBudget = '5,00,000';
-    } else if (pillId === 'pr' || pillId === 'citizenship') {
-      newVibe = 'PR';
-      newDest = 'Australia';
-      newBudget = '10,00,000';
-    } else if (pillId === 'family') {
-      newVibe = 'Family';
-      newBudget = '65,000';
+      targetPurpose = 'work';
+      targetCountry = 'Australia';
+    } else if (pillId === 'pr') {
+      targetPurpose = 'pr';
+      targetCountry = 'Canada';
+    } else if (pillId === 'tourist') {
+      targetPurpose = 'visit';
+      targetCountry = 'United States';
+    } else if (pillId === 'transit') {
+      targetPurpose = 'transit';
+      targetCountry = 'United Kingdom';
+    } else if (pillId === 'business') {
+      targetPurpose = 'business';
+      targetCountry = 'UAE';
+    } else if (pillId === 'appeals') {
+      targetPurpose = 'work';
+      targetCountry = 'Australia';
+    } else if (pillId === 'relocation') {
+      targetPurpose = 'study';
+      targetCountry = 'Germany';
     }
 
-    setDestination(newDest);
-    setVibe(newVibe);
-    setBudget(newBudget);
-    setDuration('5 Days');
-    setSearchPrompt(`5 days in ${newDest} with ${label.toLowerCase()}`);
+    setJourneyDestination(targetCountry);
+    setTravelPurpose(targetPurpose);
+    setSearchPrompt(`${passportCountry} Passport to ${targetCountry} (${label})`);
 
-    const rawBudg = parseInt(newBudget.replace(/[^0-9]/g, ''), 10) || 30000;
-    fetchAITrip({
-      destination: newDest,
-      budget: rawBudg,
-      duration: 5,
-      vibe: newVibe,
+    fetchAIPathway({
+      destination: targetCountry,
+      passport: passportCountry,
+      purpose: targetPurpose,
       modifiers: activeModifiers
     });
   };
@@ -661,22 +812,41 @@ export function AITripPlannerLanding() {
     }
     setActiveModifiers(nextMods);
 
-    const rawBudget = parseInt(budget.replace(/[^0-9]/g, ''), 10) || 30000;
-    const rawDuration = parseInt(duration.replace(/[^0-9]/g, ''), 10) || 5;
-
-    fetchAITrip({
-      destination: destination || 'Goa',
-      budget: rawBudget,
-      duration: rawDuration,
-      vibe: vibe || 'Beach',
+    fetchAIPathway({
+      destination: journeyDestination || 'Canada',
+      passport: passportCountry || 'India',
+      purpose: travelPurpose || 'study',
       modifiers: nextMods
     });
   };
 
-  // Donut chart math
-  const radius = 60;
-  const circumference = 2 * Math.PI * radius;
-  let accumulatedOffset = 0;
+  const handleSimulateOcrScan = () => {
+    setIsOcrScanning(true);
+    setTimeout(() => {
+      setIsOcrScanning(false);
+      setOcrScanned(true);
+    }, 1200);
+  };
+
+  const handleCheckTransit = () => {
+    setTicketScanning(true);
+    setTimeout(() => {
+      setTicketScanning(false);
+      setFlightTicketUploaded(true);
+      setTransitCheckResult(`Transit via London / Doha / Frankfurt: No transit visa required for ${passportCountry} passport with valid ${journeyDestination} visa (Direct Airside Transit Exemption).`);
+    }, 900);
+  };
+
+  const getDaysRemaining = (expDateStr: string) => {
+    try {
+      const exp = new Date(expDateStr).getTime();
+      const now = new Date().getTime();
+      const diff = Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
+      return diff > 0 ? diff : 0;
+    } catch {
+      return 730;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#FAFAFC] text-slate-900 selection:bg-emerald-100 selection:text-emerald-900 pb-20">
@@ -689,19 +859,6 @@ export function AITripPlannerLanding() {
           <div className="absolute top-2 left-10 w-72 h-72 bg-purple-100/10 rounded-full blur-3xl" />
           <div className="absolute top-16 right-0 w-80 h-80 bg-emerald-50/20 rounded-full blur-3xl" />
           <div className="absolute bottom-4 left-1/3 w-96 h-96 bg-slate-50/40 rounded-full blur-3xl" />
-          
-          {/* Subtle Decorative Tropical Leaves & Plane SVG Path */}
-          <div className="hidden lg:block absolute left-2 top-24 opacity-25">
-            <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
-              <path d="M10 80 Q 40 10 90 20 Q 70 80 10 80 Z" fill="#00A86B" opacity="0.4" />
-            </svg>
-          </div>
-          <div className="hidden lg:block absolute right-40 top-12 opacity-35">
-            <svg width="220" height="90" viewBox="0 0 220 90" fill="none">
-              <path d="M10 70 C 60 10, 140 10, 200 40" stroke="#A855F7" strokeWidth="2" strokeDasharray="6 6" fill="none" />
-              <polygon points="200,40 215,35 208,48" fill="#A855F7" />
-            </svg>
-          </div>
         </div>
 
         {/* Hero Content Container */}
@@ -731,7 +888,8 @@ export function AITripPlannerLanding() {
                 />
                 <button 
                   type="submit"
-                  className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-[#00A86B] hover:bg-[#008f5a] text-white flex items-center justify-center shadow-md hover:shadow-lg transition-transform active:scale-95 shrink-0 cursor-pointer"
+                  disabled={isGenerating}
+                  className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-[#00A86B] hover:bg-[#008f5a] text-white flex items-center justify-center shadow-md hover:shadow-lg transition-transform active:scale-95 shrink-0 cursor-pointer disabled:opacity-75"
                   title="Search Pathway"
                 >
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
@@ -1005,13 +1163,16 @@ export function AITripPlannerLanding() {
               {/* Field 4: Primary Action Button */}
               <div className="pt-5 sm:pt-4">
                 {hasVisaAlready === 'no' ? (
-                  <a
-                    href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
-                    className="w-full h-[52px] px-5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#00A86B]/25 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none"
+                  <button
+                    type="button"
+                    onClick={handleGeneratePathway}
+                    disabled={isGenerating}
+                    className="w-full h-[52px] px-4 sm:px-5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#00A86B]/25 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none disabled:opacity-75"
                   >
-                    <span>Find Visa Experts &amp; Pathway</span>
-                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                  </a>
+                    <Sparkles className="w-4 h-4 text-emerald-100 shrink-0" />
+                    <span>{isGenerating ? 'Generating Pathway...' : 'Generate My Pathway'}</span>
+                    <ArrowRight className="w-4 h-4 stroke-[2.5] shrink-0" />
+                  </button>
                 ) : (
                   <button
                     type="button"
@@ -1029,6 +1190,300 @@ export function AITripPlannerLanding() {
 
             </div>
           </div>
+
+          {/* ── AI LOADING STATE (ATTRACTIVE ANIMATED PATHWAY HUD) ── */}
+          {isGenerating && (
+            <div id="pathway-generator-status" className="w-full max-w-6xl mx-auto my-8 bg-gradient-to-b from-white to-emerald-50/30 border border-emerald-200/80 rounded-2xl sm:rounded-[32px] p-6 sm:p-9 text-left shadow-[0_20px_60px_rgba(0,168,107,0.08)] backdrop-blur-md relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-400 via-[#00A86B] to-teal-500 animate-pulse" />
+
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-5 border-b border-emerald-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/25 shrink-0 animate-spin" style={{ animationDuration: '6s' }}>
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-black tracking-wider uppercase text-[#00A86B] bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+                        AI Journey Architect
+                      </span>
+                      <span className="text-xs font-semibold text-slate-400">Live Pathway Synthesis</span>
+                    </div>
+                    <h3 className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">
+                      Crafting Custom Overseas Pathway for <span className="text-[#00A86B]">{journeyDestination}</span>
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-2xs">
+                    Passport: {passportCountry}
+                  </span>
+                  <span className="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#00A86B] shadow-2xs">
+                    {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-6 mb-7">
+                <div className="flex items-center justify-between text-xs font-extrabold text-slate-700 mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">{loadingSteps[loadingStep]?.icon}</span>
+                    <span className="text-slate-900">{loadingSteps[loadingStep]?.title}</span>
+                  </div>
+                  <span className="text-[#00A86B] font-black">{loadingProgress}%</span>
+                </div>
+                <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/80">
+                  <div
+                    className="h-full bg-gradient-to-r from-emerald-500 to-[#00A86B] rounded-full transition-all duration-300 shadow-sm"
+                    style={{ width: `${loadingProgress}%` }}
+                  />
+                </div>
+                <p className="text-xs text-slate-500 mt-1.5 pl-6 font-medium">
+                  {loadingSteps[loadingStep]?.desc}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
+                {loadingSteps.map((step, idx) => {
+                  const isDone = idx < loadingStep;
+                  const isCurrent = idx === loadingStep;
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-3.5 rounded-2xl border transition-all ${
+                        isCurrent
+                          ? 'bg-white border-[#00A86B] shadow-md shadow-emerald-500/10 ring-2 ring-emerald-500/20'
+                          : isDone
+                          ? 'bg-emerald-50/60 border-emerald-200 text-emerald-800'
+                          : 'bg-slate-50/60 border-slate-200/60 text-slate-400 opacity-60'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-lg">{step.icon}</span>
+                        {isDone ? (
+                          <div className="w-4 h-4 rounded-full bg-[#00A86B] text-white flex items-center justify-center">
+                            <Check className="w-2.5 h-2.5 stroke-[3]" />
+                          </div>
+                        ) : isCurrent ? (
+                          <div className="w-3 h-3 rounded-full bg-[#00A86B] animate-ping" />
+                        ) : (
+                          <span className="text-[10px] font-bold text-slate-300">0{idx + 1}</span>
+                        )}
+                      </div>
+                      <div className="text-xs font-bold truncate text-slate-800">
+                        {step.title.split('...')[0]}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ── 2. GENERATED OVERSEAS JOURNEY PATHWAY DASHBOARD (PURE READINESS & STAGES) ── */}
+          {hasGenerated && itineraryDays.length > 0 && (
+            <div id="overseas-pathway-dashboard" className="w-full max-w-6xl mx-auto mt-8 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start text-left animate-fadeIn">
+              
+              {/* LEFT CARD: AI Pathway Summary & Readiness Overview */}
+              <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-[26px] p-5 sm:p-6 shadow-sm">
+                <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                  <div>
+                    <span className="text-[10px] text-emerald-600 font-extrabold uppercase tracking-wider block">AI Pathway Assessment</span>
+                    <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
+                      {journeyDestination} Journey Roadmap
+                    </h3>
+                  </div>
+                  <div className="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-black text-[#00A86B]">
+                    96% Match
+                  </div>
+                </div>
+
+                {/* Destination & Meta Tags */}
+                <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-4 mb-4 space-y-2.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 font-bold">Passport Country</span>
+                    <span className="font-extrabold text-slate-800">{passportCountry} 🇮🇳</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 font-bold">Target Destination</span>
+                    <span className="font-extrabold text-slate-800">{journeyDestination}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 font-bold">Visa Intent</span>
+                    <span className="font-extrabold text-emerald-700">{travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200/60">
+                    <span className="text-slate-500 font-bold">Estimated Timeline</span>
+                    <span className="font-extrabold text-slate-900">4 – 8 Weeks</span>
+                  </div>
+                </div>
+
+                {/* Key Regulatory Checklist */}
+                <div className="space-y-2 mb-5">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                    Key Preparation Milestones
+                  </span>
+                  <div className="space-y-1.5 text-xs font-bold text-slate-700">
+                    <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                      <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
+                      <span>Biometrics &amp; Medical Clearance</span>
+                    </div>
+                    <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                      <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
+                      <span>Financial Proofs &amp; Maintenance Funds</span>
+                    </div>
+                    <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                      <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
+                      <span>English Proficiency (IELTS / PTE / TOEFL)</span>
+                    </div>
+                    <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                      <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
+                      <span>Designated Institution LOA / LMIA Sponsorship</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Journey Modifiers Pills */}
+                <div className="pt-3 border-t border-slate-100">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-2">
+                    Add Journey Enhancers
+                  </span>
+                  <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                    {journeyModifiers.map((mod) => {
+                      const isActive = activeModifiers.includes(mod.id);
+                      return (
+                        <button
+                          key={mod.id}
+                          type="button"
+                          onClick={() => toggleModifier(mod.id)}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer select-none ${
+                            isActive
+                              ? 'border-[#00A86B] bg-emerald-50 text-[#00A86B]'
+                              : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'
+                          }`}
+                        >
+                          <span>{mod.icon}</span>
+                          <span>{mod.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* CTA: Connect with Expert */}
+                <div className="mt-4 pt-3 border-t border-slate-100">
+                  <a
+                    href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
+                    className="w-full py-2.5 px-4 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center"
+                  >
+                    <span>Find {journeyDestination} Visa Specialists</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+
+              {/* RIGHT CARD: Stage-by-Stage / Day-by-Day Preparation Itinerary */}
+              <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-[26px] p-5 sm:p-6 shadow-sm">
+                <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-2 text-slate-900 font-extrabold text-base sm:text-lg">
+                    <Compass className="w-5 h-5 text-[#00A86B]" />
+                    <span>Stage-by-Stage Overseas Pathway</span>
+                  </div>
+                  <span className="text-xs font-bold text-[#00A86B] bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                    {itineraryDays.length} Milestones
+                  </span>
+                </div>
+
+                {/* Dynamic Accordion list */}
+                <div className="space-y-2.5">
+                  {itineraryDays.map((day) => {
+                    const isExpanded = expandedDay === day.dayNumber;
+                    return (
+                      <div
+                        key={day.dayNumber}
+                        className={`border rounded-2xl overflow-hidden transition-all duration-200 ${
+                          isExpanded
+                            ? 'border-slate-200 bg-white shadow-2xs'
+                            : 'border-slate-200/80 bg-white hover:border-slate-300'
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setExpandedDay(isExpanded ? 0 : day.dayNumber)}
+                          className="w-full p-3.5 flex items-center justify-between text-left hover:bg-slate-50 transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-3">
+                            {day.image && (
+                              <img
+                                src={day.image}
+                                alt={day.title}
+                                className="w-12 h-12 object-cover rounded-xl shrink-0 border border-slate-100 shadow-2xs"
+                              />
+                            )}
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-black text-[#00A86B] uppercase tracking-wider">
+                                  Stage 0{day.dayNumber}
+                                </span>
+                                <span className="text-xs sm:text-sm font-extrabold text-slate-800">
+                                  {day.title.replace(/^Stage \d+:\s*/i, '')}
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-slate-500 font-medium truncate max-w-[220px] sm:max-w-md mt-0.5">
+                                {day.summary || day.morning}
+                              </p>
+                            </div>
+                          </div>
+                          <ChevronDown
+                            className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ml-2 ${
+                              isExpanded ? 'rotate-180 text-[#00A86B]' : ''
+                            }`}
+                          />
+                        </button>
+
+                        {isExpanded && (
+                          <div className="px-4 pb-4 pt-1 bg-slate-50/50 border-t border-slate-100 text-xs space-y-2.5">
+                            {day.summary && (
+                              <p className="text-slate-600 font-medium leading-relaxed italic bg-white p-2.5 rounded-xl border border-slate-200/70">
+                                &quot;{day.summary}&quot;
+                              </p>
+                            )}
+                            <div className="space-y-2 pt-1">
+                              {day.morning && (
+                                <div className="flex items-start gap-2 bg-white p-2 rounded-xl border border-slate-100">
+                                  <span className="font-bold text-slate-800 shrink-0 flex items-center gap-1">
+                                    ☀️ Morning:
+                                  </span>
+                                  <span className="text-slate-600 font-medium">{day.morning}</span>
+                                </div>
+                              )}
+                              {day.afternoon && (
+                                <div className="flex items-start gap-2 bg-white p-2 rounded-xl border border-slate-100">
+                                  <span className="font-bold text-slate-800 shrink-0 flex items-center gap-1">
+                                    🌤️ Afternoon:
+                                  </span>
+                                  <span className="text-slate-600 font-medium">{day.afternoon}</span>
+                                </div>
+                              )}
+                              {day.evening && (
+                                <div className="flex items-start gap-2 bg-white p-2 rounded-xl border border-slate-100">
+                                  <span className="font-bold text-slate-800 shrink-0 flex items-center gap-1">
+                                    🌅 Evening:
+                                  </span>
+                                  <span className="text-slate-600 font-medium">{day.evening}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
+          )}
 
           {/* ── 3. FLOW 1: "VISA APPROVED & READY" JOURNEY DASHBOARD (APPLE-LIKE GLASSMORPHISM) ── */}
           {hasVisaAlready === 'yes' && (
@@ -1391,7 +1846,7 @@ export function AITripPlannerLanding() {
             </div>
           )}
 
-          {/* ── 3. MULTI-TAB GLOBAL SEARCH & FILTER WIDGET (MOBILE-PERFECT RESPONSIVE) ── */}
+{/* ── 3. MULTI-TAB GLOBAL SEARCH & FILTER WIDGET (MOBILE-PERFECT RESPONSIVE) ── */}
           <div className="w-full max-w-6xl mx-auto mt-7 sm:mt-9 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-4 sm:p-7 md:p-9 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left">
             
             {/* Top 5 Service Tabs - Clean Horizontal Scroll with Generous Gap */}

@@ -1224,56 +1224,10 @@ Official URL: https://travltik.com
             </div>
           )}
 
-          {/* ── 2. FLOW 1: VISA APPROVED & READY PARENTAL SECURITY ENGINE (WITH AUTH GUARD) ── */}
+          {/* ── 2. FLOW 1: VISA APPROVED & READY PARENTAL SECURITY ENGINE ── */}
           {showDashboard && (
-            <div id="parental-security-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6 relative">
+            <div id="parental-security-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
               
-              {/* AUTHENTICATION LOCK GUARD OVERLAY (GUEST STATE) */}
-              {!isAuthenticated && (
-                <div className="absolute inset-0 z-30 bg-white/70 backdrop-blur-md rounded-2xl sm:rounded-[32px] flex items-center justify-center p-4 sm:p-6 shadow-2xl border border-white/80 animate-fadeIn">
-                  <div className="max-w-md w-full bg-white/95 border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.12)] text-center relative overflow-hidden">
-                    <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] mx-auto mb-4 shadow-sm">
-                      <Lock className="w-7 h-7 stroke-[2.5]" />
-                    </div>
-                    
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-800 text-[11px] font-black uppercase tracking-wider mb-2">
-                      <span>🔒 Overseas Safeguard Engine</span>
-                    </div>
-
-                    <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
-                      Unlock Your Overseas Journey Roadmap
-                    </h3>
-
-                    <p className="text-xs text-slate-600 font-medium mt-2 leading-relaxed">
-                      Sign in or create a free TravlTik account to scan your visa, set expiry alerts, and access pre-departure tools.
-                    </p>
-
-                    <div className="mt-6 space-y-2.5">
-                      <a
-                        href="/login"
-                        className="w-full py-3 px-5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black shadow-md shadow-emerald-600/25 transition-all flex items-center justify-center gap-2 active:scale-95"
-                      >
-                        <LogIn className="w-4 h-4" />
-                        <span>Sign In to Unlock</span>
-                        <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                      </a>
-
-                      <a
-                        href="/signup"
-                        className="w-full py-3 px-5 rounded-2xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all flex items-center justify-center gap-2 active:scale-95"
-                      >
-                        <UserPlus className="w-4 h-4" />
-                        <span>Create Free Account</span>
-                      </a>
-                    </div>
-
-                    <p className="text-[11px] text-slate-400 font-medium mt-4">
-                      Free access • Bank-grade encrypted document security
-                    </p>
-                  </div>
-                </div>
-              )}
-
               {/* Top Banner: Visa Status Active & Destination Confirmation */}
               <div className="bg-gradient-to-r from-emerald-500 via-[#00A86B] to-teal-600 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 text-white shadow-xl relative overflow-hidden">
                 <div className="absolute right-0 top-0 bottom-0 w-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />

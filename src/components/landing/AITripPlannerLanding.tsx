@@ -2194,7 +2194,81 @@ Track live status here: https://travltik.com/dashboard`;
             </div>
           )}
 
-{/* ── 3. MULTI-TAB GLOBAL SEARCH & FILTER WIDGET (MOBILE-PERFECT RESPONSIVE) ── */}
+          {/* ── HOW IT WORKS (SIMPLE 3-STEP PROCESS) ── */}
+          <div className="relative w-full max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
+            {/* Header Typography */}
+            <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-[#00A86B] border border-emerald-200/60 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-3">
+              <span>Simple 3-Step Process</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight text-center">
+              How TravlTik Works
+            </h2>
+            <p className="text-slate-500 text-sm sm:text-base font-medium max-w-xl mx-auto text-center mt-2">
+              From choosing your destination to safe arrival, our AI and verified network guide every step.
+            </p>
+
+            {/* 3-Step Interactive Card Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mt-10 relative z-10 text-left">
+              {/* Connector Lines on Desktop */}
+              <div className="hidden md:block absolute top-1/2 left-0 w-full border-t-2 border-dashed border-slate-200 -z-0 pointer-events-none transform -translate-y-6" />
+
+              {/* STEP 01 CARD */}
+              <div className="bg-white/80 backdrop-blur-md border border-slate-200/80 hover:border-[#00A86B] rounded-[24px] p-6 shadow-sm hover:shadow-xl transition-all flex flex-col items-start relative group z-10">
+                <div className="flex items-center justify-between w-full mb-4">
+                  <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-2xs group-hover:scale-105 transition-transform">
+                    🎯
+                  </div>
+                  <span className="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-lg">
+                    01
+                  </span>
+                </div>
+                <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#00A86B] transition-colors">
+                  Share Target &amp; Visa Status
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-2 leading-relaxed">
+                  Select your passport, destination country, and whether you already hold a valid visa or need expert guidance.
+                </p>
+              </div>
+
+              {/* STEP 02 CARD */}
+              <div className="bg-white/80 backdrop-blur-md border border-slate-200/80 hover:border-[#00A86B] rounded-[24px] p-6 shadow-sm hover:shadow-xl transition-all flex flex-col items-start relative group z-10">
+                <div className="flex items-center justify-between w-full mb-4">
+                  <div className="w-12 h-12 bg-teal-50 text-[#00A86B] rounded-2xl flex items-center justify-center text-xl shadow-2xs group-hover:scale-105 transition-transform">
+                    ⚡
+                  </div>
+                  <span className="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-lg">
+                    02
+                  </span>
+                </div>
+                <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#00A86B] transition-colors">
+                  AI Synthesizes Your Pathway
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-2 leading-relaxed">
+                  Our engine checks transit visa layovers, document requirements, and creates a custom readiness roadmap.
+                </p>
+              </div>
+
+              {/* STEP 03 CARD */}
+              <div className="bg-white/80 backdrop-blur-md border border-slate-200/80 hover:border-[#00A86B] rounded-[24px] p-6 shadow-sm hover:shadow-xl transition-all flex flex-col items-start relative group z-10">
+                <div className="flex items-center justify-between w-full mb-4">
+                  <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-2xs group-hover:scale-105 transition-transform">
+                    ✈️
+                  </div>
+                  <span className="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-lg">
+                    03
+                  </span>
+                </div>
+                <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#00A86B] transition-colors">
+                  Safe Landing &amp; Settlement
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-2 leading-relaxed">
+                  Confirm airport driver pickup, escrow housing, Forex eSIMs, and connect with peer groups in your target city.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* ── 3. MULTI-TAB GLOBAL SEARCH & FILTER WIDGET (MOBILE-PERFECT RESPONSIVE) ── */}
           <div className="w-full max-w-6xl mx-auto mt-7 sm:mt-9 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-4 sm:p-7 md:p-9 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left">
             
             {/* Top 5 Service Tabs - Clean Horizontal Scroll with Generous Gap */}

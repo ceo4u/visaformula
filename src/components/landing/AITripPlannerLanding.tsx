@@ -202,237 +202,6 @@ const getLocationsByCountry = (country: string) => {
   ];
 };
 
-const destinationPathwayKnowledge: Record<string, { image: string; fallbackDays: Array<{ title: string; summary: string; morning: string; afternoon: string; evening: string }> }> = {
-  canada: {
-    image: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?q=80&w=600&auto=format&fit=crop',
-    fallbackDays: [
-      {
-        title: 'Stage 1: Documentation & Eligibility Assessment',
-        summary: 'Audit of academic transcripts, WES credential evaluation, and IELTS/PTE language scores.',
-        morning: 'Comprehensive profile assessment & Provincial Nominee / Express Entry eligibility check.',
-        afternoon: 'Verification of proof of funds (CAD $20,635+ living expenses & tuition GIC account).',
-        evening: 'Statement of Purpose (SOP) & Letter of Explanation (LOE) drafting with certified advisor.'
-      },
-      {
-        title: 'Stage 2: Institutional Offer / Job Acceptance & CAQ',
-        summary: 'Securing official Designated Learning Institution (DLI) Letter of Acceptance (LOA) / LMIA.',
-        morning: 'Submit formal application to DLI institutions in Ontario, BC, or Alberta.',
-        afternoon: 'Pay first semester tuition deposit & receive Provincial Attestation Letter (PAL) / CAQ.',
-        evening: 'Initiate Scotiabank / CIBC Student GIC program verification & deposit confirmation.'
-      },
-      {
-        title: 'Stage 3: Upfront Medical Exam & Biometrics Filing',
-        summary: 'IRCC panel physician health clearance and biometric appointment at VFS Global.',
-        morning: 'Complete mandatory Immigration Medical Examination (IME) with empanelled physician.',
-        afternoon: 'Submit online IRCC visa application with complete digital document package.',
-        evening: 'Book and attend biometric capture (fingerprinting & digital photo) at VFS center.'
-      },
-      {
-        title: 'Stage 4: Visa Grant & Pre-Flight Transit Verification',
-        summary: 'Download Letter of Introduction (Port of Entry Letter) and book flight routes.',
-        morning: 'Receive official IRCC Study / Work Permit Approval & Port of Entry (POE) letter.',
-        afternoon: 'Book international flight tickets & verify direct transit rules (UK/Europe/Qatar layovers).',
-        evening: 'Enroll in mandatory international student/expat health insurance coverage.'
-      },
-      {
-        title: 'Stage 5: Housing Escrow, Forex & Border Clearance',
-        summary: 'Secure campus accommodation, multi-currency card, and seamless border landing.',
-        morning: 'Reserve verified student housing / short-stay apartment with escrow protection.',
-        afternoon: 'Activate Zero-Forex multi-currency card & get Canadian 5G eSIM for arrival.',
-        evening: 'Border CBSA interview clearance at Toronto (YYZ) or Vancouver (YVR) and SIN issuance.'
-      }
-    ]
-  },
-  usa: {
-    image: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?q=80&w=600&auto=format&fit=crop',
-    fallbackDays: [
-      {
-        title: 'Stage 1: University Acceptance & Form I-20 Issuance',
-        summary: 'Secure official SEVP-certified institution admission and Form I-20.',
-        morning: 'University admission confirmation and submission of affidavit of support & bank statements.',
-        afternoon: 'Receive digital Form I-20 with SEVIS ID and designated university advisor details.',
-        evening: 'Pay mandatory SEVIS I-901 fee online and save payment confirmation receipt.'
-      },
-      {
-        title: 'Stage 2: DS-160 Filing & Visa Appointment Scheduling',
-        summary: 'Complete Online Nonimmigrant Visa Application (DS-160) and schedule VAC biometrics.',
-        morning: 'Fill out DS-160 barcode form accurately with educational and travel history.',
-        afternoon: 'Pay US visa application fee and book two-stage appointment (OFC Biometrics + Consular Interview).',
-        evening: 'Prepare structured interview document folder with academic, financial, and home-tie proofs.'
-      },
-      {
-        title: 'Stage 3: OFC Biometrics & US Embassy Consular Interview',
-        summary: 'Attend biometric fingerprinting and face-to-face visa officer interview.',
-        morning: 'Attend OFC (Offsite Facilitation Center) for photo and fingerprint scanning.',
-        afternoon: 'Attend Consular Visa Interview at US Embassy/Consulate with clear intent and confidence.',
-        evening: 'Visa approval confirmation: Passport submitted for visa stamping & issuance.'
-      },
-      {
-        title: 'Stage 4: Flight Ticketing & Transit Clearance',
-        summary: 'Confirm transpacific/transatlantic flight routing and transit visa exemptions.',
-        morning: 'Book air ticket arriving up to 30 days prior to I-20 program start date.',
-        afternoon: 'Verify direct airside transit exemptions for European and Middle Eastern hub layovers.',
-        evening: 'Register university mandatory immunization records & health insurance.'
-      },
-      {
-        title: 'Stage 5: Forex, US eSIM & CBP Port of Entry Arrival',
-        summary: 'Landing at US airport, CBP border inspection, and I-94 arrival record.',
-        morning: 'Load USD Forex Card & activate US 5G eSIM before boarding flight.',
-        afternoon: 'Present Passport, Visa, and I-20 at CBP border inspection at JFK / SFO / ORD.',
-        evening: 'Download electronic Form I-94 arrival record and check-in to campus housing.'
-      }
-    ]
-  },
-  uk: {
-    image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=600&auto=format&fit=crop',
-    fallbackDays: [
-      {
-        title: 'Stage 1: CAS Issuance & Financial Verification',
-        summary: 'Obtaining Confirmation of Acceptance for Studies (CAS) and 28-day fund maturation.',
-        morning: 'Fulfill university conditional offer & accept official unconditional CAS letter.',
-        afternoon: 'Verify 28-day maintenance funds in approved bank account (London vs Outer London).',
-        evening: 'Complete mandatory UK TB (Tuberculosis) screening at approved IOM diagnostic clinic.'
-      },
-      {
-        title: 'Stage 2: UKVI Online Application & IHS Health Surcharge',
-        summary: 'Complete UK Visas & Immigration application and pay NHS health surcharge.',
-        morning: 'Fill out UKVI digital application form referencing CAS number and travel dates.',
-        afternoon: 'Pay Immigration Health Surcharge (IHS) for full NHS medical coverage during stay.',
-        evening: 'Upload supporting academic certificates, bank statements, and TB certificate.'
-      },
-      {
-        title: 'Stage 3: VFS Biometrics & Digital Visa Decision',
-        summary: 'Submit biometric scans and receive digital eVisa / vignette passport sticker.',
-        morning: 'Attend VFS Global / TLScontact appointment for biometrics and passport submission.',
-        afternoon: 'Option for Priority / Super Priority visa processing (decisions in 24-48 hours).',
-        evening: 'Receive UKVI decision letter and collect passport with entry vignette.'
-      },
-      {
-        title: 'Stage 4: Flight Route & London Transit Alignment',
-        summary: 'Book flights into London Heathrow / Manchester and secure student luggage allowance.',
-        morning: 'Book student flight ticket with double 23kg baggage allowance.',
-        afternoon: 'Confirm airport arrival train / National Express coach direct to university city.',
-        evening: 'Complete UK digital Passenger Locator checks & university arrival registration.'
-      },
-      {
-        title: 'Stage 5: BRP / UKVI eVisa Account, Housing & Bank Account',
-        summary: 'Set up UKVI digital status, Monzo/Revolut bank account, and student dorm check-in.',
-        morning: 'Arrive at UK border with digital eVisa share code and passport.',
-        afternoon: 'Check-in to university student hall / private accommodation with verified contract.',
-        evening: 'Open UK bank account, set up UK mobile SIM, and complete university on-campus enrolment.'
-      }
-    ]
-  },
-  australia: {
-    image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=600&auto=format&fit=crop',
-    fallbackDays: [
-      {
-        title: 'Stage 1: Confirmation of Enrolment (CoE) & Genuine Student (GS)',
-        summary: 'Secure CRICOS CoE and complete Genuine Student requirement evaluation.',
-        morning: 'Accept university offer letter and satisfy Genuine Student (GS) assessment criteria.',
-        afternoon: 'Pay initial tuition deposit and receive official electronic Confirmation of Enrolment (CoE).',
-        evening: 'Purchase mandatory Overseas Student Health Cover (OSHC) with Medibank / Bupa / Allianz.'
-      },
-      {
-        title: 'Stage 2: ImmiAccount Filing & Financial Evidence',
-        summary: 'Submit Subclass 500 / 482 visa application through Australian Department of Home Affairs.',
-        morning: 'Create ImmiAccount and fill out Student Visa (Subclass 500) application.',
-        afternoon: 'Upload financial capacity evidence (AUD $29,710 living cost + tuition) & English test scores.',
-        evening: 'Pay Department of Home Affairs visa application fee.'
-      },
-      {
-        title: 'Stage 3: HAP ID Health Assessment & Biometrics',
-        summary: 'Complete Bupa Medical Visa Services health examination and VFS biometrics.',
-        morning: 'Generate eMedical referral letter with HAP ID and book panel physician exam.',
-        afternoon: 'Complete chest X-ray and medical examination at authorized medical clinic.',
-        evening: 'Attend VFS Global Australian Biometric Collection Centre for fingerprinting.'
-      },
-      {
-        title: 'Stage 4: Visa Grant & Flight Routing via Asian Hubs',
-        summary: 'Receive Department of Home Affairs visa grant notification & flight confirmation.',
-        morning: 'Download Visa Grant Notice containing VEVO visa conditions (Work Condition 8105).',
-        afternoon: 'Book international flight to Sydney (SYD), Melbourne (MEL), or Brisbane (BNE).',
-        evening: 'Confirm transit rules for Singapore (SIN), Kuala Lumpur (KUL), or Bangkok (BKK) layovers.'
-      },
-      {
-        title: 'Stage 5: TFN / Bank Setup, Housing & Australia Arrival',
-        summary: 'Arrival in Australia, Australian Tax File Number (TFN) application, and campus start.',
-        morning: 'Clear Australian SmartGate border entry with valid passport.',
-        afternoon: 'Check-in to student accommodation or homestay in destination city.',
-        evening: 'Apply for Tax File Number (TFN), open Commonwealth/ANZ bank account, and buy Opal/Myki card.'
-      }
-    ]
-  },
-  germany: {
-    image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=600&auto=format&fit=crop',
-    fallbackDays: [
-      {
-        title: 'Stage 1: University Zulassung & Blocked Account Setup',
-        summary: 'Secure German university admission and fund Sperrkonto (Blocked Account).',
-        morning: 'Receive official admission letter (Zulassungsbescheid) or Opportunity Card assessment.',
-        afternoon: 'Open German Blocked Account (Sperrkonto) with Coracle / Expatrio / Fintiba (€11,208/yr).',
-        evening: 'Enroll in mandatory statutory health insurance (TK / Barmer) or private expat cover.'
-      },
-      {
-        title: 'Stage 2: German National Visa (D-Visa) Application',
-        summary: 'Book VFS / German Embassy appointment and assemble German standard dossier.',
-        morning: 'Complete digital VIDEX application for German National Long-Stay Visa (Category D).',
-        afternoon: 'Compile chronological Europass CV, German motivation letter, and academic transcripts with APS certificate.',
-        evening: 'Schedule VFS German Visa Application Centre appointment slot.'
-      },
-      {
-        title: 'Stage 3: VFS Document Submission & Embassy Verification',
-        summary: 'Attend appointment, submit biometrics, and track Alien Authority clearance.',
-        morning: 'Submit dossier and biometrics at VFS German Application Centre.',
-        afternoon: 'Application forwarded to German Federal Foreign Office and local Ausländerbehörde.',
-        evening: 'Track visa dispatch and receive passport stamped with German National D-Visa.'
-      },
-      {
-        title: 'Stage 4: Flight Booking & Schengen Entry Alignment',
-        summary: 'Confirm direct flight to Frankfurt (FRA), Munich (MUC), or Berlin (BER).',
-        morning: 'Book air ticket arriving ahead of German semester start date (Winter/Summer semester).',
-        afternoon: 'Verify Schengen transit rules and baggage allowances for student travel.',
-        evening: 'Secure temporary accommodation / WG-Zimmer (flatshare) with Wohnungsgeberbestätigung.'
-      },
-      {
-        title: 'Stage 5: City Registration (Anmeldung), Bank & Residence Permit',
-        summary: 'Complete local Bürgeramt Anmeldung, unblock Sperrkonto, and university matriculation.',
-        morning: 'Arrive in Germany and register address at local Bürgeramt within 14 days (Anmeldung).',
-        afternoon: 'Activate blocked account monthly payouts with German IBAN bank account.',
-        evening: 'Complete university matriculation (Immatrikulation) and receive Semesterticket.'
-      }
-    ]
-  }
-};
-
-const getDestinationImage = (dest: string) => {
-  const d = (dest || '').toLowerCase();
-  if (d.includes('canada')) return 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('usa') || d.includes('united states') || d.includes('america')) return 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('uk') || d.includes('united kingdom') || d.includes('london') || d.includes('britain')) return 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('australia') || d.includes('sydney') || d.includes('melbourne')) return 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('germany') || d.includes('berlin') || d.includes('frankfurt') || d.includes('munich')) return 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('ireland') || d.includes('dublin')) return 'https://images.unsplash.com/photo-1590089415225-401ed6f9db8e?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('new zealand') || d.includes('auckland')) return 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('uae') || d.includes('dubai')) return 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('singapore')) return 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('france') || d.includes('paris')) return 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=600&auto=format&fit=crop';
-  if (d.includes('japan') || d.includes('tokyo')) return 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=600&auto=format&fit=crop';
-  return 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=600&auto=format&fit=crop';
-};
-
-// Popular destinations with high-res circular country flag images
-const popularDestinations = [
-  { name: 'Canada', flagImg: 'https://flagcdn.com/w160/ca.png', code: 'CA' },
-  { name: 'UK', flagImg: 'https://flagcdn.com/w160/gb.png', code: 'GB' },
-  { name: 'USA', flagImg: 'https://flagcdn.com/w160/us.png', code: 'US' },
-  { name: 'Australia', flagImg: 'https://flagcdn.com/w160/au.png', code: 'AU' },
-  { name: 'Germany', flagImg: 'https://flagcdn.com/w160/de.png', code: 'DE' },
-  { name: 'New Zealand', flagImg: 'https://flagcdn.com/w160/nz.png', code: 'NZ' },
-  { name: 'UAE', flagImg: 'https://flagcdn.com/w160/ae.png', code: 'AE' },
-  { name: 'More', flagImg: '', isMore: true, code: 'ALL' },
-];
-
 export function AITripPlannerLanding() {
   // Input search state
   const [searchPrompt, setSearchPrompt] = useState('');
@@ -483,13 +252,7 @@ export function AITripPlannerLanding() {
   const visaFileInputRef = useRef<HTMLInputElement>(null);
   const ticketFileInputRef = useRef<HTMLInputElement>(null);
   
-  // Step 3: On-Arrival Settlement States
-  const [bankAppointmentBooked, setBankAppointmentBooked] = useState(false);
-  const [campusCheckInConfirmed, setCampusCheckInConfirmed] = useState(false);
-  const [transitPassGuideOpen, setTransitPassGuideOpen] = useState(false);
-  const [gpDoctorRegistered, setGpDoctorRegistered] = useState(false);
-
-  // Action Checklist Checklist States
+  // Action Checklist Checklist States (Parent's Peace-of-Mind Roadmap)
   const [ticketScanning, setTicketScanning] = useState(false);
   const [uploadedTicketFileName, setUploadedTicketFileName] = useState('');
   const [flightTicketUploaded, setFlightTicketUploaded] = useState(false);
@@ -506,20 +269,16 @@ export function AITripPlannerLanding() {
     docs: false,
   });
 
-  // Generator & Pathway States
+  // Step 3: On-Arrival Settlement States
+  const [bankAppointmentBooked, setBankAppointmentBooked] = useState(false);
+  const [campusCheckInConfirmed, setCampusCheckInConfirmed] = useState(false);
+  const [transitPassGuideOpen, setTransitPassGuideOpen] = useState(false);
+  const [gpDoctorRegistered, setGpDoctorRegistered] = useState(false);
+
+  // Generator & Dashboard Trigger States
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
-  const [expandedDay, setExpandedDay] = useState<number>(1);
-  const [itineraryDays, setItineraryDays] = useState<Array<{
-    dayNumber: number;
-    title: string;
-    summary?: string;
-    image: string;
-    morning: string;
-    afternoon: string;
-    evening: string;
-  }>>([]);
 
   // Global Multi-Tab Search Widget State
   const [activeSearchTab, setActiveSearchTab] = useState<'universities' | 'consultants' | 'relocation' | 'jobs' | 'lawyers'>('universities');
@@ -559,18 +318,15 @@ export function AITripPlannerLanding() {
   const experienceLevelRef = useRef<HTMLDivElement>(null);
   const lawyerSpecRef = useRef<HTMLDivElement>(null);
 
-  // Dynamically resolve state/province locations based on chosen destination country
-  const activeLocations = getLocationsByCountry(searchCountry);
-
-  // Dynamic AI Generation Loading Step State
+  // Dynamic Loading HUD State
   const [loadingStep, setLoadingStep] = useState<number>(0);
   const [loadingProgress, setLoadingProgress] = useState<number>(15);
 
   const loadingSteps = [
-    { icon: '🌐', title: 'Connecting to Global Visa & Immigration Hub...', desc: `Analyzing ${passportCountry} to ${journeyDestination} eligibility` },
-    { icon: '📑', title: 'Structuring Required Documentation & Stages...', desc: 'Optimizing SOP, Financials, Medicals & Biometrics' },
-    { icon: '🎓', title: 'Matching Institutional & Regulatory Clearances...', desc: 'Verifying DLI acceptance, VFS slots & work entitlements' },
-    { icon: '✨', title: 'Finalizing Your Overseas Preparation Pathway...', desc: 'Synthesizing stage-by-stage departure roadmap' }
+    { icon: '🌐', title: 'Connecting to Global Visa & Security Hub...', desc: `Auditing ${passportCountry} to ${journeyDestination} regulations` },
+    { icon: '📑', title: 'Structuring Visa Compliance & Transit Check...', desc: 'Verifying stay conditions, work limits & layover exemptions' },
+    { icon: '🛡️', title: 'Activating Parental Security Engine...', desc: 'Configuring verified driver pickup, housing escrow & 5G eSIM' },
+    { icon: '✨', title: 'Finalizing Peace-of-Mind Departure Roadmap...', desc: 'Ready for secure international departure' }
   ];
 
   // Close custom dropdowns on click outside
@@ -626,22 +382,16 @@ export function AITripPlannerLanding() {
     }
   };
 
-  // Trigger Gemini API Pathway generation
-  const fetchAIPathway = async (payload: {
+  // Trigger Parental Security Engine Generation
+  const fetchAISecurityEngine = async (payload: {
     destination?: string;
     passport?: string;
     purpose?: string;
-    modifiers?: string[];
   }) => {
     setIsGenerating(true);
     setLoadingStep(0);
     setLoadingProgress(15);
 
-    const targetDest = payload.destination || journeyDestination || 'Canada';
-    const targetPassport = payload.passport || passportCountry || 'India';
-    const targetPurpose = payload.purpose || travelPurpose || 'study';
-
-    // Scroll to loading card
     setTimeout(() => {
       const loadingEl = document.getElementById('pathway-generator-status');
       if (loadingEl) {
@@ -658,91 +408,27 @@ export function AITripPlannerLanding() {
         if (prev < 85) return prev + 25;
         return 95;
       });
-    }, 400);
+    }, 350);
 
-    try {
-      const response = await fetch('/api/generate-trip', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          destination: targetDest,
-          vibe: targetPurpose,
-          duration: 5,
-          modifiers: payload.modifiers || activeModifiers
-        }),
-      });
-      const data = await response.json();
-      
-      let stages: any[] = [];
-      if (data && data.success && data.plan && data.plan.days && Array.isArray(data.plan.days) && data.plan.days.length > 0) {
-        stages = data.plan.days.map((d: any, idx: number) => ({
-          dayNumber: d.dayNumber || (idx + 1),
-          title: d.title || `Stage ${idx + 1}: Overseas Journey Preparation`,
-          summary: d.summary || (d.morning ? d.morning.substring(0, 70) + '...' : 'Key preparatory milestone and compliance check.'),
-          image: d.image || getDestinationImage(targetDest),
-          morning: d.morning || 'Review documents and fulfill regulatory criteria.',
-          afternoon: d.afternoon || 'Submit forms and process requisite verification deposits.',
-          evening: d.evening || 'Confirm approvals, transit readiness, and airport arrival plan.'
-        }));
-      } else {
-        const normDest = targetDest.toLowerCase().replace(/[^a-z]/g, '');
-        const fallbackObj = destinationPathwayKnowledge[normDest] || destinationPathwayKnowledge['canada'];
-        stages = fallbackObj.fallbackDays.map((d, idx) => ({
-          dayNumber: idx + 1,
-          title: d.title,
-          summary: d.summary,
-          image: fallbackObj.image,
-          morning: d.morning,
-          afternoon: d.afternoon,
-          evening: d.evening
-        }));
-      }
-
-      setItineraryDays(stages);
-      setExpandedDay(1);
-      setLoadingProgress(100);
-      setHasGenerated(true);
-
-      setTimeout(() => {
-        const dashboardElement = document.getElementById('overseas-pathway-dashboard');
-        if (dashboardElement) {
-          dashboardElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 150);
-    } catch (err) {
-      console.error('Failed to generate AI pathway:', err);
-      const normDest = targetDest.toLowerCase().replace(/[^a-z]/g, '');
-      const fallbackObj = destinationPathwayKnowledge[normDest] || destinationPathwayKnowledge['canada'];
-      setItineraryDays(fallbackObj.fallbackDays.map((d, idx) => ({
-        dayNumber: idx + 1,
-        title: d.title,
-        summary: d.summary,
-        image: fallbackObj.image,
-        morning: d.morning,
-        afternoon: d.afternoon,
-        evening: d.evening
-      })));
-      setExpandedDay(1);
-      setLoadingProgress(100);
-      setHasGenerated(true);
-      setTimeout(() => {
-        const dashboardElement = document.getElementById('overseas-pathway-dashboard');
-        if (dashboardElement) {
-          dashboardElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 150);
-    } finally {
+    setTimeout(() => {
       clearInterval(stepInterval);
+      setLoadingProgress(100);
       setIsGenerating(false);
-    }
+      setHasGenerated(true);
+      setTimeout(() => {
+        const dashboardElement = document.getElementById('parental-security-engine-dashboard');
+        if (dashboardElement) {
+          dashboardElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }, 1200);
   };
 
   const handleGeneratePathway = () => {
-    fetchAIPathway({
+    fetchAISecurityEngine({
       destination: journeyDestination || 'Canada',
       passport: passportCountry || 'India',
-      purpose: travelPurpose || 'study',
-      modifiers: activeModifiers
+      purpose: travelPurpose || 'study'
     });
   };
 
@@ -760,11 +446,10 @@ export function AITripPlannerLanding() {
     }
     setJourneyDestination(foundDest);
 
-    fetchAIPathway({
+    fetchAISecurityEngine({
       destination: foundDest,
       passport: passportCountry,
-      purpose: travelPurpose,
-      modifiers: activeModifiers
+      purpose: travelPurpose
     });
   };
 
@@ -803,28 +488,10 @@ export function AITripPlannerLanding() {
     setTravelPurpose(targetPurpose);
     setSearchPrompt(`${passportCountry} Passport to ${targetCountry} (${label})`);
 
-    fetchAIPathway({
+    fetchAISecurityEngine({
       destination: targetCountry,
       passport: passportCountry,
-      purpose: targetPurpose,
-      modifiers: activeModifiers
-    });
-  };
-
-  const toggleModifier = (modId: string) => {
-    let nextMods: string[];
-    if (activeModifiers.includes(modId)) {
-      nextMods = activeModifiers.filter(m => m !== modId);
-    } else {
-      nextMods = [...activeModifiers, modId];
-    }
-    setActiveModifiers(nextMods);
-
-    fetchAIPathway({
-      destination: journeyDestination || 'Canada',
-      passport: passportCountry || 'India',
-      purpose: travelPurpose || 'study',
-      modifiers: nextMods
+      purpose: targetPurpose
     });
   };
 
@@ -840,7 +507,6 @@ export function AITripPlannerLanding() {
     setIsOcrScanning(true);
 
     try {
-      // Read file to Base64
       const reader = new FileReader();
       reader.onload = async () => {
         const base64Data = reader.result as string;
@@ -890,7 +556,6 @@ export function AITripPlannerLanding() {
           console.warn('API OCR fetch failed, applying client fallback:', apiErr);
         }
 
-        // Fallback if API route is unavailable
         applyFallbackOcr(fileName);
       };
 
@@ -932,13 +597,14 @@ export function AITripPlannerLanding() {
           complianceChecksum: 'SHA256:VERIFIED_IMMIGRATION_RECORD_VJ9CHC0C'
         });
       } else {
-        setApprovedVisaType(`${journeyDestination} ${travelPurpose === 'study' ? 'Student Visa' : 'Work Permit'}`);
+        setApprovedVisaType(`${journeyDestination} ${travelPurpose === 'study' ? 'Student Visa (Subclass 500 / Permit)' : 'Skilled Worker / Employment Visa'}`);
         setApprovalDate('2026-04-15');
         setValidityDate('2028-08-31');
         setOcrConditions([
-          'Permitted study and authorized work hours per statutory visa class',
-          'Mandatory international health cover maintained throughout stay',
-          'Multiple entry visa valid prior to specified expiration date'
+          'Work Rights: 48 hours / fortnight allowed during active academic session',
+          'Condition 8501: Mandatory international health cover (OSHC) active throughout stay',
+          'Condition 8202: Must maintain satisfactory course progress and CRICOS registration',
+          'Multiple Entry Visa: Permitted unlimited exits and re-entries prior to expiry'
         ]);
         setExtractedDossier({
           documentId: 'DOC-' + Math.floor(100000 + Math.random() * 900000),
@@ -968,7 +634,7 @@ export function AITripPlannerLanding() {
     setTimeout(() => {
       setTicketScanning(false);
       setFlightTicketUploaded(true);
-      setTransitCheckResult(`Transit Route Verified via London Heathrow / Doha: Direct Airside Transit Exemption active for ${passportCountry} passport with valid ${journeyDestination} Visa. No Transit Visa required.`);
+      setTransitCheckResult(`Transit Route Checked (via London Heathrow / Doha / Frankfurt): Direct Airside Transit Exemption Active for ${passportCountry} passport with valid ${journeyDestination} Visa. No Transit Visa required ✓`);
     }, 1100);
   };
 
@@ -1063,6 +729,7 @@ Official URL: https://travltik.com
   };
 
   const daysRemaining = getDaysRemaining(validityDate);
+  const showDashboard = hasVisaAlready === 'yes' || hasGenerated;
 
   return (
     <div className="min-h-screen bg-[#FAFAFC] text-slate-900 selection:bg-emerald-100 selection:text-emerald-900 pb-20">
@@ -1152,19 +819,19 @@ Official URL: https://travltik.com
             })}
           </div>
 
-          {/* ── 2. PLAN YOUR OVERSEAS JOURNEY FORM CARD (NO BUDGET / NO VIBE) ── */}
+          {/* ── 2. PLAN YOUR OVERSEAS JOURNEY FORM CARD (PARENTAL SECURITY ENGINE) ── */}
           <div className="relative z-30 w-full max-w-6xl mx-auto mt-8 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_45px_rgba(0,0,0,0.06)] text-left">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 shadow-2xs">
-                  <Compass className="w-5 h-5 text-[#00A86B]" />
+                  <ShieldCheck className="w-5 h-5 text-[#00A86B]" />
                 </div>
                 <div>
                   <h2 className="text-[#30005a] font-black text-base sm:text-lg tracking-tight">
-                    Plan Your Overseas Journey
+                    Plan Your Overseas Journey &amp; Security Roadmap
                   </h2>
                   <p className="text-xs text-slate-500 font-semibold">
-                    Smart pathway matching for study, employment, migration &amp; travel.
+                    Visa condition tracking, verified driver pickup, housing escrow &amp; transit visa verification.
                   </p>
                 </div>
               </div>
@@ -1175,7 +842,10 @@ Official URL: https://travltik.com
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
-                    onClick={() => setHasVisaAlready('no')}
+                    onClick={() => {
+                      setHasVisaAlready('no');
+                      setHasGenerated(true);
+                    }}
                     className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                       hasVisaAlready === 'no'
                         ? 'bg-white text-slate-900 shadow-sm border border-slate-200/80'
@@ -1186,7 +856,10 @@ Official URL: https://travltik.com
                   </button>
                   <button
                     type="button"
-                    onClick={() => setHasVisaAlready('yes')}
+                    onClick={() => {
+                      setHasVisaAlready('yes');
+                      setHasGenerated(true);
+                    }}
                     className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 ${
                       hasVisaAlready === 'yes'
                         ? 'bg-[#00A86B] text-white shadow-sm shadow-emerald-600/20'
@@ -1394,36 +1067,22 @@ Official URL: https://travltik.com
 
               {/* Field 4: Primary Action Button */}
               <div className="pt-5 sm:pt-4">
-                {hasVisaAlready === 'no' ? (
-                  <button
-                    type="button"
-                    onClick={handleGeneratePathway}
-                    disabled={isGenerating}
-                    className="w-full h-[52px] px-4 sm:px-5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#00A86B]/25 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none disabled:opacity-75"
-                  >
-                    <Sparkles className="w-4 h-4 text-emerald-100 shrink-0" />
-                    <span>{isGenerating ? 'Generating Pathway...' : 'Generate My Pathway'}</span>
-                    <ArrowRight className="w-4 h-4 stroke-[2.5] shrink-0" />
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const el = document.getElementById('visa-journey-engine-dashboard');
-                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }}
-                    className="w-full h-[52px] px-5 rounded-2xl bg-[#30005a] hover:bg-[#20003e] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-purple-950/20 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none"
-                  >
-                    <Sparkles className="w-4 h-4 text-purple-300" />
-                    <span>Open Journey Engine</span>
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={handleGeneratePathway}
+                  disabled={isGenerating}
+                  className="w-full h-[52px] px-4 sm:px-5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#00A86B]/25 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none disabled:opacity-75"
+                >
+                  <ShieldCheck className="w-4 h-4 text-emerald-100 shrink-0" />
+                  <span>{isGenerating ? 'Analyzing Security...' : 'Open Security Engine'}</span>
+                  <ArrowRight className="w-4 h-4 stroke-[2.5] shrink-0" />
+                </button>
               </div>
 
             </div>
           </div>
 
-          {/* ── AI LOADING STATE (ATTRACTIVE ANIMATED PATHWAY HUD) ── */}
+          {/* ── AI LOADING STATE (ANIMATED SECURITY HUD) ── */}
           {isGenerating && (
             <div id="pathway-generator-status" className="w-full max-w-6xl mx-auto my-8 bg-gradient-to-b from-white to-emerald-50/30 border border-emerald-200/80 rounded-2xl sm:rounded-[32px] p-6 sm:p-9 text-left shadow-[0_20px_60px_rgba(0,168,107,0.08)] backdrop-blur-md relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-400 via-[#00A86B] to-teal-500 animate-pulse" />
@@ -1431,17 +1090,17 @@ Official URL: https://travltik.com
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-5 border-b border-emerald-100">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/25 shrink-0 animate-spin" style={{ animationDuration: '6s' }}>
-                    <Sparkles className="w-5 h-5" />
+                    <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-black tracking-wider uppercase text-[#00A86B] bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
-                        AI Journey Architect
+                        Parental Security Engine
                       </span>
-                      <span className="text-xs font-semibold text-slate-400">Live Pathway Synthesis</span>
+                      <span className="text-xs font-semibold text-slate-400">Pre-Departure Peace-of-Mind</span>
                     </div>
                     <h3 className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">
-                      Crafting Custom Overseas Pathway for <span className="text-[#00A86B]">{journeyDestination}</span>
+                      Configuring Safe Pathway for <span className="text-[#00A86B]">{journeyDestination}</span>
                     </h3>
                   </div>
                 </div>
@@ -1512,214 +1171,9 @@ Official URL: https://travltik.com
             </div>
           )}
 
-          {/* ── 2. GENERATED OVERSEAS JOURNEY PATHWAY DASHBOARD (PURE READINESS & STAGES) ── */}
-          {hasGenerated && itineraryDays.length > 0 && (
-            <div id="overseas-pathway-dashboard" className="w-full max-w-6xl mx-auto mt-8 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start text-left animate-fadeIn">
-              
-              {/* LEFT CARD: AI Pathway Summary & Readiness Overview */}
-              <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-[26px] p-5 sm:p-6 shadow-sm">
-                <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-                  <div>
-                    <span className="text-[10px] text-emerald-600 font-extrabold uppercase tracking-wider block">AI Pathway Assessment</span>
-                    <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
-                      {journeyDestination} Journey Roadmap
-                    </h3>
-                  </div>
-                  <div className="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-black text-[#00A86B]">
-                    96% Match
-                  </div>
-                </div>
-
-                {/* Destination & Meta Tags */}
-                <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-4 mb-4 space-y-2.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 font-bold">Passport Country</span>
-                    <span className="font-extrabold text-slate-800">{passportCountry} 🇮🇳</span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 font-bold">Target Destination</span>
-                    <span className="font-extrabold text-slate-800">{journeyDestination}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 font-bold">Visa Intent</span>
-                    <span className="font-extrabold text-emerald-700">{travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200/60">
-                    <span className="text-slate-500 font-bold">Estimated Timeline</span>
-                    <span className="font-extrabold text-slate-900">4 – 8 Weeks</span>
-                  </div>
-                </div>
-
-                {/* Key Regulatory Checklist */}
-                <div className="space-y-2 mb-5">
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
-                    Key Preparation Milestones
-                  </span>
-                  <div className="space-y-1.5 text-xs font-bold text-slate-700">
-                    <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
-                      <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                      <span>Biometrics &amp; Medical Clearance</span>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
-                      <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                      <span>Financial Proofs &amp; Maintenance Funds</span>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
-                      <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                      <span>English Proficiency (IELTS / PTE / TOEFL)</span>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
-                      <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                      <span>Designated Institution LOA / LMIA Sponsorship</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Journey Modifiers Pills */}
-                <div className="pt-3 border-t border-slate-100">
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-2">
-                    Add Journey Enhancers
-                  </span>
-                  <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-                    {journeyModifiers.map((mod) => {
-                      const isActive = activeModifiers.includes(mod.id);
-                      return (
-                        <button
-                          key={mod.id}
-                          type="button"
-                          onClick={() => toggleModifier(mod.id)}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer select-none ${
-                            isActive
-                              ? 'border-[#00A86B] bg-emerald-50 text-[#00A86B]'
-                              : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'
-                          }`}
-                        >
-                          <span>{mod.icon}</span>
-                          <span>{mod.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* CTA: Connect with Expert */}
-                <div className="mt-4 pt-3 border-t border-slate-100">
-                  <a
-                    href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
-                    className="w-full py-2.5 px-4 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center"
-                  >
-                    <span>Find {journeyDestination} Visa Specialists</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-
-              {/* RIGHT CARD: Stage-by-Stage / Day-by-Day Preparation Itinerary */}
-              <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-[26px] p-5 sm:p-6 shadow-sm">
-                <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
-                  <div className="flex items-center gap-2 text-slate-900 font-extrabold text-base sm:text-lg">
-                    <Compass className="w-5 h-5 text-[#00A86B]" />
-                    <span>Stage-by-Stage Overseas Pathway</span>
-                  </div>
-                  <span className="text-xs font-bold text-[#00A86B] bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
-                    {itineraryDays.length} Milestones
-                  </span>
-                </div>
-
-                {/* Dynamic Accordion list */}
-                <div className="space-y-2.5">
-                  {itineraryDays.map((day) => {
-                    const isExpanded = expandedDay === day.dayNumber;
-                    return (
-                      <div
-                        key={day.dayNumber}
-                        className={`border rounded-2xl overflow-hidden transition-all duration-200 ${
-                          isExpanded
-                            ? 'border-slate-200 bg-white shadow-2xs'
-                            : 'border-slate-200/80 bg-white hover:border-slate-300'
-                        }`}
-                      >
-                        <button
-                          type="button"
-                          onClick={() => setExpandedDay(isExpanded ? 0 : day.dayNumber)}
-                          className="w-full p-3.5 flex items-center justify-between text-left hover:bg-slate-50 transition-colors cursor-pointer"
-                        >
-                          <div className="flex items-center gap-3">
-                            {day.image && (
-                              <img
-                                src={day.image}
-                                alt={day.title}
-                                className="w-12 h-12 object-cover rounded-xl shrink-0 border border-slate-100 shadow-2xs"
-                              />
-                            )}
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs font-black text-[#00A86B] uppercase tracking-wider">
-                                  Stage 0{day.dayNumber}
-                                </span>
-                                <span className="text-xs sm:text-sm font-extrabold text-slate-800">
-                                  {day.title.replace(/^Stage \d+:\s*/i, '')}
-                                </span>
-                              </div>
-                              <p className="text-[11px] text-slate-500 font-medium truncate max-w-[220px] sm:max-w-md mt-0.5">
-                                {day.summary || day.morning}
-                              </p>
-                            </div>
-                          </div>
-                          <ChevronDown
-                            className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ml-2 ${
-                              isExpanded ? 'rotate-180 text-[#00A86B]' : ''
-                            }`}
-                          />
-                        </button>
-
-                        {isExpanded && (
-                          <div className="px-4 pb-4 pt-1 bg-slate-50/50 border-t border-slate-100 text-xs space-y-2.5">
-                            {day.summary && (
-                              <p className="text-slate-600 font-medium leading-relaxed italic bg-white p-2.5 rounded-xl border border-slate-200/70">
-                                &quot;{day.summary}&quot;
-                              </p>
-                            )}
-                            <div className="space-y-2 pt-1">
-                              {day.morning && (
-                                <div className="flex items-start gap-2 bg-white p-2 rounded-xl border border-slate-100">
-                                  <span className="font-bold text-slate-800 shrink-0 flex items-center gap-1">
-                                    ☀️ Morning:
-                                  </span>
-                                  <span className="text-slate-600 font-medium">{day.morning}</span>
-                                </div>
-                              )}
-                              {day.afternoon && (
-                                <div className="flex items-start gap-2 bg-white p-2 rounded-xl border border-slate-100">
-                                  <span className="font-bold text-slate-800 shrink-0 flex items-center gap-1">
-                                    🌤️ Afternoon:
-                                  </span>
-                                  <span className="text-slate-600 font-medium">{day.afternoon}</span>
-                                </div>
-                              )}
-                              {day.evening && (
-                                <div className="flex items-start gap-2 bg-white p-2 rounded-xl border border-slate-100">
-                                  <span className="font-bold text-slate-800 shrink-0 flex items-center gap-1">
-                                    🌅 Evening:
-                                  </span>
-                                  <span className="text-slate-600 font-medium">{day.evening}</span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-            </div>
-          )}
-
-          {/* ── 3. FLOW 1: "VISA APPROVED & READY" JOURNEY DASHBOARD (REAL DYNAMIC FEATURE) ── */}
-          {hasVisaAlready === 'yes' && (
-            <div id="visa-journey-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
+          {/* ── 2. FLOW 1: VISA APPROVED & READY PARENTAL SECURITY ENGINE (EXACT 2 CARDS) ── */}
+          {showDashboard && (
+            <div id="parental-security-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
               
               {/* Top Banner: Visa Status Active & Destination Confirmation */}
               <div className="bg-gradient-to-r from-emerald-500 via-[#00A86B] to-teal-600 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 text-white shadow-xl relative overflow-hidden">
@@ -1727,15 +1181,15 @@ Official URL: https://travltik.com
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex items-center gap-3.5">
                     <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shrink-0 text-2xl shadow-sm">
-                      ✈️
+                      🛡️
                     </div>
                     <div>
                       <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[11px] font-black uppercase tracking-wider mb-1">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-200" />
-                        <span>{ocrScanned || approvedVisaType ? 'Visa Registered & Active' : 'Ready for Visa Setup'}</span>
+                        <span>{ocrScanned || approvedVisaType ? 'Visa Registered & Protected' : 'Parental Security Engine Active'}</span>
                       </div>
                       <h3 className="text-lg sm:text-2xl font-black tracking-tight">
-                        Your Overseas Journey to {journeyDestination}
+                        Safe Overseas Journey to {journeyDestination}
                       </h3>
                       <p className="text-xs sm:text-sm text-emerald-50 font-medium">
                         Passport: <strong>{passportCountry}</strong> • Purpose: <strong>{travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose}</strong>
@@ -1745,255 +1199,146 @@ Official URL: https://travltik.com
 
                   <div className="flex items-center gap-2 shrink-0">
                     <div className="px-4 py-2.5 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 text-left">
-                      <span className="text-[10px] uppercase font-bold text-emerald-100 block">Status</span>
+                      <span className="text-[10px] uppercase font-bold text-emerald-100 block">Security Status</span>
                       <span className="text-xs sm:text-sm font-extrabold text-white flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-300 animate-ping" />
-                        <span>Ready for Departure</span>
+                        <span>Ready for Safe Departure</span>
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* STEP 1: REAL VISA DETAILS & OCR SCANNER CARD */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)]">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-700">
-                      <FileCheck2 className="w-4 h-4" />
+              {/* ── THE EXACT 2-CARD CORE ENGINE (LEFT & RIGHT CARDS) ── */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                {/* ── LEFT CARD: VISA DETAILS & CONDITIONS (SCAN & REMINDERS) ── */}
+                <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5">
+                  
+                  {/* Left Card Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-700">
+                        <FileCheck2 className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
+                          Visa Verification &amp; Smart Alerts
+                        </h4>
+                        <p className="text-xs text-slate-500 font-medium">
+                          Auto-expiry tracker &amp; legal condition audit.
+                        </p>
+                      </div>
                     </div>
+
+                    {/* Auto-Renewal Reminder Countdown Badge */}
+                    <div className="shrink-0">
+                      {daysRemaining === null ? (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-bold">
+                          <Clock className="w-3.5 h-3.5 text-slate-400" />
+                          <span>Set expiry date</span>
+                        </div>
+                      ) : daysRemaining > 90 ? (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] font-bold">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B]" />
+                          <span>Auto-renewal active • {daysRemaining} days left</span>
+                        </div>
+                      ) : daysRemaining >= 0 ? (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-bold animate-pulse">
+                          <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
+                          <span>⚠️ Expiring in {daysRemaining} days</span>
+                        </div>
+                      ) : (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50 border border-rose-300 text-rose-900 text-[11px] font-bold">
+                          <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                          <span>❌ Visa Expired</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Visa Fields Displayed */}
+                  <div className="space-y-3.5">
                     <div>
-                      <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
-                        Step 1: Visa Verification &amp; Auto-Renewal Tracker
-                      </h4>
-                      <p className="text-xs text-slate-500 font-medium">
-                        Record your official visa dates or upload document to auto-extract conditions.
-                      </p>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Visa Type / Subclass
+                      </label>
+                      <input
+                        type="text"
+                        value={approvedVisaType}
+                        onChange={(e) => setApprovedVisaType(e.target.value)}
+                        placeholder={`e.g. Student Subclass 500 / Skilled Worker (${journeyDestination})`}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                          Approval Date
+                        </label>
+                        <input
+                          type="date"
+                          value={approvalDate}
+                          onChange={(e) => setApprovalDate(e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                          Visa Expiry Date
+                        </label>
+                        <input
+                          type="date"
+                          value={validityDate}
+                          onChange={(e) => setValidityDate(e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  {/* Dynamic Auto-Renewal Reminder Pill */}
-                  <div className="shrink-0">
-                    {daysRemaining === null ? (
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-bold">
-                        <Clock className="w-3.5 h-3.5 text-slate-400" />
-                        <span>Set expiry date to activate renewal tracker</span>
+                  {/* Interactive Scan Visa Document Banner */}
+                  <div className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex items-start gap-2.5 min-w-0">
+                      <div className="w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-purple-700 shadow-2xs shrink-0">
+                        <QrCode className="w-4 h-4" />
                       </div>
-                    ) : daysRemaining > 90 ? (
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-bold">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B]" />
-                        <span>Auto-renewal active • {daysRemaining} days left</span>
+                      <div className="min-w-0">
+                        <h5 className="text-xs font-extrabold text-slate-900 truncate">
+                          <span>Scan Visa Document / Grant Letter</span>
+                        </h5>
+                        <p className="text-[11px] text-slate-500 font-medium truncate mt-0.5">
+                          {uploadedVisaFileName ? `Verified: ${uploadedVisaFileName}` : 'Auto-extracts work hours & health conditions.'}
+                        </p>
                       </div>
-                    ) : daysRemaining >= 0 ? (
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold animate-pulse">
-                        <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
-                        <span>⚠️ Expiring in {daysRemaining} days • Renewal recommended</span>
-                      </div>
-                    ) : (
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50 border border-rose-300 text-rose-900 text-xs font-bold">
-                        <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
-                        <span>❌ Visa Expired • Extension / Appeal required</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
-                  {/* Visa Type Input */}
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                      Visa Category / Subclass
-                    </label>
-                    <input
-                      type="text"
-                      value={approvedVisaType}
-                      onChange={(e) => setApprovedVisaType(e.target.value)}
-                      placeholder={`e.g. ${journeyDestination} ${travelPurpose === 'study' ? 'Student Visa' : 'Work Permit'}`}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
-                    />
-                  </div>
-
-                  {/* Approval Date */}
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                      Grant / Approval Date
-                    </label>
-                    <input
-                      type="date"
-                      value={approvalDate}
-                      onChange={(e) => setApprovalDate(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
-                    />
-                  </div>
-
-                  {/* Expiry / Validity Date */}
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                      Visa Expiry Date
-                    </label>
-                    <input
-                      type="date"
-                      value={validityDate}
-                      onChange={(e) => setValidityDate(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
-                    />
-                  </div>
-                </div>
-
-                {/* Real OCR Document Upload & Scanner Banner */}
-                <div className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-700 shadow-2xs shrink-0">
-                      <QrCode className="w-5 h-5 text-purple-600" />
                     </div>
-                    <div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2 flex-wrap">
-                        <span>OCR Scan Visa Document / Grant Letter</span>
-                        {ocrScanned ? (
-                          <span className="text-[10px] font-black text-[#00A86B] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3 text-[#00A86B]" />
-                            <span>VERIFIED ({uploadedVisaFileName || 'Document'})</span>
-                          </span>
-                        ) : (
-                          <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">
-                            PDF / PNG / JPG
-                          </span>
-                        )}
-                      </h5>
-                      <p className="text-xs text-slate-500 font-medium mt-0.5">
-                        {uploadedVisaFileName ? (
-                          <span className="text-emerald-700 font-semibold">
-                            Uploaded: {uploadedVisaFileName} ({uploadedVisaFileSize}) • Auto-extracted conditions below
-                          </span>
-                        ) : (
-                          'Upload your official grant PDF or photo. Our OCR engine parses stay limits, work rights & auto-fills dates.'
-                        )}
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="shrink-0 flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => visaFileInputRef.current?.click()}
                       disabled={isOcrScanning}
-                      className="px-4 py-2.5 rounded-xl bg-[#30005a] hover:bg-[#20003e] text-white text-xs font-extrabold shadow-sm transition-all cursor-pointer flex items-center gap-2 active:scale-95 disabled:opacity-75"
+                      className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-[#30005a] hover:bg-[#20003e] text-white text-xs font-bold shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0 active:scale-95 disabled:opacity-75"
                     >
                       {isOcrScanning ? (
                         <>
-                          <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          <span>Analyzing Document...</span>
+                          <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          <span>Scanning...</span>
                         </>
                       ) : (
                         <>
-                          <UploadCloud className="w-4 h-4 text-purple-300" />
-                          <span>{ocrScanned ? 'Re-upload Document' : 'Upload & Scan Visa'}</span>
+                          <UploadCloud className="w-3.5 h-3.5 text-purple-300" />
+                          <span>{ocrScanned ? 'Re-scan' : 'Scan Document'}</span>
                         </>
                       )}
                     </button>
-
-                    {ocrScanned && (
-                      <button
-                        type="button"
-                        onClick={handleSaveVisaRecord}
-                        className="px-3.5 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-[#00A86B] text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5"
-                        title="Save record"
-                      >
-                        <Save className="w-3.5 h-3.5" />
-                        <span>Save Record</span>
-                      </button>
-                    )}
                   </div>
-                </div>
 
-                {/* Save confirmation toast */}
-                {savedSuccessToast && (
-                  <div className="mt-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#00A86B] flex items-center gap-2 animate-fadeIn">
-                    <CheckCircle2 className="w-4 h-4 shrink-0" />
-                    <span>Visa details and conditions saved successfully to your Journey Dashboard!</span>
-                  </div>
-                )}
-
-                {/* Copy toast */}
-                {copiedToast && (
-                  <div className="mt-3 p-3 rounded-xl bg-purple-50 border border-purple-200 text-xs font-bold text-purple-800 flex items-center gap-2 animate-fadeIn">
-                    <CheckCheck className="w-4 h-4 shrink-0 text-purple-600" />
-                    <span>Copied structured Visa Verification Dossier to clipboard!</span>
-                  </div>
-                )}
-
-                {/* ── REAL EXTRACTED INTELLIGENCE DOSSIER & ONE-CLICK EXPORT CARD ── */}
-                {extractedDossier && ocrScanned && (
-                  <div className="mt-5 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-purple-950 text-white shadow-lg border border-slate-800 animate-fadeIn">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-white/10">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 text-sm font-bold">
-                          ✓
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-black uppercase tracking-wider text-emerald-400">
-                              Analyzed Visa Intelligence Dossier
-                            </span>
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-white border border-white/15">
-                              {extractedDossier.documentId}
-                            </span>
-                          </div>
-                          <p className="text-xs text-slate-300 font-medium mt-0.5">
-                            {extractedDossier.issuingAuthority}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Export & Copy Actions */}
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={handleCopyDossier}
-                          className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
-                        >
-                          <Copy className="w-3.5 h-3.5 text-purple-300" />
-                          <span>Copy</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={handleDownloadDossier}
-                          className="px-3.5 py-1.5 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-emerald-900/40"
-                        >
-                          <Download className="w-3.5 h-3.5" />
-                          <span>Export Dossier (TXT)</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Dossier Structured Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                      <div className="bg-white/5 border border-white/10 rounded-xl p-2.5">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase block">Visa Subclass</span>
-                        <span className="font-extrabold text-white truncate block mt-0.5">{approvedVisaType}</span>
-                      </div>
-                      <div className="bg-white/5 border border-white/10 rounded-xl p-2.5">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase block">Work Rights</span>
-                        <span className="font-extrabold text-emerald-300 truncate block mt-0.5">{extractedDossier.workRights}</span>
-                      </div>
-                      <div className="bg-white/5 border border-white/10 rounded-xl p-2.5">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase block">Healthcare Coverage</span>
-                        <span className="font-extrabold text-purple-200 truncate block mt-0.5">{extractedDossier.healthCover}</span>
-                      </div>
-                      <div className="bg-white/5 border border-white/10 rounded-xl p-2.5">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase block">Validity Span</span>
-                        <span className="font-extrabold text-amber-300 block mt-0.5">{approvalDate} → {validityDate}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Extracted / Added Condition Tags */}
-                {ocrConditions.length > 0 && (
-                  <div className="mt-5 pt-4 border-t border-slate-100 animate-fadeIn">
-                    <div className="flex items-center justify-between gap-2 mb-3">
+                  {/* Conditions of Visa (Interactive List with 48-hrs, OSHC, 8501) */}
+                  <div className="pt-2">
+                    <div className="flex items-center justify-between gap-2 mb-2.5">
                       <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
-                        Extracted Statutory Conditions &amp; Entitlements ({ocrConditions.length})
+                        Conditions of Visa &amp; Legal Rules ({ocrConditions.length || 4})
                       </span>
                       <button
                         type="button"
@@ -2001,13 +1346,13 @@ Official URL: https://travltik.com
                         className="text-xs font-extrabold text-[#00A86B] hover:text-[#008f5a] flex items-center gap-1 cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5" />
-                        <span>Add Condition / Note</span>
+                        <span>Add Condition</span>
                       </button>
                     </div>
 
                     {/* Inline Add Condition Input */}
                     {isAddingCondition && (
-                      <div className="mb-3 p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2 animate-fadeIn">
+                      <div className="mb-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2 animate-fadeIn">
                         <input
                           type="text"
                           value={newCustomCondition}
@@ -2015,269 +1360,311 @@ Official URL: https://travltik.com
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') handleAddCustomCondition();
                           }}
-                          placeholder="e.g. Condition 8501: Health insurance active until expiry..."
-                          className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-[#00A86B]"
+                          placeholder="e.g. Condition 8105: Work 48 hrs/fortnight..."
+                          className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-1 text-xs font-medium text-slate-800 focus:outline-none focus:border-[#00A86B]"
                         />
                         <button
                           type="button"
                           onClick={handleAddCustomCondition}
-                          className="px-3 py-1.5 rounded-lg bg-[#00A86B] text-white text-xs font-bold hover:bg-[#008f5a] cursor-pointer"
+                          className="px-2.5 py-1 rounded-lg bg-[#00A86B] text-white text-xs font-bold hover:bg-[#008f5a] cursor-pointer"
                         >
                           Add
                         </button>
                         <button
                           type="button"
                           onClick={() => setIsAddingCondition(false)}
-                          className="p-1.5 text-slate-400 hover:text-slate-600 cursor-pointer"
+                          className="p-1 text-slate-400 hover:text-slate-600 cursor-pointer"
                         >
-                          <X className="w-4 h-4" />
+                          <X className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {ocrConditions.map((cond, idx) => (
+                    <div className="space-y-2">
+                      {(ocrConditions.length > 0 ? ocrConditions : [
+                        'Work Limit: 48 hours / fortnight allowed during active academic session',
+                        'Condition 8501: Mandatory international health cover (OSHC) active throughout stay',
+                        'Condition 8202: Must maintain satisfactory course progress & institutional attendance',
+                        'Multiple Entry Visa: Permitted unlimited exits and entries prior to expiration'
+                      ]).map((cond, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-emerald-50/70 border border-emerald-100 text-xs font-bold text-slate-800 group hover:border-emerald-200 transition-all"
+                          className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-100 text-xs font-bold text-slate-800"
                         >
                           <div className="flex items-center gap-2 min-w-0">
                             <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
                             <span className="truncate">{cond}</span>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteCondition(idx)}
-                            className="text-slate-400 hover:text-rose-600 opacity-60 hover:opacity-100 transition-opacity p-0.5 cursor-pointer"
-                            title="Remove condition"
-                          >
-                            <X className="w-3.5 h-3.5" />
-                          </button>
+                          {ocrConditions.length > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteCondition(idx)}
+                              className="text-slate-400 hover:text-rose-600 p-0.5 cursor-pointer"
+                              title="Remove"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
                       ))}
                     </div>
                   </div>
-                )}
-              </div>
 
-              {/* STEP 2: "MY OVERSEAS JOURNEY" INTERACTIVE ACTION CHECKLIST (6 REAL ACTION MODULES) */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)]">
-                <div className="flex items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B]">
-                      <Luggage className="w-4 h-4" />
+                  {/* Dossier Quick Export Buttons */}
+                  {extractedDossier && (
+                    <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={handleCopyDossier}
+                        className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                      >
+                        <Copy className="w-3.5 h-3.5 text-slate-500" />
+                        <span>Copy Summary</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDownloadDossier}
+                        className="flex-1 py-2 px-3 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Export Dossier</span>
+                      </button>
                     </div>
-                    <div>
-                      <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
-                        Step 2: &quot;My Overseas Journey&quot; Interactive Action Checklist
-                      </h4>
-                      <p className="text-xs text-slate-500 font-medium">
-                        Essential pre-departure tools, transit visa check, housing &amp; airport assistance.
-                      </p>
+                  )}
+
+                  {copiedToast && (
+                    <div className="p-2 bg-purple-50 border border-purple-200 rounded-xl text-xs font-bold text-purple-800 flex items-center gap-1.5">
+                      <CheckCheck className="w-3.5 h-3.5 text-purple-600" />
+                      <span>Copied dossier summary to clipboard!</span>
                     </div>
-                  </div>
+                  )}
                 </div>
 
-                {/* 6 Action Checklist Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* ── RIGHT CARD: SUGGESTED NEXT ACTIONS CHECKLIST (THE PARENT'S PEACE-OF-MIND ROADMAP) ── */}
+                <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-4">
                   
-                  {/* Action 1: ✈️ Flight Booking & Transit Visa Check */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">✈️</span>
-                        <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-100">
-                          {flightTicketUploaded ? 'Verified ✓' : 'Transit Visa'}
-                        </span>
+                  {/* Right Card Header */}
+                  <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B]">
+                        <Shield className="w-4 h-4" />
                       </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">Flight &amp; Transit Visa Check</h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Upload flight ticket or route to check layover airport transit rules (Heathrow, Doha, Frankfurt).
-                      </p>
+                      <div>
+                        <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
+                          Suggested Next Actions Checklist
+                        </h4>
+                        <p className="text-xs text-slate-500 font-medium">
+                          The Parent&apos;s Peace-of-Mind Roadmap for safe international departure.
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-extrabold text-[#00A86B] bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 shrink-0">
+                      6 Key Safeguards
+                    </span>
+                  </div>
 
-                      {transitCheckResult && (
-                        <div className="mt-3 p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
-                          {transitCheckResult}
+                  {/* 6 Practical Action Steps Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    
+                    {/* Step 1: ✈️ Book Ticket & Transit Visa Check */}
+                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">✈️</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-100">
+                            {flightTicketUploaded ? 'Checked ✓' : 'Transit Check'}
+                          </span>
                         </div>
-                      )}
-                    </div>
+                        <h5 className="text-xs font-extrabold text-slate-900">1. Book Ticket &amp; Transit Visa Check</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
+                          Upload ticket to auto-check if layover airport (London, Doha, Frankfurt) needs a Transit Visa.
+                        </p>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => ticketFileInputRef.current?.click()}
-                        disabled={ticketScanning}
-                        className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
-                      >
-                        {ticketScanning ? (
-                          <>
-                            <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                            <span>Scanning Ticket...</span>
-                          </>
-                        ) : (
-                          <>
-                            <UploadCloud className="w-3.5 h-3.5" />
-                            <span>{flightTicketUploaded ? 'Re-scan Flight Ticket' : 'Upload & Check Ticket'}</span>
-                          </>
+                        {transitCheckResult && (
+                          <div className="mt-2 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[10px] font-bold text-emerald-900">
+                            {transitCheckResult}
+                          </div>
                         )}
-                      </button>
+                      </div>
+
+                      <div className="mt-3 pt-2 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={() => ticketFileInputRef.current?.click()}
+                          disabled={ticketScanning}
+                          className="w-full py-1.5 px-3 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                        >
+                          {ticketScanning ? (
+                            <>
+                              <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                              <span>Scanning Route...</span>
+                            </>
+                          ) : (
+                            <>
+                              <UploadCloud className="w-3.5 h-3.5" />
+                              <span>{flightTicketUploaded ? 'Re-check Ticket' : 'Upload Flight Ticket'}</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
                     </div>
+
+                    {/* Step 2: 🚘 Confirm Airport Pickup & Driver Details */}
+                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">🚘</span>
+                          <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ${pickupConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-slate-100 text-slate-600'}`}>
+                            {pickupConfirmed ? 'Confirmed ✓' : 'Terminal Meet'}
+                          </span>
+                        </div>
+                        <h5 className="text-xs font-extrabold text-slate-900">2. Airport Pickup &amp; Driver Details</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
+                          Input flight no. to book verified student/migrant driver pickup so parents know who is receiving at terminal.
+                        </p>
+
+                        <div className="mt-2">
+                          <input
+                            type="text"
+                            value={pickupFlightNum}
+                            onChange={(e) => setPickupFlightNum(e.target.value)}
+                            placeholder="Flight No. (e.g. AC 043 / BA 142)"
+                            className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#00A86B]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-3 pt-2 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={() => setPickupConfirmed(!pickupConfirmed)}
+                          className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                            pickupConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
+                          }`}
+                        >
+                          {pickupConfirmed ? 'Driver Assigned ✓' : 'Confirm Airport Transfer'}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Step 3: 🏠 Confirm Secure Accommodation */}
+                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">🏠</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Escrow Secure</span>
+                        </div>
+                        <h5 className="text-xs font-extrabold text-slate-900">3. Confirm Secure Accommodation</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
+                          Verify student dorm, homestay, or rental apartment with escrow protection against landlord fraud.
+                        </p>
+                      </div>
+
+                      <div className="mt-3 pt-2 border-t border-slate-100">
+                        <a
+                          href={`/classifieds?category=accommodation&country=${encodeURIComponent(journeyDestination)}`}
+                          className="w-full py-1.5 px-3 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold text-center transition-all flex items-center justify-center gap-1"
+                        >
+                          <span>Find Housing in {journeyDestination}</span>
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Step 4: 👥 Connect with Student/Expat Peer Network */}
+                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">👥</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">Peer Network</span>
+                        </div>
+                        <h5 className="text-xs font-extrabold text-slate-900">4. Student &amp; Expat Peer Network</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
+                          Connect with other students &amp; travellers on the same visa going to {journeyDestination}.
+                        </p>
+                      </div>
+
+                      <div className="mt-3 pt-2 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={() => setPeerNetworkJoined(!peerNetworkJoined)}
+                          className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                            peerNetworkJoined ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                          }`}
+                        >
+                          {peerNetworkJoined ? 'Joined ' + journeyDestination + ' Group ✓' : 'Join Peer Group'}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Step 5: 💳 Buy Forex & 5G eSIM */}
+                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">💳</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">Zero Markup</span>
+                        </div>
+                        <h5 className="text-xs font-extrabold text-slate-900">5. Buy Forex Card &amp; 5G eSIM</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
+                          Reserve zero-markup Multi-Currency Card &amp; instant QR 5G eSIM before boarding flight.
+                        </p>
+                      </div>
+
+                      <div className="mt-3 pt-2 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={() => setForexCardOrdered(!forexCardOrdered)}
+                          className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                            forexCardOrdered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-slate-900 hover:bg-black text-white'
+                          }`}
+                        >
+                          {forexCardOrdered ? 'Forex & eSIM Reserved ✓' : 'Get Forex & eSIM'}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Step 6: 📑 Travel, Customs & Biosecurity Rules */}
+                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">📑</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-100">Rules</span>
+                        </div>
+                        <h5 className="text-xs font-extrabold text-slate-900">6. Travel, Customs &amp; Biosecurity</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
+                          Check cash limits ($10k USD), doctor prescription letters, and food declaration rules.
+                        </p>
+
+                        <div className="mt-2 space-y-1 text-[10px] font-semibold text-slate-700">
+                          <label className="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" checked={customsChecklistDone.cash} onChange={(e) => setCustomsChecklistDone({ ...customsChecklistDone, cash: e.target.checked })} className="rounded text-[#00A86B] focus:ring-0 w-3 h-3" />
+                            <span>Cash declaration under $10,000</span>
+                          </label>
+                          <label className="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" checked={customsChecklistDone.meds} onChange={(e) => setCustomsChecklistDone({ ...customsChecklistDone, meds: e.target.checked })} className="rounded text-[#00A86B] focus:ring-0 w-3 h-3" />
+                            <span>Doctor prescription certificates</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 pt-2 border-t border-slate-100">
+                        <a
+                          href="/visa-guide"
+                          className="w-full py-1.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center transition-all block"
+                        >
+                          Read Arrival Guide →
+                        </a>
+                      </div>
+                    </div>
+
                   </div>
-
-                  {/* Action 2: 🚘 Airport Pickup Confirmation */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">🚘</span>
-                        <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${pickupConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-slate-100 text-slate-600'}`}>
-                          {pickupConfirmed ? 'Confirmed ✓' : 'Optional'}
-                        </span>
-                      </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">Airport Pickup &amp; Meet</h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Record arrival flight slot to request verified student / migrant driver pickup.
-                      </p>
-
-                      <div className="mt-3 space-y-2">
-                        <input
-                          type="text"
-                          value={pickupFlightNum}
-                          onChange={(e) => setPickupFlightNum(e.target.value)}
-                          placeholder="Arrival Flight No. (e.g. AC 043)"
-                          className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#00A86B]"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-100">
-                      <button
-                        type="button"
-                        onClick={() => setPickupConfirmed(!pickupConfirmed)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                          pickupConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
-                        }`}
-                      >
-                        {pickupConfirmed ? 'Pickup Slot Confirmed ✓' : 'Confirm Airport Transfer'}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Action 3: 🏠 Accommodation Confirmation */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">🏠</span>
-                        <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Housing</span>
-                      </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">Verified Accommodation</h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Connect with verified student dorms, homestays, and rental apartments with escrow protection.
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
-                      <a
-                        href="/classifieds?category=accommodation"
-                        className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold text-center transition-all flex items-center justify-center gap-1"
-                      >
-                        <span>Find Housing in {journeyDestination}</span>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-                  </div>
-
-                  {/* Action 4: 👥 Peer Network */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">👥</span>
-                        <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">Community</span>
-                      </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">Peer Network &amp; Arrivals</h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Connect with other verified visa holders heading to {journeyDestination} in Fall 2026.
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-100">
-                      <button
-                        type="button"
-                        onClick={() => setPeerNetworkJoined(!peerNetworkJoined)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                          peerNetworkJoined ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                        }`}
-                      >
-                        {peerNetworkJoined ? 'Joined ' + journeyDestination + ' Group ✓' : 'Join Peer Community'}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Action 5: 💳 Forex & eSIM Connectivity */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">💳</span>
-                        <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">Forex &amp; SIM</span>
-                      </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">Forex Card &amp; 5G eSIM</h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Zero-forex multi-currency card &amp; instant QR code 5G eSIM before boarding flight.
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setForexCardOrdered(!forexCardOrdered)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                          forexCardOrdered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-slate-900 hover:bg-black text-white'
-                        }`}
-                      >
-                        {forexCardOrdered ? 'Forex & eSIM Reserved ✓' : 'Get Forex Card & eSIM'}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Action 6: 📑 Customs & Travel Rules Guide */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">📑</span>
-                        <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-100">Customs</span>
-                      </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">Customs &amp; Arrival Rules</h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Cash declaration limits, prescribed medications certificate &amp; biosecurity declaration.
-                      </p>
-
-                      <div className="mt-3 space-y-1.5 text-[11px] font-semibold text-slate-700">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" checked={customsChecklistDone.cash} onChange={(e) => setCustomsChecklistDone({ ...customsChecklistDone, cash: e.target.checked })} className="rounded text-[#00A86B] focus:ring-0" />
-                          <span>Under $10,000 USD cash limit</span>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" checked={customsChecklistDone.meds} onChange={(e) => setCustomsChecklistDone({ ...customsChecklistDone, meds: e.target.checked })} className="rounded text-[#00A86B] focus:ring-0" />
-                          <span>Doctor&apos;s letter for medications</span>
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-100">
-                      <a
-                        href="/visa-guide"
-                        className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center transition-all block"
-                      >
-                        Read Arrival Guide →
-                      </a>
-                    </div>
-                  </div>
-
                 </div>
+
               </div>
 
-              {/* STEP 3: ON-ARRIVAL SETTLEMENT & FIRST 30 DAYS */}
+              {/* ── STEP 3: ON-ARRIVAL SETTLEMENT & FIRST 30 DAYS ── */}
               <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)]">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b border-slate-100">
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00A86B]">
                       <HomeIcon className="w-4 h-4" />
@@ -2298,10 +1685,9 @@ Official URL: https://travltik.com
                   </div>
                 </div>
 
-                {/* 4 Essential Settlement Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   
-                  {/* Card 1: Local Phone Number & Banking */}
+                  {/* Card 1: Bank Account & SIN / NIN */}
                   <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-2">
@@ -2319,7 +1705,7 @@ Official URL: https://travltik.com
 
                       {bankAppointmentBooked && (
                         <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
-                          ✓ Appointment slot reserved with verified banking partner in {journeyDestination}.
+                          ✓ Appointment slot reserved with verified banking partner.
                         </div>
                       )}
                     </div>
@@ -2377,7 +1763,7 @@ Official URL: https://travltik.com
                     </div>
                   </div>
 
-                  {/* Card 3: Local Transit & Student Card */}
+                  {/* Card 3: Public Transport Pass & Discounts */}
                   <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-2">
@@ -2415,7 +1801,7 @@ Official URL: https://travltik.com
                     </div>
                   </div>
 
-                  {/* Card 4: Emergency & Healthcare Registration */}
+                  {/* Card 4: Health Insurance & Local GP Registration */}
                   <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-2">

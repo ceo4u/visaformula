@@ -1386,17 +1386,17 @@ Track live status here: https://travltik.com/dashboard`;
                     }
                   }}
                   disabled={isGenerating}
-                  className="w-full h-[52px] px-4 sm:px-5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#00A86B]/25 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none disabled:opacity-75"
+                  className="w-full h-[52px] px-3 sm:px-4 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#00A86B]/25 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none disabled:opacity-75"
                 >
                   {hasVisaAlready === 'yes' ? (
                     <>
                       <ShieldCheck className="w-4 h-4 text-emerald-100 shrink-0" />
-                      <span>{isGenerating ? 'Analyzing Security...' : 'Open Visa Security Engine'}</span>
+                      <span>{isGenerating ? 'Analyzing...' : 'Plan Journey'}</span>
                     </>
                   ) : (
                     <>
                       <Search className="w-4 h-4 text-emerald-100 shrink-0" />
-                      <span>Find Verified Experts for {journeyDestination}</span>
+                      <span>Find Experts</span>
                     </>
                   )}
                   <ArrowRight className="w-4 h-4 stroke-[2.5] shrink-0" />

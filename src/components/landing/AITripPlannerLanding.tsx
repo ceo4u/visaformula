@@ -2083,48 +2083,7 @@ Track live status here: https://travltik.com/dashboard`;
           {hasVisaAlready === 'no' && (
             <div id="need-visa-pathway-dashboard" className="w-full max-w-6xl mx-auto mt-6 text-left animate-fadeIn space-y-6">
               
-              {/* 1. TOP SUMMARY BANNER */}
-              <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 text-white shadow-xl relative overflow-hidden">
-                <div className="absolute right-0 top-0 bottom-0 w-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
-                  <div className="flex items-start sm:items-center gap-3.5">
-                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shrink-0 text-2xl shadow-sm">
-                      🎯
-                    </div>
-                    <div>
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[11px] font-black uppercase tracking-wider mb-1">
-                        <Sparkles className="w-3 h-3 text-amber-300" />
-                        <span>Pre-Visa Pathway Engine</span>
-                      </div>
-                      <h3 className="text-lg sm:text-2xl font-black tracking-tight">
-                        Target Pathway: {journeyDestination} {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose} Visa
-                      </h3>
-                      <p className="text-xs sm:text-sm text-blue-100 font-medium mt-0.5">
-                        Passport: <strong>{passportCountry}</strong> • Estimated Processing: <strong>4–8 Weeks</strong> • Global Approval Index: <strong>~89%</strong>
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Readiness Score Card */}
-                  <div className="shrink-0">
-                    <div className="px-4 py-3 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 text-left">
-                      <span className="text-[10px] uppercase font-bold text-blue-100 flex items-center justify-between gap-3">
-                        <span>Eligibility Assessment</span>
-                        <span className="text-emerald-300 font-black">88% Match</span>
-                      </span>
-                      <div className="text-xs sm:text-sm font-extrabold text-white flex items-center gap-1.5 mt-1">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>High Potential</span>
-                      </div>
-                      <p className="text-[10px] text-blue-200 mt-0.5 font-medium">
-                        Based on {passportCountry} passport &amp; {journeyDestination} intake.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 2. ELIGIBILITY & DOCUMENT AUDIT CHECKLIST (4-CARD GRID) */}
+              {/* 1. ELIGIBILITY & DOCUMENT AUDIT CHECKLIST (4-CARD GRID) */}
               <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">

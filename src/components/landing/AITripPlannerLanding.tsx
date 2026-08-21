@@ -1098,6 +1098,51 @@ Track live status here: https://travltik.com/dashboard`;
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
                 </button>
               </form>
+
+              {/* Have Visa Already? Selector Under First Search Bar */}
+              <div className="flex items-center justify-center gap-2 mt-4 mx-auto">
+                <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md border border-purple-200/90 p-1.5 rounded-2xl shadow-xs">
+                  <span className="text-[11px] sm:text-xs font-bold text-slate-700 pl-2">Have Visa Already?</span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setHasVisaAlready('no');
+                        setHasGenerated(false);
+                        autoSaveJourney({ has_visa: false });
+                      }}
+                      className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                        hasVisaAlready === 'no'
+                          ? 'bg-slate-900 text-white shadow-xs'
+                          : 'text-slate-500 hover:text-slate-800'
+                      }`}
+                    >
+                      NO (Need Visa)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setHasVisaAlready('yes');
+                        setHasGenerated(true);
+                        autoSaveJourney({ has_visa: true });
+                        setTimeout(() => {
+                          const el = document.getElementById('parental-security-engine-dashboard');
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                      }}
+                      className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
+                        hasVisaAlready === 'yes'
+                          ? 'bg-[#00A86B] text-white shadow-sm shadow-emerald-600/20'
+                          : 'text-slate-500 hover:text-slate-800'
+                      }`}
+                    >
+                      <span>YES (Visa Approved)</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -1137,44 +1182,6 @@ Track live status here: https://travltik.com/dashboard`;
                   <p className="text-xs text-slate-500 font-semibold">
                     Visa condition tracking, verified driver pickup, housing escrow &amp; transit visa verification.
                   </p>
-                </div>
-              </div>
-
-              {/* Radio Toggle: Have Visa Already? */}
-              <div className="flex items-center gap-2.5 bg-slate-50 border border-slate-200/90 p-1.5 rounded-2xl shrink-0 self-start sm:self-auto">
-                <span className="text-[11px] font-bold text-slate-600 pl-2">Have Visa Already?</span>
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setHasVisaAlready('no');
-                      setHasGenerated(false);
-                      autoSaveJourney();
-                    }}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
-                      hasVisaAlready === 'no'
-                        ? 'bg-white text-slate-900 shadow-sm border border-slate-200/80'
-                        : 'text-slate-500 hover:text-slate-800'
-                    }`}
-                  >
-                    NO (Need Visa)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setHasVisaAlready('yes');
-                      setHasGenerated(true);
-                      autoSaveJourney();
-                    }}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 ${
-                      hasVisaAlready === 'yes'
-                        ? 'bg-[#00A86B] text-white shadow-sm shadow-emerald-600/20'
-                        : 'text-slate-500 hover:text-slate-800'
-                    }`}
-                  >
-                    <span>YES (Visa Approved)</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
-                  </button>
                 </div>
               </div>
             </div>

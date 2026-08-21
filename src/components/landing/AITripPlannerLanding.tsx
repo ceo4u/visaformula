@@ -222,9 +222,9 @@ export function AITripPlannerLanding() {
   const [selectedPill, setSelectedPill] = useState<string>('student');
 
   // Journey Engine Form State
-  const [passportCountry, setPassportCountry] = useState('India');
-  const [journeyDestination, setJourneyDestination] = useState('Canada');
-  const [travelPurpose, setTravelPurpose] = useState('study');
+  const [passportCountry, setPassportCountry] = useState('');
+  const [journeyDestination, setJourneyDestination] = useState('');
+  const [travelPurpose, setTravelPurpose] = useState('');
   const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes'>('no');
   
   // Custom dropdown open states for Journey Form
@@ -1280,11 +1280,11 @@ Track live status here: https://travltik.com/dashboard`;
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <span className="text-base shrink-0">
-                      {passportCountryOptions.find(o => o.value === passportCountry)?.icon || '🇮🇳'}
+                      {passportCountry ? (passportCountryOptions.find(o => o.value === passportCountry)?.icon || '🌐') : '🌐'}
                     </span>
                     <div className="min-w-0">
-                      <span className="text-xs sm:text-sm font-bold text-slate-800 truncate block">
-                        {passportCountryOptions.find(o => o.value === passportCountry)?.label || passportCountry}
+                      <span className={`text-xs sm:text-sm font-bold truncate block ${passportCountry ? 'text-slate-800' : 'text-slate-400'}`}>
+                        {passportCountry ? (passportCountryOptions.find(o => o.value === passportCountry)?.label || passportCountry) : 'Select Passport'}
                       </span>
                     </div>
                   </div>
@@ -1344,11 +1344,11 @@ Track live status here: https://travltik.com/dashboard`;
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <span className="text-base shrink-0">
-                      {journeyDestinationOptions.find(o => o.value === journeyDestination)?.icon || '🇨🇦'}
+                      {journeyDestination ? (journeyDestinationOptions.find(o => o.value === journeyDestination)?.icon || '✈️') : '✈️'}
                     </span>
                     <div className="min-w-0">
-                      <span className="text-xs sm:text-sm font-bold text-slate-800 truncate block">
-                        {journeyDestinationOptions.find(o => o.value === journeyDestination)?.label || journeyDestination}
+                      <span className={`text-xs sm:text-sm font-bold truncate block ${journeyDestination ? 'text-slate-800' : 'text-slate-400'}`}>
+                        {journeyDestination ? (journeyDestinationOptions.find(o => o.value === journeyDestination)?.label || journeyDestination) : 'Select Destination'}
                       </span>
                     </div>
                   </div>
@@ -1408,11 +1408,11 @@ Track live status here: https://travltik.com/dashboard`;
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <span className="text-base shrink-0">
-                      {travelPurposeOptions.find(o => o.value === travelPurpose)?.icon || '🎓'}
+                      {travelPurpose ? (travelPurposeOptions.find(o => o.value === travelPurpose)?.icon || '🎯') : '🎯'}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <span className="text-xs sm:text-sm font-bold text-slate-800 truncate block">
-                        {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose}
+                      <span className={`text-xs sm:text-sm font-bold truncate block ${travelPurpose ? 'text-slate-800' : 'text-slate-400'}`}>
+                        {travelPurpose ? (travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose) : 'Select Purpose'}
                       </span>
                     </div>
                   </div>
@@ -2107,14 +2107,14 @@ Track live status here: https://travltik.com/dashboard`;
                         <span>Personalized Visa Pathway</span>
                       </div>
                       <h4 className="text-base sm:text-xl font-black text-white tracking-tight leading-snug">
-                        Target: {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose} to {journeyDestination}
+                        Target: {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose || 'Visa Pathway'} {journeyDestination ? `to ${journeyDestination}` : ''}
                       </h4>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
                       <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-white text-xs font-bold">
                         <span>{passportCountryOptions.find(p => p.value === passportCountry)?.icon || '🌐'}</span>
-                        <span>Passport: {passportCountry}</span>
+                        <span>Passport: {passportCountry || 'Global'}</span>
                       </div>
                       <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
                         <span>Free Specialist Consultation</span>
@@ -2134,7 +2134,7 @@ Track live status here: https://travltik.com/dashboard`;
                         Request Received!
                       </h3>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-md mx-auto leading-relaxed">
-                        Our verified <strong>{journeyDestination}</strong> visa expert will reach out to you on <strong>{leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Phone'}</strong> ({leadPhoneNumber}) shortly.
+                        Our verified <strong>{journeyDestination || 'destination'}</strong> visa expert will reach out to you on <strong>{leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Phone'}</strong> ({leadPhoneNumber}) shortly.
                       </p>
                       <div className="pt-3">
                         <button
@@ -2158,7 +2158,7 @@ Track live status here: https://travltik.com/dashboard`;
                           Get Expert Visa Guidance &amp; Pathway Plan
                         </h3>
                         <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1 leading-relaxed">
-                          Enter your contact details to receive a free profile audit and 1-on-1 guidance from top verified <strong>{journeyDestination}</strong> visa specialists.
+                          Enter your contact details to receive a free profile audit and 1-on-1 guidance from top verified <strong>{journeyDestination ? journeyDestination + ' ' : ''}</strong>visa specialists.
                         </p>
                       </div>
 

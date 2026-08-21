@@ -560,6 +560,94 @@ export function AITripPlannerLanding() {
     }, 1200);
   };
 
+  // Smart Natural Language Query Parser for Real-time Two-Way Sync
+  const parseQueryToFormState = (query: string) => {
+    const q = (query || '').toLowerCase().trim();
+    if (!q) return;
+
+    let updatedPassport = passportCountry;
+    let updatedDest = journeyDestination;
+    let updatedPurpose = travelPurpose;
+    let updatedPill = selectedPill;
+
+    // 1. Detect Passport / Origin Country
+    if (q.includes('indian') || q.includes('india')) updatedPassport = 'India';
+    else if (q.includes('nepal') || q.includes('nepalese')) updatedPassport = 'Nepal';
+    else if (q.includes('bangladesh') || q.includes('bangladeshi')) updatedPassport = 'Bangladesh';
+    else if (q.includes('sri lanka') || q.includes('sri lankan') || q.includes('lanka')) updatedPassport = 'Sri Lanka';
+    else if (q.includes('philippine') || q.includes('filipino') || q.includes('manila')) updatedPassport = 'Philippines';
+    else if (q.includes('nigeria') || q.includes('nigerian')) updatedPassport = 'Nigeria';
+    else if (q.includes('pakistan') || q.includes('pakistani')) updatedPassport = 'Pakistan';
+    else if (q.includes('uae passport') || q.includes('emirati') || q.includes('from uae') || q.includes('from dubai')) updatedPassport = 'UAE';
+    else if (q.includes('us passport') || q.includes('american passport') || q.includes('from usa') || q.includes('from us')) updatedPassport = 'United States';
+    else if (q.includes('uk passport') || q.includes('british passport') || q.includes('from uk')) updatedPassport = 'United Kingdom';
+    else if (q.includes('australian passport') || q.includes('from australia')) updatedPassport = 'Australia';
+    else if (q.includes('canadian passport') || q.includes('from canada')) updatedPassport = 'Canada';
+
+    // 2. Detect Destination Country
+    if (q.includes('canada') || q.includes('toronto') || q.includes('vancouver') || q.includes('ontario') || q.includes('montreal') || q.includes('alberta') || q.includes('calgary')) {
+      updatedDest = 'Canada';
+    } else if (q.includes('usa') || q.includes('united states') || q.includes('america') || q.includes('california') || q.includes('new york') || q.includes('texas') || q.includes('boston') || q.includes('seattle')) {
+      updatedDest = 'United States';
+    } else if (q.includes('uk') || q.includes('united kingdom') || q.includes('london') || q.includes('england') || q.includes('britain') || q.includes('scotland') || q.includes('manchester') || q.includes('birmingham')) {
+      updatedDest = 'United Kingdom';
+    } else if (q.includes('australia') || q.includes('aus') || q.includes('sydney') || q.includes('melbourne') || q.includes('brisbane') || q.includes('perth') || q.includes('adelaide')) {
+      updatedDest = 'Australia';
+    } else if (q.includes('germany') || q.includes('deutschland') || q.includes('berlin') || q.includes('munich') || q.includes('frankfurt')) {
+      updatedDest = 'Germany';
+    } else if (q.includes('ireland') || q.includes('dublin')) {
+      updatedDest = 'Ireland';
+    } else if (q.includes('new zealand') || q.includes('nz') || q.includes('auckland') || q.includes('wellington')) {
+      updatedDest = 'New Zealand';
+    } else if (q.includes('dubai') || q.includes('uae') || q.includes('abu dhabi')) {
+      updatedDest = 'UAE';
+    } else if (q.includes('singapore')) {
+      updatedDest = 'Singapore';
+    } else if (q.includes('france') || q.includes('paris') || q.includes('schengen') || q.includes('europe')) {
+      updatedDest = 'France';
+    } else if (q.includes('japan') || q.includes('tokyo')) {
+      updatedDest = 'Japan';
+    }
+
+    // 3. Detect Purpose / Visa Subclass
+    if (q.includes('study') || q.includes('student') || q.includes('university') || q.includes('college') || q.includes('masters') || q.includes('bachelors') || q.includes('course') || q.includes('degree') || q.includes('phd') || q.includes('ielts') || q.includes('500') || q.includes('f1') || q.includes('f-1')) {
+      updatedPurpose = 'study';
+      updatedPill = 'student';
+    } else if (q.includes('work') || q.includes('job') || q.includes('skilled') || q.includes('employment') || q.includes('h1b') || q.includes('h-1b') || q.includes('lmia') || q.includes('482') || q.includes('sponsor') || q.includes('permit') || q.includes('ssw') || q.includes('opportunity card')) {
+      updatedPurpose = 'work';
+      updatedPill = 'work';
+    } else if (q.includes('pr') || q.includes('permanent resident') || q.includes('express entry') || q.includes('pnp') || q.includes('migration') || q.includes('settle') || q.includes('immigrat')) {
+      updatedPurpose = 'pr';
+      updatedPill = 'pr';
+    } else if (q.includes('tourist') || q.includes('visit') || q.includes('holiday') || q.includes('travel') || q.includes('b1') || q.includes('b2') || q.includes('visitor')) {
+      updatedPurpose = 'visit';
+      updatedPill = 'tourist';
+    } else if (q.includes('transit') || q.includes('layover') || q.includes('stopover')) {
+      updatedPurpose = 'transit';
+      updatedPill = 'transit';
+    } else if (q.includes('business') || q.includes('investor') || q.includes('golden') || q.includes('startup') || q.includes('entrepreneur')) {
+      updatedPurpose = 'business';
+      updatedPill = 'business';
+    } else if (q.includes('appeal') || q.includes('refusal') || q.includes('reject') || q.includes('overturn')) {
+      updatedPurpose = 'work';
+      updatedPill = 'appeals';
+    } else if (q.includes('relocation') || q.includes('housing') || q.includes('sim') || q.includes('rent') || q.includes('accommodation')) {
+      updatedPurpose = 'study';
+      updatedPill = 'relocation';
+    }
+
+    // 4. Update Form State Instantly in Real-time
+    setPassportCountry(updatedPassport);
+    setJourneyDestination(updatedDest);
+    setTravelPurpose(updatedPurpose);
+    setSelectedPill(updatedPill);
+    autoSaveJourney({
+      passport_country: updatedPassport,
+      destination: updatedDest,
+      purpose: updatedPurpose
+    });
+  };
+
   const handleGeneratePathway = () => {
     fetchAISecurityEngine({
       destination: journeyDestination || 'Canada',
@@ -572,18 +660,10 @@ export function AITripPlannerLanding() {
     e.preventDefault();
     if (!searchPrompt.trim()) return;
 
-    const promptLower = searchPrompt.toLowerCase();
-    let foundDest = journeyDestination;
-    for (const opt of journeyDestinationOptions) {
-      if (promptLower.includes(opt.value.toLowerCase())) {
-        foundDest = opt.value;
-        break;
-      }
-    }
-    setJourneyDestination(foundDest);
+    parseQueryToFormState(searchPrompt);
 
     fetchAISecurityEngine({
-      destination: foundDest,
+      destination: journeyDestination,
       passport: passportCountry,
       purpose: travelPurpose
     });
@@ -1002,7 +1082,10 @@ Track live status here: https://travltik.com/dashboard`;
                 <input 
                   type="text" 
                   value={searchPrompt}
-                  onChange={(e) => setSearchPrompt(e.target.value)}
+                  onChange={(e) => {
+                    setSearchPrompt(e.target.value);
+                    parseQueryToFormState(e.target.value);
+                  }}
                   placeholder="Select Passport Country, Destination, and Visa Type (e.g., Indian Passport to Australia Skilled Migration)..." 
                   className="w-full bg-transparent border-none text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-0 text-xs sm:text-sm md:text-[15px] font-medium mr-2 sm:mr-3 truncate"
                 />

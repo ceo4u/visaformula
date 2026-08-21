@@ -108,12 +108,12 @@ const journeyDestinationOptions = [
 ];
 
 const travelPurposeOptions = [
-  { value: 'study', label: 'Study Abroad & Degree', icon: '🎓', desc: 'Universities, Colleges & Student Visas' },
-  { value: 'work', label: 'Work Permit & Employment', icon: '💼', desc: 'Job Sponsorship, LMIA & Work Visas' },
-  { value: 'pr', label: 'PR & Migration Settlement', icon: '🏡', desc: 'Express Entry, PNP & Direct PR' },
-  { value: 'visit', label: 'Tourist & Visitor Stay', icon: '🏝️', desc: 'Short-stay, Holidays & Family' },
-  { value: 'business', label: 'Business & Investor', icon: '💼', desc: 'Startups, Entrepreneur & Investor' },
-  { value: 'transit', label: 'Transit & Layover Visa', icon: '✈️', desc: 'Airport transit & Stopover Visas' },
+  { value: 'study', label: 'Study Visa', icon: '🎓', desc: 'Universities, Colleges & Student Visas' },
+  { value: 'work', label: 'Work Permit', icon: '💼', desc: 'Job Sponsorship, LMIA & Work Visas' },
+  { value: 'pr', label: 'PR & Migration', icon: '🏡', desc: 'Express Entry, PNP & Direct PR' },
+  { value: 'visit', label: 'Tourist / Visit', icon: '🏝️', desc: 'Short-stay, Holidays & Family' },
+  { value: 'business', label: 'Business Visa', icon: '💼', desc: 'Startups, Entrepreneur & Investor' },
+  { value: 'transit', label: 'Transit Visa', icon: '✈️', desc: 'Airport transit & Stopover Visas' },
 ];
 
 const courseLevelOptions = [
@@ -672,6 +672,21 @@ export function AITripPlannerLanding() {
     if (!leadFullName.trim() || !leadPhoneNumber.trim()) return;
 
     setLeadSubmitting(true);
+    const prefLabel = leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Direct Phone Call';
+    
+    // Save locally for instant User Dashboard reflection
+    autoSaveJourney({
+      user_name: leadFullName,
+      user_phone: leadPhoneNumber,
+      passport_country: passportCountry,
+      destination: journeyDestination,
+      purpose: travelPurpose,
+      contact_pref: prefLabel,
+      has_visa: false,
+      lead_status: 'Callback Requested',
+      lead_submitted_at: new Date().toISOString()
+    });
+
     try {
       await fetch('/api/leads/submit', {
         method: 'POST',
@@ -682,7 +697,7 @@ export function AITripPlannerLanding() {
           passport_country: passportCountry,
           destination_country: journeyDestination,
           purpose: travelPurpose,
-          contact_preference: leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Direct Phone Call',
+          contact_preference: prefLabel,
           have_visa: false
         })
       });
@@ -1140,10 +1155,16 @@ Track live status here: https://travltik.com/dashboard`;
               </form>
 
               {/* Have Visa Already? Selector Under First Search Bar */}
-              <div className="flex items-center justify-center gap-2 mt-4 mx-auto">
-                <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md border border-purple-200/90 p-1.5 rounded-2xl shadow-xs">
-                  <span className="text-[11px] sm:text-xs font-bold text-slate-700 pl-2">Have Visa Already?</span>
-                  <div className="flex items-center gap-1">
+              <div className="flex items-center justify-center mt-4 mx-auto">
+                <div className="inline-flex items-center gap-1.5 sm:gap-2.5 bg-white/95 backdrop-blur-md border border-purple-200/90 p-1 sm:p-1.5 rounded-2xl sm:rounded-[22px] shadow-[0_8px_30px_rgba(48,0,90,0.06)]">
+                  <span className="text-[11px] sm:text-xs font-extrabold text-slate-800 pl-2.5 sm:pl-3 select-none">
+                    Have Visa Already?
+                  </span>
+                  
+                  {/* Segmented Control Track */}
+                  <div className="flex items-center gap-1.5 bg-slate-100/90 p-1 rounded-xl sm:rounded-2xl border border-slate-200/80">
+                    
+                    {/* NO Option */}
                     <button
                       type="button"
                       onClick={() => {
@@ -1155,14 +1176,20 @@ Track live status here: https://travltik.com/dashboard`;
                           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }, 100);
                       }}
-                      className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                      className={`px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-[13px] font-black transition-all duration-200 cursor-pointer flex items-center gap-1.5 select-none ${
                         hasVisaAlready === 'no'
-                          ? 'bg-slate-900 text-white shadow-xs'
-                          : 'text-slate-500 hover:text-slate-800'
+                          ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30 ring-2 ring-slate-900/20 scale-[1.03]'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
                       }`}
                     >
-                      NO (Need Visa)
+                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
+                      <span>NO</span>
+                      {hasVisaAlready === 'no' && (
+                        <Check className="w-3.5 h-3.5 text-cyan-300 stroke-[3] shrink-0" />
+                      )}
                     </button>
+
+                    {/* YES Option */}
                     <button
                       type="button"
                       onClick={() => {
@@ -1174,15 +1201,19 @@ Track live status here: https://travltik.com/dashboard`;
                           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }, 100);
                       }}
-                      className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
+                      className={`px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-[13px] font-black transition-all duration-200 cursor-pointer flex items-center gap-1.5 select-none ${
                         hasVisaAlready === 'yes'
-                          ? 'bg-[#00A86B] text-white shadow-sm shadow-emerald-600/20'
-                          : 'text-slate-500 hover:text-slate-800'
+                          ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35 ring-2 ring-emerald-500/25 scale-[1.03]'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
                       }`}
                     >
-                      <span>YES (Visa Approved)</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
+                      <span>YES</span>
+                      {hasVisaAlready === 'yes' && (
+                        <Check className="w-3.5 h-3.5 text-white stroke-[3] shrink-0" />
+                      )}
                     </button>
+
                   </div>
                 </div>
               </div>
@@ -1377,9 +1408,9 @@ Track live status here: https://travltik.com/dashboard`;
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <span className="text-base shrink-0">
-                      {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || '🎓'}
+                      {travelPurposeOptions.find(o => o.value === travelPurpose)?.icon || '🎓'}
                     </span>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <span className="text-xs sm:text-sm font-bold text-slate-800 truncate block">
                         {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose}
                       </span>
@@ -2062,73 +2093,74 @@ Track live status here: https://travltik.com/dashboard`;
 
           {/* ── FLOW 2: EXPERT CALLBACK & LEAD CAPTURE ENGINE (WHEN HAVE VISA? = NO) ── */}
           {hasVisaAlready === 'no' && (
-            <div id="need-visa-pathway-dashboard" className="w-full max-w-2xl mx-auto mt-6 text-left animate-fadeIn space-y-4">
+            <div id="need-visa-pathway-dashboard" className="w-full max-w-2xl mx-auto mt-6 text-left animate-fadeIn">
               
-              {/* 2. TOP PATHWAY SUMMARY BADGE */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-[24px] p-4 sm:p-5 text-white shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                  <span className="text-[10px] uppercase font-black tracking-widest text-[#00A86B] block mb-1">
-                    🎯 Personalized Visa Pathway
-                  </span>
-                  <h4 className="text-base sm:text-lg font-black text-white leading-tight">
-                    Target Pathway: {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose} to {journeyDestination}
-                  </h4>
-                </div>
-                <div className="flex flex-wrap items-center gap-1.5 shrink-0">
-                  <span className="text-[11px] font-bold bg-white/10 text-white px-2.5 py-1 rounded-xl border border-white/10">
-                    Passport: {passportCountry} {passportCountryOptions.find(p => p.value === passportCountry)?.icon || '🇮🇳'}
-                  </span>
-                  <span className="text-[11px] font-bold bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-xl border border-amber-500/30">
-                    Eligibility Check Needed
-                  </span>
-                  <span className="text-[11px] font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-xl border border-emerald-500/30">
-                    Free Specialist Consultation
-                  </span>
-                </div>
-              </div>
-
-              {/* 3. CENTRAL LEAD CAPTURE CARD (HIGH-CONVERTING FORM) */}
-              <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-xl text-left">
-                {leadSubmittedSuccess ? (
-                  <div className="text-center py-6 sm:py-8 space-y-3 animate-fadeIn">
-                    <div className="w-16 h-16 rounded-3xl bg-emerald-50 border border-emerald-200 text-[#00A86B] flex items-center justify-center mx-auto text-3xl shadow-sm">
-                      ✅
+              {/* UNIFIED CARD CONTAINER */}
+              <div className="bg-white border border-slate-200/90 rounded-3xl sm:rounded-[28px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] overflow-hidden">
+                
+                {/* INTEGRATED TOP PATHWAY BANNER */}
+                <div className="bg-slate-900 p-5 sm:p-6 text-white border-b border-slate-800">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#00A86B]/20 border border-[#00A86B]/40 text-emerald-300 text-[10px] font-black uppercase tracking-wider mb-1.5">
+                        <Sparkles className="w-3 h-3 text-emerald-400" />
+                        <span>Personalized Visa Pathway</span>
+                      </div>
+                      <h4 className="text-base sm:text-xl font-black text-white tracking-tight leading-snug">
+                        Target: {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose} to {journeyDestination}
+                      </h4>
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-black text-slate-900">
-                      Request Received!
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-md mx-auto leading-relaxed">
-                      Our verified <strong>{journeyDestination}</strong> visa expert will reach out to you on <strong>{leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Phone'}</strong> ({leadPhoneNumber}) shortly.
-                    </p>
-                    <div className="pt-3">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setLeadSubmittedSuccess(false);
-                          setLeadFullName('');
-                          setLeadPhoneNumber('');
-                        }}
-                        className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
-                      >
-                        Submit Another Request
-                      </button>
+
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-white text-xs font-bold">
+                        <span>{passportCountryOptions.find(p => p.value === passportCountry)?.icon || '🌐'}</span>
+                        <span>Passport: {passportCountry}</span>
+                      </div>
+                      <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
+                        <span>Free Specialist Consultation</span>
+                      </div>
                     </div>
                   </div>
-                ) : (
-                  <div>
-                    {/* Header */}
-                    <div className="mb-6 pb-4 border-b border-slate-100">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200 text-[10px] font-black uppercase tracking-wider mb-2">
-                        <Sparkles className="w-3 h-3" />
-                        <span>100% Free • Verified Specialists</span>
+                </div>
+
+                {/* CARD BODY */}
+                <div className="p-6 sm:p-8">
+                  {leadSubmittedSuccess ? (
+                    <div className="text-center py-6 sm:py-8 space-y-3 animate-fadeIn">
+                      <div className="w-16 h-16 rounded-3xl bg-emerald-50 border border-emerald-200 text-[#00A86B] flex items-center justify-center mx-auto text-3xl shadow-sm">
+                        ✅
                       </div>
-                      <h3 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight">
-                        Get Expert Visa Guidance &amp; Pathway Plan
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+                        Request Received!
                       </h3>
-                      <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1 leading-relaxed">
-                        Enter your contact details to receive a free profile audit and 1-on-1 guidance from top verified <strong>{journeyDestination}</strong> visa specialists.
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-md mx-auto leading-relaxed">
+                        Our verified <strong>{journeyDestination}</strong> visa expert will reach out to you on <strong>{leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Phone'}</strong> ({leadPhoneNumber}) shortly.
                       </p>
+                      <div className="pt-3">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setLeadSubmittedSuccess(false);
+                            setLeadFullName('');
+                            setLeadPhoneNumber('');
+                          }}
+                          className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+                        >
+                          Submit Another Request
+                        </button>
+                      </div>
                     </div>
+                  ) : (
+                    <div>
+                      {/* Header Inside Card */}
+                      <div className="mb-6 pb-4 border-b border-slate-100">
+                        <h3 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight">
+                          Get Expert Visa Guidance &amp; Pathway Plan
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1 leading-relaxed">
+                          Enter your contact details to receive a free profile audit and 1-on-1 guidance from top verified <strong>{journeyDestination}</strong> visa specialists.
+                        </p>
+                      </div>
 
                     {/* Form Inputs Grid */}
                     <form onSubmit={handleNoVisaLeadSubmit} className="space-y-4">
@@ -2213,8 +2245,9 @@ Track live status here: https://travltik.com/dashboard`;
                     </form>
                   </div>
                 )}
-              </div>
+                </div>
 
+              </div>
             </div>
           )}
 

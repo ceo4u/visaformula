@@ -292,31 +292,12 @@ export function AITripPlannerLanding() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
 
-  // Flow 2: Pre-Visa Pathway & Expert Matching Engine States
-  const [preVisaDocsChecked, setPreVisaDocsChecked] = useState<Record<string, boolean>>({
-    sop: true,
-    lor: false,
-    transcripts: true,
-    funds: true,
-  });
-  const [callbackName, setCallbackName] = useState('');
-  const [callbackPhone, setCallbackPhone] = useState('');
-  const [callbackTime, setCallbackTime] = useState('Morning (9 AM - 12 PM)');
-  const [callbackSubmitting, setCallbackSubmitting] = useState(false);
-  const [callbackSuccess, setCallbackSuccess] = useState(false);
-  const [selectedExpertForBooking, setSelectedExpertForBooking] = useState<{
-    name: string;
-    agency: string;
-    rating: string;
-    license: string;
-    specialization: string;
-    fee: string;
-    icon: string;
-  } | null>(null);
-  const [bookingSlot, setBookingSlot] = useState('Tomorrow, 11:00 AM');
-  const [bookingUserName, setBookingUserName] = useState('');
-  const [bookingUserPhone, setBookingUserPhone] = useState('');
-  const [bookingConfirmed, setBookingConfirmed] = useState(false);
+  // Flow 2: No-Visa Lead Capture Engine States
+  const [leadFullName, setLeadFullName] = useState('');
+  const [leadPhoneNumber, setLeadPhoneNumber] = useState('');
+  const [leadContactPref, setLeadContactPref] = useState<'whatsapp' | 'call'>('whatsapp');
+  const [leadSubmitting, setLeadSubmitting] = useState(false);
+  const [leadSubmittedSuccess, setLeadSubmittedSuccess] = useState(false);
 
   // Global Multi-Tab Search Widget State
   const [activeSearchTab, setActiveSearchTab] = useState<'universities' | 'consultants' | 'relocation' | 'jobs' | 'lawyers'>('universities');
@@ -685,24 +666,24 @@ export function AITripPlannerLanding() {
     });
   };
 
-  // Flow 2: Handle CRM Callback Lead Submission
-  const handleCallbackSubmit = async (e: React.FormEvent) => {
+  // Flow 2: Handle No-Visa Lead Capture Submission
+  const handleNoVisaLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!callbackName.trim() || !callbackPhone.trim()) return;
+    if (!leadFullName.trim() || !leadPhoneNumber.trim()) return;
 
-    setCallbackSubmitting(true);
+    setLeadSubmitting(true);
     try {
       await fetch('/api/leads/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: callbackName,
-          phone: callbackPhone,
-          preferred_time: callbackTime,
-          destination: journeyDestination,
+          name: leadFullName,
+          phone: leadPhoneNumber,
           passport_country: passportCountry,
+          destination_country: journeyDestination,
           purpose: travelPurpose,
-          lead_source: 'Pre-Visa Eligibility Check Callback'
+          contact_preference: leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Direct Phone Call',
+          have_visa: false
         })
       });
     } catch {
@@ -710,9 +691,9 @@ export function AITripPlannerLanding() {
     }
 
     setTimeout(() => {
-      setCallbackSubmitting(false);
-      setCallbackSuccess(true);
-    }, 500);
+      setLeadSubmitting(false);
+      setLeadSubmittedSuccess(true);
+    }, 400);
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -2079,582 +2060,160 @@ Track live status here: https://travltik.com/dashboard`;
             </div>
           )}
 
-          {/* ── FLOW 2: PRE-VISA PATHWAY & EXPERT MATCHING ENGINE (WHEN HAVE VISA? = NO) ── */}
+          {/* ── FLOW 2: EXPERT CALLBACK & LEAD CAPTURE ENGINE (WHEN HAVE VISA? = NO) ── */}
           {hasVisaAlready === 'no' && (
-            <div id="need-visa-pathway-dashboard" className="w-full max-w-6xl mx-auto mt-6 text-left animate-fadeIn space-y-6">
+            <div id="need-visa-pathway-dashboard" className="w-full max-w-2xl mx-auto mt-6 text-left animate-fadeIn space-y-4">
               
-              {/* 1. ELIGIBILITY & DOCUMENT AUDIT CHECKLIST (4-CARD GRID) */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-700 shrink-0">
-                      <FileCheck2 className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
-                        Eligibility &amp; Document Audit Checklist
-                      </h4>
-                      <p className="text-[11px] text-slate-500 font-medium">
-                        Essential prerequisites to assemble before lodging your application.
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-extrabold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-100 shrink-0 self-start sm:self-auto">
-                    4 Core Milestones
+              {/* 2. TOP PATHWAY SUMMARY BADGE */}
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-[24px] p-4 sm:p-5 text-white shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <span className="text-[10px] uppercase font-black tracking-widest text-[#00A86B] block mb-1">
+                    🎯 Personalized Visa Pathway
                   </span>
+                  <h4 className="text-base sm:text-lg font-black text-white leading-tight">
+                    Target Pathway: {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose} to {journeyDestination}
+                  </h4>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                  
-                  {/* Card 1: Document Checklist */}
-                  <div className="p-3.5 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[145px]">
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-lg">📑</span>
-                        <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
-                          Mandatory
-                        </span>
-                      </div>
-                      <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
-                        1. Document Checklist
-                      </h5>
-                      <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                        SOP, 2 Letters of Recommendation (LOR), Transcripts &amp; Updated CV.
-                      </p>
-                    </div>
-                    <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-700">
-                      <span className="text-emerald-600 flex items-center gap-1">
-                        <Check className="w-3 h-3 text-[#00A86B]" /> Standard Format
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Card 2: Language Test Benchmark */}
-                  <div className="p-3.5 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[145px]">
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-lg">💬</span>
-                        <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
-                          Score Target
-                        </span>
-                      </div>
-                      <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
-                        2. Language Test Benchmark
-                      </h5>
-                      <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                        <strong>IELTS 6.5+</strong> (Min 6.0 each) / <strong>PTE 58+</strong> / <strong>TOEFL 85+</strong>.
-                      </p>
-                    </div>
-                    <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-700">
-                      <a href="/ielts" className="text-purple-600 hover:text-purple-800 text-[10px] font-extrabold flex items-center gap-1">
-                        <span>Free Mock Test →</span>
-                      </a>
-                    </div>
-                  </div>
-
-                  {/* Card 3: Proof of Financial Funds */}
-                  <div className="p-3.5 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[145px]">
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-lg">💰</span>
-                        <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-100">
-                          Solvency
-                        </span>
-                      </div>
-                      <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
-                        3. Proof of Financial Funds
-                      </h5>
-                      <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                        GIC / Blocked Account, 6-Month Liquid Bank Statement or Loan Sanction.
-                      </p>
-                    </div>
-                    <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-700">
-                      <span className="text-slate-500 text-[10px]">Sponsorship Eligible</span>
-                    </div>
-                  </div>
-
-                  {/* Card 4: Biometrics & Medical Examination */}
-                  <div className="p-3.5 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[145px]">
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-lg">🩺</span>
-                        <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">
-                          Panel Health
-                        </span>
-                      </div>
-                      <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
-                        4. Biometrics &amp; Medicals
-                      </h5>
-                      <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                        eMedical Health Assessment by Panel Doctor &amp; VFS Global Biometrics.
-                      </p>
-                    </div>
-                    <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-700">
-                      <span className="text-emerald-600 text-[10px]">Police Clearance (PCC)</span>
-                    </div>
-                  </div>
-
+                <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+                  <span className="text-[11px] font-bold bg-white/10 text-white px-2.5 py-1 rounded-xl border border-white/10">
+                    Passport: {passportCountry} {passportCountryOptions.find(p => p.value === passportCountry)?.icon || '🇮🇳'}
+                  </span>
+                  <span className="text-[11px] font-bold bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-xl border border-amber-500/30">
+                    Eligibility Check Needed
+                  </span>
+                  <span className="text-[11px] font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-xl border border-emerald-500/30">
+                    Free Specialist Consultation
+                  </span>
                 </div>
               </div>
 
-              {/* 3. VERIFIED EXPERTS MATCHMAKER CARDS */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shrink-0">
-                      <Users className="w-4 h-4" />
+              {/* 3. CENTRAL LEAD CAPTURE CARD (HIGH-CONVERTING FORM) */}
+              <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-xl text-left">
+                {leadSubmittedSuccess ? (
+                  <div className="text-center py-6 sm:py-8 space-y-3 animate-fadeIn">
+                    <div className="w-16 h-16 rounded-3xl bg-emerald-50 border border-emerald-200 text-[#00A86B] flex items-center justify-center mx-auto text-3xl shadow-sm">
+                      ✅
                     </div>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
-                        Connect with Verified {journeyDestination} Visa Specialists
-                      </h4>
-                      <p className="text-[11px] text-slate-500 font-medium">
-                        Licensed MARA, RCIC, and certified filing lawyers for guaranteed compliance.
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-extrabold text-[#00A86B] bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 shrink-0 self-start sm:self-auto">
-                    Escrow Protected ✓
-                  </span>
-                </div>
-
-                {/* 3-Column Experts Card Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  
-                  {/* Expert 1 */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-gradient-to-b from-white to-slate-50/50 hover:shadow-md transition-all flex flex-col justify-between space-y-3.5">
-                    <div>
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-10 h-10 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center text-lg font-bold shrink-0">
-                            🏛️
-                          </div>
-                          <div>
-                            <h5 className="text-xs sm:text-sm font-black text-slate-900 leading-tight">
-                              Apex Global Immigration
-                            </h5>
-                            <span className="text-[10px] font-bold text-purple-700 block mt-0.5">
-                              RCIC / MARA Certified
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-full shrink-0">
-                          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                          <span className="text-[10px] font-black text-amber-800">4.9</span>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-1.5 mt-3">
-                        <span className="text-[9px] font-extrabold bg-emerald-50 text-[#00A86B] border border-emerald-200 px-2 py-0.5 rounded-full">
-                          Verified Agency
-                        </span>
-                        <span className="text-[9px] font-extrabold bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-full">
-                          150+ Visa Approvals
-                        </span>
-                      </div>
-
-                      <p className="text-[11px] text-slate-600 font-medium mt-2 leading-relaxed">
-                        Specializes in {journeyDestination} Study Permits, Skilled Work, and Fast-track Dossiers.
-                      </p>
-                    </div>
-
-                    <div className="space-y-2 pt-2 border-t border-slate-100">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSelectedExpertForBooking({
-                            name: 'Marcus Vance, RCIC',
-                            agency: 'Apex Global Immigration',
-                            rating: '4.9 ★ (140+ reviews)',
-                            license: 'RCIC #R539201',
-                            specialization: `${journeyDestination} Direct Stream`,
-                            fee: 'Free 15-Min Screening',
-                            icon: '🏛️'
-                          });
-                          setBookingConfirmed(false);
-                        }}
-                        className="w-full py-2 px-3 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black transition-all cursor-pointer shadow-xs active:scale-95"
-                      >
-                        Book Consultation →
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const formEl = document.getElementById('pre-visa-lead-capture-form');
-                          if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }}
-                        className="w-full py-1.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all cursor-pointer"
-                      >
-                        Request Free Callback
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Expert 2 */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-gradient-to-b from-white to-slate-50/50 hover:shadow-md transition-all flex flex-col justify-between space-y-3.5">
-                    <div>
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-10 h-10 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center text-lg font-bold shrink-0">
-                            ⚖️
-                          </div>
-                          <div>
-                            <h5 className="text-xs sm:text-sm font-black text-slate-900 leading-tight">
-                              Horizon Visa Counsel
-                            </h5>
-                            <span className="text-[10px] font-bold text-blue-700 block mt-0.5">
-                              Bar Association Council
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-full shrink-0">
-                          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                          <span className="text-[10px] font-black text-amber-800">5.0</span>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-1.5 mt-3">
-                        <span className="text-[9px] font-extrabold bg-emerald-50 text-[#00A86B] border border-emerald-200 px-2 py-0.5 rounded-full">
-                          Licensed Lawyer
-                        </span>
-                        <span className="text-[9px] font-extrabold bg-purple-50 text-purple-700 border border-purple-100 px-2 py-0.5 rounded-full">
-                          98.4% Success Rate
-                        </span>
-                      </div>
-
-                      <p className="text-[11px] text-slate-600 font-medium mt-2 leading-relaxed">
-                        Expert legal representation for PR settlement, employer sponsorship, and refusal overturns.
-                      </p>
-                    </div>
-
-                    <div className="space-y-2 pt-2 border-t border-slate-100">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSelectedExpertForBooking({
-                            name: 'Adv. Elena Rostova',
-                            agency: 'Horizon Visa Counsel',
-                            rating: '5.0 ★ (98 reviews)',
-                            license: 'Bar Council #884102',
-                            specialization: `${journeyDestination} PR & Legal Filings`,
-                            fee: 'Free Strategy Call',
-                            icon: '⚖️'
-                          });
-                          setBookingConfirmed(false);
-                        }}
-                        className="w-full py-2 px-3 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black transition-all cursor-pointer shadow-xs active:scale-95"
-                      >
-                        Book Consultation →
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const formEl = document.getElementById('pre-visa-lead-capture-form');
-                          if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }}
-                        className="w-full py-1.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all cursor-pointer"
-                      >
-                        Request Free Callback
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Expert 3 */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-gradient-to-b from-white to-slate-50/50 hover:shadow-md transition-all flex flex-col justify-between space-y-3.5">
-                    <div>
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-10 h-10 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center text-lg font-bold shrink-0">
-                            🌐
-                          </div>
-                          <div>
-                            <h5 className="text-xs sm:text-sm font-black text-slate-900 leading-tight">
-                              Nexus Overseas Education
-                            </h5>
-                            <span className="text-[10px] font-bold text-teal-700 block mt-0.5">
-                              Authorized University Partner
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-full shrink-0">
-                          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                          <span className="text-[10px] font-black text-amber-800">4.8</span>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-1.5 mt-3">
-                        <span className="text-[9px] font-extrabold bg-emerald-50 text-[#00A86B] border border-emerald-200 px-2 py-0.5 rounded-full">
-                          Authorized Partner
-                        </span>
-                        <span className="text-[9px] font-extrabold bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-full">
-                          250+ Admissions
-                        </span>
-                      </div>
-
-                      <p className="text-[11px] text-slate-600 font-medium mt-2 leading-relaxed">
-                        Fast-track university admissions, scholarship guidance &amp; student visa file preparation.
-                      </p>
-                    </div>
-
-                    <div className="space-y-2 pt-2 border-t border-slate-100">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSelectedExpertForBooking({
-                            name: 'David Chen',
-                            agency: 'Nexus Overseas Education',
-                            rating: '4.8 ★ (220 reviews)',
-                            license: 'Partner ID #NX-994',
-                            specialization: `${journeyDestination} University Admissions`,
-                            fee: '100% Free University Assessment',
-                            icon: '🌐'
-                          });
-                          setBookingConfirmed(false);
-                        }}
-                        className="w-full py-2 px-3 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black transition-all cursor-pointer shadow-xs active:scale-95"
-                      >
-                        Book Consultation →
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const formEl = document.getElementById('pre-visa-lead-capture-form');
-                          if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }}
-                        className="w-full py-1.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition-all cursor-pointer"
-                      >
-                        Request Free Callback
-                      </button>
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Browse All Experts Link */}
-                <div className="pt-2">
-                  <a
-                    href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
-                    className="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center block transition-all"
-                  >
-                    Explore All 45+ Verified {journeyDestination} Specialists →
-                  </a>
-                </div>
-              </div>
-
-              {/* 4. CALLBACK LEAD CAPTURE FORM (CRM TRIGGER) */}
-              <div id="pre-visa-lead-capture-form" className="bg-gradient-to-br from-slate-900 via-[#18002e] to-slate-900 border border-purple-900/40 rounded-2xl sm:rounded-[28px] p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
-                <div className="absolute right-0 top-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-                
-                <div className="relative z-10 max-w-4xl mx-auto">
-                  <div className="text-center max-w-2xl mx-auto mb-6">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[10px] font-black uppercase tracking-wider mb-2">
-                      <PhoneCall className="w-3 h-3" />
-                      <span>Free Profile Assessment</span>
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                      Want a Free Eligibility Check?
+                    <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+                      Request Received!
                     </h3>
-                    <p className="text-xs sm:text-sm text-slate-300 font-medium mt-1">
-                      Get a personalized assessment &amp; callback from certified {journeyDestination} visa specialists within 2 hours.
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-md mx-auto leading-relaxed">
+                      Our verified <strong>{journeyDestination}</strong> visa expert will reach out to you on <strong>{leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Phone'}</strong> ({leadPhoneNumber}) shortly.
                     </p>
-                  </div>
-
-                  {callbackSuccess ? (
-                    <div className="p-6 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 text-center max-w-xl mx-auto animate-fadeIn">
-                      <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto mb-2" />
-                      <h4 className="text-base font-black text-white">Callback Requested ✓</h4>
-                      <p className="text-xs text-emerald-100 mt-1 font-medium">
-                        Our certified {journeyDestination} specialist will reach out to <strong>{callbackPhone}</strong> during your preferred slot: <strong>{callbackTime}</strong>.
-                      </p>
+                    <div className="pt-3">
                       <button
                         type="button"
-                        onClick={() => setCallbackSuccess(false)}
-                        className="mt-4 px-4 py-1.5 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold transition-all cursor-pointer"
+                        onClick={() => {
+                          setLeadSubmittedSuccess(false);
+                          setLeadFullName('');
+                          setLeadPhoneNumber('');
+                        }}
+                        className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
                       >
                         Submit Another Request
                       </button>
                     </div>
-                  ) : (
-                    <form onSubmit={handleCallbackSubmit} className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3 items-end">
+                  </div>
+                ) : (
+                  <div>
+                    {/* Header */}
+                    <div className="mb-6 pb-4 border-b border-slate-100">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200 text-[10px] font-black uppercase tracking-wider mb-2">
+                        <Sparkles className="w-3 h-3" />
+                        <span>100% Free • Verified Specialists</span>
+                      </div>
+                      <h3 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight">
+                        Get Expert Visa Guidance &amp; Pathway Plan
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1 leading-relaxed">
+                        Enter your contact details to receive a free profile audit and 1-on-1 guidance from top verified <strong>{journeyDestination}</strong> visa specialists.
+                      </p>
+                    </div>
+
+                    {/* Form Inputs Grid */}
+                    <form onSubmit={handleNoVisaLeadSubmit} className="space-y-4">
                       
-                      {/* Name Input */}
+                      {/* Field 1: Full Name */}
                       <div>
-                        <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                          Full Name
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                          Full Name <span className="text-rose-500">*</span>
                         </label>
                         <input
                           type="text"
                           required
-                          value={callbackName}
-                          onChange={(e) => setCallbackName(e.target.value)}
-                          placeholder="e.g., Rahul Sharma"
-                          className="w-full h-11 px-3.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                          value={leadFullName}
+                          onChange={(e) => setLeadFullName(e.target.value)}
+                          placeholder="Enter your full name"
+                          className="w-full h-12 px-4 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white transition-all"
                         />
                       </div>
 
-                      {/* Phone / WhatsApp Input */}
+                      {/* Field 2: Phone / WhatsApp Number */}
                       <div>
-                        <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                          Phone / WhatsApp
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                          Phone / WhatsApp Number <span className="text-rose-500">*</span>
                         </label>
                         <input
                           type="tel"
                           required
-                          value={callbackPhone}
-                          onChange={(e) => setCallbackPhone(e.target.value)}
+                          value={leadPhoneNumber}
+                          onChange={(e) => setLeadPhoneNumber(e.target.value)}
                           placeholder="+91 98765 43210"
-                          className="w-full h-11 px-3.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                          className="w-full h-12 px-4 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white transition-all"
                         />
                       </div>
 
-                      {/* Preferred Time Slot */}
+                      {/* Field 3: Select Contact Preference */}
                       <div>
-                        <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                          Preferred Time Slot
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                          Select Contact Preference
                         </label>
-                        <select
-                          value={callbackTime}
-                          onChange={(e) => setCallbackTime(e.target.value)}
-                          className="w-full h-11 px-3 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#00A86B] cursor-pointer [&>option]:text-slate-900"
-                        >
-                          <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
-                          <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
-                          <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
-                        </select>
-                      </div>
-
-                      {/* Submit CTA */}
-                      <div>
-                        <button
-                          type="submit"
-                          disabled={callbackSubmitting}
-                          className="w-full h-11 px-4 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black shadow-md shadow-emerald-600/30 transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-75 active:scale-95"
-                        >
-                          <PhoneCall className="w-3.5 h-3.5" />
-                          <span>{callbackSubmitting ? 'Submitting...' : 'Get Expert Callback →'}</span>
-                        </button>
-                      </div>
-
-                    </form>
-                  )}
-                </div>
-              </div>
-
-              {/* 5. CONSULTATION BOOKING MODAL */}
-              {selectedExpertForBooking && (
-                <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-                  <div className="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 relative animate-scaleUp text-left">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedExpertForBooking(null)}
-                      className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center cursor-pointer transition-colors"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-
-                    {bookingConfirmed ? (
-                      <div className="text-center py-4 space-y-3">
-                        <div className="w-14 h-14 rounded-full bg-emerald-100 text-[#00A86B] flex items-center justify-center mx-auto text-2xl">
-                          ✓
-                        </div>
-                        <h4 className="text-lg font-black text-slate-900">Consultation Booked!</h4>
-                        <p className="text-xs text-slate-600 font-medium">
-                          Your free strategy session with <strong>{selectedExpertForBooking.name}</strong> is confirmed for <strong>{bookingSlot}</strong>.
-                        </p>
-                        <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 font-semibold">
-                          Meeting invite &amp; preparation checklist sent via WhatsApp/Email.
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedExpertForBooking(null)}
-                          className="w-full py-2.5 rounded-xl bg-[#00A86B] text-white text-xs font-black cursor-pointer hover:bg-[#008f5a] transition-colors"
-                        >
-                          Done
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                          <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center text-2xl shrink-0">
-                            {selectedExpertForBooking.icon}
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-black text-slate-900 leading-tight">
-                              {selectedExpertForBooking.name}
-                            </h4>
-                            <p className="text-[11px] text-purple-700 font-bold">
-                              {selectedExpertForBooking.agency} • {selectedExpertForBooking.license}
-                            </p>
-                            <span className="text-[10px] text-slate-500 font-medium">
-                              {selectedExpertForBooking.rating}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] text-emerald-900 font-bold flex items-center justify-between">
-                          <span>Consultation Fee:</span>
-                          <span className="text-[#00A86B] font-black">{selectedExpertForBooking.fee}</span>
-                        </div>
-
-                        <div className="space-y-3">
-                          <div>
-                            <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-                              Select Slot
-                            </label>
-                            <select
-                              value={bookingSlot}
-                              onChange={(e) => setBookingSlot(e.target.value)}
-                              className="w-full h-10 px-3 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-[#00A86B] focus:outline-none"
-                            >
-                              <option value="Tomorrow, 11:00 AM">Tomorrow, 11:00 AM (IST)</option>
-                              <option value="Tomorrow, 03:30 PM">Tomorrow, 03:30 PM (IST)</option>
-                              <option value="Day After, 05:00 PM">Day After, 05:00 PM (IST)</option>
-                            </select>
-                          </div>
-
-                          <div>
-                            <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-                              Your Name
-                            </label>
-                            <input
-                              type="text"
-                              required
-                              value={bookingUserName}
-                              onChange={(e) => setBookingUserName(e.target.value)}
-                              placeholder="Your full name"
-                              className="w-full h-10 px-3 rounded-xl border border-slate-200 text-xs font-medium text-slate-800 focus:ring-2 focus:ring-[#00A86B] focus:outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-                              Phone / WhatsApp
-                            </label>
-                            <input
-                              type="tel"
-                              required
-                              value={bookingUserPhone}
-                              onChange={(e) => setBookingUserPhone(e.target.value)}
-                              placeholder="+91 98765 43210"
-                              className="w-full h-10 px-3 rounded-xl border border-slate-200 text-xs font-medium text-slate-800 focus:ring-2 focus:ring-[#00A86B] focus:outline-none"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="pt-2">
+                        <div className="grid grid-cols-2 gap-2.5">
                           <button
                             type="button"
-                            onClick={() => setBookingConfirmed(true)}
-                            className="w-full py-2.5 px-4 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black shadow-md shadow-emerald-600/20 transition-all cursor-pointer active:scale-95"
+                            onClick={() => setLeadContactPref('whatsapp')}
+                            className={`h-11 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 border transition-all cursor-pointer ${
+                              leadContactPref === 'whatsapp'
+                                ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-xs'
+                                : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                            }`}
                           >
-                            Confirm Free Strategy Call →
+                            <span>💬 WhatsApp</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setLeadContactPref('call')}
+                            className={`h-11 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 border transition-all cursor-pointer ${
+                              leadContactPref === 'call'
+                                ? 'bg-blue-50 border-blue-500 text-blue-800 shadow-xs'
+                                : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                            }`}
+                          >
+                            <span>📞 Direct Phone Call</span>
                           </button>
                         </div>
                       </div>
-                    )}
+
+                      {/* 4. PRIMARY CTA BUTTON */}
+                      <div className="pt-2">
+                        <button
+                          type="submit"
+                          disabled={leadSubmitting}
+                          className="w-full py-3.5 bg-[#00A86B] hover:bg-[#008f5a] text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/20 transition-all text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 active:scale-[0.99]"
+                        >
+                          <PhoneCall className="w-4 h-4" />
+                          <span>{leadSubmitting ? 'Submitting Request...' : 'Get Expert Call →'}</span>
+                        </button>
+                      </div>
+
+                      <p className="text-center text-[11px] text-slate-400 font-medium">
+                        🔒 Your contact info is 100% confidential &amp; only shared with certified {journeyDestination} specialists.
+                      </p>
+
+                    </form>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
             </div>
           )}

@@ -960,7 +960,7 @@ Official URL: https://travltik.com
   };
 
   const daysRemaining = getDaysRemaining(validityDate);
-  const showDashboard = hasVisaAlready === 'yes' && (hasGenerated || ocrScanned || Boolean(approvedVisaType));
+  const showDashboard = hasVisaAlready === 'yes';
 
   // Calculate completed actions score out of 6
   const getCompletedStepsCount = () => {
@@ -1110,6 +1110,10 @@ Track live status here: https://travltik.com/dashboard`;
                         setHasVisaAlready('no');
                         setHasGenerated(false);
                         autoSaveJourney({ has_visa: false });
+                        setTimeout(() => {
+                          const el = document.getElementById('need-visa-pathway-dashboard');
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
                       }}
                       className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                         hasVisaAlready === 'no'
@@ -1389,7 +1393,12 @@ Track live status here: https://travltik.com/dashboard`;
                     if (hasVisaAlready === 'yes') {
                       handleGeneratePathway();
                     } else {
-                      window.location.href = `/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`;
+                      const el = document.getElementById('need-visa-pathway-dashboard');
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      } else {
+                        window.location.href = `/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`;
+                      }
                     }
                   }}
                   disabled={isGenerating}
@@ -1520,7 +1529,7 @@ Track live status here: https://travltik.com/dashboard`;
                       </div>
                       <div>
                         <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
-                          Visa Verification &amp; Smart Alerts
+                          Step 1: Visa Verification &amp; Smart Alerts
                         </h4>
                         <p className="text-[11px] text-slate-500 font-medium">
                           Auto-expiry tracker &amp; condition audit.
@@ -1763,7 +1772,7 @@ Track live status here: https://travltik.com/dashboard`;
                       </div>
                       <div>
                         <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
-                          Suggested Next Actions Checklist
+                          Step 2: Suggested Next Actions Checklist
                         </h4>
                         <p className="text-[11px] text-slate-500 font-medium">
                           The Parent&apos;s Peace-of-Mind Roadmap for safe departure.
@@ -2008,6 +2017,154 @@ Track live status here: https://travltik.com/dashboard`;
 
               </div>
 
+            </div>
+          )}
+
+          {/* ── FLOW 2: NEED VISA APPLICATION PATHWAY & VERIFIED CONSULTANTS ENGINE ── */}
+          {hasVisaAlready === 'no' && (
+            <div id="need-visa-pathway-dashboard" className="w-full max-w-6xl mx-auto mt-6 text-left animate-fadeIn space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                
+                {/* ── LEFT CARD: VISA ELIGIBILITY & DOCUMENT ROADMAP ── */}
+                <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-4 sm:p-5 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-4">
+                  <div className="flex items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-700 shrink-0">
+                        <FileText className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
+                          Step 1: Visa Eligibility &amp; Checklist
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          {passportCountry} ➔ {journeyDestination} ({travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose})
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-extrabold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-100 shrink-0">
+                      Pre-Visa Check
+                    </span>
+                  </div>
+
+                  {/* Requirements Checklist */}
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs">
+                      <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-slate-900">Valid Passport &amp; Identity</span>
+                        <p className="text-[11px] text-slate-500 mt-0.5">At least 6 months validity from expected travel date.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs">
+                      <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-slate-900">Proof of Funds &amp; Sponsorship</span>
+                        <p className="text-[11px] text-slate-500 mt-0.5">Bank statements, ITR, and sponsor affidavits.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs">
+                      <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-slate-900">Purpose Dossier / Offer Letter</span>
+                        <p className="text-[11px] text-slate-500 mt-0.5">University CAS/COE, Job Sponsor, or Travel Itinerary.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Download Embassy Checklist Button */}
+                  <div className="pt-2 border-t border-slate-100">
+                    <a
+                      href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
+                      className="w-full py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-sm"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download {journeyDestination} Visa Guide</span>
+                    </a>
+                  </div>
+                </div>
+
+                {/* ── RIGHT CARD: CONNECT WITH VERIFIED IMMIGRATION EXPERTS ── */}
+                <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-4 sm:p-5 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-3.5">
+                  <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shrink-0">
+                        <Users className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
+                          Step 2: Verified {journeyDestination} Consultants
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          Licensed migration lawyers &amp; certified filing advisors.
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-extrabold text-[#00A86B] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 shrink-0">
+                      Verified 100%
+                    </span>
+                  </div>
+
+                  {/* Expert Profile Highlights Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+                    {/* Expert 1 */}
+                    <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[125px]">
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-bold text-slate-900">🌟 Top Rated MARA / RCIC</span>
+                          <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">4.9 ★</span>
+                        </div>
+                        <h5 className="text-xs font-extrabold text-slate-900">1-on-1 Visa Profile Audit</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Check refusal risk, points eligibility &amp; SOP review.
+                        </p>
+                      </div>
+                      <div className="mt-2 pt-1.5 border-t border-slate-100">
+                        <a
+                          href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
+                          className="w-full py-1.5 px-2.5 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-[11px] font-bold text-center block transition-all"
+                        >
+                          Book Free 15-Min Call →
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Expert 2 */}
+                    <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[125px]">
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-bold text-slate-900">💼 End-to-End Filing</span>
+                          <span className="text-[10px] font-extrabold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full">Escrow Safe</span>
+                        </div>
+                        <h5 className="text-xs font-extrabold text-slate-900">Complete Visa Filing Package</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Document drafting, embassy filing &amp; biometrics prep.
+                        </p>
+                      </div>
+                      <div className="mt-2 pt-1.5 border-t border-slate-100">
+                        <a
+                          href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
+                          className="w-full py-1.5 px-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-[11px] font-bold text-center block transition-all"
+                        >
+                          View Consultant Rates →
+                        </a>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Browse All Experts Link */}
+                  <div className="pt-2">
+                    <a
+                      href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
+                      className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center block transition-all"
+                    >
+                      Explore All 45+ Verified {journeyDestination} Experts →
+                    </a>
+                  </div>
+                </div>
+
+              </div>
             </div>
           )}
 

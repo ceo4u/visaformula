@@ -953,7 +953,7 @@ Track live status here: https://travltik.com/dashboard`;
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFC] text-slate-900 selection:bg-emerald-100 selection:text-emerald-900 pb-20">
+    <div className="bg-[#FAFAFC] text-slate-900 selection:bg-emerald-100 selection:text-emerald-900 pb-8 md:pb-4">
 
       {/* Hidden File Input Pickers */}
       <input

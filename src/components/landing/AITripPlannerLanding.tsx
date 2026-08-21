@@ -202,6 +202,18 @@ const getLocationsByCountry = (country: string) => {
   ];
 };
 
+// Popular destinations with high-res circular country flag images
+const popularDestinations = [
+  { name: 'Canada', flagImg: 'https://flagcdn.com/w160/ca.png', code: 'CA' },
+  { name: 'UK', flagImg: 'https://flagcdn.com/w160/gb.png', code: 'GB' },
+  { name: 'USA', flagImg: 'https://flagcdn.com/w160/us.png', code: 'US' },
+  { name: 'Australia', flagImg: 'https://flagcdn.com/w160/au.png', code: 'AU' },
+  { name: 'Germany', flagImg: 'https://flagcdn.com/w160/de.png', code: 'DE' },
+  { name: 'New Zealand', flagImg: 'https://flagcdn.com/w160/nz.png', code: 'NZ' },
+  { name: 'UAE', flagImg: 'https://flagcdn.com/w160/ae.png', code: 'AE' },
+  { name: 'More', flagImg: '', isMore: true, code: 'ALL' },
+];
+
 export function AITripPlannerLanding() {
   // Input search state
   const [searchPrompt, setSearchPrompt] = useState('');

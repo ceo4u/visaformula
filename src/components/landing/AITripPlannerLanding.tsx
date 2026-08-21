@@ -960,7 +960,7 @@ Official URL: https://travltik.com
   };
 
   const daysRemaining = getDaysRemaining(validityDate);
-  const showDashboard = hasVisaAlready === 'yes' || hasGenerated;
+  const showDashboard = hasVisaAlready === 'yes' && (hasGenerated || ocrScanned || Boolean(approvedVisaType));
 
   // Calculate completed actions score out of 6
   const getCompletedStepsCount = () => {
@@ -1148,7 +1148,7 @@ Track live status here: https://travltik.com/dashboard`;
                     type="button"
                     onClick={() => {
                       setHasVisaAlready('no');
-                      setHasGenerated(true);
+                      setHasGenerated(false);
                       autoSaveJourney();
                     }}
                     className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
@@ -1157,7 +1157,7 @@ Track live status here: https://travltik.com/dashboard`;
                         : 'text-slate-500 hover:text-slate-800'
                     }`}
                   >
-                    NO
+                    NO (Need Visa)
                   </button>
                   <button
                     type="button"
@@ -1172,7 +1172,7 @@ Track live status here: https://travltik.com/dashboard`;
                         : 'text-slate-500 hover:text-slate-800'
                     }`}
                   >
-                    <span>YES</span>
+                    <span>YES (Visa Approved)</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
                   </button>
                 </div>
@@ -1378,12 +1378,27 @@ Track live status here: https://travltik.com/dashboard`;
               <div className="pt-5 sm:pt-4">
                 <button
                   type="button"
-                  onClick={handleGeneratePathway}
+                  onClick={() => {
+                    if (hasVisaAlready === 'yes') {
+                      handleGeneratePathway();
+                    } else {
+                      window.location.href = `/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`;
+                    }
+                  }}
                   disabled={isGenerating}
                   className="w-full h-[52px] px-4 sm:px-5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#00A86B]/25 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none disabled:opacity-75"
                 >
-                  <ShieldCheck className="w-4 h-4 text-emerald-100 shrink-0" />
-                  <span>{isGenerating ? 'Analyzing Security...' : 'Open Security Engine'}</span>
+                  {hasVisaAlready === 'yes' ? (
+                    <>
+                      <ShieldCheck className="w-4 h-4 text-emerald-100 shrink-0" />
+                      <span>{isGenerating ? 'Analyzing Security...' : 'Open Visa Security Engine'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Search className="w-4 h-4 text-emerald-100 shrink-0" />
+                      <span>Find Verified Experts for {journeyDestination}</span>
+                    </>
+                  )}
                   <ArrowRight className="w-4 h-4 stroke-[2.5] shrink-0" />
                 </button>
               </div>
@@ -1981,81 +1996,6 @@ Track live status here: https://travltik.com/dashboard`;
                       </div>
                     </div>
 
-                  </div>
-                </div>
-
-              </div>
-
-              {/* ── HIGH-CONVERTING CLOSING BLOCK (READINESS COMPLETION & MONETIZATION) ── */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-                
-                {/* 1. OVERSEAS READINESS COMPLETION CARD */}
-                <div className="md:col-span-7 bg-gradient-to-br from-white to-emerald-50/40 border border-emerald-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-4">
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100/80 text-[#00A86B] text-[11px] font-black uppercase tracking-wider">
-                        <span>Roadmap Complete</span>
-                      </div>
-                      <span className="text-xs font-black text-[#00A86B]">
-                        {completedCount}/6 Safeguards ({progressPercent}%)
-                      </span>
-                    </div>
-
-                    <h4 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
-                      🎉 Your Overseas Journey Roadmap is Ready!
-                    </h4>
-                    <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">
-                      You have completed essential pre-departure safeguards and settlement checkpoints for <strong>{journeyDestination}</strong>.
-                    </p>
-
-                    {/* Visual Progress Bar */}
-                    <div className="mt-3.5 space-y-1.5">
-                      <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/80">
-                        <div
-                          className="h-full bg-gradient-to-r from-emerald-500 to-[#00A86B] rounded-full transition-all duration-500 shadow-xs"
-                          style={{ width: `${Math.max(progressPercent, 15)}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={handleShareWhatsApp}
-                      className="w-full py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-black shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
-                    >
-                      <MessageCircle className="w-4 h-4 fill-white" />
-                      <span>📱 Share Safety Checklist with Parents (WhatsApp)</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* 2. LOCAL EXPERTS MONETIZATION BANNER */}
-                <div className="md:col-span-5 bg-gradient-to-br from-slate-900 to-[#18002e] text-white border border-purple-900/40 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-md flex flex-col justify-between space-y-4 relative overflow-hidden">
-                  <div className="absolute right-0 top-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-                  
-                  <div className="relative z-10">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-400/30 text-purple-200 text-[10px] font-black uppercase tracking-wider mb-2">
-                      <span>On-Ground Assistance</span>
-                    </div>
-
-                    <h4 className="text-base font-black text-white tracking-tight">
-                      Need On-Ground Help in {journeyDestination}?
-                    </h4>
-
-                    <p className="text-xs text-slate-300 font-medium mt-1.5 leading-relaxed">
-                      Connect with verified local consultants for Tax ID, Job Resume adaptation, and Lease Reviews.
-                    </p>
-                  </div>
-
-                  <div className="relative z-10 pt-2">
-                    <a
-                      href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
-                      className="w-full py-2.5 px-4 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black text-center shadow-md shadow-emerald-500/25 transition-all flex items-center justify-center gap-1.5 active:scale-95"
-                    >
-                      <span>Browse Local Experts →</span>
-                    </a>
                   </div>
                 </div>
 

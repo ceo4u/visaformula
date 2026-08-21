@@ -57,8 +57,9 @@ import {
   RotateCw,
   Copy,
   CheckCheck,
-  LogIn,
-  UserPlus
+  Share2,
+  MessageCircle,
+  ExternalLink as ExternalIcon
 } from 'lucide-react';
 
 // Quick-Pill Intent Tags (8 Visa & Overseas Journey Categories)
@@ -110,15 +111,6 @@ const travelPurposeOptions = [
   { value: 'visit', label: 'Tourist & Visitor Stay', icon: '🏝️', desc: 'Short-stay, Holidays & Family' },
   { value: 'business', label: 'Business & Investor', icon: '💼', desc: 'Startups, Entrepreneur & Investor' },
   { value: 'transit', label: 'Transit & Layover Visa', icon: '✈️', desc: 'Airport transit & Stopover Visas' },
-];
-
-// Journey Modifiers config
-const journeyModifiers = [
-  { id: 'docs', icon: '📄', label: 'Document Checklist', desc: 'SOP, Financials & Police Clearance' },
-  { id: 'match', icon: '🎓', label: 'University/Job Match', desc: 'Designated Institutions & LMIA Employers' },
-  { id: 'transit', icon: '✈️', label: 'Transit Visa Guide', desc: 'Layover Exemptions & Airport Transfer' },
-  { id: 'relocation', icon: '🏠', label: 'Relocation & SIM', desc: 'Housing Escrow & 5G eSIM' },
-  { id: 'network', icon: '👥', label: 'Student/Expat Network', desc: 'Community & Peer Connections' },
 ];
 
 const courseLevelOptions = [
@@ -217,22 +209,10 @@ const popularDestinations = [
 ];
 
 export function AITripPlannerLanding() {
-  // Authentication State Guard
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('visaformula_user');
-      if (stored && stored !== 'null') {
-        try {
-          const parsed = JSON.parse(stored);
-          if (parsed && parsed.email) {
-            setIsAuthenticated(true);
-          }
-        } catch (e) {}
-      }
-    }
-  }, []);
+  // Current user email for persistence
+  const [currentUserEmail, setCurrentUserEmail] = useState('');
+  const [isAutoSaving, setIsAutoSaving] = useState(false);
+  const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
 
   // Input search state
   const [searchPrompt, setSearchPrompt] = useState('');
@@ -361,6 +341,129 @@ export function AITripPlannerLanding() {
     { icon: '✨', title: 'Finalizing Peace-of-Mind Departure Roadmap...', desc: 'Ready for secure international departure' }
   ];
 
+  // 1. REAL-TIME HYDRATION (FETCH SAVED STATE FROM SERVER / LOCALSTORAGE)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    let email = '';
+    const storedUser = localStorage.getItem('visaformula_user');
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        if (parsed?.email) {
+          email = parsed.email;
+          setCurrentUserEmail(parsed.email);
+        }
+      } catch (e) {}
+    }
+    if (!email) {
+      const seekerEmail = localStorage.getItem('seeker_email');
+      if (seekerEmail) {
+        email = seekerEmail;
+        setCurrentUserEmail(seekerEmail);
+      }
+    }
+
+    // Hydrate local cache first for instant rendering
+    const localData = localStorage.getItem('visaformula_user_journey');
+    if (localData) {
+      try {
+        const cached = JSON.parse(localData);
+        applyHydratedState(cached);
+      } catch (e) {}
+    }
+
+    // Fetch live state from backend database if email is present
+    if (email) {
+      fetch(`/api/journey/status?email=${encodeURIComponent(email)}`)
+        .then((res) => res.json())
+        .then((result) => {
+          if (result && result.success && result.data) {
+            applyHydratedState(result.data);
+            localStorage.setItem('visaformula_user_journey', JSON.stringify(result.data));
+          }
+        })
+        .catch((err) => console.warn('Could not fetch journey status:', err));
+    }
+  }, []);
+
+  const applyHydratedState = (d: any) => {
+    if (!d) return;
+    if (d.passportCountry) setPassportCountry(d.passportCountry);
+    if (d.destination) setJourneyDestination(d.destination);
+    if (d.purpose) setTravelPurpose(d.purpose);
+    if (d.approvedVisaType) setApprovedVisaType(d.approvedVisaType);
+    if (d.approvalDate) setApprovalDate(d.approvalDate);
+    if (d.validityDate) setValidityDate(d.validityDate);
+    if (Array.isArray(d.ocrConditions) && d.ocrConditions.length > 0) setOcrConditions(d.ocrConditions);
+    if (d.pickupFlightNum) setPickupFlightNum(d.pickupFlightNum);
+    if (typeof d.pickupConfirmed === 'boolean') setPickupConfirmed(d.pickupConfirmed);
+    if (typeof d.transitChecked === 'boolean') {
+      setFlightTicketUploaded(d.transitChecked);
+      if (d.transitChecked) {
+        setTransitCheckResult(`Transit via London/Doha/Frankfurt: Direct Airside Transit Exemption Active for ${d.passportCountry || 'Indian'} passport with valid ${d.destination || 'Canada'} Visa. No Transit Visa required ✓`);
+      }
+    }
+    if (typeof d.peerNetworkJoined === 'boolean') setPeerNetworkJoined(d.peerNetworkJoined);
+    if (typeof d.forexCardOrdered === 'boolean') setForexCardOrdered(d.forexCardOrdered);
+    if (d.customsChecklistDone) setCustomsChecklistDone(d.customsChecklistDone);
+    if (d.settlementChecklistDone) {
+      if (typeof d.settlementChecklistDone.bank === 'boolean') setBankAppointmentBooked(d.settlementChecklistDone.bank);
+      if (typeof d.settlementChecklistDone.campus === 'boolean') setCampusCheckInConfirmed(d.settlementChecklistDone.campus);
+      if (typeof d.settlementChecklistDone.transit === 'boolean') setTransitPassGuideOpen(d.settlementChecklistDone.transit);
+      if (typeof d.settlementChecklistDone.gp === 'boolean') setGpDoctorRegistered(d.settlementChecklistDone.gp);
+    }
+  };
+
+  // 2. DYNAMIC AUTO-SAVE STATE PERSISTENCE TRIGGER
+  const autoSaveJourney = async (overrides?: Partial<any>) => {
+    setIsAutoSaving(true);
+    const email = currentUserEmail || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || '' : '');
+
+    const payload = {
+      user_email: email,
+      passport_country: passportCountry,
+      destination: journeyDestination,
+      purpose: travelPurpose,
+      visa_type: approvedVisaType,
+      visa_grant_date: approvalDate,
+      visa_expiry_date: validityDate,
+      visa_conditions: ocrConditions,
+      completed_steps: getCompletedStepsArray(),
+      airport_pickup_flight_no: pickupFlightNum,
+      airport_pickup_confirmed: pickupConfirmed,
+      transit_checked: flightTicketUploaded,
+      housing_status: 'exploring',
+      peer_network_joined: peerNetworkJoined,
+      forex_ordered: forexCardOrdered,
+      customs_checklist: customsChecklistDone,
+      settlement_checklist: {
+        bank: bankAppointmentBooked,
+        campus: campusCheckInConfirmed,
+        transit: transitPassGuideOpen,
+        gp: gpDoctorRegistered
+      },
+      ...overrides
+    };
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('visaformula_user_journey', JSON.stringify(payload));
+    }
+
+    try {
+      await fetch('/api/journey/update-step', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      setLastSavedTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    } catch (e) {
+      console.warn('Auto-save network error:', e);
+    } finally {
+      setIsAutoSaving(false);
+    }
+  };
+
   // Close custom dropdowns on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -447,6 +550,7 @@ export function AITripPlannerLanding() {
       setLoadingProgress(100);
       setIsGenerating(false);
       setHasGenerated(true);
+      autoSaveJourney();
       setTimeout(() => {
         const dashboardElement = document.getElementById('parental-security-engine-dashboard');
         if (dashboardElement) {
@@ -582,6 +686,14 @@ export function AITripPlannerLanding() {
 
             setOcrScanned(true);
             setIsOcrScanning(false);
+            autoSaveJourney({
+              passport_country: d.passportCountry || passportCountry,
+              destination: d.destination || journeyDestination,
+              visa_type: d.visaType,
+              visa_grant_date: d.grantDate,
+              visa_expiry_date: d.expiryDate,
+              visa_conditions: d.conditions
+            });
             return;
           }
         } catch (apiErr) {
@@ -605,18 +717,20 @@ export function AITripPlannerLanding() {
                             fileName.toLowerCase().includes('indian') ||
                             fileName.toLowerCase().includes('tourist');
 
+      let parsedConditions: string[] = [];
       if (isIndiaSample) {
         setPassportCountry('Australia');
         setJourneyDestination('India');
         setApprovedVisaType('Indian Tourist Visa (Single Entry - VJ9CHC0C)');
         setApprovalDate('2016-12-27');
         setValidityDate('2017-06-26');
-        setOcrConditions([
+        parsedConditions = [
           'Change of Purpose Not Allowed (प्रयोजन बदलने की अनुमति नहीं है)',
           'Tourist Visa Non-Extendable (पर्यटक वीजा गैर-विस्तारणीय)',
           'Single entry valid for travel prior to 26/06/2017',
           'Unauthorized study or business employment is strictly prohibited'
-        ]);
+        ];
+        setOcrConditions(parsedConditions);
         setExtractedDossier({
           documentId: 'VJ9CHC0C',
           issuingAuthority: 'Republic of India / Ministry of Home Affairs',
@@ -632,12 +746,13 @@ export function AITripPlannerLanding() {
         setApprovedVisaType(`${journeyDestination} ${travelPurpose === 'study' ? 'Student Visa (Subclass 500 / Permit)' : 'Skilled Worker / Employment Visa'}`);
         setApprovalDate('2026-04-15');
         setValidityDate('2028-08-31');
-        setOcrConditions([
+        parsedConditions = [
           'Work Rights: 48 hours / fortnight allowed during active academic session',
           'Condition 8501: Mandatory international health cover (OSHC) active throughout stay',
           'Condition 8202: Must maintain satisfactory course progress and CRICOS registration',
           'Multiple Entry Visa: Permitted unlimited exits and re-entries prior to expiry'
-        ]);
+        ];
+        setOcrConditions(parsedConditions);
         setExtractedDossier({
           documentId: 'DOC-' + Math.floor(100000 + Math.random() * 900000),
           issuingAuthority: `Immigration Authority of ${journeyDestination}`,
@@ -652,6 +767,9 @@ export function AITripPlannerLanding() {
       }
       setOcrScanned(true);
       setIsOcrScanning(false);
+      autoSaveJourney({
+        visa_conditions: parsedConditions
+      });
     }, 1200);
   };
 
@@ -667,26 +785,36 @@ export function AITripPlannerLanding() {
       setTicketScanning(false);
       setFlightTicketUploaded(true);
       setTransitCheckResult(`Transit via London/Doha/Frankfurt: Direct Airside Transit Exemption Active for ${passportCountry} passport with valid ${journeyDestination} Visa. No Transit Visa required ✓`);
+      autoSaveJourney({
+        transit_checked: true
+      });
     }, 1100);
   };
 
   // Add custom condition handler
   const handleAddCustomCondition = () => {
     if (!newCustomCondition.trim()) return;
-    setOcrConditions([...ocrConditions, newCustomCondition.trim()]);
+    const updated = [...ocrConditions, newCustomCondition.trim()];
+    setOcrConditions(updated);
     setNewCustomCondition('');
     setIsAddingCondition(false);
+    autoSaveJourney({ visa_conditions: updated });
   };
 
   // Delete condition handler
   const handleDeleteCondition = (indexToRemove: number) => {
-    setOcrConditions(ocrConditions.filter((_, idx) => idx !== indexToRemove));
+    const updated = ocrConditions.filter((_, idx) => idx !== indexToRemove);
+    setOcrConditions(updated);
+    autoSaveJourney({ visa_conditions: updated });
   };
 
-  // Save / Export Visa Record Toast
-  const handleSaveVisaRecord = () => {
-    setSavedSuccessToast(true);
-    setTimeout(() => setSavedSuccessToast(false), 3000);
+  // Copy structured dossier to clipboard
+  const handleCopyDossier = () => {
+    if (!extractedDossier) return;
+    const text = `Visa Verification Dossier - ${journeyDestination}\nDoc ID: ${extractedDossier.documentId}\nCategory: ${approvedVisaType}\nValidity: ${approvalDate} to ${validityDate}\nWork Rights: ${extractedDossier.workRights}\nConditions:\n${ocrConditions.map((c, i) => `• ${c}`).join('\n')}`;
+    navigator.clipboard.writeText(text);
+    setCopiedToast(true);
+    setTimeout(() => setCopiedToast(false), 2500);
   };
 
   // Export / Download Dossier as a clean text file
@@ -739,15 +867,6 @@ Official URL: https://travltik.com
     URL.revokeObjectURL(url);
   };
 
-  // Copy structured dossier to clipboard
-  const handleCopyDossier = () => {
-    if (!extractedDossier) return;
-    const text = `Visa Verification Dossier - ${journeyDestination}\nDoc ID: ${extractedDossier.documentId}\nCategory: ${approvedVisaType}\nValidity: ${approvalDate} to ${validityDate}\nWork Rights: ${extractedDossier.workRights}\nConditions:\n${ocrConditions.map((c, i) => `• ${c}`).join('\n')}`;
-    navigator.clipboard.writeText(text);
-    setCopiedToast(true);
-    setTimeout(() => setCopiedToast(false), 2500);
-  };
-
   const getDaysRemaining = (expDateStr: string) => {
     if (!expDateStr) return null;
     try {
@@ -762,6 +881,55 @@ Official URL: https://travltik.com
 
   const daysRemaining = getDaysRemaining(validityDate);
   const showDashboard = hasVisaAlready === 'yes' || hasGenerated;
+
+  // Calculate completed actions score out of 6
+  const getCompletedStepsCount = () => {
+    let count = 0;
+    if (flightTicketUploaded) count++;
+    if (pickupConfirmed) count++;
+    if (peerNetworkJoined) count++;
+    if (forexCardOrdered) count++;
+    if (customsChecklistDone.cash && customsChecklistDone.meds) count++;
+    if (bankAppointmentBooked || campusCheckInConfirmed || gpDoctorRegistered) count++;
+    return count;
+  };
+
+  const getCompletedStepsArray = () => {
+    const list: string[] = [];
+    if (flightTicketUploaded) list.push('flight_transit_check');
+    if (pickupConfirmed) list.push('airport_pickup_confirmed');
+    if (peerNetworkJoined) list.push('peer_network_joined');
+    if (forexCardOrdered) list.push('forex_card_ordered');
+    if (customsChecklistDone.cash && customsChecklistDone.meds) list.push('customs_rules_verified');
+    if (bankAppointmentBooked) list.push('settlement_bank_booked');
+    if (campusCheckInConfirmed) list.push('settlement_campus_checkin');
+    if (gpDoctorRegistered) list.push('settlement_gp_registered');
+    return list;
+  };
+
+  const completedCount = getCompletedStepsCount();
+  const progressPercent = Math.round((completedCount / 6) * 100);
+
+  // WhatsApp Share Handler
+  const handleShareWhatsApp = () => {
+    const text = `🛡️ *TravlTik Overseas Safety & Departure Checklist for ${journeyDestination}*
+📍 Destination: ${journeyDestination} (${travelPurpose})
+🛂 Passport: ${passportCountry} | Visa: ${approvedVisaType || 'Registered'}
+⏳ Status: ${completedCount}/6 Safeguard Milestones Completed (${progressPercent}%)
+
+✅ Pre-Departure Status:
+• Flight & Transit: ${flightTicketUploaded ? 'Verified ✓' : 'In Progress'}
+• Terminal Pickup Driver: ${pickupConfirmed ? 'Confirmed (' + (pickupFlightNum || 'Assigned') + ') ✓' : 'Pending'}
+• Accommodation: Escrow Protected ✓
+• Peer Community: ${peerNetworkJoined ? 'Joined ✓' : 'Pending'}
+• Forex & 5G eSIM: ${forexCardOrdered ? 'Active ✓' : 'Pending'}
+• Customs Checklist: ${customsChecklistDone.cash ? 'Compliant ✓' : 'Pending'}
+
+Track live status here: https://travltik.com/dashboard`;
+
+    const encoded = encodeURIComponent(text);
+    window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+  };
 
   // Convert full condition text to compact pill representation
   const formatConditionPill = (text: string) => {
@@ -803,7 +971,7 @@ Official URL: https://travltik.com
         className="hidden"
       />
 
-      {/* ── 1. HERO SECTION (ULTRA-LIGHT CLEAN AIRY BACKGROUND) ── */}
+      {/* ── 1. HERO SECTION ── */}
       <section className="relative w-full overflow-hidden bg-gradient-to-b from-slate-50/60 via-white to-white pt-8 pb-10 px-4 sm:px-6 lg:px-8">
         
         {/* Soft Ultra-Light Background Glows */}
@@ -898,6 +1066,7 @@ Official URL: https://travltik.com
                     onClick={() => {
                       setHasVisaAlready('no');
                       setHasGenerated(true);
+                      autoSaveJourney();
                     }}
                     className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                       hasVisaAlready === 'no'
@@ -912,6 +1081,7 @@ Official URL: https://travltik.com
                     onClick={() => {
                       setHasVisaAlready('yes');
                       setHasGenerated(true);
+                      autoSaveJourney();
                     }}
                     className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 ${
                       hasVisaAlready === 'yes'
@@ -926,7 +1096,7 @@ Official URL: https://travltik.com
               </div>
             </div>
 
-            {/* Form Inputs Grid (4 Fields: Passport, Destination, Purpose, Action) */}
+            {/* Form Inputs Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 items-center">
               
               {/* Field 1: Citizenship / Passport Country */}
@@ -973,6 +1143,7 @@ Official URL: https://travltik.com
                               onClick={() => {
                                 setPassportCountry(opt.value);
                                 setIsPassportOpen(false);
+                                autoSaveJourney({ passport_country: opt.value });
                               }}
                               className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                 isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
@@ -1036,6 +1207,7 @@ Official URL: https://travltik.com
                               onClick={() => {
                                 setJourneyDestination(opt.value);
                                 setIsJourneyDestOpen(false);
+                                autoSaveJourney({ destination: opt.value });
                               }}
                               className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                 isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
@@ -1099,6 +1271,7 @@ Official URL: https://travltik.com
                               onClick={() => {
                                 setTravelPurpose(opt.value);
                                 setIsPurposeOpen(false);
+                                autoSaveJourney({ purpose: opt.value });
                               }}
                               className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                 isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
@@ -1135,7 +1308,7 @@ Official URL: https://travltik.com
             </div>
           </div>
 
-          {/* ── AI LOADING STATE (ANIMATED SECURITY HUD) ── */}
+          {/* ── AI LOADING STATE ── */}
           {isGenerating && (
             <div id="pathway-generator-status" className="w-full max-w-6xl mx-auto my-8 bg-gradient-to-b from-white to-emerald-50/30 border border-emerald-200/80 rounded-2xl sm:rounded-[32px] p-6 sm:p-9 text-left shadow-[0_20px_60px_rgba(0,168,107,0.08)] backdrop-blur-md relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-400 via-[#00A86B] to-teal-500 animate-pulse" />
@@ -1228,7 +1401,7 @@ Official URL: https://travltik.com
           {showDashboard && (
             <div id="parental-security-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
               
-              {/* Top Banner: Visa Status Active & Destination Confirmation */}
+              {/* Top Banner: Visa Status Active, Destination & Auto-save Status */}
               <div className="bg-gradient-to-r from-emerald-500 via-[#00A86B] to-teal-600 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 text-white shadow-xl relative overflow-hidden">
                 <div className="absolute right-0 top-0 bottom-0 w-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -1252,10 +1425,17 @@ Official URL: https://travltik.com
 
                   <div className="flex items-center gap-2 shrink-0">
                     <div className="px-4 py-2.5 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 text-left">
-                      <span className="text-[10px] uppercase font-bold text-emerald-100 block">Security Status</span>
-                      <span className="text-xs sm:text-sm font-extrabold text-white flex items-center gap-1.5">
+                      <span className="text-[10px] uppercase font-bold text-emerald-100 flex items-center justify-between gap-2">
+                        <span>Checklist Sync</span>
+                        {isAutoSaving ? (
+                          <span className="text-[10px] text-emerald-200 animate-pulse">Syncing...</span>
+                        ) : (
+                          <span className="text-[10px] text-emerald-200 font-normal">Auto-saved ✓</span>
+                        )}
+                      </span>
+                      <span className="text-xs sm:text-sm font-extrabold text-white flex items-center gap-1.5 mt-0.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-300 animate-ping" />
-                        <span>Ready for Safe Departure</span>
+                        <span>{completedCount}/6 Steps Completed ({progressPercent}%)</span>
                       </span>
                     </div>
                   </div>
@@ -1320,6 +1500,7 @@ Official URL: https://travltik.com
                         type="text"
                         value={approvedVisaType}
                         onChange={(e) => setApprovedVisaType(e.target.value)}
+                        onBlur={() => autoSaveJourney({ visa_type: approvedVisaType })}
                         placeholder={`e.g. Student Subclass 500 / Skilled Worker (${journeyDestination})`}
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
                       />
@@ -1333,7 +1514,10 @@ Official URL: https://travltik.com
                         <input
                           type="date"
                           value={approvalDate}
-                          onChange={(e) => setApprovalDate(e.target.value)}
+                          onChange={(e) => {
+                            setApprovalDate(e.target.value);
+                            autoSaveJourney({ visa_grant_date: e.target.value });
+                          }}
                           className="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
                         />
                       </div>
@@ -1344,7 +1528,10 @@ Official URL: https://travltik.com
                         <input
                           type="date"
                           value={validityDate}
-                          onChange={(e) => setValidityDate(e.target.value)}
+                          onChange={(e) => {
+                            setValidityDate(e.target.value);
+                            autoSaveJourney({ visa_expiry_date: e.target.value });
+                          }}
                           className="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
                         />
                       </div>
@@ -1588,6 +1775,7 @@ Official URL: https://travltik.com
                             type="text"
                             value={pickupFlightNum}
                             onChange={(e) => setPickupFlightNum(e.target.value)}
+                            onBlur={() => autoSaveJourney({ airport_pickup_flight_no: pickupFlightNum })}
                             placeholder="Flight No. (e.g. AC 043)"
                             className="w-full bg-white border border-slate-200 rounded-lg px-2 py-0.5 text-[11px] font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#00A86B]"
                           />
@@ -1597,7 +1785,11 @@ Official URL: https://travltik.com
                       <div className="mt-2 pt-1.5 border-t border-slate-100">
                         <button
                           type="button"
-                          onClick={() => setPickupConfirmed(!pickupConfirmed)}
+                          onClick={() => {
+                            const nextState = !pickupConfirmed;
+                            setPickupConfirmed(nextState);
+                            autoSaveJourney({ airport_pickup_confirmed: nextState });
+                          }}
                           className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
                             pickupConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
                           }`}
@@ -1636,7 +1828,9 @@ Official URL: https://travltik.com
                       <div>
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-lg">👥</span>
-                          <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">Community</span>
+                          <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${peerNetworkJoined ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-slate-100 text-slate-600'}`}>
+                            {peerNetworkJoined ? 'Connected ✓' : 'Community'}
+                          </span>
                         </div>
                         <h5 className="text-xs font-extrabold text-slate-900">4. Peer Network</h5>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
@@ -1647,7 +1841,11 @@ Official URL: https://travltik.com
                       <div className="mt-2 pt-1.5 border-t border-slate-100">
                         <button
                           type="button"
-                          onClick={() => setPeerNetworkJoined(!peerNetworkJoined)}
+                          onClick={() => {
+                            const nextState = !peerNetworkJoined;
+                            setPeerNetworkJoined(nextState);
+                            autoSaveJourney({ peer_network_joined: nextState });
+                          }}
                           className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
                             peerNetworkJoined ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
                           }`}
@@ -1662,7 +1860,9 @@ Official URL: https://travltik.com
                       <div>
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-lg">💳</span>
-                          <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">0% Markup</span>
+                          <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${forexCardOrdered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
+                            {forexCardOrdered ? 'Active ✓' : '0% Markup'}
+                          </span>
                         </div>
                         <h5 className="text-xs font-extrabold text-slate-900">5. Forex &amp; 5G eSIM</h5>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
@@ -1673,7 +1873,11 @@ Official URL: https://travltik.com
                       <div className="mt-2 pt-1.5 border-t border-slate-100">
                         <button
                           type="button"
-                          onClick={() => setForexCardOrdered(!forexCardOrdered)}
+                          onClick={() => {
+                            const nextState = !forexCardOrdered;
+                            setForexCardOrdered(nextState);
+                            autoSaveJourney({ forex_ordered: nextState });
+                          }}
                           className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
                             forexCardOrdered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-slate-900 hover:bg-black text-white'
                           }`}
@@ -1697,11 +1901,29 @@ Official URL: https://travltik.com
 
                         <div className="mt-1 flex items-center gap-3 text-[10px] font-semibold text-slate-700">
                           <label className="flex items-center gap-1 cursor-pointer">
-                            <input type="checkbox" checked={customsChecklistDone.cash} onChange={(e) => setCustomsChecklistDone({ ...customsChecklistDone, cash: e.target.checked })} className="rounded text-[#00A86B] focus:ring-0 w-3 h-3" />
+                            <input
+                              type="checkbox"
+                              checked={customsChecklistDone.cash}
+                              onChange={(e) => {
+                                const updated = { ...customsChecklistDone, cash: e.target.checked };
+                                setCustomsChecklistDone(updated);
+                                autoSaveJourney({ customs_checklist: updated });
+                              }}
+                              className="rounded text-[#00A86B] focus:ring-0 w-3 h-3"
+                            />
                             <span>&lt;$10k Cash</span>
                           </label>
                           <label className="flex items-center gap-1 cursor-pointer">
-                            <input type="checkbox" checked={customsChecklistDone.meds} onChange={(e) => setCustomsChecklistDone({ ...customsChecklistDone, meds: e.target.checked })} className="rounded text-[#00A86B] focus:ring-0 w-3 h-3" />
+                            <input
+                              type="checkbox"
+                              checked={customsChecklistDone.meds}
+                              onChange={(e) => {
+                                const updated = { ...customsChecklistDone, meds: e.target.checked };
+                                setCustomsChecklistDone(updated);
+                                autoSaveJourney({ customs_checklist: updated });
+                              }}
+                              className="rounded text-[#00A86B] focus:ring-0 w-3 h-3"
+                            />
                             <span>Doctor Letter</span>
                           </label>
                         </div>
@@ -1752,7 +1974,7 @@ Official URL: https://travltik.com
                     <div>
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-lg">🏦</span>
-                        <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${bankAppointmentBooked ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-purple-50 text-purple-700 border border-purple-100'}`}>
+                        <span className={`text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${bankAppointmentBooked ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-purple-50 text-purple-700 border border-purple-100'}`}>
                           {bankAppointmentBooked ? 'Booked ✓' : 'Day 1–3'}
                         </span>
                       </div>
@@ -1767,7 +1989,11 @@ Official URL: https://travltik.com
                     <div className="mt-2 pt-1.5 border-t border-slate-100">
                       <button
                         type="button"
-                        onClick={() => setBankAppointmentBooked(!bankAppointmentBooked)}
+                        onClick={() => {
+                          const nextState = !bankAppointmentBooked;
+                          setBankAppointmentBooked(nextState);
+                          autoSaveJourney({ settlement_checklist: { bank: nextState, campus: campusCheckInConfirmed, transit: transitPassGuideOpen, gp: gpDoctorRegistered } });
+                        }}
                         className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer ${
                           bankAppointmentBooked
                             ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
@@ -1784,7 +2010,7 @@ Official URL: https://travltik.com
                     <div>
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-lg">🎓</span>
-                        <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${campusCheckInConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-blue-50 text-blue-700 border border-blue-100'}`}>
+                        <span className={`text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${campusCheckInConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-blue-50 text-blue-700 border border-blue-100'}`}>
                           {campusCheckInConfirmed ? 'Verified ✓' : 'Day 3–7'}
                         </span>
                       </div>
@@ -1799,7 +2025,11 @@ Official URL: https://travltik.com
                     <div className="mt-2 pt-1.5 border-t border-slate-100">
                       <button
                         type="button"
-                        onClick={() => setCampusCheckInConfirmed(!campusCheckInConfirmed)}
+                        onClick={() => {
+                          const nextState = !campusCheckInConfirmed;
+                          setCampusCheckInConfirmed(nextState);
+                          autoSaveJourney({ settlement_checklist: { bank: bankAppointmentBooked, campus: nextState, transit: transitPassGuideOpen, gp: gpDoctorRegistered } });
+                        }}
                         className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer ${
                           campusCheckInConfirmed
                             ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
@@ -1816,7 +2046,7 @@ Official URL: https://travltik.com
                     <div>
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-lg">🚆</span>
-                        <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${transitPassGuideOpen ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
+                        <span className={`text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${transitPassGuideOpen ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
                           {transitPassGuideOpen ? '30% Off' : 'Concession'}
                         </span>
                       </div>
@@ -1831,7 +2061,11 @@ Official URL: https://travltik.com
                     <div className="mt-2 pt-1.5 border-t border-slate-100">
                       <button
                         type="button"
-                        onClick={() => setTransitPassGuideOpen(!transitPassGuideOpen)}
+                        onClick={() => {
+                          const nextState = !transitPassGuideOpen;
+                          setTransitPassGuideOpen(nextState);
+                          autoSaveJourney({ settlement_checklist: { bank: bankAppointmentBooked, campus: campusCheckInConfirmed, transit: nextState, gp: gpDoctorRegistered } });
+                        }}
                         className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer ${
                           transitPassGuideOpen
                             ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
@@ -1848,7 +2082,7 @@ Official URL: https://travltik.com
                     <div>
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-lg">🏥</span>
-                        <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${gpDoctorRegistered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-100'}`}>
+                        <span className={`text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${gpDoctorRegistered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-100'}`}>
                           {gpDoctorRegistered ? 'Linked ✓' : 'GP Care'}
                         </span>
                       </div>
@@ -1863,7 +2097,11 @@ Official URL: https://travltik.com
                     <div className="mt-2 pt-1.5 border-t border-slate-100">
                       <button
                         type="button"
-                        onClick={() => setGpDoctorRegistered(!gpDoctorRegistered)}
+                        onClick={() => {
+                          const nextState = !gpDoctorRegistered;
+                          setGpDoctorRegistered(nextState);
+                          autoSaveJourney({ settlement_checklist: { bank: bankAppointmentBooked, campus: campusCheckInConfirmed, transit: transitPassGuideOpen, gp: nextState } });
+                        }}
                         className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer ${
                           gpDoctorRegistered
                             ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
@@ -1876,6 +2114,81 @@ Official URL: https://travltik.com
                   </div>
 
                 </div>
+              </div>
+
+              {/* ── HIGH-CONVERTING CLOSING BLOCK (READINESS COMPLETION & MONETIZATION) ── */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                
+                {/* 1. OVERSEAS READINESS COMPLETION CARD */}
+                <div className="md:col-span-7 bg-gradient-to-br from-white to-emerald-50/40 border border-emerald-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-4">
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100/80 text-[#00A86B] text-[11px] font-black uppercase tracking-wider">
+                        <span>Roadmap Complete</span>
+                      </div>
+                      <span className="text-xs font-black text-[#00A86B]">
+                        {completedCount}/6 Safeguards ({progressPercent}%)
+                      </span>
+                    </div>
+
+                    <h4 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                      🎉 Your Overseas Journey Roadmap is Ready!
+                    </h4>
+                    <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">
+                      You have completed essential pre-departure safeguards and settlement checkpoints for <strong>{journeyDestination}</strong>.
+                    </p>
+
+                    {/* Visual Progress Bar */}
+                    <div className="mt-3.5 space-y-1.5">
+                      <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/80">
+                        <div
+                          className="h-full bg-gradient-to-r from-emerald-500 to-[#00A86B] rounded-full transition-all duration-500 shadow-xs"
+                          style={{ width: `${Math.max(progressPercent, 15)}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={handleShareWhatsApp}
+                      className="w-full py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-black shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                    >
+                      <MessageCircle className="w-4 h-4 fill-white" />
+                      <span>📱 Share Safety Checklist with Parents (WhatsApp)</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 2. LOCAL EXPERTS MONETIZATION BANNER */}
+                <div className="md:col-span-5 bg-gradient-to-br from-slate-900 to-[#18002e] text-white border border-purple-900/40 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-md flex flex-col justify-between space-y-4 relative overflow-hidden">
+                  <div className="absolute right-0 top-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+                  
+                  <div className="relative z-10">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-400/30 text-purple-200 text-[10px] font-black uppercase tracking-wider mb-2">
+                      <span>On-Ground Assistance</span>
+                    </div>
+
+                    <h4 className="text-base font-black text-white tracking-tight">
+                      Need On-Ground Help in {journeyDestination}?
+                    </h4>
+
+                    <p className="text-xs text-slate-300 font-medium mt-1.5 leading-relaxed">
+                      Connect with verified local consultants for Tax ID, Job Resume adaptation, and Lease Reviews.
+                    </p>
+                  </div>
+
+                  <div className="relative z-10 pt-2">
+                    <a
+                      href={`/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`}
+                      className="w-full py-2.5 px-4 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black text-center shadow-md shadow-emerald-500/25 transition-all flex items-center justify-center gap-1.5 active:scale-95"
+                    >
+                      <span>Browse Local Experts →</span>
+                    </a>
+                  </div>
+                </div>
+
               </div>
 
             </div>

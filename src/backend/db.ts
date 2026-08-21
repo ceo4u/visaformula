@@ -426,6 +426,33 @@ export async function runMigrations() {
   `);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_payment_orders_booking ON payment_orders (booking_id);`);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_payment_orders_order_id ON payment_orders (order_id);`);
+
+  // 18. User Journey Checklists Table (Flow 1 Parental Security Engine)
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS user_journey_checklists (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER DEFAULT 0,
+      user_email VARCHAR(255) NOT NULL,
+      passport_country VARCHAR(100),
+      destination VARCHAR(100),
+      purpose VARCHAR(100),
+      visa_type VARCHAR(150),
+      visa_grant_date VARCHAR(50),
+      visa_expiry_date VARCHAR(50),
+      visa_conditions TEXT,
+      completed_steps TEXT,
+      airport_pickup_flight_no VARCHAR(100),
+      airport_pickup_confirmed BOOLEAN DEFAULT FALSE,
+      transit_checked BOOLEAN DEFAULT FALSE,
+      housing_status VARCHAR(50) DEFAULT 'exploring',
+      peer_network_joined BOOLEAN DEFAULT FALSE,
+      forex_ordered BOOLEAN DEFAULT FALSE,
+      customs_checklist TEXT,
+      settlement_checklist TEXT,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_user_journey_email ON user_journey_checklists (user_email);`);
   })();
   return migrationsPromise;
 }

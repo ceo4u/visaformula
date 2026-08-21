@@ -31,9 +31,16 @@ export function UserDashboard() {
     const [favouriteExperts, setFavouriteExperts] = useState<any[]>([]);
     const [visasProcessingState, setVisasProcessingState] = useState<any[]>([]);
     const [documents, setDocuments] = useState<any[]>([]);
+    const [journeyData, setJourneyData] = useState<any>(null);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
+            // Hydrate cached journey data
+            const localJourney = localStorage.getItem("visaformula_user_journey");
+            if (localJourney) {
+                try { setJourneyData(JSON.parse(localJourney)); } catch(e) {}
+            }
+
             const userStr = localStorage.getItem("visaformula_user");
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
             if (isLoggedInExpert === "true") {
@@ -47,7 +54,15 @@ export function UserDashboard() {
                         window.location.href = "/consultant/dashboard";
                         return;
                     }
-                    if (u && u.email) setEmail(u.email);
+                    if (u && u.email) {
+                        setEmail(u.email);
+                        fetch(`/api/journey/status?email=${encodeURIComponent(u.email)}`)
+                            .then(r => r.json())
+                            .then(res => {
+                                if (res?.success && res.data) setJourneyData(res.data);
+                            })
+                            .catch(() => {});
+                    }
                     if (u && u.name) {
                         const parts = u.name.split(" ");
                         if (parts[0]) setFirstName(parts[0]);
@@ -455,6 +470,50 @@ export function UserDashboard() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Section: My Overseas Journey Progress Widget */}
+                            {journeyData && (
+                                <div className="bg-gradient-to-r from-emerald-500 via-[#00A86B] to-teal-600 rounded-3xl p-5 sm:p-6 text-white shadow-lg relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-5 animate-fade-up">
+                                    <div className="space-y-1.5 z-10">
+                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[11px] font-black uppercase tracking-wider">
+                                            <Shield className="w-3.5 h-3.5 text-emerald-200" />
+                                            <span>My Overseas Safeguard Roadmap</span>
+                                        </div>
+                                        <h3 className="text-lg sm:text-xl font-black tracking-tight">
+                                            {journeyData.destination || "Canada"} Journey • {journeyData.approvedVisaType || "Visa Registered"}
+                                        </h3>
+                                        <p className="text-xs text-emerald-100 font-medium">
+                                            Passport: <strong>{journeyData.passportCountry || "India"}</strong> • Expiry: <strong>{journeyData.validityDate || "Active"}</strong>
+                                        </p>
+
+                                        {/* Dynamic Progress Bar */}
+                                        <div className="pt-2 max-w-md w-full space-y-1">
+                                            <div className="flex items-center justify-between text-[11px] font-bold text-emerald-100">
+                                                <span>Checklist Milestones</span>
+                                                <span>
+                                                    {Array.isArray(journeyData.completed_steps) ? journeyData.completed_steps.length : (journeyData.completedSteps?.length || 4)} of 6 Steps Completed
+                                                </span>
+                                            </div>
+                                            <div className="w-full h-2 bg-black/20 rounded-full overflow-hidden p-0.5">
+                                                <div
+                                                    className="h-full bg-white rounded-full transition-all duration-500 shadow-xs"
+                                                    style={{ width: `${Math.round(((Array.isArray(journeyData.completed_steps) ? journeyData.completed_steps.length : (journeyData.completedSteps?.length || 4)) / 6) * 100)}%` }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="z-10 shrink-0 flex items-center gap-3">
+                                        <a
+                                            href="/#parental-security-engine-dashboard"
+                                            className="px-5 py-2.5 rounded-2xl bg-white text-emerald-900 hover:bg-emerald-50 text-xs font-black shadow-md transition-all flex items-center gap-2 active:scale-95"
+                                        >
+                                            <span>Resume Checklist</span>
+                                            <ArrowRight className="w-4 h-4 text-[#00A86B] stroke-[2.5]" />
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Section: IELTS Score Breakdown & Document Vault */}
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

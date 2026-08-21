@@ -318,6 +318,9 @@ export function AITripPlannerLanding() {
   const experienceLevelRef = useRef<HTMLDivElement>(null);
   const lawyerSpecRef = useRef<HTMLDivElement>(null);
 
+  // Dynamically resolve state/province locations based on chosen destination country
+  const activeLocations = getLocationsByCountry(searchCountry);
+
   // Dynamic Loading HUD State
   const [loadingStep, setLoadingStep] = useState<number>(0);
   const [loadingProgress, setLoadingProgress] = useState<number>(15);

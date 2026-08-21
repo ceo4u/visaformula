@@ -56,7 +56,9 @@ import {
   Save,
   RotateCw,
   Copy,
-  CheckCheck
+  CheckCheck,
+  LogIn,
+  UserPlus
 } from 'lucide-react';
 
 // Quick-Pill Intent Tags (8 Visa & Overseas Journey Categories)
@@ -215,6 +217,23 @@ const popularDestinations = [
 ];
 
 export function AITripPlannerLanding() {
+  // Authentication State Guard
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('visaformula_user');
+      if (stored && stored !== 'null') {
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.email) {
+            setIsAuthenticated(true);
+          }
+        } catch (e) {}
+      }
+    }
+  }, []);
+
   // Input search state
   const [searchPrompt, setSearchPrompt] = useState('');
   const [selectedPill, setSelectedPill] = useState<string>('student');
@@ -271,7 +290,6 @@ export function AITripPlannerLanding() {
   const [transitCheckResult, setTransitCheckResult] = useState<string | null>(null);
   const [pickupFlightNum, setPickupFlightNum] = useState('');
   const [pickupConfirmed, setPickupConfirmed] = useState(false);
-  const [housingStatus, setHousingStatus] = useState<'exploring' | 'verified' | 'booked'>('exploring');
   const [peerNetworkJoined, setPeerNetworkJoined] = useState(false);
   const [forexCardOrdered, setForexCardOrdered] = useState(false);
   const [customsChecklistDone, setCustomsChecklistDone] = useState<Record<string, boolean>>({
@@ -290,7 +308,6 @@ export function AITripPlannerLanding() {
   // Generator & Dashboard Trigger States
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
-  const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
 
   // Global Multi-Tab Search Widget State
   const [activeSearchTab, setActiveSearchTab] = useState<'universities' | 'consultants' | 'relocation' | 'jobs' | 'lawyers'>('universities');
@@ -649,7 +666,7 @@ export function AITripPlannerLanding() {
     setTimeout(() => {
       setTicketScanning(false);
       setFlightTicketUploaded(true);
-      setTransitCheckResult(`Transit Route Checked (via London Heathrow / Doha / Frankfurt): Direct Airside Transit Exemption Active for ${passportCountry} passport with valid ${journeyDestination} Visa. No Transit Visa required ✓`);
+      setTransitCheckResult(`Transit via London/Doha/Frankfurt: Direct Airside Transit Exemption Active for ${passportCountry} passport with valid ${journeyDestination} Visa. No Transit Visa required ✓`);
     }, 1100);
   };
 
@@ -746,6 +763,27 @@ Official URL: https://travltik.com
   const daysRemaining = getDaysRemaining(validityDate);
   const showDashboard = hasVisaAlready === 'yes' || hasGenerated;
 
+  // Convert full condition text to compact pill representation
+  const formatConditionPill = (text: string) => {
+    const t = text.toLowerCase();
+    if (t.includes('work') || t.includes('48') || t.includes('24') || t.includes('20') || t.includes('8105')) {
+      return { icon: '⏱️', label: 'Work: 48h/fortnight allowed', full: text };
+    }
+    if (t.includes('health') || t.includes('oshc') || t.includes('8501') || t.includes('nhs') || t.includes('medicare')) {
+      return { icon: '🏥', label: 'Health: OSHC / NHS Active', full: text };
+    }
+    if (t.includes('progress') || t.includes('8202') || t.includes('dli') || t.includes('study')) {
+      return { icon: '🎓', label: 'Progress: Academic Valid', full: text };
+    }
+    if (t.includes('multiple') || t.includes('entry') || t.includes('re-entries')) {
+      return { icon: '✈️', label: 'Entry: Multiple Allowed', full: text };
+    }
+    if (t.includes('purpose') || t.includes('non-extendable')) {
+      return { icon: '⚖️', label: 'Rule: Non-Extendable', full: text };
+    }
+    return { icon: '📋', label: text.length > 28 ? text.substring(0, 26) + '...' : text, full: text };
+  };
+
   return (
     <div className="min-h-screen bg-[#FAFAFC] text-slate-900 selection:bg-emerald-100 selection:text-emerald-900 pb-20">
 
@@ -834,7 +872,7 @@ Official URL: https://travltik.com
             })}
           </div>
 
-          {/* ── 2. PLAN YOUR OVERSEAS JOURNEY FORM CARD (PARENTAL SECURITY ENGINE) ── */}
+          {/* ── 2. PLAN YOUR OVERSEAS JOURNEY FORM CARD ── */}
           <div className="relative z-30 w-full max-w-6xl mx-auto mt-8 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_45px_rgba(0,0,0,0.06)] text-left">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
               <div className="flex items-center gap-2.5">
@@ -1033,7 +1071,7 @@ Official URL: https://travltik.com
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <span className="text-base shrink-0">
-                      {travelPurposeOptions.find(o => o.value === travelPurpose)?.icon || '🎓'}
+                      {travelPurposeOptions.find(o => o.value === travelPurpose)?.label || '🎓'}
                     </span>
                     <div className="min-w-0">
                       <span className="text-xs sm:text-sm font-bold text-slate-800 truncate block">
@@ -1186,10 +1224,56 @@ Official URL: https://travltik.com
             </div>
           )}
 
-          {/* ── 2. FLOW 1: VISA APPROVED & READY PARENTAL SECURITY ENGINE (EXACT 2 CARDS) ── */}
+          {/* ── 2. FLOW 1: VISA APPROVED & READY PARENTAL SECURITY ENGINE (WITH AUTH GUARD) ── */}
           {showDashboard && (
-            <div id="parental-security-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
+            <div id="parental-security-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6 relative">
               
+              {/* AUTHENTICATION LOCK GUARD OVERLAY (GUEST STATE) */}
+              {!isAuthenticated && (
+                <div className="absolute inset-0 z-30 bg-white/70 backdrop-blur-md rounded-2xl sm:rounded-[32px] flex items-center justify-center p-4 sm:p-6 shadow-2xl border border-white/80 animate-fadeIn">
+                  <div className="max-w-md w-full bg-white/95 border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.12)] text-center relative overflow-hidden">
+                    <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] mx-auto mb-4 shadow-sm">
+                      <Lock className="w-7 h-7 stroke-[2.5]" />
+                    </div>
+                    
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-800 text-[11px] font-black uppercase tracking-wider mb-2">
+                      <span>🔒 Overseas Safeguard Engine</span>
+                    </div>
+
+                    <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+                      Unlock Your Overseas Journey Roadmap
+                    </h3>
+
+                    <p className="text-xs text-slate-600 font-medium mt-2 leading-relaxed">
+                      Sign in or create a free TravlTik account to scan your visa, set expiry alerts, and access pre-departure tools.
+                    </p>
+
+                    <div className="mt-6 space-y-2.5">
+                      <a
+                        href="/login"
+                        className="w-full py-3 px-5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black shadow-md shadow-emerald-600/25 transition-all flex items-center justify-center gap-2 active:scale-95"
+                      >
+                        <LogIn className="w-4 h-4" />
+                        <span>Sign In to Unlock</span>
+                        <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                      </a>
+
+                      <a
+                        href="/signup"
+                        className="w-full py-3 px-5 rounded-2xl bg-slate-900 hover:bg-black text-white text-xs font-black transition-all flex items-center justify-center gap-2 active:scale-95"
+                      >
+                        <UserPlus className="w-4 h-4" />
+                        <span>Create Free Account</span>
+                      </a>
+                    </div>
+
+                    <p className="text-[11px] text-slate-400 font-medium mt-4">
+                      Free access • Bank-grade encrypted document security
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {/* Top Banner: Visa Status Active & Destination Confirmation */}
               <div className="bg-gradient-to-r from-emerald-500 via-[#00A86B] to-teal-600 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 text-white shadow-xl relative overflow-hidden">
                 <div className="absolute right-0 top-0 bottom-0 w-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
@@ -1225,23 +1309,23 @@ Official URL: https://travltik.com
               </div>
 
               {/* ── THE EXACT 2-CARD CORE ENGINE (LEFT & RIGHT CARDS) ── */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
                 
                 {/* ── LEFT CARD: VISA DETAILS & CONDITIONS (SCAN & REMINDERS) ── */}
-                <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5">
+                <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-4 sm:p-5 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-4">
                   
                   {/* Left Card Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-700">
+                  <div className="flex items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-700 shrink-0">
                         <FileCheck2 className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
+                        <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
                           Visa Verification &amp; Smart Alerts
                         </h4>
-                        <p className="text-xs text-slate-500 font-medium">
-                          Auto-expiry tracker &amp; legal condition audit.
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          Auto-expiry tracker &amp; condition audit.
                         </p>
                       </div>
                     </div>
@@ -1249,31 +1333,31 @@ Official URL: https://travltik.com
                     {/* Auto-Renewal Reminder Countdown Badge */}
                     <div className="shrink-0">
                       {daysRemaining === null ? (
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-bold">
-                          <Clock className="w-3.5 h-3.5 text-slate-400" />
+                        <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-bold">
+                          <Clock className="w-3 h-3 text-slate-400" />
                           <span>Set expiry date</span>
                         </div>
                       ) : daysRemaining > 90 ? (
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] font-bold">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B]" />
-                          <span>Auto-renewal active • {daysRemaining} days left</span>
+                        <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-900 text-[10px] font-bold">
+                          <CheckCircle2 className="w-3 h-3 text-[#00A86B]" />
+                          <span>Auto-renewal active • {daysRemaining}d left</span>
                         </div>
                       ) : daysRemaining >= 0 ? (
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-bold animate-pulse">
-                          <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
-                          <span>⚠️ Expiring in {daysRemaining} days</span>
+                        <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-300 text-amber-900 text-[10px] font-bold animate-pulse">
+                          <AlertTriangle className="w-3 h-3 text-amber-600" />
+                          <span>⚠️ Expiring in {daysRemaining}d</span>
                         </div>
                       ) : (
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50 border border-rose-300 text-rose-900 text-[11px] font-bold">
-                          <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
-                          <span>❌ Visa Expired</span>
+                        <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-50 border border-rose-300 text-rose-900 text-[10px] font-bold">
+                          <AlertTriangle className="w-3 h-3 text-rose-600" />
+                          <span>❌ Expired</span>
                         </div>
                       )}
                     </div>
                   </div>
 
                   {/* Visa Fields Displayed */}
-                  <div className="space-y-3.5">
+                  <div className="space-y-2.5">
                     <div>
                       <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
                         Visa Type / Subclass
@@ -1283,11 +1367,11 @@ Official URL: https://travltik.com
                         value={approvedVisaType}
                         onChange={(e) => setApprovedVisaType(e.target.value)}
                         placeholder={`e.g. Student Subclass 500 / Skilled Worker (${journeyDestination})`}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-2.5">
                       <div>
                         <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
                           Approval Date
@@ -1296,7 +1380,7 @@ Official URL: https://travltik.com
                           type="date"
                           value={approvalDate}
                           onChange={(e) => setApprovalDate(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
                         />
                       </div>
                       <div>
@@ -1307,24 +1391,24 @@ Official URL: https://travltik.com
                           type="date"
                           value={validityDate}
                           onChange={(e) => setValidityDate(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00A86B] focus:bg-white transition-all"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* Interactive Scan Visa Document Banner */}
-                  <div className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                    <div className="flex items-start gap-2.5 min-w-0">
-                      <div className="w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-purple-700 shadow-2xs shrink-0">
+                  <div className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-3 flex items-center justify-between gap-2.5">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-purple-700 shadow-2xs shrink-0">
                         <QrCode className="w-4 h-4" />
                       </div>
                       <div className="min-w-0">
                         <h5 className="text-xs font-extrabold text-slate-900 truncate">
-                          <span>Scan Visa Document / Grant Letter</span>
+                          <span>Scan Visa Document</span>
                         </h5>
-                        <p className="text-[11px] text-slate-500 font-medium truncate mt-0.5">
-                          {uploadedVisaFileName ? `Verified: ${uploadedVisaFileName}` : 'Auto-extracts work hours & health conditions.'}
+                        <p className="text-[10px] text-slate-500 font-medium truncate">
+                          {uploadedVisaFileName ? `✓ ${uploadedVisaFileName}` : 'Auto-extracts work hours & legal rules.'}
                         </p>
                       </div>
                     </div>
@@ -1333,7 +1417,7 @@ Official URL: https://travltik.com
                       type="button"
                       onClick={() => visaFileInputRef.current?.click()}
                       disabled={isOcrScanning}
-                      className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-[#30005a] hover:bg-[#20003e] text-white text-xs font-bold shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0 active:scale-95 disabled:opacity-75"
+                      className="px-3 py-1.5 rounded-xl bg-[#30005a] hover:bg-[#20003e] text-white text-[11px] font-bold shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0 active:scale-95 disabled:opacity-75"
                     >
                       {isOcrScanning ? (
                         <>
@@ -1342,32 +1426,32 @@ Official URL: https://travltik.com
                         </>
                       ) : (
                         <>
-                          <UploadCloud className="w-3.5 h-3.5 text-purple-300" />
-                          <span>{ocrScanned ? 'Re-scan' : 'Scan Document'}</span>
+                          <UploadCloud className="w-3 h-3 text-purple-300" />
+                          <span>{ocrScanned ? 'Re-scan' : 'Scan'}</span>
                         </>
                       )}
                     </button>
                   </div>
 
-                  {/* Conditions of Visa (Interactive List with 48-hrs, OSHC, 8501) */}
-                  <div className="pt-2">
-                    <div className="flex items-center justify-between gap-2 mb-2.5">
+                  {/* Conditions of Visa Tags (Crisp Pill Badges with Hover Full Details) */}
+                  <div className="pt-1">
+                    <div className="flex items-center justify-between gap-2 mb-2">
                       <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
-                        Conditions of Visa &amp; Legal Rules ({ocrConditions.length || 4})
+                        Conditions of Visa ({ocrConditions.length || 4})
                       </span>
                       <button
                         type="button"
                         onClick={() => setIsAddingCondition(!isAddingCondition)}
-                        className="text-xs font-extrabold text-[#00A86B] hover:text-[#008f5a] flex items-center gap-1 cursor-pointer"
+                        className="text-[11px] font-extrabold text-[#00A86B] hover:text-[#008f5a] flex items-center gap-1 cursor-pointer"
                       >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>Add Condition</span>
+                        <Plus className="w-3 h-3" />
+                        <span>Add</span>
                       </button>
                     </div>
 
                     {/* Inline Add Condition Input */}
                     {isAddingCondition && (
-                      <div className="mb-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2 animate-fadeIn">
+                      <div className="mb-2 p-2 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2 animate-fadeIn">
                         <input
                           type="text"
                           value={newCustomCondition}
@@ -1375,13 +1459,13 @@ Official URL: https://travltik.com
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') handleAddCustomCondition();
                           }}
-                          placeholder="e.g. Condition 8105: Work 48 hrs/fortnight..."
-                          className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-1 text-xs font-medium text-slate-800 focus:outline-none focus:border-[#00A86B]"
+                          placeholder="e.g. Work: 48h/fortnight..."
+                          className="flex-1 bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-medium text-slate-800 focus:outline-none focus:border-[#00A86B]"
                         />
                         <button
                           type="button"
                           onClick={handleAddCustomCondition}
-                          className="px-2.5 py-1 rounded-lg bg-[#00A86B] text-white text-xs font-bold hover:bg-[#008f5a] cursor-pointer"
+                          className="px-2 py-1 rounded-lg bg-[#00A86B] text-white text-xs font-bold hover:bg-[#008f5a] cursor-pointer"
                         >
                           Add
                         </button>
@@ -1395,277 +1479,284 @@ Official URL: https://travltik.com
                       </div>
                     )}
 
-                    <div className="space-y-2">
+                    {/* Crisp Condition Badges Grid */}
+                    <div className="grid grid-cols-2 gap-1.5">
                       {(ocrConditions.length > 0 ? ocrConditions : [
-                        'Work Limit: 48 hours / fortnight allowed during active academic session',
-                        'Condition 8501: Mandatory international health cover (OSHC) active throughout stay',
-                        'Condition 8202: Must maintain satisfactory course progress & institutional attendance',
-                        'Multiple Entry Visa: Permitted unlimited exits and entries prior to expiration'
-                      ]).map((cond, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-100 text-xs font-bold text-slate-800"
-                        >
-                          <div className="flex items-center gap-2 min-w-0">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                            <span className="truncate">{cond}</span>
+                        'Work Limit: 48 hours / fortnight allowed during active semester',
+                        'Condition 8501: Mandatory international health cover (OSHC) active',
+                        'Condition 8202: Maintain satisfactory course progress & attendance',
+                        'Multiple Entry Visa: Permitted unlimited exits and re-entries'
+                      ]).map((cond, idx) => {
+                        const pill = formatConditionPill(cond);
+                        return (
+                          <div
+                            key={idx}
+                            title={pill.full}
+                            className="flex items-center justify-between gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-50/70 border border-emerald-100 text-[11px] font-bold text-slate-800 hover:border-emerald-200 transition-all cursor-help"
+                          >
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <span className="text-xs shrink-0">{pill.icon}</span>
+                              <span className="truncate">{pill.label}</span>
+                            </div>
+                            {ocrConditions.length > 0 && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteCondition(idx);
+                                }}
+                                className="text-slate-400 hover:text-rose-600 p-0.5 cursor-pointer shrink-0"
+                                title="Remove condition"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            )}
                           </div>
-                          {ocrConditions.length > 0 && (
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteCondition(idx)}
-                              className="text-slate-400 hover:text-rose-600 p-0.5 cursor-pointer"
-                              title="Remove"
-                            >
-                              <X className="w-3.5 h-3.5" />
-                            </button>
-                          )}
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
 
                   {/* Dossier Quick Export Buttons */}
                   {extractedDossier && (
-                    <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
+                    <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
                       <button
                         type="button"
                         onClick={handleCopyDossier}
-                        className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                        className="flex-1 py-1.5 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
                       >
-                        <Copy className="w-3.5 h-3.5 text-slate-500" />
-                        <span>Copy Summary</span>
+                        <Copy className="w-3 h-3 text-slate-500" />
+                        <span>Copy</span>
                       </button>
                       <button
                         type="button"
                         onClick={handleDownloadDossier}
-                        className="flex-1 py-2 px-3 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+                        className="flex-1 py-1.5 px-2.5 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-[11px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
                       >
-                        <Download className="w-3.5 h-3.5" />
+                        <Download className="w-3 h-3" />
                         <span>Export Dossier</span>
                       </button>
                     </div>
                   )}
 
                   {copiedToast && (
-                    <div className="p-2 bg-purple-50 border border-purple-200 rounded-xl text-xs font-bold text-purple-800 flex items-center gap-1.5">
-                      <CheckCheck className="w-3.5 h-3.5 text-purple-600" />
-                      <span>Copied dossier summary to clipboard!</span>
+                    <div className="p-1.5 bg-purple-50 border border-purple-200 rounded-xl text-[11px] font-bold text-purple-800 flex items-center gap-1.5">
+                      <CheckCheck className="w-3 h-3 text-purple-600" />
+                      <span>Copied dossier summary!</span>
                     </div>
                   )}
                 </div>
 
-                {/* ── RIGHT CARD: SUGGESTED NEXT ACTIONS CHECKLIST (THE PARENT'S PEACE-OF-MIND ROADMAP) ── */}
-                <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-4">
+                {/* ── RIGHT CARD: SUGGESTED NEXT ACTIONS CHECKLIST (SIMPLIFIED 1-LINER UI) ── */}
+                <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-4 sm:p-5 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-3.5">
                   
                   {/* Right Card Header */}
-                  <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-100">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B]">
+                  <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shrink-0">
                         <Shield className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
+                        <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
                           Suggested Next Actions Checklist
                         </h4>
-                        <p className="text-xs text-slate-500 font-medium">
-                          The Parent&apos;s Peace-of-Mind Roadmap for safe international departure.
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          The Parent&apos;s Peace-of-Mind Roadmap for safe departure.
                         </p>
                       </div>
                     </div>
-                    <span className="text-[11px] font-extrabold text-[#00A86B] bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 shrink-0">
-                      6 Key Safeguards
+                    <span className="text-[10px] font-extrabold text-[#00A86B] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 shrink-0">
+                      6 Safeguards
                     </span>
                   </div>
 
-                  {/* 6 Practical Action Steps Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  {/* 6 Practical 1-Liner Action Cards (Clean 2x3 Grid) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     
-                    {/* Step 1: ✈️ Book Ticket & Transit Visa Check */}
-                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                    {/* Card 1: Flight & Transit Check */}
+                    <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[125px]">
                       <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xl">✈️</span>
-                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-100">
-                            {flightTicketUploaded ? 'Checked ✓' : 'Transit Check'}
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-lg">✈️</span>
+                          <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-100">
+                            {flightTicketUploaded ? 'Checked ✓' : 'Transit'}
                           </span>
                         </div>
-                        <h5 className="text-xs font-extrabold text-slate-900">1. Book Ticket &amp; Transit Visa Check</h5>
-                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                          Upload ticket to auto-check if layover airport (London, Doha, Frankfurt) needs a Transit Visa.
+                        <h5 className="text-xs font-extrabold text-slate-900">1. Flight &amp; Transit Check</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Upload ticket for layover transit rules.
                         </p>
-
                         {transitCheckResult && (
-                          <div className="mt-2 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[10px] font-bold text-emerald-900">
-                            {transitCheckResult}
+                          <div className="mt-1.5 p-1.5 bg-emerald-50 border border-emerald-200 rounded-lg text-[10px] font-bold text-emerald-900 truncate">
+                            ✓ Direct Transit Exemption Active
                           </div>
                         )}
                       </div>
 
-                      <div className="mt-3 pt-2 border-t border-slate-100">
+                      <div className="mt-2 pt-1.5 border-t border-slate-100">
                         <button
                           type="button"
                           onClick={() => ticketFileInputRef.current?.click()}
                           disabled={ticketScanning}
-                          className="w-full py-1.5 px-3 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                          className="w-full py-1.5 px-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-[11px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1"
                         >
                           {ticketScanning ? (
                             <>
-                              <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                              <span>Scanning Route...</span>
+                              <span className="w-2.5 h-2.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                              <span>Checking...</span>
                             </>
                           ) : (
                             <>
-                              <UploadCloud className="w-3.5 h-3.5" />
-                              <span>{flightTicketUploaded ? 'Re-check Ticket' : 'Upload Flight Ticket'}</span>
+                              <UploadCloud className="w-3 h-3" />
+                              <span>{flightTicketUploaded ? 'Re-check' : 'Upload Flight Ticket'}</span>
                             </>
                           )}
                         </button>
                       </div>
                     </div>
 
-                    {/* Step 2: 🚘 Confirm Airport Pickup & Driver Details */}
-                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                    {/* Card 2: Driver & Airport Pickup */}
+                    <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[125px]">
                       <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xl">🚘</span>
-                          <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ${pickupConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-slate-100 text-slate-600'}`}>
-                            {pickupConfirmed ? 'Confirmed ✓' : 'Terminal Meet'}
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-lg">🚘</span>
+                          <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${pickupConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-slate-100 text-slate-600'}`}>
+                            {pickupConfirmed ? 'Assigned ✓' : 'Pickup'}
                           </span>
                         </div>
-                        <h5 className="text-xs font-extrabold text-slate-900">2. Airport Pickup &amp; Driver Details</h5>
-                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                          Input flight no. to book verified student/migrant driver pickup so parents know who is receiving at terminal.
+                        <h5 className="text-xs font-extrabold text-slate-900">2. Driver &amp; Airport Pickup</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Book verified terminal driver pickup.
                         </p>
 
-                        <div className="mt-2">
+                        <div className="mt-1.5">
                           <input
                             type="text"
                             value={pickupFlightNum}
                             onChange={(e) => setPickupFlightNum(e.target.value)}
-                            placeholder="Flight No. (e.g. AC 043 / BA 142)"
-                            className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#00A86B]"
+                            placeholder="Flight No. (e.g. AC 043)"
+                            className="w-full bg-white border border-slate-200 rounded-lg px-2 py-0.5 text-[11px] font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#00A86B]"
                           />
                         </div>
                       </div>
 
-                      <div className="mt-3 pt-2 border-t border-slate-100">
+                      <div className="mt-2 pt-1.5 border-t border-slate-100">
                         <button
                           type="button"
                           onClick={() => setPickupConfirmed(!pickupConfirmed)}
-                          className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
                             pickupConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
                           }`}
                         >
-                          {pickupConfirmed ? 'Driver Assigned ✓' : 'Confirm Airport Transfer'}
+                          {pickupConfirmed ? 'Driver Confirmed ✓' : 'Confirm Pickup'}
                         </button>
                       </div>
                     </div>
 
-                    {/* Step 3: 🏠 Confirm Secure Accommodation */}
-                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                    {/* Card 3: Secure Housing */}
+                    <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[125px]">
                       <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xl">🏠</span>
-                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Escrow Secure</span>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-lg">🏠</span>
+                          <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Escrow</span>
                         </div>
-                        <h5 className="text-xs font-extrabold text-slate-900">3. Confirm Secure Accommodation</h5>
-                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                          Verify student dorm, homestay, or rental apartment with escrow protection against landlord fraud.
+                        <h5 className="text-xs font-extrabold text-slate-900">3. Secure Housing</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Escrow-protected student dorms &amp; apartments.
                         </p>
                       </div>
 
-                      <div className="mt-3 pt-2 border-t border-slate-100">
+                      <div className="mt-2 pt-1.5 border-t border-slate-100">
                         <a
                           href={`/classifieds?category=accommodation&country=${encodeURIComponent(journeyDestination)}`}
-                          className="w-full py-1.5 px-3 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold text-center transition-all flex items-center justify-center gap-1"
+                          className="w-full py-1.5 px-2.5 rounded-xl bg-slate-900 hover:bg-black text-white text-[11px] font-bold text-center transition-all flex items-center justify-center gap-1"
                         >
-                          <span>Find Housing in {journeyDestination}</span>
-                          <ArrowUpRight className="w-3.5 h-3.5" />
+                          <span>Find Housing</span>
+                          <ArrowUpRight className="w-3 h-3" />
                         </a>
                       </div>
                     </div>
 
-                    {/* Step 4: 👥 Connect with Student/Expat Peer Network */}
-                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                    {/* Card 4: Peer Network */}
+                    <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[125px]">
                       <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xl">👥</span>
-                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">Peer Network</span>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-lg">👥</span>
+                          <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">Community</span>
                         </div>
-                        <h5 className="text-xs font-extrabold text-slate-900">4. Student &amp; Expat Peer Network</h5>
-                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                          Connect with other students &amp; travellers on the same visa going to {journeyDestination}.
+                        <h5 className="text-xs font-extrabold text-slate-900">4. Peer Network</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Connect with students going to same city.
                         </p>
                       </div>
 
-                      <div className="mt-3 pt-2 border-t border-slate-100">
+                      <div className="mt-2 pt-1.5 border-t border-slate-100">
                         <button
                           type="button"
                           onClick={() => setPeerNetworkJoined(!peerNetworkJoined)}
-                          className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
                             peerNetworkJoined ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
                           }`}
                         >
-                          {peerNetworkJoined ? 'Joined ' + journeyDestination + ' Group ✓' : 'Join Peer Group'}
+                          {peerNetworkJoined ? 'Joined Group ✓' : 'Join Peer Group'}
                         </button>
                       </div>
                     </div>
 
-                    {/* Step 5: 💳 Buy Forex & 5G eSIM */}
-                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                    {/* Card 5: Forex & 5G eSIM */}
+                    <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[125px]">
                       <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xl">💳</span>
-                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">Zero Markup</span>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-lg">💳</span>
+                          <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">0% Markup</span>
                         </div>
-                        <h5 className="text-xs font-extrabold text-slate-900">5. Buy Forex Card &amp; 5G eSIM</h5>
-                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                          Reserve zero-markup Multi-Currency Card &amp; instant QR 5G eSIM before boarding flight.
+                        <h5 className="text-xs font-extrabold text-slate-900">5. Forex &amp; 5G eSIM</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Zero-markup card &amp; instant QR eSIM.
                         </p>
                       </div>
 
-                      <div className="mt-3 pt-2 border-t border-slate-100">
+                      <div className="mt-2 pt-1.5 border-t border-slate-100">
                         <button
                           type="button"
                           onClick={() => setForexCardOrdered(!forexCardOrdered)}
-                          className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
                             forexCardOrdered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-slate-900 hover:bg-black text-white'
                           }`}
                         >
-                          {forexCardOrdered ? 'Forex & eSIM Reserved ✓' : 'Get Forex & eSIM'}
+                          {forexCardOrdered ? 'Forex Reserved ✓' : 'Get Forex & eSIM'}
                         </button>
                       </div>
                     </div>
 
-                    {/* Step 6: 📑 Travel, Customs & Biosecurity Rules */}
-                    <div className="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between">
+                    {/* Card 6: Customs & Rules */}
+                    <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[125px]">
                       <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xl">📑</span>
-                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-100">Rules</span>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-lg">📑</span>
+                          <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-100">Customs</span>
                         </div>
-                        <h5 className="text-xs font-extrabold text-slate-900">6. Travel, Customs &amp; Biosecurity</h5>
-                        <p className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                          Check cash limits ($10k USD), doctor prescription letters, and food declaration rules.
+                        <h5 className="text-xs font-extrabold text-slate-900">6. Customs &amp; Rules</h5>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          $10k cash limit &amp; medication guidelines.
                         </p>
 
-                        <div className="mt-2 space-y-1 text-[10px] font-semibold text-slate-700">
-                          <label className="flex items-center gap-1.5 cursor-pointer">
+                        <div className="mt-1 flex items-center gap-3 text-[10px] font-semibold text-slate-700">
+                          <label className="flex items-center gap-1 cursor-pointer">
                             <input type="checkbox" checked={customsChecklistDone.cash} onChange={(e) => setCustomsChecklistDone({ ...customsChecklistDone, cash: e.target.checked })} className="rounded text-[#00A86B] focus:ring-0 w-3 h-3" />
-                            <span>Cash declaration under $10,000</span>
+                            <span>&lt;$10k Cash</span>
                           </label>
-                          <label className="flex items-center gap-1.5 cursor-pointer">
+                          <label className="flex items-center gap-1 cursor-pointer">
                             <input type="checkbox" checked={customsChecklistDone.meds} onChange={(e) => setCustomsChecklistDone({ ...customsChecklistDone, meds: e.target.checked })} className="rounded text-[#00A86B] focus:ring-0 w-3 h-3" />
-                            <span>Doctor prescription certificates</span>
+                            <span>Doctor Letter</span>
                           </label>
                         </div>
                       </div>
 
-                      <div className="mt-3 pt-2 border-t border-slate-100">
+                      <div className="mt-2 pt-1.5 border-t border-slate-100">
                         <a
                           href="/visa-guide"
-                          className="w-full py-1.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center transition-all block"
+                          className="w-full py-1.5 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-bold text-center transition-all block"
                         >
                           Read Arrival Guide →
                         </a>
@@ -1678,178 +1769,154 @@ Official URL: https://travltik.com
               </div>
 
               {/* ── STEP 3: ON-ARRIVAL SETTLEMENT & FIRST 30 DAYS ── */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)]">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00A86B]">
+              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-4 sm:p-5 shadow-[0_10px_35px_rgba(0,0,0,0.04)]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#00A86B] shrink-0">
                       <HomeIcon className="w-4 h-4" />
                     </div>
                     <div>
-                      <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
+                      <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">
                         Step 3: On-Arrival Settlement &amp; First 30 Days
                       </h4>
-                      <p className="text-xs text-slate-500 font-medium">
-                        Crucial steps to complete within your first week of landing at your destination.
+                      <p className="text-[11px] text-slate-500 font-medium">
+                        Crucial steps to complete within your first week of landing.
                       </p>
                     </div>
                   </div>
 
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold shrink-0">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B]" />
-                    <span>Post-Landing Settlement Hub</span>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold shrink-0">
+                    <CheckCircle2 className="w-3 h-3 text-[#00A86B]" />
+                    <span>Post-Landing Settlement</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   
                   {/* Card 1: Bank Account & SIN / NIN */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                  <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[135px]">
                     <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">🏦</span>
-                        <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${bankAppointmentBooked ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-purple-50 text-purple-700 border border-purple-100'}`}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-lg">🏦</span>
+                        <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${bankAppointmentBooked ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-purple-50 text-purple-700 border border-purple-100'}`}>
                           {bankAppointmentBooked ? 'Booked ✓' : 'Day 1–3'}
                         </span>
                       </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">
-                        Bank Account &amp; SIN / NIN Registration
+                      <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
+                        Bank Account &amp; SIN / NIN
                       </h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Book a priority slot to open a local student/work bank account and apply for Social Insurance / National Insurance Number.
+                      <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                        Open local student/work bank account &amp; apply for SIN/NIN.
                       </p>
-
-                      {bankAppointmentBooked && (
-                        <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
-                          ✓ Appointment slot reserved with verified banking partner.
-                        </div>
-                      )}
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100">
+                    <div className="mt-2 pt-1.5 border-t border-slate-100">
                       <button
                         type="button"
                         onClick={() => setBankAppointmentBooked(!bankAppointmentBooked)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
+                        className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer ${
                           bankAppointmentBooked
                             ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
-                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white active:scale-95'
+                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
                         }`}
                       >
-                        <span>{bankAppointmentBooked ? 'Appointment Reserved ✓' : 'Book Bank Appointment →'}</span>
+                        <span>{bankAppointmentBooked ? 'Reserved ✓' : 'Book Appointment →'}</span>
                       </button>
                     </div>
                   </div>
 
                   {/* Card 2: Campus / Workplace Check-In */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                  <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[135px]">
                     <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">🎓</span>
-                        <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${campusCheckInConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-blue-50 text-blue-700 border border-blue-100'}`}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-lg">🎓</span>
+                        <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${campusCheckInConfirmed ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-blue-50 text-blue-700 border border-blue-100'}`}>
                           {campusCheckInConfirmed ? 'Verified ✓' : 'Day 3–7'}
                         </span>
                       </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">
-                        Institutional Orientation &amp; Enrollment
+                      <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
+                        Orientation &amp; Enrollment
                       </h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Upload landing confirmation to receive your university ID, course schedule, or employer onboarding checklist.
+                      <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                        Upload landing confirmation for university/employee ID.
                       </p>
-
-                      {campusCheckInConfirmed && (
-                        <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
-                          ✓ Check-in verified. Student/Employee ID badge queue assigned.
-                        </div>
-                      )}
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100">
+                    <div className="mt-2 pt-1.5 border-t border-slate-100">
                       <button
                         type="button"
                         onClick={() => setCampusCheckInConfirmed(!campusCheckInConfirmed)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
+                        className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer ${
                           campusCheckInConfirmed
                             ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
-                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white active:scale-95'
+                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
                         }`}
                       >
-                        <span>{campusCheckInConfirmed ? 'Check-In Confirmed ✓' : 'Confirm Check-In'}</span>
+                        <span>{campusCheckInConfirmed ? 'Verified ✓' : 'Confirm Check-In'}</span>
                       </button>
                     </div>
                   </div>
 
                   {/* Card 3: Public Transport Pass & Discounts */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                  <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[135px]">
                     <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">🚆</span>
-                        <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${transitPassGuideOpen ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
-                          {transitPassGuideOpen ? '30% Discount Active' : 'Concession Pass'}
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-lg">🚆</span>
+                        <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${transitPassGuideOpen ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
+                          {transitPassGuideOpen ? '30% Off' : 'Concession'}
                         </span>
                       </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">
-                        Public Transport Pass &amp; Discounts
+                      <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
+                        Public Transport Pass
                       </h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Activate student concession passes for local metro, buses, and regional transit networks.
+                      <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                        Activate student 30% concession passes for metro &amp; bus.
                       </p>
-
-                      {transitPassGuideOpen && (
-                        <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
-                          ✓ Concession card registration active: Apply with university enrollment letter.
-                        </div>
-                      )}
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100">
+                    <div className="mt-2 pt-1.5 border-t border-slate-100">
                       <button
                         type="button"
                         onClick={() => setTransitPassGuideOpen(!transitPassGuideOpen)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
+                        className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer ${
                           transitPassGuideOpen
                             ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
-                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white active:scale-95'
+                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
                         }`}
                       >
-                        <span>{transitPassGuideOpen ? 'Concession Guide Loaded ✓' : 'Get Transit Pass Guide'}</span>
+                        <span>{transitPassGuideOpen ? 'Guide Active ✓' : 'Get Transit Guide'}</span>
                       </button>
                     </div>
                   </div>
 
                   {/* Card 4: Health Insurance & Local GP Registration */}
-                  <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                  <div className="p-3 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between min-h-[135px]">
                     <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl">🏥</span>
-                        <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${gpDoctorRegistered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-100'}`}>
-                          {gpDoctorRegistered ? 'Registered ✓' : 'Essential Care'}
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-lg">🏥</span>
+                        <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${gpDoctorRegistered ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-100'}`}>
+                          {gpDoctorRegistered ? 'Linked ✓' : 'GP Care'}
                         </span>
                       </div>
-                      <h5 className="text-xs sm:text-sm font-extrabold text-slate-900">
-                        Health Insurance &amp; Local GP Doctor Registration
+                      <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
+                        Health &amp; GP Registration
                       </h5>
-                      <p className="text-xs text-slate-500 font-medium mt-1">
-                        Register with local health services (e.g., NHS / Provincial Health) using your visa health cover (OSHC / IHS).
+                      <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                        Register with local GP surgery using visa health cover.
                       </p>
-
-                      {gpDoctorRegistered && (
-                        <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] font-bold text-emerald-900">
-                          ✓ Local GP Clinic surgery linked to your foreign student/worker health policy.
-                        </div>
-                      )}
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100">
+                    <div className="mt-2 pt-1.5 border-t border-slate-100">
                       <button
                         type="button"
                         onClick={() => setGpDoctorRegistered(!gpDoctorRegistered)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
+                        className={`w-full py-1.5 px-2.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer ${
                           gpDoctorRegistered
                             ? 'bg-emerald-50 text-[#00A86B] border border-emerald-200'
-                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white active:scale-95'
+                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
                         }`}
                       >
-                        <span>{gpDoctorRegistered ? 'Doctor Registered ✓' : 'Register Local Doctor'}</span>
+                        <span>{gpDoctorRegistered ? 'Doctor Linked ✓' : 'Register Doctor'}</span>
                       </button>
                     </div>
                   </div>

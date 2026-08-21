@@ -1121,17 +1121,17 @@ Track live status here: https://travltik.com/dashboard`;
 
           {/* Centered Hero Info */}
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] sm:leading-[1.1]">
               <span className="text-[#30005a] block">Where do you</span>
               <span className="text-[#00A86B] block mt-1">want to go?</span>
             </h1>
             
-            <p className="mt-3 text-slate-600 text-sm sm:text-base font-medium max-w-xl mx-auto leading-relaxed">
+            <p className="mt-3 text-slate-600 text-xs sm:text-base font-medium max-w-xl mx-auto leading-relaxed px-2">
               From dream to reality, we make your overseas journey process and visas easy to apply and smooth journey.
             </p>
 
             {/* FLOATING PROMPT INPUT */}
-            <div className="w-full max-w-3xl mt-7 mx-auto px-1 sm:px-0">
+            <div className="w-full max-w-3xl mt-6 sm:mt-7 mx-auto px-1 sm:px-0">
               <form onSubmit={handleSearchSubmit} className="relative flex items-center bg-white border border-purple-200/90 rounded-full pl-3.5 sm:pl-6 pr-1.5 sm:pr-2.5 py-1.5 sm:py-2.5 shadow-[0_10px_35px_rgb(91,44,111,0.08)] hover:shadow-[0_12px_40px_rgb(91,44,111,0.14)] transition-all">
                 <span className="text-purple-600 mr-2 sm:mr-3 text-base sm:text-xl shrink-0">✨</span>
                 <input 
@@ -1155,14 +1155,14 @@ Track live status here: https://travltik.com/dashboard`;
               </form>
 
               {/* Have Visa Already? Selector Under First Search Bar */}
-              <div className="flex items-center justify-center mt-4 mx-auto">
-                <div className="inline-flex items-center gap-1.5 sm:gap-2.5 bg-white/95 backdrop-blur-md border border-purple-200/90 p-1 sm:p-1.5 rounded-2xl sm:rounded-[22px] shadow-[0_8px_30px_rgba(48,0,90,0.06)]">
-                  <span className="text-[11px] sm:text-xs font-extrabold text-slate-800 pl-2.5 sm:pl-3 select-none">
+              <div className="flex items-center justify-center mt-4 mx-auto w-full px-1">
+                <div className="inline-flex flex-wrap sm:flex-nowrap items-center justify-center gap-1.5 sm:gap-2.5 bg-white/95 backdrop-blur-md border border-purple-200/90 p-1 sm:p-1.5 rounded-2xl sm:rounded-[22px] shadow-[0_8px_30px_rgba(48,0,90,0.06)] max-w-full">
+                  <span className="text-[11px] sm:text-xs font-extrabold text-slate-800 px-2 select-none whitespace-nowrap">
                     Have Visa Already?
                   </span>
                   
                   {/* Segmented Control Track */}
-                  <div className="flex items-center gap-1.5 bg-slate-100/90 p-1 rounded-xl sm:rounded-2xl border border-slate-200/80">
+                  <div className="flex items-center gap-1 bg-slate-100/90 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-200/80">
                     
                     {/* NO Option */}
                     <button

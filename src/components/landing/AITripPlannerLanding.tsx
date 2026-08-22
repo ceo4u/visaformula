@@ -980,10 +980,10 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
           {/* Centered Hero Info */}
           <div className="max-w-3xl mx-auto text-center">
             
-            {/* Official H1 Tagline with Gradient Highlight */}
+            {/* Official H1 Tagline with Sign Up Button Green Color */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] sm:leading-[1.1]">
               <span className="text-[#30005a] block">Dream Abroad.</span>
-              <span className="bg-gradient-to-r from-[#00A86B] via-teal-500 to-emerald-600 bg-clip-text text-transparent block mt-1">
+              <span className="text-[#00A86B] block mt-1">
                 We Make It Easy.
               </span>
             </h1>

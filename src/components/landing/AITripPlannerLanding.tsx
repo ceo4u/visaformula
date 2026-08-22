@@ -1494,7 +1494,7 @@ return (
                 onClick={() => setTravelScopeTab('domestic')}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all cursor-pointer shadow-2xs ${
                   travelScopeTab === 'domestic'
-                    ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/25 ring-2 ring-emerald-500/20 scale-[1.02]'
+                    ? 'bg-slate-900 text-white shadow-md shadow-slate-900/20 ring-2 ring-slate-900/15 scale-[1.02]'
                     : 'bg-white/90 hover:bg-white text-slate-600 hover:text-slate-900 border border-slate-200/80'
                 }`}
               >
@@ -1791,11 +1791,7 @@ return (
                       type="button"
                       onClick={handleGeneratePathway}
                       disabled={isGenerating}
-                      className={`w-full h-[46px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-[13px] flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 ${
-                        hasVisaAlready === 'no'
-                          ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-slate-900/30'
-                          : 'bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-emerald-600/35'
-                      }`}
+                      className="w-full h-[46px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-[13px] flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 bg-slate-900 hover:bg-slate-800 text-white shadow-slate-900/30"
                     >
                       {isGenerating ? (
                         <>
@@ -1864,13 +1860,13 @@ return (
                       }}
                       className={`px-4 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all duration-200 cursor-pointer flex items-center gap-1.5 select-none ${
                         hasVisaAlready === 'yes'
-                          ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35 scale-[1.03]'
+                          ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30 scale-[1.03]'
                           : 'text-slate-600 hover:text-slate-900'
                       }`}
                     >
-                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
+                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
                       <span>YES</span>
-                      {hasVisaAlready === 'yes' && <Check className="w-4 h-4 text-white stroke-[3]" />}
+                      {hasVisaAlready === 'yes' && <Check className="w-4 h-4 text-cyan-300 stroke-[3]" />}
                     </button>
                   </div>
                 </div>
@@ -1903,213 +1899,301 @@ return (
             )}
 
             {/* TAB CONTENT 2: DOMESTIC TRAVEL & TOURS FORM */}
-            {travelScopeTab === 'domestic' && (
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:py-4 md:px-6 shadow-[0_12px_40px_rgba(0,168,107,0.06)] animate-fadeIn">
-                
-                {/* Header Row */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3.5 pb-2.5 border-b border-slate-100">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-2xs shrink-0">
-                      <span className="text-base">🏠</span>
-                    </div>
-                    <div>
-                      <h2 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
-                        Domestic Holiday, Sightseeing &amp; Tour Packages
-                      </h2>
-                      <p className="text-[11px] sm:text-xs font-medium text-slate-500">
-                        Zero visa required • Verified local guides, hotels &amp; seamless family itineraries
-                      </p>
-                    </div>
-                  </div>
+            {travelScopeTab === 'domestic' && (() => {
+              const currentDomesticData = domesticCountryData[domesticCountry] || domesticCountryData['India'];
+              const currentStatesList = currentDomesticData.states;
+              const currentDestsList = currentDomesticData.destinations;
 
-                  <div className="flex items-center gap-2 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200/70 text-emerald-800 text-xs font-bold shrink-0 self-start sm:self-auto">
-                    <span>🇮🇳 All India Destinations</span>
-                  </div>
-                </div>
-
-                {/* 5-Column Grid Inputs (Current State, Current City, Destination, Members, Button) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3 items-end">
+              return (
+                <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:py-4 md:px-6 shadow-[0_12px_40px_rgba(0,168,107,0.06)] animate-fadeIn">
                   
-                  {/* Field 1: Current State */}
-                  <div className="relative">
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Current State
-                    </label>
-                    <div
-                      ref={domesticStateRef}
-                      onClick={() => {
-                        setIsDomesticStateOpen(!isDomesticStateOpen);
-                        setIsDomesticDestOpen(false);
-                      }}
-                      className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-xl sm:rounded-2xl h-[46px] px-3 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
-                    >
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        <span className="text-base shrink-0">
-                          {domesticState ? (domesticStateOptions.find(o => o.value === domesticState)?.icon || '📍') : '📍'}
-                        </span>
-                        <div className="min-w-0">
-                          <span className={`text-xs font-bold truncate block ${domesticState ? 'text-slate-900' : 'text-slate-400'}`}>
-                            {domesticState || 'Select Current State'}
-                          </span>
-                        </div>
+                  {/* Header Row */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3.5 pb-2.5 border-b border-slate-100">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-2xs shrink-0">
+                        <span className="text-base">🏠</span>
                       </div>
-                      <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticStateOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                      <div>
+                        <h2 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
+                          Domestic Holiday, Sightseeing &amp; Tour Packages
+                        </h2>
+                        <p className="text-[11px] sm:text-xs font-medium text-slate-500">
+                          Zero visa required • Verified local guides, curated hotels &amp; seamless itineraries in {domesticCountry}
+                        </p>
+                      </div>
+                    </div>
 
-                      {isDomesticStateOpen && (
-                        <div
-                          className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                            Select Current State
-                          </div>
-                          <div className="space-y-0.5">
-                            {domesticStateOptions.map((opt) => {
-                              const isSelected = domesticState === opt.value;
-                              return (
-                                <button
-                                  key={opt.value}
-                                  type="button"
-                                  onClick={() => {
-                                    setDomesticState(opt.value);
-                                    setIsDomesticStateOpen(false);
-                                  }}
-                                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
-                                    isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
-                                  }`}
-                                >
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    <span className="text-base">{opt.icon}</span>
-                                    <span className="truncate">{opt.label}</span>
-                                  </div>
-                                  {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
+                    {/* Dynamic Country Badge */}
+                    <div className="flex items-center gap-1.5 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200/70 text-emerald-800 text-xs font-extrabold shrink-0 self-start sm:self-auto">
+                      <span>{currentDomesticData.badge}</span>
                     </div>
                   </div>
 
-                  {/* Field 2: Current City */}
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Current City
-                    </label>
+                  {/* 6-Column Grid Inputs (Country, State, City, Destination, Travelers, Button) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2.5 sm:gap-3 items-end">
+                    
+                    {/* Field 1: Domestic Country */}
                     <div className="relative">
-                      <input
-                        type="text"
-                        value={domesticCity}
-                        onChange={(e) => setDomesticCity(e.target.value)}
-                        placeholder="e.g. Jaipur, Mumbai, Delhi"
-                        className="w-full bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 focus:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] px-3 text-xs font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Field 3: Destination City / State / Tour */}
-                  <div className="relative">
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Destination / Holiday
-                    </label>
-                    <div
-                      ref={domesticDestRef}
-                      onClick={() => {
-                        setIsDomesticDestOpen(!isDomesticDestOpen);
-                        setIsDomesticStateOpen(false);
-                      }}
-                      className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-xl sm:rounded-2xl h-[46px] px-3 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
-                    >
-                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                        <span className="text-base shrink-0">
-                          {domesticDestination ? (domesticDestinationOptions.find(o => o.value === domesticDestination)?.icon || '🏖️') : '🏖️'}
-                        </span>
-                        <div className="min-w-0">
-                          <span className={`text-xs font-bold truncate block ${domesticDestination ? 'text-slate-900' : 'text-slate-400'}`}>
-                            {domesticDestination ? (domesticDestinationOptions.find(o => o.value === domesticDestination)?.label || domesticDestination) : 'Select Destination / Tour'}
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Country
+                      </label>
+                      <div
+                        ref={domesticCountryRef}
+                        onClick={() => {
+                          setIsDomesticCountryOpen(!isDomesticCountryOpen);
+                          setIsDomesticStateOpen(false);
+                          setIsDomesticDestOpen(false);
+                        }}
+                        className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-xl sm:rounded-2xl h-[46px] px-3 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                      >
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                          <span className="text-base shrink-0">
+                            {domesticCountryOptions.find(o => o.value === domesticCountry)?.icon || '🌐'}
                           </span>
+                          <div className="min-w-0">
+                            <span className="text-xs font-bold text-slate-900 truncate block">
+                              {domesticCountry}
+                            </span>
+                          </div>
                         </div>
+                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticCountryOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+
+                        {isDomesticCountryOpen && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-[220px] sm:w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                              Select Country
+                            </div>
+                            <div className="space-y-0.5">
+                              {domesticCountryOptions.map((opt) => {
+                                const isSelected = domesticCountry === opt.value;
+                                return (
+                                  <button
+                                    key={opt.value}
+                                    type="button"
+                                    onClick={() => {
+                                      setDomesticCountry(opt.value);
+                                      setDomesticState('');
+                                      setDomesticDestination('');
+                                      setIsDomesticCountryOpen(false);
+                                      autoSaveJourney({ domestic_country: opt.value, domestic_state: '', domestic_destination: '' });
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                      isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <span className="text-base">{opt.icon}</span>
+                                      <span className="truncate">{opt.label}</span>
+                                    </div>
+                                    {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticDestOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                    </div>
 
-                      {isDomesticDestOpen && (
-                        <div
-                          className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                            Select Tour Package
-                          </div>
-                          <div className="space-y-0.5">
-                            {domesticDestinationOptions.map((opt) => {
-                              const isSelected = domesticDestination === opt.value;
-                              return (
-                                <button
-                                  key={opt.value}
-                                  type="button"
-                                  onClick={() => {
-                                    setDomesticDestination(opt.value);
-                                    setIsDomesticDestOpen(false);
-                                  }}
-                                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
-                                    isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
-                                  }`}
-                                >
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    <span className="text-base">{opt.icon}</span>
-                                    <span className="truncate">{opt.label}</span>
-                                  </div>
-                                  {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
-                                </button>
-                              );
-                            })}
+                    {/* Field 2: Current State / Region */}
+                    <div className="relative">
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Current State / Region
+                      </label>
+                      <div
+                        ref={domesticStateRef}
+                        onClick={() => {
+                          setIsDomesticStateOpen(!isDomesticStateOpen);
+                          setIsDomesticCountryOpen(false);
+                          setIsDomesticDestOpen(false);
+                        }}
+                        className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-xl sm:rounded-2xl h-[46px] px-3 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                      >
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                          <span className="text-base shrink-0">
+                            {domesticState ? (currentStatesList.find(o => o.value === domesticState)?.icon || '📍') : '📍'}
+                          </span>
+                          <div className="min-w-0">
+                            <span className={`text-xs font-bold truncate block ${domesticState ? 'text-slate-900' : 'text-slate-400'}`}>
+                              {domesticState || 'Select State / Region'}
+                            </span>
                           </div>
                         </div>
-                      )}
-                    </div>
-                  </div>
+                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticStateOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
 
-                  {/* Field 4: No. of Family / Group Members */}
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Travelers
-                    </label>
-                    <div className="bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] px-3 flex items-center justify-between">
-                      <button
-                        type="button"
-                        onClick={() => setDomesticMembers(Math.max(1, domesticMembers - 1))}
-                        className="w-7 h-7 rounded-lg bg-slate-200/80 hover:bg-slate-300 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer transition-colors"
-                      >
-                        -
-                      </button>
-                      <span className="text-xs font-black text-slate-900">
-                        {domesticMembers} {domesticMembers === 1 ? 'Traveler' : 'Travelers'}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setDomesticMembers(domesticMembers + 1)}
-                        className="w-7 h-7 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm flex items-center justify-center cursor-pointer transition-colors shadow-2xs"
-                      >
-                        +
-                      </button>
+                        {isDomesticStateOpen && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-[240px] sm:w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                              States / Regions in {domesticCountry}
+                            </div>
+                            <div className="space-y-0.5">
+                              {currentStatesList.map((opt) => {
+                                const isSelected = domesticState === opt.value;
+                                return (
+                                  <button
+                                    key={opt.value}
+                                    type="button"
+                                    onClick={() => {
+                                      setDomesticState(opt.value);
+                                      setIsDomesticStateOpen(false);
+                                      autoSaveJourney({ domestic_state: opt.value });
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                      isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <span className="text-base">{opt.icon}</span>
+                                      <span className="truncate">{opt.label}</span>
+                                    </div>
+                                    {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Field 5: Action Button: Explore Tours & Packages */}
-                  <div>
-                    <a
-                      href="/services/tours"
-                      className="w-full h-[46px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-[13px] bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-md shadow-emerald-600/35 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer"
-                    >
-                      <span>Explore Tours &amp; Packages →</span>
-                    </a>
+                    {/* Field 3: Current City */}
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Current City
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={domesticCity}
+                          onChange={(e) => {
+                            setDomesticCity(e.target.value);
+                            autoSaveJourney({ domestic_city: e.target.value });
+                          }}
+                          placeholder={`e.g., City in ${domesticCountry}`}
+                          className="w-full bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 focus:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] px-3 text-xs font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Field 4: Destination City / State / Tour */}
+                    <div className="relative">
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Destination / Tour
+                      </label>
+                      <div
+                        ref={domesticDestRef}
+                        onClick={() => {
+                          setIsDomesticDestOpen(!isDomesticDestOpen);
+                          setIsDomesticCountryOpen(false);
+                          setIsDomesticStateOpen(false);
+                        }}
+                        className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-xl sm:rounded-2xl h-[46px] px-3 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                      >
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                          <span className="text-base shrink-0">
+                            {domesticDestination ? (currentDestsList.find(o => o.value === domesticDestination)?.icon || '🏖️') : '🏖️'}
+                          </span>
+                          <div className="min-w-0">
+                            <span className={`text-xs font-bold truncate block ${domesticDestination ? 'text-slate-900' : 'text-slate-400'}`}>
+                              {domesticDestination ? (currentDestsList.find(o => o.value === domesticDestination)?.label || domesticDestination) : 'Select Destination / Tour'}
+                            </span>
+                          </div>
+                        </div>
+                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticDestOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+
+                        {isDomesticDestOpen && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-[260px] sm:w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                              Tours in {domesticCountry}
+                            </div>
+                            <div className="space-y-0.5">
+                              {currentDestsList.map((opt) => {
+                                const isSelected = domesticDestination === opt.value;
+                                return (
+                                  <button
+                                    key={opt.value}
+                                    type="button"
+                                    onClick={() => {
+                                      setDomesticDestination(opt.value);
+                                      setIsDomesticDestOpen(false);
+                                      autoSaveJourney({ domestic_destination: opt.value });
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                      isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <span className="text-base">{opt.icon}</span>
+                                      <span className="truncate">{opt.label}</span>
+                                    </div>
+                                    {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Field 5: No. of Family / Group Members */}
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Travelers
+                      </label>
+                      <div className="bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] px-3 flex items-center justify-between">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const nextCount = Math.max(1, domesticMembers - 1);
+                            setDomesticMembers(nextCount);
+                            autoSaveJourney({ domestic_members: nextCount });
+                          }}
+                          className="w-7 h-7 rounded-lg bg-slate-200/80 hover:bg-slate-300 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer transition-colors"
+                        >
+                          -
+                        </button>
+                        <span className="text-xs font-black text-slate-900">
+                          {domesticMembers} {domesticMembers === 1 ? 'Traveler' : 'Travelers'}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const nextCount = domesticMembers + 1;
+                            setDomesticMembers(nextCount);
+                            autoSaveJourney({ domestic_members: nextCount });
+                          }}
+                          className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-black text-sm flex items-center justify-center cursor-pointer transition-colors shadow-2xs"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Field 6: Action Button: Explore Tours & Packages */}
+                    <div>
+                      <a
+                        href={`/services/tours?country=${encodeURIComponent(domesticCountry)}`}
+                        className="w-full h-[46px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-[13px] bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer"
+                      >
+                        <span className="truncate">Explore Packages →</span>
+                      </a>
+                    </div>
+
                   </div>
 
                 </div>
-
-              </div>
-            )}
+              );
+            })()}
 
           </div>
 
@@ -3526,9 +3610,7 @@ return (
                           type="submit"
                           disabled={leadSubmitting}
                           className={`w-full h-11 font-extrabold text-xs sm:text-sm rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 ${
-                            hasVisaAlready === 'no'
-                              ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30'
-                              : 'bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-md shadow-[#00A86B]/25'
+                            'bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30'
                           }`}
                         >
                           <PhoneCall className={`w-4 h-4 ${hasVisaAlready === 'no' ? 'text-cyan-400' : 'text-emerald-100'}`} />
@@ -3941,13 +4023,9 @@ return (
               <button
                 type="button"
                 onClick={handleGlobalSearch}
-                className={`w-full py-3.5 font-extrabold text-sm sm:text-base rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                  hasVisaAlready === 'no'
-                    ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25'
-                    : 'bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-lg shadow-emerald-600/20'
-                }`}
+                className="w-full py-3.5 font-extrabold text-sm sm:text-base rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25"
               >
-                <Search className={`w-4 h-4 ${hasVisaAlready === 'no' ? 'text-cyan-400' : 'text-white'}`} />
+                <Search className="w-4 h-4 text-cyan-400" />
                 <span>Search {activeSearchTab === 'universities' ? 'Universities & Courses' : activeSearchTab === 'consultants' ? 'Verified Consultants' : activeSearchTab === 'relocation' ? 'Relocation Classifieds' : activeSearchTab === 'jobs' ? 'Jobs Abroad' : 'Immigration Lawyers'} →</span>
               </button>
             </div>

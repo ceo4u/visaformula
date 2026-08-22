@@ -2410,12 +2410,12 @@ export function AITripPlannerLanding() {
                       </div>
                     </div>
 
-                    {/* STEP 4: VFS Funds & Financial Weakness Audit (6 Cols) */}
+                    {/* STEP 4: Visa Funds & Financial Audit (6 Cols) */}
                     <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
                       <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
                         <span className="w-7 h-7 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-black text-xs">4</span>
                         <div>
-                          <h4 className="text-sm sm:text-base font-black text-slate-900">Step 4: VFS Funds &amp; Financial Weakness Audit</h4>
+                          <h4 className="text-sm sm:text-base font-black text-slate-900">Step 4: Visa Funds &amp; Financial Audit</h4>
                           <p className="text-[11px] text-slate-400">Proof of funds calculator for {journeyDestination || 'Destination'}</p>
                         </div>
                       </div>

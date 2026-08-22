@@ -1118,15 +1118,15 @@ export function AITripPlannerLanding() {
             
             {/* Official H1 Tagline with Sign Up Button Green Color */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] sm:leading-[1.1]">
-              <span className="text-[#30005a] block">Dream Abroad.</span>
+              <span className="text-[#30005a] block">Dream Journey.</span>
               <span className="text-[#00A86B] block mt-1">
                 We Make It Easy.
               </span>
             </h1>
             
             {/* Supporting Official Subtitle */}
-            <p className="mt-3.5 text-slate-600 text-xs sm:text-base font-medium max-w-xl mx-auto leading-relaxed px-2">
-              From visa applications to your overseas journey, we simplify every step so you can travel with confidence.
+            <p className="mt-3.5 text-slate-600 text-xs sm:text-base font-medium max-w-2xl mx-auto leading-relaxed px-2">
+              From domestic trip planning to your complete overseas journey including visa applications we simplify every step so you can travel with confidence
             </p>
 
             {/* FLOATING PROMPT INPUT */}

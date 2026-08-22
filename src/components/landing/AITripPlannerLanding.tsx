@@ -522,11 +522,11 @@ export function AITripPlannerLanding() {
   const [studyTuitionFee, setStudyTuitionFee] = useState('');
   const [studyLivingCost, setStudyLivingCost] = useState('');
   
-  // Step 3 Document Gathering States
-  const [docTranscriptsUploaded, setDocTranscriptsUploaded] = useState(true);
-  const [docSopUploaded, setDocSopUploaded] = useState(true);
+  // Step 3 Document Gathering States (Initialized to false for clean real uploading)
+  const [docTranscriptsUploaded, setDocTranscriptsUploaded] = useState(false);
+  const [docSopUploaded, setDocSopUploaded] = useState(false);
   const [docLorUploaded, setDocLorUploaded] = useState(false);
-  const [docIeltsUploaded, setDocIeltsUploaded] = useState(true);
+  const [docIeltsUploaded, setDocIeltsUploaded] = useState(false);
   
   // Step 4 Funds & Financial Weakness States
   const [fundsAvailableAmount, setFundsAvailableAmount] = useState('25000');

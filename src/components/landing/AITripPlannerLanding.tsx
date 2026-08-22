@@ -641,6 +641,9 @@ const courseLevelOptions = [
 export function AITripPlannerLanding() {
   // Current user email for persistence
   const [currentUserEmail, setCurrentUserEmail] = useState('');
+    const [isGeneratingDomestic, setIsGeneratingDomestic] = useState(false);
+  const [showDomesticItinerary, setShowDomesticItinerary] = useState(false);
+  const [domesticSavedSuccess, setDomesticSavedSuccess] = useState(false);
   const [isAutoSaving, setIsAutoSaving] = useState(false);
   const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
 
@@ -1219,6 +1222,26 @@ export function AITripPlannerLanding() {
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 150);
+  };
+
+    const handleGenerateDomesticItinerary = () => {
+    setIsGeneratingDomestic(true);
+    autoSaveJourney({
+      domestic_country: domesticCountry || 'India',
+      domestic_state: domesticState || 'Delhi',
+      domestic_city: domesticCity || 'Local City',
+      domestic_destination: domesticDestination || 'Holiday Tour',
+      domestic_members: domesticMembers || 1
+    });
+
+    setTimeout(() => {
+      setIsGeneratingDomestic(false);
+      setShowDomesticItinerary(true);
+      setTimeout(() => {
+        const el = document.getElementById('domestic-itinerary-dashboard');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }, 800);
   };
 
   const handleGeneratePathway = () => {
@@ -2181,12 +2204,24 @@ return (
 
                     {/* Field 6: Action Button: Explore Tours & Packages */}
                     <div>
-                      <a
-                        href={`/services/tours?country=${encodeURIComponent(domesticCountry)}`}
-                        className="w-full h-[46px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-[13px] bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer"
+                      <button
+                        type="button"
+                        onClick={handleGenerateDomesticItinerary}
+                        disabled={isGeneratingDomestic}
+                        className="w-full h-[46px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-[13px] bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                       >
-                        <span className="truncate">Explore Packages →</span>
-                      </a>
+                        {isGeneratingDomestic ? (
+                          <>
+                            <RotateCw className="w-3.5 h-3.5 animate-spin text-white" />
+                            <span>Building Itinerary...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+                            <span className="truncate">Explore Packages →</span>
+                          </>
+                        )}
+                      </button>
                     </div>
 
                   </div>
@@ -2196,6 +2231,207 @@ return (
             })()}
 
           </div>
+
+          {/* ── DOMESTIC AI HOLIDAY & TOUR ITINERARY DASHBOARD ── */}
+          {showDomesticItinerary && travelScopeTab === 'domestic' && (
+            <div id="domestic-itinerary-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
+              
+              {/* Top Banner Card */}
+              <div className="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+                
+                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-black uppercase tracking-wider">
+                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                        AI Curated Domestic Tour Itinerary
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-slate-200 text-[10px] font-bold">
+                        Zero Visa Required ✓
+                      </span>
+                    </div>
+
+                    <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                      {domesticDestination || 'Signature Holiday Tour'} in {domesticCountry || 'India'}
+                    </h3>
+
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs sm:text-sm text-slate-300 font-medium">
+                      <span>Country: <strong className="text-white">{domesticCountry || 'India'}</strong></span>
+                      <span>• Origin: <strong className="text-white">{domesticCity || domesticState || 'Selected Origin'}</strong></span>
+                      <span>• Group Size: <strong className="text-emerald-400">{domesticMembers || 1} {(domesticMembers || 1) === 1 ? 'Traveler' : 'Travelers'}</strong></span>
+                      <span>• Duration: <strong className="text-white">4 Days / 3 Nights</strong></span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        autoSaveJourney({
+                          domestic_country: domesticCountry,
+                          domestic_state: domesticState,
+                          domestic_city: domesticCity,
+                          domestic_destination: domesticDestination,
+                          domestic_members: domesticMembers
+                        });
+                        setDomesticSavedSuccess(true);
+                        setTimeout(() => setDomesticSavedSuccess(false), 3000);
+                      }}
+                      className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all border border-white/15 flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <span>{domesticSavedSuccess ? 'Saved to Dashboard ✓' : '💾 Save to Dashboard'}</span>
+                    </button>
+                    <a
+                      href="/dashboard"
+                      className="px-5 py-2.5 rounded-xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs sm:text-sm font-black transition-all shadow-lg shadow-emerald-900/30 flex items-center gap-2 cursor-pointer"
+                    >
+                      <span>View in Dashboard →</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Grid: Day-by-Day Itinerary (8 Cols) + Inclusions & Local Support (4 Cols) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                {/* ── LEFT: 4-DAY DETAILED ITINERARY ── */}
+                <div className="lg:col-span-8 bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-6">
+                  <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                    <div>
+                      <h4 className="text-lg font-black text-slate-900">Day-by-Day Travel Schedule</h4>
+                      <p className="text-xs text-slate-500">Curated by local destination experts for {domesticDestination || 'your trip'}</p>
+                    </div>
+                    <span className="px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold">
+                      Full Flexibility
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    {/* Day 1 */}
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black uppercase tracking-wider text-[#00A86B] bg-emerald-100/70 px-2.5 py-0.5 rounded-md">
+                          Day 1: Arrival &amp; Local Welcome
+                        </span>
+                        <span className="text-xs font-bold text-slate-500">Afternoon / Evening</span>
+                      </div>
+                      <h5 className="text-sm font-black text-slate-900">VIP Station/Airport Pickup &amp; Heritage Check-in</h5>
+                      <ul className="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                        <li>Dedicated AC vehicle pickup with verified driver from origin / transit terminal.</li>
+                        <li>Check-in at top-rated handpicked stay with complimentary welcome drinks.</li>
+                        <li>Evening leisure stroll around signature local promenade / market with sunset viewpoints.</li>
+                      </ul>
+                    </div>
+
+                    {/* Day 2 */}
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black uppercase tracking-wider text-purple-700 bg-purple-100/70 px-2.5 py-0.5 rounded-md">
+                          Day 2: Iconic Landmarks &amp; Culture
+                        </span>
+                        <span className="text-xs font-bold text-slate-500">Full Day Tour</span>
+                      </div>
+                      <h5 className="text-sm font-black text-slate-900">Fast-Track Sightseeing &amp; Gastronomy Walk</h5>
+                      <ul className="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                        <li>Morning guided tour of top UNESCO / historic monuments and panoramic scenic viewpoints.</li>
+                        <li>Authentic multi-course lunch at celebrated traditional regional culinary spots.</li>
+                        <li>Evening cultural experience (folk art / light show / boat cruise experience).</li>
+                      </ul>
+                    </div>
+
+                    {/* Day 3 */}
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black uppercase tracking-wider text-cyan-700 bg-cyan-100/70 px-2.5 py-0.5 rounded-md">
+                          Day 3: Nature, Safari &amp; Adventure
+                        </span>
+                        <span className="text-xs font-bold text-slate-500">Experiential Highlights</span>
+                      </div>
+                      <h5 className="text-sm font-black text-slate-900">Local Hidden Gems &amp; Artisan Shopping</h5>
+                      <ul className="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                        <li>Outdoor nature excursion (scenic valley / wildlife safari / water activities).</li>
+                        <li>Visit to verified local artisan workshops, spices, and handmade souvenir bazaars.</li>
+                        <li>Special chef-curated farewell dinner under starlit ambience.</li>
+                      </ul>
+                    </div>
+
+                    {/* Day 4 */}
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black uppercase tracking-wider text-amber-700 bg-amber-100/70 px-2.5 py-0.5 rounded-md">
+                          Day 4: Scenic Departure
+                        </span>
+                        <span className="text-xs font-bold text-slate-500">Morning Departure</span>
+                      </div>
+                      <h5 className="text-sm font-black text-slate-900">Breakfast &amp; Guaranteed On-Time Transfer</h5>
+                      <ul className="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                        <li>Buffet breakfast at hotel and seamless contactless express checkout.</li>
+                        <li>Dedicated transfer back to airport / railway station with on-time departure guarantee.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── RIGHT: INCLUDED SAFEGUARDS & HANDPICKED STAYS ── */}
+                <div className="lg:col-span-4 space-y-5">
+                  
+                  {/* Card 1: What's Included */}
+                  <div className="bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+                    <h4 className="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
+                      <ShieldCheck className="w-5 h-5 text-[#00A86B]" />
+                      <span>Package Inclusions</span>
+                    </h4>
+                    
+                    <div className="space-y-2.5 text-xs text-slate-700 font-medium">
+                      <div className="flex items-center gap-2.5 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                        <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
+                        <span>Private Dedicated AC Cab for all 4 Days</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                        <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
+                        <span>Handpicked 4-Star Resort / Heritage Stay</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                        <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
+                        <span>Daily Buffet Breakfast &amp; Welcome Drinks</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                        <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
+                        <span>Certified English/Hindi Speaking Local Guide</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                        <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
+                        <span>100% Escrow Payment Protection</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 2: 24/7 Verified Guide Support */}
+                  <div className="bg-gradient-to-br from-emerald-50 to-teal-50/60 border border-emerald-200/80 rounded-3xl p-5 sm:p-6 shadow-sm space-y-3">
+                    <div className="w-10 h-10 rounded-2xl bg-[#00A86B] text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                      📞
+                    </div>
+                    <h4 className="text-sm font-black text-slate-900">
+                      Need Itinerary Customization?
+                    </h4>
+                    <p className="text-xs text-slate-600">
+                      Talk directly with our local tour planner to add private yachts, special dietary arrangements or adventure treks.
+                    </p>
+                    <a
+                      href="/support"
+                      className="inline-flex items-center justify-center w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black transition-all shadow-md shadow-slate-900/20"
+                    >
+                      Connect with Local Tour Specialist →
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          )}
 
           {/* QUICK-PILL INTENT TAGS (STRICT 1-ROW FLEX CONTAINER BELOW PRIMARY SEARCH) */}
           <div className="mt-7 sm:mt-8 flex flex-nowrap items-center justify-start sm:justify-center gap-2.5 sm:gap-3 max-w-6xl mx-auto w-full overflow-x-auto no-scrollbar pb-1">

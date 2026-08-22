@@ -133,6 +133,155 @@ const travelPurposeOptions = [
 ];
 
 // Domestic Travel Dropdown Options
+// Multi-Country Domestic Travel & Tours Engine
+const domesticCountryData: Record<string, {
+  name: string;
+  flag: string;
+  badge: string;
+  states: { value: string; label: string; icon: string }[];
+  destinations: { value: string; label: string; icon: string }[];
+}> = {
+  India: {
+    name: 'India',
+    flag: '🇮🇳',
+    badge: '🇮🇳 All India Domestic Tours',
+    states: [
+      { value: 'Rajasthan', label: 'Rajasthan', icon: '🏰' },
+      { value: 'Maharashtra', label: 'Maharashtra', icon: '🏙️' },
+      { value: 'Delhi NCR', label: 'Delhi NCR', icon: '🏛️' },
+      { value: 'Karnataka', label: 'Karnataka', icon: '🌳' },
+      { value: 'Kerala', label: 'Kerala', icon: '🌴' },
+      { value: 'Goa', label: 'Goa', icon: '🏖️' },
+      { value: 'Gujarat', label: 'Gujarat', icon: '🦁' },
+      { value: 'Tamil Nadu', label: 'Tamil Nadu', icon: '🛕' },
+      { value: 'Himachal Pradesh', label: 'Himachal Pradesh', icon: '🏔️' },
+      { value: 'Uttarakhand', label: 'Uttarakhand', icon: '⛰️' },
+      { value: 'West Bengal', label: 'West Bengal', icon: '🪔' },
+      { value: 'Other State', label: 'Other State / UT', icon: '📍' },
+    ],
+    destinations: [
+      { value: 'Goa Beach Holiday', label: 'Goa Beach & Water Sports', icon: '🏖️' },
+      { value: 'Kerala Backwaters & Munnar', label: 'Kerala Backwaters & Munnar Hills', icon: '🌴' },
+      { value: 'Manali, Shimla & Rohtang', label: 'Manali, Shimla & Snow Valleys', icon: '🏔️' },
+      { value: 'Rajasthan Heritage Forts', label: 'Jaipur, Udaipur & Royal Forts', icon: '🏰' },
+      { value: 'Kashmir Valley & Gulmarg', label: 'Kashmir Valley & Gulmarg Snow Tour', icon: '❄️' },
+      { value: 'Varanasi & Ayodhya Circuit', label: 'Varanasi & Ayodhya Spiritual Tour', icon: '🕉️' },
+      { value: 'Andaman Island Expedition', label: 'Andaman & Havelock Island Tour', icon: '🌊' },
+      { value: 'Leh Ladakh Mountain Passes', label: 'Leh Ladakh High Altitude Safari', icon: '🏍️' },
+    ]
+  },
+  UAE: {
+    name: 'UAE',
+    flag: '🇦🇪',
+    badge: '🇦🇪 UAE Staycations & Tours',
+    states: [
+      { value: 'Dubai', label: 'Dubai Emirate', icon: '🏙️' },
+      { value: 'Abu Dhabi', label: 'Abu Dhabi Emirate', icon: '🕌' },
+      { value: 'Sharjah', label: 'Sharjah Cultural Emirate', icon: '🎨' },
+      { value: 'Ras Al Khaimah', label: 'Ras Al Khaimah Mountains', icon: '⛰️' },
+      { value: 'Fujairah', label: 'Fujairah Coast & Beaches', icon: '🌊' },
+      { value: 'Ajman', label: 'Ajman Emirate', icon: '🏖️' },
+      { value: 'Umm Al Quwain', label: 'Umm Al Quwain', icon: '🚤' },
+    ],
+    destinations: [
+      { value: 'Dubai Marina & Desert Safari', label: 'Dubai Marina & Red Dunes Safari', icon: '🏜️' },
+      { value: 'Abu Dhabi Yas Island & Louvre', label: 'Abu Dhabi Grand Mosque & Yas Island', icon: '🕌' },
+      { value: 'Jebel Jais Adventure RAK', label: 'Ras Al Khaimah Jebel Jais Zipline', icon: '⛰️' },
+      { value: 'Fujairah Snoopy Island Diving', label: 'Fujairah Snorkeling & Beach Resorts', icon: '🤿' },
+      { value: 'Hatta Mountain Glamping', label: 'Hatta Kayak & Mountain Glamping', icon: '🛶' },
+    ]
+  },
+  'United States': {
+    name: 'United States',
+    flag: '🇺🇸',
+    badge: '🇺🇸 USA Domestic Vacations',
+    states: [
+      { value: 'California', label: 'California', icon: '🌴' },
+      { value: 'New York', label: 'New York', icon: '🗽' },
+      { value: 'Florida', label: 'Florida', icon: '☀️' },
+      { value: 'Texas', label: 'Texas', icon: '🤠' },
+      { value: 'Nevada', label: 'Nevada', icon: '🎰' },
+      { value: 'Hawaii', label: 'Hawaii', icon: '🌺' },
+      { value: 'Colorado', label: 'Colorado', icon: '🏂' },
+      { value: 'Washington', label: 'Washington', icon: '🌲' },
+      { value: 'Other US State', label: 'Other State', icon: '📍' },
+    ],
+    destinations: [
+      { value: 'Hawaii Island Getaway', label: 'Honolulu & Maui Beach Resorts', icon: '🌺' },
+      { value: 'Grand Canyon & Vegas Strip', label: 'Grand Canyon & Las Vegas Lights', icon: '🏜️' },
+      { value: 'Yellowstone & Rockies Wildlife', label: 'Yellowstone National Park Tour', icon: '🐻' },
+      { value: 'Miami Beach & Key West Drive', label: 'Miami Beach & Florida Keys Tour', icon: '🏖️' },
+      { value: 'New York City Lights & Broadway', label: 'NYC Skyline, Times Sq & Broadway', icon: '🗽' },
+      { value: 'California Highway 1 Coast', label: 'Big Sur & Monterey Coastal Drive', icon: '🌊' },
+    ]
+  },
+  'United Kingdom': {
+    name: 'United Kingdom',
+    flag: '🇬🇧',
+    badge: '🇬🇧 UK Domestic Holidays',
+    states: [
+      { value: 'England', label: 'England', icon: '🎡' },
+      { value: 'Scotland', label: 'Scotland', icon: '🏰' },
+      { value: 'Wales', label: 'Wales', icon: '🐉' },
+      { value: 'Northern Ireland', label: 'Northern Ireland', icon: '☘️' },
+    ],
+    destinations: [
+      { value: 'Scottish Highlands & Skye', label: 'Scottish Highlands & Isle of Skye', icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
+      { value: 'Lake District & Windermere', label: 'Lake District National Park Tour', icon: '🏞️' },
+      { value: 'Cornwall Coastal Beaches', label: 'Cornwall Surf & Coastal Cottages', icon: '🏖️' },
+      { value: 'Cotswolds Historic Villages', label: 'Cotswolds Countryside Tour', icon: '🏡' },
+      { value: 'London Sightseeing & Thames', label: 'London Landmarks & West End', icon: '🎡' },
+    ]
+  },
+  Canada: {
+    name: 'Canada',
+    flag: '🇨🇦',
+    badge: '🇨🇦 Canada Domestic Travel',
+    states: [
+      { value: 'Ontario', label: 'Ontario', icon: '🍁' },
+      { value: 'British Columbia', label: 'British Columbia', icon: '🏔️' },
+      { value: 'Alberta', label: 'Alberta', icon: '🎿' },
+      { value: 'Quebec', label: 'Quebec', icon: '⚜️' },
+      { value: 'Nova Scotia', label: 'Nova Scotia', icon: '🌊' },
+      { value: 'Other Province', label: 'Other Province', icon: '📍' },
+    ],
+    destinations: [
+      { value: 'Banff & Lake Louise Rockies', label: 'Banff National Park & Lake Louise', icon: '🏔️' },
+      { value: 'Niagara Falls & Toronto Skyline', label: 'Niagara Falls & Toronto City Tour', icon: '🌊' },
+      { value: 'Whistler Blackcomb Skiing', label: 'Whistler Mountain & Vancouver Coast', icon: '🏂' },
+      { value: 'Old Quebec City & Montreal', label: 'Old Quebec European Charm & Montreal', icon: '🏰' },
+    ]
+  },
+  Australia: {
+    name: 'Australia',
+    flag: '🇦🇺',
+    badge: '🇦🇺 Australia Domestic Getaways',
+    states: [
+      { value: 'New South Wales', label: 'New South Wales (NSW)', icon: '🦘' },
+      { value: 'Victoria', label: 'Victoria (VIC)', icon: '☕' },
+      { value: 'Queensland', label: 'Queensland (QLD)', icon: '🐠' },
+      { value: 'Western Australia', label: 'Western Australia (WA)', icon: '🏜️' },
+      { value: 'Tasmania', label: 'Tasmania (TAS)', icon: '🌲' },
+    ],
+    destinations: [
+      { value: 'Great Barrier Reef Cairns', label: 'Great Barrier Reef & Whitsundays', icon: '🐠' },
+      { value: 'Gold Coast Theme Parks & Surf', label: 'Gold Coast Surfers Paradise', icon: '🏄‍♂️' },
+      { value: 'Great Ocean Road Melbourne', label: 'Great Ocean Road & 12 Apostles', icon: '🌊' },
+      { value: 'Sydney Harbour & Blue Mountains', label: 'Sydney Harbour & Blue Mountains', icon: '🌉' },
+      { value: 'Tasmania Cradle Mountain Tour', label: 'Tasmania Wilderness & Hobart Tour', icon: '🌲' },
+    ]
+  }
+};
+
+const domesticCountryOptions = [
+  { value: 'India', label: 'India', icon: '🇮🇳' },
+  { value: 'UAE', label: 'United Arab Emirates (UAE)', icon: '🇦🇪' },
+  { value: 'United States', label: 'United States (USA)', icon: '🇺🇸' },
+  { value: 'United Kingdom', label: 'United Kingdom (UK)', icon: '🇬🇧' },
+  { value: 'Canada', label: 'Canada', icon: '🇨🇦' },
+  { value: 'Australia', label: 'Australia', icon: '🇦🇺' },
+];
+
 const domesticStateOptions = [
   { value: 'Rajasthan', label: 'Rajasthan', icon: '🏰' },
   { value: 'Maharashtra', label: 'Maharashtra', icon: '🏙️' },
@@ -566,7 +715,7 @@ export function AITripPlannerLanding() {
   const [docIeltsUploaded, setDocIeltsUploaded] = useState(false);
   
   // Step 4 Funds & Financial Weakness States
-  const [fundsAvailableAmount, setFundsAvailableAmount] = useState('25000');
+  const [fundsAvailableAmount, setFundsAvailableAmount] = useState('');
   
   // Step 6 Admission Re-Check
   const [casI20Number, setCasI20Number] = useState('');
@@ -579,8 +728,8 @@ export function AITripPlannerLanding() {
   const [visitPlannedAlready, setVisitPlannedAlready] = useState<'yes' | 'no'>('yes');
   const [visitItineraryUploaded, setVisitItineraryUploaded] = useState(false);
   const [visitSelectedTourPackage, setVisitSelectedTourPackage] = useState<string>('');
-  const [visitFundsVerified, setVisitFundsVerified] = useState(true);
-  const [visitTiesProofChecked, setVisitTiesProofChecked] = useState(true);
+  const [visitFundsVerified, setVisitFundsVerified] = useState(false);
+  const [visitTiesProofChecked, setVisitTiesProofChecked] = useState(false);
 
   // Flow 2: No-Visa Lead Capture Engine States (Fallback for Work / PR)
   const [leadFullName, setLeadFullName] = useState('');
@@ -599,8 +748,11 @@ export function AITripPlannerLanding() {
   const [travelScopeTab, setTravelScopeTab] = useState<'international' | 'domestic'>('international');
 
   // Domestic Travel States (Clean initial state, no dummy prefilled details)
+  const [domesticCountry, setDomesticCountry] = useState('India');
   const [domesticState, setDomesticState] = useState('');
+  const [isDomesticCountryOpen, setIsDomesticCountryOpen] = useState(false);
   const [isDomesticStateOpen, setIsDomesticStateOpen] = useState(false);
+  const domesticCountryRef = useRef<HTMLDivElement>(null);
   const domesticStateRef = useRef<HTMLDivElement>(null);
   const [domesticCity, setDomesticCity] = useState('');
   const [domesticDestination, setDomesticDestination] = useState('');
@@ -629,6 +781,7 @@ export function AITripPlannerLanding() {
   const sopInputRef = useRef<HTMLInputElement>(null);
   const lorInputRef = useRef<HTMLInputElement>(null);
   const ieltsInputRef = useRef<HTMLInputElement>(null);
+  const offerLetterInputRef = useRef<HTMLInputElement>(null);
   const passportInputRef = useRef<HTMLInputElement>(null);
   const bankProofInputRef = useRef<HTMLInputElement>(null);
   const flightTicketInputRef = useRef<HTMLInputElement>(null);

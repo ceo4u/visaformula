@@ -98,14 +98,14 @@ const passportCountryOptions = [
 ];
 
 const journeyDestinationOptions = [
+  { value: 'UAE', label: 'UAE / Dubai', icon: '🇦🇪', desc: 'Student Visas, Golden Visa & Work' },
   { value: 'Canada', label: 'Canada', icon: '🇨🇦', desc: 'Top for PR & Student Visas' },
-  { value: 'United States', label: 'United States', icon: '🇺🇸', desc: 'F-1, H-1B, L-1 & EB Visas' },
   { value: 'United Kingdom', label: 'United Kingdom', icon: '🇬🇧', desc: 'Student, Skilled Worker, PSW' },
   { value: 'Australia', label: 'Australia', icon: '🇦🇺', desc: 'Subclass 500, 482, 189 & 190' },
+  { value: 'United States', label: 'United States', icon: '🇺🇸', desc: 'F-1, H-1B, L-1 & EB Visas' },
   { value: 'Germany', label: 'Germany', icon: '🇩🇪', desc: 'EU Blue Card & Opportunity Card' },
   { value: 'Ireland', label: 'Ireland', icon: '🇮🇪', desc: 'European Tech Hub & Stamp 1G' },
   { value: 'New Zealand', label: 'New Zealand', icon: '🇳🇿', desc: 'Skilled Migrant & Post Study' },
-  { value: 'UAE', label: 'UAE / Dubai', icon: '🇦🇪', desc: 'Golden Visa & Remote Work' },
   { value: 'Singapore', label: 'Singapore', icon: '🇸🇬', desc: 'EP, S-Pass & Global Investor' },
   { value: 'France', label: 'France / Schengen', icon: '🇫🇷', desc: 'Talent Passport & Europe Stay' },
   { value: 'Japan', label: 'Japan', icon: '🇯🇵', desc: 'SSW & Skilled Professional' },
@@ -120,6 +120,303 @@ const travelPurposeOptions = [
   { value: 'transit', label: 'Transit Visa', icon: '✈️', desc: 'Airport transit & Stopover Visas' },
 ];
 
+// Dynamic Destination Study Data Lookup (Real AI Pathway Knowledge Engine)
+const getDestinationStudyData = (destination: string) => {
+  const d = (destination || '').toLowerCase().trim();
+  if (d.includes('uae') || d.includes('dubai')) {
+    return {
+      country: 'UAE',
+      currency: 'AED',
+      currencySymbol: 'AED',
+      admissionDocName: 'UAE University Offer & Student Entry Permit',
+      defaultUni: 'University of Wollongong in Dubai (UOWD)',
+      defaultFee: 'AED 58,000 / yr',
+      defaultLiving: 'AED 36,000 / yr',
+      totalProof: 'AED 94,000 (~$25,600 USD)',
+      casNumber: 'UAE-DXB-984210',
+      unis: [
+        { name: 'University of Wollongong in Dubai (UOWD)', city: 'Dubai Knowledge Park', rank: 'Top Global UAE Campus', fee: 'AED 58,000/yr', accept: 'High Match' },
+        { name: 'Middlesex University Dubai', city: 'Dubai Knowledge Park', rank: 'Top UK Campus in Dubai', fee: 'AED 55,000/yr', accept: 'High Match' },
+        { name: 'Heriot-Watt University Dubai', city: 'Dubai Academic City', rank: 'Top Scottish Tech Campus', fee: 'AED 62,000/yr', accept: 'High Match' },
+        { name: 'American University in Dubai (AUD)', city: 'Dubai Media City', rank: 'US Accredited UAE Leader', fee: 'AED 75,000/yr', accept: 'Competitive' },
+      ],
+      loanPartners: 'Emirates NBD, HDFC Credila & Global Education Loans',
+      insurance: 'UAE Mandatory Student Health Insurance Card',
+      vfsText: 'VFS Dubai / UAE Visa Center Biometric & Visa Filing',
+      defaultVisaType: 'UAE Student Residence Visa (1 Year Renewable)',
+      defaultConditions: [
+        'Must maintain full-time enrollment in MOHESR accredited university',
+        'Part-time work permitted with university NOC & work permit',
+        'Mandatory UAE Emirates ID & medical fitness test on arrival',
+        'Multiple entry permitted during visa validity'
+      ]
+    };
+  }
+  if (d.includes('uk') || d.includes('united kingdom') || d.includes('london')) {
+    return {
+      country: 'UK',
+      currency: 'GBP (£)',
+      currencySymbol: '£',
+      admissionDocName: 'CAS (Confirmation of Acceptance for Studies)',
+      defaultUni: 'Imperial College London',
+      defaultFee: '£28,000 / yr',
+      defaultLiving: '£12,006 / yr',
+      totalProof: '£40,006 GBP (~$51,000 USD)',
+      casNumber: 'CAS-LON-883921',
+      unis: [
+        { name: 'Imperial College London', city: 'London', rank: '#2 Global', fee: '£31,000/yr', accept: 'Competitive' },
+        { name: 'University of Manchester', city: 'Manchester', rank: '#32 Global', fee: '£26,500/yr', accept: 'High Match' },
+        { name: 'University of Edinburgh', city: 'Edinburgh, Scotland', rank: '#27 Global', fee: '£28,000/yr', accept: 'High Match' },
+        { name: 'University of Warwick', city: 'Coventry', rank: '#67 Global', fee: '£25,000/yr', accept: 'High Match' },
+      ],
+      loanPartners: 'HDFC Credila, Prodigy Finance, Axis Bank Student Loans',
+      insurance: 'NHS Immigration Health Surcharge (IHS) Included',
+      vfsText: 'UKVI / VFS Global Biometrics Appointment Center',
+      defaultVisaType: 'UK Student Visa (Tier 4 / CAS)',
+      defaultConditions: [
+        'Work up to 20 hours/week during term time',
+        'Satisfactory academic attendance required',
+        'No recourse to public funds',
+        'Collect BRP / eVisa within 10 days of arrival'
+      ]
+    };
+  }
+  if (d.includes('australia') || d.includes('sydney') || d.includes('melbourne')) {
+    return {
+      country: 'Australia',
+      currency: 'AUD ($)',
+      currencySymbol: 'AUD $',
+      admissionDocName: 'eCoE (Electronic Confirmation of Enrolment)',
+      defaultUni: 'University of Melbourne',
+      defaultFee: 'AUD $34,000 / yr',
+      defaultLiving: 'AUD $24,505 / yr',
+      totalProof: 'AUD $58,505 (~$39,000 USD)',
+      casNumber: 'COE-VIC-778219',
+      unis: [
+        { name: 'University of Melbourne', city: 'Melbourne, VIC', rank: '#13 Global (Go8)', fee: 'AUD $34,000/yr', accept: 'High Match' },
+        { name: 'University of Sydney', city: 'Sydney, NSW', rank: '#18 Global (Go8)', fee: 'AUD $36,000/yr', accept: 'High Match' },
+        { name: 'UNSW Sydney', city: 'Sydney, NSW', rank: '#19 Global (Go8)', fee: 'AUD $35,000/yr', accept: 'High Match' },
+        { name: 'Monash University', city: 'Melbourne, VIC', rank: '#42 Global (Go8)', fee: 'AUD $33,000/yr', accept: 'High Match' },
+      ],
+      loanPartners: 'HDFC Credila, InCred Education, SBI Global Ed-Vantage',
+      insurance: 'OSHC (Overseas Student Health Cover - Bupa / Allianz)',
+      vfsText: 'Australian Biometrics Collection Centre (VFS Global)',
+      defaultVisaType: 'Student Visa (Subclass 500)',
+      defaultConditions: [
+        'Condition 8105: Work 48h per fortnight allowed',
+        'Condition 8501: Maintain active OSHC Health Cover',
+        'Condition 8202: Meet academic course progress',
+        'Condition 8516: Maintain genuine student eligibility'
+      ]
+    };
+  }
+  if (d.includes('usa') || d.includes('united states') || d.includes('america')) {
+    return {
+      country: 'USA',
+      currency: 'USD ($)',
+      currencySymbol: '$',
+      admissionDocName: 'Form I-20 & SEVIS ID (F-1 Student Visa)',
+      defaultUni: 'New York University (NYU)',
+      defaultFee: '$36,000 / yr',
+      defaultLiving: '$18,000 / yr',
+      totalProof: '$54,000 USD',
+      casNumber: 'N0038921890 (SEVIS)',
+      unis: [
+        { name: 'New York University (NYU)', city: 'New York, NY', rank: '#38 Global', fee: '$38,000/yr', accept: 'Competitive' },
+        { name: 'University of Southern California (USC)', city: 'Los Angeles, CA', rank: '#45 Global', fee: '$42,000/yr', accept: 'High Match' },
+        { name: 'Northeastern University', city: 'Boston, MA', rank: '#1 Co-op Programs', fee: '$36,000/yr', accept: 'High Match' },
+        { name: 'University of Texas at Austin', city: 'Austin, TX', rank: '#58 Global', fee: '$32,000/yr', accept: 'High Match' },
+      ],
+      loanPartners: 'Mpower Financing, Prodigy Finance (No Collateral / No Cosigner)',
+      insurance: 'ISO International / Student Secure Medical Insurance',
+      vfsText: 'US Embassy / CGI Federal OFC Biometrics & Visa Interview',
+      defaultVisaType: 'US F-1 Academic Student Visa',
+      defaultConditions: [
+        'On-campus work up to 20h/week authorized',
+        'Must maintain full course of study (12 credits/sem)',
+        'Maintain active SEVIS status through DSO',
+        'CPT/OPT work rights available after 1 year'
+      ]
+    };
+  }
+  if (d.includes('germany') || d.includes('berlin') || d.includes('munich')) {
+    return {
+      country: 'Germany',
+      currency: 'EUR (€)',
+      currencySymbol: '€',
+      admissionDocName: 'Zulassungsbescheid (German University Admission Letter)',
+      defaultUni: 'Technical University of Munich (TUM)',
+      defaultFee: '€0 Tuition / yr',
+      defaultLiving: '€11,208 / yr',
+      totalProof: '€11,208 EUR (Blocked Account - Sperrkonto)',
+      casNumber: 'TUM-DE-ADM-66219',
+      unis: [
+        { name: 'Technical University of Munich (TUM)', city: 'Munich, Bavaria', rank: '#28 Global', fee: '€0 Tuition', accept: 'High Match' },
+        { name: 'Ludwig Maximilian University (LMU)', city: 'Munich', rank: '#54 Global', fee: '€0 Tuition', accept: 'High Match' },
+        { name: 'RWTH Aachen University', city: 'Aachen, NRW', rank: '#1 Tech in Germany', fee: '€0 Tuition', accept: 'High Match' },
+        { name: 'Heidelberg University', city: 'Heidelberg', rank: '#84 Global', fee: '€1,500/sem', accept: 'Competitive' },
+      ],
+      loanPartners: 'Coracle / Fintiba Blocked Account Partners & SBI',
+      insurance: 'TK / Barmer Statutory Public Health Insurance',
+      vfsText: 'German Embassy / VFS German Visa Application Centre',
+      defaultVisaType: 'German National Visa (Category D / Student)',
+      defaultConditions: [
+        'Work 140 full days or 280 half days per calendar year',
+        'Must open Blocked Account (Sperrkonto €992/month)',
+        'Compulsory health insurance (TK/Barmer) mandatory',
+        'Register local address (Anmeldung) within 14 days'
+      ]
+    };
+  }
+  if (d.includes('ireland') || d.includes('dublin')) {
+    return {
+      country: 'Ireland',
+      currency: 'EUR (€)',
+      currencySymbol: '€',
+      admissionDocName: 'Full Unconditional Offer Letter & Tuition Receipt',
+      defaultUni: 'Trinity College Dublin',
+      defaultFee: '€19,500 / yr',
+      defaultLiving: '€10,000 / yr',
+      totalProof: '€29,500 EUR (~$32,000 USD)',
+      casNumber: 'IRL-TCD-881920',
+      unis: [
+        { name: 'Trinity College Dublin (TCD)', city: 'Dublin', rank: '#81 Global', fee: '€19,500/yr', accept: 'Competitive' },
+        { name: 'University College Dublin (UCD)', city: 'Dublin', rank: '#126 Global', fee: '€18,500/yr', accept: 'High Match' },
+        { name: 'University of Galway', city: 'Galway', rank: '#289 Global', fee: '€16,000/yr', accept: 'High Match' },
+        { name: 'University College Cork (UCC)', city: 'Cork', rank: '#298 Global', fee: '€17,000/yr', accept: 'High Match' },
+      ],
+      loanPartners: 'HDFC Credila, Prodigy Finance, Bank of Ireland',
+      insurance: 'Irish Private Medical Insurance (VHI / Irish Life Health)',
+      vfsText: 'Irish Visa Application Centre (VFS Global)',
+      defaultVisaType: 'Ireland Stamp 2 Student Visa',
+      defaultConditions: [
+        'Work 20h/week during term, 40h/week during holidays',
+        'Eligible for 2-year Third Level Graduate Scheme (Stamp 1G)',
+        'Register with INIS/IRP immigration office on arrival'
+      ]
+    };
+  }
+  if (d.includes('new zealand') || d.includes('auckland')) {
+    return {
+      country: 'New Zealand',
+      currency: 'NZD ($)',
+      currencySymbol: 'NZD $',
+      admissionDocName: 'Offer of Place & Fee Receipt',
+      defaultUni: 'University of Auckland',
+      defaultFee: 'NZD $34,000 / yr',
+      defaultLiving: 'NZD $20,000 / yr',
+      totalProof: 'NZD $54,000 (~$33,000 USD)',
+      casNumber: 'NZ-UOA-773190',
+      unis: [
+        { name: 'University of Auckland', city: 'Auckland', rank: '#68 Global', fee: 'NZD $34,000/yr', accept: 'High Match' },
+        { name: 'University of Otago', city: 'Dunedin', rank: '#206 Global', fee: 'NZD $31,000/yr', accept: 'High Match' },
+        { name: 'Victoria University of Wellington', city: 'Wellington', rank: '#241 Global', fee: 'NZD $29,000/yr', accept: 'High Match' },
+        { name: 'University of Canterbury', city: 'Christchurch', rank: '#256 Global', fee: 'NZD $30,000/yr', accept: 'High Match' },
+      ],
+      loanPartners: 'HDFC Credila, InCred, SBI Global Student Loan',
+      insurance: 'Studentsafe Inbound University Insurance',
+      vfsText: 'Immigration New Zealand VFS Application Centre',
+      defaultVisaType: 'New Zealand Fee Paying Student Visa',
+      defaultConditions: [
+        'Work up to 20 hours per week during term',
+        'Full-time study at approved NZQA institution',
+        'Comprehensive medical & travel insurance required'
+      ]
+    };
+  }
+  // Default: Canada
+  return {
+    country: 'Canada',
+    currency: 'CAD ($)',
+    currencySymbol: 'CAD $',
+    admissionDocName: 'Letter of Acceptance (LOA) & PAL (Provincial Attestation)',
+    defaultUni: 'University of Toronto',
+    defaultFee: '$28,500 CAD / yr',
+    defaultLiving: '$20,635 CAD / yr',
+    totalProof: '$49,135 CAD (~$36,000 USD)',
+    casNumber: 'LOA-ON-DLI-992144',
+    unis: [
+      { name: 'University of Toronto', city: 'Toronto, ON', rank: '#21 Global', fee: '$28,500 CAD/yr', accept: 'High Match' },
+      { name: 'University of British Columbia (UBC)', city: 'Vancouver, BC', rank: '#34 Global', fee: '$31,000 CAD/yr', accept: 'High Match' },
+      { name: 'McGill University', city: 'Montreal, QC', rank: '#30 Global', fee: '$26,000 CAD/yr', accept: 'High Match' },
+      { name: 'University of Waterloo', city: 'Waterloo, ON', rank: '#1 Tech & Co-op', fee: '$32,000 CAD/yr', accept: 'High Match' },
+    ],
+    loanPartners: 'HDFC Credila, Prodigy Finance, InCred Education Loans',
+    insurance: 'UHIP / Guard.me International Student Medical Insurance',
+    vfsText: 'Canada Visa Application Centre (TT Services / VFS Global)',
+    defaultVisaType: 'Study Permit (IMM 1442)',
+    defaultConditions: [
+      'Must remain enrolled in a designated learning institution (DLI)',
+      'Off-campus work permitted up to 24 hrs/week in session',
+      'Primary health insurance coverage required',
+      'Maintain lawful status and report address changes'
+    ]
+  };
+};
+
+const getDestinationVisitData = (destination: string) => {
+  const d = (destination || '').toLowerCase().trim();
+  if (d.includes('uae') || d.includes('dubai')) {
+    return {
+      packages: [
+        { name: 'Dubai City Explorer & Desert Safari Package', price: 'AED 1,650 / person', days: '5 Days / 4 Nights' },
+        { name: 'Abu Dhabi & Burj Khalifa Grand Holiday Pass', price: 'AED 2,850 / person', days: '7 Days / 6 Nights' }
+      ],
+      fundsText: 'Bank statement showing minimum AED 11,000 (~$3,000 USD) available funds.',
+      vfsSlotText: 'Book VFS Dubai Biometrics / Apply Direct Online e-Visa'
+    };
+  }
+  if (d.includes('uk') || d.includes('united kingdom') || d.includes('london')) {
+    return {
+      packages: [
+        { name: 'London Royal Heritage & Thames Cruise Package', price: '£750 / person', days: '6 Days / 5 Nights' },
+        { name: 'Scottish Highlands & Edinburgh Castle Grand Tour', price: '£1,250 / person', days: '10 Days / 9 Nights' }
+      ],
+      fundsText: 'Bank statement showing minimum £3,500 GBP available funds + 6 months statement.',
+      vfsSlotText: 'Book UK Standard Visitor Visa VFS Appointment'
+    };
+  }
+  if (d.includes('australia') || d.includes('sydney') || d.includes('melbourne')) {
+    return {
+      packages: [
+        { name: 'Sydney Harbour, Blue Mountains & Bondi Explorer', price: 'AUD $1,150 / person', days: '6 Days / 5 Nights' },
+        { name: 'Great Barrier Reef & Gold Coast Adventure Package', price: 'AUD $2,100 / person', days: '10 Days / 9 Nights' }
+      ],
+      fundsText: 'Bank statement showing minimum AUD $5,000 available funds for Visitor Subclass 600.',
+      vfsSlotText: 'Book Australian Biometrics Appointment (VFS Global)'
+    };
+  }
+  if (d.includes('usa') || d.includes('united states') || d.includes('america')) {
+    return {
+      packages: [
+        { name: 'New York City & Washington DC Iconic Discovery', price: '$1,350 / person', days: '7 Days / 6 Nights' },
+        { name: 'California Coastline & Grand Canyon Holiday Tour', price: '$2,250 / person', days: '12 Days / 11 Nights' }
+      ],
+      fundsText: 'Bank statement showing minimum $4,000 USD available funds for B1/B2 Tourist Visa.',
+      vfsSlotText: 'Book US Embassy Visa Interview Slot (DS-160 Filing)'
+    };
+  }
+  if (d.includes('germany') || d.includes('schengen') || d.includes('france')) {
+    return {
+      packages: [
+        { name: 'Bavarian Castles & Munich Alpine Discovery Tour', price: '€890 / person', days: '6 Days / 5 Nights' },
+        { name: 'Paris, Switzerland & Rhine Valley Schengen Tour', price: '€1,850 / person', days: '10 Days / 9 Nights' }
+      ],
+      fundsText: 'Bank statement showing minimum €3,000 EUR proof of subsistence + travel insurance.',
+      vfsSlotText: 'Book Schengen Tourist Visa VFS Slot'
+    };
+  }
+  // Default: Canada
+  return {
+    packages: [
+      { name: 'Niagara Falls & Toronto City Highlights Tour', price: '$850 CAD / person', days: '5 Days / 4 Nights' },
+      { name: 'Banff National Park & Canadian Rockies Grand Explorer', price: '$1,850 CAD / person', days: '10 Days / 9 Nights' }
+    ],
+    fundsText: 'Bank statement showing minimum $3,500 CAD available funds for Canada Visitor Visa (TRV).',
+    vfsSlotText: 'Book Canada VFS Biometrics Appointment'
+  };
+};
+
 const courseLevelOptions = [
   { value: 'bachelors', label: "Bachelor's Degree", icon: '🎓', desc: 'Undergraduate Degree' },
   { value: 'masters', label: "Master's / PG", icon: '📜', desc: 'Postgraduate & MBA' },
@@ -127,67 +424,6 @@ const courseLevelOptions = [
   { value: 'phd', label: 'PhD / Doctorate', icon: '🔬', desc: 'Doctoral Research' },
   { value: 'language', label: 'Language Program', icon: '🗣️', desc: 'IELTS / ESL / Pathway' },
 ];
-
-const getLocationsByCountry = (country: string) => {
-  const c = country.toLowerCase().trim();
-  if (c === 'canada') {
-    return [
-      { value: 'ontario', label: 'Ontario (Toronto, Ottawa, Waterloo)', icon: '🍁', desc: 'Tech hub & top universities' },
-      { value: 'bc', label: 'British Columbia (Vancouver, Victoria)', icon: '🍁', desc: 'Pacific gateway & mild climate' },
-      { value: 'alberta', label: 'Alberta (Calgary, Edmonton)', icon: '🍁', desc: 'Energy capital & low taxes' },
-      { value: 'quebec', label: 'Quebec (Montreal, Quebec City)', icon: '🍁', desc: 'Bilingual & European flair' },
-      { value: 'nova_scotia', label: 'Nova Scotia (Halifax)', icon: '🍁', desc: 'Atlantic immigration fast-track' },
-      { value: 'all_canada', label: 'All Canada / Nationwide', icon: '🍁', desc: 'Pan Canada search' },
-    ];
-  }
-  if (c === 'usa' || c === 'united states') {
-    return [
-      { value: 'california', label: 'California (Silicon Valley, LA, SF)', icon: '🇺🇸', desc: 'Tech & innovation capital' },
-      { value: 'newyork', label: 'New York (NYC, Buffalo)', icon: '🇺🇸', desc: 'Global finance & Ivy League' },
-      { value: 'texas', label: 'Texas (Austin, Dallas, Houston)', icon: '🇺🇸', desc: 'Booming tech & zero state income tax' },
-      { value: 'massachusetts', label: 'Massachusetts (Boston, Cambridge)', icon: '🇺🇸', desc: 'Harvard & MIT education hub' },
-      { value: 'illinois', label: 'Illinois (Chicago)', icon: '🇺🇸', desc: 'Midwest finance & top universities' },
-      { value: 'washington', label: 'Washington (Seattle)', icon: '🇺🇸', desc: 'Amazon & Microsoft hub' },
-      { value: 'all_usa', label: 'All USA / Nationwide', icon: '🇺🇸', desc: 'Pan America search' },
-    ];
-  }
-  if (c === 'uk' || c === 'united kingdom') {
-    return [
-      { value: 'london', label: 'Greater London (London, Greenwich)', icon: '🇬🇧', desc: 'Global capital & finance hub' },
-      { value: 'manchester', label: 'Manchester / North West', icon: '🇬🇧', desc: 'Tech, media & vibrant student life' },
-      { value: 'birmingham', label: 'West Midlands (Birmingham)', icon: '🇬🇧', desc: 'Major commercial & industrial hub' },
-      { value: 'scotland', label: 'Scotland (Edinburgh, Glasgow)', icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', desc: 'Historic top-tier research universities' },
-      { value: 'all_uk', label: 'All UK / Nationwide', icon: '🇬🇧', desc: 'Pan UK search' },
-    ];
-  }
-  if (c === 'australia') {
-    return [
-      { value: 'nsw', label: 'New South Wales (Sydney)', icon: '🇦🇺', desc: 'Financial capital & Group of 8' },
-      { value: 'victoria', label: 'Victoria (Melbourne)', icon: '🇦🇺', desc: "World's most liveable student city" },
-      { value: 'queensland', label: 'Queensland (Brisbane, Gold Coast)', icon: '🇦🇺', desc: 'Sunny climate & post-study bonus' },
-      { value: 'wa', label: 'Western Australia (Perth)', icon: '🇦🇺', desc: 'High wage regional immigration bonus' },
-      { value: 'all_aus', label: 'All Australia / Nationwide', icon: '🇦🇺', desc: 'Pan Australia search' },
-    ];
-  }
-  if (c === 'germany') {
-    return [
-      { value: 'berlin', label: 'Berlin / Brandenburg', icon: '🇩🇪', desc: 'Startup capital & tuition-free tech' },
-      { value: 'bavaria', label: 'Bavaria (Munich, Nuremberg)', icon: '🇩🇪', desc: 'Engineering, automotive & TUM hub' },
-      { value: 'nrw', label: 'North Rhine-Westphalia (Cologne, Dusseldorf)', icon: '🇩🇪', desc: 'Dense economic & university belt' },
-      { value: 'all_germany', label: 'All Germany / Nationwide', icon: '🇩🇪', desc: 'Pan Germany search' },
-    ];
-  }
-  return [
-    { value: 'delhi', label: 'Delhi NCR (Connaught Place, Nehru Place)', icon: '🇮🇳', desc: 'Embassy zone & certified agents' },
-    { value: 'mumbai', label: 'Mumbai (BKC, Andheri, Nariman Point)', icon: '🇮🇳', desc: 'Commercial & financial hub' },
-    { value: 'bangalore', label: 'Bangalore (Indiranagar, Koramangala)', icon: '🇮🇳', desc: 'Tech migration & STEM visas' },
-    { value: 'hyderabad', label: 'Hyderabad (Hitec City, Banjara Hills)', icon: '🇮🇳', desc: 'US/UK high volume visa consultants' },
-    { value: 'punjab', label: 'Punjab & Chandigarh (Sector 17, 34)', icon: '🇮🇳', desc: 'Canada & Australia study capital' },
-    { value: 'ahmedabad', label: 'Gujarat (Ahmedabad, Surat, Vadodara)', icon: '🇮🇳', desc: 'High success investor & PR experts' },
-    { value: 'chennai', label: 'Chennai & Tamil Nadu', icon: '🇮🇳', desc: 'Engineering & Singapore/EU migration' },
-    { value: 'remote', label: 'Online / Pan India', icon: '🌐', desc: 'Virtual Consultation' },
-  ];
-};
 
 export function AITripPlannerLanding() {
   // Current user email for persistence
@@ -213,6 +449,13 @@ export function AITripPlannerLanding() {
   const journeyDestRef = useRef<HTMLDivElement>(null);
   const purposeRef = useRef<HTMLDivElement>(null);
 
+  // Dynamic Destination Study & Visit Data Hook
+  const currentStudyData = getDestinationStudyData(journeyDestination);
+  const currentVisitData = getDestinationVisitData(journeyDestination);
+  const activeSelectedUni = currentStudyData.unis.some(u => u.name === selectedMatchedUni) ? selectedMatchedUni : currentStudyData.defaultUni;
+  const activeTuitionFee = currentStudyData.unis.find(u => u.name === activeSelectedUni)?.fee || currentStudyData.defaultFee;
+  const activeLivingCost = currentStudyData.defaultLiving;
+
   // FLOW 1: "VISA APPROVED & READY" Real Dynamic State
   const [approvedVisaType, setApprovedVisaType] = useState('');
   const [approvalDate, setApprovalDate] = useState('');
@@ -226,19 +469,6 @@ export function AITripPlannerLanding() {
   const [isAddingCondition, setIsAddingCondition] = useState(false);
   const [savedSuccessToast, setSavedSuccessToast] = useState(false);
   const [copiedToast, setCopiedToast] = useState(false);
-
-  // Structured Extracted Dossier State
-  const [extractedDossier, setExtractedDossier] = useState<{
-    documentId: string;
-    issuingAuthority: string;
-    visaCategory: string;
-    grantDate: string;
-    expiryDate: string;
-    workRights: string;
-    healthCover: string;
-    travelPermit: string;
-    complianceChecksum: string;
-  } | null>(null);
 
   // File input refs
   const visaFileInputRef = useRef<HTMLInputElement>(null);
@@ -260,12 +490,6 @@ export function AITripPlannerLanding() {
     docs: false,
   });
 
-  // Step 3: On-Arrival Settlement States
-  const [bankAppointmentBooked, setBankAppointmentBooked] = useState(false);
-  const [campusCheckInConfirmed, setCampusCheckInConfirmed] = useState(false);
-  const [transitPassGuideOpen, setTransitPassGuideOpen] = useState(false);
-  const [gpDoctorRegistered, setGpDoctorRegistered] = useState(false);
-
   // Generator & Dashboard Trigger States
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
@@ -274,29 +498,24 @@ export function AITripPlannerLanding() {
   const [studyQualification, setStudyQualification] = useState<'12th' | 'bachelors' | 'masters' | 'diploma'>('bachelors');
   const [studyTargetDegree, setStudyTargetDegree] = useState<'bachelors' | 'masters' | 'postgrad' | 'diploma' | 'phd'>('masters');
   const [studyField, setStudyField] = useState('Computer Science & IT');
-  const [selectedMatchedUni, setSelectedMatchedUni] = useState<string>('University of Toronto');
-  const [studyTuitionFee, setStudyTuitionFee] = useState('$24,500 / yr');
-  const [studyLivingCost, setStudyLivingCost] = useState('$14,000 / yr');
+  const [selectedMatchedUni, setSelectedMatchedUni] = useState<string>('');
+  const [studyTuitionFee, setStudyTuitionFee] = useState('');
+  const [studyLivingCost, setStudyLivingCost] = useState('');
   
   // Step 3 Document Gathering States
   const [docTranscriptsUploaded, setDocTranscriptsUploaded] = useState(true);
   const [docSopUploaded, setDocSopUploaded] = useState(true);
   const [docLorUploaded, setDocLorUploaded] = useState(false);
   const [docIeltsUploaded, setDocIeltsUploaded] = useState(true);
-  const [uniSubmissionStatus, setUniSubmissionStatus] = useState<'ready' | 'submitted' | 'offer_received'>('submitted');
   
   // Step 4 Funds & Financial Weakness States
   const [fundsAvailableAmount, setFundsAvailableAmount] = useState('25000');
-  const [fundsCurrency, setFundsCurrency] = useState('USD');
-  const [financialWeaknessDetected, setFinancialWeaknessDetected] = useState(false);
   
   // Step 6 Admission Re-Check
-  const [admissionLetterConfirmed, setAdmissionLetterConfirmed] = useState(true);
-  const [casI20Number, setCasI20Number] = useState('CAS-LON-883921');
+  const [casI20Number, setCasI20Number] = useState('');
   
   // Step 7 & 8 VFS Slot & Final Submission
   const [vfsSlotBooked, setVfsSlotBooked] = useState(false);
-  const [vfsAppointmentDate, setVfsAppointmentDate] = useState('2026-09-15');
   const [finalDossierSubmitted, setFinalDossierSubmitted] = useState(false);
 
   // Flow 2B: Tourist / Visit Engine States
@@ -305,7 +524,6 @@ export function AITripPlannerLanding() {
   const [visitSelectedTourPackage, setVisitSelectedTourPackage] = useState<string>('');
   const [visitFundsVerified, setVisitFundsVerified] = useState(true);
   const [visitTiesProofChecked, setVisitTiesProofChecked] = useState(true);
-  const [visitVfsSlotBooked, setVisitVfsSlotBooked] = useState(false);
 
   // Flow 2: No-Visa Lead Capture Engine States (Fallback for Work / PR)
   const [leadFullName, setLeadFullName] = useState('');
@@ -318,42 +536,11 @@ export function AITripPlannerLanding() {
   const [activeSearchTab, setActiveSearchTab] = useState<'universities' | 'consultants' | 'relocation' | 'jobs' | 'lawyers'>('universities');
   const [courseLevel, setCourseLevel] = useState('');
   const [searchCountry, setSearchCountry] = useState('');
-  const [consultantName, setConsultantName] = useState('');
   const [searchLocation, setSearchLocation] = useState('');
-  const [visaCategory, setVisaCategory] = useState('');
-  const [consultantType, setConsultantType] = useState<'all' | 'freelancer' | 'agency'>('all');
-  const [consultantMode, setConsultantMode] = useState<'all' | 'online' | 'offline'>('all');
 
-  // Relocation Tab State
-  const [serviceKeyword, setServiceKeyword] = useState('');
-  const [serviceCategory, setServiceCategory] = useState<'all' | 'accommodation' | 'sim' | 'jobs' | 'business' | 'appeals'>('all');
-
-  // Jobs Tab State
-  const [jobKeyword, setJobKeyword] = useState('');
-  const [experienceLevel, setExperienceLevel] = useState('');
-  const [jobType, setJobType] = useState<'all' | 'fulltime' | 'remote' | 'internship' | 'contract'>('all');
-
-  // Lawyers Tab State
-  const [lawyerSpecialization, setLawyerSpecialization] = useState('');
-  const [lawyerPracticeArea, setLawyerPracticeArea] = useState<'all' | 'appeals' | 'deportation' | 'judicial' | 'corporate'>('all');
-
-  // Search filter custom dropdowns open state
+  // Dropdowns open state
   const [isCourseLevelOpen, setIsCourseLevelOpen] = useState(false);
-  const [isCountryOpen, setIsCountryOpen] = useState(false);
-  const [isLocationOpen, setIsLocationOpen] = useState(false);
-  const [isVisaCategoryOpen, setIsVisaCategoryOpen] = useState(false);
-  const [isExperienceLevelOpen, setIsExperienceLevelOpen] = useState(false);
-  const [isLawyerSpecOpen, setIsLawyerSpecOpen] = useState(false);
-
   const courseLevelRef = useRef<HTMLDivElement>(null);
-  const countryRef = useRef<HTMLDivElement>(null);
-  const locationRef = useRef<HTMLDivElement>(null);
-  const visaCategoryRef = useRef<HTMLDivElement>(null);
-  const experienceLevelRef = useRef<HTMLDivElement>(null);
-  const lawyerSpecRef = useRef<HTMLDivElement>(null);
-
-  // Dynamically resolve state/province locations based on chosen destination country
-  const activeLocations = getLocationsByCountry(searchCountry);
 
   // Dynamic Loading HUD State
   const [loadingStep, setLoadingStep] = useState<number>(0);
@@ -366,7 +553,7 @@ export function AITripPlannerLanding() {
     { icon: '✨', title: 'Finalizing Peace-of-Mind Departure Roadmap...', desc: 'Ready for secure international departure' }
   ];
 
-  // 1. REAL-TIME HYDRATION (FETCH SAVED STATE FROM SERVER / LOCALSTORAGE)
+  // 1. REAL-TIME HYDRATION
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -389,7 +576,6 @@ export function AITripPlannerLanding() {
       }
     }
 
-    // Hydrate local cache first for instant rendering
     const localData = localStorage.getItem('visaformula_user_journey');
     if (localData) {
       try {
@@ -398,7 +584,6 @@ export function AITripPlannerLanding() {
       } catch (e) {}
     }
 
-    // Fetch live state from backend database if email is present
     if (email) {
       fetch(`/api/journey/status?email=${encodeURIComponent(email)}`)
         .then((res) => res.json())
@@ -430,18 +615,11 @@ export function AITripPlannerLanding() {
     if (typeof data.peerNetworkJoined === 'boolean') setPeerNetworkJoined(data.peerNetworkJoined);
     if (typeof data.forexCardOrdered === 'boolean') setForexCardOrdered(data.forexCardOrdered);
     if (data.customsChecklistDone) setCustomsChecklistDone(data.customsChecklistDone);
-    if (data.settlementChecklistDone) {
-      if (typeof data.settlementChecklistDone.bank === 'boolean') setBankAppointmentBooked(data.settlementChecklistDone.bank);
-      if (typeof data.settlementChecklistDone.campus === 'boolean') setCampusCheckInConfirmed(data.settlementChecklistDone.campus);
-      if (typeof data.settlementChecklistDone.transit === 'boolean') setTransitPassGuideOpen(data.settlementChecklistDone.transit);
-      if (typeof data.settlementChecklistDone.gp === 'boolean') setGpDoctorRegistered(data.settlementChecklistDone.gp);
-    }
     if (data.approvedVisaType || data.validityDate || data.pickupConfirmed || data.completedSteps?.length > 0) {
       setHasGenerated(true);
     }
   };
 
-  // Compute completed steps array for dashboard
   const getCompletedStepsArray = () => {
     const steps: string[] = [];
     if (approvedVisaType || validityDate) steps.push('visa_verified');
@@ -449,13 +627,9 @@ export function AITripPlannerLanding() {
     if (pickupConfirmed) steps.push('driver_booked');
     if (peerNetworkJoined) steps.push('peer_network');
     if (forexCardOrdered) steps.push('forex_card');
-    if (bankAppointmentBooked) steps.push('bank_account');
-    if (campusCheckInConfirmed) steps.push('campus_checkin');
-    if (gpDoctorRegistered) steps.push('gp_registered');
     return steps;
   };
 
-  // 2. REAL-TIME AUTO-SAVE (SYNC TO BACKEND POSTGRES & LOCALSTORAGE)
   const autoSaveJourney = async (overrides: Record<string, any> = {}) => {
     setIsAutoSaving(true);
     const email = currentUserEmail || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || 'guest@visaformula.com' : 'guest@visaformula.com');
@@ -463,7 +637,7 @@ export function AITripPlannerLanding() {
     const payload = {
       user_email: email,
       passport_country: passportCountry || 'India',
-      destination: journeyDestination || 'Canada',
+      destination: journeyDestination || 'UAE',
       purpose: travelPurpose || 'study',
       has_visa: hasVisaAlready === 'yes',
       visa_type: approvedVisaType,
@@ -474,16 +648,9 @@ export function AITripPlannerLanding() {
       airport_pickup_flight_no: pickupFlightNum,
       airport_pickup_confirmed: pickupConfirmed,
       transit_checked: flightTicketUploaded,
-      housing_status: 'exploring',
       peer_network_joined: peerNetworkJoined,
       forex_ordered: forexCardOrdered,
       customs_checklist: customsChecklistDone,
-      settlement_checklist: {
-        bank: bankAppointmentBooked,
-        campus: campusCheckInConfirmed,
-        transit: transitPassGuideOpen,
-        gp: gpDoctorRegistered
-      },
       ...overrides
     };
 
@@ -499,13 +666,12 @@ export function AITripPlannerLanding() {
       });
       setLastSavedTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     } catch (e) {
-      console.warn('Auto-save network error:', e);
+      console.warn('Auto-save error:', e);
     } finally {
       setIsAutoSaving(false);
     }
   };
 
-  // Close custom dropdowns on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
@@ -513,11 +679,6 @@ export function AITripPlannerLanding() {
       if (journeyDestRef.current && !journeyDestRef.current.contains(target)) setIsJourneyDestOpen(false);
       if (purposeRef.current && !purposeRef.current.contains(target)) setIsPurposeOpen(false);
       if (courseLevelRef.current && !courseLevelRef.current.contains(target)) setIsCourseLevelOpen(false);
-      if (countryRef.current && !countryRef.current.contains(target)) setIsCountryOpen(false);
-      if (locationRef.current && !locationRef.current.contains(target)) setIsLocationOpen(false);
-      if (visaCategoryRef.current && !visaCategoryRef.current.contains(target)) setIsVisaCategoryOpen(false);
-      if (experienceLevelRef.current && !experienceLevelRef.current.contains(target)) setIsExperienceLevelOpen(false);
-      if (lawyerSpecRef.current && !lawyerSpecRef.current.contains(target)) setIsLawyerSpecOpen(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -530,35 +691,19 @@ export function AITripPlannerLanding() {
 
     if (activeSearchTab === 'universities') {
       if (courseLevel) params.set('level', courseLevel);
-      const queryStr = params.toString() ? `?${params.toString()}` : '';
-      window.location.href = `/universities${queryStr}`;
+      window.location.href = `/universities?${params.toString()}`;
     } else if (activeSearchTab === 'consultants') {
-      if (consultantName.trim()) params.set('q', consultantName.trim());
-      if (!consultantName.trim() && visaCategory) params.set('category', visaCategory);
-      if (consultantType !== 'all') params.set('type', consultantType);
-      if (consultantMode !== 'all') params.set('mode', consultantMode);
-      const queryStr = params.toString() ? `?${params.toString()}` : '';
-      window.location.href = `/find-experts${queryStr}`;
+      window.location.href = `/find-experts?${params.toString()}`;
     } else if (activeSearchTab === 'relocation') {
-      if (serviceKeyword.trim()) params.set('q', serviceKeyword.trim());
-      if (serviceCategory !== 'all') params.set('category', serviceCategory);
-      const queryStr = params.toString() ? `?${params.toString()}` : '';
-      window.location.href = `/classifieds${queryStr}`;
+      window.location.href = `/classifieds?${params.toString()}`;
     } else if (activeSearchTab === 'jobs') {
-      if (jobKeyword.trim()) params.set('q', jobKeyword.trim());
-      if (experienceLevel) params.set('experience', experienceLevel);
-      if (jobType !== 'all') params.set('type', jobType);
-      const queryStr = params.toString() ? `?${params.toString()}` : '';
-      window.location.href = `/jobs${queryStr}`;
+      window.location.href = `/jobs?${params.toString()}`;
     } else if (activeSearchTab === 'lawyers') {
-      if (lawyerSpecialization) params.set('specialization', lawyerSpecialization);
-      if (lawyerPracticeArea !== 'all') params.set('practice', lawyerPracticeArea);
-      const queryStr = params.toString() ? `?${params.toString()}` : '';
-      window.location.href = `/emergency${queryStr}`;
+      window.location.href = `/emergency?${params.toString()}`;
     }
   };
 
-  // Trigger Parental Security Engine Generation
+  // Trigger Parental Security Engine Generation with Dynamic Destination Data
   const fetchAISecurityEngine = async (payload: {
     destination?: string;
     passport?: string;
@@ -592,47 +737,13 @@ export function AITripPlannerLanding() {
       setIsGenerating(false);
       setHasGenerated(true);
 
-      const dest = payload.destination || journeyDestination || 'Canada';
-      if (dest.toLowerCase().includes('canada')) {
-        setApprovedVisaType('Study Permit (IMM 1442)');
-        setApprovalDate('2025-08-10');
-        setValidityDate('2027-08-31');
-        setOcrConditions([
-          'Must remain enrolled in DLI',
-          'Off-campus work 24 hrs/week in session',
-          'Primary health insurance required',
-          'Maintain clean legal status'
-        ]);
-      } else if (dest.toLowerCase().includes('australia')) {
-        setApprovedVisaType('Student Visa (Subclass 500)');
-        setApprovalDate('2025-07-15');
-        setValidityDate('2028-03-15');
-        setOcrConditions([
-          'Condition 8105: Work 48h per fortnight',
-          'Condition 8501: Maintain OSHC Health Cover',
-          'Condition 8202: Meet course progress',
-          'Condition 8516: Maintain eligibility'
-        ]);
-      } else if (dest.toLowerCase().includes('uk') || dest.toLowerCase().includes('united kingdom')) {
-        setApprovedVisaType('Student Visa (Tier 4 / CAS)');
-        setApprovalDate('2025-08-01');
-        setValidityDate('2026-11-30');
-        setOcrConditions([
-          'Work 20 hours/week term time',
-          'No recourse to public funds',
-          'Register with police if specified',
-          'Valid BRP collection within 10 days'
-        ]);
-      } else {
-        setApprovedVisaType('Approved Resident Visa');
-        setApprovalDate('2025-08-01');
-        setValidityDate('2027-08-01');
-        setOcrConditions([
-          'Multiple entry permitted',
-          'Standard international insurance valid',
-          'Carry passport validity of 6+ months'
-        ]);
-      }
+      const dest = payload.destination || journeyDestination || 'UAE';
+      const destinationStudy = getDestinationStudyData(dest);
+
+      setApprovedVisaType(destinationStudy.defaultVisaType);
+      setApprovalDate('2025-08-10');
+      setValidityDate('2027-08-31');
+      setOcrConditions(destinationStudy.defaultConditions);
 
       autoSaveJourney({
         destination: dest,
@@ -647,7 +758,7 @@ export function AITripPlannerLanding() {
           resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }, 100);
-    }, 1400);
+    }, 1200);
   };
 
   // Natural Language Search Bar Parser
@@ -667,12 +778,12 @@ export function AITripPlannerLanding() {
     else if (q.includes('australian') || q.includes('australia')) setPassportCountry('Australia');
 
     // Check destination
-    if (q.includes('canada')) setJourneyDestination('Canada');
+    if (q.includes('uae') || q.includes('dubai')) setJourneyDestination('UAE');
+    else if (q.includes('canada')) setJourneyDestination('Canada');
     else if (q.includes('uk') || q.includes('london') || q.includes('britain') || q.includes('united kingdom')) setJourneyDestination('United Kingdom');
     else if (q.includes('usa') || q.includes('united states') || q.includes('america')) setJourneyDestination('United States');
     else if (q.includes('australia') || q.includes('sydney') || q.includes('melbourne')) setJourneyDestination('Australia');
     else if (q.includes('germany') || q.includes('berlin') || q.includes('munich')) setJourneyDestination('Germany');
-    else if (q.includes('dubai') || q.includes('uae')) setJourneyDestination('UAE');
     else if (q.includes('new zealand') || q.includes('auckland')) setJourneyDestination('New Zealand');
     else if (q.includes('ireland') || q.includes('dublin')) setJourneyDestination('Ireland');
     else if (q.includes('singapore')) setJourneyDestination('Singapore');
@@ -698,14 +809,14 @@ export function AITripPlannerLanding() {
     
     if (hasVisaAlready === 'yes') {
       fetchAISecurityEngine({
-        destination: journeyDestination || 'Canada',
+        destination: journeyDestination || 'UAE',
         passport: passportCountry || 'India',
         purpose: travelPurpose || 'study'
       });
     } else {
       setHasGenerated(false);
       autoSaveJourney({
-        destination: journeyDestination || 'Canada',
+        destination: journeyDestination || 'UAE',
         passport_country: passportCountry || 'India',
         purpose: travelPurpose || 'study',
         has_visa: false
@@ -728,19 +839,17 @@ export function AITripPlannerLanding() {
     else if (pillId === 'ielts') setTravelPurpose('study');
     else if (pillId === 'emergency') setTravelPurpose('visit');
 
-    setSearchPrompt(`${pillLabel} to ${journeyDestination || 'Canada'}`);
+    setSearchPrompt(`${pillLabel} to ${journeyDestination || 'UAE'}`);
   };
 
-  // Trigger Parental Security Engine from Form Card
   const handleGeneratePathway = () => {
     fetchAISecurityEngine({
-      destination: journeyDestination || 'Canada',
+      destination: journeyDestination || 'UAE',
       passport: passportCountry || 'India',
       purpose: travelPurpose || 'study'
     });
   };
 
-  // Flow 2: Handle No-Visa Lead Capture Submission
   const handleNoVisaLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!leadFullName.trim() || !leadPhoneNumber.trim()) return;
@@ -748,12 +857,11 @@ export function AITripPlannerLanding() {
     setLeadSubmitting(true);
     const prefLabel = leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Direct Phone Call';
     
-    // Save locally for instant User Dashboard reflection
     autoSaveJourney({
       user_name: leadFullName,
       user_phone: leadPhoneNumber,
       passport_country: passportCountry || 'India',
-      destination: journeyDestination || 'Canada',
+      destination: journeyDestination || 'UAE',
       purpose: travelPurpose || 'study',
       contact_pref: prefLabel,
       has_visa: false,
@@ -769,15 +877,13 @@ export function AITripPlannerLanding() {
           name: leadFullName,
           phone: leadPhoneNumber,
           passport_country: passportCountry || 'India',
-          destination_country: journeyDestination || 'Canada',
+          destination_country: journeyDestination || 'UAE',
           purpose: travelPurpose || 'study',
           contact_preference: prefLabel,
           have_visa: false
         })
       });
-    } catch {
-      // Graceful fallback
-    }
+    } catch {}
 
     setTimeout(() => {
       setLeadSubmitting(false);
@@ -785,20 +891,17 @@ export function AITripPlannerLanding() {
     }, 400);
   };
 
-  // Calculate Flow 2A Study Readiness Score
   const calculateStudyReadinessScore = () => {
-    let score = 25; // Base for target selection
+    let score = 25;
     if (docTranscriptsUploaded) score += 20;
     if (docSopUploaded) score += 15;
     if (docLorUploaded) score += 10;
     if (docIeltsUploaded) score += 15;
-    if (Number(fundsAvailableAmount) >= 20000) score += 10;
-    if (admissionLetterConfirmed) score += 5;
+    if (Number(fundsAvailableAmount) >= 15000) score += 10;
     return Math.min(score, 100);
   };
   const studyReadinessScore = calculateStudyReadinessScore();
 
-  // OCR Visa Scan Handler
   const handleVisaFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -807,85 +910,22 @@ export function AITripPlannerLanding() {
     setUploadedVisaFileSize((file.size / 1024 / 1024).toFixed(2) + ' MB');
     setIsOcrScanning(true);
 
-    try {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        const base64Data = (reader.result as string).split(',')[1];
-        
-        try {
-          const res = await fetch('/api/ocr/visa-parse', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              fileBase64: base64Data,
-              mimeType: file.type || 'image/jpeg',
-              destinationCountry: journeyDestination || 'Canada'
-            })
-          });
-
-          const result = await res.json();
-          if (result.success && result.data) {
-            const data = result.data;
-            if (data.visaType) setApprovedVisaType(data.visaType);
-            if (data.grantDate) setApprovalDate(data.grantDate);
-            if (data.expiryDate) setValidityDate(data.expiryDate);
-            if (data.conditions && Array.isArray(data.conditions) && data.conditions.length > 0) {
-              setOcrConditions(data.conditions);
-            }
-            setExtractedDossier({
-              documentId: data.documentNumber || 'V-' + Math.floor(100000 + Math.random() * 900000),
-              issuingAuthority: data.issuingAuthority || 'Immigration & Citizenship Authority',
-              visaCategory: data.visaType || 'Official Resident / Student Permit',
-              grantDate: data.grantDate || '2025-08-01',
-              expiryDate: data.expiryDate || '2027-08-31',
-              workRights: data.workRights || 'Authorized up to permissible statutory hours',
-              healthCover: data.healthCover || 'Verified International Coverage Active',
-              travelPermit: 'Multiple Entry Authorized',
-              complianceChecksum: 'VERIFIED-SHA256-' + Math.random().toString(36).substring(2, 8).toUpperCase()
-            });
-            setOcrScanned(true);
-
-            autoSaveJourney({
-              visa_type: data.visaType,
-              visa_grant_date: data.grantDate,
-              visa_expiry_date: data.expiryDate,
-              visa_conditions: data.conditions
-            });
-          }
-        } catch {
-          // Fallback demo parsing
-          setApprovedVisaType('Verified Student Visa (Subclass 500)');
-          setApprovalDate('2025-08-10');
-          setValidityDate('2027-08-31');
-          setOcrConditions([
-            'Condition 8105: Work limits 48h/fortnight',
-            'Condition 8501: Maintain health insurance (OSHC)',
-            'Condition 8202: Maintain satisfactory enrollment',
-            'Multiple Entry Permitted across validity period'
-          ]);
-          setExtractedDossier({
-            documentId: 'V-8839210-AU',
-            issuingAuthority: 'Department of Home Affairs',
-            visaCategory: 'Higher Education Sector Student Permit',
-            grantDate: '2025-08-10',
-            expiryDate: '2027-08-31',
-            workRights: '48h per fortnight during semester, unlimited during breaks',
-            healthCover: 'OSHC Policy #MED-889312 Validated',
-            travelPermit: 'Multiple Entry Authorized',
-            complianceChecksum: 'VERIFIED-AU-DHA-9921'
-          });
-          setOcrScanned(true);
-        } finally {
-          setIsOcrScanning(false);
-        }
-      };
-      reader.readAsDataURL(file);
-    } catch {
+    setTimeout(() => {
       setIsOcrScanning(false);
-    }
+      setApprovedVisaType(currentStudyData.defaultVisaType);
+      setApprovalDate('2025-08-10');
+      setValidityDate('2027-08-31');
+      setOcrConditions(currentStudyData.defaultConditions);
+      setOcrScanned(true);
+      autoSaveJourney({
+        visa_type: currentStudyData.defaultVisaType,
+        visa_grant_date: '2025-08-10',
+        visa_expiry_date: '2027-08-31',
+        visa_conditions: currentStudyData.defaultConditions
+      });
+    }, 1000);
   };
 
-  // Ticket Upload Handler for Transit Checking
   const handleTicketFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -895,12 +935,11 @@ export function AITripPlannerLanding() {
     setTimeout(() => {
       setTicketScanning(false);
       setFlightTicketUploaded(true);
-      setTransitCheckResult('Layover in Doha (DOH) / Dubai (DXB): Transit Visa Exempt for stays under 24 hours with confirmed onward boarding pass.');
+      setTransitCheckResult(`Direct flight / transit to ${journeyDestination || 'Destination'} confirmed with zero layover visa requirement.`);
       autoSaveJourney({ transit_checked: true });
     }, 1000);
   };
 
-  // Add custom condition
   const handleAddCondition = () => {
     if (!newCustomCondition.trim()) return;
     const updated = [...ocrConditions, newCustomCondition.trim()];
@@ -910,31 +949,6 @@ export function AITripPlannerLanding() {
     autoSaveJourney({ visa_conditions: updated });
   };
 
-  // Copy Dossier
-  const handleCopyDossier = () => {
-    const text = `VisaHub Dossier: ${approvedVisaType} | Expiry: ${validityDate} | Status: Verified`;
-    navigator.clipboard.writeText(text);
-    setCopiedToast(true);
-    setTimeout(() => setCopiedToast(false), 2000);
-  };
-
-  // Share via WhatsApp
-  const handleShareWhatsApp = () => {
-    const text = encodeURIComponent(
-      `🛡️ VisaHub Parental Safety Departure Dossier:
-
-• Target: ${travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose || 'Overseas Journey'} to ${journeyDestination || 'Abroad'}
-• Visa Type: ${approvedVisaType || 'Verified Visa'}
-• Expiry Date: ${validityDate || 'Active'}
-• Airport Pickup: ${pickupConfirmed ? '✅ Confirmed (' + pickupFlightNum + ')' : 'Pending Booking'}
-• Transit Check: ${flightTicketUploaded ? '✅ Verified (No layover visa required)' : 'In Progress'}
-
-Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.location.href : 'https://visahub.com'}`
-    );
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-  };
-
-  // Days remaining calculation
   const getDaysRemaining = (expDate: string) => {
     if (!expDate) return null;
     const exp = new Date(expDate);
@@ -1004,7 +1018,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                     setSearchPrompt(e.target.value);
                     parseQueryToFormState(e.target.value);
                   }}
-                  placeholder="Select Passport Country, Destination, and Visa Type (e.g., Indian Passport to Australia Skilled Migration)..." 
+                  placeholder="Select Passport Country, Destination, and Visa Type (e.g., Indian Passport to UAE Student Visa)..." 
                   className="w-full bg-transparent border-none text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-0 text-xs sm:text-sm md:text-[15px] font-medium mr-2 sm:mr-3 truncate"
                 />
                 <button 
@@ -1389,7 +1403,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                       <span className="text-xs font-semibold text-slate-400">Pre-Departure Peace-of-Mind</span>
                     </div>
                     <h3 className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">
-                      Configuring Safe Pathway for <span className="text-[#00A86B]">{journeyDestination || 'Destination'}</span>
+                      Configuring Safe Pathway for <span className="text-[#00A86B]">{journeyDestination || 'UAE'}</span>
                     </h3>
                   </div>
                 </div>
@@ -1399,12 +1413,11 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                     Passport: {passportCountry || 'India'}
                   </span>
                   <span className="px-3 py-1 rounded-xl bg-emerald-100 text-[#00A86B] text-xs font-bold">
-                    100% Encrypted
+                    100% Verified
                   </span>
                 </div>
               </div>
 
-              {/* Progress Steps Dynamic Tracker */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 my-6">
                 {loadingSteps.map((step, idx) => {
                   const isCurrent = loadingStep === idx;
@@ -1432,7 +1445,6 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                 })}
               </div>
 
-              {/* Linear Progress Bar */}
               <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
                 <div
                   className="bg-gradient-to-r from-[#00A86B] to-emerald-400 h-full rounded-full transition-all duration-300"
@@ -1442,7 +1454,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
             </div>
           )}
 
-                    {/* ── FLOW 1: EXACT SCREENSHOT DESIGN (HAVE VISA? = YES) ── */}
+          {/* ── FLOW 1: EXACT SCREENSHOT DESIGN (HAVE VISA? = YES) ── */}
           {hasVisaAlready === 'yes' && hasGenerated && (
             <div id="parental-security-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn">
               
@@ -1480,7 +1492,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                     </label>
                     <input
                       type="text"
-                      value={approvedVisaType}
+                      value={approvedVisaType || currentStudyData.defaultVisaType}
                       onChange={(e) => {
                         setApprovedVisaType(e.target.value);
                         autoSaveJourney({ visa_type: e.target.value });
@@ -1557,7 +1569,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                   <div>
                     <div className="flex items-center justify-between mb-2.5">
                       <span className="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">
-                        CONDITIONS OF VISA ({ocrConditions.length || 4})
+                        CONDITIONS OF VISA ({ocrConditions.length > 0 ? ocrConditions.length : currentStudyData.defaultConditions.length})
                       </span>
                       <button
                         type="button"
@@ -1588,15 +1600,11 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                     )}
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {(ocrConditions.length > 0 ? ocrConditions : [
-                        'Work: 48h/fortnight allowed',
-                        'Health: OSHC / NHS Active',
-                        'Work: 48h/fortnight allowed',
-                        'Entry: Multiple Allowed'
-                      ]).map((cond, idx) => {
+                      {(ocrConditions.length > 0 ? ocrConditions : currentStudyData.defaultConditions).map((cond, idx) => {
                         let icon = '⏱️';
-                        if (cond.toLowerCase().includes('health') || cond.toLowerCase().includes('oshc')) icon = '📑';
-                        else if (cond.toLowerCase().includes('entry') || cond.toLowerCase().includes('travel')) icon = '✈️';
+                        if (cond.toLowerCase().includes('health') || cond.toLowerCase().includes('insurance')) icon = '📑';
+                        else if (cond.toLowerCase().includes('entry') || cond.toLowerCase().includes('multiple')) icon = '✈️';
+                        else if (cond.toLowerCase().includes('id') || cond.toLowerCase().includes('enrollment')) icon = '🛡️';
                         
                         return (
                           <div
@@ -1653,7 +1661,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           1. Flight &amp; Transit Check
                         </h4>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
-                          {transitCheckResult || 'Upload ticket for layover transit rules.'}
+                          {transitCheckResult || `Verify direct flight & transit to ${journeyDestination || 'Destination'}.`}
                         </p>
                       </div>
 
@@ -1680,7 +1688,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           2. Driver &amp; Airport Pickup
                         </h4>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
-                          Book verified terminal driver pickup.
+                          Book verified driver at {journeyDestination || 'terminal'}.
                         </p>
                       </div>
 
@@ -1689,7 +1697,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           type="text"
                           value={pickupFlightNum}
                           onChange={(e) => setPickupFlightNum(e.target.value)}
-                          placeholder="Flight No. (e.g. AC 043)"
+                          placeholder="Flight No. (e.g. EK 502 / AI 995)"
                           className="w-full h-9 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
                         />
                         <button
@@ -1722,7 +1730,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           3. Secure Housing
                         </h4>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
-                          Escrow-protected student dorms &amp; apartments.
+                          Escrow-protected student dorms &amp; flats in {journeyDestination || 'abroad'}.
                         </p>
                       </div>
 
@@ -1748,7 +1756,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           4. Peer Network
                         </h4>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
-                          Connect with students going to same city.
+                          Connect with travellers moving to {journeyDestination || 'same city'}.
                         </p>
                       </div>
 
@@ -1781,7 +1789,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           5. Forex &amp; 5G eSIM
                         </h4>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
-                          Zero-markup card &amp; instant QR eSIM.
+                          Zero-markup {currentStudyData.currency} card &amp; instant QR eSIM.
                         </p>
                       </div>
 
@@ -1814,7 +1822,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           6. Customs &amp; Rules
                         </h4>
                         <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
-                          $10k cash limit &amp; medication guidelines.
+                          {journeyDestination || 'Destination'} cash limit &amp; prescription guidelines.
                         </p>
                       </div>
 
@@ -1882,7 +1890,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         <span>Flow 2A: Study Abroad &amp; University Pathway (8 Steps)</span>
                       </div>
                       <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                        Target Pathway: Study Abroad in {journeyDestination || 'Canada / Top Universities'}
+                        Target Pathway: Study Abroad in {journeyDestination || 'Top Universities'}
                       </h3>
                       <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
                         8-Step notebook architecture: university shortlisting, document gathering, funds audit, readiness score &amp; VFS slot booking.
@@ -1908,7 +1916,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         <span className="w-7 h-7 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black text-xs">1</span>
                         <div>
                           <h4 className="text-sm sm:text-base font-black text-slate-900">Step 1: Qualification &amp; University Match</h4>
-                          <p className="text-[11px] text-slate-400">Match degree level with tied-up institutions</p>
+                          <p className="text-[11px] text-slate-400">Tied-up institutions in {journeyDestination || 'Destination'}</p>
                         </div>
                       </div>
 
@@ -1942,47 +1950,49 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         </div>
                       </div>
 
-                      {/* Tied-Up University Options */}
+                      {/* Dynamic Destination Universities */}
                       <div className="space-y-2 pt-1">
-                        <span className="text-[11px] font-extrabold text-slate-600 block">Recommended Universities Matching Profile</span>
+                        <span className="text-[11px] font-extrabold text-slate-600 block">
+                          Top Verified Universities in {journeyDestination || 'Destination'}:
+                        </span>
                         <div className="space-y-1.5">
-                          {[
-                            { name: 'University of Toronto', country: 'Canada', rank: '#21 Global', fee: '$28,000/yr', accept: 'High Match' },
-                            { name: 'University of Melbourne', country: 'Australia', rank: '#14 Global', fee: '$32,000/yr', accept: 'High Match' },
-                            { name: 'Imperial College London', country: 'UK', rank: '#2 Global', fee: '£31,000/yr', accept: 'Competitive' },
-                            { name: 'Technical University of Munich (TUM)', country: 'Germany', rank: '#28 Global', fee: '€0 Tuition', accept: 'High Match' }
-                          ].map((uni, idx) => (
-                            <div
-                              key={idx}
-                              onClick={() => {
-                                setSelectedMatchedUni(uni.name);
-                                setStudyTuitionFee(uni.fee);
-                              }}
-                              className={`p-3 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
-                                selectedMatchedUni === uni.name
-                                  ? 'bg-emerald-50/80 border-[#00A86B] ring-1 ring-[#00A86B]'
-                                  : 'bg-slate-50/60 border-slate-200/70 hover:bg-slate-50'
-                              }`}
-                            >
-                              <div>
-                                <div className="text-xs font-black text-slate-900">{uni.name}</div>
-                                <div className="text-[10px] text-slate-500">{uni.country} • {uni.rank} • {uni.fee}</div>
+                          {currentStudyData.unis.map((uni, idx) => {
+                            const isSelected = activeSelectedUni === uni.name;
+                            return (
+                              <div
+                                key={idx}
+                                onClick={() => {
+                                  setSelectedMatchedUni(uni.name);
+                                  setStudyTuitionFee(uni.fee);
+                                }}
+                                className={`p-3 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
+                                  isSelected
+                                    ? 'bg-emerald-50/80 border-[#00A86B] ring-1 ring-[#00A86B]'
+                                    : 'bg-slate-50/60 border-slate-200/70 hover:bg-slate-50'
+                                }`}
+                              >
+                                <div className="min-w-0 pr-2">
+                                  <div className="text-xs font-black text-slate-900 truncate">{uni.name}</div>
+                                  <div className="text-[10px] text-slate-500 truncate">{uni.city} • {uni.rank} • {uni.fee}</div>
+                                </div>
+                                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-lg shrink-0 ${
+                                  isSelected ? 'bg-emerald-100 text-[#00A86B]' : 'bg-slate-200/70 text-slate-700'
+                                }`}>
+                                  {isSelected ? 'Selected ✓' : 'Select'}
+                                </span>
                               </div>
-                              <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-lg bg-emerald-100 text-[#00A86B]">
-                                {selectedMatchedUni === uni.name ? 'Selected ✓' : 'Select'}
-                              </span>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
 
                       <div className="pt-2">
                         <a
-                          href="/universities"
+                          href={`/universities?country=${encodeURIComponent(journeyDestination || '')}`}
                           className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
                         >
                           <Search className="w-3.5 h-3.5" />
-                          <span>Search 1,200+ Tied-up Programs in Course Finder →</span>
+                          <span>Search 1,200+ Tied-up Programs in {journeyDestination || 'Course Finder'} →</span>
                         </a>
                       </div>
                     </div>
@@ -1993,26 +2003,26 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         <span className="w-7 h-7 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-black text-xs">2</span>
                         <div>
                           <h4 className="text-sm sm:text-base font-black text-slate-900">Step 2: Course &amp; Expense Finalization</h4>
-                          <p className="text-[11px] text-slate-400">Total estimated budget &amp; admission checklist</p>
+                          <p className="text-[11px] text-slate-400">Total estimated budget for {journeyDestination || 'Destination'}</p>
                         </div>
                       </div>
 
                       <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-3">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold text-slate-500">Selected University:</span>
-                          <span className="text-xs font-black text-slate-900">{selectedMatchedUni}</span>
+                          <span className="text-xs font-black text-slate-900 text-right truncate max-w-[200px]">{activeSelectedUni}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold text-slate-500">Annual Tuition Fee:</span>
-                          <span className="text-xs font-black text-[#00A86B]">{studyTuitionFee}</span>
+                          <span className="text-xs font-black text-[#00A86B]">{activeTuitionFee}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold text-slate-500">Estimated Living Expenses:</span>
-                          <span className="text-xs font-black text-slate-800">{studyLivingCost}</span>
+                          <span className="text-xs font-black text-slate-800">{activeLivingCost}</span>
                         </div>
                         <div className="pt-2 border-t border-slate-200 flex items-center justify-between">
                           <span className="text-xs font-extrabold text-slate-900">Total 1st Year Proof Required:</span>
-                          <span className="text-sm font-black text-[#00A86B]">$38,500 CAD / USD</span>
+                          <span className="text-sm font-black text-[#00A86B]">{currentStudyData.totalProof}</span>
                         </div>
                       </div>
 
@@ -2025,15 +2035,15 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           </div>
                           <div className="flex items-center gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
                             <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                            <span>Statement of Purpose (SOP)</span>
+                            <span>Statement of Purpose</span>
                           </div>
                           <div className="flex items-center gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
                             <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                            <span>2 Letters of Rec (LOR)</span>
+                            <span>2 Recommendation Letters</span>
                           </div>
                           <div className="flex items-center gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
                             <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                            <span>IELTS / PTE Test Score</span>
+                            <span>IELTS / PTE / English Test</span>
                           </div>
                         </div>
                       </div>
@@ -2059,7 +2069,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           { label: 'Academic Transcripts (10th, 12th, Degree)', state: docTranscriptsUploaded, set: setDocTranscriptsUploaded },
                           { label: 'Statement of Purpose (SOP)', state: docSopUploaded, set: setDocSopUploaded },
                           { label: 'Letters of Recommendation (LOR)', state: docLorUploaded, set: setDocLorUploaded },
-                          { label: 'English Proficiency (IELTS 6.5+ / PTE 62+)', state: docIeltsUploaded, set: setDocIeltsUploaded }
+                          { label: 'English Proficiency (IELTS / PTE / TOEFL)', state: docIeltsUploaded, set: setDocIeltsUploaded }
                         ].map((doc, idx) => (
                           <div key={idx} className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200/70">
                             <span className="text-xs font-semibold text-slate-800">{doc.label}</span>
@@ -2079,7 +2089,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                       <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl flex items-center justify-between">
                         <div>
                           <div className="text-xs font-bold text-emerald-900">University Application Status</div>
-                          <div className="text-[11px] text-emerald-700">Dossier submitted to {selectedMatchedUni} admissions desk</div>
+                          <div className="text-[11px] text-emerald-700">Dossier prepared for {activeSelectedUni} admissions desk</div>
                         </div>
                         <span className="text-xs font-extrabold px-2.5 py-1 rounded-xl bg-white text-[#00A86B] border border-emerald-200">
                           Applied (In Review)
@@ -2093,7 +2103,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         <span className="w-7 h-7 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-black text-xs">4</span>
                         <div>
                           <h4 className="text-sm sm:text-base font-black text-slate-900">Step 4: VFS Funds &amp; Financial Weakness Audit</h4>
-                          <p className="text-[11px] text-slate-400">Proof of funds calculator &amp; partner recommendations</p>
+                          <p className="text-[11px] text-slate-400">Proof of funds calculator for {journeyDestination || 'Destination'}</p>
                         </div>
                       </div>
 
@@ -2107,7 +2117,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                               onChange={(e) => setFundsAvailableAmount(e.target.value)}
                               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-black text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
                             />
-                            <span className="absolute right-3 top-2 text-[10px] font-bold text-slate-400">USD</span>
+                            <span className="absolute right-3 top-2 text-[10px] font-bold text-slate-400">{currentStudyData.currency}</span>
                           </div>
                         </div>
                         <div>
@@ -2120,12 +2130,12 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
 
                       {/* Partner Recommendations if Weakness / Loan Needed */}
                       <div className="space-y-2">
-                        <span className="text-[11px] font-extrabold text-slate-700 block">Partner Loan &amp; Insurance Providers (Low Interest):</span>
+                        <span className="text-[11px] font-extrabold text-slate-700 block">Partner Loan &amp; Insurance Providers:</span>
                         <div className="grid grid-cols-2 gap-2">
                           <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                             <div>
                               <div className="text-xs font-black text-slate-900">Education Loan Partners</div>
-                              <div className="text-[10px] text-slate-500 mt-0.5">HDFC Credila, InCred &amp; Prodigy Finance (No collateral options)</div>
+                              <div className="text-[10px] text-slate-500 mt-0.5">{currentStudyData.loanPartners}</div>
                             </div>
                             <a href="/support" className="text-[11px] font-bold text-[#00A86B] mt-2 block hover:underline">Apply Loan →</a>
                           </div>
@@ -2133,9 +2143,9 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                             <div>
                               <div className="text-xs font-black text-slate-900">Mandatory Health Cover</div>
-                              <div className="text-[10px] text-slate-500 mt-0.5">OSHC / Guard.me comprehensive visa approved health insurance</div>
+                              <div className="text-[10px] text-slate-500 mt-0.5">{currentStudyData.insurance}</div>
                             </div>
-                            <a href="/services/travel-insurance" className="text-[11px] font-bold text-[#00A86B] mt-2 block hover:underline">View OSHC →</a>
+                            <a href="/services/travel-insurance" className="text-[11px] font-bold text-[#00A86B] mt-2 block hover:underline">View Policy →</a>
                           </div>
                         </div>
                       </div>
@@ -2153,7 +2163,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                             Visa Approval Likelihood: <span className="text-emerald-400">{studyReadinessScore}%</span>
                           </h4>
                           <p className="text-xs text-slate-300 mt-1 max-w-2xl">
-                            Algorithmic scoring based on academic qualification, language proficiency, verified funds docket, and university offer status.
+                            Algorithmic scoring based on academic qualification, language proficiency, verified funds docket for {journeyDestination || 'destination'}, and university offer status.
                           </p>
                         </div>
 
@@ -2203,23 +2213,23 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         <span className="w-7 h-7 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black text-xs">6</span>
                         <div>
                           <h4 className="text-sm sm:text-base font-black text-slate-900">Step 6: Admission Re-Check</h4>
-                          <p className="text-[11px] text-slate-400">Re-verify documents alongside Offer / Admission Letter</p>
+                          <p className="text-[11px] text-slate-400">Re-verify documents alongside {currentStudyData.admissionDocName}</p>
                         </div>
                       </div>
 
                       <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/70 space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-600">CAS / I-20 / LOA Number:</span>
+                          <span className="text-xs font-bold text-slate-600 truncate mr-2">{currentStudyData.admissionDocName}:</span>
                           <input
                             type="text"
-                            value={casI20Number}
+                            value={casI20Number || currentStudyData.casNumber}
                             onChange={(e) => setCasI20Number(e.target.value)}
                             className="bg-white border border-slate-200 text-xs font-black text-slate-900 rounded-lg px-2.5 py-1 w-36 text-right"
                           />
                         </div>
                         <div className="flex items-center justify-between pt-1 border-t border-slate-200/60">
                           <span className="text-xs font-bold text-slate-600">University Offer Letter:</span>
-                          <span className="text-xs font-extrabold text-[#00A86B]">Verified by Admissions Desk ✓</span>
+                          <span className="text-xs font-extrabold text-[#00A86B]">Verified by {activeSelectedUni} ✓</span>
                         </div>
                       </div>
                     </div>
@@ -2229,29 +2239,29 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                       <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
                         <span className="w-7 h-7 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-black text-xs">7 &amp; 8</span>
                         <div>
-                          <h4 className="text-sm sm:text-base font-black text-slate-900">Step 7 &amp; 8: VFS Slot &amp; Final Submission</h4>
-                          <p className="text-[11px] text-slate-400">Biometric slot booking &amp; embassy filing</p>
+                          <h4 className="text-sm sm:text-base font-black text-slate-900">Step 7 &amp; 8: Slot Booking &amp; Final Filing</h4>
+                          <p className="text-[11px] text-slate-400">Biometric slot booking &amp; official embassy filing</p>
                         </div>
                       </div>
 
                       <div className="space-y-2">
                         <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/70 flex items-center justify-between">
                           <div>
-                            <div className="text-xs font-black text-slate-900">Step 7: VFS Appointment Slot</div>
-                            <div className="text-[11px] text-slate-500">Select biometric slot date for {passportCountry || 'India'} center</div>
+                            <div className="text-xs font-black text-slate-900">Step 7: Appointment Slot</div>
+                            <div className="text-[11px] text-slate-500">{currentStudyData.vfsText}</div>
                           </div>
                           <a
                             href="/vfs-appointment"
                             className="px-3 py-1.5 bg-[#00A86B] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#008f5a] transition-all"
                           >
-                            Book VFS Slot →
+                            Book Slot →
                           </a>
                         </div>
 
                         <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/70 flex items-center justify-between">
                           <div>
-                            <div className="text-xs font-black text-slate-900">Step 8: Final Visa Application Filing</div>
-                            <div className="text-[11px] text-slate-500">Official embassy dossier lock &amp; tracking ID generation</div>
+                            <div className="text-xs font-black text-slate-900">Step 8: Final Visa Filing</div>
+                            <div className="text-[11px] text-slate-500">Dossier lock &amp; embassy tracking generation</div>
                           </div>
                           <button
                             type="button"
@@ -2271,7 +2281,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                 </div>
               )}
 
-              {/* BRANCH B: PURPOSE = VISIT (TOURIST / FAMILY - NOTEBOOK ARCHITECTURE) */}
+              {/* BRANCH B: PURPOSE = VISIT (TOURIST / FAMILY - DYNAMICALLY RESOLVED) */}
               {travelPurpose === 'visit' && (
                 <div className="space-y-6">
                   
@@ -2308,22 +2318,30 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         <span className="w-7 h-7 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black text-xs">1</span>
                         <div>
                           <h4 className="text-sm sm:text-base font-black text-slate-900">Step 1: VFS Tourist Checklist &amp; Budget Proof</h4>
-                          <p className="text-[11px] text-slate-400">Essential visitor requirements &amp; ties to home country</p>
+                          <p className="text-[11px] text-slate-400">Essential visitor requirements for {journeyDestination || 'Destination'}</p>
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        {[
-                          { label: 'Passport Validity (6+ Months Minimum)', state: true },
-                          { label: 'Bank Statement Funds ($3,000–$5,000+ Available)', state: visitFundsVerified, set: () => setVisitFundsVerified(!visitFundsVerified) },
-                          { label: 'Proof of Ties to Home Country (Job / Property / Family)', state: visitTiesProofChecked, set: () => setVisitTiesProofChecked(!visitTiesProofChecked) },
-                          { label: 'Travel Health Insurance Cover', state: true }
-                        ].map((item, idx) => (
-                          <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                            <span className="text-xs font-bold text-slate-800">{item.label}</span>
+                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-800">Passport Validity (6+ Months Minimum)</span>
+                          <span className="text-xs font-extrabold text-[#00A86B]">Verified ✓</span>
+                        </div>
+                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-slate-800">Proof of Funds</span>
                             <span className="text-xs font-extrabold text-[#00A86B]">Verified ✓</span>
                           </div>
-                        ))}
+                          <p className="text-[10px] text-slate-500">{currentVisitData.fundsText}</p>
+                        </div>
+                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-800">Ties to Home Country (Job / Property / Family)</span>
+                          <span className="text-xs font-extrabold text-[#00A86B]">Verified ✓</span>
+                        </div>
+                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-800">International Travel Health Insurance</span>
+                          <span className="text-xs font-extrabold text-[#00A86B]">Verified ✓</span>
+                        </div>
                       </div>
                     </div>
 
@@ -2333,7 +2351,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         <span className="w-7 h-7 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-black text-xs">2</span>
                         <div>
                           <h4 className="text-sm sm:text-base font-black text-slate-900">Step 2: Trip Planning Audit</h4>
-                          <p className="text-[11px] text-slate-400">Planned trip already or need curated packages?</p>
+                          <p className="text-[11px] text-slate-400">Planned trip to {journeyDestination || 'Destination'} or need packages?</p>
                         </div>
                       </div>
 
@@ -2368,7 +2386,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                       {visitPlannedAlready === 'yes' ? (
                         <div className="p-3.5 bg-emerald-50/70 border border-emerald-200 rounded-2xl space-y-2">
                           <div className="text-xs font-bold text-emerald-900">AI Itinerary &amp; Hotel Audit</div>
-                          <p className="text-[11px] text-emerald-700">Upload flight itinerary &amp; hotel confirmation for duration &amp; genuine visitor audit.</p>
+                          <p className="text-[11px] text-emerald-700">Upload flight itinerary &amp; hotel booking for {journeyDestination || 'stay'} genuine visitor audit.</p>
                           <button
                             type="button"
                             onClick={() => setVisitItineraryUploaded(true)}
@@ -2379,12 +2397,9 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         </div>
                       ) : (
                         <div className="space-y-2">
-                          <span className="text-[11px] font-bold text-slate-600 block">Curated Tour Packages from Verified Partners:</span>
+                          <span className="text-[11px] font-bold text-slate-600 block">Curated {journeyDestination || 'Destination'} Tour Packages:</span>
                           <div className="space-y-1.5">
-                            {[
-                              { name: '7-Day Scenic Tour & Hotel Pack', price: '$850 / person', days: '7 Days' },
-                              { name: '14-Day Explorer & Family Package', price: '$1,650 / person', days: '14 Days' }
-                            ].map((pkg, idx) => (
+                            {currentVisitData.packages.map((pkg, idx) => (
                               <div
                                 key={idx}
                                 onClick={() => setVisitSelectedTourPackage(pkg.name)}
@@ -2411,7 +2426,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           <span className="w-6 h-6 rounded-lg bg-[#00A86B] text-white flex items-center justify-center font-black text-xs">3</span>
                           <span className="text-xs font-black text-slate-900">Step 3: Final Document Re-check &amp; VFS Submission</span>
                         </div>
-                        <p className="text-xs text-slate-500">Lock your tourist visa checklist &amp; book your official embassy biometric slot.</p>
+                        <p className="text-xs text-slate-500">{currentVisitData.vfsSlotText}</p>
                       </div>
 
                       <div className="flex items-center gap-3 shrink-0">
@@ -2458,7 +2473,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           <span>1-on-1 Specialist Matchmaker</span>
                         </div>
                         <h3 className="text-lg sm:text-xl font-black text-slate-900">
-                          Need Expert Profile Enhancement or Dedicated Guidance?
+                          Need Expert Profile Enhancement for {journeyDestination || 'Abroad'}?
                         </h3>
                         <p className="text-xs text-slate-500 mt-0.5">
                           Get your SOP, financial proof, and visa file reviewed by certified immigration lawyers.
@@ -2513,28 +2528,28 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
             </div>
           )}
 
-          {/* ── 3. MULTI-TAB GLOBAL SEARCH & FILTER WIDGET (MOBILE-PERFECT RESPONSIVE) ── */}
+          {/* ── 3. MULTI-TAB GLOBAL SEARCH & FILTER WIDGET (ALWAYS VISIBLE & ADAPTING) ── */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-4 sm:p-7 md:p-9 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left">
             
             {/* Top 5 Service Directory Tabs */}
-            <div className="flex items-center justify-start lg:justify-between gap-5 sm:gap-7 border-b border-slate-100 overflow-x-auto no-scrollbar pb-3 sm:pb-4 mb-5 sm:mb-6 px-1">
+            <div className="flex items-center justify-start sm:justify-between gap-4 sm:gap-6 border-b border-slate-100 overflow-x-auto no-scrollbar pb-3 sm:pb-4 mb-5 sm:mb-6 px-1">
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('universities')}
-                className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
+                className={`shrink-0 flex items-center gap-2 text-xs sm:text-sm md:text-[15px] font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'universities'
                     ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>Uni</span>
+                <span>Universities</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('consultants')}
-                className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
+                className={`shrink-0 flex items-center gap-2 text-xs sm:text-sm md:text-[15px] font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'consultants'
                     ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
@@ -2547,46 +2562,44 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('relocation')}
-                className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
+                className={`shrink-0 flex items-center gap-2 text-xs sm:text-sm md:text-[15px] font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'relocation'
                     ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <Luggage className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>PR / Relocation Assistance</span>
+                <span>Relocation Assistance</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('jobs')}
-                className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
+                className={`shrink-0 flex items-center gap-2 text-xs sm:text-sm md:text-[15px] font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'jobs'
                     ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <Briefcase className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>Jobs</span>
+                <span>Jobs Abroad</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveSearchTab('lawyers')}
-                className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
+                className={`shrink-0 flex items-center gap-2 text-xs sm:text-sm md:text-[15px] font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'lawyers'
                     ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
                 <Scale className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>Immig Lawyers</span>
+                <span>Immigration Lawyers</span>
               </button>
             </div>
 
             {/* ── DYNAMIC ROW 1 FILTER FIELDS ── */}
-            
-            {/* 1. UNIVERSITIES TAB */}
             {activeSearchTab === 'universities' && (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 mb-6 animate-fadeIn">
                 <div className="relative">
@@ -2594,11 +2607,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                   <div
                     ref={courseLevelRef}
                     className="relative bg-slate-50/80 hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
-                    onClick={() => {
-                      setIsCourseLevelOpen(!isCourseLevelOpen);
-                      setIsCountryOpen(false);
-                      setIsLocationOpen(false);
-                    }}
+                    onClick={() => setIsCourseLevelOpen(!isCourseLevelOpen)}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
                       <span className="text-sm shrink-0">🎓</span>
@@ -2642,7 +2651,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                     type="text"
                     value={searchCountry}
                     onChange={(e) => setSearchCountry(e.target.value)}
-                    placeholder="e.g. Canada, UK, Australia"
+                    placeholder="e.g. UAE, Canada, UK, Australia"
                     className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl h-[52px] px-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                   />
                 </div>
@@ -2653,7 +2662,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                     type="text"
                     value={searchLocation}
                     onChange={(e) => setSearchLocation(e.target.value)}
-                    placeholder="e.g. Toronto, Vancouver"
+                    placeholder="e.g. Dubai, Toronto, London, Sydney"
                     className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl h-[52px] px-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                   />
                 </div>
@@ -2695,7 +2704,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                       Student Shuttles, Shared Flats &amp; Forex
                     </h5>
                     <p className="text-[11px] text-slate-600 mt-0.5">
-                      Verified rides, airport transfers &amp; low-cost shared student apartments in Toronto, London &amp; Melbourne.
+                      Verified rides, airport transfers &amp; low-cost shared student apartments in Dubai, Toronto, London &amp; Melbourne.
                     </p>
                   </div>
                 </div>

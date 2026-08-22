@@ -2030,22 +2030,35 @@ export function AITripPlannerLanding() {
                   </div>
 
                   {/* 8-Step Study Notebook Grid */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  <div className="space-y-6 sm:space-y-8 max-w-5xl mx-auto">
                     
-                    {/* STEP 1: Qualification & University Match (6 Cols) */}
-                    <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
-                      <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-                        <span className="w-7 h-7 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black text-xs">1</span>
-                        <div>
-                          <h4 className="text-sm sm:text-base font-black text-slate-900">Step 1: Qualification &amp; University Match</h4>
-                          <p className="text-[11px] text-slate-400">Tied-up institutions in {journeyDestination || 'Destination'}</p>
+                    
+                    {/* STEP 1: Qualification & University Match */}
+                    <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-6 text-left">
+                      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div className="flex items-center gap-3">
+                          <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black text-sm sm:text-base shadow-xs">
+                            1
+                          </span>
+                          <div>
+                            <h4 className="text-base sm:text-lg font-black text-slate-900">
+                              Step 1: Qualification &amp; University Match
+                            </h4>
+                            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                              Tied-up institutions matching your profile in {journeyDestination || 'Destination'}
+                            </p>
+                          </div>
                         </div>
+                        <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-xs font-bold">
+                          Step 1 of 8
+                        </span>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Custom Search-Style Dropdowns */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Custom Dropdown 1: Highest Qualification */}
                         <div className="relative">
-                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">
                             Highest Qualification
                           </label>
                           <div
@@ -2054,13 +2067,13 @@ export function AITripPlannerLanding() {
                               setIsStudyQualOpen(!isStudyQualOpen);
                               setIsStudyTargetOpen(false);
                             }}
-                            className="relative bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                            className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                           >
                             <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                              <span className="text-base shrink-0">
+                              <span className="text-lg shrink-0">
                                 {studyQualificationOptions.find(o => o.value === studyQualification)?.icon || '🎓'}
                               </span>
-                              <span className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                              <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                                 {studyQualificationOptions.find(o => o.value === studyQualification)?.label || studyQualification}
                               </span>
                             </div>
@@ -2068,13 +2081,13 @@ export function AITripPlannerLanding() {
 
                             {isStudyQualOpen && (
                               <div
-                                className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                                className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-2 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                                   Select Qualification
                                 </div>
-                                <div className="space-y-0.5">
+                                <div className="space-y-1">
                                   {studyQualificationOptions.map((opt) => {
                                     const isSelected = studyQualification === opt.value;
                                     return (
@@ -2085,15 +2098,15 @@ export function AITripPlannerLanding() {
                                           setStudyQualification(opt.value as any);
                                           setIsStudyQualOpen(false);
                                         }}
-                                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                           isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                                         }`}
                                       >
-                                        <div className="flex items-center gap-2 min-w-0">
+                                        <div className="flex items-center gap-2.5 min-w-0">
                                           <span className="text-base">{opt.icon}</span>
                                           <span className="truncate">{opt.label}</span>
                                         </div>
-                                        {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                        {isSelected && <Check className="w-4 h-4 text-[#00A86B] shrink-0 ml-1" />}
                                       </button>
                                     );
                                   })}
@@ -2105,7 +2118,7 @@ export function AITripPlannerLanding() {
 
                         {/* Custom Dropdown 2: Target Degree */}
                         <div className="relative">
-                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">
                             Target Degree
                           </label>
                           <div
@@ -2114,13 +2127,13 @@ export function AITripPlannerLanding() {
                               setIsStudyTargetOpen(!isStudyTargetOpen);
                               setIsStudyQualOpen(false);
                             }}
-                            className="relative bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                            className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                           >
                             <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                              <span className="text-base shrink-0">
+                              <span className="text-lg shrink-0">
                                 {studyTargetDegreeOptions.find(o => o.value === studyTargetDegree)?.icon || '📜'}
                               </span>
-                              <span className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                              <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                                 {studyTargetDegreeOptions.find(o => o.value === studyTargetDegree)?.label || studyTargetDegree}
                               </span>
                             </div>
@@ -2128,13 +2141,13 @@ export function AITripPlannerLanding() {
 
                             {isStudyTargetOpen && (
                               <div
-                                className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                                className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-2 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                                   Select Target Degree
                                 </div>
-                                <div className="space-y-0.5">
+                                <div className="space-y-1">
                                   {studyTargetDegreeOptions.map((opt) => {
                                     const isSelected = studyTargetDegree === opt.value;
                                     return (
@@ -2145,15 +2158,15 @@ export function AITripPlannerLanding() {
                                           setStudyTargetDegree(opt.value as any);
                                           setIsStudyTargetOpen(false);
                                         }}
-                                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
                                           isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
                                         }`}
                                       >
-                                        <div className="flex items-center gap-2 min-w-0">
+                                        <div className="flex items-center gap-2.5 min-w-0">
                                           <span className="text-base">{opt.icon}</span>
                                           <span className="truncate">{opt.label}</span>
                                         </div>
-                                        {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                        {isSelected && <Check className="w-4 h-4 text-[#00A86B] shrink-0 ml-1" />}
                                       </button>
                                     );
                                   })}
@@ -2165,11 +2178,11 @@ export function AITripPlannerLanding() {
                       </div>
 
                       {/* Dynamic Destination Universities */}
-                      <div className="space-y-2 pt-1">
-                        <span className="text-[11px] font-extrabold text-slate-600 block">
+                      <div className="space-y-2.5 pt-1">
+                        <span className="text-xs sm:text-sm font-extrabold text-slate-700 block">
                           Top Verified Universities in {journeyDestination || 'Destination'}:
                         </span>
-                        <div className="space-y-1.5">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                           {currentStudyData.unis.map((uni, idx) => {
                             const isSelected = activeSelectedUni === uni.name;
                             return (
@@ -2179,20 +2192,21 @@ export function AITripPlannerLanding() {
                                   setSelectedMatchedUni(uni.name);
                                   setStudyTuitionFee(uni.fee);
                                 }}
-                                className={`p-3 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
+                                className={`p-4 rounded-2xl border flex flex-col justify-between cursor-pointer transition-all ${
                                   isSelected
-                                    ? 'bg-emerald-50/80 border-[#00A86B] ring-1 ring-[#00A86B]'
-                                    : 'bg-slate-50/60 border-slate-200/70 hover:bg-slate-50'
+                                    ? 'bg-emerald-50/80 border-[#00A86B] ring-2 ring-[#00A86B]/30 shadow-sm'
+                                    : 'bg-slate-50/70 border-slate-200/80 hover:bg-slate-50 hover:border-slate-300'
                                 }`}
                               >
-                                <div className="min-w-0 pr-2">
-                                  <div className="text-xs font-black text-slate-900 truncate">{uni.name}</div>
-                                  <div className="text-[10px] text-slate-500 truncate">{uni.city} • {uni.rank} • {uni.fee}</div>
+                                <div>
+                                  <div className="text-xs sm:text-sm font-black text-slate-900 line-clamp-2">{uni.name}</div>
+                                  <div className="text-[11px] text-slate-500 mt-1">{uni.city} • {uni.rank}</div>
+                                  <div className="text-xs font-black text-[#00A86B] mt-2">{uni.fee}</div>
                                 </div>
-                                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-lg shrink-0 ${
-                                  isSelected ? 'bg-emerald-100 text-[#00A86B]' : 'bg-slate-200/70 text-slate-700'
+                                <span className={`text-xs font-extrabold px-3 py-1 rounded-xl text-center mt-3 ${
+                                  isSelected ? 'bg-[#00A86B] text-white shadow-2xs' : 'bg-slate-200/80 text-slate-700'
                                 }`}>
-                                  {isSelected ? 'Selected ✓' : 'Select'}
+                                  {isSelected ? 'Selected ✓' : 'Select University'}
                                 </span>
                               </div>
                             );
@@ -2203,77 +2217,104 @@ export function AITripPlannerLanding() {
                       <div className="pt-2">
                         <a
                           href={`/universities?country=${encodeURIComponent(journeyDestination || '')}`}
-                          className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
+                          className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all"
                         >
-                          <Search className="w-3.5 h-3.5" />
+                          <Search className="w-4 h-4" />
                           <span>Search 1,200+ Tied-up Programs in {journeyDestination || 'Course Finder'} →</span>
                         </a>
                       </div>
                     </div>
 
-                    {/* STEP 2: Course & Expense Finalization (6 Cols) */}
-                    <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
-                      <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-                        <span className="w-7 h-7 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-black text-xs">2</span>
-                        <div>
-                          <h4 className="text-sm sm:text-base font-black text-slate-900">Step 2: Course &amp; Expense Finalization</h4>
-                          <p className="text-[11px] text-slate-400">Total estimated budget for {journeyDestination || 'Destination'}</p>
+                    {/* STEP 2: Course & Expense Finalization */}
+                    <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-6 text-left">
+                      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div className="flex items-center gap-3">
+                          <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center font-black text-sm sm:text-base shadow-xs">
+                            2
+                          </span>
+                          <div>
+                            <h4 className="text-base sm:text-lg font-black text-slate-900">
+                              Step 2: Course &amp; Expense Finalization
+                            </h4>
+                            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                              Total estimated 1st year budget and mandatory financial checklist for {journeyDestination || 'Destination'}
+                            </p>
+                          </div>
                         </div>
+                        <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold">
+                          Step 2 of 8
+                        </span>
                       </div>
 
-                      <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-500">Selected University:</span>
-                          <span className="text-xs font-black text-slate-900 text-right truncate max-w-[200px]">{activeSelectedUni}</span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+                          <span className="text-xs font-bold text-slate-500 block">Selected Institution</span>
+                          <span className="text-xs sm:text-sm font-black text-slate-900 mt-1 block truncate" title={activeSelectedUni}>
+                            {activeSelectedUni}
+                          </span>
                         </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-500">Annual Tuition Fee:</span>
-                          <span className="text-xs font-black text-[#00A86B]">{activeTuitionFee}</span>
+                        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+                          <span className="text-xs font-bold text-slate-500 block">Annual Tuition Fee</span>
+                          <span className="text-sm sm:text-base font-black text-[#00A86B] mt-1 block">
+                            {activeTuitionFee}
+                          </span>
                         </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-500">Estimated Living Expenses:</span>
-                          <span className="text-xs font-black text-slate-800">{activeLivingCost}</span>
+                        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+                          <span className="text-xs font-bold text-slate-500 block">Living Cost Estimate</span>
+                          <span className="text-sm sm:text-base font-black text-slate-800 mt-1 block">
+                            {activeLivingCost}
+                          </span>
                         </div>
-                        <div className="pt-2 border-t border-slate-200 flex items-center justify-between">
-                          <span className="text-xs font-extrabold text-slate-900">Total 1st Year Proof Required:</span>
-                          <span className="text-sm font-black text-[#00A86B]">{currentStudyData.totalProof}</span>
+                        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
+                          <span className="text-xs font-bold text-emerald-800 block">Total 1st Year Proof</span>
+                          <span className="text-sm sm:text-base font-black text-[#00A86B] mt-1 block">
+                            {currentStudyData.totalProof}
+                          </span>
                         </div>
                       </div>
 
                       <div>
-                        <span className="text-[11px] font-extrabold text-slate-600 block mb-2">Required Document Checklist:</span>
-                        <div className="grid grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
-                          <div className="flex items-center gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
+                        <span className="text-xs sm:text-sm font-extrabold text-slate-700 block mb-3">
+                          Required Admission Document Checklist:
+                        </span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs font-semibold text-slate-800">
+                          <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-2xl border border-slate-200/70">
+                            <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
                             <span>Academic Transcripts</span>
                           </div>
-                          <div className="flex items-center gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
+                          <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-2xl border border-slate-200/70">
+                            <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
                             <span>Statement of Purpose</span>
                           </div>
-                          <div className="flex items-center gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                            <span>2 Recommendation Letters</span>
+                          <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-2xl border border-slate-200/70">
+                            <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
+                            <span>2 LOR Letters</span>
                           </div>
-                          <div className="flex items-center gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />
-                            <span>IELTS / PTE / English Test</span>
+                          <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-2xl border border-slate-200/70">
+                            <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
+                            <span>IELTS / Language Test</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* STEP 3: Document Gathering & Client Dashboard Sync (6 Cols) */}
-                    <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                        <div className="flex items-center gap-2">
-                          <span className="w-7 h-7 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-black text-xs">3</span>
+                    {/* STEP 3: Document Gathering & Dashboard Sync */}
+                    <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-6 text-left">
+                      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div className="flex items-center gap-3">
+                          <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center font-black text-sm sm:text-base shadow-xs">
+                            3
+                          </span>
                           <div>
-                            <h4 className="text-sm sm:text-base font-black text-slate-900">Step 3: Document Gathering &amp; Dashboard Sync</h4>
-                            <p className="text-[11px] text-slate-400">Scanned docs auto-update data in Client Dashboard DB</p>
+                            <h4 className="text-base sm:text-lg font-black text-slate-900">
+                              Step 3: Document Gathering &amp; Dashboard Sync
+                            </h4>
+                            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                              Upload real files to auto-update and verify data in Client Dashboard DB
+                            </p>
                           </div>
                         </div>
-                        <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-100 text-[#00A86B]">
+                        <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-emerald-100 text-[#00A86B] text-xs font-bold">
                           Synced to /dashboard ✓
                         </span>
                       </div>
@@ -2308,7 +2349,7 @@ export function AITripPlannerLanding() {
                         accept=".pdf,.png,.jpg,.jpeg"
                       />
 
-                      <div className="space-y-2.5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         {[
                           { key: 'transcripts', label: 'Academic Transcripts (10th, 12th, Degree)', ref: transcriptsInputRef, isUploaded: !!uploadedDocFiles['transcripts'] || docTranscriptsUploaded, icon: '🎓' },
                           { key: 'sop', label: 'Statement of Purpose (SOP)', ref: sopInputRef, isUploaded: !!uploadedDocFiles['sop'] || docSopUploaded, icon: '📝' },
@@ -2321,31 +2362,31 @@ export function AITripPlannerLanding() {
                           return (
                             <div
                               key={idx}
-                              className={`p-3 rounded-2xl border transition-all ${
+                              className={`p-4 rounded-2xl border transition-all ${
                                 doc.isUploaded
                                   ? 'bg-emerald-50/60 border-emerald-300 ring-1 ring-emerald-200'
                                   : 'bg-slate-50/80 border-slate-200/80 hover:bg-slate-50'
                               }`}
                             >
-                              <div className="flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                                  <span className="text-base shrink-0">{doc.icon}</span>
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-3 min-w-0 flex-1">
+                                  <span className="text-xl shrink-0">{doc.icon}</span>
                                   <div className="min-w-0">
-                                    <div className="text-xs font-bold text-slate-800 truncate">
+                                    <div className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                                       {doc.label}
                                     </div>
                                     {fileData ? (
-                                      <div className="text-[11px] font-semibold text-emerald-700 truncate mt-0.5 flex items-center gap-1.5">
+                                      <div className="text-xs font-semibold text-emerald-700 truncate mt-0.5 flex items-center gap-1.5">
                                         <span className="truncate">📄 {fileData.name}</span>
                                         <span className="text-slate-400 font-normal">({fileData.size})</span>
-                                        <span className="text-[10px] text-emerald-600 bg-emerald-100 px-1.5 py-0.2 rounded font-bold">Verified</span>
+                                        <span className="text-[10px] text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-md font-bold">Verified</span>
                                       </div>
                                     ) : doc.isUploaded ? (
-                                      <div className="text-[10px] text-emerald-600 font-medium mt-0.5">
+                                      <div className="text-xs text-emerald-600 font-medium mt-0.5">
                                         Verified on Client Dashboard
                                       </div>
                                     ) : (
-                                      <div className="text-[10px] text-slate-400 font-medium mt-0.5">
+                                      <div className="text-xs text-slate-400 font-medium mt-0.5">
                                         PDF, DOCX, or Scanned Image
                                       </div>
                                     )}
@@ -2358,16 +2399,16 @@ export function AITripPlannerLanding() {
                                       <button
                                         type="button"
                                         onClick={() => doc.ref.current?.click()}
-                                        className="px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold bg-emerald-600 text-white hover:bg-emerald-700 shadow-2xs flex items-center gap-1 cursor-pointer transition-all"
+                                        className="px-3 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 text-white hover:bg-emerald-700 shadow-2xs flex items-center gap-1.5 cursor-pointer transition-all"
                                       >
-                                        <Check className="w-3 h-3 stroke-[3]" />
+                                        <Check className="w-3.5 h-3.5 stroke-[3]" />
                                         <span>Uploaded ✓</span>
                                       </button>
                                       <button
                                         type="button"
                                         title="Remove file"
                                         onClick={() => handleRemoveUploadedFile(doc.key)}
-                                        className="w-7 h-7 rounded-xl bg-slate-200/80 hover:bg-red-100 hover:text-red-600 text-slate-600 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
+                                        className="w-8 h-8 rounded-xl bg-slate-200/80 hover:bg-red-100 hover:text-red-600 text-slate-600 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
                                       >
                                         ✕
                                       </button>
@@ -2377,16 +2418,16 @@ export function AITripPlannerLanding() {
                                       type="button"
                                       disabled={isUploading}
                                       onClick={() => doc.ref.current?.click()}
-                                      className="px-3 py-1.5 rounded-xl text-[11px] font-bold bg-white border border-slate-200 hover:border-[#00A86B] text-slate-700 hover:text-[#00A86B] hover:bg-emerald-50/50 shadow-2xs flex items-center gap-1.5 cursor-pointer transition-all"
+                                      className="px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-slate-200 hover:border-[#00A86B] text-slate-700 hover:text-[#00A86B] hover:bg-emerald-50/50 shadow-2xs flex items-center gap-1.5 cursor-pointer transition-all"
                                     >
                                       {isUploading ? (
                                         <>
-                                          <RefreshCw className="w-3 h-3 animate-spin text-[#00A86B]" />
+                                          <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#00A86B]" />
                                           <span>Scanning...</span>
                                         </>
                                       ) : (
                                         <>
-                                          <Upload className="w-3 h-3" />
+                                          <Upload className="w-3.5 h-3.5" />
                                           <span>Upload +</span>
                                         </>
                                       )}
@@ -2399,110 +2440,121 @@ export function AITripPlannerLanding() {
                         })}
                       </div>
 
-                      <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl flex items-center justify-between">
+                      <div className="p-4 bg-emerald-50/80 border border-emerald-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
-                          <div className="text-xs font-bold text-emerald-900">University Application Status</div>
-                          <div className="text-[11px] text-emerald-700">Dossier prepared for {activeSelectedUni} admissions desk</div>
+                          <div className="text-xs sm:text-sm font-black text-emerald-950">University Application Status</div>
+                          <div className="text-xs text-emerald-700 mt-0.5">Dossier prepared for {activeSelectedUni} admissions desk</div>
                         </div>
-                        <span className="text-xs font-extrabold px-2.5 py-1 rounded-xl bg-white text-[#00A86B] border border-emerald-200">
+                        <span className="text-xs font-extrabold px-3 py-1.5 rounded-xl bg-white text-[#00A86B] border border-emerald-200 shrink-0 self-start sm:self-auto">
                           Applied (In Review)
                         </span>
                       </div>
                     </div>
 
-                    {/* STEP 4: Visa Funds & Financial Audit (6 Cols) */}
-                    <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
-                      <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-                        <span className="w-7 h-7 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-black text-xs">4</span>
-                        <div>
-                          <h4 className="text-sm sm:text-base font-black text-slate-900">Step 4: Visa Funds &amp; Financial Audit</h4>
-                          <p className="text-[11px] text-slate-400">Proof of funds calculator for {journeyDestination || 'Destination'}</p>
+                    {/* STEP 4: Visa Funds & Financial Audit */}
+                    <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-6 text-left">
+                      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div className="flex items-center gap-3">
+                          <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center font-black text-sm sm:text-base shadow-xs">
+                            4
+                          </span>
+                          <div>
+                            <h4 className="text-base sm:text-lg font-black text-slate-900">
+                              Step 4: Visa Funds &amp; Financial Audit
+                            </h4>
+                            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                              Proof of funds calculator and verification for {journeyDestination || 'Destination'}
+                            </p>
+                          </div>
                         </div>
+                        <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold">
+                          Step 4 of 8
+                        </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Available Funds</label>
+                          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Available Funds</label>
                           <div className="relative">
                             <input
                               type="number"
                               value={fundsAvailableAmount}
                               onChange={(e) => setFundsAvailableAmount(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-black text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm font-black text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
                             />
-                            <span className="absolute right-3 top-2 text-[10px] font-bold text-slate-400">{currentStudyData.currency}</span>
+                            <span className="absolute right-4 top-3 text-xs font-bold text-slate-400">{currentStudyData.currency}</span>
                           </div>
                         </div>
                         <div>
-                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Estimated Timeline</label>
-                          <div className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700">
+                          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Estimated Timeline</label>
+                          <div className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs sm:text-sm font-bold text-slate-700 flex items-center">
                             ⏱️ 2–4 Weeks to Collect
                           </div>
                         </div>
                       </div>
 
-                      {/* Partner Recommendations if Weakness / Loan Needed */}
-                      <div className="space-y-2">
-                        <span className="text-[11px] font-extrabold text-slate-700 block">Partner Loan &amp; Insurance Providers:</span>
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                      {/* Partner Recommendations */}
+                      <div className="space-y-3">
+                        <span className="text-xs sm:text-sm font-extrabold text-slate-700 block">Partner Loan &amp; Insurance Providers:</span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col justify-between">
                             <div>
-                              <div className="text-xs font-black text-slate-900">Education Loan Partners</div>
-                              <div className="text-[10px] text-slate-500 mt-0.5">{currentStudyData.loanPartners}</div>
+                              <div className="text-xs sm:text-sm font-black text-slate-900">Education Loan Partners</div>
+                              <div className="text-xs text-slate-500 mt-1">{currentStudyData.loanPartners}</div>
                             </div>
-                            <a href="/support" className="text-[11px] font-bold text-[#00A86B] mt-2 block hover:underline">Apply Loan →</a>
+                            <a href="/support" className="text-xs font-bold text-[#00A86B] mt-3 block hover:underline">Apply Loan →</a>
                           </div>
 
-                          <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col justify-between">
                             <div>
-                              <div className="text-xs font-black text-slate-900">Mandatory Health Cover</div>
-                              <div className="text-[10px] text-slate-500 mt-0.5">{currentStudyData.insurance}</div>
+                              <div className="text-xs sm:text-sm font-black text-slate-900">Mandatory Health Cover</div>
+                              <div className="text-xs text-slate-500 mt-1">{currentStudyData.insurance}</div>
                             </div>
-                            <a href="/services/travel-insurance" className="text-[11px] font-bold text-[#00A86B] mt-2 block hover:underline">View Policy →</a>
+                            <a href="/services/travel-insurance" className="text-xs font-bold text-[#00A86B] mt-3 block hover:underline">View Policy →</a>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* STEP 5: Dynamic Readiness Score (12 Cols Full Width) */}
-                    <div className="lg:col-span-12 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-7 shadow-lg space-y-4">
+                    {/* STEP 5: Dynamic Readiness Score */}
+                    <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-lg space-y-5 text-left">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="w-6 h-6 rounded-lg bg-[#00A86B] text-white flex items-center justify-center font-black text-xs">5</span>
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <span className="w-7 h-7 rounded-xl bg-[#00A86B] text-white flex items-center justify-center font-black text-xs">5</span>
                             <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">Step 5: Dynamic Visa Readiness Score</span>
                           </div>
-                          <h4 className="text-xl sm:text-2xl font-black text-white">
+                          <h4 className="text-2xl sm:text-3xl font-black text-white">
                             Visa Approval Likelihood: <span className="text-emerald-400">{studyReadinessScore}%</span>
                           </h4>
-                          <p className="text-xs text-slate-300 mt-1 max-w-2xl">
+                          <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl">
                             Algorithmic scoring based on academic qualification, language proficiency, verified funds docket for {journeyDestination || 'destination'}, and university offer status.
                           </p>
                         </div>
 
                         <div className="shrink-0">
                           {studyReadinessScore >= 95 ? (
-                            <div className="bg-emerald-500/20 border border-emerald-500/40 p-3.5 rounded-2xl text-center">
-                              <div className="text-xs font-black text-emerald-300">⭐ High Profile Strength</div>
-                              <div className="text-[11px] text-slate-200 mt-0.5">Self-Apply Recommended</div>
+                            <div className="bg-emerald-500/20 border border-emerald-500/40 p-4 rounded-2xl text-center">
+                              <div className="text-xs sm:text-sm font-black text-emerald-300">⭐ High Profile Strength</div>
+                              <div className="text-xs text-slate-200 mt-0.5">Self-Apply Recommended</div>
                               <a
                                 href="/self-apply"
-                                className="mt-2 inline-block px-4 py-1.5 bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black rounded-xl transition-all shadow-md"
+                                className="mt-2.5 inline-block px-5 py-2 bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black rounded-xl transition-all shadow-md"
                               >
                                 Self Apply Now →
                               </a>
                             </div>
                           ) : (
-                            <div className="bg-amber-500/20 border border-amber-500/40 p-3.5 rounded-2xl text-center">
-                              <div className="text-xs font-black text-amber-300">Profile Boost Needed (&lt;95%)</div>
-                              <div className="text-[11px] text-slate-200 mt-0.5">Specialist Guidance Suggested</div>
+                            <div className="bg-amber-500/20 border border-amber-500/40 p-4 rounded-2xl text-center">
+                              <div className="text-xs sm:text-sm font-black text-amber-300">Profile Boost Needed (&lt;95%)</div>
+                              <div className="text-xs text-slate-200 mt-0.5">Specialist Guidance Suggested</div>
                               <button
                                 type="button"
                                 onClick={() => {
                                   const formEl = document.getElementById('study-lead-capture-section');
                                   if (formEl) formEl.scrollIntoView({ behavior: 'smooth' });
                                 }}
-                                className="mt-2 inline-block px-4 py-1.5 bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black rounded-xl transition-all shadow-md cursor-pointer"
+                                className="mt-2.5 inline-block px-5 py-2 bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black rounded-xl transition-all shadow-md cursor-pointer"
                               >
                                 📞 Contact Expert to Enhance Profile
                               </button>
@@ -2512,7 +2564,7 @@ export function AITripPlannerLanding() {
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="w-full bg-white/10 rounded-full h-2.5 overflow-hidden">
+                      <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
                         <div
                           className="bg-gradient-to-r from-emerald-400 to-[#00A86B] h-full rounded-full transition-all duration-500"
                           style={{ width: `${studyReadinessScore}%` }}
@@ -2520,70 +2572,92 @@ export function AITripPlannerLanding() {
                       </div>
                     </div>
 
-                    {/* STEP 6: Admission Re-Check (6 Cols) */}
-                    <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm space-y-3">
-                      <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-                        <span className="w-7 h-7 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black text-xs">6</span>
-                        <div>
-                          <h4 className="text-sm sm:text-base font-black text-slate-900">Step 6: Admission Re-Check</h4>
-                          <p className="text-[11px] text-slate-400">Re-verify documents alongside {currentStudyData.admissionDocName}</p>
+                    {/* STEP 6: Admission Re-Check */}
+                    <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5 text-left">
+                      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div className="flex items-center gap-3">
+                          <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black text-sm sm:text-base shadow-xs">
+                            6
+                          </span>
+                          <div>
+                            <h4 className="text-base sm:text-lg font-black text-slate-900">
+                              Step 6: Admission Re-Check
+                            </h4>
+                            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                              Re-verify documents alongside {currentStudyData.admissionDocName}
+                            </p>
+                          </div>
                         </div>
+                        <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-xs font-bold">
+                          Step 6 of 8
+                        </span>
                       </div>
 
-                      <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/70 space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-600 truncate mr-2">{currentStudyData.admissionDocName}:</span>
+                      <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <span className="text-xs sm:text-sm font-bold text-slate-700 mr-2">{currentStudyData.admissionDocName}:</span>
                           <input
                             type="text"
                             value={casI20Number || currentStudyData.casNumber}
                             onChange={(e) => setCasI20Number(e.target.value)}
-                            className="bg-white border border-slate-200 text-xs font-black text-slate-900 rounded-lg px-2.5 py-1 w-36 text-right"
+                            className="bg-white border border-slate-200 text-xs sm:text-sm font-black text-slate-900 rounded-xl px-3.5 py-2 w-full sm:w-48 text-left sm:text-right"
                           />
                         </div>
-                        <div className="flex items-center justify-between pt-1 border-t border-slate-200/60">
-                          <span className="text-xs font-bold text-slate-600">University Offer Letter:</span>
-                          <span className="text-xs font-extrabold text-[#00A86B]">Verified by {activeSelectedUni} ✓</span>
+                        <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+                          <span className="text-xs sm:text-sm font-bold text-slate-700">University Offer Letter:</span>
+                          <span className="text-xs sm:text-sm font-extrabold text-[#00A86B]">Verified by {activeSelectedUni} ✓</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* STEPS 7 & 8: VFS Appointment Booking & Final Application Submission (6 Cols) */}
-                    <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-6 shadow-sm space-y-3">
-                      <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-                        <span className="w-7 h-7 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-black text-xs">7 &amp; 8</span>
-                        <div>
-                          <h4 className="text-sm sm:text-base font-black text-slate-900">Step 7 &amp; 8: Slot Booking &amp; Final Filing</h4>
-                          <p className="text-[11px] text-slate-400">Biometric slot booking &amp; official embassy filing</p>
+                    {/* STEPS 7 & 8: VFS Appointment Booking & Final Application Submission */}
+                    <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5 text-left">
+                      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div className="flex items-center gap-3">
+                          <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center font-black text-sm sm:text-base shadow-xs">
+                            7 &amp; 8
+                          </span>
+                          <div>
+                            <h4 className="text-base sm:text-lg font-black text-slate-900">
+                              Step 7 &amp; 8: Slot Booking &amp; Final Visa Filing
+                            </h4>
+                            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                              Biometric appointment booking &amp; official embassy dossier submission
+                            </p>
+                          </div>
                         </div>
+                        <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold">
+                          Step 7 &amp; 8 of 8
+                        </span>
                       </div>
 
-                      <div className="space-y-2">
-                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/70 flex items-center justify-between">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex flex-col justify-between gap-3">
                           <div>
-                            <div className="text-xs font-black text-slate-900">Step 7: Appointment Slot</div>
-                            <div className="text-[11px] text-slate-500">{currentStudyData.vfsText}</div>
+                            <div className="text-xs sm:text-sm font-black text-slate-900">Step 7: Appointment Slot</div>
+                            <div className="text-xs text-slate-500 mt-1">{currentStudyData.vfsText}</div>
                           </div>
                           <a
                             href="/vfs-appointment"
-                            className="px-3 py-1.5 bg-[#00A86B] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#008f5a] transition-all"
+                            className="w-full text-center py-2.5 bg-[#00A86B] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#008f5a] transition-all"
                           >
-                            Book Slot →
+                            Book Biometric Slot →
                           </a>
                         </div>
 
-                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/70 flex items-center justify-between">
+                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex flex-col justify-between gap-3">
                           <div>
-                            <div className="text-xs font-black text-slate-900">Step 8: Final Visa Filing</div>
-                            <div className="text-[11px] text-slate-500">Dossier lock &amp; embassy tracking generation</div>
+                            <div className="text-xs sm:text-sm font-black text-slate-900">Step 8: Final Visa Filing</div>
+                            <div className="text-xs text-slate-500 mt-1">Dossier lock &amp; embassy tracking generation</div>
                           </div>
                           <button
                             type="button"
                             onClick={() => setFinalDossierSubmitted(true)}
-                            className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+                            className={`w-full text-center py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
                               finalDossierSubmitted ? 'bg-emerald-100 text-[#00A86B]' : 'bg-slate-900 text-white hover:bg-slate-800'
                             }`}
                           >
-                            {finalDossierSubmitted ? 'Submitted ✓' : 'Submit Application'}
+                            {finalDossierSubmitted ? 'Submitted ✓' : 'Submit Final Application'}
                           </button>
                         </div>
                       </div>

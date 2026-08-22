@@ -132,6 +132,43 @@ const travelPurposeOptions = [
   { value: 'transit', label: 'Transit Visa', icon: '✈️', desc: 'Airport transit & Stopover Visas' },
 ];
 
+// Domestic Travel Dropdown Options
+const domesticStateOptions = [
+  { value: 'Rajasthan', label: 'Rajasthan', icon: '🏰' },
+  { value: 'Maharashtra', label: 'Maharashtra', icon: '🏙️' },
+  { value: 'Delhi NCR', label: 'Delhi NCR', icon: '🏛️' },
+  { value: 'Karnataka', label: 'Karnataka', icon: '🌳' },
+  { value: 'Kerala', label: 'Kerala', icon: '🌴' },
+  { value: 'Goa', label: 'Goa', icon: '🏖️' },
+  { value: 'Gujarat', label: 'Gujarat', icon: '🦁' },
+  { value: 'Tamil Nadu', label: 'Tamil Nadu', icon: '🛕' },
+  { value: 'Himachal Pradesh', label: 'Himachal Pradesh', icon: '🏔️' },
+  { value: 'Uttarakhand', label: 'Uttarakhand', icon: '⛰️' },
+  { value: 'Punjab', label: 'Punjab', icon: '🌾' },
+  { value: 'West Bengal', label: 'West Bengal', icon: '🪔' },
+  { value: 'Other State', label: 'Other State / UT', icon: '📍' },
+];
+
+const domesticDestinationOptions = [
+  { value: 'Goa Beach Holiday', label: 'Goa Beach & Water Sports', icon: '🏖️' },
+  { value: 'Kerala Backwaters & Munnar', label: 'Kerala Backwaters & Munnar Hills', icon: '🌴' },
+  { value: 'Manali, Shimla & Rohtang', label: 'Manali, Shimla & Snow Valleys', icon: '🏔️' },
+  { value: 'Rajasthan Heritage Forts', label: 'Jaipur, Udaipur & Royal Forts', icon: '🏰' },
+  { value: 'Kashmir Valley & Gulmarg', label: 'Kashmir Valley & Gulmarg Snow Tour', icon: '❄️' },
+  { value: 'Varanasi & Ayodhya Circuit', label: 'Varanasi & Ayodhya Spiritual Tour', icon: '🕉️' },
+  { value: 'Andaman Island Expedition', label: 'Andaman & Havelock Island Tour', icon: '🌊' },
+  { value: 'Leh Ladakh Mountain Passes', label: 'Leh Ladakh High Altitude Safari', icon: '🏍️' },
+];
+
+const tripDurationOptions = [
+  { value: '15', label: '15 Days (Quick Vacation)', icon: '⚡' },
+  { value: '30', label: '30 Days (Standard Trip)', icon: '🗓️' },
+  { value: '60', label: '60 Days (Extended Visit)', icon: '✈️' },
+  { value: '90', label: '90 Days (Quarter Stay)', icon: '🏖️' },
+  { value: '180', label: '180 Days (Semester / Long Stay)', icon: '🎓' },
+  { value: '365', label: '1+ Year (Study / Work Permit)', icon: '💼' },
+];
+
 // Dynamic Destination Study Data Lookup (Real AI Pathway Knowledge Engine)
 const getDestinationStudyData = (destination: string) => {
   const d = (destination || '').toLowerCase().trim();

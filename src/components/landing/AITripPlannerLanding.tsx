@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import {
+  Upload,
+  RefreshCw,
   Sparkles,
   ArrowRight,
   MapPin,
@@ -109,6 +111,16 @@ const journeyDestinationOptions = [
   { value: 'Singapore', label: 'Singapore', icon: '🇸🇬', desc: 'EP, S-Pass & Global Investor' },
   { value: 'France', label: 'France / Schengen', icon: '🇫🇷', desc: 'Talent Passport & Europe Stay' },
   { value: 'Japan', label: 'Japan', icon: '🇯🇵', desc: 'SSW & Skilled Professional' },
+];
+
+
+const checklistCountryOptions = [
+  { value: 'UAE', label: 'United Arab Emirates (UAE / Dubai)', icon: '🇦🇪' },
+  { value: 'Canada', label: 'Canada (Study, TRV, Express Entry)', icon: '🇨🇦' },
+  { value: 'United States', label: 'United States (B1/B2, F1, H1B)', icon: '🇺🇸' },
+  { value: 'United Kingdom', label: 'United Kingdom (Student, Standard)', icon: '🇬🇧' },
+  { value: 'Germany', label: 'Germany (Schengen, Opportunity Card)', icon: '🇩🇪' },
+  { value: 'Australia', label: 'Australia (Subclass 500, 482, 189)', icon: '🇦🇺' },
 ];
 
 const travelPurposeOptions = [
@@ -548,6 +560,9 @@ export function AITripPlannerLanding() {
 
   // Dropdowns open state
   const [isCourseLevelOpen, setIsCourseLevelOpen] = useState(false);
+  const [checklistCountry, setChecklistCountry] = useState('UAE');
+  const [isChecklistCountryOpen, setIsChecklistCountryOpen] = useState(false);
+  const checklistCountryRef = useRef<HTMLDivElement>(null);
 
   // Step 1 Custom Dropdowns Open States
   

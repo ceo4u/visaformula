@@ -1434,87 +1434,61 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
             </div>
           )}
 
-          {/* ── FLOW 1: PARENTAL SECURITY & PRE-DEPARTURE ENGINE (HAVE VISA? = YES) ── */}
+                    {/* ── FLOW 1: EXACT SCREENSHOT DESIGN (HAVE VISA? = YES) ── */}
           {hasVisaAlready === 'yes' && hasGenerated && (
-            <div id="parental-security-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
+            <div id="parental-security-engine-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn">
               
-              {/* Dynamic Header Badge */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#00A86B]/20 text-[#00A86B] border border-[#00A86B]/30 text-[10px] font-black uppercase tracking-wider">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>Parental Security Engine Active</span>
-                    </span>
-                    <span className="text-slate-400 text-xs font-medium">Pre-Departure Peace-of-Mind</span>
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                    Departure Safety Roadmap: {passportCountry || 'India'} → {journeyDestination || 'Canada'}
-                  </h3>
-                  <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl">
-                    Automated compliance audit, driver pickup coordination, airport layovers, and on-arrival settling toolkit.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2 shrink-0">
-                  {daysLeft !== null && (
-                    <div className="px-3.5 py-1.5 rounded-2xl bg-white/10 border border-white/15 text-white flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <div>
-                        <div className="text-[10px] text-slate-300 font-bold leading-none">Visa Expiry</div>
-                        <div className="text-xs font-black text-emerald-300 leading-tight mt-0.5">{daysLeft} Days Remaining</div>
-                      </div>
-                    </div>
-                  )}
-                  <button
-                    type="button"
-                    onClick={handleShareWhatsApp}
-                    className="px-4 py-2 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm shadow-md flex items-center gap-2 transition-all cursor-pointer"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    <span>Share with Parents</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* 2-CARD CORE ENGINE (LEFT: VISA & OCR | RIGHT: PEACE-OF-MIND ROADMAP) */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
-                {/* ── LEFT CARD: VISA VERIFICATION & OCR ENGINE (5 COLS) ── */}
-                <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-[0_12px_40px_rgba(0,0,0,0.05)] space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-bold">
-                        <FileCheck2 className="w-4 h-4" />
+                {/* ── LEFT CARD: STEP 1: VISA VERIFICATION & SMART ALERTS (5 COLS) ── */}
+                <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5">
+                  
+                  {/* Card Header */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shrink-0">
+                        <RotateCw className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="text-sm sm:text-base font-black text-slate-900">Visa Verification &amp; OCR</h4>
-                        <p className="text-[11px] text-slate-400 font-medium">Vision-powered subclass compliance</p>
+                        <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                          Step 1: Visa Verification &amp; Smart Alerts
+                        </h3>
+                        <p className="text-xs text-slate-500 font-medium mt-0.5">
+                          Auto-expiry tracker &amp; condition audit.
+                        </p>
                       </div>
                     </div>
-                    
-                    <button
-                      type="button"
-                      onClick={() => visaFileInputRef.current?.click()}
-                      className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
-                    >
-                      <UploadCloud className="w-3.5 h-3.5" />
-                      <span>{isOcrScanning ? 'Scanning...' : 'Scan Document'}</span>
-                    </button>
+
+                    <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100/90 text-slate-600 text-[11px] font-bold shrink-0">
+                      <Clock className="w-3.5 h-3.5 text-slate-400" />
+                      <span>{daysLeft !== null ? `${daysLeft}d left` : 'Set expiry date'}</span>
+                    </div>
                   </div>
 
-                  {/* Visa Type Badge & Dates */}
-                  <div className="bg-slate-50/80 border border-slate-200/70 rounded-2xl p-3.5 space-y-2.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Approved Subclass</span>
-                      <span className="text-xs font-black text-[#00A86B] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-lg">
-                        {approvedVisaType || 'Study Permit (IMM 1442)'}
-                      </span>
-                    </div>
+                  {/* Visa Type / Subclass */}
+                  <div>
+                    <label className="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
+                      VISA TYPE / SUBCLASS
+                    </label>
+                    <input
+                      type="text"
+                      value={approvedVisaType}
+                      onChange={(e) => {
+                        setApprovedVisaType(e.target.value);
+                        autoSaveJourney({ visa_type: e.target.value });
+                      }}
+                      placeholder="e.g. Student Subclass 500 / Skilled Worker (UAE)"
+                      className="w-full h-12 px-4 rounded-2xl bg-slate-50/90 border border-slate-200/90 text-slate-900 placeholder-slate-400 text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white transition-all"
+                    />
+                  </div>
 
-                    <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200/50">
-                      <div>
-                        <span className="text-[10px] font-bold text-slate-400 block">Approval Date</span>
+                  {/* Dates Row */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
+                        APPROVAL DATE
+                      </label>
+                      <div className="relative">
                         <input
                           type="date"
                           value={approvalDate}
@@ -1522,11 +1496,16 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                             setApprovalDate(e.target.value);
                             autoSaveJourney({ visa_grant_date: e.target.value });
                           }}
-                          className="bg-white border border-slate-200 text-slate-800 text-xs font-bold rounded-lg px-2 py-1 w-full mt-0.5 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                          className="w-full h-12 px-3.5 rounded-2xl bg-slate-50/90 border border-slate-200/90 text-slate-800 text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white transition-all"
                         />
                       </div>
-                      <div>
-                        <span className="text-[10px] font-bold text-slate-400 block">Expiry Date</span>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">
+                        VISA EXPIRY DATE
+                      </label>
+                      <div className="relative">
                         <input
                           type="date"
                           value={validityDate}
@@ -1534,22 +1513,50 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                             setValidityDate(e.target.value);
                             autoSaveJourney({ visa_expiry_date: e.target.value });
                           }}
-                          className="bg-white border border-slate-200 text-slate-800 text-xs font-bold rounded-lg px-2 py-1 w-full mt-0.5 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                          className="w-full h-12 px-3.5 rounded-2xl bg-slate-50/90 border border-slate-200/90 text-slate-800 text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white transition-all"
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Legal Rule Pills */}
+                  {/* Scan Visa Document Box */}
+                  <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-lg shrink-0">
+                        <QrCode className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-tight">
+                          Scan Visa Document
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                          Auto-extracts work hours &amp; legal rules.
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => visaFileInputRef.current?.click()}
+                      className="px-4 py-2 rounded-xl bg-[#2e0854] hover:bg-[#3d0b6f] text-white text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shrink-0 shadow-sm"
+                    >
+                      <Search className="w-3.5 h-3.5" />
+                      <span>{isOcrScanning ? 'Scanning...' : 'Scan'}</span>
+                    </button>
+                  </div>
+
+                  {/* CONDITIONS OF VISA */}
                   <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-black text-slate-800">Stay &amp; Work Conditions</span>
+                    <div className="flex items-center justify-between mb-2.5">
+                      <span className="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">
+                        CONDITIONS OF VISA ({ocrConditions.length || 4})
+                      </span>
                       <button
                         type="button"
                         onClick={() => setIsAddingCondition(!isAddingCondition)}
-                        className="text-[11px] font-bold text-[#00A86B] hover:underline cursor-pointer"
+                        className="text-xs font-extrabold text-[#00A86B] hover:underline cursor-pointer flex items-center gap-1"
                       >
-                        + Add Rule
+                        <span>+ Add</span>
                       </button>
                     </div>
 
@@ -1559,100 +1566,123 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                           type="text"
                           value={newCustomCondition}
                           onChange={(e) => setNewCustomCondition(e.target.value)}
-                          placeholder="e.g. Max 20h weekly work during term"
-                          className="text-xs border border-slate-200 rounded-xl px-2.5 py-1.5 w-full focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                          placeholder="e.g. Work: 48h/fortnight allowed"
+                          className="text-xs border border-slate-200 rounded-xl px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
                         />
                         <button
                           type="button"
                           onClick={handleAddCondition}
-                          className="px-2.5 py-1.5 bg-[#00A86B] text-white text-xs font-bold rounded-xl shrink-0"
+                          className="px-3 py-2 bg-[#00A86B] text-white text-xs font-bold rounded-xl shrink-0 cursor-pointer"
                         >
                           Save
                         </button>
                       </div>
                     )}
 
-                    <div className="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar">
-                      {ocrConditions.map((cond, i) => (
-                        <div key={i} className="flex items-start gap-2 text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-100 p-2 rounded-xl">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#00A86B] shrink-0 mt-0.5" />
-                          <span>{cond}</span>
-                        </div>
-                      ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {(ocrConditions.length > 0 ? ocrConditions : [
+                        'Work: 48h/fortnight allowed',
+                        'Health: OSHC / NHS Active',
+                        'Work: 48h/fortnight allowed',
+                        'Entry: Multiple Allowed'
+                      ]).map((cond, idx) => {
+                        let icon = '⏱️';
+                        if (cond.toLowerCase().includes('health') || cond.toLowerCase().includes('oshc')) icon = '📑';
+                        else if (cond.toLowerCase().includes('entry') || cond.toLowerCase().includes('travel')) icon = '✈️';
+                        
+                        return (
+                          <div
+                            key={idx}
+                            className="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-100/90 text-slate-800 text-[11px] font-bold"
+                          >
+                            <span className="text-sm shrink-0">{icon}</span>
+                            <span className="truncate">{cond}</span>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 
-                  {/* Copy Dossier Action */}
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                    <button
-                      type="button"
-                      onClick={handleCopyDossier}
-                      className="text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>{copiedToast ? 'Copied Dossier!' : 'Copy Summary'}</span>
-                    </button>
-                    <span className="text-[10px] text-slate-400 font-medium">Verified by Vision OCR</span>
-                  </div>
                 </div>
 
-                {/* ── RIGHT CARD: PARENT'S PEACE-OF-MIND ROADMAP (7 COLS) ── */}
-                <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-[0_12px_40px_rgba(0,0,0,0.05)] space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold">
-                        <Shield className="w-4 h-4" />
+                {/* ── RIGHT CARD: STEP 2: SUGGESTED NEXT ACTIONS CHECKLIST (7 COLS) ── */}
+                <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5">
+                  
+                  {/* Card Header */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shrink-0">
+                        <Shield className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="text-sm sm:text-base font-black text-slate-900">Pre-Departure Safety Checklist</h4>
-                        <p className="text-[11px] text-slate-400 font-medium">Critical travel, transit, accommodation &amp; settling milestones</p>
+                        <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                          Step 2: Suggested Next Actions Checklist
+                        </h3>
+                        <p className="text-xs text-slate-500 font-medium mt-0.5">
+                          The Parent's Peace-of-Mind Roadmap for safe departure.
+                        </p>
                       </div>
+                    </div>
+
+                    <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/70 text-[#00A86B] text-xs font-black shrink-0">
+                      <span>6 Safeguards</span>
                     </div>
                   </div>
 
-                  {/* 6 Action Milestones Grid */}
-                  <div className="space-y-3">
+                  {/* 2-Column x 3-Row Grid of 6 Action Cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     
-                    {/* 1. Flight & Transit Visa Check */}
-                    <div className="bg-slate-50/80 border border-slate-200/70 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                      <div className="flex items-start gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 font-bold shrink-0 mt-0.5">
-                          ✈️
+                    {/* Action 1: Flight & Transit Check */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between space-y-3 shadow-2xs">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">✈️</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 font-sans">
+                            TRANSIT
+                          </span>
                         </div>
-                        <div>
-                          <div className="text-xs font-black text-slate-800">Flight &amp; Transit Layover Check</div>
-                          <div className="text-[11px] text-slate-500">
-                            {transitCheckResult || 'Upload itinerary to verify stopover transit visa exemption'}
-                          </div>
-                        </div>
+                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                          1. Flight &amp; Transit Check
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          {transitCheckResult || 'Upload ticket for layover transit rules.'}
+                        </p>
                       </div>
+
                       <button
                         type="button"
                         onClick={() => ticketFileInputRef.current?.click()}
-                        className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-800 text-xs font-bold transition-all shrink-0 cursor-pointer"
+                        className="w-full py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
                       >
-                        {ticketScanning ? 'Verifying...' : flightTicketUploaded ? 'Re-Verify' : 'Upload Ticket'}
+                        <UploadCloud className="w-3.5 h-3.5" />
+                        <span>{ticketScanning ? 'Verifying...' : flightTicketUploaded ? 'Ticket Uploaded ✓' : 'Upload Flight Ticket'}</span>
                       </button>
                     </div>
 
-                    {/* 2. Driver & Airport Pickup */}
-                    <div className="bg-slate-50/80 border border-slate-200/70 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                      <div className="flex items-start gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 font-bold shrink-0 mt-0.5">
-                          🚗
+                    {/* Action 2: Driver & Airport Pickup */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between space-y-3 shadow-2xs">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">🚗</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-sans">
+                            PICKUP
+                          </span>
                         </div>
-                        <div>
-                          <div className="text-xs font-black text-slate-800">Driver &amp; Airport Pickup</div>
-                          <div className="text-[11px] text-slate-500">Verified driver meets at terminal gate</div>
-                        </div>
+                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                          2. Driver &amp; Airport Pickup
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Book verified terminal driver pickup.
+                        </p>
                       </div>
-                      <div className="flex items-center gap-1.5 shrink-0">
+
+                      <div className="space-y-2">
                         <input
                           type="text"
                           value={pickupFlightNum}
                           onChange={(e) => setPickupFlightNum(e.target.value)}
                           placeholder="Flight No. (e.g. AC 043)"
-                          className="text-xs border border-slate-200 bg-white rounded-xl px-2.5 py-1.5 w-32 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                          className="w-full h-9 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
                         />
                         <button
                           type="button"
@@ -1660,235 +1690,169 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                             setPickupConfirmed(true);
                             autoSaveJourney({ airport_pickup_confirmed: true, airport_pickup_flight_no: pickupFlightNum });
                           }}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                            pickupConfirmed ? 'bg-emerald-100 text-[#00A86B]' : 'bg-[#00A86B] text-white hover:bg-[#008f5a]'
+                          className={`w-full py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer shadow-xs ${
+                            pickupConfirmed
+                              ? 'bg-emerald-100 text-[#00A86B]'
+                              : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
                           }`}
                         >
-                          {pickupConfirmed ? 'Booked ✓' : 'Book'}
+                          {pickupConfirmed ? 'Pickup Confirmed ✓' : 'Confirm Pickup'}
                         </button>
                       </div>
                     </div>
 
-                    {/* 3. Secure Housing */}
-                    <div className="bg-slate-50/80 border border-slate-200/70 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                      <div className="flex items-start gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 font-bold shrink-0 mt-0.5">
-                          🏡
+                    {/* Action 3: Secure Housing */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between space-y-3 shadow-2xs">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">🏡</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-sans">
+                            ESCROW
+                          </span>
                         </div>
-                        <div>
-                          <div className="text-xs font-black text-slate-800">Secure Housing &amp; Escrow</div>
-                          <div className="text-[11px] text-slate-500">Verified student accommodation with zero rent-scam guarantee</div>
-                        </div>
+                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                          3. Secure Housing
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Escrow-protected student dorms &amp; apartments.
+                        </p>
                       </div>
+
                       <a
                         href="/classifieds?category=accommodation"
-                        className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-800 text-xs font-bold transition-all shrink-0 text-center"
+                        className="w-full py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold flex items-center justify-center gap-1.5 transition-all text-center shadow-xs"
                       >
-                        Explore Dorms
+                        <span>Find Housing</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
                       </a>
                     </div>
 
-                    {/* 4. Peer Network */}
-                    <div className="bg-slate-50/80 border border-slate-200/70 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                      <div className="flex items-start gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 font-bold shrink-0 mt-0.5">
-                          👥
+                    {/* Action 4: Peer Network */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between space-y-3 shadow-2xs">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">👥</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-sans">
+                            COMMUNITY
+                          </span>
                         </div>
-                        <div>
-                          <div className="text-xs font-black text-slate-800">Peer Network &amp; Co-Travellers</div>
-                          <div className="text-[11px] text-slate-500">Connect with students &amp; professionals moving to {journeyDestination || 'same city'}</div>
-                        </div>
+                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                          4. Peer Network
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Connect with students going to same city.
+                        </p>
                       </div>
+
                       <button
                         type="button"
                         onClick={() => {
                           setPeerNetworkJoined(!peerNetworkJoined);
                           autoSaveJourney({ peer_network_joined: !peerNetworkJoined });
                         }}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                          peerNetworkJoined ? 'bg-emerald-100 text-[#00A86B]' : 'bg-white border border-slate-200 hover:bg-slate-100 text-slate-800'
+                        className={`w-full py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer shadow-xs ${
+                          peerNetworkJoined
+                            ? 'bg-emerald-100 text-[#00A86B]'
+                            : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
                         }`}
                       >
-                        {peerNetworkJoined ? 'Joined Group ✓' : 'Join Network'}
+                        {peerNetworkJoined ? 'Group Joined ✓' : 'Join Peer Group'}
                       </button>
                     </div>
 
-                    {/* 5. Forex Card & 5G eSIM */}
-                    <div className="bg-slate-50/80 border border-slate-200/70 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                      <div className="flex items-start gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 font-bold shrink-0 mt-0.5">
-                          💳
+                    {/* Action 5: Forex & 5G eSIM */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between space-y-3 shadow-2xs">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">💳</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 font-sans">
+                            0% MARKUP
+                          </span>
                         </div>
-                        <div>
-                          <div className="text-xs font-black text-slate-800">Forex Card &amp; 5G eSIM</div>
-                          <div className="text-[11px] text-slate-500">Zero-markup multi-currency debit card + instant QR eSIM</div>
-                        </div>
+                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                          5. Forex &amp; 5G eSIM
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          Zero-markup card &amp; instant QR eSIM.
+                        </p>
                       </div>
+
                       <button
                         type="button"
                         onClick={() => {
                           setForexCardOrdered(!forexCardOrdered);
                           autoSaveJourney({ forex_ordered: !forexCardOrdered });
                         }}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                          forexCardOrdered ? 'bg-emerald-100 text-[#00A86B]' : 'bg-white border border-slate-200 hover:bg-slate-100 text-slate-800'
+                        className={`w-full py-2.5 px-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer shadow-xs ${
+                          forexCardOrdered
+                            ? 'bg-emerald-100 text-[#00A86B]'
+                            : 'bg-slate-900 hover:bg-slate-800 text-white'
                         }`}
                       >
-                        {forexCardOrdered ? 'Card Ordered ✓' : 'Get Free Card'}
+                        {forexCardOrdered ? 'Ordered ✓' : 'Get Forex & eSIM'}
                       </button>
                     </div>
 
-                    {/* 6. Customs & Biosecurity */}
-                    <div className="bg-slate-50/80 border border-slate-200/70 rounded-2xl p-3.5 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-base">🛡️</span>
-                          <span className="text-xs font-black text-slate-800">Customs &amp; Biosecurity Declaration</span>
+                    {/* Action 6: Customs & Rules */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between space-y-3 shadow-2xs">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xl">📄</span>
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 font-sans">
+                            CUSTOMS
+                          </span>
                         </div>
-                        <span className="text-[10px] text-slate-400 font-bold">Mandatory Regulations</span>
+                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                          6. Customs &amp; Rules
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 leading-snug">
+                          $10k cash limit &amp; medication guidelines.
+                        </p>
                       </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-semibold text-slate-700">
-                        <label className="flex items-center gap-1.5 cursor-pointer bg-white p-2 rounded-xl border border-slate-200/60">
-                          <input
-                            type="checkbox"
-                            checked={customsChecklistDone.cash}
-                            onChange={(e) => {
-                              const updated = { ...customsChecklistDone, cash: e.target.checked };
-                              setCustomsChecklistDone(updated);
-                              autoSaveJourney({ customs_checklist: updated });
-                            }}
-                            className="rounded text-[#00A86B] focus:ring-0 w-3.5 h-3.5"
-                          />
-                          <span>&lt; $10k Cash</span>
-                        </label>
-                        <label className="flex items-center gap-1.5 cursor-pointer bg-white p-2 rounded-xl border border-slate-200/60">
-                          <input
-                            type="checkbox"
-                            checked={customsChecklistDone.meds}
-                            onChange={(e) => {
-                              const updated = { ...customsChecklistDone, meds: e.target.checked };
-                              setCustomsChecklistDone(updated);
-                              autoSaveJourney({ customs_checklist: updated });
-                            }}
-                            className="rounded text-[#00A86B] focus:ring-0 w-3.5 h-3.5"
-                          />
-                          <span>Doctor Letter</span>
-                        </label>
-                        <label className="flex items-center gap-1.5 cursor-pointer bg-white p-2 rounded-xl border border-slate-200/60">
-                          <input
-                            type="checkbox"
-                            checked={customsChecklistDone.food}
-                            onChange={(e) => {
-                              const updated = { ...customsChecklistDone, food: e.target.checked };
-                              setCustomsChecklistDone(updated);
-                              autoSaveJourney({ customs_checklist: updated });
-                            }}
-                            className="rounded text-[#00A86B] focus:ring-0 w-3.5 h-3.5"
-                          />
-                          <span>No Fresh Food</span>
-                        </label>
-                        <label className="flex items-center gap-1.5 cursor-pointer bg-white p-2 rounded-xl border border-slate-200/60">
-                          <input
-                            type="checkbox"
-                            checked={customsChecklistDone.docs}
-                            onChange={(e) => {
-                              const updated = { ...customsChecklistDone, docs: e.target.checked };
-                              setCustomsChecklistDone(updated);
-                              autoSaveJourney({ customs_checklist: updated });
-                            }}
-                            className="rounded text-[#00A86B] focus:ring-0 w-3.5 h-3.5"
-                          />
-                          <span>Original LOA</span>
-                        </label>
+
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-3 text-xs font-semibold text-slate-700">
+                          <label className="flex items-center gap-1.5 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={customsChecklistDone.cash}
+                              onChange={(e) => {
+                                const updated = { ...customsChecklistDone, cash: e.target.checked };
+                                setCustomsChecklistDone(updated);
+                                autoSaveJourney({ customs_checklist: updated });
+                              }}
+                              className="rounded text-[#00A86B] focus:ring-0 w-3.5 h-3.5"
+                            />
+                            <span>&lt;$10k Cash</span>
+                          </label>
+                          <label className="flex items-center gap-1.5 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={customsChecklistDone.meds}
+                              onChange={(e) => {
+                                const updated = { ...customsChecklistDone, meds: e.target.checked };
+                                setCustomsChecklistDone(updated);
+                                autoSaveJourney({ customs_checklist: updated });
+                              }}
+                              className="rounded text-[#00A86B] focus:ring-0 w-3.5 h-3.5"
+                            />
+                            <span>Doctor Letter</span>
+                          </label>
+                        </div>
+
+                        <a
+                          href="/visa-guide"
+                          className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-extrabold block text-center transition-all"
+                        >
+                          Read Arrival Guide →
+                        </a>
                       </div>
                     </div>
 
                   </div>
+
                 </div>
 
-              </div>
-
-              {/* ── STEP 3 ON-ARRIVAL ACCORDION ── */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[28px] p-5 sm:p-6 shadow-[0_12px_40px_rgba(0,0,0,0.05)] text-left">
-                <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
-                      🏢
-                    </div>
-                    <div>
-                      <h4 className="text-sm sm:text-base font-black text-slate-900">Step 3: On-Arrival Settling Toolkit</h4>
-                      <p className="text-[11px] text-slate-400 font-medium">Bank account, tax numbers, campus registration &amp; healthcare</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                  <div className="bg-slate-50/90 border border-slate-200/80 p-3.5 rounded-2xl space-y-1.5">
-                    <span className="text-base">🏦</span>
-                    <h5 className="text-xs font-black text-slate-800">Local Bank Account (SIN/NIN)</h5>
-                    <p className="text-[11px] text-slate-500 leading-snug">Open zero-fee student/worker checking account</p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setBankAppointmentBooked(!bankAppointmentBooked);
-                        autoSaveJourney({ settlement_checklist: { ...customsChecklistDone, bank: !bankAppointmentBooked } });
-                      }}
-                      className={`w-full py-1.5 rounded-xl text-xs font-bold mt-2 cursor-pointer transition-all ${
-                        bankAppointmentBooked ? 'bg-emerald-100 text-[#00A86B]' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
-                      }`}
-                    >
-                      {bankAppointmentBooked ? 'Booked ✓' : 'Book Bank Slot'}
-                    </button>
-                  </div>
-
-                  <div className="bg-slate-50/90 border border-slate-200/80 p-3.5 rounded-2xl space-y-1.5">
-                    <span className="text-base">🎓</span>
-                    <h5 className="text-xs font-black text-slate-800">Campus Check-In</h5>
-                    <p className="text-[11px] text-slate-500 leading-snug">Student ID card &amp; orientation compliance</p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setCampusCheckInConfirmed(!campusCheckInConfirmed);
-                        autoSaveJourney({ settlement_checklist: { ...customsChecklistDone, campus: !campusCheckInConfirmed } });
-                      }}
-                      className={`w-full py-1.5 rounded-xl text-xs font-bold mt-2 cursor-pointer transition-all ${
-                        campusCheckInConfirmed ? 'bg-emerald-100 text-[#00A86B]' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
-                      }`}
-                    >
-                      {campusCheckInConfirmed ? 'Confirmed ✓' : 'Confirm Check-in'}
-                    </button>
-                  </div>
-
-                  <div className="bg-slate-50/90 border border-slate-200/80 p-3.5 rounded-2xl space-y-1.5">
-                    <span className="text-base">🚇</span>
-                    <h5 className="text-xs font-black text-slate-800">Subway &amp; Transit Pass</h5>
-                    <p className="text-[11px] text-slate-500 leading-snug">Discounted city monthly transit concession card</p>
-                    <a
-                      href="/visa-guide"
-                      className="w-full py-1.5 rounded-xl text-xs font-bold mt-2 bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 text-center block transition-all"
-                    >
-                      View Transit Guide
-                    </a>
-                  </div>
-
-                  <div className="bg-slate-50/90 border border-slate-200/80 p-3.5 rounded-2xl space-y-1.5">
-                    <span className="text-base">🩺</span>
-                    <h5 className="text-xs font-black text-slate-800">GP Doctor Registration</h5>
-                    <p className="text-[11px] text-slate-500 leading-snug">Register with local clinic for NHS / Medicare</p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setGpDoctorRegistered(!gpDoctorRegistered);
-                        autoSaveJourney({ settlement_checklist: { ...customsChecklistDone, gp: !gpDoctorRegistered } });
-                      }}
-                      className={`w-full py-1.5 rounded-xl text-xs font-bold mt-2 cursor-pointer transition-all ${
-                        gpDoctorRegistered ? 'bg-emerald-100 text-[#00A86B]' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
-                      }`}
-                    >
-                      {gpDoctorRegistered ? 'Registered ✓' : 'Register Clinic'}
-                    </button>
-                  </div>
-                </div>
               </div>
 
             </div>

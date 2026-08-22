@@ -1130,26 +1130,26 @@ export function AITripPlannerLanding() {
             </p>
           </div>
 
-          {/* ── 2. PLAN YOUR OVERSEAS JOURNEY FORM CARD (PRIMARY SEARCH) ── */}
-          <div className="relative z-30 w-full max-w-5xl mx-auto mt-7 sm:mt-8 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-7 md:p-8 shadow-[0_16px_50px_rgba(48,0,90,0.07)] text-left">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-2xs">
-                  <Compass className="w-5 h-5 stroke-[2.2]" />
+          {/* ── 2. PLAN YOUR OVERSEAS JOURNEY FORM CARD (SLIM & WIDE HORIZONTAL) ── */}
+          <div className="relative z-30 w-full max-w-6xl mx-auto mt-5 sm:mt-6 bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:py-3.5 md:px-6 shadow-[0_12px_40px_rgba(48,0,90,0.06)] text-left">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-2xs shrink-0">
+                  <Compass className="w-4 h-4 stroke-[2.2]" />
                 </div>
                 <div>
-                  <h2 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                  <h2 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
                     Plan Your Overseas Journey &amp; Visa
                   </h2>
-                  <p className="text-xs font-medium text-slate-500 mt-0.5">
+                  <p className="text-[11px] sm:text-xs font-medium text-slate-500">
                     Real-time compliance checks, pre-visa audits &amp; departure security
                   </p>
                 </div>
               </div>
 
               {/* Core Decision Toggle: Have Visa Already? */}
-              <div className="flex items-center gap-2 bg-slate-100/90 p-1 rounded-2xl border border-slate-200/80 shrink-0 self-start sm:self-auto">
-                <span className="text-xs font-extrabold text-slate-700 px-2 select-none">
+              <div className="flex items-center gap-1.5 bg-slate-100/90 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-200/80 shrink-0 self-start sm:self-auto">
+                <span className="text-[11px] sm:text-xs font-extrabold text-slate-700 px-2 select-none">
                   Have Visa Already?
                 </span>
                 
@@ -1165,7 +1165,7 @@ export function AITripPlannerLanding() {
                       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }, 100);
                   }}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                  className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
                     hasVisaAlready === 'no'
                       ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30'
                       : 'text-slate-600 hover:text-slate-900'
@@ -1173,7 +1173,7 @@ export function AITripPlannerLanding() {
                 >
                   <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
                   <span>NO</span>
-                  {hasVisaAlready === 'no' && <Check className="w-3.5 h-3.5 text-cyan-300 stroke-[3]" />}
+                  {hasVisaAlready === 'no' && <Check className="w-3 h-3 text-cyan-300 stroke-[3]" />}
                 </button>
 
                 {/* YES Option */}
@@ -1188,7 +1188,7 @@ export function AITripPlannerLanding() {
                       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }, 100);
                   }}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                  className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
                     hasVisaAlready === 'yes'
                       ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35'
                       : 'text-slate-600 hover:text-slate-900'
@@ -1196,17 +1196,17 @@ export function AITripPlannerLanding() {
                 >
                   <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
                   <span>YES</span>
-                  {hasVisaAlready === 'yes' && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
+                  {hasVisaAlready === 'yes' && <Check className="w-3 h-3 text-white stroke-[3]" />}
                 </button>
               </div>
             </div>
 
             {/* 3-Column Dropdowns Grid + Action Button */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 items-end">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5 items-end">
               
               {/* Field 1: Passport Country */}
               <div className="relative">
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
                   Passport Country
                 </label>
                 <div
@@ -1216,14 +1216,14 @@ export function AITripPlannerLanding() {
                     setIsJourneyDestOpen(false);
                     setIsPurposeOpen(false);
                   }}
-                  className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                  className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-xl sm:rounded-2xl h-[46px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <span className="text-lg shrink-0">
+                    <span className="text-base shrink-0">
                       {passportCountry ? (passportCountryOptions.find(o => o.value === passportCountry)?.icon || '🌐') : '🌐'}
                     </span>
                     <div className="min-w-0">
-                      <span className={`text-xs sm:text-sm font-bold truncate block ${passportCountry ? 'text-slate-900' : 'text-slate-400'}`}>
+                      <span className={`text-xs sm:text-[13px] font-bold truncate block ${passportCountry ? 'text-slate-900' : 'text-slate-400'}`}>
                         {passportCountry ? (passportCountryOptions.find(o => o.value === passportCountry)?.label || passportCountry) : 'Select Passport'}
                       </span>
                     </div>
@@ -1232,7 +1232,7 @@ export function AITripPlannerLanding() {
 
                   {isPassportOpen && (
                     <div
-                      className="absolute top-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                      className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -1270,7 +1270,7 @@ export function AITripPlannerLanding() {
 
               {/* Field 2: Destination Country */}
               <div className="relative">
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
                   Destination Country
                 </label>
                 <div
@@ -1280,14 +1280,14 @@ export function AITripPlannerLanding() {
                     setIsPassportOpen(false);
                     setIsPurposeOpen(false);
                   }}
-                  className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                  className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-xl sm:rounded-2xl h-[46px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <span className="text-lg shrink-0">
+                    <span className="text-base shrink-0">
                       {journeyDestination ? (journeyDestinationOptions.find(o => o.value === journeyDestination)?.icon || '✈️') : '✈️'}
                     </span>
                     <div className="min-w-0">
-                      <span className={`text-xs sm:text-sm font-bold truncate block ${journeyDestination ? 'text-slate-900' : 'text-slate-400'}`}>
+                      <span className={`text-xs sm:text-[13px] font-bold truncate block ${journeyDestination ? 'text-slate-900' : 'text-slate-400'}`}>
                         {journeyDestination ? (journeyDestinationOptions.find(o => o.value === journeyDestination)?.label || journeyDestination) : 'Select Destination'}
                       </span>
                     </div>
@@ -1296,7 +1296,7 @@ export function AITripPlannerLanding() {
 
                   {isJourneyDestOpen && (
                     <div
-                      className="absolute top-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                      className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -1334,7 +1334,7 @@ export function AITripPlannerLanding() {
 
               {/* Field 3: Purpose of Travel */}
               <div className="relative">
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
                   Purpose of Travel
                 </label>
                 <div
@@ -1344,14 +1344,14 @@ export function AITripPlannerLanding() {
                     setIsPassportOpen(false);
                     setIsJourneyDestOpen(false);
                   }}
-                  className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                  className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-xl sm:rounded-2xl h-[46px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <span className="text-lg shrink-0">
+                    <span className="text-base shrink-0">
                       {travelPurpose ? (travelPurposeOptions.find(o => o.value === travelPurpose)?.icon || '🎯') : '🎯'}
                     </span>
                     <div className="min-w-0">
-                      <span className={`text-xs sm:text-sm font-bold truncate block ${travelPurpose ? 'text-slate-900' : 'text-slate-400'}`}>
+                      <span className={`text-xs sm:text-[13px] font-bold truncate block ${travelPurpose ? 'text-slate-900' : 'text-slate-400'}`}>
                         {travelPurpose ? (travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose) : 'Select Purpose'}
                       </span>
                     </div>
@@ -1360,7 +1360,7 @@ export function AITripPlannerLanding() {
 
                   {isPurposeOpen && (
                     <div
-                      className="absolute top-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                      className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -1402,7 +1402,7 @@ export function AITripPlannerLanding() {
                   type="button"
                   onClick={handleGeneratePathway}
                   disabled={isGenerating}
-                  className={`w-full h-[52px] rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 ${
+                  className={`w-full h-[46px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-[13px] flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 ${
                     hasVisaAlready === 'no'
                       ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-slate-900/30'
                       : 'bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-emerald-600/35'
@@ -1410,12 +1410,12 @@ export function AITripPlannerLanding() {
                 >
                   {isGenerating ? (
                     <>
-                      <RotateCw className="w-4 h-4 animate-spin text-white" />
-                      <span>Auditing Regulations...</span>
+                      <RotateCw className="w-3.5 h-3.5 animate-spin text-white" />
+                      <span>Auditing...</span>
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-4 h-4 fill-white/20" />
+                      <Sparkles className="w-3.5 h-3.5 fill-white/20" />
                       <span>{hasVisaAlready === 'no' ? 'Explore Visa Pathway →' : 'Launch Travel Plan →'}</span>
                     </>
                   )}

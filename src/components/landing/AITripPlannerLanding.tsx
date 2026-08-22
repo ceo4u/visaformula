@@ -2495,9 +2495,13 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                         <button
                           type="submit"
                           disabled={leadSubmitting}
-                          className="w-full h-11 bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+                          className={`w-full h-11 font-extrabold text-xs sm:text-sm rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 ${
+                            hasVisaAlready === 'no'
+                              ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30'
+                              : 'bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-md shadow-[#00A86B]/25'
+                          }`}
                         >
-                          <PhoneCall className="w-4 h-4" />
+                          <PhoneCall className={`w-4 h-4 ${hasVisaAlready === 'no' ? 'text-cyan-400' : 'text-emerald-100'}`} />
                           <span>{leadSubmitting ? 'Connecting...' : 'Request Free Specialist Callback'}</span>
                         </button>
                       </div>
@@ -2519,7 +2523,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                 onClick={() => setActiveSearchTab('universities')}
                 className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'universities'
-                    ? 'border-b-2 border-[#00A86B] text-[#00A86B]'
+                    ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -2532,7 +2536,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                 onClick={() => setActiveSearchTab('consultants')}
                 className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'consultants'
-                    ? 'border-b-2 border-[#00A86B] text-[#00A86B]'
+                    ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -2545,7 +2549,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                 onClick={() => setActiveSearchTab('relocation')}
                 className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'relocation'
-                    ? 'border-b-2 border-[#00A86B] text-[#00A86B]'
+                    ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -2558,7 +2562,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                 onClick={() => setActiveSearchTab('jobs')}
                 className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'jobs'
-                    ? 'border-b-2 border-[#00A86B] text-[#00A86B]'
+                    ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -2571,7 +2575,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                 onClick={() => setActiveSearchTab('lawyers')}
                 className={`shrink-0 flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm md:text-base font-extrabold transition-all whitespace-nowrap cursor-pointer pb-3 sm:pb-4 -mb-[13px] sm:-mb-[17px] ${
                   activeSearchTab === 'lawyers'
-                    ? 'border-b-2 border-[#00A86B] text-[#00A86B]'
+                    ? hasVisaAlready === 'no' ? 'border-b-2 border-slate-900 text-slate-900' : 'border-b-2 border-[#00A86B] text-[#00A86B]'
                     : 'border-b-2 border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -2661,9 +2665,13 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
               <button
                 type="button"
                 onClick={handleGlobalSearch}
-                className="w-full py-3.5 bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-sm sm:text-base rounded-2xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className={`w-full py-3.5 font-extrabold text-sm sm:text-base rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  hasVisaAlready === 'no'
+                    ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25'
+                    : 'bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-lg shadow-emerald-600/20'
+                }`}
               >
-                <Search className="w-4 h-4" />
+                <Search className={`w-4 h-4 ${hasVisaAlready === 'no' ? 'text-cyan-400' : 'text-white'}`} />
                 <span>Search {activeSearchTab === 'universities' ? 'Universities & Courses' : activeSearchTab === 'consultants' ? 'Verified Consultants' : activeSearchTab === 'relocation' ? 'Relocation Classifieds' : activeSearchTab === 'jobs' ? 'Jobs Abroad' : 'Immigration Lawyers'} →</span>
               </button>
             </div>

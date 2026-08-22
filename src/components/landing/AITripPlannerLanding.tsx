@@ -1611,17 +1611,17 @@ return (
 
                 </div>
 
-                {/* Core Decision Toggle: Have Visa Already? (Placed below search inputs) */}
-                <div className="mt-3 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-slate-50/80 px-3.5 py-2.5 rounded-2xl border border-slate-200/80">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#00A86B]" />
-                    <span className="text-xs font-black text-slate-800">
+                {/* Core Decision Toggle: Have Visa Already? (CENTERED & ENLARGED) */}
+                <div className="mt-4 pt-3.5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 bg-gradient-to-r from-slate-50 via-emerald-50/20 to-slate-50 p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-2xs text-center sm:text-left">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] animate-pulse shrink-0" />
+                    <span className="text-xs sm:text-sm md:text-base font-black text-slate-800">
                       Do you already hold an approved visa for {journeyDestination || 'your destination'}?
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs shrink-0 self-start sm:self-auto">
-                    <span className="text-xs font-extrabold text-slate-700 px-2 select-none">
+                  <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-xs shrink-0 ring-1 ring-black/5">
+                    <span className="text-xs sm:text-sm font-black text-slate-700 px-2.5 select-none">
                       Have Visa Already?
                     </span>
                     
@@ -1637,15 +1637,15 @@ return (
                           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }, 100);
                       }}
-                      className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                      className={`px-4 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all duration-200 cursor-pointer flex items-center gap-1.5 select-none ${
                         hasVisaAlready === 'no'
-                          ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30'
+                          ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30 scale-[1.03]'
                           : 'text-slate-600 hover:text-slate-900'
                       }`}
                     >
                       <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
                       <span>NO</span>
-                      {hasVisaAlready === 'no' && <Check className="w-3 h-3 text-cyan-300 stroke-[3]" />}
+                      {hasVisaAlready === 'no' && <Check className="w-4 h-4 text-cyan-300 stroke-[3]" />}
                     </button>
 
                     {/* YES Option */}
@@ -1660,15 +1660,15 @@ return (
                           if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }, 100);
                       }}
-                      className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                      className={`px-4 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all duration-200 cursor-pointer flex items-center gap-1.5 select-none ${
                         hasVisaAlready === 'yes'
-                          ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35'
+                          ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35 scale-[1.03]'
                           : 'text-slate-600 hover:text-slate-900'
                       }`}
                     >
                       <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
                       <span>YES</span>
-                      {hasVisaAlready === 'yes' && <Check className="w-3 h-3 text-white stroke-[3]" />}
+                      {hasVisaAlready === 'yes' && <Check className="w-4 h-4 text-white stroke-[3]" />}
                     </button>
                   </div>
                 </div>

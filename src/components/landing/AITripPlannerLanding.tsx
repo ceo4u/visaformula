@@ -1010,7 +1010,11 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                 <button 
                   type="submit"
                   disabled={isGenerating}
-                  className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-[#00A86B] hover:bg-[#008f5a] text-white flex items-center justify-center shadow-md hover:shadow-lg transition-transform active:scale-95 shrink-0 cursor-pointer disabled:opacity-75"
+                  className={`w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full text-white flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer disabled:opacity-75 ${
+                    hasVisaAlready === 'no'
+                      ? 'bg-slate-900 hover:bg-slate-800 shadow-md shadow-slate-900/30'
+                      : 'bg-[#00A86B] hover:bg-[#008f5a] shadow-md hover:shadow-lg'
+                  }`}
                   title="Search Pathway"
                 >
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
@@ -1343,7 +1347,11 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                     }
                   }}
                   disabled={isGenerating}
-                  className="w-full h-[52px] px-3 sm:px-4 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#00A86B]/25 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none disabled:opacity-75"
+                  className={`w-full h-[52px] px-3 sm:px-4 rounded-2xl font-extrabold text-xs sm:text-sm transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none disabled:opacity-75 ${
+                    hasVisaAlready === 'no'
+                      ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30'
+                      : 'bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-md shadow-[#00A86B]/25 hover:shadow-lg'
+                  }`}
                 >
                   {hasVisaAlready === 'yes' ? (
                     <>
@@ -1352,7 +1360,7 @@ Track safe arrival roadmap on VisaHub: ${typeof window !== 'undefined' ? window.
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-4 h-4 text-emerald-100 shrink-0" />
+                      <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
                       <span>Explore Pathway</span>
                     </>
                   )}

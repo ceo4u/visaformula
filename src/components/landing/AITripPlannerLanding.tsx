@@ -417,6 +417,21 @@ const getDestinationVisitData = (destination: string) => {
   };
 };
 
+
+const studyQualificationOptions = [
+  { value: '12th', label: '12th / High School', icon: '🏫', desc: 'Higher Secondary' },
+  { value: 'bachelors', label: "Bachelor's Degree", icon: '🎓', desc: 'Undergraduate Degree' },
+  { value: 'masters', label: "Master's Degree", icon: '📜', desc: 'Postgraduate / Master' },
+  { value: 'diploma', label: 'Diploma / Associate', icon: '📋', desc: 'Vocational / Diploma' },
+];
+
+const studyTargetDegreeOptions = [
+  { value: 'bachelors', label: "Bachelor's (UG)", icon: '🎓', desc: '3-4 Year Degree' },
+  { value: 'masters', label: "Master's (PG / MS)", icon: '📜', desc: '1-2 Year Postgrad' },
+  { value: 'postgrad', label: 'Postgraduate Diploma', icon: '📋', desc: '1-Year Fast Track' },
+  { value: 'phd', label: 'PhD / Research', icon: '🔬', desc: 'Doctorate & Fellowship' },
+];
+
 const courseLevelOptions = [
   { value: 'bachelors', label: "Bachelor's Degree", icon: '🎓', desc: 'Undergraduate Degree' },
   { value: 'masters', label: "Master's / PG", icon: '📜', desc: 'Postgraduate & MBA' },
@@ -533,6 +548,13 @@ export function AITripPlannerLanding() {
 
   // Dropdowns open state
   const [isCourseLevelOpen, setIsCourseLevelOpen] = useState(false);
+
+  // Step 1 Custom Dropdowns Open States
+  const [isStudyQualOpen, setIsStudyQualOpen] = useState(false);
+  const [isStudyTargetOpen, setIsStudyTargetOpen] = useState(false);
+  const studyQualRef = useRef<HTMLDivElement>(null);
+  const studyTargetRef = useRef<HTMLDivElement>(null);
+
   const courseLevelRef = useRef<HTMLDivElement>(null);
 
   // Dynamic Destination Study & Visit Data Hook (Computed after all states are initialized)
@@ -679,6 +701,8 @@ export function AITripPlannerLanding() {
       if (journeyDestRef.current && !journeyDestRef.current.contains(target)) setIsJourneyDestOpen(false);
       if (purposeRef.current && !purposeRef.current.contains(target)) setIsPurposeOpen(false);
       if (courseLevelRef.current && !courseLevelRef.current.contains(target)) setIsCourseLevelOpen(false);
+      if (studyQualRef.current && !studyQualRef.current.contains(target)) setIsStudyQualOpen(false);
+      if (studyTargetRef.current && !studyTargetRef.current.contains(target)) setIsStudyTargetOpen(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -2765,7 +2789,7 @@ export function AITripPlannerLanding() {
             </div>
 
           </div>
-          {/* ── 4. POPULAR DESTINATIONS SECTION (1:1 PIXEL-PERFECT) ── */}
+          {/* ── 4. POPULAR DESTINATIONS SECTION (1:1 CLEAN CIRCULAR FLAGS AS IN SCREENSHOT) ── */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left">
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
               <div>
@@ -2785,7 +2809,7 @@ export function AITripPlannerLanding() {
               </a>
             </div>
 
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-3 sm:gap-4 text-center">
+            <div className="flex items-center justify-between gap-2 sm:gap-4 overflow-x-auto no-scrollbar py-2 px-1 text-center">
               {[
                 { name: 'Canada', code: 'ca', country: 'Canada' },
                 { name: 'UK', code: 'gb', country: 'United Kingdom' },
@@ -2807,21 +2831,23 @@ export function AITripPlannerLanding() {
                       window.location.href = '/universities';
                     }
                   }}
-                  className="flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl bg-slate-50/70 hover:bg-emerald-50/50 border border-slate-100 hover:border-emerald-300 transition-all cursor-pointer group"
+                  className="flex flex-col items-center justify-center min-w-[68px] sm:min-w-[80px] p-2 hover:scale-105 transition-transform cursor-pointer group select-none"
                 >
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden mb-2 shadow-xs group-hover:scale-110 group-hover:shadow-md transition-all flex items-center justify-center bg-white border border-slate-200/80">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-all flex items-center justify-center bg-white border border-slate-200/80">
                     {item.code ? (
                       <img
-                        src={`https://flagcdn.com/w80/${item.code}.png`}
+                        src={`https://flagcdn.com/w160/${item.code}.png`}
                         alt={item.name}
                         className="w-full h-full object-cover rounded-full"
                         loading="lazy"
                       />
                     ) : (
-                      <span className="text-slate-500 font-black text-xs">•••</span>
+                      <div className="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-black text-sm">
+                        •••
+                      </div>
                     )}
                   </div>
-                  <span className="text-xs font-black text-slate-800 group-hover:text-[#00A86B] truncate w-full">
+                  <span className="text-xs font-bold text-slate-800 group-hover:text-[#00A86B] truncate w-full text-center">
                     {item.name}
                   </span>
                 </button>

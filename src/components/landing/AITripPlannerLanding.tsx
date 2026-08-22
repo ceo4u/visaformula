@@ -961,6 +961,27 @@ export function AITripPlannerLanding() {
       peer_network_joined: peerNetworkJoined,
       forex_ordered: forexCardOrdered,
       customs_checklist: customsChecklistDone,
+
+      // Study Abroad Engine Fields
+      highest_qualification: studyQualification,
+      target_degree: studyTargetDegree,
+      matched_university: selectedMatchedUni || currentStudyData.defaultUni,
+      tuition_fee: studyTuitionFee || currentStudyData.defaultFee,
+      living_cost: studyLivingCost || currentStudyData.defaultLiving,
+      funds_available: fundsAvailableAmount,
+      cas_i20_number: casI20Number,
+      vfs_slot_booked: vfsSlotBooked,
+      final_dossier_submitted: finalDossierSubmitted,
+      readiness_score: studyReadinessScore,
+      uploaded_documents: uploadedDocFiles,
+
+      // Domestic Travel Engine Fields
+      domestic_country: domesticCountry,
+      domestic_state: domesticState,
+      domestic_city: domesticCity,
+      domestic_destination: domesticDestination,
+      domestic_members: domesticMembers,
+
       ...overrides
     };
 

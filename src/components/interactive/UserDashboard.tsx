@@ -471,47 +471,106 @@ export function UserDashboard() {
                                 </div>
                             </div>
 
-                            {/* Section: My Overseas Journey Progress Widget */}
+                            {/* Section: My Journey & Application Dashboard Widget */}
                             {journeyData && (
-                                <div className="bg-gradient-to-r from-emerald-500 via-[#00A86B] to-teal-600 rounded-3xl p-5 sm:p-6 text-white shadow-lg relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-5 animate-fade-up">
-                                    <div className="space-y-1.5 z-10">
-                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[11px] font-black uppercase tracking-wider">
-                                            <Shield className="w-3.5 h-3.5 text-emerald-200" />
-                                            <span>My Overseas Safeguard Roadmap</span>
-                                        </div>
-                                        <h3 className="text-lg sm:text-xl font-black tracking-tight">
-                                            {journeyData.destination || "Canada"} Journey • {journeyData.approvedVisaType || "Visa Registered"}
-                                        </h3>
-                                        <p className="text-xs text-emerald-100 font-medium">
-                                            Passport: <strong>{journeyData.passportCountry || "India"}</strong> • Expiry: <strong>{journeyData.validityDate || "Active"}</strong>
-                                        </p>
-
-                                        {/* Dynamic Progress Bar */}
-                                        <div className="pt-2 max-w-md w-full space-y-1">
-                                            <div className="flex items-center justify-between text-[11px] font-bold text-emerald-100">
-                                                <span>Checklist Milestones</span>
-                                                <span>
-                                                    {Array.isArray(journeyData.completed_steps) ? journeyData.completed_steps.length : (journeyData.completedSteps?.length || 4)} of 6 Steps Completed
+                                <div className="space-y-4 animate-fade-up">
+                                    {/* CARD 1: OVERSEAS VISA / STUDY ABROAD PATHWAY */}
+                                    <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-5 sm:p-7 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border border-slate-800">
+                                        <div className="space-y-2 z-10 flex-1">
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider">
+                                                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                                                    {journeyData.has_visa 
+                                                        ? 'Active Visa • Departure Safeguard Roadmap' 
+                                                        : (journeyData.purpose === 'study' ? '🎓 Study Abroad Pathway (In Progress)' : '✈️ Overseas Visa Application (In Progress)')}
                                                 </span>
+                                                {journeyData.readiness_score && (
+                                                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black">
+                                                        Readiness: {journeyData.readiness_score}%
+                                                    </span>
+                                                )}
                                             </div>
-                                            <div className="w-full h-2 bg-black/20 rounded-full overflow-hidden p-0.5">
-                                                <div
-                                                    className="h-full bg-white rounded-full transition-all duration-500 shadow-xs"
-                                                    style={{ width: `${Math.round(((Array.isArray(journeyData.completed_steps) ? journeyData.completed_steps.length : (journeyData.completedSteps?.length || 4)) / 6) * 100)}%` }}
-                                                />
+
+                                            <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white">
+                                                {journeyData.destination || 'Destination'} Journey • {journeyData.matched_university || journeyData.visa_type || 'Custom Pathway'}
+                                            </h3>
+
+                                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-300">
+                                                <span>Passport: <strong className="text-white">{journeyData.passport_country || journeyData.passportCountry || 'India'}</strong></span>
+                                                {journeyData.target_degree && (
+                                                    <span>• Target Degree: <strong className="text-emerald-400 uppercase">{journeyData.target_degree}</strong></span>
+                                                )}
+                                                {journeyData.highest_qualification && (
+                                                    <span>• Qualification: <strong className="text-white">{journeyData.highest_qualification}</strong></span>
+                                                )}
+                                                {journeyData.funds_available && (
+                                                    <span>• Proof of Funds: <strong className="text-emerald-300">{journeyData.funds_available}</strong></span>
+                                                )}
                                             </div>
+
+                                            {/* Status Highlights */}
+                                            <div className="pt-2 flex flex-wrap items-center gap-2">
+                                                {journeyData.cas_i20_number && (
+                                                    <span className="px-2.5 py-1 rounded-xl bg-white/10 text-slate-200 text-xs font-semibold">
+                                                        Admission ID: {journeyData.cas_i20_number} ✓
+                                                    </span>
+                                                )}
+                                                {journeyData.uploaded_documents && Object.keys(journeyData.uploaded_documents).length > 0 && (
+                                                    <span className="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold">
+                                                        📄 {Object.keys(journeyData.uploaded_documents).length} Documents Uploaded &amp; Verified
+                                                    </span>
+                                                )}
+                                                {journeyData.final_dossier_submitted && (
+                                                    <span className="px-2.5 py-1 rounded-xl bg-emerald-600 text-white text-xs font-black shadow-xs">
+                                                        Dossier Filed to Embassy ✓
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="z-10 shrink-0 flex items-center gap-3">
+                                            <a
+                                                href="/#need-visa-pathway-dashboard"
+                                                className="px-5 py-3 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs sm:text-sm font-black shadow-lg transition-all flex items-center gap-2 active:scale-95"
+                                            >
+                                                <span>Resume Pathway →</span>
+                                            </a>
                                         </div>
                                     </div>
 
-                                    <div className="z-10 shrink-0 flex items-center gap-3">
-                                        <a
-                                            href="/#parental-security-engine-dashboard"
-                                            className="px-5 py-2.5 rounded-2xl bg-white text-emerald-900 hover:bg-emerald-50 text-xs font-black shadow-md transition-all flex items-center gap-2 active:scale-95"
-                                        >
-                                            <span>Resume Checklist</span>
-                                            <ArrowRight className="w-4 h-4 text-[#00A86B] stroke-[2.5]" />
-                                        </a>
-                                    </div>
+                                    {/* CARD 2: DOMESTIC TRIP BOOKING (IF CONFIGURED) */}
+                                    {(journeyData.domestic_destination || journeyData.domestic_country) && (
+                                        <div className="bg-white border border-emerald-200/90 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                            <div className="flex items-center gap-3.5">
+                                                <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center text-xl shadow-xs shrink-0">
+                                                    🏠
+                                                </div>
+                                                <div>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">
+                                                            {journeyData.domestic_country || 'India'} Domestic Holiday
+                                                        </span>
+                                                        <span className="text-xs text-slate-500">
+                                                            {journeyData.domestic_members || 1} {(journeyData.domestic_members || 1) === 1 ? 'Traveler' : 'Travelers'}
+                                                        </span>
+                                                    </div>
+                                                    <h4 className="text-base font-black text-slate-900 mt-1">
+                                                        {journeyData.domestic_destination || 'Selected Holiday Tour'}
+                                                    </h4>
+                                                    <p className="text-xs text-slate-500 mt-0.5">
+                                                        Origin: {journeyData.domestic_city || journeyData.domestic_state || 'Local Region'}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <a
+                                                href={`/services/tours?country=${encodeURIComponent(journeyData.domestic_country || 'India')}`}
+                                                className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shrink-0 self-start sm:self-auto"
+                                            >
+                                                View Tour Packages →
+                                            </a>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 

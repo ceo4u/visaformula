@@ -1309,72 +1309,17 @@ return (
               <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:py-4 md:px-6 shadow-[0_12px_40px_rgba(48,0,90,0.06)] animate-fadeIn">
                 
                 {/* Header Row */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3.5 pb-2.5 border-b border-slate-100">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-2xs shrink-0">
-                      <Compass className="w-4 h-4 stroke-[2.2]" />
-                    </div>
-                    <div>
-                      <h2 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
-                        International Journey, Visa Compliance &amp; Exemption
-                      </h2>
-                      <p className="text-[11px] sm:text-xs font-medium text-slate-500">
-                        Real-time ETA checks, departure compliance &amp; full pathway roadmap
-                      </p>
-                    </div>
+                <div className="flex items-center gap-2.5 mb-3.5 pb-2.5 border-b border-slate-100">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-2xs shrink-0">
+                    <Compass className="w-4 h-4 stroke-[2.2]" />
                   </div>
-
-                  {/* Core Toggle: Have Visa Already? */}
-                  <div className="flex items-center gap-1.5 bg-slate-100/90 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-200/80 shrink-0 self-start sm:self-auto">
-                    <span className="text-[11px] sm:text-xs font-extrabold text-slate-700 px-2 select-none">
-                      Have Visa Already?
-                    </span>
-                    
-                    {/* NO Option */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setHasVisaAlready('no');
-                        setHasGenerated(false);
-                        autoSaveJourney({ has_visa: false });
-                        setTimeout(() => {
-                          const el = document.getElementById('need-visa-pathway-dashboard');
-                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100);
-                      }}
-                      className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
-                        hasVisaAlready === 'no'
-                          ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30'
-                          : 'text-slate-600 hover:text-slate-900'
-                      }`}
-                    >
-                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
-                      <span>NO</span>
-                      {hasVisaAlready === 'no' && <Check className="w-3 h-3 text-cyan-300 stroke-[3]" />}
-                    </button>
-
-                    {/* YES Option */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setHasVisaAlready('yes');
-                        setHasGenerated(true);
-                        autoSaveJourney({ has_visa: true });
-                        setTimeout(() => {
-                          const el = document.getElementById('parental-security-engine-dashboard');
-                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100);
-                      }}
-                      className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
-                        hasVisaAlready === 'yes'
-                          ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35'
-                          : 'text-slate-600 hover:text-slate-900'
-                      }`}
-                    >
-                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
-                      <span>YES</span>
-                      {hasVisaAlready === 'yes' && <Check className="w-3 h-3 text-white stroke-[3]" />}
-                    </button>
+                  <div>
+                    <h2 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
+                      International Journey, Visa Compliance &amp; Exemption
+                    </h2>
+                    <p className="text-[11px] sm:text-xs font-medium text-slate-500">
+                      Real-time ETA checks, departure compliance &amp; full pathway roadmap
+                    </p>
                   </div>
                 </div>
 
@@ -1664,6 +1609,68 @@ return (
                     </button>
                   </div>
 
+                </div>
+
+                {/* Core Decision Toggle: Have Visa Already? (Placed below search inputs) */}
+                <div className="mt-3 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-slate-50/80 px-3.5 py-2.5 rounded-2xl border border-slate-200/80">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#00A86B]" />
+                    <span className="text-xs font-black text-slate-800">
+                      Do you already hold an approved visa for {journeyDestination || 'your destination'}?
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs shrink-0 self-start sm:self-auto">
+                    <span className="text-xs font-extrabold text-slate-700 px-2 select-none">
+                      Have Visa Already?
+                    </span>
+                    
+                    {/* NO Option */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setHasVisaAlready('no');
+                        setHasGenerated(false);
+                        autoSaveJourney({ has_visa: false });
+                        setTimeout(() => {
+                          const el = document.getElementById('need-visa-pathway-dashboard');
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                      }}
+                      className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                        hasVisaAlready === 'no'
+                          ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
+                      <span>NO</span>
+                      {hasVisaAlready === 'no' && <Check className="w-3 h-3 text-cyan-300 stroke-[3]" />}
+                    </button>
+
+                    {/* YES Option */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setHasVisaAlready('yes');
+                        setHasGenerated(true);
+                        autoSaveJourney({ has_visa: true });
+                        setTimeout(() => {
+                          const el = document.getElementById('parental-security-engine-dashboard');
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                      }}
+                      className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                        hasVisaAlready === 'yes'
+                          ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
+                      <span>YES</span>
+                      {hasVisaAlready === 'yes' && <Check className="w-3 h-3 text-white stroke-[3]" />}
+                    </button>
+                  </div>
                 </div>
 
                 {/* 4. SMART AI VISA EXEMPTION & DURATION ENGINE INSIGHT BOX */}

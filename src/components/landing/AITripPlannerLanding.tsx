@@ -550,6 +550,71 @@ export function AITripPlannerLanding() {
   const [isCourseLevelOpen, setIsCourseLevelOpen] = useState(false);
 
   // Step 1 Custom Dropdowns Open States
+  
+  // Real File Uploads State & Refs for Step 3 and Document Sections
+  const [uploadedDocFiles, setUploadedDocFiles] = useState<Record<string, { name: string; size: string; time: string }>>({});
+  const [uploadingDocKey, setUploadingDocKey] = useState<string | null>(null);
+
+  const transcriptsInputRef = useRef<HTMLInputElement>(null);
+  const sopInputRef = useRef<HTMLInputElement>(null);
+  const lorInputRef = useRef<HTMLInputElement>(null);
+  const ieltsInputRef = useRef<HTMLInputElement>(null);
+  const passportInputRef = useRef<HTMLInputElement>(null);
+  const bankProofInputRef = useRef<HTMLInputElement>(null);
+  const flightTicketInputRef = useRef<HTMLInputElement>(null);
+
+  const handleRealFileUpload = (docKey: string, file: File) => {
+    if (!file) return;
+    setUploadingDocKey(docKey);
+    
+    // Simulate real scanning & hashing in 600ms
+    setTimeout(() => {
+      const sizeStr = file.size > 1024 * 1024 
+        ? (file.size / (1024 * 1024)).toFixed(1) + ' MB'
+        : Math.round(file.size / 1024) + ' KB';
+      
+      const newFiles = {
+        ...uploadedDocFiles,
+        [docKey]: {
+          name: file.name,
+          size: sizeStr,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      };
+
+      setUploadedDocFiles(newFiles);
+      setUploadingDocKey(null);
+
+      // Mark corresponding boolean flags
+      if (docKey === 'transcripts') setDocTranscriptsUploaded(true);
+      if (docKey === 'sop') setDocSopUploaded(true);
+      if (docKey === 'lor') setDocLorUploaded(true);
+      if (docKey === 'ielts') setDocIeltsUploaded(true);
+      if (docKey === 'passport') setPassportVerified(true);
+      if (docKey === 'flight') setFlightTicketUploaded(true);
+
+      // Auto-save metadata
+      autoSaveJourney({
+        uploaded_documents: newFiles
+      });
+    }, 600);
+  };
+
+  const handleRemoveUploadedFile = (docKey: string) => {
+    const newFiles = { ...uploadedDocFiles };
+    delete newFiles[docKey];
+    setUploadedDocFiles(newFiles);
+
+    if (docKey === 'transcripts') setDocTranscriptsUploaded(false);
+    if (docKey === 'sop') setDocSopUploaded(false);
+    if (docKey === 'lor') setDocLorUploaded(false);
+    if (docKey === 'ielts') setDocIeltsUploaded(false);
+    if (docKey === 'passport') setPassportVerified(false);
+    if (docKey === 'flight') setFlightTicketUploaded(false);
+
+    autoSaveJourney({ uploaded_documents: newFiles });
+  };
+
   const [isStudyQualOpen, setIsStudyQualOpen] = useState(false);
   const [isStudyTargetOpen, setIsStudyTargetOpen] = useState(false);
   const studyQualRef = useRef<HTMLDivElement>(null);
@@ -701,6 +766,9 @@ export function AITripPlannerLanding() {
       if (journeyDestRef.current && !journeyDestRef.current.contains(target)) setIsJourneyDestOpen(false);
       if (purposeRef.current && !purposeRef.current.contains(target)) setIsPurposeOpen(false);
       if (courseLevelRef.current && !courseLevelRef.current.contains(target)) setIsCourseLevelOpen(false);
+      if (studyQualRef.current && !studyQualRef.current.contains(target)) setIsStudyQualOpen(false);
+      if (studyTargetRef.current && !studyTargetRef.current.contains(target)) setIsStudyTargetOpen(false);
+      if (checklistCountryRef.current && !checklistCountryRef.current.contains(target)) setIsChecklistCountryOpen(false);
       if (studyQualRef.current && !studyQualRef.current.contains(target)) setIsStudyQualOpen(false);
       if (studyTargetRef.current && !studyTargetRef.current.contains(target)) setIsStudyTargetOpen(false);
     };
@@ -1959,33 +2027,125 @@ export function AITripPlannerLanding() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Highest Qualification</label>
-                          <select
-                            value={studyQualification}
-                            onChange={(e) => setStudyQualification(e.target.value as any)}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {/* Custom Dropdown 1: Highest Qualification */}
+                        <div className="relative">
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                            Highest Qualification
+                          </label>
+                          <div
+                            ref={studyQualRef}
+                            onClick={() => {
+                              setIsStudyQualOpen(!isStudyQualOpen);
+                              setIsStudyTargetOpen(false);
+                            }}
+                            className="relative bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                           >
-                            <option value="12th">12th / High School</option>
-                            <option value="bachelors">Bachelor's Degree</option>
-                            <option value="masters">Master's Degree</option>
-                            <option value="diploma">Diploma / Associate</option>
-                          </select>
+                            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                              <span className="text-base shrink-0">
+                                {studyQualificationOptions.find(o => o.value === studyQualification)?.icon || '🎓'}
+                              </span>
+                              <span className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                                {studyQualificationOptions.find(o => o.value === studyQualification)?.label || studyQualification}
+                              </span>
+                            </div>
+                            <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isStudyQualOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+
+                            {isStudyQualOpen && (
+                              <div
+                                className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                                  Select Qualification
+                                </div>
+                                <div className="space-y-0.5">
+                                  {studyQualificationOptions.map((opt) => {
+                                    const isSelected = studyQualification === opt.value;
+                                    return (
+                                      <button
+                                        key={opt.value}
+                                        type="button"
+                                        onClick={() => {
+                                          setStudyQualification(opt.value as any);
+                                          setIsStudyQualOpen(false);
+                                        }}
+                                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                          isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                        }`}
+                                      >
+                                        <div className="flex items-center gap-2 min-w-0">
+                                          <span className="text-base">{opt.icon}</span>
+                                          <span className="truncate">{opt.label}</span>
+                                        </div>
+                                        {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
 
-                        <div>
-                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Target Degree</label>
-                          <select
-                            value={studyTargetDegree}
-                            onChange={(e) => setStudyTargetDegree(e.target.value as any)}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                        {/* Custom Dropdown 2: Target Degree */}
+                        <div className="relative">
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                            Target Degree
+                          </label>
+                          <div
+                            ref={studyTargetRef}
+                            onClick={() => {
+                              setIsStudyTargetOpen(!isStudyTargetOpen);
+                              setIsStudyQualOpen(false);
+                            }}
+                            className="relative bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                           >
-                            <option value="bachelors">Bachelor's (UG)</option>
-                            <option value="masters">Master's (PG / MS)</option>
-                            <option value="postgrad">Postgraduate Diploma</option>
-                            <option value="phd">PhD / Research</option>
-                          </select>
+                            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                              <span className="text-base shrink-0">
+                                {studyTargetDegreeOptions.find(o => o.value === studyTargetDegree)?.icon || '📜'}
+                              </span>
+                              <span className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                                {studyTargetDegreeOptions.find(o => o.value === studyTargetDegree)?.label || studyTargetDegree}
+                              </span>
+                            </div>
+                            <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isStudyTargetOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+
+                            {isStudyTargetOpen && (
+                              <div
+                                className="absolute top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                                  Select Target Degree
+                                </div>
+                                <div className="space-y-0.5">
+                                  {studyTargetDegreeOptions.map((opt) => {
+                                    const isSelected = studyTargetDegree === opt.value;
+                                    return (
+                                      <button
+                                        key={opt.value}
+                                        type="button"
+                                        onClick={() => {
+                                          setStudyTargetDegree(opt.value as any);
+                                          setIsStudyTargetOpen(false);
+                                        }}
+                                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                          isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                        }`}
+                                      >
+                                        <div className="flex items-center gap-2 min-w-0">
+                                          <span className="text-base">{opt.icon}</span>
+                                          <span className="truncate">{opt.label}</span>
+                                        </div>
+                                        {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
 
@@ -2103,26 +2263,125 @@ export function AITripPlannerLanding() {
                         </span>
                       </div>
 
-                      <div className="space-y-2">
+                      {/* Hidden Real File Inputs */}
+                      <input
+                        type="file"
+                        ref={transcriptsInputRef}
+                        onChange={(e) => e.target.files?.[0] && handleRealFileUpload('transcripts', e.target.files[0])}
+                        className="hidden"
+                        accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
+                      />
+                      <input
+                        type="file"
+                        ref={sopInputRef}
+                        onChange={(e) => e.target.files?.[0] && handleRealFileUpload('sop', e.target.files[0])}
+                        className="hidden"
+                        accept=".pdf,.doc,.docx"
+                      />
+                      <input
+                        type="file"
+                        ref={lorInputRef}
+                        onChange={(e) => e.target.files?.[0] && handleRealFileUpload('lor', e.target.files[0])}
+                        className="hidden"
+                        accept=".pdf,.doc,.docx"
+                      />
+                      <input
+                        type="file"
+                        ref={ieltsInputRef}
+                        onChange={(e) => e.target.files?.[0] && handleRealFileUpload('ielts', e.target.files[0])}
+                        className="hidden"
+                        accept=".pdf,.png,.jpg,.jpeg"
+                      />
+
+                      <div className="space-y-2.5">
                         {[
-                          { label: 'Academic Transcripts (10th, 12th, Degree)', state: docTranscriptsUploaded, set: setDocTranscriptsUploaded },
-                          { label: 'Statement of Purpose (SOP)', state: docSopUploaded, set: setDocSopUploaded },
-                          { label: 'Letters of Recommendation (LOR)', state: docLorUploaded, set: setDocLorUploaded },
-                          { label: 'English Proficiency (IELTS / PTE / TOEFL)', state: docIeltsUploaded, set: setDocIeltsUploaded }
-                        ].map((doc, idx) => (
-                          <div key={idx} className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200/70">
-                            <span className="text-xs font-semibold text-slate-800">{doc.label}</span>
-                            <button
-                              type="button"
-                              onClick={() => doc.set(!doc.state)}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-bold cursor-pointer transition-all ${
-                                doc.state ? 'bg-[#00A86B] text-white' : 'bg-white border border-slate-200 text-slate-600'
+                          { key: 'transcripts', label: 'Academic Transcripts (10th, 12th, Degree)', ref: transcriptsInputRef, isUploaded: !!uploadedDocFiles['transcripts'] || docTranscriptsUploaded, icon: '🎓' },
+                          { key: 'sop', label: 'Statement of Purpose (SOP)', ref: sopInputRef, isUploaded: !!uploadedDocFiles['sop'] || docSopUploaded, icon: '📝' },
+                          { key: 'lor', label: 'Letters of Recommendation (LOR)', ref: lorInputRef, isUploaded: !!uploadedDocFiles['lor'] || docLorUploaded, icon: '📜' },
+                          { key: 'ielts', label: 'English Proficiency (IELTS / PTE / TOEFL)', ref: ieltsInputRef, isUploaded: !!uploadedDocFiles['ielts'] || docIeltsUploaded, icon: '🌐' }
+                        ].map((doc, idx) => {
+                          const fileData = uploadedDocFiles[doc.key];
+                          const isUploading = uploadingDocKey === doc.key;
+
+                          return (
+                            <div
+                              key={idx}
+                              className={`p-3 rounded-2xl border transition-all ${
+                                doc.isUploaded
+                                  ? 'bg-emerald-50/60 border-emerald-300 ring-1 ring-emerald-200'
+                                  : 'bg-slate-50/80 border-slate-200/80 hover:bg-slate-50'
                               }`}
                             >
-                              {doc.state ? 'Uploaded ✓' : 'Upload +'}
-                            </button>
-                          </div>
-                        ))}
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                                  <span className="text-base shrink-0">{doc.icon}</span>
+                                  <div className="min-w-0">
+                                    <div className="text-xs font-bold text-slate-800 truncate">
+                                      {doc.label}
+                                    </div>
+                                    {fileData ? (
+                                      <div className="text-[11px] font-semibold text-emerald-700 truncate mt-0.5 flex items-center gap-1.5">
+                                        <span className="truncate">📄 {fileData.name}</span>
+                                        <span className="text-slate-400 font-normal">({fileData.size})</span>
+                                        <span className="text-[10px] text-emerald-600 bg-emerald-100 px-1.5 py-0.2 rounded font-bold">Verified</span>
+                                      </div>
+                                    ) : doc.isUploaded ? (
+                                      <div className="text-[10px] text-emerald-600 font-medium mt-0.5">
+                                        Verified on Client Dashboard
+                                      </div>
+                                    ) : (
+                                      <div className="text-[10px] text-slate-400 font-medium mt-0.5">
+                                        PDF, DOCX, or Scanned Image
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-1.5 shrink-0">
+                                  {doc.isUploaded ? (
+                                    <>
+                                      <button
+                                        type="button"
+                                        onClick={() => doc.ref.current?.click()}
+                                        className="px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold bg-emerald-600 text-white hover:bg-emerald-700 shadow-2xs flex items-center gap-1 cursor-pointer transition-all"
+                                      >
+                                        <Check className="w-3 h-3 stroke-[3]" />
+                                        <span>Uploaded ✓</span>
+                                      </button>
+                                      <button
+                                        type="button"
+                                        title="Remove file"
+                                        onClick={() => handleRemoveUploadedFile(doc.key)}
+                                        className="w-7 h-7 rounded-xl bg-slate-200/80 hover:bg-red-100 hover:text-red-600 text-slate-600 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
+                                      >
+                                        ✕
+                                      </button>
+                                    </>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      disabled={isUploading}
+                                      onClick={() => doc.ref.current?.click()}
+                                      className="px-3 py-1.5 rounded-xl text-[11px] font-bold bg-white border border-slate-200 hover:border-[#00A86B] text-slate-700 hover:text-[#00A86B] hover:bg-emerald-50/50 shadow-2xs flex items-center gap-1.5 cursor-pointer transition-all"
+                                    >
+                                      {isUploading ? (
+                                        <>
+                                          <RefreshCw className="w-3 h-3 animate-spin text-[#00A86B]" />
+                                          <span>Scanning...</span>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Upload className="w-3 h-3" />
+                                          <span>Upload +</span>
+                                        </>
+                                      )}
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
 
                       <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl flex items-center justify-between">
@@ -2990,16 +3249,57 @@ export function AITripPlannerLanding() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center gap-2.5 mt-4">
-                  <div className="relative w-full sm:w-64 bg-slate-50 border border-slate-200 rounded-xl p-2 px-3 flex items-center justify-between">
-                    <select className="w-full bg-transparent text-xs font-semibold text-slate-700 outline-none border-none p-0 appearance-none cursor-pointer">
-                      <option value="uae">United Arab Emirates (UAE / Dubai)</option>
-                      <option value="ca">Canada (Study, TRV, Express Entry)</option>
-                      <option value="us">United States (B1/B2, F1, H1B)</option>
-                      <option value="uk">United Kingdom (Student, Standard)</option>
-                      <option value="de">Germany (Schengen, Opportunity Card)</option>
-                      <option value="au">Australia (Subclass 500, 482, 189)</option>
-                    </select>
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+                  <div className="relative w-full sm:w-72">
+                    <div
+                      ref={checklistCountryRef}
+                      onClick={() => setIsChecklistCountryOpen(!isChecklistCountryOpen)}
+                      className="relative bg-slate-50 hover:bg-slate-100/80 border border-slate-200/90 rounded-2xl h-[46px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                    >
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <span className="text-base shrink-0">
+                          {checklistCountryOptions.find(o => o.value === checklistCountry)?.icon || '🇦🇪'}
+                        </span>
+                        <span className="text-xs font-bold text-slate-800 truncate">
+                          {checklistCountryOptions.find(o => o.value === checklistCountry)?.label || 'United Arab Emirates (UAE / Dubai)'}
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isChecklistCountryOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+
+                      {isChecklistCountryOpen && (
+                        <div
+                          className="absolute bottom-[calc(100%+6px)] sm:bottom-auto sm:top-[calc(100%+6px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            Select Country
+                          </div>
+                          <div className="space-y-0.5">
+                            {checklistCountryOptions.map((opt) => {
+                              const isSelected = checklistCountry === opt.value;
+                              return (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setChecklistCountry(opt.value);
+                                    setIsChecklistCountryOpen(false);
+                                  }}
+                                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-left cursor-pointer transition-colors ${
+                                    isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span className="text-base">{opt.icon}</span>
+                                    <span className="truncate">{opt.label}</span>
+                                  </div>
+                                  {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <a

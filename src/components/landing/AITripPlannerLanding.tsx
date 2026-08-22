@@ -1128,155 +1128,85 @@ export function AITripPlannerLanding() {
             <p className="mt-3.5 text-slate-600 text-xs sm:text-base font-medium max-w-2xl mx-auto leading-relaxed px-2">
               From domestic trip planning to your complete overseas journey including visa applications we simplify every step so you can travel with confidence
             </p>
-
-            {/* FLOATING PROMPT INPUT */}
-            <div className="w-full max-w-3xl mt-6 sm:mt-7 mx-auto px-1 sm:px-0">
-              <form onSubmit={handleSearchSubmit} className="relative flex items-center bg-white border border-purple-200/90 rounded-full pl-3.5 sm:pl-6 pr-1.5 sm:pr-2.5 py-1.5 sm:py-2.5 shadow-[0_10px_35px_rgb(91,44,111,0.08)] hover:shadow-[0_12px_40px_rgb(91,44,111,0.14)] transition-all">
-                <span className="text-purple-600 mr-2 sm:mr-3 text-base sm:text-xl shrink-0">✨</span>
-                <input 
-                  type="text" 
-                  value={searchPrompt}
-                  onChange={(e) => {
-                    setSearchPrompt(e.target.value);
-                    parseQueryToFormState(e.target.value);
-                  }}
-                  placeholder="Select Passport Country, Destination, and Visa Type (e.g., Indian Passport to UAE Student Visa)..." 
-                  className="w-full bg-transparent border-none text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-0 text-xs sm:text-sm md:text-[15px] font-medium mr-2 sm:mr-3 truncate"
-                />
-                <button 
-                  type="submit"
-                  disabled={isGenerating}
-                  className={`w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full text-white flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer disabled:opacity-75 ${
-                    hasVisaAlready === 'no'
-                      ? 'bg-slate-900 hover:bg-slate-800 shadow-md shadow-slate-900/30'
-                      : 'bg-[#00A86B] hover:bg-[#008f5a] shadow-md hover:shadow-lg'
-                  }`}
-                  title="Search Pathway"
-                >
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
-                </button>
-              </form>
-
-              {/* Have Visa Already? Selector Under First Search Bar */}
-              <div className="flex items-center justify-center mt-4 mx-auto w-full px-1">
-                <div className="inline-flex flex-wrap sm:flex-nowrap items-center justify-center gap-1.5 sm:gap-2.5 bg-white/95 backdrop-blur-md border border-purple-200/90 p-1 sm:p-1.5 rounded-2xl sm:rounded-[22px] shadow-[0_8px_30px_rgba(48,0,90,0.06)] max-w-full">
-                  <span className="text-[11px] sm:text-xs font-extrabold text-slate-800 px-2 select-none whitespace-nowrap">
-                    Have Visa Already?
-                  </span>
-                  
-                  {/* Segmented Control Track */}
-                  <div className="flex items-center gap-1 bg-slate-100/90 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-200/80">
-                    
-                    {/* NO Option */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setHasVisaAlready('no');
-                        setHasGenerated(false);
-                        autoSaveJourney({ has_visa: false });
-                        setTimeout(() => {
-                          const el = document.getElementById('need-visa-pathway-dashboard');
-                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100);
-                      }}
-                      className={`px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-[13px] font-black transition-all duration-200 cursor-pointer flex items-center gap-1.5 select-none ${
-                        hasVisaAlready === 'no'
-                          ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30 ring-2 ring-slate-900/20 scale-[1.03]'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-                      }`}
-                    >
-                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
-                      <span>NO</span>
-                      {hasVisaAlready === 'no' && (
-                        <Check className="w-3.5 h-3.5 text-cyan-300 stroke-[3] shrink-0" />
-                      )}
-                    </button>
-
-                    {/* YES Option */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setHasVisaAlready('yes');
-                        setHasGenerated(true);
-                        autoSaveJourney({ has_visa: true });
-                        setTimeout(() => {
-                          const el = document.getElementById('parental-security-engine-dashboard');
-                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100);
-                      }}
-                      className={`px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-[13px] font-black transition-all duration-200 cursor-pointer flex items-center gap-1.5 select-none ${
-                        hasVisaAlready === 'yes'
-                          ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35 ring-2 ring-emerald-500/25 scale-[1.03]'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-                      }`}
-                    >
-                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
-                      <span>YES</span>
-                      {hasVisaAlready === 'yes' && (
-                        <Check className="w-3.5 h-3.5 text-white stroke-[3] shrink-0" />
-                      )}
-                    </button>
-
-                  </div>
-                </div>
-              </div>
-
-            </div>
           </div>
 
-          {/* QUICK-PILL INTENT TAGS (STRICT 1-ROW FLEX CONTAINER) */}
-          <div className="mt-8 flex flex-nowrap items-center justify-start sm:justify-center gap-2.5 sm:gap-3 max-w-6xl mx-auto w-full overflow-x-auto no-scrollbar pb-1">
-            {categoryPills.map((pill) => {
-              const isSelected = selectedPill === pill.id;
-              return (
-                <button 
-                  key={pill.id} 
-                  type="button"
-                  onClick={() => handlePillClick(pill.id, pill.label)}
-                  className={`flex flex-col items-center justify-center bg-white border rounded-2xl px-3 py-2.5 shadow-2xs hover:shadow-md transition-all shrink-0 min-w-[88px] sm:min-w-[98px] h-[74px] cursor-pointer select-none ${
-                    isSelected ? 'border-[#00A86B] ring-2 ring-[#00A86B]/20 bg-emerald-50/40' : 'border-slate-200/80 hover:border-[#00A86B]'
-                  }`}
-                >
-                  <span className="text-xl sm:text-2xl leading-none">{pill.emoji}</span>
-                  <span className={`text-[11px] sm:text-xs font-bold mt-1.5 whitespace-nowrap leading-tight ${isSelected ? 'text-[#00A86B]' : 'text-slate-700'}`}>
-                    {pill.label}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* ── 2. PLAN YOUR OVERSEAS JOURNEY FORM CARD ── */}
-          <div className="relative z-30 w-full max-w-6xl mx-auto mt-8 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_45px_rgba(0,0,0,0.06)] text-left">
+          {/* ── 2. PLAN YOUR OVERSEAS JOURNEY FORM CARD (PRIMARY SEARCH) ── */}
+          <div className="relative z-30 w-full max-w-5xl mx-auto mt-7 sm:mt-8 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-7 md:p-8 shadow-[0_16px_50px_rgba(48,0,90,0.07)] text-left">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 shadow-2xs">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-2xs">
                   <Compass className="w-5 h-5 stroke-[2.2]" />
                 </div>
                 <div>
                   <h2 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
                     Plan Your Overseas Journey &amp; Visa
                   </h2>
-                  <p className="text-[11px] sm:text-xs font-medium text-slate-500">
+                  <p className="text-xs font-medium text-slate-500 mt-0.5">
                     Real-time compliance checks, pre-visa audits &amp; departure security
                   </p>
                 </div>
               </div>
 
-              {lastSavedTime && (
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
-                  <Save className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>Synced at {lastSavedTime}</span>
-                </div>
-              )}
+              {/* Core Decision Toggle: Have Visa Already? */}
+              <div className="flex items-center gap-2 bg-slate-100/90 p-1 rounded-2xl border border-slate-200/80 shrink-0 self-start sm:self-auto">
+                <span className="text-xs font-extrabold text-slate-700 px-2 select-none">
+                  Have Visa Already?
+                </span>
+                
+                {/* NO Option */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHasVisaAlready('no');
+                    setHasGenerated(false);
+                    autoSaveJourney({ has_visa: false });
+                    setTimeout(() => {
+                      const el = document.getElementById('need-visa-pathway-dashboard');
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                  }}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                    hasVisaAlready === 'no'
+                      ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
+                  <span>NO</span>
+                  {hasVisaAlready === 'no' && <Check className="w-3.5 h-3.5 text-cyan-300 stroke-[3]" />}
+                </button>
+
+                {/* YES Option */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHasVisaAlready('yes');
+                    setHasGenerated(true);
+                    autoSaveJourney({ has_visa: true });
+                    setTimeout(() => {
+                      const el = document.getElementById('parental-security-engine-dashboard');
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                  }}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                    hasVisaAlready === 'yes'
+                      ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
+                  <span>YES</span>
+                  {hasVisaAlready === 'yes' && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
+                </button>
+              </div>
             </div>
 
-            {/* 3-Column Dropdowns Grid */}
+            {/* 3-Column Dropdowns Grid + Action Button */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 items-end">
               
               {/* Field 1: Passport Country */}
               <div className="relative">
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                   Passport Country
                 </label>
                 <div
@@ -1286,14 +1216,14 @@ export function AITripPlannerLanding() {
                     setIsJourneyDestOpen(false);
                     setIsPurposeOpen(false);
                   }}
-                  className="relative bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                  className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <span className="text-base shrink-0">
+                    <span className="text-lg shrink-0">
                       {passportCountry ? (passportCountryOptions.find(o => o.value === passportCountry)?.icon || '🌐') : '🌐'}
                     </span>
                     <div className="min-w-0">
-                      <span className={`text-xs sm:text-sm font-bold truncate block ${passportCountry ? 'text-slate-800' : 'text-slate-400'}`}>
+                      <span className={`text-xs sm:text-sm font-bold truncate block ${passportCountry ? 'text-slate-900' : 'text-slate-400'}`}>
                         {passportCountry ? (passportCountryOptions.find(o => o.value === passportCountry)?.label || passportCountry) : 'Select Passport'}
                       </span>
                     </div>
@@ -1340,7 +1270,7 @@ export function AITripPlannerLanding() {
 
               {/* Field 2: Destination Country */}
               <div className="relative">
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                   Destination Country
                 </label>
                 <div
@@ -1350,14 +1280,14 @@ export function AITripPlannerLanding() {
                     setIsPassportOpen(false);
                     setIsPurposeOpen(false);
                   }}
-                  className="relative bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                  className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <span className="text-base shrink-0">
+                    <span className="text-lg shrink-0">
                       {journeyDestination ? (journeyDestinationOptions.find(o => o.value === journeyDestination)?.icon || '✈️') : '✈️'}
                     </span>
                     <div className="min-w-0">
-                      <span className={`text-xs sm:text-sm font-bold truncate block ${journeyDestination ? 'text-slate-800' : 'text-slate-400'}`}>
+                      <span className={`text-xs sm:text-sm font-bold truncate block ${journeyDestination ? 'text-slate-900' : 'text-slate-400'}`}>
                         {journeyDestination ? (journeyDestinationOptions.find(o => o.value === journeyDestination)?.label || journeyDestination) : 'Select Destination'}
                       </span>
                     </div>
@@ -1370,7 +1300,7 @@ export function AITripPlannerLanding() {
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                        Where do you want to go?
+                        Select Destination
                       </div>
                       <div className="space-y-0.5">
                         {journeyDestinationOptions.map((opt) => {
@@ -1404,7 +1334,7 @@ export function AITripPlannerLanding() {
 
               {/* Field 3: Purpose of Travel */}
               <div className="relative">
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                   Purpose of Travel
                 </label>
                 <div
@@ -1414,14 +1344,14 @@ export function AITripPlannerLanding() {
                     setIsPassportOpen(false);
                     setIsJourneyDestOpen(false);
                   }}
-                  className="relative bg-slate-50/90 hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                  className="relative bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 hover:border-[#00A86B]/60 rounded-2xl h-[52px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <span className="text-base shrink-0">
+                    <span className="text-lg shrink-0">
                       {travelPurpose ? (travelPurposeOptions.find(o => o.value === travelPurpose)?.icon || '🎯') : '🎯'}
                     </span>
-                    <div className="min-w-0 flex-1">
-                      <span className={`text-xs sm:text-sm font-bold truncate block ${travelPurpose ? 'text-slate-800' : 'text-slate-400'}`}>
+                    <div className="min-w-0">
+                      <span className={`text-xs sm:text-sm font-bold truncate block ${travelPurpose ? 'text-slate-900' : 'text-slate-400'}`}>
                         {travelPurpose ? (travelPurposeOptions.find(o => o.value === travelPurpose)?.label || travelPurpose) : 'Select Purpose'}
                       </span>
                     </div>
@@ -1466,45 +1396,55 @@ export function AITripPlannerLanding() {
                 </div>
               </div>
 
-              {/* Field 4: Primary Action Button */}
-              <div className="pt-2 sm:pt-0">
+              {/* Action Button: Generate Roadmap */}
+              <div>
                 <button
                   type="button"
-                  onClick={() => {
-                    if (hasVisaAlready === 'yes') {
-                      handleGeneratePathway();
-                    } else {
-                      const el = document.getElementById('need-visa-pathway-dashboard');
-                      if (el) {
-                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      } else {
-                        window.location.href = `/find-experts?country=${encodeURIComponent(journeyDestination)}&category=${travelPurpose}`;
-                      }
-                    }
-                  }}
+                  onClick={handleGeneratePathway}
                   disabled={isGenerating}
-                  className={`w-full h-[52px] px-3 sm:px-4 rounded-2xl font-extrabold text-xs sm:text-sm transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer select-none disabled:opacity-75 ${
+                  className={`w-full h-[52px] rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 ${
                     hasVisaAlready === 'no'
-                      ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30'
-                      : 'bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-md shadow-[#00A86B]/25 hover:shadow-lg'
+                      ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-slate-900/30'
+                      : 'bg-[#00A86B] hover:bg-[#008f5a] text-white shadow-emerald-600/35'
                   }`}
                 >
-                  {hasVisaAlready === 'yes' ? (
+                  {isGenerating ? (
                     <>
-                      <ShieldCheck className="w-4 h-4 text-emerald-100 shrink-0" />
-                      <span>{isGenerating ? 'Analyzing...' : 'Plan Journey'}</span>
+                      <RotateCw className="w-4 h-4 animate-spin text-white" />
+                      <span>Auditing Regulations...</span>
                     </>
                   ) : (
                     <>
-                      <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
-                      <span>Explore Pathway</span>
+                      <Sparkles className="w-4 h-4 fill-white/20" />
+                      <span>{hasVisaAlready === 'no' ? 'Explore Visa Pathway →' : 'Launch Travel Plan →'}</span>
                     </>
                   )}
-                  <ArrowRight className="w-4 h-4 stroke-[2.5] shrink-0" />
                 </button>
               </div>
 
             </div>
+          </div>
+
+          {/* QUICK-PILL INTENT TAGS (STRICT 1-ROW FLEX CONTAINER BELOW PRIMARY SEARCH) */}
+          <div className="mt-7 sm:mt-8 flex flex-nowrap items-center justify-start sm:justify-center gap-2.5 sm:gap-3 max-w-6xl mx-auto w-full overflow-x-auto no-scrollbar pb-1">
+            {categoryPills.map((pill) => {
+              const isSelected = selectedPill === pill.id;
+              return (
+                <button 
+                  key={pill.id} 
+                  type="button" 
+                  onClick={() => handlePillClick(pill.id, pill.label)}
+                  className={`flex flex-col items-center justify-center bg-white border rounded-2xl px-3.5 py-2.5 shadow-2xs hover:shadow-md transition-all shrink-0 min-w-[90px] sm:min-w-[100px] h-[76px] cursor-pointer select-none ${
+                    isSelected ? 'border-[#00A86B] ring-2 ring-[#00A86B]/20 bg-emerald-50/40' : 'border-slate-200/80 hover:border-[#00A86B]'
+                  }`}
+                >
+                  <span className="text-xl sm:text-2xl leading-none">{pill.emoji}</span>
+                  <span className={`text-[11px] sm:text-xs font-bold mt-1.5 whitespace-nowrap leading-tight ${isSelected ? 'text-[#00A86B]' : 'text-slate-700'}`}>
+                    {pill.label}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {/* ── AI LOADING STATE ── */}

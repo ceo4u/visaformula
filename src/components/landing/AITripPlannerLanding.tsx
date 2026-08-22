@@ -598,18 +598,18 @@ export function AITripPlannerLanding() {
   // 2-Tab Navigation: Domestic vs International
   const [travelScopeTab, setTravelScopeTab] = useState<'international' | 'domestic'>('international');
 
-  // Domestic Travel States
-  const [domesticState, setDomesticState] = useState('Rajasthan');
+  // Domestic Travel States (Clean initial state, no dummy prefilled details)
+  const [domesticState, setDomesticState] = useState('');
   const [isDomesticStateOpen, setIsDomesticStateOpen] = useState(false);
   const domesticStateRef = useRef<HTMLDivElement>(null);
-  const [domesticCity, setDomesticCity] = useState('Jaipur');
-  const [domesticDestination, setDomesticDestination] = useState('Goa Beach Holiday');
+  const [domesticCity, setDomesticCity] = useState('');
+  const [domesticDestination, setDomesticDestination] = useState('');
   const [isDomesticDestOpen, setIsDomesticDestOpen] = useState(false);
   const domesticDestRef = useRef<HTMLDivElement>(null);
-  const [domesticMembers, setDomesticMembers] = useState(2);
+  const [domesticMembers, setDomesticMembers] = useState(1);
 
   // International Travel Duration
-  const [tripDurationDays, setTripDurationDays] = useState('30');
+  const [tripDurationDays, setTripDurationDays] = useState('');
   const [isDurationOpen, setIsDurationOpen] = useState(false);
   const durationRef = useRef<HTMLDivElement>(null);
 
@@ -1529,8 +1529,8 @@ return (
                       <div className="flex items-center gap-2 min-w-0 flex-1">
                         <span className="text-base shrink-0">⏱️</span>
                         <div className="min-w-0">
-                          <span className="text-xs font-bold text-slate-900 truncate block">
-                            {tripDurationDays} Days ({tripDurationDays === '365' ? '1+ Yr' : tripDurationDays === '180' ? '6 Mos' : tripDurationDays === '90' ? '3 Mos' : 'Stay'})
+                          <span className={`text-xs font-bold truncate block ${tripDurationDays ? 'text-slate-900' : 'text-slate-400'}`}>
+                            {tripDurationDays ? `${tripDurationDays} Days (${tripDurationDays === '365' ? '1+ Yr' : tripDurationDays === '180' ? '6 Mos' : tripDurationDays === '90' ? '3 Mos' : 'Stay'})` : 'Select Duration'}
                           </span>
                         </div>
                       </div>
@@ -1736,11 +1736,11 @@ return (
                     >
                       <div className="flex items-center gap-2 min-w-0 flex-1">
                         <span className="text-base shrink-0">
-                          {domesticStateOptions.find(o => o.value === domesticState)?.icon || '📍'}
+                          {domesticState ? (domesticStateOptions.find(o => o.value === domesticState)?.icon || '📍') : '📍'}
                         </span>
                         <div className="min-w-0">
-                          <span className="text-xs font-bold text-slate-900 truncate block">
-                            {domesticState}
+                          <span className={`text-xs font-bold truncate block ${domesticState ? 'text-slate-900' : 'text-slate-400'}`}>
+                            {domesticState || 'Select Current State'}
                           </span>
                         </div>
                       </div>
@@ -1793,7 +1793,7 @@ return (
                         type="text"
                         value={domesticCity}
                         onChange={(e) => setDomesticCity(e.target.value)}
-                        placeholder="e.g., Jaipur / Mumbai"
+                        placeholder="e.g. Jaipur, Mumbai, Delhi"
                         className="w-full bg-slate-50 hover:bg-slate-100/70 border border-slate-200/90 focus:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] px-3 text-xs font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
                       />
                     </div>
@@ -1814,11 +1814,11 @@ return (
                     >
                       <div className="flex items-center gap-2 min-w-0 flex-1">
                         <span className="text-base shrink-0">
-                          {domesticDestinationOptions.find(o => o.value === domesticDestination)?.icon || '🏖️'}
+                          {domesticDestination ? (domesticDestinationOptions.find(o => o.value === domesticDestination)?.icon || '🏖️') : '🏖️'}
                         </span>
                         <div className="min-w-0">
-                          <span className="text-xs font-bold text-slate-900 truncate block">
-                            {domesticDestinationOptions.find(o => o.value === domesticDestination)?.label || domesticDestination}
+                          <span className={`text-xs font-bold truncate block ${domesticDestination ? 'text-slate-900' : 'text-slate-400'}`}>
+                            {domesticDestination ? (domesticDestinationOptions.find(o => o.value === domesticDestination)?.label || domesticDestination) : 'Select Destination / Tour'}
                           </span>
                         </div>
                       </div>

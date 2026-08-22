@@ -1269,8 +1269,8 @@ return (
           {/* ── 2. TABBED SEARCH ENGINE (DOMESTIC VS INTERNATIONAL) ── */}
           <div className="relative z-30 w-full max-w-6xl mx-auto mt-6 text-left">
             
-            {/* TOP 2-TAB PILLS SELECTOR */}
-            <div className="flex items-center justify-center sm:justify-start gap-2 mb-2 px-1">
+            {/* TOP 2-TAB PILLS SELECTOR (CENTERED) */}
+            <div className="flex items-center justify-center gap-2.5 mb-3 px-1">
               <button
                 type="button"
                 onClick={() => setTravelScopeTab('international')}

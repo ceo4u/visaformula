@@ -42,11 +42,20 @@ export function UserDashboard() {
             }
 
             const userStr = localStorage.getItem("visaformula_user");
+            const savedEmail = localStorage.getItem("seeker_email");
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
+
             if (isLoggedInExpert === "true") {
                 window.location.href = "/consultant/dashboard";
                 return;
             }
+
+            // If user is not logged in at all, directly open login page with redirect to dashboard
+            if (!userStr && !savedEmail) {
+                window.location.href = "/login?redirect=/dashboard";
+                return;
+            }
+
             if (userStr) {
                 try {
                     const u = JSON.parse(userStr);
@@ -76,7 +85,7 @@ export function UserDashboard() {
                 setFirstName(savedFirst);
                 setModalFirstName(savedFirst);
             }
-            
+
             const savedLast = localStorage.getItem("seeker_lastName");
             if (savedLast) {
                 setLastName(savedLast);
@@ -95,7 +104,6 @@ export function UserDashboard() {
                 }
             }
 
-            const savedEmail = localStorage.getItem("seeker_email");
             if (savedEmail) setEmail(savedEmail);
 
             const savedCountry = localStorage.getItem("seeker_passportCountry");

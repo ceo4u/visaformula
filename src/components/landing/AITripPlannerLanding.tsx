@@ -1226,7 +1226,28 @@ export function AITripPlannerLanding() {
     }, 150);
   };
 
-    const handleGenerateDomesticItinerary = () => {
+      const handleViewInDashboard = () => {
+    autoSaveJourney({
+      domestic_country: domesticCountry,
+      domestic_state: domesticState,
+      domestic_city: domesticCity,
+      domestic_destination: domesticDestination,
+      domestic_members: domesticMembers
+    });
+
+    const isUserLoggedIn = typeof window !== 'undefined' && (
+      Boolean(localStorage.getItem('visaformula_user')) ||
+      Boolean(localStorage.getItem('seeker_email'))
+    );
+
+    if (isUserLoggedIn) {
+      window.location.href = '/dashboard';
+    } else {
+      window.location.href = '/login?redirect=/dashboard';
+    }
+  };
+
+  const handleGenerateDomesticItinerary = () => {
     setIsGeneratingDomestic(true);
     autoSaveJourney({
       domestic_country: domesticCountry || 'India',
@@ -2338,12 +2359,13 @@ return (
                     >
                       <span>{domesticSavedSuccess ? 'Saved to Dashboard ✓' : '💾 Save to Dashboard'}</span>
                     </button>
-                    <a
-                      href="/dashboard"
+                    <button
+                      type="button"
+                      onClick={handleViewInDashboard}
                       className="px-5 py-3 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs sm:text-sm font-black transition-all shadow-lg shadow-emerald-900/30 flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <span>View in Dashboard →</span>
-                    </a>
+                    </button>
                   </div>
                 </div>
 

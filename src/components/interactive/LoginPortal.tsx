@@ -52,7 +52,8 @@ function LoginPortalContent() {
                 try {
                     const parsed = JSON.parse(userStr);
                     window.location.href = parsed.type === "expert" ? "/consultant/dashboard" : "/dashboard";
-                } catch { window.location.href = "/dashboard"; }
+                } catch { const redirectParam = new URLSearchParams(window.location.search).get("redirect") || "/dashboard";
+            window.location.href = redirectParam; }
             } else {
                 window.location.href = "/dashboard";
             }

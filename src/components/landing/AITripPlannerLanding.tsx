@@ -740,6 +740,16 @@ export function AITripPlannerLanding() {
 
   // Global Multi-Tab Search Widget State
   const [activeSearchTab, setActiveSearchTab] = useState<'universities' | 'consultants' | 'relocation' | 'jobs' | 'lawyers'>('universities');
+    // Multi-Tab Search Specific Filter States
+  const [consultantPassport, setConsultantPassport] = useState('');
+  const [consultantDestination, setConsultantDestination] = useState('');
+  const [consultantPurpose, setConsultantPurpose] = useState('');
+  const [isConsultantPassportOpen, setIsConsultantPassportOpen] = useState(false);
+  const [isConsultantDestOpen, setIsConsultantDestOpen] = useState(false);
+  const [isConsultantPurposeOpen, setIsConsultantPurposeOpen] = useState(false);
+  const consultantPassportRef = useRef<HTMLDivElement>(null);
+  const consultantDestRef = useRef<HTMLDivElement>(null);
+  const consultantPurposeRef = useRef<HTMLDivElement>(null);
   const [courseLevel, setCourseLevel] = useState('');
   const [searchCountry, setSearchCountry] = useState('');
   const [searchLocation, setSearchLocation] = useState('');
@@ -1010,6 +1020,9 @@ export function AITripPlannerLanding() {
       if (journeyDestRef.current && !journeyDestRef.current.contains(target)) setIsJourneyDestOpen(false);
       if (purposeRef.current && !purposeRef.current.contains(target)) setIsPurposeOpen(false);
       if (courseLevelRef.current && !courseLevelRef.current.contains(target)) setIsCourseLevelOpen(false);
+      if (consultantPassportRef.current && !consultantPassportRef.current.contains(target)) setIsConsultantPassportOpen(false);
+      if (consultantDestRef.current && !consultantDestRef.current.contains(target)) setIsConsultantDestOpen(false);
+      if (consultantPurposeRef.current && !consultantPurposeRef.current.contains(target)) setIsConsultantPurposeOpen(false);
       if (studyQualRef.current && !studyQualRef.current.contains(target)) setIsStudyQualOpen(false);
       if (studyTargetRef.current && !studyTargetRef.current.contains(target)) setIsStudyTargetOpen(false);
       if (checklistCountryRef.current && !checklistCountryRef.current.contains(target)) setIsChecklistCountryOpen(false);
@@ -1022,20 +1035,35 @@ export function AITripPlannerLanding() {
 
   const handleGlobalSearch = () => {
     const params = new URLSearchParams();
-    if (searchCountry) params.set('country', searchCountry);
-    if (searchLocation) params.set('location', searchLocation);
 
     if (activeSearchTab === 'universities') {
+      if (searchCountry) params.set('country', searchCountry);
+      if (searchLocation) params.set('location', searchLocation);
       if (courseLevel) params.set('level', courseLevel);
       window.location.href = `/universities?${params.toString()}`;
     } else if (activeSearchTab === 'consultants') {
+      const dest = consultantDestination || searchCountry;
+      const passport = consultantPassport || passportCountry;
+      const purpose = consultantPurpose || travelPurpose;
+      
+      if (dest) params.set('country', dest);
+      if (passport) params.set('passport', passport);
+      if (purpose) params.set('category', purpose === 'study' ? 'Student Visa' : purpose === 'work' ? 'Work Permit' : purpose === 'pr' ? 'PR' : purpose === 'visit' ? 'Visit' : purpose);
+      if (searchLocation) params.set('city', searchLocation);
+      
       window.location.href = `/find-experts?${params.toString()}`;
     } else if (activeSearchTab === 'relocation') {
+      if (searchCountry) params.set('country', searchCountry);
+      if (searchLocation) params.set('location', searchLocation);
       window.location.href = `/classifieds?${params.toString()}`;
     } else if (activeSearchTab === 'jobs') {
+      if (searchCountry) params.set('country', searchCountry);
+      if (searchLocation) params.set('location', searchLocation);
       window.location.href = `/jobs?${params.toString()}`;
     } else if (activeSearchTab === 'lawyers') {
-      window.location.href = `/emergency?${params.toString()}`;
+      const dest = consultantDestination || searchCountry;
+      if (dest) params.set('country', dest);
+      window.location.href = `/find-experts?category=${encodeURIComponent('Visa Appeals')}${dest ? `&country=${encodeURIComponent(dest)}` : ''}`;
     }
   };
 
@@ -3587,6 +3615,8 @@ return (
             </div>
 
             {/* ── DYNAMIC ROW 1 FILTER FIELDS ── */}
+            
+            {/* TAB 1: UNIVERSITIES */}
             {activeSearchTab === 'universities' && (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 mb-6 animate-fadeIn">
                 <div className="relative">
@@ -3650,6 +3680,256 @@ return (
                     value={searchLocation}
                     onChange={(e) => setSearchLocation(e.target.value)}
                     placeholder="e.g. Dubai, Toronto, London, Sydney"
+                    className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl h-[52px] px-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: CONSULTANTS (PASSPORT, DESTINATION, PURPOSE FILTER) */}
+            {activeSearchTab === 'consultants' && (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 mb-6 animate-fadeIn">
+                
+                {/* 1. Passport Country */}
+                <div className="relative">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+                    Passport / Origin
+                  </label>
+                  <div
+                    ref={consultantPassportRef}
+                    className="relative bg-slate-50/80 hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                    onClick={() => {
+                      setIsConsultantPassportOpen(!isConsultantPassportOpen);
+                      setIsConsultantDestOpen(false);
+                      setIsConsultantPurposeOpen(false);
+                    }}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      <span className="text-base shrink-0">
+                        {consultantPassport ? (passportCountryOptions.find(o => o.value === consultantPassport)?.icon || '🌐') : '🌐'}
+                      </span>
+                      <span className={`text-sm font-semibold truncate ${consultantPassport ? 'text-slate-800 font-bold' : 'text-slate-400'}`}>
+                        {consultantPassport ? (passportCountryOptions.find(o => o.value === consultantPassport)?.label || consultantPassport) : 'Select Passport'}
+                      </span>
+                    </div>
+                    <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isConsultantPassportOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+
+                    {isConsultantPassportOpen && (
+                      <div
+                        className="absolute top-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="space-y-0.5">
+                          {passportCountryOptions.map((opt) => (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => {
+                                setConsultantPassport(opt.value);
+                                setIsConsultantPassportOpen(false);
+                              }}
+                              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                consultantPassport === opt.value ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2 min-w-0">
+                                <span className="text-base">{opt.icon}</span>
+                                <span className="truncate">{opt.label}</span>
+                              </div>
+                              {consultantPassport === opt.value && <Check className="w-3.5 h-3.5 text-[#00A86B]" />}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* 2. Target Destination Country */}
+                <div className="relative">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+                    Target Destination
+                  </label>
+                  <div
+                    ref={consultantDestRef}
+                    className="relative bg-slate-50/80 hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                    onClick={() => {
+                      setIsConsultantDestOpen(!isConsultantDestOpen);
+                      setIsConsultantPassportOpen(false);
+                      setIsConsultantPurposeOpen(false);
+                    }}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      <span className="text-base shrink-0">
+                        {consultantDestination ? (journeyDestinationOptions.find(o => o.value === consultantDestination)?.icon || '✈️') : '✈️'}
+                      </span>
+                      <span className={`text-sm font-semibold truncate ${consultantDestination ? 'text-slate-800 font-bold' : 'text-slate-400'}`}>
+                        {consultantDestination ? (journeyDestinationOptions.find(o => o.value === consultantDestination)?.label || consultantDestination) : 'Select Destination'}
+                      </span>
+                    </div>
+                    <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isConsultantDestOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+
+                    {isConsultantDestOpen && (
+                      <div
+                        className="absolute top-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="space-y-0.5">
+                          {journeyDestinationOptions.map((opt) => (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => {
+                                setConsultantDestination(opt.value);
+                                setIsConsultantDestOpen(false);
+                              }}
+                              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                consultantDestination === opt.value ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2 min-w-0">
+                                <span className="text-base">{opt.icon}</span>
+                                <span className="truncate">{opt.label}</span>
+                              </div>
+                              {consultantDestination === opt.value && <Check className="w-3.5 h-3.5 text-[#00A86B]" />}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* 3. Purpose / Visa Type */}
+                <div className="relative">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+                    Visa Purpose / Category
+                  </label>
+                  <div
+                    ref={consultantPurposeRef}
+                    className="relative bg-slate-50/80 hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[52px] px-4 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                    onClick={() => {
+                      setIsConsultantPurposeOpen(!isConsultantPurposeOpen);
+                      setIsConsultantPassportOpen(false);
+                      setIsConsultantDestOpen(false);
+                    }}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      <span className="text-base shrink-0">
+                        {consultantPurpose ? (travelPurposeOptions.find(o => o.value === consultantPurpose)?.icon || '🎯') : '🎯'}
+                      </span>
+                      <span className={`text-sm font-semibold truncate ${consultantPurpose ? 'text-slate-800 font-bold' : 'text-slate-400'}`}>
+                        {consultantPurpose ? (travelPurposeOptions.find(o => o.value === consultantPurpose)?.label || consultantPurpose) : 'Select Visa Goal'}
+                      </span>
+                    </div>
+                    <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isConsultantPurposeOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+
+                    {isConsultantPurposeOpen && (
+                      <div
+                        className="absolute top-[calc(100%+8px)] left-0 w-full z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="space-y-0.5">
+                          {travelPurposeOptions.map((opt) => (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => {
+                                setConsultantPurpose(opt.value);
+                                setIsConsultantPurposeOpen(false);
+                              }}
+                              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-left cursor-pointer transition-colors ${
+                                consultantPurpose === opt.value ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-700 hover:bg-slate-50'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2 min-w-0">
+                                <span className="text-base">{opt.icon}</span>
+                                <span className="truncate">{opt.label}</span>
+                              </div>
+                              {consultantPurpose === opt.value && <Check className="w-3.5 h-3.5 text-[#00A86B]" />}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* TAB 3: RELOCATION ASSISTANCE */}
+            {activeSearchTab === 'relocation' && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-6 animate-fadeIn">
+                <div className="relative">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Relocation Destination</label>
+                  <input
+                    type="text"
+                    value={searchCountry}
+                    onChange={(e) => setSearchCountry(e.target.value)}
+                    placeholder="e.g. Dubai, London, Toronto, Sydney"
+                    className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl h-[52px] px-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                  />
+                </div>
+                <div className="relative">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Service Type</label>
+                  <input
+                    type="text"
+                    value={searchLocation}
+                    onChange={(e) => setSearchLocation(e.target.value)}
+                    placeholder="e.g. Shared Accommodation, Forex, Airport Pickup"
+                    className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl h-[52px] px-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: JOBS ABROAD */}
+            {activeSearchTab === 'jobs' && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-6 animate-fadeIn">
+                <div className="relative">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Target Work Destination</label>
+                  <input
+                    type="text"
+                    value={searchCountry}
+                    onChange={(e) => setSearchCountry(e.target.value)}
+                    placeholder="e.g. Germany, UAE, Canada, UK"
+                    className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl h-[52px] px-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                  />
+                </div>
+                <div className="relative">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Job Role / Industry</label>
+                  <input
+                    type="text"
+                    value={searchLocation}
+                    onChange={(e) => setSearchLocation(e.target.value)}
+                    placeholder="e.g. Software Engineer, Healthcare, Hospitality"
+                    className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl h-[52px] px-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: IMMIGRATION LAWYERS */}
+            {activeSearchTab === 'lawyers' && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-6 animate-fadeIn">
+                <div className="relative">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Embassy / Jurisdiction Country</label>
+                  <input
+                    type="text"
+                    value={searchCountry}
+                    onChange={(e) => setSearchCountry(e.target.value)}
+                    placeholder="e.g. Canada, UK, USA, Australia"
+                    className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl h-[52px] px-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                  />
+                </div>
+                <div className="relative">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Legal Matter / Issue</label>
+                  <input
+                    type="text"
+                    value={searchLocation}
+                    onChange={(e) => setSearchLocation(e.target.value)}
+                    placeholder="e.g. Visa Refusal Appeal, Judicial Review, Overstay"
                     className="w-full bg-slate-50/80 border border-slate-200/90 rounded-2xl h-[52px] px-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                   />
                 </div>

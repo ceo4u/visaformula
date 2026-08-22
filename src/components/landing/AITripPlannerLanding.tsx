@@ -1132,72 +1132,17 @@ export function AITripPlannerLanding() {
 
           {/* ── 2. PLAN YOUR OVERSEAS JOURNEY FORM CARD (SLIM & WIDE HORIZONTAL) ── */}
           <div className="relative z-30 w-full max-w-6xl mx-auto mt-5 sm:mt-6 bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:py-3.5 md:px-6 shadow-[0_12px_40px_rgba(48,0,90,0.06)] text-left">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-slate-100">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-2xs shrink-0">
-                  <Compass className="w-4 h-4 stroke-[2.2]" />
-                </div>
-                <div>
-                  <h2 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
-                    Plan Your Overseas Journey &amp; Visa
-                  </h2>
-                  <p className="text-[11px] sm:text-xs font-medium text-slate-500">
-                    Real-time compliance checks, pre-visa audits &amp; departure security
-                  </p>
-                </div>
+            <div className="flex items-center gap-2.5 mb-3 pb-2.5 border-b border-slate-100">
+              <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-2xs shrink-0">
+                <Compass className="w-4 h-4 stroke-[2.2]" />
               </div>
-
-              {/* Core Decision Toggle: Have Visa Already? */}
-              <div className="flex items-center gap-1.5 bg-slate-100/90 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-200/80 shrink-0 self-start sm:self-auto">
-                <span className="text-[11px] sm:text-xs font-extrabold text-slate-700 px-2 select-none">
-                  Have Visa Already?
-                </span>
-                
-                {/* NO Option */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setHasVisaAlready('no');
-                    setHasGenerated(false);
-                    autoSaveJourney({ has_visa: false });
-                    setTimeout(() => {
-                      const el = document.getElementById('need-visa-pathway-dashboard');
-                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
-                  }}
-                  className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
-                    hasVisaAlready === 'no'
-                      ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
-                  <span>NO</span>
-                  {hasVisaAlready === 'no' && <Check className="w-3 h-3 text-cyan-300 stroke-[3]" />}
-                </button>
-
-                {/* YES Option */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setHasVisaAlready('yes');
-                    setHasGenerated(true);
-                    autoSaveJourney({ has_visa: true });
-                    setTimeout(() => {
-                      const el = document.getElementById('parental-security-engine-dashboard');
-                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
-                  }}
-                  className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
-                    hasVisaAlready === 'yes'
-                      ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
-                  <span>YES</span>
-                  {hasVisaAlready === 'yes' && <Check className="w-3 h-3 text-white stroke-[3]" />}
-                </button>
+              <div>
+                <h2 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
+                  Plan Your Overseas Journey &amp; Visa
+                </h2>
+                <p className="text-[11px] sm:text-xs font-medium text-slate-500">
+                  Real-time compliance checks, pre-visa audits &amp; departure security
+                </p>
               </div>
             </div>
 

@@ -78,7 +78,7 @@ const categoryPills = [
   { id: 'pr', emoji: '🏡', label: 'PR & Migration' },
   { id: 'tourist', emoji: '🏝️', label: 'Tourist Visa' },
   { id: 'business', emoji: '🏢', label: 'Business & Investor' },
-  { id: 'parents', emoji: '👨‍👩‍👧', label: 'Parents Super Visa' },
+  { id: 'nomad', emoji: '💻', label: 'Digital Nomad Visa' },
   { id: 'ielts', emoji: '🗣️', label: 'IELTS / PTE Test' },
   { id: 'emergency', emoji: '🚨', label: 'Urgent Visa Help' },
 ];
@@ -945,7 +945,7 @@ export function AITripPlannerLanding() {
     else if (pillId === 'pr') targetPurpose = 'pr';
     else if (pillId === 'tourist') targetPurpose = 'visit';
     else if (pillId === 'business') targetPurpose = 'business';
-    else if (pillId === 'parents') targetPurpose = 'visit';
+    else if (pillId === 'nomad') targetPurpose = 'work';
     else if (pillId === 'ielts') targetPurpose = 'study';
     else if (pillId === 'emergency') targetPurpose = 'visit';
 

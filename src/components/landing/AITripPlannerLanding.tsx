@@ -1894,57 +1894,6 @@ return (
 
                     </div>
 
-                    {/* Core Toggle: Have Visa Already? (ONLY IN INTERNATIONAL SERVICES) */}
-                    <div className="flex items-center justify-between pt-2.5 sm:pt-3 border-t border-slate-100 flex-wrap gap-2">
-                      <div className="flex items-center gap-1.5 bg-slate-100/90 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-200/80">
-                        <span className="text-[11px] sm:text-xs font-extrabold text-slate-700 px-2 select-none">
-                          Have Visa Already?
-                        </span>
-                        
-                        {/* NO Option */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setHasVisaAlready('no');
-                            setHasGenerated(false);
-                            autoSaveJourney({ has_visa: false });
-                          }}
-                          className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
-                            hasVisaAlready === 'no'
-                              ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30'
-                              : 'text-slate-600 hover:text-slate-900'
-                          }`}
-                        >
-                          <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
-                          <span>NO</span>
-                          {hasVisaAlready === 'no' && <Check className="w-3 h-3 text-cyan-300 stroke-[3]" />}
-                        </button>
-
-                        {/* YES Option */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setHasVisaAlready('yes');
-                            setHasGenerated(true);
-                            autoSaveJourney({ has_visa: true });
-                          }}
-                          className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
-                            hasVisaAlready === 'yes'
-                              ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35'
-                              : 'text-slate-600 hover:text-slate-900'
-                          }`}
-                        >
-                          <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
-                          <span>YES</span>
-                          {hasVisaAlready === 'yes' && <Check className="w-3 h-3 text-white stroke-[3]" />}
-                        </button>
-                      </div>
-
-                      <span className="text-[11px] sm:text-xs text-slate-500 font-semibold hidden sm:inline">
-                        {hasVisaAlready === 'no' ? '💡 Explore top university pathways, consultants & VFS checklists' : '🛡️ Pre-departure compliance, expiry tracker & airport security'}
-                      </span>
-                    </div>
-
                   </div>
                 )}
 
@@ -2197,6 +2146,64 @@ return (
               </div>
 
             </div>
+
+            {/* Core Toggle: Have Visa Already? (Clean floating pill right below Search Box) */}
+            {travelScopeTab === 'international' && (
+              <div className="flex items-center justify-center mt-4 sm:mt-5 animate-fadeIn">
+                <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md border border-slate-200/90 py-1.5 px-3.5 sm:px-4 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-md transition-all">
+                  <span className="text-xs sm:text-[13px] font-extrabold text-slate-800 select-none">
+                    Have Visa Already?
+                  </span>
+                  <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-full">
+                    {/* NO Option */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setHasVisaAlready('no');
+                        setHasGenerated(false);
+                        autoSaveJourney({ has_visa: false });
+                        setTimeout(() => {
+                          const el = document.getElementById('need-visa-pathway-dashboard');
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                      }}
+                      className={`px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                        hasVisaAlready === 'no'
+                          ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
+                      <span>NO</span>
+                      {hasVisaAlready === 'no' && <Check className="w-3.5 h-3.5 text-cyan-300 stroke-[3]" />}
+                    </button>
+
+                    {/* YES Option */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setHasVisaAlready('yes');
+                        setHasGenerated(true);
+                        autoSaveJourney({ has_visa: true });
+                        setTimeout(() => {
+                          const el = document.getElementById('parental-security-engine-dashboard');
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                      }}
+                      className={`px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                        hasVisaAlready === 'yes'
+                          ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
+                      <span>YES</span>
+                      {hasVisaAlready === 'yes' && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
           </div>
 
@@ -3058,9 +3065,7 @@ return (
                       <div className="px-3.5 py-1.5 rounded-2xl bg-white/10 border border-white/15 text-white text-xs font-bold">
                         <span>Passport: {passportCountry || 'India'}</span>
                       </div>
-                      <div className="px-3.5 py-1.5 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
-                        <span>Readiness Score: {studyReadinessScore}%</span>
-                      </div>
+                      
                     </div>
                   </div>
 
@@ -3085,7 +3090,7 @@ return (
                           </div>
                         </div>
                         <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-xs font-bold">
-                          Step 1 of 8
+                          Step 1 of 7
                         </span>
                       </div>
 
@@ -3277,7 +3282,7 @@ return (
                           </div>
                         </div>
                         <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold">
-                          Step 2 of 8
+                          Step 2 of 7
                         </span>
                       </div>
 
@@ -3503,7 +3508,7 @@ return (
                           </div>
                         </div>
                         <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold">
-                          Step 4 of 8
+                          Step 4 of 7
                         </span>
                       </div>
 
@@ -3551,63 +3556,43 @@ return (
                       </div>
                     </div>
 
-                    {/* STEP 5: Dynamic Readiness Score */}
-                    <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-lg space-y-5 text-left">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1.5">
-                            <span className="w-7 h-7 rounded-xl bg-[#00A86B] text-white flex items-center justify-center font-black text-xs">5</span>
-                            <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">Step 5: Dynamic Visa Readiness Score</span>
+                    {/* STEP 5: Admission Re-Check */}
+                    <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5 text-left">
+                      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div className="flex items-center gap-3">
+                          <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black text-sm sm:text-base shadow-xs">
+                            5
+                          </span>
+                          <div>
+                            <h4 className="text-base sm:text-lg font-black text-slate-900">
+                              Step 5: Admission Re-Check
+                            </h4>
+                            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                              Re-verify documents alongside {currentStudyData.admissionDocName}
+                            </p>
                           </div>
-                          <h4 className="text-2xl sm:text-3xl font-black text-white">
-                            Visa Approval Likelihood: <span className="text-emerald-400">{studyReadinessScore}%</span>
-                          </h4>
-                          <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl">
-                            Algorithmic scoring based on academic qualification, language proficiency, verified funds docket for {journeyDestination || 'destination'}, and university offer status.
-                          </p>
                         </div>
-
-                        <div className="shrink-0">
-                          {studyReadinessScore >= 95 ? (
-                            <div className="bg-emerald-500/20 border border-emerald-500/40 p-4 rounded-2xl text-center">
-                              <div className="text-xs sm:text-sm font-black text-emerald-300">⭐ High Profile Strength</div>
-                              <div className="text-xs text-slate-200 mt-0.5">Self-Apply Recommended</div>
-                              <a
-                                href="/self-apply"
-                                className="mt-2.5 inline-block px-5 py-2 bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black rounded-xl transition-all shadow-md"
-                              >
-                                Self Apply Now →
-                              </a>
-                            </div>
-                          ) : (
-                            <div className="bg-amber-500/20 border border-amber-500/40 p-4 rounded-2xl text-center">
-                              <div className="text-xs sm:text-sm font-black text-amber-300">Profile Boost Needed (&lt;95%)</div>
-                              <div className="text-xs text-slate-200 mt-0.5">Specialist Guidance Suggested</div>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const formEl = document.getElementById('study-lead-capture-section');
-                                  if (formEl) formEl.scrollIntoView({ behavior: 'smooth' });
-                                }}
-                                className="mt-2.5 inline-block px-5 py-2 bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black rounded-xl transition-all shadow-md cursor-pointer"
-                              >
-                                📞 Contact Expert to Enhance Profile
-                              </button>
-                            </div>
-                          )}
-                        </div>
+                        <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-xs font-bold">
+                          Step 5 of 7
+                        </span>
                       </div>
 
-                      {/* Progress Bar */}
-                      <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-                        <div
-                          className="bg-gradient-to-r from-emerald-400 to-[#00A86B] h-full rounded-full transition-all duration-500"
-                          style={{ width: `${studyReadinessScore}%` }}
-                        />
+                      <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <span className="text-xs sm:text-sm font-bold text-slate-700 mr-2">{currentStudyData.admissionDocName}:</span>
+                          <input
+                            type="text"
+                            value={casI20Number || currentStudyData.casNumber}
+                            onChange={(e) => setCasI20Number(e.target.value)}
+                            className="bg-white border border-slate-200 text-xs sm:text-sm font-black text-slate-900 rounded-xl px-3.5 py-2 w-full sm:w-48 text-left sm:text-right"
+                          />
+                        </div>
+                        <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+                          <span className="text-xs sm:text-sm font-bold text-slate-700">University Offer Letter:</span>
+                          <span className="text-xs sm:text-sm font-extrabold text-[#00A86B]">Verified by {activeSelectedUni} ✓</span>
+                        </div>
                       </div>
                     </div>
-
-                    {/* STEP 6: Admission Re-Check */}
                     <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5 text-left">
                       <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                         <div className="flex items-center gap-3">
@@ -3669,7 +3654,7 @@ return (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex flex-col justify-between gap-3">
                           <div>
-                            <div className="text-xs sm:text-sm font-black text-slate-900">Step 7: Appointment Slot</div>
+                            <div className="text-xs sm:text-sm font-black text-slate-900">Step 6: Appointment Slot</div>
                             <div className="text-xs text-slate-500 mt-1">{currentStudyData.vfsText}</div>
                           </div>
                           <a
@@ -3682,7 +3667,7 @@ return (
 
                         <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex flex-col justify-between gap-3">
                           <div>
-                            <div className="text-xs sm:text-sm font-black text-slate-900">Step 8: Final Visa Filing</div>
+                            <div className="text-xs sm:text-sm font-black text-slate-900">Step 7: Final Visa Filing</div>
                             <div className="text-xs text-slate-500 mt-1">Dossier lock &amp; embassy tracking generation</div>
                           </div>
                           <button
@@ -4485,55 +4470,55 @@ return (
               ))}
             </div>
           </div>
-          {/* ── EXPLORE CLASSIFIEDS SECTION (EXACT MOCKUP IMPLEMENTATION) ── */}
-          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left">
-            <div className="flex items-center justify-between mb-5 pb-4 border-b border-slate-100">
+          {/* ── EXPLORE CLASSIFIEDS SECTION (1:1 PIXEL-PERFECT MOCKUP) ── */}
+          <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-14 px-2 sm:px-0 text-left">
+            <div className="flex items-center justify-between mb-4 sm:mb-5">
               <div>
-                <h3 className="text-base sm:text-2xl font-black text-slate-900 leading-tight">Explore Classifieds</h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Find great offers from trusted providers</p>
+                <h3 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">Explore Classifieds</h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-normal mt-0.5">Find great offers from trusted providers</p>
               </div>
               <a
                 href="/classifieds"
-                className="text-xs sm:text-sm font-bold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
+                className="text-xs sm:text-sm font-semibold text-[#16a34a] hover:underline"
               >
                 View All
               </a>
             </div>
 
-            {/* 5 Cards Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
+            {/* 5 Offer Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
               
               {/* Card 1: Study in Canada */}
               <a
                 href="/universities?country=Canada"
-                className="group bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 rounded-md bg-[#6366f1] text-white text-[9px] font-black uppercase tracking-wider shadow-sm">
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-[#6366f1] text-white text-[9px] font-black uppercase tracking-wider shadow-2xs">
                     FEATURED
                   </span>
                   <img
-                    src="https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1517935703635-2717090c2226?w=600&auto=format&fit=crop&q=80"
                     alt="Study in Canada"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
                   <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
                       Study in Canada
                     </h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
                       Get admission in top universities
                     </p>
                   </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold">
-                    <div className="flex items-center gap-1 text-amber-500">
-                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800 font-black">4.8</span>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.8</span>
                     </div>
-                    <span className="text-slate-500 font-semibold">Canada</span>
+                    <span className="text-slate-500 font-medium">Canada</span>
                   </div>
                 </div>
               </a>
@@ -4541,34 +4526,34 @@ return (
               {/* Card 2: Flight Tickets */}
               <a
                 href="/find-experts?category=flight"
-                className="group bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 rounded-md bg-[#10b981] text-white text-[9px] font-black uppercase tracking-wider shadow-sm">
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-[#10b981] text-white text-[9px] font-black uppercase tracking-wider shadow-2xs">
                     OFFER
                   </span>
                   <img
-                    src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80"
                     alt="Flight Tickets"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
                   <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
                       Flight Tickets
                     </h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
                       Domestic &amp; International flight deals
                     </p>
                   </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold">
-                    <div className="flex items-center gap-1 text-amber-500">
-                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800 font-black">4.6</span>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.6</span>
                     </div>
-                    <span className="text-slate-500 font-semibold">All Routes</span>
+                    <span className="text-slate-500 font-medium">All Routes</span>
                   </div>
                 </div>
               </a>
@@ -4576,31 +4561,31 @@ return (
               {/* Card 3: Hotel Stays */}
               <a
                 href="/classifieds?category=hotels"
-                className="group bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
                   <img
-                    src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&auto=format&fit=crop&q=80"
                     alt="Hotel Stays"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
                   <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
                       Hotel Stays
                     </h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
                       Best hotel deals across India
                     </p>
                   </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold">
-                    <div className="flex items-center gap-1 text-amber-500">
-                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800 font-black">4.7</span>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.7</span>
                     </div>
-                    <span className="text-slate-500 font-semibold">1000+ Hotels</span>
+                    <span className="text-slate-500 font-medium">1000+ Hotels</span>
                   </div>
                 </div>
               </a>
@@ -4608,31 +4593,31 @@ return (
               {/* Card 4: Outstation Cabs */}
               <a
                 href="/classifieds?category=cabs"
-                className="group bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
                   <img
-                    src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop&q=80"
                     alt="Outstation Cabs"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
                   <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
                       Outstation Cabs
                     </h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
                       Safe &amp; reliable cabs at best prices
                     </p>
                   </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold">
-                    <div className="flex items-center gap-1 text-amber-500">
-                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800 font-black">4.5</span>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.5</span>
                     </div>
-                    <span className="text-slate-500 font-semibold">All India</span>
+                    <span className="text-slate-500 font-medium">All India</span>
                   </div>
                 </div>
               </a>
@@ -4640,31 +4625,31 @@ return (
               {/* Card 5: Holiday Packages */}
               <a
                 href="/tours"
-                className="group bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer col-span-2 sm:col-span-1"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer col-span-2 sm:col-span-1"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
                   <img
-                    src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80"
                     alt="Holiday Packages"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
                   <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
                       Holiday Packages
                     </h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
                       Amazing holiday packages
                     </p>
                   </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold">
-                    <div className="flex items-center gap-1 text-amber-500">
-                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800 font-black">4.6</span>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.6</span>
                     </div>
-                    <span className="text-slate-500 font-semibold">All India</span>
+                    <span className="text-slate-500 font-medium">All India</span>
                   </div>
                 </div>
               </a>
@@ -4672,30 +4657,27 @@ return (
             </div>
           </div>
 
-          {/* ── HOW TRAVLTIK WORKS SECTION (EXACT MOCKUP IMPLEMENTATION) ── */}
-          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-6 sm:p-8 md:p-10 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-center">
-            <div className="mb-8 sm:mb-12">
-              <h3 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                How TravlTik Works?
-              </h3>
-            </div>
+          {/* ── HOW TRAVLTIK WORKS SECTION (1:1 PIXEL-PERFECT MOCKUP) ── */}
+          <div className="w-full max-w-6xl mx-auto mt-14 sm:mt-20 px-2 sm:px-0 text-center">
+            <h3 className="text-xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-10 sm:mb-14">
+              How TravlTik Works?
+            </h3>
 
             <div className="relative max-w-5xl mx-auto">
-              {/* 4 Steps Grid with Connectors */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 relative z-10">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-6 relative z-10">
                 
                 {/* Step 1: Search */}
                 <div className="flex flex-col items-center text-center relative group">
                   <div className="relative mb-3">
-                    <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 shadow-2xs z-10">
+                    <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
                       1
                     </span>
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white border border-blue-100 shadow-[0_8px_25px_rgba(37,99,235,0.08)] flex items-center justify-center text-blue-600 group-hover:scale-105 transition-transform">
-                      <Search className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2]" />
+                    <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-[#f8faff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.06)] group-hover:scale-105 transition-transform">
+                      <Search className="w-8 h-8 stroke-[2.2]" />
                     </div>
                   </div>
-                  <h4 className="text-sm sm:text-base font-black text-slate-900 mt-1">Search</h4>
-                  <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 max-w-[170px] leading-relaxed">
+                  <h4 className="text-sm sm:text-base font-bold text-slate-900 mt-2">Search</h4>
+                  <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
                     Find services, destinations or trusted experts
                   </p>
                 </div>
@@ -4703,22 +4685,22 @@ return (
                 {/* Step 2: Compare */}
                 <div className="flex flex-col items-center text-center relative group">
                   <div className="relative mb-3">
-                    <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 shadow-2xs z-10">
+                    <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
                       2
                     </span>
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white border border-blue-100 shadow-[0_8px_25px_rgba(37,99,235,0.08)] flex items-center justify-center text-blue-600 group-hover:scale-105 transition-transform">
-                      <svg className="w-7 h-7 sm:w-8 sm:h-8 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="8" y1="6" x2="21" y2="6"></line>
-                        <line x1="8" y1="12" x2="21" y2="12"></line>
-                        <line x1="8" y1="18" x2="21" y2="18"></line>
-                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-[#f8faff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.06)] group-hover:scale-105 transition-transform">
+                      <svg className="w-8 h-8 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="9" y1="6" x2="20" y2="6"></line>
+                        <line x1="9" y1="12" x2="20" y2="12"></line>
+                        <line x1="9" y1="18" x2="20" y2="18"></line>
+                        <circle cx="4" cy="6" r="1.5" fill="currentColor"></circle>
+                        <circle cx="4" cy="12" r="1.5" fill="currentColor"></circle>
+                        <circle cx="4" cy="18" r="1.5" fill="currentColor"></circle>
                       </svg>
                     </div>
                   </div>
-                  <h4 className="text-sm sm:text-base font-black text-slate-900 mt-1">Compare</h4>
-                  <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 max-w-[170px] leading-relaxed">
+                  <h4 className="text-sm sm:text-base font-bold text-slate-900 mt-2">Compare</h4>
+                  <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
                     Compare options, reviews &amp; prices
                   </p>
                 </div>
@@ -4726,15 +4708,15 @@ return (
                 {/* Step 3: Connect */}
                 <div className="flex flex-col items-center text-center relative group">
                   <div className="relative mb-3">
-                    <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 shadow-2xs z-10">
+                    <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
                       3
                     </span>
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white border border-emerald-100 shadow-[0_8px_25px_rgba(16,185,129,0.08)] flex items-center justify-center text-emerald-600 group-hover:scale-105 transition-transform">
-                      <ShieldCheck className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2]" />
+                    <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-[#f0fdf4] border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-[0_4px_20px_rgba(16,185,129,0.06)] group-hover:scale-105 transition-transform">
+                      <ShieldCheck className="w-8 h-8 stroke-[2.2]" />
                     </div>
                   </div>
-                  <h4 className="text-sm sm:text-base font-black text-slate-900 mt-1">Connect</h4>
-                  <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 max-w-[170px] leading-relaxed">
+                  <h4 className="text-sm sm:text-base font-bold text-slate-900 mt-2">Connect</h4>
+                  <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
                     Connect with verified experts &amp; book with confidence
                   </p>
                 </div>
@@ -4742,15 +4724,15 @@ return (
                 {/* Step 4: Travel */}
                 <div className="flex flex-col items-center text-center relative group">
                   <div className="relative mb-3">
-                    <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 shadow-2xs z-10">
+                    <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
                       4
                     </span>
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white border border-blue-100 shadow-[0_8px_25px_rgba(37,99,235,0.08)] flex items-center justify-center text-blue-600 group-hover:scale-105 transition-transform">
-                      <Send className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2] -rotate-12 translate-x-0.5" />
+                    <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-[#f8faff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.06)] group-hover:scale-105 transition-transform">
+                      <Send className="w-8 h-8 stroke-[2.2] -rotate-12 translate-x-0.5" />
                     </div>
                   </div>
-                  <h4 className="text-sm sm:text-base font-black text-slate-900 mt-1">Travel</h4>
-                  <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 max-w-[170px] leading-relaxed">
+                  <h4 className="text-sm sm:text-base font-bold text-slate-900 mt-2">Travel</h4>
+                  <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
                     Plan, prepare and enjoy your journey
                   </p>
                 </div>

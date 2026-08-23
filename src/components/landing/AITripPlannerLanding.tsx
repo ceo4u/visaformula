@@ -1527,57 +1527,56 @@ return (
         className="hidden"
       />
 
-      {/* ── 1. HERO SECTION (EXACT IPHONE & ANDROID PIXEL-PERFECT AESTHETIC) ── */}
-      <section className="relative w-full overflow-visible bg-gradient-to-b from-sky-50/40 via-[#f3f7fb] to-white pt-3 sm:pt-6 pb-6 sm:pb-10 px-3 sm:px-6 lg:px-8">
+      {/* ── 1. HERO SECTION (1:1 PIXEL-PERFECT IPHONE & ANDROID MATCH) ── */}
+      <section className="relative w-full overflow-visible bg-gradient-to-b from-sky-50/40 via-[#f3f7fb] to-white pt-2 sm:pt-6 pb-6 sm:pb-10 px-2.5 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
-        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[40px] bg-[#edf5fc] border border-white/90 shadow-[0_25px_80px_rgba(0,0,0,0.06)] ring-1 ring-slate-900/5">
+        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[40px] bg-[#edf5fc] border border-white/90 shadow-[0_25px_80px_rgba(0,0,0,0.06)] ring-1 ring-slate-900/5 overflow-visible">
           
-          {/* High-Resolution Generated Travel Photograph Background (Mobile & Desktop Responsive) */}
+          {/* High-Resolution Generated Travel Photograph Background */}
           <div 
-            className="absolute top-0 right-0 bottom-0 w-full sm:w-3/5 lg:w-[58%] bg-cover bg-[position:88%_center] sm:bg-right md:bg-center pointer-events-none opacity-100 rounded-3xl sm:rounded-[40px] overflow-hidden"
+            className="absolute top-0 right-0 w-[48%] sm:w-3/5 lg:w-[58%] h-[200px] sm:h-full bg-cover bg-[position:top_right] sm:bg-right md:bg-center pointer-events-none opacity-100 rounded-tr-3xl rounded-bl-3xl sm:rounded-bl-none sm:rounded-r-[40px] overflow-hidden"
             style={{
               backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
             }}
           >
-            {/* Soft, Non-Washing Gradient Overlay so girl and landscape remain vibrant */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#edf5fc] via-[#edf5fc]/60 sm:via-[#edf5fc]/40 to-transparent w-3/4 sm:w-full" />
+            {/* Soft, Transparent Gradient only on the left side of image */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#edf5fc] via-[#edf5fc]/40 to-transparent w-1/3 sm:w-1/2" />
           </div>
 
           {/* Hero Content Container */}
-          <div className="relative z-10 w-full p-4 sm:p-8 lg:pt-12 lg:pb-12 lg:px-10 text-left">
+          <div className="relative z-10 w-full p-3.5 sm:p-8 lg:pt-12 lg:pb-12 lg:px-10 text-left">
             
             {/* Top Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/90 shadow-2xs mb-3 sm:mb-4">
-              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-              <span className="text-xs sm:text-sm font-black text-blue-600 tracking-tight">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/90 shadow-2xs mb-2.5 sm:mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+              <span className="text-[11px] sm:text-sm font-extrabold text-blue-600 tracking-tight">
                 Your Journey, Our Expertise
               </span>
             </div>
 
             {/* Main H1 Headline */}
-            <h1 className="text-2xl sm:text-4xl lg:text-[46px] font-black text-slate-900 leading-[1.15] sm:leading-[1.12] tracking-tight">
+            <h1 className="text-[20px] sm:text-4xl lg:text-[46px] font-black text-slate-900 leading-[1.18] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
               Everything you need for <br className="hidden sm:inline" />
               <span className="text-slate-900">Visas, Immigration &amp; Travel</span>
             </h1>
 
             {/* Subheading */}
-            <p className="mt-2 sm:mt-3 text-slate-600 text-xs sm:text-base lg:text-[16px] font-medium max-w-xl leading-relaxed mb-4 sm:mb-6">
-              Find trusted consultants, plan your trip, compare services <br className="hidden sm:inline" />
-              and make your journey seamless.
+            <p className="mt-1.5 sm:mt-3 text-slate-600 text-[11px] sm:text-base lg:text-[16px] font-medium max-w-[210px] sm:max-w-xl leading-relaxed mb-3 sm:mb-6">
+              Find trusted consultants, plan your trip, compare services and make your journey seamless.
             </p>
 
             {/* ── INTEGRATED HERO 3-TABS + ENLARGED SEARCH CARD ── */}
-            <div className="w-full max-w-full mt-4 sm:mt-6">
+            <div className="w-full max-w-full mt-3 sm:mt-6">
               
               {/* 3 Tabs attached seamlessly to the top of the search card */}
-              <div className="flex items-end gap-1.5 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar">
+              <div className="flex items-end gap-1 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar">
                 
                 {/* Tab 1: International Services */}
                 <button
                   type="button"
                   onClick={() => setTravelScopeTab('international')}
-                  className={`px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-t-2xl text-xs sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
+                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
                     travelScopeTab === 'international'
                       ? 'bg-white text-blue-950 border-slate-200/90 shadow-xs -mb-[1px] z-20'
                       : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
@@ -1585,7 +1584,7 @@ return (
                 >
                   <span className="relative z-10">International Services</span>
                   {travelScopeTab === 'international' && (
-                    <div className="absolute top-0 left-4 right-4 h-[3px] bg-blue-600 rounded-full" />
+                    <div className="absolute top-0 left-3 right-3 h-[3px] bg-blue-600 rounded-full" />
                   )}
                 </button>
 
@@ -1593,18 +1592,18 @@ return (
                 <button
                   type="button"
                   onClick={() => setTravelScopeTab('domestic')}
-                  className={`px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-t-2xl text-xs sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-2 shrink-0 ${
+                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
                     travelScopeTab === 'domestic'
                       ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
                       : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
                   }`}
                 >
                   <span>Trip Planner</span>
-                  <span className="bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-2xs">
+                  <span className="bg-amber-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-2xs">
                     New
                   </span>
                   {travelScopeTab === 'domestic' && (
-                    <div className="absolute top-0 left-4 right-4 h-[3px] bg-[#00A86B] rounded-full" />
+                    <div className="absolute top-0 left-3 right-3 h-[3px] bg-[#00A86B] rounded-full" />
                   )}
                 </button>
 
@@ -1612,7 +1611,7 @@ return (
                 <button
                   type="button"
                   onClick={() => setTravelScopeTab('explore')}
-                  className={`px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-t-2xl text-xs sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
+                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
                     travelScopeTab === 'explore'
                       ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
                       : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
@@ -1620,25 +1619,25 @@ return (
                 >
                   <span>Explore</span>
                   {travelScopeTab === 'explore' && (
-                    <div className="absolute top-0 left-4 right-4 h-[3px] bg-purple-600 rounded-full" />
+                    <div className="absolute top-0 left-3 right-3 h-[3px] bg-purple-600 rounded-full" />
                   )}
                 </button>
 
               </div>
 
               {/* Large Premium Search Card (Exact Mobile & Desktop Layout) */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[32px] sm:rounded-tl-none p-4 sm:p-6 md:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.06)] relative z-20">
+              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[32px] sm:rounded-tl-none p-3.5 sm:p-6 md:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.06)] relative z-20">
                 
                 {/* TAB 1: INTERNATIONAL SERVICES FIELDS */}
                 {travelScopeTab === 'international' && (
-                  <div className="space-y-3 sm:space-y-4 animate-fadeIn">
+                  <div className="space-y-2.5 sm:space-y-4 animate-fadeIn">
                     
                     {/* Desktop & Mobile Responsive Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-end">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-3.5 items-end">
                       
                       {/* Field 1: I am looking for (Full width on mobile, 4 cols on desktop) */}
                       <div className="lg:col-span-4 relative">
-                        <label className="block text-xs font-black text-slate-800 mb-1.5">
+                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
                           I am looking for
                         </label>
                         <div
@@ -1649,7 +1648,7 @@ return (
                             setIsServiceTypeOpen(false);
                             setIsOriginCityOpen(false);
                           }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-3.5 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                         >
                           <div className="flex items-center gap-2 min-w-0">
                             <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
@@ -1689,11 +1688,11 @@ return (
                       </div>
 
                       {/* Sub-row with 3 fields (3 Columns in mobile row, 6 cols on desktop) */}
-                      <div className="grid grid-cols-3 lg:col-span-6 gap-2 sm:gap-3">
+                      <div className="grid grid-cols-3 lg:col-span-6 gap-1.5 sm:gap-3">
                         
                         {/* Field 2: Going to (Country) */}
                         <div className="relative">
-                          <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1.5 truncate">
+                          <label className="block text-[10px] sm:text-xs font-black text-slate-800 mb-1 truncate">
                             Going to
                           </label>
                           <div
@@ -1704,12 +1703,12 @@ return (
                               setIsServiceTypeOpen(false);
                               setIsOriginCityOpen(false);
                             }}
-                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-2.5 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
+                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
                             <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
                               {journeyDestination || 'Country'}
                             </span>
-                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-blue-600' : ''}`} />
 
                             {isJourneyDestOpen && (
                               <div
@@ -1726,7 +1725,7 @@ return (
                                         setIsJourneyDestOpen(false);
                                         autoSaveJourney({ destination: opt.value });
                                       }}
-                                      className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
+                                      className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                     >
                                       <div className="flex items-center gap-2 min-w-0">
                                         <span className="text-base">{opt.icon}</span>
@@ -1743,7 +1742,7 @@ return (
 
                         {/* Field 3: Service Type */}
                         <div className="relative">
-                          <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1.5 truncate">
+                          <label className="block text-[10px] sm:text-xs font-black text-slate-800 mb-1 truncate">
                             Service Type
                           </label>
                           <div
@@ -1754,12 +1753,12 @@ return (
                               setIsJourneyDestOpen(false);
                               setIsOriginCityOpen(false);
                             }}
-                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-2.5 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
+                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
                             <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
                               {selectedServiceType || 'Service'}
                             </span>
-                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isServiceTypeOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isServiceTypeOpen ? 'rotate-180 text-blue-600' : ''}`} />
 
                             {isServiceTypeOpen && (
                               <div
@@ -1775,7 +1774,7 @@ return (
                                         setSelectedServiceType(opt.label);
                                         setIsServiceTypeOpen(false);
                                       }}
-                                      className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
+                                      className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                     >
                                       <div className="flex items-center gap-2 min-w-0">
                                         <span className="text-base">{opt.icon}</span>
@@ -1791,7 +1790,7 @@ return (
 
                         {/* Field 4: From (City) */}
                         <div className="relative">
-                          <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1.5 truncate">
+                          <label className="block text-[10px] sm:text-xs font-black text-slate-800 mb-1 truncate">
                             From
                           </label>
                           <div
@@ -1802,12 +1801,12 @@ return (
                               setIsJourneyDestOpen(false);
                               setIsServiceTypeOpen(false);
                             }}
-                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-2.5 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
+                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
                             <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
                               {originCity || 'City'}
                             </span>
-                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-blue-600' : ''}`} />
 
                             {isOriginCityOpen && (
                               <div
@@ -1824,7 +1823,7 @@ return (
                                         setPassportCountry('India');
                                         setIsOriginCityOpen(false);
                                       }}
-                                      className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
+                                      className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                     >
                                       <div className="flex items-center gap-2 min-w-0">
                                         <span className="text-base">{opt.icon}</span>
@@ -1840,13 +1839,13 @@ return (
 
                       </div>
 
-                      {/* Action Button: Search (2 Cols on desktop, Full width on mobile) */}
-                      <div className="lg:col-span-2">
+                      {/* Action Button: Search */}
+                      <div className="lg:col-span-2 mt-1 sm:mt-0">
                         <button
                           type="button"
                           onClick={handleGeneratePathway}
                           disabled={isGenerating}
-                          className="w-full h-[48px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-base bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                          className="w-full h-[44px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-base bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                         >
                           {isGenerating ? (
                             <>
@@ -1874,11 +1873,11 @@ return (
                   const tourList = activeStateObj?.destinations || [];
 
                   return (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-3.5 items-end animate-fadeIn">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-end animate-fadeIn">
                       
                       {/* Country (2 Cols) */}
                       <div className="lg:col-span-2 relative">
-                        <label className="block text-xs font-black text-slate-800 mb-1.5">
+                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
                           Country
                         </label>
                         <div
@@ -1888,9 +1887,9 @@ return (
                             setIsDomesticStateOpen(false);
                             setIsDomesticDestOpen(false);
                           }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-3.5 flex items-center justify-between shadow-2xs cursor-pointer select-none"
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs cursor-pointer select-none"
                         >
-                          <div className="flex items-center gap-2 min-w-0">
+                          <div className="flex items-center gap-1.5 min-w-0">
                             <span>{domesticCountryOptions.find(c => c.value === domesticCountry)?.icon || '🇮🇳'}</span>
                             <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                               {domesticCountry}
@@ -1928,7 +1927,7 @@ return (
 
                       {/* State (2 Cols) */}
                       <div className="lg:col-span-2 relative">
-                        <label className="block text-xs font-black text-slate-800 mb-1.5">
+                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
                           State / Region
                         </label>
                         <div
@@ -1938,7 +1937,7 @@ return (
                             setIsDomesticCountryOpen(false);
                             setIsDomesticDestOpen(false);
                           }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-3.5 flex items-center justify-between shadow-2xs cursor-pointer select-none"
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs cursor-pointer select-none"
                         >
                           <span className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
                             {domesticState || 'Select State'}
@@ -1968,7 +1967,7 @@ return (
 
                       {/* Origin City (2 Cols) */}
                       <div className="lg:col-span-2 relative">
-                        <label className="block text-xs font-black text-slate-800 mb-1.5">
+                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
                           Departing From
                         </label>
                         <input
@@ -1976,13 +1975,13 @@ return (
                           value={domesticCity}
                           onChange={(e) => setDomesticCity(e.target.value)}
                           placeholder="Your City (e.g. Nashik)"
-                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-3.5 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                         />
                       </div>
 
                       {/* Tour / Destination (2 Cols) */}
                       <div className="lg:col-span-2 relative">
-                        <label className="block text-xs font-black text-slate-800 mb-1.5">
+                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
                           Destination Package
                         </label>
                         <div
@@ -1992,7 +1991,7 @@ return (
                             setIsDomesticCountryOpen(false);
                             setIsDomesticStateOpen(false);
                           }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-3.5 flex items-center justify-between shadow-2xs cursor-pointer select-none"
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs cursor-pointer select-none"
                         >
                           <span className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
                             {domesticDestination || 'Select Tour'}
@@ -2021,10 +2020,10 @@ return (
 
                       {/* Travelers (2 Cols) */}
                       <div className="lg:col-span-2 relative">
-                        <label className="block text-xs font-black text-slate-800 mb-1.5">
+                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
                           Travelers
                         </label>
-                        <div className="flex items-center justify-between bg-white border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-3.5 shadow-2xs">
+                        <div className="flex items-center justify-between bg-white border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 shadow-2xs">
                           <button
                             type="button"
                             onClick={() => setDomesticMembers(Math.max(1, domesticMembers - 1))}
@@ -2051,7 +2050,7 @@ return (
                           type="button"
                           onClick={handleGenerateDomesticItinerary}
                           disabled={isGeneratingDomestic}
-                          className="w-full h-[48px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                          className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                         >
                           {isGeneratingDomestic ? (
                             <>
@@ -2075,28 +2074,28 @@ return (
                 {travelScopeTab === 'explore' && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end animate-fadeIn">
                     <div className="relative">
-                      <label className="block text-xs font-black text-slate-800 mb-1.5">Destination Region</label>
+                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">Destination Region</label>
                       <input
                         type="text"
                         value={searchCountry}
                         onChange={(e) => setSearchCountry(e.target.value)}
                         placeholder="e.g. Europe, Middle East, UK"
-                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-3.5 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                       />
                     </div>
                     <div className="relative">
-                      <label className="block text-xs font-black text-slate-800 mb-1.5">Purpose of Visit</label>
+                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">Purpose of Visit</label>
                       <input
                         type="text"
                         value={searchLocation}
                         onChange={(e) => setSearchLocation(e.target.value)}
                         placeholder="e.g. Study, Work, Holiday, PR"
-                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-3.5 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                       />
                     </div>
                     <div className="relative">
-                      <label className="block text-xs font-black text-slate-800 mb-1.5">Duration Style</label>
-                      <div className="bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] sm:h-[54px] px-3.5 flex items-center text-xs sm:text-sm font-semibold text-slate-700">
+                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">Duration Style</label>
+                      <div className="bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center text-xs sm:text-sm font-semibold text-slate-700">
                         ⚡ Instant AI Pathway Match
                       </div>
                     </div>
@@ -2104,7 +2103,7 @@ return (
                       <button
                         type="button"
                         onClick={handleGlobalSearch}
-                        className="w-full h-[48px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+                        className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
                       >
                         <Compass className="w-4 h-4 text-cyan-400" />
                         <span>Explore Guides →</span>
@@ -2117,52 +2116,44 @@ return (
 
             </div>
 
-            {/* ── 4 TRUST PILLARS STRIP (IPHONE / ANDROID NATIVE AESTHETIC) ── */}
-            <div className="mt-8 sm:mt-10 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 max-w-5xl mx-auto">
-              <div className="flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-2xs hover:shadow-xs transition-all">
-                <div className="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0 shadow-2xs">
-                  <ShieldCheck className="w-5 h-5 stroke-[2.2]" />
+            {/* ── 4 TRUST PILLARS STRIP (EXACT 4-COL COMPACT ROW AS IN SCREENSHOT) ── */}
+            <div className="mt-5 sm:mt-10 grid grid-cols-4 gap-1.5 sm:gap-4 max-w-5xl mx-auto">
+              <div className="flex flex-col items-center text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-2xs">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-1.5 shrink-0 shadow-2xs">
+                  <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
                 </div>
-                <div>
-                  <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-tight">Trusted Experts</h4>
-                  <p className="text-[10px] sm:text-xs font-semibold text-slate-500 mt-0.5">Verified Consultants</p>
-                </div>
+                <h4 className="text-[10px] sm:text-sm font-black text-slate-900 leading-tight">Trusted Experts</h4>
+                <p className="text-[8px] sm:text-xs font-semibold text-slate-400 mt-0.5 hidden xs:block">Verified Consultants</p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-2xs hover:shadow-xs transition-all">
-                <div className="w-10 h-10 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shrink-0 shadow-2xs">
-                  <Scale className="w-5 h-5 stroke-[2.2]" />
+              <div className="flex flex-col items-center text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-2xs">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 mb-1.5 shrink-0 shadow-2xs">
+                  <Scale className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
                 </div>
-                <div>
-                  <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-tight">Compare &amp; Choose</h4>
-                  <p className="text-[10px] sm:text-xs font-semibold text-slate-500 mt-0.5">Compare Services</p>
-                </div>
+                <h4 className="text-[10px] sm:text-sm font-black text-slate-900 leading-tight">Compare &amp; Choose</h4>
+                <p className="text-[8px] sm:text-xs font-semibold text-slate-400 mt-0.5 hidden xs:block">Compare Services</p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-2xs hover:shadow-xs transition-all">
-                <div className="w-10 h-10 rounded-full bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shrink-0 shadow-2xs">
-                  <Lock className="w-5 h-5 stroke-[2.2]" />
+              <div className="flex flex-col items-center text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-2xs">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 mb-1.5 shrink-0 shadow-2xs">
+                  <Lock className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
                 </div>
-                <div>
-                  <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-tight">Secure &amp; Reliable</h4>
-                  <p className="text-[10px] sm:text-xs font-semibold text-slate-500 mt-0.5">Safe &amp; Trusted Platform</p>
-                </div>
+                <h4 className="text-[10px] sm:text-sm font-black text-slate-900 leading-tight">Secure &amp; Reliable</h4>
+                <p className="text-[8px] sm:text-xs font-semibold text-slate-400 mt-0.5 hidden xs:block">Safe &amp; Trusted</p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-2 sm:gap-3 p-3 sm:p-4 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-2xs hover:shadow-xs transition-all">
-                <div className="w-10 h-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0 shadow-2xs">
-                  <Headphones className="w-5 h-5 stroke-[2.2]" />
+              <div className="flex flex-col items-center text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-2xs">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 mb-1.5 shrink-0 shadow-2xs">
+                  <Headphones className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
                 </div>
-                <div>
-                  <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-tight">24/7 Support</h4>
-                  <p className="text-[10px] sm:text-xs font-semibold text-slate-500 mt-0.5">We're here to help</p>
-                </div>
+                <h4 className="text-[10px] sm:text-sm font-black text-slate-900 leading-tight">24/7 Support</h4>
+                <p className="text-[8px] sm:text-xs font-semibold text-slate-400 mt-0.5 hidden xs:block">We're here to help</p>
               </div>
             </div>
 
             {/* ── POPULAR INTERNATIONAL SERVICES STRIP ── */}
-            <div className="mt-8 sm:mt-12 max-w-7xl mx-auto">
-              <div className="flex items-center justify-between mb-3.5 px-1">
+            <div className="mt-6 sm:mt-12 max-w-7xl mx-auto">
+              <div className="flex items-center justify-between mb-3 px-1">
                 <div>
                   <h3 className="text-sm sm:text-lg font-black text-slate-900 tracking-tight">Popular International Services</h3>
                   <p className="text-xs text-slate-500 font-medium hidden sm:block">Explore verified visa categories &amp; migration programs</p>
@@ -2170,81 +2161,81 @@ return (
                 <button
                   type="button"
                   onClick={() => setTravelScopeTab('international')}
-                  className="px-3.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-[11px] sm:text-xs font-black text-slate-700 transition-colors"
+                  className="px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-[10px] sm:text-xs font-black text-slate-700 transition-colors"
                 >
                   View All
                 </button>
               </div>
 
               {/* 5 Cards Responsive Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3.5">
                 {/* Card 1: Visit Visa */}
                 <div
                   onClick={() => { setTravelPurpose('tourism'); autoSaveJourney({ travel_purpose: 'tourism' }); }}
-                  className="bg-[#f0fdf9] hover:bg-[#e6faf4] border border-emerald-200/70 hover:border-emerald-400 p-3.5 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
+                  className="bg-[#f0fdf9] hover:bg-[#e6faf4] border border-emerald-200/70 hover:border-emerald-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100/90 border border-emerald-200 flex items-center justify-center text-emerald-700 mb-2.5 group-hover:scale-105 transition-transform">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-100/90 border border-emerald-200 flex items-center justify-center text-emerald-700 mb-2 group-hover:scale-105 transition-transform">
                     <Globe className="w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="text-xs sm:text-sm font-black text-slate-900">Visit Visa</h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Tourist, Family visit, Business visit visas</p>
+                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Tourist, Family visit, Business visit visas</p>
                   </div>
                 </div>
 
                 {/* Card 2: Work Visa */}
                 <div
                   onClick={() => { setTravelPurpose('work'); autoSaveJourney({ travel_purpose: 'work' }); }}
-                  className="bg-[#f0f9ff] hover:bg-[#e0f2fe] border border-sky-200/70 hover:border-sky-400 p-3.5 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
+                  className="bg-[#f0f9ff] hover:bg-[#e0f2fe] border border-sky-200/70 hover:border-sky-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-sky-100/90 border border-sky-200 flex items-center justify-center text-sky-700 mb-2.5 group-hover:scale-105 transition-transform">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sky-100/90 border border-sky-200 flex items-center justify-center text-sky-700 mb-2 group-hover:scale-105 transition-transform">
                     <Briefcase className="w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="text-xs sm:text-sm font-black text-slate-900">Work Visa</h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Skilled, Employment, Job seeker visas</p>
+                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Skilled, Employment, Job seeker visas</p>
                   </div>
                 </div>
 
                 {/* Card 3: Study Abroad */}
                 <div
                   onClick={() => { setTravelPurpose('study'); autoSaveJourney({ travel_purpose: 'study' }); }}
-                  className="bg-[#faf5ff] hover:bg-[#f3e8ff] border border-purple-200/70 hover:border-purple-400 p-3.5 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
+                  className="bg-[#faf5ff] hover:bg-[#f3e8ff] border border-purple-200/70 hover:border-purple-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-purple-100/90 border border-purple-200 flex items-center justify-center text-purple-700 mb-2.5 group-hover:scale-105 transition-transform">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-100/90 border border-purple-200 flex items-center justify-center text-purple-700 mb-2 group-hover:scale-105 transition-transform">
                     <GraduationCap className="w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="text-xs sm:text-sm font-black text-slate-900">Study Abroad</h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Student visa, Admissions, Universities</p>
+                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Student visa, Admissions, Universities</p>
                   </div>
                 </div>
 
                 {/* Card 4: Immigration */}
                 <div
                   onClick={() => { setTravelPurpose('pr'); autoSaveJourney({ travel_purpose: 'pr' }); }}
-                  className="bg-[#fff1f2] hover:bg-[#ffe4e6] border border-rose-200/70 hover:border-rose-400 p-3.5 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
+                  className="bg-[#fff1f2] hover:bg-[#ffe4e6] border border-rose-200/70 hover:border-rose-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-rose-100/90 border border-rose-200 flex items-center justify-center text-rose-700 mb-2.5 group-hover:scale-105 transition-transform">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-100/90 border border-rose-200 flex items-center justify-center text-rose-700 mb-2 group-hover:scale-105 transition-transform">
                     <Users className="w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="text-xs sm:text-sm font-black text-slate-900">Immigration</h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">PR, Work permit, Family sponsorship</p>
+                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">PR, Work permit, Family sponsorship</p>
                   </div>
                 </div>
 
                 {/* Card 5: Business Setup */}
                 <div
                   onClick={() => { setTravelPurpose('business'); autoSaveJourney({ travel_purpose: 'business' }); }}
-                  className="bg-[#fffbeb] hover:bg-[#fef3c7] border border-amber-200/70 hover:border-amber-400 p-3.5 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between col-span-2 sm:col-span-1"
+                  className="bg-[#fffbeb] hover:bg-[#fef3c7] border border-amber-200/70 hover:border-amber-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between col-span-2 sm:col-span-1"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-amber-100/90 border border-amber-200 flex items-center justify-center text-amber-700 mb-2.5 group-hover:scale-105 transition-transform">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-100/90 border border-amber-200 flex items-center justify-center text-amber-700 mb-2 group-hover:scale-105 transition-transform">
                     <Building2 className="w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="text-xs sm:text-sm font-black text-slate-900">Business Setup</h4>
-                    <p className="text-[10px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Company formation, Business services</p>
+                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Company formation, Business services</p>
                   </div>
                 </div>
               </div>

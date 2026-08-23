@@ -700,7 +700,7 @@ export function AITripPlannerLanding() {
   const [isOriginCityOpen, setIsOriginCityOpen] = useState(false);
   const originCityRef = useRef<HTMLDivElement>(null);
 
-  const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes'>('no');
+  const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes' | null>(null);
   
   // Custom dropdown open states for Journey Form
   const [isPassportOpen, setIsPassportOpen] = useState(false);
@@ -2214,44 +2214,60 @@ return (
       {/* ── OVERSEAS JOURNEY & AI VISA ENGINE FLOW (INTACT & WORKING) ── */}
       <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center animate-fadeIn">
         
-        {/* 1. HAVE VISA ALREADY TOGGLE SWITCH */}
-        <div className="inline-flex items-center gap-2 bg-white border border-slate-200/90 p-1 rounded-full shadow-sm mb-6">
-          <span className="text-xs sm:text-sm font-extrabold text-slate-700 px-3 select-none">
-            Have Visa Already?
-          </span>
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-full">
+        {/* 1. HAVE VISA ALREADY TOGGLE SWITCH (NOT PRE-SELECTED BY DEFAULT) */}
+        <div className="inline-flex flex-col sm:flex-row items-center gap-3 bg-white/95 backdrop-blur-md border border-slate-300/80 p-2 sm:p-2.5 rounded-3xl sm:rounded-full shadow-[0_6px_25px_rgba(0,0,0,0.07)] mb-7">
+          <div className="flex items-center gap-2 px-3">
+            <span className="text-xs sm:text-sm font-black text-slate-900 select-none">
+              Have Visa Already?
+            </span>
+            <span className="text-[11px] font-semibold text-slate-500 hidden md:inline">
+              (Select one to continue)
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1.5 bg-slate-100/90 p-1 rounded-full border border-slate-200">
+            {/* NO Button */}
             <button
               type="button"
               onClick={() => {
                 setHasVisaAlready('no');
-                setHasGenerated(false);
+                setHasGenerated(true);
                 autoSaveJourney({ has_visa: false });
+                setTimeout(() => {
+                  const el = document.getElementById('need-visa-pathway-dashboard');
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
               }}
-              className={`px-4 py-1.5 rounded-full text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1.5 select-none ${
+              className={`px-5 py-2 rounded-full text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-2 select-none ${
                 hasVisaAlready === 'no'
-                  ? 'bg-slate-900 text-white shadow-md'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30 scale-105'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-white/80'
               }`}
             >
-              <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
+              <span className={`w-2.5 h-2.5 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'border-2 border-slate-400 bg-transparent'}`} />
               <span>NO</span>
               {hasVisaAlready === 'no' && <Check className="w-3.5 h-3.5 text-cyan-300 stroke-[3]" />}
             </button>
 
+            {/* YES Button */}
             <button
               type="button"
               onClick={() => {
                 setHasVisaAlready('yes');
                 setHasGenerated(true);
                 autoSaveJourney({ has_visa: true });
+                setTimeout(() => {
+                  const el = document.getElementById('parental-security-engine-dashboard');
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
               }}
-              className={`px-4 py-1.5 rounded-full text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1.5 select-none ${
+              className={`px-5 py-2 rounded-full text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-2 select-none ${
                 hasVisaAlready === 'yes'
-                  ? 'bg-[#00A86B] text-white shadow-md'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35 scale-105'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-white/80'
               }`}
             >
-              <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
+              <span className={`w-2.5 h-2.5 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'border-2 border-slate-400 bg-transparent'}`} />
               <span>YES</span>
               {hasVisaAlready === 'yes' && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
             </button>
@@ -4927,12 +4943,12 @@ return (
           </div>
 
           {/* ── HOW TRAVLTIK WORKS SECTION (1:1 PIXEL-PERFECT MOCKUP) ── */}
-          <div className="w-full max-w-5xl mx-auto mt-14 sm:mt-20 px-4 text-center">
+          <div className="w-full max-w-6xl mx-auto mt-14 sm:mt-20 px-4 sm:px-6 lg:px-8 text-center">
             <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-10 sm:mb-14">
               How TravlTik Works?
             </h3>
 
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-2 relative">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 lg:gap-8 relative max-w-5xl mx-auto">
               
               {/* Step 1: Search */}
               <div className="flex flex-col items-center text-center group flex-1">

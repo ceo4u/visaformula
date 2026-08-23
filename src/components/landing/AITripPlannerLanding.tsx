@@ -1619,7 +1619,7 @@ return (
                   )}
                 </button>
 
-                {/* Tab 2: Domestic Trip Planner [New] */}
+                {/* Tab 2: Domestic Trip Planner */}
                 <button
                   type="button"
                   onClick={() => setTravelScopeTab('domestic')}
@@ -1629,10 +1629,7 @@ return (
                       : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
                   }`}
                 >
-                  <span>Trip Planner</span>
-                  <span className="bg-amber-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-2xs">
-                    New
-                  </span>
+                  <span>Domestic Trip</span>
                   {travelScopeTab === 'domestic' && (
                     <div className="absolute top-0 left-3 right-3 h-[3px] bg-[#00A86B] rounded-full" />
                   )}
@@ -2225,66 +2222,66 @@ return (
       </div>
 
       
-      {/* ── OVERSEAS JOURNEY & AI VISA ENGINE FLOW (INTACT & WORKING) ── */}
-      <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 text-center animate-fadeIn">
-        
-        {/* 1. HAVE VISA ALREADY TOGGLE SWITCH (CLEAN & CENTERED) */}
-        <div className="w-full sm:w-auto inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 bg-white/95 backdrop-blur-md border border-slate-300/80 p-2.5 sm:p-2 sm:pl-5 sm:pr-2 rounded-3xl sm:rounded-full shadow-[0_6px_25px_rgba(0,0,0,0.07)] mb-3">
-          <span className="text-sm sm:text-base font-black text-slate-900 select-none tracking-tight whitespace-nowrap">
-            Have Visa Already?
-          </span>
+      {/* ── OVERSEAS JOURNEY & AI VISA ENGINE FLOW (ONLY SHOWN FOR INTERNATIONAL SERVICES) ── */}
+      {travelScopeTab === 'international' && (
+        <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 text-center animate-fadeIn">
+          
+          {/* 1. HAVE VISA ALREADY TOGGLE SWITCH (CLEAN & CENTERED) */}
+          <div className="w-full sm:w-auto inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 bg-white/95 backdrop-blur-md border border-slate-300/80 p-2.5 sm:p-2 sm:pl-5 sm:pr-2 rounded-3xl sm:rounded-full shadow-[0_6px_25px_rgba(0,0,0,0.07)] mb-3">
+            <span className="text-sm sm:text-base font-black text-slate-900 select-none tracking-tight whitespace-nowrap">
+              Have Visa Already?
+            </span>
 
-          <div className="w-full sm:w-auto grid grid-cols-2 sm:flex items-center gap-2 bg-slate-100/90 p-1.5 sm:p-1 rounded-2xl sm:rounded-full border border-slate-200">
-            {/* NO Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setHasVisaAlready('no');
-                setHasGenerated(true);
-                autoSaveJourney({ has_visa: false });
-                setTimeout(() => {
-                  const el = document.getElementById('need-visa-pathway-dashboard');
-                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-              }}
-              className={`w-full sm:w-auto px-6 py-2.5 sm:py-2 rounded-xl sm:rounded-full text-xs sm:text-sm font-black transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 select-none ${
-                hasVisaAlready === 'no'
-                  ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30 scale-[1.02] sm:scale-105'
-                  : 'text-slate-700 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span className={`w-2.5 h-2.5 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'border-2 border-slate-400 bg-transparent'}`} />
-              <span>NO</span>
-              {hasVisaAlready === 'no' && <Check className="w-4 h-4 text-cyan-300 stroke-[3]" />}
-            </button>
+            <div className="w-full sm:w-auto grid grid-cols-2 sm:flex items-center gap-2 bg-slate-100/90 p-1.5 sm:p-1 rounded-2xl sm:rounded-full border border-slate-200">
+              {/* NO Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setHasVisaAlready('no');
+                  setHasGenerated(true);
+                  autoSaveJourney({ has_visa: false });
+                  setTimeout(() => {
+                    const el = document.getElementById('need-visa-pathway-dashboard');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }, 100);
+                }}
+                className={`w-full sm:w-auto px-6 py-2.5 sm:py-2 rounded-xl sm:rounded-full text-xs sm:text-sm font-black transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 select-none ${
+                  hasVisaAlready === 'no'
+                    ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30 scale-[1.02] sm:scale-105'
+                    : 'text-slate-700 hover:text-slate-900 hover:bg-white/80'
+                }`}
+              >
+                <span className={`w-2.5 h-2.5 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'border-2 border-slate-400 bg-transparent'}`} />
+                <span>NO</span>
+                {hasVisaAlready === 'no' && <Check className="w-4 h-4 text-cyan-300 stroke-[3]" />}
+              </button>
 
-            {/* YES Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setHasVisaAlready('yes');
-                setHasGenerated(true);
-                autoSaveJourney({ has_visa: true });
-                setTimeout(() => {
-                  const el = document.getElementById('parental-security-engine-dashboard');
-                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-              }}
-              className={`w-full sm:w-auto px-6 py-2.5 sm:py-2 rounded-xl sm:rounded-full text-xs sm:text-sm font-black transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 select-none ${
-                hasVisaAlready === 'yes'
-                  ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35 scale-[1.02] sm:scale-105'
-                  : 'text-slate-700 hover:text-slate-900 hover:bg-white/80'
-              }`}
-            >
-              <span className={`w-2.5 h-2.5 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'border-2 border-slate-400 bg-transparent'}`} />
-              <span>YES</span>
-              {hasVisaAlready === 'yes' && <Check className="w-4 h-4 text-white stroke-[3]" />}
-            </button>
+              {/* YES Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setHasVisaAlready('yes');
+                  setHasGenerated(true);
+                  autoSaveJourney({ has_visa: true });
+                  setTimeout(() => {
+                    const el = document.getElementById('parental-security-engine-dashboard');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }, 100);
+                }}
+                className={`w-full sm:w-auto px-6 py-2.5 sm:py-2 rounded-xl sm:rounded-full text-xs sm:text-sm font-black transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 select-none ${
+                  hasVisaAlready === 'yes'
+                    ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35 scale-[1.02] sm:scale-105'
+                    : 'text-slate-700 hover:text-slate-900 hover:bg-white/80'
+                }`}
+              >
+                <span className={`w-2.5 h-2.5 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'border-2 border-slate-400 bg-transparent'}`} />
+                <span>YES</span>
+                {hasVisaAlready === 'yes' && <Check className="w-4 h-4 text-white stroke-[3]" />}
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* QUICK-PILL INTENT TAGS (TIGHTLY POSITIONED DIRECTLY UNDER TOGGLE) */}
-        {travelScopeTab === 'international' && (
+          {/* QUICK-PILL INTENT TAGS (TIGHTLY POSITIONED DIRECTLY UNDER TOGGLE) */}
           <div className="mt-1 flex flex-nowrap items-center justify-start sm:justify-center gap-2 sm:gap-3 max-w-6xl mx-auto w-full overflow-x-auto no-scrollbar pb-2 px-2 sm:px-0">
             {categoryPills.map((pill) => {
               const isSelected = selectedPill === pill.id;
@@ -2305,9 +2302,9 @@ return (
               );
             })}
           </div>
-        )}
 
-      </section>
+        </section>
+      )}
 
       {/* ── DOMESTIC AI HOLIDAY & TOUR ITINERARY DASHBOARD (CENTERED & ENLARGED) ── */}
           {showDomesticItinerary && travelScopeTab === 'domestic' && (() => {

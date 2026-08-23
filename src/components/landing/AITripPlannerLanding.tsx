@@ -1529,59 +1529,60 @@ return (
         className="hidden"
       />
 
-      {/* ── 1. HERO SECTION (PIXEL-PERFECT MATCH TO SCREENSHOT) ── */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-b from-sky-50/50 via-[#f0f7fc] to-white pt-6 sm:pt-8 pb-12 px-3 sm:px-6 lg:px-8">
+      {/* ── 1. HERO SECTION (ULTRA-HIGH QUALITY IPHONE APPLE AESTHETIC) ── */}
+      <section className="relative w-full overflow-hidden bg-gradient-to-b from-sky-50/40 via-[#f3f7fb] to-white pt-4 sm:pt-6 pb-12 px-3 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
-        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] overflow-hidden bg-[#edf5fc] border border-slate-200/80 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
+        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[40px] overflow-hidden bg-[#edf5fc] border border-white/90 shadow-[0_25px_80px_rgba(0,0,0,0.06)] ring-1 ring-slate-900/5">
           
-          {/* Scenic Background Image with Traveler on the Right */}
+          {/* High-Resolution Generated Travel Photograph Background */}
           <div 
-            className="absolute top-0 right-0 bottom-0 w-full sm:w-3/5 lg:w-[54%] bg-cover bg-right sm:bg-center pointer-events-none opacity-90 sm:opacity-100"
+            className="absolute top-0 right-0 bottom-0 w-full sm:w-3/5 lg:w-[58%] bg-cover bg-right sm:bg-center pointer-events-none opacity-95 sm:opacity-100 transition-opacity duration-500"
             style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1400&q=85')`,
+              backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
             }}
           >
-            {/* Smooth gradient blend to text area */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#edf5fc] via-[#edf5fc]/85 sm:via-[#edf5fc]/60 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#edf5fc] via-[#edf5fc]/70 to-transparent sm:hidden" />
+            {/* Ultra-Smooth Apple-Grade Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#edf5fc] via-[#edf5fc]/90 sm:via-[#edf5fc]/55 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#edf5fc] via-[#edf5fc]/75 to-transparent sm:hidden" />
           </div>
 
           {/* Hero Content Container */}
           <div className="relative z-10 w-full p-6 sm:p-10 lg:pt-14 lg:pb-16 lg:px-14 text-left">
             
             {/* Top Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-blue-200/90 shadow-xs mb-3.5 sm:mb-4">
-              <span className="text-xs sm:text-sm font-bold text-blue-600 tracking-tight">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/90 shadow-2xs mb-4">
+              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+              <span className="text-xs sm:text-sm font-black text-blue-600 tracking-tight">
                 Your Journey, Our Expertise
               </span>
             </div>
 
             {/* Main H1 Headline */}
-            <h1 className="text-2xl sm:text-4xl lg:text-[46px] font-black text-slate-900 leading-[1.15] tracking-tight">
+            <h1 className="text-3xl sm:text-5xl lg:text-[50px] font-black text-slate-900 leading-[1.14] sm:leading-[1.12] tracking-tight">
               Everything you need for <br className="hidden sm:inline" />
-              <span>Visas, Immigration &amp; Travel</span>
+              <span className="text-slate-900">Visas, Immigration &amp; Travel</span>
             </h1>
 
             {/* Subheading */}
-            <p className="mt-2.5 sm:mt-3 text-slate-600 text-xs sm:text-base font-medium max-w-lg leading-relaxed mb-6 sm:mb-8">
+            <p className="mt-3 sm:mt-4 text-slate-600 text-sm sm:text-base lg:text-[17px] font-medium max-w-xl leading-relaxed mb-6 sm:mb-8">
               Find trusted consultants, plan your trip, compare services <br className="hidden sm:inline" />
               and make your journey seamless.
             </p>
 
-            {/* ── INTEGRATED HERO 3-TABS + SEARCH WIDGET ── */}
-            <div className="w-full max-w-5xl mt-4 sm:mt-6">
+            {/* ── INTEGRATED HERO 3-TABS + ENLARGED SEARCH CARD (IPHONE QUALITY) ── */}
+            <div className="w-full max-w-5xl mt-6 sm:mt-8">
               
-              {/* 3 Tabs attached to the top of the search card */}
+              {/* 3 Tabs attached seamlessly to the top of the search card */}
               <div className="flex items-end gap-1.5 sm:gap-2 px-2 sm:px-4">
                 
                 {/* Tab 1: International Services */}
                 <button
                   type="button"
                   onClick={() => setTravelScopeTab('international')}
-                  className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-t-2xl text-xs sm:text-sm font-black transition-all cursor-pointer select-none border-t border-x relative ${
+                  className={`px-5 sm:px-7 py-3 sm:py-3.5 rounded-t-2xl text-xs sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative ${
                     travelScopeTab === 'international'
-                      ? 'bg-white text-blue-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      ? 'bg-white text-blue-950 border-slate-200/90 shadow-xs -mb-[1px] z-20'
                       : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
                   }`}
                 >
@@ -1595,7 +1596,7 @@ return (
                 <button
                   type="button"
                   onClick={() => setTravelScopeTab('domestic')}
-                  className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-t-2xl text-xs sm:text-sm font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-2 ${
+                  className={`px-5 sm:px-7 py-3 sm:py-3.5 rounded-t-2xl text-xs sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-2.5 ${
                     travelScopeTab === 'domestic'
                       ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
                       : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
@@ -1614,7 +1615,7 @@ return (
                 <button
                   type="button"
                   onClick={() => setTravelScopeTab('explore')}
-                  className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-t-2xl text-xs sm:text-sm font-black transition-all cursor-pointer select-none border-t border-x relative hidden sm:flex items-center gap-1.5 ${
+                  className={`px-5 sm:px-7 py-3 sm:py-3.5 rounded-t-2xl text-xs sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative hidden sm:flex items-center gap-1.5 ${
                     travelScopeTab === 'explore'
                       ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
                       : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
@@ -1628,16 +1629,16 @@ return (
 
               </div>
 
-              {/* Search Card Container (White Box with 4 Fields + Action Button) */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl sm:rounded-tl-none p-4 sm:p-5 md:p-6 shadow-[0_14px_40px_rgba(0,0,0,0.06)] relative z-10">
+              {/* Large Premium Search Card (White Box with Increased Padding & Height) */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[32px] sm:rounded-tl-none p-5 sm:p-7 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.06)] relative z-10">
                 
-                {/* TAB 1: INTERNATIONAL SERVICES FIELDS (1:1 AS IN SCREENSHOT) */}
+                {/* TAB 1: INTERNATIONAL SERVICES FIELDS */}
                 {travelScopeTab === 'international' && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 items-end animate-fadeIn">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 sm:gap-4 items-end animate-fadeIn">
                     
-                    {/* Field 1: I am looking for (3 Cols) */}
+                    {/* Field 1: I am looking for (3.5 Cols) */}
                     <div className="lg:col-span-3 relative">
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                      <label className="block text-xs font-black text-slate-800 mb-2">
                         I am looking for
                       </label>
                       <div
@@ -1648,19 +1649,19 @@ return (
                           setIsServiceTypeOpen(false);
                           setIsOriginCityOpen(false);
                         }}
-                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-400 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-2xl h-[54px] sm:h-[58px] px-4 flex items-center justify-between shadow-2xs hover:shadow-xs transition-all cursor-pointer select-none"
                       >
-                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 truncate">
+                        <span className="text-xs sm:text-sm font-bold text-slate-800 truncate">
                           {serviceLookingFor || 'Visa, Immigration, Travel...'}
                         </span>
-                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isLookingForOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isLookingForOpen ? 'rotate-180 text-blue-600' : ''}`} />
 
                         {isLookingForOpen && (
                           <div
-                            className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[240px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[260px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.15)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <div className="space-y-0.5">
+                            <div className="space-y-1">
                               {lookingForOptions.map((opt) => (
                                 <button
                                   key={opt.value}
@@ -1670,10 +1671,10 @@ return (
                                     if (opt.value !== 'visa') setTravelPurpose(opt.value);
                                     setIsLookingForOpen(false);
                                   }}
-                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                 >
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    <span>{opt.icon}</span>
+                                  <div className="flex items-center gap-2.5 min-w-0">
+                                    <span className="text-base">{opt.icon}</span>
                                     <span className="truncate">{opt.label}</span>
                                   </div>
                                 </button>
@@ -1686,7 +1687,7 @@ return (
 
                     {/* Field 2: Going to (Country) (3 Cols) */}
                     <div className="lg:col-span-3 relative">
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                      <label className="block text-xs font-black text-slate-800 mb-2">
                         Going to
                       </label>
                       <div
@@ -1697,30 +1698,30 @@ return (
                           setIsServiceTypeOpen(false);
                           setIsOriginCityOpen(false);
                         }}
-                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-400 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-2xl h-[54px] sm:h-[58px] px-4 flex items-center justify-between shadow-2xs hover:shadow-xs transition-all cursor-pointer select-none"
                       >
-                        <div className="flex items-center gap-2 min-w-0">
+                        <div className="flex items-center gap-2.5 min-w-0">
                           {journeyDestination ? (
                             <>
-                              <span>{journeyDestinationOptions.find(o => o.value === journeyDestination)?.icon || '📍'}</span>
-                              <span className="text-xs sm:text-[13px] font-bold text-slate-900 truncate">
+                              <span className="text-base">{journeyDestinationOptions.find(o => o.value === journeyDestination)?.icon || '📍'}</span>
+                              <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                                 {journeyDestination}
                               </span>
                             </>
                           ) : (
-                            <span className="text-xs sm:text-[13px] font-semibold text-slate-400 truncate">
+                            <span className="text-xs sm:text-sm font-semibold text-slate-400 truncate">
                               Select Country
                             </span>
                           )}
                         </div>
-                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-blue-600' : ''}`} />
 
                         {isJourneyDestOpen && (
                           <div
-                            className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[240px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[260px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.15)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <div className="space-y-0.5">
+                            <div className="space-y-1">
                               {journeyDestinationOptions.map((opt) => (
                                 <button
                                   key={opt.value}
@@ -1730,13 +1731,13 @@ return (
                                     setIsJourneyDestOpen(false);
                                     autoSaveJourney({ destination: opt.value });
                                   }}
-                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                 >
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    <span>{opt.icon}</span>
+                                  <div className="flex items-center gap-2.5 min-w-0">
+                                    <span className="text-base">{opt.icon}</span>
                                     <span className="truncate">{opt.label}</span>
                                   </div>
-                                  {journeyDestination === opt.value && <Check className="w-3.5 h-3.5 text-[#00A86B]" />}
+                                  {journeyDestination === opt.value && <Check className="w-4 h-4 text-[#00A86B]" />}
                                 </button>
                               ))}
                             </div>
@@ -1745,9 +1746,9 @@ return (
                       </div>
                     </div>
 
-                    {/* Field 3: Service Type (2.5 Cols) */}
+                    {/* Field 3: Service Type (2 Cols) */}
                     <div className="lg:col-span-2 relative">
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                      <label className="block text-xs font-black text-slate-800 mb-2">
                         Service Type
                       </label>
                       <div
@@ -1758,19 +1759,19 @@ return (
                           setIsJourneyDestOpen(false);
                           setIsOriginCityOpen(false);
                         }}
-                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-400 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-2xl h-[54px] sm:h-[58px] px-4 flex items-center justify-between shadow-2xs hover:shadow-xs transition-all cursor-pointer select-none"
                       >
-                        <span className={`text-xs sm:text-[13px] truncate ${selectedServiceType ? 'font-bold text-slate-900' : 'font-semibold text-slate-400'}`}>
+                        <span className={`text-xs sm:text-sm truncate ${selectedServiceType ? 'font-bold text-slate-900' : 'font-semibold text-slate-400'}`}>
                           {selectedServiceType || 'Select Service'}
                         </span>
-                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isServiceTypeOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isServiceTypeOpen ? 'rotate-180 text-blue-600' : ''}`} />
 
                         {isServiceTypeOpen && (
                           <div
-                            className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[220px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[240px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.15)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <div className="space-y-0.5">
+                            <div className="space-y-1">
                               {serviceTypeOptions.map((opt) => (
                                 <button
                                   key={opt.value}
@@ -1779,10 +1780,10 @@ return (
                                     setSelectedServiceType(opt.label);
                                     setIsServiceTypeOpen(false);
                                   }}
-                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                 >
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    <span>{opt.icon}</span>
+                                  <div className="flex items-center gap-2.5 min-w-0">
+                                    <span className="text-base">{opt.icon}</span>
                                     <span className="truncate">{opt.label}</span>
                                   </div>
                                 </button>
@@ -1793,9 +1794,9 @@ return (
                       </div>
                     </div>
 
-                    {/* Field 4: From (City/Origin) (2.5 Cols) */}
+                    {/* Field 4: From (City/Origin) (2 Cols) */}
                     <div className="lg:col-span-2 relative">
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                      <label className="block text-xs font-black text-slate-800 mb-2">
                         From
                       </label>
                       <div
@@ -1806,19 +1807,19 @@ return (
                           setIsJourneyDestOpen(false);
                           setIsServiceTypeOpen(false);
                         }}
-                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-400 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-2xl h-[54px] sm:h-[58px] px-4 flex items-center justify-between shadow-2xs hover:shadow-xs transition-all cursor-pointer select-none"
                       >
-                        <span className={`text-xs sm:text-[13px] truncate ${originCity ? 'font-bold text-slate-900' : 'font-semibold text-slate-400'}`}>
+                        <span className={`text-xs sm:text-sm truncate ${originCity ? 'font-bold text-slate-900' : 'font-semibold text-slate-400'}`}>
                           {originCity || 'Select City'}
                         </span>
-                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-blue-600' : ''}`} />
 
                         {isOriginCityOpen && (
                           <div
-                            className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[200px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.15)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <div className="space-y-0.5">
+                            <div className="space-y-1">
                               {originCityOptions.map((opt) => (
                                 <button
                                   key={opt.value}
@@ -1828,10 +1829,10 @@ return (
                                     setPassportCountry('India');
                                     setIsOriginCityOpen(false);
                                   }}
-                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                 >
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    <span>{opt.icon}</span>
+                                  <div className="flex items-center gap-2.5 min-w-0">
+                                    <span className="text-base">{opt.icon}</span>
                                     <span className="truncate">{opt.label}</span>
                                   </div>
                                 </button>
@@ -1848,7 +1849,7 @@ return (
                         type="button"
                         onClick={handleGeneratePathway}
                         disabled={isGenerating}
-                        className="w-full h-[48px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                        className="w-full h-[54px] sm:h-[58px] rounded-2xl font-black text-xs sm:text-base bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25 flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                       >
                         {isGenerating ? (
                           <>
@@ -1857,7 +1858,7 @@ return (
                           </>
                         ) : (
                           <>
-                            <Search className="w-4 h-4 text-white" />
+                            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                             <span>Search</span>
                           </>
                         )}
@@ -1874,11 +1875,11 @@ return (
                   const tourList = activeStateObj?.destinations || [];
 
                   return (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4 items-end animate-fadeIn">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5 sm:gap-4 items-end animate-fadeIn">
                       
                       {/* Country */}
                       <div className="relative">
-                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                        <label className="block text-xs font-black text-slate-800 mb-2">
                           Country
                         </label>
                         <div
@@ -1888,18 +1889,18 @@ return (
                             setIsDomesticStateOpen(false);
                             setIsDomesticDestOpen(false);
                           }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs cursor-pointer select-none"
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[54px] sm:h-[58px] px-4 flex items-center justify-between shadow-2xs cursor-pointer select-none"
                         >
                           <div className="flex items-center gap-2 min-w-0">
                             <span>{domesticCountryOptions.find(c => c.value === domesticCountry)?.icon || '🇮🇳'}</span>
-                            <span className="text-xs sm:text-[13px] font-bold text-slate-900 truncate">
+                            <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                               {domesticCountry}
                             </span>
                           </div>
-                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticCountryOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticCountryOpen ? 'rotate-180' : ''}`} />
 
                           {isDomesticCountryOpen && (
-                            <div className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[200px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5" onClick={(e) => e.stopPropagation()}>
+                            <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.15)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/5" onClick={(e) => e.stopPropagation()}>
                               {domesticCountryOptions.map((opt) => (
                                 <button
                                   key={opt.value}
@@ -1913,9 +1914,9 @@ return (
                                     }
                                     setIsDomesticCountryOpen(false);
                                   }}
-                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
                                 >
-                                  <div className="flex items-center gap-2 min-w-0">
+                                  <div className="flex items-center gap-2.5 min-w-0">
                                     <span>{opt.icon}</span>
                                     <span className="truncate">{opt.label}</span>
                                   </div>
@@ -1928,7 +1929,7 @@ return (
 
                       {/* State */}
                       <div className="relative">
-                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                        <label className="block text-xs font-black text-slate-800 mb-2">
                           State / Region
                         </label>
                         <div
@@ -1938,15 +1939,15 @@ return (
                             setIsDomesticCountryOpen(false);
                             setIsDomesticDestOpen(false);
                           }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs cursor-pointer select-none"
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[54px] sm:h-[58px] px-4 flex items-center justify-between shadow-2xs cursor-pointer select-none"
                         >
-                          <span className="text-xs sm:text-[13px] font-semibold text-slate-800 truncate">
+                          <span className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
                             {domesticState || 'Select State'}
                           </span>
-                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticStateOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticStateOpen ? 'rotate-180' : ''}`} />
 
                           {isDomesticStateOpen && (
-                            <div className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[200px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5" onClick={(e) => e.stopPropagation()}>
+                            <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.15)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/5" onClick={(e) => e.stopPropagation()}>
                               {stateList.map((st) => (
                                 <button
                                   key={st.name}
@@ -1956,7 +1957,7 @@ return (
                                     if (st.destinations?.[0]) setDomesticDestination(st.destinations[0].name);
                                     setIsDomesticStateOpen(false);
                                   }}
-                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
                                 >
                                   <span>{st.name}</span>
                                 </button>
@@ -1968,7 +1969,7 @@ return (
 
                       {/* Origin City */}
                       <div className="relative">
-                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                        <label className="block text-xs font-black text-slate-800 mb-2">
                           Departing From
                         </label>
                         <input
@@ -1976,13 +1977,13 @@ return (
                           value={domesticCity}
                           onChange={(e) => setDomesticCity(e.target.value)}
                           placeholder="Your City (e.g. Nashik)"
-                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 text-xs sm:text-[13px] font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[54px] sm:h-[58px] px-4 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                         />
                       </div>
 
                       {/* Tour / Destination */}
                       <div className="relative">
-                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                        <label className="block text-xs font-black text-slate-800 mb-2">
                           Destination Package
                         </label>
                         <div
@@ -1992,15 +1993,15 @@ return (
                             setIsDomesticCountryOpen(false);
                             setIsDomesticStateOpen(false);
                           }}
-                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs cursor-pointer select-none"
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[54px] sm:h-[58px] px-4 flex items-center justify-between shadow-2xs cursor-pointer select-none"
                         >
-                          <span className="text-xs sm:text-[13px] font-semibold text-slate-800 truncate">
+                          <span className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
                             {domesticDestination || 'Select Tour'}
                           </span>
-                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticDestOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticDestOpen ? 'rotate-180' : ''}`} />
 
                           {isDomesticDestOpen && (
-                            <div className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[220px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5" onClick={(e) => e.stopPropagation()}>
+                            <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[240px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.15)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/5" onClick={(e) => e.stopPropagation()}>
                               {tourList.map((d) => (
                                 <button
                                   key={d.name}
@@ -2009,7 +2010,7 @@ return (
                                     setDomesticDestination(d.name);
                                     setIsDomesticDestOpen(false);
                                   }}
-                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
                                 >
                                   <span>{d.name}</span>
                                 </button>
@@ -2021,24 +2022,24 @@ return (
 
                       {/* Travelers */}
                       <div className="relative">
-                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                        <label className="block text-xs font-black text-slate-800 mb-2">
                           Travelers
                         </label>
-                        <div className="flex items-center justify-between bg-white border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 shadow-2xs">
+                        <div className="flex items-center justify-between bg-white border border-slate-200/90 rounded-2xl h-[54px] sm:h-[58px] px-4 shadow-2xs">
                           <button
                             type="button"
                             onClick={() => setDomesticMembers(Math.max(1, domesticMembers - 1))}
-                            className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center cursor-pointer"
+                            className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-black flex items-center justify-center cursor-pointer text-sm"
                           >
                             -
                           </button>
-                          <span className="text-xs sm:text-[13px] font-bold text-slate-900">
+                          <span className="text-xs sm:text-sm font-bold text-slate-900">
                             {domesticMembers} {domesticMembers === 1 ? 'Traveler' : 'Travelers'}
                           </span>
                           <button
                             type="button"
                             onClick={() => setDomesticMembers(domesticMembers + 1)}
-                            className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold flex items-center justify-center cursor-pointer"
+                            className="w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black flex items-center justify-center cursor-pointer text-sm"
                           >
                             +
                           </button>
@@ -2051,16 +2052,16 @@ return (
                           type="button"
                           onClick={handleGenerateDomesticItinerary}
                           disabled={isGeneratingDomestic}
-                          className="w-full h-[48px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-[13px] bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                          className="w-full h-[54px] sm:h-[58px] rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                         >
                           {isGeneratingDomestic ? (
                             <>
-                              <RotateCw className="w-3.5 h-3.5 animate-spin text-white" />
+                              <RotateCw className="w-4 h-4 animate-spin text-white" />
                               <span>Planning...</span>
                             </>
                           ) : (
                             <>
-                              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+                              <Sparkles className="w-4 h-4 text-cyan-300" />
                               <span className="truncate">Explore Packages →</span>
                             </>
                           )}
@@ -2073,30 +2074,30 @@ return (
 
                 {/* TAB 3: EXPLORE DESTINATIONS */}
                 {travelScopeTab === 'explore' && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-end animate-fadeIn">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 items-end animate-fadeIn">
                     <div className="relative">
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">Destination Region</label>
+                      <label className="block text-xs font-black text-slate-800 mb-2">Destination Region</label>
                       <input
                         type="text"
                         value={searchCountry}
                         onChange={(e) => setSearchCountry(e.target.value)}
                         placeholder="e.g. Europe, Middle East, UK"
-                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 text-xs sm:text-[13px] font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[54px] sm:h-[58px] px-4 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                       />
                     </div>
                     <div className="relative">
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">Purpose of Visit</label>
+                      <label className="block text-xs font-black text-slate-800 mb-2">Purpose of Visit</label>
                       <input
                         type="text"
                         value={searchLocation}
                         onChange={(e) => setSearchLocation(e.target.value)}
                         placeholder="e.g. Study, Work, Holiday, PR"
-                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 text-xs sm:text-[13px] font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-2xl h-[54px] sm:h-[58px] px-4 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                       />
                     </div>
                     <div className="relative">
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">Duration Style</label>
-                      <div className="bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center text-xs font-semibold text-slate-700">
+                      <label className="block text-xs font-black text-slate-800 mb-2">Duration Style</label>
+                      <div className="bg-slate-50 border border-slate-200/90 rounded-2xl h-[54px] sm:h-[58px] px-4 flex items-center text-xs sm:text-sm font-semibold text-slate-700">
                         ⚡ Instant AI Pathway Match
                       </div>
                     </div>
@@ -2104,7 +2105,7 @@ return (
                       <button
                         type="button"
                         onClick={handleGlobalSearch}
-                        className="w-full h-[48px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+                        className="w-full h-[54px] sm:h-[58px] rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
                       >
                         <Compass className="w-4 h-4 text-cyan-400" />
                         <span>Explore Guides →</span>

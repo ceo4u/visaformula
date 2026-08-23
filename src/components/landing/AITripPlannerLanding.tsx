@@ -2153,6 +2153,275 @@ return (
 
       </section>
 
+      {/* ── 2. EXPLORE CLASSIFIEDS SECTION (EXACT MOCKUP IMPLEMENTATION) ── */}
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div>
+            <h2 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight">Explore Classifieds</h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Find great offers from trusted providers</p>
+          </div>
+          <a
+            href="/classifieds"
+            className="text-xs sm:text-sm font-bold text-emerald-600 hover:text-emerald-700 transition-colors"
+          >
+            View All
+          </a>
+        </div>
+
+        {/* 5 Cards Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+          
+          {/* Card 1: Study in Canada */}
+          <a
+            href="/universities?country=Canada"
+            className="group bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer"
+          >
+            <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+              <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 rounded-md bg-[#6366f1] text-white text-[9px] font-black uppercase tracking-wider shadow-sm">
+                FEATURED
+              </span>
+              <img
+                src="https://images.unsplash.com/photo-1517935703635-2717090c2226?w=600&auto=format&fit=crop&q=80"
+                alt="Study in Canada"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+              <div>
+                <h3 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                  Study in Canada
+                </h3>
+                <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                  Get admission in top universities
+                </p>
+              </div>
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100/80 text-[11px] font-bold">
+                <div className="flex items-center gap-1 text-amber-500">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span className="text-slate-800 font-black">4.8</span>
+                </div>
+                <span className="text-slate-500 font-semibold">Canada</span>
+              </div>
+            </div>
+          </a>
+
+          {/* Card 2: Flight Tickets */}
+          <a
+            href="/find-experts?category=flight"
+            className="group bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer"
+          >
+            <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+              <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 rounded-md bg-[#10b981] text-white text-[9px] font-black uppercase tracking-wider shadow-sm">
+                OFFER
+              </span>
+              <img
+                src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80"
+                alt="Flight Tickets"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+              <div>
+                <h3 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                  Flight Tickets
+                </h3>
+                <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                  Domestic &amp; International flight deals
+                </p>
+              </div>
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100/80 text-[11px] font-bold">
+                <div className="flex items-center gap-1 text-amber-500">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span className="text-slate-800 font-black">4.6</span>
+                </div>
+                <span className="text-slate-500 font-semibold">All Routes</span>
+              </div>
+            </div>
+          </a>
+
+          {/* Card 3: Hotel Stays */}
+          <a
+            href="/classifieds?category=hotels"
+            className="group bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer"
+          >
+            <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+              <img
+                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80"
+                alt="Hotel Stays"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+              <div>
+                <h3 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                  Hotel Stays
+                </h3>
+                <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                  Best hotel deals across India
+                </p>
+              </div>
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100/80 text-[11px] font-bold">
+                <div className="flex items-center gap-1 text-amber-500">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span className="text-slate-800 font-black">4.7</span>
+                </div>
+                <span className="text-slate-500 font-semibold">1000+ Hotels</span>
+              </div>
+            </div>
+          </a>
+
+          {/* Card 4: Outstation Cabs */}
+          <a
+            href="/classifieds?category=cabs"
+            className="group bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer"
+          >
+            <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+              <img
+                src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop&q=80"
+                alt="Outstation Cabs"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+              <div>
+                <h3 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                  Outstation Cabs
+                </h3>
+                <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                  Safe &amp; reliable cabs at best prices
+                </p>
+              </div>
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100/80 text-[11px] font-bold">
+                <div className="flex items-center gap-1 text-amber-500">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span className="text-slate-800 font-black">4.5</span>
+                </div>
+                <span className="text-slate-500 font-semibold">All India</span>
+              </div>
+            </div>
+          </a>
+
+          {/* Card 5: Holiday Packages */}
+          <a
+            href="/tours"
+            className="group bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-300 flex flex-col cursor-pointer col-span-2 sm:col-span-1"
+          >
+            <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+              <img
+                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80"
+                alt="Holiday Packages"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+              <div>
+                <h3 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                  Holiday Packages
+                </h3>
+                <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 line-clamp-2">
+                  Amazing holiday packages
+                </p>
+              </div>
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100/80 text-[11px] font-bold">
+                <div className="flex items-center gap-1 text-amber-500">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span className="text-slate-800 font-black">4.6</span>
+                </div>
+                <span className="text-slate-500 font-semibold">All India</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      {/* ── 3. HOW TRAVLTIK WORKS SECTION (EXACT MOCKUP IMPLEMENTATION) ── */}
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 border-t border-slate-100/80">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            How TravlTik Works?
+          </h2>
+        </div>
+
+        <div className="relative max-w-5xl mx-auto">
+          {/* 4 Steps Grid with Connectors */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 relative z-10">
+            
+            {/* Step 1: Search */}
+            <div className="flex flex-col items-center text-center relative group">
+              <div className="relative mb-3">
+                <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 shadow-2xs z-10">
+                  1
+                </span>
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white border border-blue-100 shadow-[0_8px_25px_rgba(37,99,235,0.08)] flex items-center justify-center text-blue-600 group-hover:scale-105 transition-transform">
+                  <Search className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2]" />
+                </div>
+              </div>
+              <h3 className="text-sm sm:text-base font-black text-slate-900 mt-1">Search</h3>
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 max-w-[170px] leading-relaxed">
+                Find services, destinations or trusted experts
+              </p>
+            </div>
+
+            {/* Step 2: Compare */}
+            <div className="flex flex-col items-center text-center relative group">
+              <div className="relative mb-3">
+                <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 shadow-2xs z-10">
+                  2
+                </span>
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white border border-blue-100 shadow-[0_8px_25px_rgba(37,99,235,0.08)] flex items-center justify-center text-blue-600 group-hover:scale-105 transition-transform">
+                  <svg className="w-7 h-7 sm:w-8 sm:h-8 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </svg>
+                </div>
+              </div>
+              <h3 className="text-sm sm:text-base font-black text-slate-900 mt-1">Compare</h3>
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 max-w-[170px] leading-relaxed">
+                Compare options, reviews &amp; prices
+              </p>
+            </div>
+
+            {/* Step 3: Connect */}
+            <div className="flex flex-col items-center text-center relative group">
+              <div className="relative mb-3">
+                <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 shadow-2xs z-10">
+                  3
+                </span>
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white border border-emerald-100 shadow-[0_8px_25px_rgba(16,185,129,0.08)] flex items-center justify-center text-emerald-600 group-hover:scale-105 transition-transform">
+                  <ShieldCheck className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2]" />
+                </div>
+              </div>
+              <h3 className="text-sm sm:text-base font-black text-slate-900 mt-1">Connect</h3>
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 max-w-[170px] leading-relaxed">
+                Connect with verified experts &amp; book with confidence
+              </p>
+            </div>
+
+            {/* Step 4: Travel */}
+            <div className="flex flex-col items-center text-center relative group">
+              <div className="relative mb-3">
+                <span className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-black text-xs flex items-center justify-center border border-blue-200 shadow-2xs z-10">
+                  4
+                </span>
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white border border-blue-100 shadow-[0_8px_25px_rgba(37,99,235,0.08)] flex items-center justify-center text-blue-600 group-hover:scale-105 transition-transform">
+                  <Send className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2] -rotate-12 translate-x-0.5" />
+                </div>
+              </div>
+              <h3 className="text-sm sm:text-base font-black text-slate-900 mt-1">Travel</h3>
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 max-w-[170px] leading-relaxed">
+                Plan, prepare and enjoy your journey
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* ── MOBILE STICKY BOTTOM NAVIGATION BAR (IPHONE & ANDROID NATIVE TAB BAR) ── */}
       <div className="block md:hidden fixed bottom-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] py-1.5 px-3 pb-safe">
         <div className="grid grid-cols-5 gap-1 items-center max-w-md mx-auto">

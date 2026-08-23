@@ -2214,18 +2214,13 @@ return (
       {/* ── OVERSEAS JOURNEY & AI VISA ENGINE FLOW (INTACT & WORKING) ── */}
       <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center animate-fadeIn">
         
-        {/* 1. HAVE VISA ALREADY TOGGLE SWITCH (SPREAD ON MOBILE & DESKTOP) */}
-        <div className="w-full max-w-lg mx-auto bg-white/95 backdrop-blur-md border border-slate-300/80 p-3 sm:p-2.5 rounded-3xl sm:rounded-full shadow-[0_6px_25px_rgba(0,0,0,0.07)] mb-7 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center justify-center sm:justify-start gap-2 px-2 text-center sm:text-left">
-            <span className="text-sm sm:text-[15px] font-black text-slate-900 select-none tracking-tight">
-              Have Visa Already?
-            </span>
-            <span className="text-[11px] font-semibold text-slate-500 hidden md:inline">
-              (Select one to continue)
-            </span>
-          </div>
+        {/* 1. HAVE VISA ALREADY TOGGLE SWITCH (CLEAN & CENTERED) */}
+        <div className="w-full sm:w-auto inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 bg-white/95 backdrop-blur-md border border-slate-300/80 p-2.5 sm:p-2 sm:pl-5 sm:pr-2 rounded-3xl sm:rounded-full shadow-[0_6px_25px_rgba(0,0,0,0.07)] mb-7">
+          <span className="text-sm sm:text-base font-black text-slate-900 select-none tracking-tight whitespace-nowrap">
+            Have Visa Already?
+          </span>
 
-          <div className="w-full sm:w-auto grid grid-cols-2 sm:flex items-center gap-2 bg-slate-100/90 p-1.5 rounded-2xl sm:rounded-full border border-slate-200">
+          <div className="w-full sm:w-auto grid grid-cols-2 sm:flex items-center gap-2 bg-slate-100/90 p-1.5 sm:p-1 rounded-2xl sm:rounded-full border border-slate-200">
             {/* NO Button */}
             <button
               type="button"

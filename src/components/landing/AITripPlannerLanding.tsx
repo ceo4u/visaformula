@@ -1535,14 +1535,13 @@ return (
           
           {/* High-Resolution Generated Travel Photograph Background (Mobile & Desktop Responsive) */}
           <div 
-            className="absolute top-0 right-0 bottom-0 w-full sm:w-3/5 lg:w-[58%] bg-cover bg-[center_right_-20px] sm:bg-right md:bg-center pointer-events-none opacity-95 sm:opacity-100 rounded-3xl sm:rounded-[40px] overflow-hidden"
+            className="absolute top-0 right-0 bottom-0 w-full sm:w-3/5 lg:w-[58%] bg-cover bg-[position:88%_center] sm:bg-right md:bg-center pointer-events-none opacity-100 rounded-3xl sm:rounded-[40px] overflow-hidden"
             style={{
               backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
             }}
           >
-            {/* Ultra-Smooth Apple-Grade Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#edf5fc] via-[#edf5fc]/92 sm:via-[#edf5fc]/55 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#edf5fc] via-[#edf5fc]/75 to-transparent sm:hidden" />
+            {/* Soft, Non-Washing Gradient Overlay so girl and landscape remain vibrant */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#edf5fc] via-[#edf5fc]/60 sm:via-[#edf5fc]/40 to-transparent w-3/4 sm:w-full" />
           </div>
 
           {/* Hero Content Container */}

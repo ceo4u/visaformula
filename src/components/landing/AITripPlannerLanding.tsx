@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Building2, UserCheck, LayoutGrid, Upload,
+import { Globe, Home, Building2, UserCheck, LayoutGrid, Upload,
   RefreshCw,
   Sparkles,
   ArrowRight,

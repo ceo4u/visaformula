@@ -1484,37 +1484,82 @@ return (
         className="hidden"
       />
 
-      {/* ── 1. HERO SECTION ── */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-b from-slate-50/60 via-white to-white pt-8 pb-10 px-4 sm:px-6 lg:px-8">
+      {/* ── 1. HERO SECTION (EXACT REPLICA OF SCREENSHOT) ── */}
+      <section className="relative w-full overflow-hidden bg-gradient-to-b from-slate-50/50 via-white to-white pt-4 sm:pt-6 pb-8 px-4 sm:px-6 lg:px-8">
         
-        {/* Soft Ultra-Light Background Glows */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0">
-          <div className="absolute top-2 left-10 w-72 h-72 bg-purple-100/10 rounded-full blur-3xl" />
-          <div className="absolute top-16 right-0 w-80 h-80 bg-emerald-50/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-4 left-1/3 w-96 h-96 bg-slate-50/40 rounded-full blur-3xl" />
-        </div>
-
-        {/* Hero Content Container */}
-        <div className="max-w-6xl mx-auto relative z-10 text-center">
-
-          {/* Centered Hero Info */}
-          <div className="max-w-3xl mx-auto text-center">
-            
-            {/* Official H1 Tagline with Sign Up Button Green Color */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] sm:leading-[1.1]">
-              <span className="text-[#30005a] block">Dream Journey.</span>
-              <span className="text-[#00A86B] block mt-1">
-                We Make It Easy.
-              </span>
-            </h1>
-            
-            {/* Supporting Official Subtitle */}
-            <p className="mt-3.5 text-slate-600 text-xs sm:text-base font-medium max-w-2xl mx-auto leading-relaxed px-2">
-              From domestic trip planning to your complete overseas journey including visa applications we simplify every step so you can travel with confidence
-            </p>
+        {/* Banner Card Container with Scenic Travel Background */}
+        <div className="relative w-full max-w-6xl mx-auto rounded-3xl sm:rounded-[36px] overflow-hidden bg-gradient-to-r from-[#eef5fc] via-[#f2f7fc] to-[#e4eef8] border border-slate-200/90 shadow-[0_15px_50px_rgba(0,0,0,0.04)] min-h-[300px] sm:min-h-[360px] lg:min-h-[400px] flex items-center">
+          
+          {/* Scenic Mountain Lake & Traveler Background Image on the Right */}
+          <div 
+            className="absolute top-0 right-0 bottom-0 w-full sm:w-3/5 lg:w-1/2 bg-cover bg-right sm:bg-center pointer-events-none opacity-90 sm:opacity-100"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1200&q=85')`,
+            }}
+          >
+            {/* Smooth gradient overlay to blend perfectly with the left text area */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#eef5fc] via-[#eef5fc]/80 sm:via-[#eef5fc]/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#eef5fc]/70 via-transparent to-transparent sm:hidden" />
           </div>
 
-          {/* ── 2. TABBED SEARCH ENGINE (DOMESTIC VS INTERNATIONAL) ── */}
+          {/* Left Hero Content */}
+          <div className="relative z-10 w-full p-6 sm:p-10 lg:p-14 text-left max-w-2xl">
+            
+            {/* Top Pill Badge */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-blue-200/80 shadow-xs mb-3.5 sm:mb-4">
+              <span className="text-xs sm:text-sm font-bold text-blue-600 tracking-tight">
+                Your Journey, Our Expertise
+              </span>
+            </div>
+
+            {/* Main H1 Headline */}
+            <h1 className="text-2xl sm:text-4xl lg:text-[44px] font-black text-slate-900 leading-[1.18] sm:leading-[1.15] tracking-tight">
+              Everything you need for <br className="hidden sm:inline" />
+              <span>Visas, Immigration &amp; Travel</span>
+            </h1>
+
+            {/* Subheading */}
+            <p className="mt-2.5 sm:mt-3.5 text-slate-600 text-xs sm:text-base font-medium max-w-lg leading-relaxed">
+              Find trusted experts, plan your trip, compare services and make your journey seamless.
+            </p>
+
+            {/* Pill Search Bar */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (searchPrompt.trim()) {
+                  parseQueryToFormState(searchPrompt);
+                }
+              }}
+              className="mt-5 sm:mt-7 max-w-xl relative flex items-center bg-white border border-slate-200/90 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-slate-300 transition-all p-1 sm:p-1.5"
+            >
+              <div className="pl-3.5 sm:pl-4 pr-2 text-slate-400">
+                <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <input
+                type="text"
+                value={searchPrompt}
+                onChange={(e) => {
+                  setSearchPrompt(e.target.value);
+                  parseQueryToFormState(e.target.value);
+                }}
+                placeholder="Search services, countries, consultants..."
+                className="w-full bg-transparent border-none text-xs sm:text-sm md:text-[15px] font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-0"
+              />
+              <button
+                type="submit"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#00A86B] hover:bg-[#008f5a] text-white flex items-center justify-center shrink-0 transition-all shadow-md shadow-emerald-600/30 cursor-pointer"
+                title="Search"
+              >
+                <Search className="w-4 h-4 text-white" />
+              </button>
+            </form>
+
+          </div>
+
+        </div>
+
+        {/* ── 2. TABBED SEARCH ENGINE (DOMESTIC VS INTERNATIONAL) ── */}
           <div className="relative z-30 w-full max-w-6xl mx-auto mt-6 text-left">
             
             {/* TOP 2-TAB PILLS SELECTOR (CENTERED) */}
@@ -4709,9 +4754,6 @@ return (
             </div>
 
           </div>
-
-
-        </div>
 
       </section>
 

@@ -1527,15 +1527,15 @@ return (
         className="hidden"
       />
 
-      {/* ── 1. HERO SECTION (PURE WHITE BACKGROUND MATCHING HEADER) ── */}
-      <section className="relative w-full overflow-visible bg-white pt-1 sm:pt-4 pb-6 sm:pb-10 px-2.5 sm:px-6 lg:px-8">
+      {/* ── 1. HERO SECTION (THIN & SLEEK PURE WHITE DESIGN) ── */}
+      <section className="relative w-full overflow-visible bg-white pt-1 sm:pt-2 pb-2 sm:pb-4 px-2.5 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
-        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[40px] bg-white border border-slate-100 shadow-[0_15px_50px_rgba(0,0,0,0.04)] ring-1 ring-slate-900/5 overflow-visible">
+        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-100 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
           
           {/* High-Resolution Generated Travel Photograph Background */}
           <div 
-            className="absolute top-0 right-0 w-[48%] sm:w-3/5 lg:w-[58%] h-[200px] sm:h-full bg-cover bg-[position:top_right] sm:bg-right md:bg-center pointer-events-none opacity-100 rounded-tr-3xl rounded-bl-3xl sm:rounded-bl-none sm:rounded-r-[40px] overflow-hidden"
+            className="absolute top-0 right-0 w-[48%] sm:w-3/5 lg:w-[58%] h-[180px] sm:h-full bg-cover bg-[position:top_right] sm:bg-right md:bg-center pointer-events-none opacity-100 rounded-tr-3xl rounded-bl-3xl sm:rounded-bl-none sm:rounded-r-[36px] overflow-hidden"
             style={{
               backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
             }}
@@ -1545,29 +1545,29 @@ return (
           </div>
 
           {/* Hero Content Container */}
-          <div className="relative z-10 w-full p-3.5 sm:p-8 lg:pt-12 lg:pb-12 lg:px-10 text-left">
+          <div className="relative z-10 w-full p-3 sm:p-5 lg:pt-6 lg:pb-6 lg:px-8 text-left">
             
             {/* Top Pill Badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/90 shadow-2xs mb-2.5 sm:mb-4">
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/90 shadow-2xs mb-2 sm:mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-              <span className="text-[11px] sm:text-sm font-extrabold text-blue-600 tracking-tight">
+              <span className="text-[10px] sm:text-xs font-extrabold text-blue-600 tracking-tight">
                 Your Journey, Our Expertise
               </span>
             </div>
 
             {/* Main H1 Headline */}
-            <h1 className="text-[20px] sm:text-4xl lg:text-[46px] font-black text-slate-900 leading-[1.18] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
+            <h1 className="text-[19px] sm:text-3xl lg:text-[38px] font-black text-slate-900 leading-[1.16] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
               Everything you need for <br className="hidden sm:inline" />
               <span className="text-slate-900">Visas, Immigration &amp; Travel</span>
             </h1>
 
             {/* Subheading */}
-            <p className="mt-1.5 sm:mt-3 text-slate-600 text-[11px] sm:text-base lg:text-[16px] font-medium max-w-[210px] sm:max-w-xl leading-relaxed mb-3 sm:mb-6">
+            <p className="mt-1 sm:mt-2 text-slate-600 text-[11px] sm:text-sm lg:text-[14px] font-medium max-w-[210px] sm:max-w-xl leading-relaxed mb-2.5 sm:mb-4">
               Find trusted consultants, plan your trip, compare services and make your journey seamless.
             </p>
 
             {/* ── INTEGRATED HERO 3-TABS + ENLARGED SEARCH CARD ── */}
-            <div className="w-full max-w-full mt-3 sm:mt-6">
+            <div className="w-full max-w-full mt-2.5 sm:mt-4">
               
               {/* 3 Tabs attached seamlessly to the top of the search card */}
               <div className="flex items-end gap-1 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar">
@@ -2114,131 +2114,6 @@ return (
 
               </div>
 
-            </div>
-
-            {/* ── 4 TRUST PILLARS STRIP (HIDDEN ON MOBILE) ── */}
-            <div className="mt-5 sm:mt-10 hidden sm:grid grid-cols-4 gap-1.5 sm:gap-4 max-w-5xl mx-auto">
-              <div className="flex flex-col items-center text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-2xs">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-1.5 shrink-0 shadow-2xs">
-                  <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
-                </div>
-                <h4 className="text-[10px] sm:text-sm font-black text-slate-900 leading-tight">Trusted Experts</h4>
-                <p className="text-[8px] sm:text-xs font-semibold text-slate-400 mt-0.5 hidden xs:block">Verified Consultants</p>
-              </div>
-
-              <div className="flex flex-col items-center text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-2xs">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 mb-1.5 shrink-0 shadow-2xs">
-                  <Scale className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
-                </div>
-                <h4 className="text-[10px] sm:text-sm font-black text-slate-900 leading-tight">Compare &amp; Choose</h4>
-                <p className="text-[8px] sm:text-xs font-semibold text-slate-400 mt-0.5 hidden xs:block">Compare Services</p>
-              </div>
-
-              <div className="flex flex-col items-center text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-2xs">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 mb-1.5 shrink-0 shadow-2xs">
-                  <Lock className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
-                </div>
-                <h4 className="text-[10px] sm:text-sm font-black text-slate-900 leading-tight">Secure &amp; Reliable</h4>
-                <p className="text-[8px] sm:text-xs font-semibold text-slate-400 mt-0.5 hidden xs:block">Safe &amp; Trusted</p>
-              </div>
-
-              <div className="flex flex-col items-center text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-2xs">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 mb-1.5 shrink-0 shadow-2xs">
-                  <Headphones className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
-                </div>
-                <h4 className="text-[10px] sm:text-sm font-black text-slate-900 leading-tight">24/7 Support</h4>
-                <p className="text-[8px] sm:text-xs font-semibold text-slate-400 mt-0.5 hidden xs:block">We're here to help</p>
-              </div>
-            </div>
-
-            {/* ── POPULAR INTERNATIONAL SERVICES STRIP (HIDDEN ON MOBILE) ── */}
-            <div className="mt-6 sm:mt-12 hidden sm:block max-w-7xl mx-auto">
-              <div className="flex items-center justify-between mb-3 px-1">
-                <div>
-                  <h3 className="text-sm sm:text-lg font-black text-slate-900 tracking-tight">Popular International Services</h3>
-                  <p className="text-xs text-slate-500 font-medium hidden sm:block">Explore verified visa categories &amp; migration programs</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setTravelScopeTab('international')}
-                  className="px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-[10px] sm:text-xs font-black text-slate-700 transition-colors"
-                >
-                  View All
-                </button>
-              </div>
-
-              {/* 5 Cards Responsive Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3.5">
-                {/* Card 1: Visit Visa */}
-                <div
-                  onClick={() => { setTravelPurpose('tourism'); autoSaveJourney({ travel_purpose: 'tourism' }); }}
-                  className="bg-[#f0fdf9] hover:bg-[#e6faf4] border border-emerald-200/70 hover:border-emerald-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
-                >
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-100/90 border border-emerald-200 flex items-center justify-center text-emerald-700 mb-2 group-hover:scale-105 transition-transform">
-                    <Globe className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900">Visit Visa</h4>
-                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Tourist, Family visit, Business visit visas</p>
-                  </div>
-                </div>
-
-                {/* Card 2: Work Visa */}
-                <div
-                  onClick={() => { setTravelPurpose('work'); autoSaveJourney({ travel_purpose: 'work' }); }}
-                  className="bg-[#f0f9ff] hover:bg-[#e0f2fe] border border-sky-200/70 hover:border-sky-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
-                >
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sky-100/90 border border-sky-200 flex items-center justify-center text-sky-700 mb-2 group-hover:scale-105 transition-transform">
-                    <Briefcase className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900">Work Visa</h4>
-                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Skilled, Employment, Job seeker visas</p>
-                  </div>
-                </div>
-
-                {/* Card 3: Study Abroad */}
-                <div
-                  onClick={() => { setTravelPurpose('study'); autoSaveJourney({ travel_purpose: 'study' }); }}
-                  className="bg-[#faf5ff] hover:bg-[#f3e8ff] border border-purple-200/70 hover:border-purple-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
-                >
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-100/90 border border-purple-200 flex items-center justify-center text-purple-700 mb-2 group-hover:scale-105 transition-transform">
-                    <GraduationCap className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900">Study Abroad</h4>
-                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Student visa, Admissions, Universities</p>
-                  </div>
-                </div>
-
-                {/* Card 4: Immigration */}
-                <div
-                  onClick={() => { setTravelPurpose('pr'); autoSaveJourney({ travel_purpose: 'pr' }); }}
-                  className="bg-[#fff1f2] hover:bg-[#ffe4e6] border border-rose-200/70 hover:border-rose-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between"
-                >
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-100/90 border border-rose-200 flex items-center justify-center text-rose-700 mb-2 group-hover:scale-105 transition-transform">
-                    <Users className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900">Immigration</h4>
-                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">PR, Work permit, Family sponsorship</p>
-                  </div>
-                </div>
-
-                {/* Card 5: Business Setup */}
-                <div
-                  onClick={() => { setTravelPurpose('business'); autoSaveJourney({ travel_purpose: 'business' }); }}
-                  className="bg-[#fffbeb] hover:bg-[#fef3c7] border border-amber-200/70 hover:border-amber-400 p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 shadow-2xs hover:shadow-xs group flex flex-col justify-between col-span-2 sm:col-span-1"
-                >
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-100/90 border border-amber-200 flex items-center justify-center text-amber-700 mb-2 group-hover:scale-105 transition-transform">
-                    <Building2 className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900">Business Setup</h4>
-                    <p className="text-[9px] sm:text-[11px] text-slate-600 font-medium mt-0.5 leading-snug">Company formation, Business services</p>
-                  </div>
-                </div>
-              </div>
             </div>
 
           </div>

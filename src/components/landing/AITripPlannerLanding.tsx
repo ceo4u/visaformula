@@ -2116,8 +2116,8 @@ return (
 
             </div>
 
-            {/* ── 4 TRUST PILLARS STRIP (EXACT 4-COL COMPACT ROW AS IN SCREENSHOT) ── */}
-            <div className="mt-5 sm:mt-10 grid grid-cols-4 gap-1.5 sm:gap-4 max-w-5xl mx-auto">
+            {/* ── 4 TRUST PILLARS STRIP (HIDDEN ON MOBILE) ── */}
+            <div className="mt-5 sm:mt-10 hidden sm:grid grid-cols-4 gap-1.5 sm:gap-4 max-w-5xl mx-auto">
               <div className="flex flex-col items-center text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/70 shadow-2xs">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-1.5 shrink-0 shadow-2xs">
                   <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />

@@ -1548,7 +1548,7 @@ return (
           </div>
 
           {/* Hero Content Container */}
-          <div className="relative z-10 w-full p-6 sm:p-10 lg:pt-14 lg:pb-16 lg:px-14 text-left">
+          <div className="relative z-10 w-full p-5 sm:p-8 lg:pt-12 lg:pb-14 lg:px-10 text-left">
             
             {/* Top Pill Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/90 shadow-2xs mb-4">
@@ -1571,7 +1571,7 @@ return (
             </p>
 
             {/* ── INTEGRATED HERO 3-TABS + ENLARGED SEARCH CARD (IPHONE QUALITY) ── */}
-            <div className="w-full max-w-5xl mt-6 sm:mt-8">
+            <div className="w-full max-w-full mt-6 sm:mt-8">
               
               {/* 3 Tabs attached seamlessly to the top of the search card */}
               <div className="flex items-end gap-1.5 sm:gap-2 px-2 sm:px-4">
@@ -1875,10 +1875,10 @@ return (
                   const tourList = activeStateObj?.destinations || [];
 
                   return (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5 sm:gap-4 items-end animate-fadeIn">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-3.5 items-end animate-fadeIn">
                       
                       {/* Country */}
-                      <div className="relative">
+                      <div className="lg:col-span-2 relative">
                         <label className="block text-xs font-black text-slate-800 mb-2">
                           Country
                         </label>
@@ -1928,7 +1928,7 @@ return (
                       </div>
 
                       {/* State */}
-                      <div className="relative">
+                      <div className="lg:col-span-2 relative">
                         <label className="block text-xs font-black text-slate-800 mb-2">
                           State / Region
                         </label>
@@ -1968,7 +1968,7 @@ return (
                       </div>
 
                       {/* Origin City */}
-                      <div className="relative">
+                      <div className="lg:col-span-2 relative">
                         <label className="block text-xs font-black text-slate-800 mb-2">
                           Departing From
                         </label>
@@ -1982,7 +1982,7 @@ return (
                       </div>
 
                       {/* Tour / Destination */}
-                      <div className="relative">
+                      <div className="lg:col-span-2 relative">
                         <label className="block text-xs font-black text-slate-800 mb-2">
                           Destination Package
                         </label>
@@ -2021,7 +2021,7 @@ return (
                       </div>
 
                       {/* Travelers */}
-                      <div className="relative">
+                      <div className="lg:col-span-2 relative">
                         <label className="block text-xs font-black text-slate-800 mb-2">
                           Travelers
                         </label>
@@ -2047,7 +2047,7 @@ return (
                       </div>
 
                       {/* Action Button */}
-                      <div>
+                      <div className="lg:col-span-2">
                         <button
                           type="button"
                           onClick={handleGenerateDomesticItinerary}

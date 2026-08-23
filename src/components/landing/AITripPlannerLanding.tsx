@@ -2212,10 +2212,10 @@ return (
 
       
       {/* ── OVERSEAS JOURNEY & AI VISA ENGINE FLOW (INTACT & WORKING) ── */}
-      <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center animate-fadeIn">
+      <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 text-center animate-fadeIn">
         
         {/* 1. HAVE VISA ALREADY TOGGLE SWITCH (CLEAN & CENTERED) */}
-        <div className="w-full sm:w-auto inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 bg-white/95 backdrop-blur-md border border-slate-300/80 p-2.5 sm:p-2 sm:pl-5 sm:pr-2 rounded-3xl sm:rounded-full shadow-[0_6px_25px_rgba(0,0,0,0.07)] mb-7">
+        <div className="w-full sm:w-auto inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 bg-white/95 backdrop-blur-md border border-slate-300/80 p-2.5 sm:p-2 sm:pl-5 sm:pr-2 rounded-3xl sm:rounded-full shadow-[0_6px_25px_rgba(0,0,0,0.07)] mb-3">
           <span className="text-sm sm:text-base font-black text-slate-900 select-none tracking-tight whitespace-nowrap">
             Have Visa Already?
           </span>
@@ -2268,6 +2268,30 @@ return (
             </button>
           </div>
         </div>
+
+        {/* QUICK-PILL INTENT TAGS (TIGHTLY POSITIONED DIRECTLY UNDER TOGGLE) */}
+        {travelScopeTab === 'international' && (
+          <div className="mt-1 flex flex-nowrap items-center justify-start sm:justify-center gap-2 sm:gap-3 max-w-6xl mx-auto w-full overflow-x-auto no-scrollbar pb-2 px-2 sm:px-0">
+            {categoryPills.map((pill) => {
+              const isSelected = selectedPill === pill.id;
+              return (
+                <button 
+                  key={pill.id} 
+                  type="button" 
+                  onClick={() => handlePillClick(pill.id, pill.label)}
+                  className={`flex flex-col items-center justify-center bg-white border rounded-2xl px-3.5 py-2.5 shadow-2xs hover:shadow-md transition-all shrink-0 min-w-[90px] sm:min-w-[100px] h-[76px] cursor-pointer select-none ${
+                    isSelected ? 'border-[#00A86B] ring-2 ring-[#00A86B]/20 bg-emerald-50/40' : 'border-slate-200/80 hover:border-[#00A86B]'
+                  }`}
+                >
+                  <span className="text-xl sm:text-2xl leading-none">{pill.emoji}</span>
+                  <span className={`text-[11px] sm:text-xs font-bold mt-1.5 whitespace-nowrap leading-tight ${isSelected ? 'text-[#00A86B]' : 'text-slate-700'}`}>
+                    {pill.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
       </section>
 
@@ -2526,30 +2550,6 @@ return (
               </div>
             );
           })()}
-
-          {/* QUICK-PILL INTENT TAGS (ONLY SHOWN FOR INTERNATIONAL TRAVEL) */}
-          {travelScopeTab === 'international' && (
-            <div className="mt-6 sm:mt-8 flex flex-nowrap items-center justify-start sm:justify-center gap-2 sm:gap-3 max-w-6xl mx-auto w-full overflow-x-auto no-scrollbar pb-2 px-2 sm:px-0">
-              {categoryPills.map((pill) => {
-                const isSelected = selectedPill === pill.id;
-                return (
-                  <button 
-                    key={pill.id} 
-                    type="button" 
-                    onClick={() => handlePillClick(pill.id, pill.label)}
-                    className={`flex flex-col items-center justify-center bg-white border rounded-2xl px-3.5 py-2.5 shadow-2xs hover:shadow-md transition-all shrink-0 min-w-[90px] sm:min-w-[100px] h-[76px] cursor-pointer select-none ${
-                      isSelected ? 'border-[#00A86B] ring-2 ring-[#00A86B]/20 bg-emerald-50/40' : 'border-slate-200/80 hover:border-[#00A86B]'
-                    }`}
-                  >
-                    <span className="text-xl sm:text-2xl leading-none">{pill.emoji}</span>
-                    <span className={`text-[11px] sm:text-xs font-bold mt-1.5 whitespace-nowrap leading-tight ${isSelected ? 'text-[#00A86B]' : 'text-slate-700'}`}>
-                      {pill.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
 
           {/* ── AI LOADING STATE ── */}
           {isGenerating && (

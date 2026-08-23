@@ -1527,11 +1527,11 @@ return (
         className="hidden"
       />
 
-      {/* ── 1. HERO SECTION (1:1 PIXEL-PERFECT IPHONE & ANDROID MATCH) ── */}
-      <section className="relative w-full overflow-visible bg-gradient-to-b from-sky-50/40 via-[#f3f7fb] to-white pt-2 sm:pt-6 pb-6 sm:pb-10 px-2.5 sm:px-6 lg:px-8">
+      {/* ── 1. HERO SECTION (PURE WHITE BACKGROUND MATCHING HEADER) ── */}
+      <section className="relative w-full overflow-visible bg-white pt-1 sm:pt-4 pb-6 sm:pb-10 px-2.5 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
-        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[40px] bg-[#edf5fc] border border-white/90 shadow-[0_25px_80px_rgba(0,0,0,0.06)] ring-1 ring-slate-900/5 overflow-visible">
+        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[40px] bg-white border border-slate-100 shadow-[0_15px_50px_rgba(0,0,0,0.04)] ring-1 ring-slate-900/5 overflow-visible">
           
           {/* High-Resolution Generated Travel Photograph Background */}
           <div 
@@ -1540,8 +1540,8 @@ return (
               backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
             }}
           >
-            {/* Soft, Transparent Gradient only on the left side of image */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#edf5fc] via-[#edf5fc]/40 to-transparent w-1/3 sm:w-1/2" />
+            {/* Soft, Transparent Gradient only on the left side of image (Pure White Blend) */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/45 to-transparent w-1/3 sm:w-1/2" />
           </div>
 
           {/* Hero Content Container */}
@@ -1579,7 +1579,7 @@ return (
                   className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
                     travelScopeTab === 'international'
                       ? 'bg-white text-blue-950 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                      : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
+                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
                   }`}
                 >
                   <span className="relative z-10">International Services</span>
@@ -1595,7 +1595,7 @@ return (
                   className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
                     travelScopeTab === 'domestic'
                       ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                      : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
+                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
                   }`}
                 >
                   <span>Trip Planner</span>
@@ -1614,7 +1614,7 @@ return (
                   className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
                     travelScopeTab === 'explore'
                       ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                      : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
+                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
                   }`}
                 >
                   <span>Explore</span>

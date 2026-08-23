@@ -2563,7 +2563,7 @@ return (
           })()}
 
           {/* ── AI LOADING STATE ── */}
-          {isGenerating && (
+          {travelScopeTab === 'international' && isGenerating && (
             <div id="pathway-generator-status" className="w-full max-w-6xl mx-auto my-8 bg-gradient-to-b from-white to-emerald-50/30 border border-emerald-200/80 rounded-2xl sm:rounded-[32px] p-6 sm:p-9 text-left shadow-[0_20px_60px_rgba(0,168,107,0.08)] backdrop-blur-md relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-400 via-[#00A86B] to-teal-500 animate-pulse" />
 
@@ -3052,7 +3052,7 @@ return (
           )}
 
           {/* ── FLOW 2: NOTEBOOK ARCHITECTURE (HAVE VISA? = NO) ── */}
-          {hasVisaAlready === 'no' && (
+          {travelScopeTab === 'international' && hasVisaAlready === 'no' && (
             <div id="need-visa-pathway-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
               
               {/* BRANCH A: PURPOSE = STUDY (8 STEPS NOTEBOOK ARCHITECTURE) */}
@@ -4533,7 +4533,7 @@ return (
                     FEATURED
                   </span>
                   <img
-                    src="https://images.unsplash.com/photo-1517935703635-2717090c2226?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=85"
                     alt="Study in Canada"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
@@ -4797,7 +4797,7 @@ return (
 
 
           {/* ── 6. BOTTOM 2 FEATURE CARDS (READINESS AUDIT & EMBASSY CHECKLIST DOWNLOAD) ── */}
-          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 text-left">
+          <div className="w-full max-w-6xl mx-auto mt-16 sm:mt-24 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 text-left">
             
             {/* Left Card: Check Your Travel Readiness */}
             <a

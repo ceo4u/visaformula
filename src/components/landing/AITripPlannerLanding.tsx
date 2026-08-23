@@ -638,6 +638,39 @@ const courseLevelOptions = [
   { value: 'language', label: 'Language Program', icon: '🗣️', desc: 'IELTS / ESL / Pathway' },
 ];
 
+
+const lookingForOptions = [
+  { value: 'visa', label: 'Visa, Immigration, Travel...', icon: '✈️' },
+  { value: 'student', label: 'Student Visa & Admissions', icon: '🎓' },
+  { value: 'work', label: 'Work Permit & Overseas Jobs', icon: '💼' },
+  { value: 'pr', label: 'Permanent Residency & Migration', icon: '🛂' },
+  { value: 'tourist', label: 'Tourist & Visitor Visas', icon: '🏖️' },
+  { value: 'business', label: 'Business & Investor Visa', icon: '🏛️' },
+  { value: 'ielts', label: 'IELTS / PTE Test Prep', icon: '📖' },
+];
+
+const serviceTypeOptions = [
+  { value: 'all', label: 'All Services', icon: '⚡' },
+  { value: 'filing', label: 'Full Visa Application Filing', icon: '📝' },
+  { value: 'consultation', label: '1-on-1 Expert Consultation', icon: '📞' },
+  { value: 'docs', label: 'Document & SOP Verification', icon: '📄' },
+  { value: 'admission', label: 'Direct University Admission', icon: '🎓' },
+  { value: 'appeal', label: 'Visa Refusal & Appeals', icon: '⚖️' },
+];
+
+const originCityOptions = [
+  { value: 'Mumbai', label: 'Mumbai, India', icon: '📍' },
+  { value: 'Delhi', label: 'Delhi NCR, India', icon: '📍' },
+  { value: 'Bangalore', label: 'Bangalore, India', icon: '📍' },
+  { value: 'Hyderabad', label: 'Hyderabad, India', icon: '📍' },
+  { value: 'Chennai', label: 'Chennai, India', icon: '📍' },
+  { value: 'Pune', label: 'Pune, India', icon: '📍' },
+  { value: 'Kolkata', label: 'Kolkata, India', icon: '📍' },
+  { value: 'Dubai', label: 'Dubai, UAE', icon: '📍' },
+  { value: 'London', label: 'London, UK', icon: '📍' },
+  { value: 'Toronto', label: 'Toronto, Canada', icon: '📍' },
+];
+
 export function AITripPlannerLanding() {
   // Current user email for persistence
   const [currentUserEmail, setCurrentUserEmail] = useState('');
@@ -657,6 +690,18 @@ export function AITripPlannerLanding() {
   const [passportCountry, setPassportCountry] = useState('');
   const [journeyDestination, setJourneyDestination] = useState('');
   const [travelPurpose, setTravelPurpose] = useState('');
+  const [serviceLookingFor, setServiceLookingFor] = useState('Visa & Immigration');
+  const [isLookingForOpen, setIsLookingForOpen] = useState(false);
+  const lookingForRef = useRef<HTMLDivElement>(null);
+
+  const [selectedServiceType, setSelectedServiceType] = useState('');
+  const [isServiceTypeOpen, setIsServiceTypeOpen] = useState(false);
+  const serviceTypeRef = useRef<HTMLDivElement>(null);
+
+  const [originCity, setOriginCity] = useState('');
+  const [isOriginCityOpen, setIsOriginCityOpen] = useState(false);
+  const originCityRef = useRef<HTMLDivElement>(null);
+
   const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes'>('no');
   
   // Custom dropdown open states for Journey Form
@@ -760,7 +805,7 @@ export function AITripPlannerLanding() {
   const [searchLocation, setSearchLocation] = useState('');
 
   // 2-Tab Navigation: Domestic vs International
-  const [travelScopeTab, setTravelScopeTab] = useState<'international' | 'domestic'>('international');
+  const [travelScopeTab, setTravelScopeTab] = useState<'international' | 'domestic' | 'explore'>('international');
 
   // Domestic Travel States (Clean initial state, no dummy prefilled details)
   const [domesticCountry, setDomesticCountry] = useState('India');
@@ -1484,120 +1529,601 @@ return (
         className="hidden"
       />
 
-      {/* ── 1. HERO SECTION (EXACT REPLICA OF SCREENSHOT) ── */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-b from-slate-50/50 via-white to-white pt-4 sm:pt-6 pb-8 px-4 sm:px-6 lg:px-8">
+      {/* ── 1. HERO SECTION (PIXEL-PERFECT MATCH TO SCREENSHOT) ── */}
+      <section className="relative w-full overflow-hidden bg-gradient-to-b from-sky-50/50 via-[#f0f7fc] to-white pt-6 sm:pt-8 pb-12 px-3 sm:px-6 lg:px-8">
         
-        {/* Banner Card Container with Scenic Travel Background */}
-        <div className="relative w-full max-w-6xl mx-auto rounded-3xl sm:rounded-[36px] overflow-hidden bg-gradient-to-r from-[#eef5fc] via-[#f2f7fc] to-[#e4eef8] border border-slate-200/90 shadow-[0_15px_50px_rgba(0,0,0,0.04)] min-h-[300px] sm:min-h-[360px] lg:min-h-[400px] flex items-center">
+        {/* Full-width Scenic Travel Background Card */}
+        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] overflow-hidden bg-[#edf5fc] border border-slate-200/80 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
           
-          {/* Scenic Mountain Lake & Traveler Background Image on the Right */}
+          {/* Scenic Background Image with Traveler on the Right */}
           <div 
-            className="absolute top-0 right-0 bottom-0 w-full sm:w-3/5 lg:w-1/2 bg-cover bg-right sm:bg-center pointer-events-none opacity-90 sm:opacity-100"
+            className="absolute top-0 right-0 bottom-0 w-full sm:w-3/5 lg:w-[54%] bg-cover bg-right sm:bg-center pointer-events-none opacity-90 sm:opacity-100"
             style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1200&q=85')`,
+              backgroundImage: `url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1400&q=85')`,
             }}
           >
-            {/* Smooth gradient overlay to blend perfectly with the left text area */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#eef5fc] via-[#eef5fc]/80 sm:via-[#eef5fc]/60 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#eef5fc]/70 via-transparent to-transparent sm:hidden" />
+            {/* Smooth gradient blend to text area */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#edf5fc] via-[#edf5fc]/85 sm:via-[#edf5fc]/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#edf5fc] via-[#edf5fc]/70 to-transparent sm:hidden" />
           </div>
 
-          {/* Left Hero Content */}
-          <div className="relative z-10 w-full p-6 sm:p-10 lg:p-14 text-left max-w-2xl">
+          {/* Hero Content Container */}
+          <div className="relative z-10 w-full p-6 sm:p-10 lg:pt-14 lg:pb-16 lg:px-14 text-left">
             
             {/* Top Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-blue-200/80 shadow-xs mb-3.5 sm:mb-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-blue-200/90 shadow-xs mb-3.5 sm:mb-4">
               <span className="text-xs sm:text-sm font-bold text-blue-600 tracking-tight">
                 Your Journey, Our Expertise
               </span>
             </div>
 
             {/* Main H1 Headline */}
-            <h1 className="text-2xl sm:text-4xl lg:text-[44px] font-black text-slate-900 leading-[1.18] sm:leading-[1.15] tracking-tight">
+            <h1 className="text-2xl sm:text-4xl lg:text-[46px] font-black text-slate-900 leading-[1.15] tracking-tight">
               Everything you need for <br className="hidden sm:inline" />
               <span>Visas, Immigration &amp; Travel</span>
             </h1>
 
             {/* Subheading */}
-            <p className="mt-2.5 sm:mt-3.5 text-slate-600 text-xs sm:text-base font-medium max-w-lg leading-relaxed">
-              Find trusted experts, plan your trip, compare services and make your journey seamless.
+            <p className="mt-2.5 sm:mt-3 text-slate-600 text-xs sm:text-base font-medium max-w-lg leading-relaxed mb-6 sm:mb-8">
+              Find trusted consultants, plan your trip, compare services <br className="hidden sm:inline" />
+              and make your journey seamless.
             </p>
 
-            {/* Pill Search Bar */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (searchPrompt.trim()) {
-                  parseQueryToFormState(searchPrompt);
-                }
-              }}
-              className="mt-5 sm:mt-7 max-w-xl relative flex items-center bg-white border border-slate-200/90 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-slate-300 transition-all p-1 sm:p-1.5"
-            >
-              <div className="pl-3.5 sm:pl-4 pr-2 text-slate-400">
-                <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* ── INTEGRATED HERO 3-TABS + SEARCH WIDGET ── */}
+            <div className="w-full max-w-5xl mt-4 sm:mt-6">
+              
+              {/* 3 Tabs attached to the top of the search card */}
+              <div className="flex items-end gap-1.5 sm:gap-2 px-2 sm:px-4">
+                
+                {/* Tab 1: International Services */}
+                <button
+                  type="button"
+                  onClick={() => setTravelScopeTab('international')}
+                  className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-t-2xl text-xs sm:text-sm font-black transition-all cursor-pointer select-none border-t border-x relative ${
+                    travelScopeTab === 'international'
+                      ? 'bg-white text-blue-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
+                  }`}
+                >
+                  <span className="relative z-10">International Services</span>
+                  {travelScopeTab === 'international' && (
+                    <div className="absolute top-0 left-4 right-4 h-[3px] bg-blue-600 rounded-full" />
+                  )}
+                </button>
+
+                {/* Tab 2: Domestic Trip Planner [New] */}
+                <button
+                  type="button"
+                  onClick={() => setTravelScopeTab('domestic')}
+                  className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-t-2xl text-xs sm:text-sm font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-2 ${
+                    travelScopeTab === 'domestic'
+                      ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
+                  }`}
+                >
+                  <span>Domestic Trip Planner</span>
+                  <span className="bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-2xs">
+                    New
+                  </span>
+                  {travelScopeTab === 'domestic' && (
+                    <div className="absolute top-0 left-4 right-4 h-[3px] bg-[#00A86B] rounded-full" />
+                  )}
+                </button>
+
+                {/* Tab 3: Explore Destinations */}
+                <button
+                  type="button"
+                  onClick={() => setTravelScopeTab('explore')}
+                  className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-t-2xl text-xs sm:text-sm font-black transition-all cursor-pointer select-none border-t border-x relative hidden sm:flex items-center gap-1.5 ${
+                    travelScopeTab === 'explore'
+                      ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      : 'bg-white/60 hover:bg-white/80 text-slate-700 border-transparent hover:border-slate-200/60'
+                  }`}
+                >
+                  <span>Explore Destinations</span>
+                  {travelScopeTab === 'explore' && (
+                    <div className="absolute top-0 left-4 right-4 h-[3px] bg-purple-600 rounded-full" />
+                  )}
+                </button>
+
               </div>
-              <input
-                type="text"
-                value={searchPrompt}
-                onChange={(e) => {
-                  setSearchPrompt(e.target.value);
-                  parseQueryToFormState(e.target.value);
-                }}
-                placeholder="Search services, countries, consultants..."
-                className="w-full bg-transparent border-none text-xs sm:text-sm md:text-[15px] font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-0"
-              />
-              <button
-                type="submit"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#00A86B] hover:bg-[#008f5a] text-white flex items-center justify-center shrink-0 transition-all shadow-md shadow-emerald-600/30 cursor-pointer"
-                title="Search"
-              >
-                <Search className="w-4 h-4 text-white" />
-              </button>
-            </form>
+
+              {/* Search Card Container (White Box with 4 Fields + Action Button) */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl sm:rounded-tl-none p-4 sm:p-5 md:p-6 shadow-[0_14px_40px_rgba(0,0,0,0.06)] relative z-10">
+                
+                {/* TAB 1: INTERNATIONAL SERVICES FIELDS (1:1 AS IN SCREENSHOT) */}
+                {travelScopeTab === 'international' && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 items-end animate-fadeIn">
+                    
+                    {/* Field 1: I am looking for (3 Cols) */}
+                    <div className="lg:col-span-3 relative">
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                        I am looking for
+                      </label>
+                      <div
+                        ref={lookingForRef}
+                        onClick={() => {
+                          setIsLookingForOpen(!isLookingForOpen);
+                          setIsJourneyDestOpen(false);
+                          setIsServiceTypeOpen(false);
+                          setIsOriginCityOpen(false);
+                        }}
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-400 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                      >
+                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 truncate">
+                          {serviceLookingFor || 'Visa, Immigration, Travel...'}
+                        </span>
+                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isLookingForOpen ? 'rotate-180 text-blue-600' : ''}`} />
+
+                        {isLookingForOpen && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[240px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="space-y-0.5">
+                              {lookingForOptions.map((opt) => (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setServiceLookingFor(opt.label);
+                                    if (opt.value !== 'visa') setTravelPurpose(opt.value);
+                                    setIsLookingForOpen(false);
+                                  }}
+                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span>{opt.icon}</span>
+                                    <span className="truncate">{opt.label}</span>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Field 2: Going to (Country) (3 Cols) */}
+                    <div className="lg:col-span-3 relative">
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                        Going to
+                      </label>
+                      <div
+                        ref={journeyDestRef}
+                        onClick={() => {
+                          setIsJourneyDestOpen(!isJourneyDestOpen);
+                          setIsLookingForOpen(false);
+                          setIsServiceTypeOpen(false);
+                          setIsOriginCityOpen(false);
+                        }}
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-400 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          {journeyDestination ? (
+                            <>
+                              <span>{journeyDestinationOptions.find(o => o.value === journeyDestination)?.icon || '📍'}</span>
+                              <span className="text-xs sm:text-[13px] font-bold text-slate-900 truncate">
+                                {journeyDestination}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-xs sm:text-[13px] font-semibold text-slate-400 truncate">
+                              Select Country
+                            </span>
+                          )}
+                        </div>
+                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-blue-600' : ''}`} />
+
+                        {isJourneyDestOpen && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[240px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="space-y-0.5">
+                              {journeyDestinationOptions.map((opt) => (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setJourneyDestination(opt.value);
+                                    setIsJourneyDestOpen(false);
+                                    autoSaveJourney({ destination: opt.value });
+                                  }}
+                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span>{opt.icon}</span>
+                                    <span className="truncate">{opt.label}</span>
+                                  </div>
+                                  {journeyDestination === opt.value && <Check className="w-3.5 h-3.5 text-[#00A86B]" />}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Field 3: Service Type (2.5 Cols) */}
+                    <div className="lg:col-span-2 relative">
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                        Service Type
+                      </label>
+                      <div
+                        ref={serviceTypeRef}
+                        onClick={() => {
+                          setIsServiceTypeOpen(!isServiceTypeOpen);
+                          setIsLookingForOpen(false);
+                          setIsJourneyDestOpen(false);
+                          setIsOriginCityOpen(false);
+                        }}
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-400 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                      >
+                        <span className={`text-xs sm:text-[13px] truncate ${selectedServiceType ? 'font-bold text-slate-900' : 'font-semibold text-slate-400'}`}>
+                          {selectedServiceType || 'Select Service'}
+                        </span>
+                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isServiceTypeOpen ? 'rotate-180 text-blue-600' : ''}`} />
+
+                        {isServiceTypeOpen && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[220px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="space-y-0.5">
+                              {serviceTypeOptions.map((opt) => (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedServiceType(opt.label);
+                                    setIsServiceTypeOpen(false);
+                                  }}
+                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span>{opt.icon}</span>
+                                    <span className="truncate">{opt.label}</span>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Field 4: From (City/Origin) (2.5 Cols) */}
+                    <div className="lg:col-span-2 relative">
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                        From
+                      </label>
+                      <div
+                        ref={originCityRef}
+                        onClick={() => {
+                          setIsOriginCityOpen(!isOriginCityOpen);
+                          setIsLookingForOpen(false);
+                          setIsJourneyDestOpen(false);
+                          setIsServiceTypeOpen(false);
+                        }}
+                        className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-400 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs transition-colors cursor-pointer select-none"
+                      >
+                        <span className={`text-xs sm:text-[13px] truncate ${originCity ? 'font-bold text-slate-900' : 'font-semibold text-slate-400'}`}>
+                          {originCity || 'Select City'}
+                        </span>
+                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-blue-600' : ''}`} />
+
+                        {isOriginCityOpen && (
+                          <div
+                            className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[200px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="space-y-0.5">
+                              {originCityOptions.map((opt) => (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setOriginCity(opt.value);
+                                    setPassportCountry('India');
+                                    setIsOriginCityOpen(false);
+                                  }}
+                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span>{opt.icon}</span>
+                                    <span className="truncate">{opt.label}</span>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Action Button: Search (2 Cols) */}
+                    <div className="lg:col-span-2">
+                      <button
+                        type="button"
+                        onClick={handleGeneratePathway}
+                        disabled={isGenerating}
+                        className="w-full h-[48px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                      >
+                        {isGenerating ? (
+                          <>
+                            <RotateCw className="w-4 h-4 animate-spin text-white" />
+                            <span>Searching...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Search className="w-4 h-4 text-white" />
+                            <span>Search</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                  </div>
+                )}
+
+                {/* TAB 2: DOMESTIC TRIP PLANNER FIELDS */}
+                {travelScopeTab === 'domestic' && (() => {
+                  const stateList = domesticCountryData[domesticCountry]?.states || [];
+                  const activeStateObj = stateList.find(s => s.name === domesticState) || stateList[0];
+                  const tourList = activeStateObj?.destinations || [];
+
+                  return (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4 items-end animate-fadeIn">
+                      
+                      {/* Country */}
+                      <div className="relative">
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                          Country
+                        </label>
+                        <div
+                          ref={domesticCountryRef}
+                          onClick={() => {
+                            setIsDomesticCountryOpen(!isDomesticCountryOpen);
+                            setIsDomesticStateOpen(false);
+                            setIsDomesticDestOpen(false);
+                          }}
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs cursor-pointer select-none"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span>{domesticCountryOptions.find(c => c.value === domesticCountry)?.icon || '🇮🇳'}</span>
+                            <span className="text-xs sm:text-[13px] font-bold text-slate-900 truncate">
+                              {domesticCountry}
+                            </span>
+                          </div>
+                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticCountryOpen ? 'rotate-180' : ''}`} />
+
+                          {isDomesticCountryOpen && (
+                            <div className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[200px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5" onClick={(e) => e.stopPropagation()}>
+                              {domesticCountryOptions.map((opt) => (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setDomesticCountry(opt.value);
+                                    const newStates = domesticCountryData[opt.value]?.states || [];
+                                    if (newStates[0]) {
+                                      setDomesticState(newStates[0].name);
+                                      if (newStates[0].destinations?.[0]) setDomesticDestination(newStates[0].destinations[0].name);
+                                    }
+                                    setIsDomesticCountryOpen(false);
+                                  }}
+                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                >
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span>{opt.icon}</span>
+                                    <span className="truncate">{opt.label}</span>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* State */}
+                      <div className="relative">
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                          State / Region
+                        </label>
+                        <div
+                          ref={domesticStateRef}
+                          onClick={() => {
+                            setIsDomesticStateOpen(!isDomesticStateOpen);
+                            setIsDomesticCountryOpen(false);
+                            setIsDomesticDestOpen(false);
+                          }}
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs cursor-pointer select-none"
+                        >
+                          <span className="text-xs sm:text-[13px] font-semibold text-slate-800 truncate">
+                            {domesticState || 'Select State'}
+                          </span>
+                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticStateOpen ? 'rotate-180' : ''}`} />
+
+                          {isDomesticStateOpen && (
+                            <div className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[200px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5" onClick={(e) => e.stopPropagation()}>
+                              {stateList.map((st) => (
+                                <button
+                                  key={st.name}
+                                  type="button"
+                                  onClick={() => {
+                                    setDomesticState(st.name);
+                                    if (st.destinations?.[0]) setDomesticDestination(st.destinations[0].name);
+                                    setIsDomesticStateOpen(false);
+                                  }}
+                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                >
+                                  <span>{st.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Origin City */}
+                      <div className="relative">
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                          Departing From
+                        </label>
+                        <input
+                          type="text"
+                          value={domesticCity}
+                          onChange={(e) => setDomesticCity(e.target.value)}
+                          placeholder="Your City (e.g. Nashik)"
+                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 text-xs sm:text-[13px] font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                        />
+                      </div>
+
+                      {/* Tour / Destination */}
+                      <div className="relative">
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                          Destination Package
+                        </label>
+                        <div
+                          ref={domesticDestRef}
+                          onClick={() => {
+                            setIsDomesticDestOpen(!isDomesticDestOpen);
+                            setIsDomesticCountryOpen(false);
+                            setIsDomesticStateOpen(false);
+                          }}
+                          className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center justify-between shadow-2xs cursor-pointer select-none"
+                        >
+                          <span className="text-xs sm:text-[13px] font-semibold text-slate-800 truncate">
+                            {domesticDestination || 'Select Tour'}
+                          </span>
+                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticDestOpen ? 'rotate-180' : ''}`} />
+
+                          {isDomesticDestOpen && (
+                            <div className="absolute top-[calc(100%+6px)] left-0 w-full min-w-[220px] z-[999] bg-white border border-slate-200 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.14)] p-1.5 max-h-[260px] overflow-y-auto no-scrollbar ring-1 ring-black/5" onClick={(e) => e.stopPropagation()}>
+                              {tourList.map((d) => (
+                                <button
+                                  key={d.name}
+                                  type="button"
+                                  onClick={() => {
+                                    setDomesticDestination(d.name);
+                                    setIsDomesticDestOpen(false);
+                                  }}
+                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                >
+                                  <span>{d.name}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Travelers */}
+                      <div className="relative">
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1.5">
+                          Travelers
+                        </label>
+                        <div className="flex items-center justify-between bg-white border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 shadow-2xs">
+                          <button
+                            type="button"
+                            onClick={() => setDomesticMembers(Math.max(1, domesticMembers - 1))}
+                            className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center cursor-pointer"
+                          >
+                            -
+                          </button>
+                          <span className="text-xs sm:text-[13px] font-bold text-slate-900">
+                            {domesticMembers} {domesticMembers === 1 ? 'Traveler' : 'Travelers'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setDomesticMembers(domesticMembers + 1)}
+                            className="w-7 h-7 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold flex items-center justify-center cursor-pointer"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Action Button */}
+                      <div>
+                        <button
+                          type="button"
+                          onClick={handleGenerateDomesticItinerary}
+                          disabled={isGeneratingDomestic}
+                          className="w-full h-[48px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-[13px] bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                        >
+                          {isGeneratingDomestic ? (
+                            <>
+                              <RotateCw className="w-3.5 h-3.5 animate-spin text-white" />
+                              <span>Planning...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+                              <span className="truncate">Explore Packages →</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                    </div>
+                  );
+                })()}
+
+                {/* TAB 3: EXPLORE DESTINATIONS */}
+                {travelScopeTab === 'explore' && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-end animate-fadeIn">
+                    <div className="relative">
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">Destination Region</label>
+                      <input
+                        type="text"
+                        value={searchCountry}
+                        onChange={(e) => setSearchCountry(e.target.value)}
+                        placeholder="e.g. Europe, Middle East, UK"
+                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 text-xs sm:text-[13px] font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                      />
+                    </div>
+                    <div className="relative">
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">Purpose of Visit</label>
+                      <input
+                        type="text"
+                        value={searchLocation}
+                        onChange={(e) => setSearchLocation(e.target.value)}
+                        placeholder="e.g. Study, Work, Holiday, PR"
+                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 text-xs sm:text-[13px] font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                      />
+                    </div>
+                    <div className="relative">
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1.5">Duration Style</label>
+                      <div className="bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[48px] px-3.5 flex items-center text-xs font-semibold text-slate-700">
+                        ⚡ Instant AI Pathway Match
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={handleGlobalSearch}
+                        className="w-full h-[48px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+                      >
+                        <Compass className="w-4 h-4 text-cyan-400" />
+                        <span>Explore Guides →</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+
+            </div>
 
           </div>
 
         </div>
 
-        {/* ── 2. TABBED SEARCH ENGINE (DOMESTIC VS INTERNATIONAL) ── */}
-          <div className="relative z-30 w-full max-w-6xl mx-auto mt-6 text-left">
-            
-            {/* TOP 2-TAB PILLS SELECTOR (CENTERED) */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-2.5 mb-3.5 px-1 max-w-md sm:max-w-none mx-auto">
-              <button
-                type="button"
-                onClick={() => setTravelScopeTab('international')}
-                className={`flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all cursor-pointer shadow-2xs w-full sm:w-auto ${
-                  travelScopeTab === 'international'
-                    ? 'bg-slate-900 text-white shadow-md shadow-slate-900/20 ring-2 ring-slate-900/15 scale-[1.01]'
-                    : 'bg-white/90 hover:bg-white text-slate-600 hover:text-slate-900 border border-slate-200/80'
-                }`}
-              >
-                <span className="text-base">🌐</span>
-                <span>International Travel &amp; Visa</span>
-                {travelScopeTab === 'international' && (
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse ml-0.5" />
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setTravelScopeTab('domestic')}
-                className={`flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all cursor-pointer shadow-2xs w-full sm:w-auto ${
-                  travelScopeTab === 'domestic'
-                    ? 'bg-slate-900 text-white shadow-md shadow-slate-900/20 ring-2 ring-slate-900/15 scale-[1.01]'
-                    : 'bg-white/90 hover:bg-white text-slate-600 hover:text-slate-900 border border-slate-200/80'
-                }`}
-              >
-                <span className="text-base">🏠</span>
-                <span>Domestic Travel &amp; Tours</span>
-                {travelScopeTab === 'domestic' && (
-                  <span className="w-2 h-2 rounded-full bg-white animate-pulse ml-0.5" />
-                )}
-              </button>
-            </div>
-
-            {/* TAB CONTENT 1: INTERNATIONAL TRAVEL & VISA FORM */}
+        {/* ── 2. TABBED SEARCH ENGINE CONTINUATION (FLOWS INTACT) ── */}
+        <div className="relative z-30 w-full max-w-6xl mx-auto mt-6 text-left">
+          {/* TAB CONTENT 1: INTERNATIONAL TRAVEL & VISA FORM */}
             {travelScopeTab === 'international' && (
               <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:py-4 md:px-6 shadow-[0_12px_40px_rgba(48,0,90,0.06)] animate-fadeIn">
                 

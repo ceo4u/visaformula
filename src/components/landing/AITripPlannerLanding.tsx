@@ -1894,6 +1894,57 @@ return (
 
                     </div>
 
+                    {/* Core Toggle: Have Visa Already? (ONLY IN INTERNATIONAL SERVICES) */}
+                    <div className="flex items-center justify-between pt-2.5 sm:pt-3 border-t border-slate-100 flex-wrap gap-2">
+                      <div className="flex items-center gap-1.5 bg-slate-100/90 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-200/80">
+                        <span className="text-[11px] sm:text-xs font-extrabold text-slate-700 px-2 select-none">
+                          Have Visa Already?
+                        </span>
+                        
+                        {/* NO Option */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setHasVisaAlready('no');
+                            setHasGenerated(false);
+                            autoSaveJourney({ has_visa: false });
+                          }}
+                          className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                            hasVisaAlready === 'no'
+                              ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30'
+                              : 'text-slate-600 hover:text-slate-900'
+                          }`}
+                        >
+                          <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'no' ? 'bg-cyan-400 animate-pulse' : 'bg-slate-300'}`} />
+                          <span>NO</span>
+                          {hasVisaAlready === 'no' && <Check className="w-3 h-3 text-cyan-300 stroke-[3]" />}
+                        </button>
+
+                        {/* YES Option */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setHasVisaAlready('yes');
+                            setHasGenerated(true);
+                            autoSaveJourney({ has_visa: true });
+                          }}
+                          className={`px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all duration-200 cursor-pointer flex items-center gap-1 select-none ${
+                            hasVisaAlready === 'yes'
+                              ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/35'
+                              : 'text-slate-600 hover:text-slate-900'
+                          }`}
+                        >
+                          <span className={`w-2 h-2 rounded-full ${hasVisaAlready === 'yes' ? 'bg-white animate-pulse' : 'bg-slate-300'}`} />
+                          <span>YES</span>
+                          {hasVisaAlready === 'yes' && <Check className="w-3 h-3 text-white stroke-[3]" />}
+                        </button>
+                      </div>
+
+                      <span className="text-[11px] sm:text-xs text-slate-500 font-semibold hidden sm:inline">
+                        {hasVisaAlready === 'no' ? '💡 Explore top university pathways, consultants & VFS checklists' : '🛡️ Pre-departure compliance, expiry tracker & airport security'}
+                      </span>
+                    </div>
+
                   </div>
                 )}
 

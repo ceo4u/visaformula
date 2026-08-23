@@ -4797,7 +4797,7 @@ return (
 
 
           {/* ── 6. BOTTOM 2 FEATURE CARDS (READINESS AUDIT & EMBASSY CHECKLIST DOWNLOAD) ── */}
-          <div className="w-full max-w-6xl mx-auto mt-16 sm:mt-24 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 text-left">
+          <div className="w-full max-w-6xl mx-auto mt-16 sm:mt-24 mb-16 sm:mb-24 pb-4 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 text-left">
             
             {/* Left Card: Check Your Travel Readiness */}
             <a

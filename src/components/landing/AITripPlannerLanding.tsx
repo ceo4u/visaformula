@@ -2151,8 +2151,8 @@ return (
               </div>
             </div>
 
-            {/* ── POPULAR INTERNATIONAL SERVICES STRIP ── */}
-            <div className="mt-6 sm:mt-12 max-w-7xl mx-auto">
+            {/* ── POPULAR INTERNATIONAL SERVICES STRIP (HIDDEN ON MOBILE) ── */}
+            <div className="mt-6 sm:mt-12 hidden sm:block max-w-7xl mx-auto">
               <div className="flex items-center justify-between mb-3 px-1">
                 <div>
                   <h3 className="text-sm sm:text-lg font-black text-slate-900 tracking-tight">Popular International Services</h3>

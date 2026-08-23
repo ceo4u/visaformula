@@ -1819,7 +1819,7 @@ return (
                           </div>
                         </div>
 
-                        {/* Field 4: From (City) */}
+                        {/* Field 4: From (Country) */}
                         <div className="relative">
                           <label className="block text-[10px] sm:text-xs font-black text-slate-800 mb-1 truncate">
                             From
@@ -1834,9 +1834,14 @@ return (
                             }}
                             className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
-                            <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
-                              {originCity || 'City'}
-                            </span>
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <span className="text-sm shrink-0">
+                                {passportCountry ? (passportCountryOptions.find(o => o.value === passportCountry)?.icon || '🇮🇳') : '🇮🇳'}
+                              </span>
+                              <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
+                                {passportCountry || 'Country'}
+                              </span>
+                            </div>
                             <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-blue-600' : ''}`} />
 
                             {isOriginCityOpen && (
@@ -1845,14 +1850,15 @@ return (
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 <div className="space-y-1">
-                                  {originCityOptions.map((opt) => (
+                                  {passportCountryOptions.map((opt) => (
                                     <button
                                       key={opt.value}
                                       type="button"
                                       onClick={() => {
-                                        setOriginCity(opt.value);
-                                        setPassportCountry('India');
+                                        setPassportCountry(opt.value);
+                                        setOriginCity(opt.label);
                                         setIsOriginCityOpen(false);
+                                        autoSaveJourney({ passport_country: opt.value });
                                       }}
                                       className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                     >
@@ -1899,9 +1905,9 @@ return (
 
                 {/* TAB 2: DOMESTIC TRIP PLANNER FIELDS */}
                 {travelScopeTab === 'domestic' && (() => {
-                  const stateList = domesticCountryData[domesticCountry]?.states || [];
-                  const activeStateObj = stateList.find(s => s.name === domesticState) || stateList[0];
-                  const tourList = activeStateObj?.destinations || [];
+                  const currentCountryData = domesticCountryData[domesticCountry] || domesticCountryData['India'];
+                  const stateList = currentCountryData?.states || [];
+                  const tourList = currentCountryData?.destinations || [];
 
                   return (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-end animate-fadeIn">
@@ -1938,8 +1944,11 @@ return (
                                     setDomesticCountry(opt.value);
                                     const newStates = domesticCountryData[opt.value]?.states || [];
                                     if (newStates[0]) {
-                                      setDomesticState(newStates[0].name);
-                                      if (newStates[0].destinations?.[0]) setDomesticDestination(newStates[0].destinations[0].name);
+                                      setDomesticState(newStates[0].label);
+                                    }
+                                    const newDests = domesticCountryData[opt.value]?.destinations || [];
+                                    if (newDests[0]) {
+                                      setDomesticDestination(newDests[0].label);
                                     }
                                     setIsDomesticCountryOpen(false);
                                   }}
@@ -1979,16 +1988,18 @@ return (
                             <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
                               {stateList.map((st) => (
                                 <button
-                                  key={st.name}
+                                  key={st.value || st.label}
                                   type="button"
                                   onClick={() => {
-                                    setDomesticState(st.name);
-                                    if (st.destinations?.[0]) setDomesticDestination(st.destinations[0].name);
+                                    setDomesticState(st.label || st.value);
                                     setIsDomesticStateOpen(false);
                                   }}
-                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
                                 >
-                                  <span>{st.name}</span>
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span>{st.icon || '📍'}</span>
+                                    <span className="truncate">{st.label || st.value}</span>
+                                  </div>
                                 </button>
                               ))}
                             </div>
@@ -2033,15 +2044,18 @@ return (
                             <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[240px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
                               {tourList.map((d) => (
                                 <button
-                                  key={d.name}
+                                  key={d.value || d.label}
                                   type="button"
                                   onClick={() => {
-                                    setDomesticDestination(d.name);
+                                    setDomesticDestination(d.label || d.value);
                                     setIsDomesticDestOpen(false);
                                   }}
-                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 text-left cursor-pointer"
                                 >
-                                  <span>{d.name}</span>
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span>{d.icon || '🏖️'}</span>
+                                    <span className="truncate">{d.label || d.value}</span>
+                                  </div>
                                 </button>
                               ))}
                             </div>

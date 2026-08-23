@@ -1311,11 +1311,42 @@ export function AITripPlannerLanding() {
   };
 
   const handleGeneratePathway = () => {
-    fetchAISecurityEngine({
+    setIsGenerating(true);
+    
+    // Auto-save search parameters to user journey
+    autoSaveJourney({
       destination: journeyDestination || 'UAE',
-      passport: passportCountry || 'India',
-      purpose: travelPurpose || 'study'
+      passport_country: passportCountry || 'India',
+      purpose: travelPurpose || 'study',
+      service_type: selectedServiceType || 'Visa',
+      origin_city: originCity || 'Mumbai',
+      looking_for: serviceLookingFor || 'Visa & Immigration'
     });
+
+    const params = new URLSearchParams();
+    if (journeyDestination && journeyDestination !== 'Country') {
+      params.set('country', journeyDestination);
+    }
+    
+    // Map service category
+    let categoryParam = selectedServiceType;
+    if (!categoryParam || categoryParam === 'Service') {
+      if (serviceLookingFor.includes('Study') || travelPurpose === 'study') categoryParam = 'Student Visa';
+      else if (serviceLookingFor.includes('Work') || travelPurpose === 'work') categoryParam = 'Work Permit';
+      else if (serviceLookingFor.includes('Tourist') || serviceLookingFor.includes('Visit') || travelPurpose === 'visit') categoryParam = 'Visit';
+      else if (serviceLookingFor.includes('Business') || travelPurpose === 'business') categoryParam = 'Business Visa';
+      else if (serviceLookingFor.includes('PR') || travelPurpose === 'pr') categoryParam = 'PR';
+      else categoryParam = 'Student Visa';
+    }
+    params.set('category', categoryParam);
+
+    if (originCity && originCity !== 'City') {
+      params.set('city', originCity);
+    }
+
+    setTimeout(() => {
+      window.location.href = `/find-experts?${params.toString()}`;
+    }, 450);
   };
 
   const handleNoVisaLeadSubmit = async (e: React.FormEvent) => {
@@ -1849,7 +1880,7 @@ return (
                         >
                           {isGenerating ? (
                             <>
-                              <RotateCw className="w-4 h-4 animate-spin text-white" />
+                              <RefreshCw className="w-4 h-4 animate-spin text-white" />
                               <span>Searching...</span>
                             </>
                           ) : (

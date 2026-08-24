@@ -550,6 +550,89 @@ export async function runMigrations() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     CREATE INDEX IF NOT EXISTS idx_partner_team_pid ON partner_team_members (partner_id);
+
+    -- ── COMMUNITY & CHAT HUB TABLES ──
+    CREATE TABLE IF NOT EXISTS community_channels (
+      id SERIAL PRIMARY KEY,
+      slug VARCHAR(100) UNIQUE NOT NULL,
+      name VARCHAR(150) NOT NULL,
+      category VARCHAR(100) NOT NULL,
+      icon VARCHAR(50) DEFAULT 'hash',
+      unread_count INT DEFAULT 0,
+      description TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS chat_messages (
+      id SERIAL PRIMARY KEY,
+      channel_slug VARCHAR(100) NOT NULL,
+      user_id VARCHAR(100),
+      sender_name VARCHAR(150) NOT NULL,
+      sender_avatar VARCHAR(255),
+      is_verified_senior BOOLEAN DEFAULT false,
+      content TEXT NOT NULL,
+      reactions JSONB DEFAULT '[]'::jsonb,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_chat_msg_channel ON chat_messages (channel_slug);
+
+    CREATE TABLE IF NOT EXISTS verified_seniors (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(150) NOT NULL,
+      avatar_url VARCHAR(255),
+      university VARCHAR(200) NOT NULL,
+      status VARCHAR(50) DEFAULT 'Online',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS pinned_resources (
+      id SERIAL PRIMARY KEY,
+      channel_slug VARCHAR(100) DEFAULT 'russia-mbbs-2026',
+      title VARCHAR(200) NOT NULL,
+      file_size VARCHAR(50) NOT NULL,
+      file_type VARCHAR(50) DEFAULT 'pdf',
+      download_url VARCHAR(255),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    -- Seed default channels if empty
+    INSERT INTO community_channels (slug, name, category, icon, unread_count, description)
+    VALUES 
+      ('russia-mbbs-2026', 'russia-mbbs-2026', 'MBBS Abroad Guide', 'graduation-cap', 3, 'Official hub for 2026 Russia MBBS Aspirants & Seniors'),
+      ('delhi-to-moscow-flights', 'delhi-to-moscow-flights', 'Travel & Accommodation', 'plane', 0, 'Group flights, transit visas, baggage allowance discussions'),
+      ('dorm-sharing', 'dorm-sharing', 'Travel & Accommodation', 'home', 0, 'Find flatmates, university hostel room reviews & booking'),
+      ('visa-approval-tracker', 'visa-approval-tracker', 'Visa & Documentation', 'file-check', 1, 'Live Embassy queue updates & VFS passport tracking'),
+      ('ielts-prep-hub', 'ielts-prep-hub', 'General Announcements', 'book-open', 0, 'Mock tests, speaking partners, and score improvement tips'),
+      ('campus-life-moscow', 'campus-life-moscow', 'Student Life', 'coffee', 0, 'Indian mess food, winter clothing guides, and weekend events'),
+      ('random-lounge', 'random-lounge', 'Off-Topic', 'smile', 0, 'Casual chats, gaming, memes, and community meetups')
+    ON CONFLICT (slug) DO NOTHING;
+
+    -- Seed verified seniors if empty
+    INSERT INTO verified_seniors (name, avatar_url, university, status)
+    VALUES
+      ('Arjun Patel', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', 'Moscow State University (4th Year)', 'Online'),
+      ('Neha Reddy', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80', 'Kazan Federal University (3rd Year)', 'Online'),
+      ('Vikram Joshi', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', 'Sechenov First MSMU (5th Year)', 'Online'),
+      ('Simran Kaur', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80', 'Pavlov First St. Petersburg (2nd Year)', 'Online'),
+      ('Aditya Kumar', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80', 'Bashkir State Medical University (Intern)', 'Online')
+    ON CONFLICT DO NOTHING;
+
+    -- Seed pinned resources if empty
+    INSERT INTO pinned_resources (channel_slug, title, file_size, file_type, download_url)
+    VALUES
+      ('russia-mbbs-2026', 'Russia MBBS Admission Process 2026.pdf', '2.4 MB', 'pdf', '#'),
+      ('russia-mbbs-2026', 'Moscow State University Hostel Guide.pdf', '1.8 MB', 'pdf', '#'),
+      ('russia-mbbs-2026', 'VFS Russia Student Visa Checklist.pdf', '1.2 MB', 'pdf', '#')
+    ON CONFLICT DO NOTHING;
+
+    -- Seed starter messages for russia-mbbs-2026 if empty
+    INSERT INTO chat_messages (channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at)
+    SELECT 'russia-mbbs-2026', 'user-arjun', 'Arjun Patel', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', true, 'Hey everyone! 👋 Admissions for Moscow State University and Sechenov 2026 batch are officially open. Check the pinned resources for the certified apostille checklist.', '[{"emoji":"❤️","count":12},{"emoji":"👍","count":8},{"emoji":"👋","count":6}]'::jsonb, NOW() - INTERVAL '45 minutes'
+    WHERE NOT EXISTS (SELECT 1 FROM chat_messages WHERE channel_slug = 'russia-mbbs-2026');
+
+    INSERT INTO chat_messages (channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at)
+    SELECT 'russia-mbbs-2026', 'user-neha', 'Neha Reddy', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80', true, 'Also make sure your NEET qualification certificate is ready before VFS appointment. Feel free to drop questions here regarding hostel fees & winter prep! ❄️', '[{"emoji":"💯","count":9},{"emoji":"🔥","count":5}]'::jsonb, NOW() - INTERVAL '30 minutes'
+    WHERE NOT EXISTS (SELECT 1 FROM chat_messages WHERE channel_slug = 'russia-mbbs-2026' AND user_id = 'user-neha');
   `);
   })();
   return migrationsPromise;

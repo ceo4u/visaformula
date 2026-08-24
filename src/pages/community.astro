@@ -1,0 +1,16 @@
+---
+// src/pages/community.astro
+export const prerender = false;
+import Layout from '../layouts/Layout.astro';
+import CommunityHub from '../components/community/CommunityHub';
+---
+
+<Layout
+  title="Live Community & Chat Hub | TravlTik"
+  description="Connect with verified study abroad seniors, live channels, flight companions, and MBBS guides on the TravlTik Community Hub."
+  hideHeader={true}
+  hideFooter={true}
+  hideWidgets={true}
+>
+  <CommunityHub client:only="react" />
+</Layout>

@@ -1,0 +1,14 @@
+---
+// src/pages/channel-partner.astro
+import Layout from '../layouts/Layout.astro';
+import ChannelPartnerDashboard from '../components/channel-partner/ChannelPartnerDashboard';
+---
+
+<Layout 
+  title="Channel Partner Dashboard" 
+  description="TravlTik Channel Partner Management Dashboard — Manage your state partners, referral consultants, leads, and earnings."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <ChannelPartnerDashboard client:only="react" />
+</Layout>

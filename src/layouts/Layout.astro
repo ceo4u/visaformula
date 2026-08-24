@@ -35,6 +35,7 @@ const currentUrl = canonical || Astro.url.href;
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const isJobs = Astro.url.pathname === '/jobs' || Astro.url.pathname === '/jobs/';
 const isTours = Astro.url.pathname === '/tours' || Astro.url.pathname === '/tours/';
+const isEvents = Astro.url.pathname.startsWith('/events');
 const isChannelPartner = Astro.url.pathname.startsWith('/channel-partner');
 const isCommunity = Astro.url.pathname.startsWith('/community');
 const shouldHideWidgets = hideWidgets || isChannelPartner || isCommunity;

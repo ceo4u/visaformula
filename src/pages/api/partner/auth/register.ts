@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getPool, runMigrations } from '../../../../backend/db';
+import { verifyOtp } from '../../../../lib/otp';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 
@@ -12,7 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
     await runMigrations();
     const pool = getPool();
     const body = await request.json();
-    const { role = 'country_partner', email, password } = body;
+    const { role = 'country_partner', email, password, otp } = body;
 
     // 1. Basic validation
     if (!email || !EMAIL_REGEX.test(email.trim())) {
@@ -30,12 +31,26 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const cleanEmail = email.trim().toLowerCase();
+
+    // 2. Verify OTP code if provided (or required)
+    if (otp) {
+      const otpVerify = await verifyOtp(cleanEmail, String(otp).trim());
+      if (!otpVerify.success) {
+        return new Response(JSON.stringify({
+          success: false,
+          message: otpVerify.error === 'EXPIRED'
+            ? 'Verification code has expired. Please request a new code.'
+            : 'Invalid 6-digit verification code. Please check your email and try again.'
+        }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+      }
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     let partnerRecord: any = null;
 
-    // 2. Role Specific Processing — Immediately Approved & Active
+    // 3. Role Specific Processing — Immediately Approved & Active
     if (role === 'country_partner') {
       const { company_name, contact_person, phone, country, tax_id } = body;
       if (!company_name || !contact_person) {
@@ -152,7 +167,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // 3. Create active session token immediately
+    // 4. Create active session token immediately
     const token = crypto.randomBytes(32).toString('hex');
     const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
     await pool.query(
@@ -169,7 +184,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       success: true,
-      message: '🎉 Partner Account Activated! Redirecting to dashboard...',
+      message: '🎉 Email Verified & Partner Account Activated! Redirecting to dashboard...',
       redirectUrl: '/channel-partner/dashboard',
       partner: {
         id: partnerRecord.id,

@@ -3,7 +3,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   Star, Lock, Mail, Shield, ArrowRight, Eye, EyeOff,
   CheckCircle2, AlertCircle, Building2, UserCheck, ChevronDown,
-  Globe, Phone, FileText, Check, Search, MapPin, Briefcase
+  Globe, Phone, FileText, Check, Search, MapPin, Briefcase,
+  KeyRound, RefreshCw, ArrowLeft
 } from 'lucide-react';
 
 interface Props {
@@ -208,10 +209,27 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
   const [regPassword, setRegPassword] = useState('');
   const [showRegPassword, setShowRegPassword] = useState(false);
 
+  // OTP Verification States
+  const [step, setStep] = useState<'form' | 'otp'>('form');
+  const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
+  const [cooldown, setCooldown] = useState(0);
+  const [activeEmail, setActiveEmail] = useState('');
+
   // State Management
   const [loading, setLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successInfo, setSuccessInfo] = useState<string | null>(null);
+
+  // Focus ref for OTP boxes
+  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Cooldown timer
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => setCooldown((prev) => prev - 1), 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   // Handle Login Submit
   const handleLogin = async (e: React.FormEvent) => {
@@ -241,10 +259,16 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
     }
   };
 
-  // Handle Registration Submit
-  const handleRegister = async (e: React.FormEvent) => {
+  // Step 1: Send OTP to Email for Registration
+  const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setSuccessInfo(null);
+
+    if (!regEmail || !regEmail.includes('@')) {
+      setError('Please provide a valid email address.');
+      return;
+    }
 
     if (regPassword.length < 8) {
       setError('Password must be at least 8 characters long.');
@@ -254,11 +278,118 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
     setLoading(true);
 
     try {
+      const res = await fetch('/api/partner/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: regEmail.trim().toLowerCase() })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Failed to dispatch verification code.');
+      }
+
+      setActiveEmail(regEmail.trim().toLowerCase());
+      setStep('otp');
+      setCooldown(30);
+      setSuccessInfo(data.message || 'Verification code sent to your email.');
+
+      // Auto-focus first digit
+      setTimeout(() => {
+        otpInputRefs.current[0]?.focus();
+      }, 100);
+
+    } catch (err: any) {
+      setError(err.message || 'Error sending verification code. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Resend OTP
+  const handleResendOtp = async () => {
+    if (cooldown > 0) return;
+    setError(null);
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/partner/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: activeEmail || regEmail.trim().toLowerCase() })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Failed to resend code.');
+      }
+
+      setCooldown(30);
+      setSuccessInfo('A fresh 6-digit verification code has been dispatched.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to resend code.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle individual OTP input digit change
+  const handleOtpDigitChange = (index: number, val: string) => {
+    if (!/^\d*$/.test(val)) return;
+    const newDigits = [...otpDigits];
+    
+    // Handle pasting multi-digit code
+    if (val.length > 1) {
+      const pasted = val.slice(0, 6).split('');
+      pasted.forEach((d, i) => {
+        if (i < 6) newDigits[i] = d;
+      });
+      setOtpDigits(newDigits);
+      const nextIdx = Math.min(pasted.length, 5);
+      otpInputRefs.current[nextIdx]?.focus();
+      if (pasted.length === 6) {
+        handleVerifyAndRegister(newDigits.join(''));
+      }
+      return;
+    }
+
+    newDigits[index] = val;
+    setOtpDigits(newDigits);
+
+    if (val && index < 5) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+
+    // Auto submit when all 6 digits entered
+    if (newDigits.every(d => d !== '')) {
+      handleVerifyAndRegister(newDigits.join(''));
+    }
+  };
+
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
+      otpInputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  // Step 2: Verify OTP and Register Account
+  const handleVerifyAndRegister = async (fullCode?: string) => {
+    const code = fullCode || otpDigits.join('');
+    if (code.length < 6) {
+      setError('Please enter all 6 digits of the verification code.');
+      return;
+    }
+
+    setError(null);
+    setLoading(true);
+
+    try {
       const payload: any = {
         role,
-        email: regEmail,
+        email: activeEmail || regEmail.trim().toLowerCase(),
         password: regPassword,
         phone: regPhone,
+        otp: code
       };
 
       if (role === 'country_partner') {
@@ -284,7 +415,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Registration failed.');
+        throw new Error(data.message || 'Verification failed. Please check the code.');
       }
 
       // Smooth loading transition directly to dashboard
@@ -294,7 +425,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
       }, 700);
 
     } catch (err: any) {
-      setError(err.message || 'Registration failed. Please try again.');
+      setError(err.message || 'Verification failed. Please try again.');
       setLoading(false);
     }
   };
@@ -308,7 +439,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
       <div className="absolute top-[35%] right-[20%] w-[380px] h-[380px] rounded-full bg-slate-200/50 blur-[100px] pointer-events-none" />
 
       {/* Main Container Card */}
-      <div className={`w-full ${mode === 'register' ? 'max-w-[540px]' : 'max-w-[450px]'} relative z-10 transition-all duration-300`}>
+      <div className={`w-full ${mode === 'register' && step === 'form' ? 'max-w-[540px]' : 'max-w-[460px]'} relative z-10 transition-all duration-300`}>
         <div className="bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-[0_15px_40px_rgba(0,0,0,0.05)] text-slate-900">
 
           {/* Header & Logo */}
@@ -331,31 +462,33 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
             </div>
           </div>
 
-          {/* Mode Switcher Segmented Control */}
-          <div className="flex bg-slate-100 p-1 rounded-2xl mb-6 border border-slate-200/70">
-            <button
-              type="button"
-              onClick={() => { setMode('login'); setError(null); }}
-              className={`flex-1 py-2 rounded-xl text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
-                mode === 'login'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              Sign In
-            </button>
-            <button
-              type="button"
-              onClick={() => { setMode('register'); setError(null); }}
-              className={`flex-1 py-2 rounded-xl text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
-                mode === 'register'
-                  ? 'bg-[#00A878] text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              Register as Partner
-            </button>
-          </div>
+          {/* Mode Switcher Segmented Control (Only show in Form Step) */}
+          {step === 'form' && (
+            <div className="flex bg-slate-100 p-1 rounded-2xl mb-6 border border-slate-200/70">
+              <button
+                type="button"
+                onClick={() => { setMode('login'); setError(null); }}
+                className={`flex-1 py-2 rounded-xl text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
+                  mode === 'login'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMode('register'); setError(null); }}
+                className={`flex-1 py-2 rounded-xl text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
+                  mode === 'register'
+                    ? 'bg-[#00A878] text-white shadow-sm'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                Register as Partner
+              </button>
+            </div>
+          )}
 
           {/* Error Message */}
           {error && (
@@ -365,8 +498,99 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
             </div>
           )}
 
+          {/* Success Info Message */}
+          {successInfo && (
+            <div className="mb-5 p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-2.5 text-emerald-800 text-xs animate-fadeIn font-medium">
+              <CheckCircle2 className="w-4 h-4 text-[#00A878] shrink-0 mt-0.5" />
+              <div className="flex-1">{successInfo}</div>
+            </div>
+          )}
+
+          {/* ═══════════ STEP: OTP VERIFICATION SCREEN ═══════════ */}
+          {step === 'otp' && (
+            <div className="space-y-5 animate-fadeIn">
+              <div className="text-center">
+                <div className="w-13 h-13 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mx-auto mb-3 text-[#00A878]">
+                  <KeyRound className="w-6 h-6" />
+                </div>
+                <h2 className="text-base font-bold text-slate-900">Enter Verification Code</h2>
+                <p className="text-xs text-slate-500 mt-1">
+                  We've dispatched a 6-digit security OTP to <br />
+                  <span className="font-semibold text-slate-800">{activeEmail || regEmail}</span>
+                </p>
+              </div>
+
+              {/* 6 Digit Input Boxes */}
+              <div className="flex justify-center items-center gap-2 sm:gap-2.5 my-4">
+                {otpDigits.map((digit, idx) => (
+                  <input
+                    key={idx}
+                    ref={(el) => (otpInputRefs.current[idx] = el)}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={6}
+                    value={digit}
+                    onChange={(e) => handleOtpDigitChange(idx, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(idx, e)}
+                    className="w-10 h-12 sm:w-12 sm:h-14 text-center text-lg sm:text-xl font-bold bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00A878]/30 focus:border-[#00A878] focus:bg-white transition-all shadow-xs"
+                  />
+                ))}
+              </div>
+
+              {/* Verify Button */}
+              <button
+                type="button"
+                disabled={loading || otpDigits.some(d => d === '')}
+                onClick={() => handleVerifyAndRegister()}
+                className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-[#00A878] hover:bg-[#008A62] text-white text-xs sm:text-sm font-semibold tracking-normal flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
+              >
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Verifying Code...</span>
+                  </div>
+                ) : (
+                  <>
+                    <span>Verify Code & Open Dashboard</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+
+              {/* Resend & Back Row */}
+              <div className="flex items-center justify-between text-xs pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep('form');
+                    setOtpDigits(['', '', '', '', '', '']);
+                    setError(null);
+                    setSuccessInfo(null);
+                  }}
+                  className="inline-flex items-center gap-1 text-slate-500 hover:text-slate-800 font-medium cursor-pointer"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" /> Back / Edit Email
+                </button>
+
+                <button
+                  type="button"
+                  disabled={cooldown > 0 || loading}
+                  onClick={handleResendOtp}
+                  className={`inline-flex items-center gap-1 font-semibold ${
+                    cooldown > 0
+                      ? 'text-slate-400 cursor-not-allowed'
+                      : 'text-[#00A878] hover:underline cursor-pointer'
+                  }`}
+                >
+                  <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />
+                  {cooldown > 0 ? `Resend code (${cooldown}s)` : 'Resend Code'}
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* ═══════════ TAB 1: SIGN IN FORM ═══════════ */}
-          {mode === 'login' && (
+          {mode === 'login' && step === 'form' && (
             <form onSubmit={handleLogin} className="space-y-4">
               {/* Custom Role Dropdown */}
               <CustomSelect
@@ -464,8 +688,8 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
           )}
 
           {/* ═══════════ TAB 2: REGISTER FORM ═══════════ */}
-          {mode === 'register' && (
-            <form onSubmit={handleRegister} className="space-y-4">
+          {mode === 'register' && step === 'form' && (
+            <form onSubmit={handleRequestOtp} className="space-y-4">
 
               {/* Role Segmented Buttons */}
               <div>
@@ -738,10 +962,10 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               </div>
 
               {/* Notice */}
-              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex items-start gap-2.5">
-                <Shield className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
-                <p className="text-xs text-slate-600 font-normal leading-relaxed">
-                  Upon registration, your account will be placed into the TravlTik HQ approval queue with status <strong>PENDING_APPROVAL</strong>.
+              <div className="bg-emerald-50/60 border border-emerald-200/80 rounded-xl p-3 flex items-start gap-2.5">
+                <Shield className="w-4 h-4 text-[#00A878] shrink-0 mt-0.5" />
+                <p className="text-xs text-emerald-900 font-medium leading-relaxed">
+                  Clicking continue will send a 6-digit OTP code to verify your corporate email address.
                 </p>
               </div>
 
@@ -754,11 +978,11 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                 {loading ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Submitting Application...</span>
+                    <span>Sending Verification Code...</span>
                   </div>
                 ) : (
                   <>
-                    <span>Submit Partner Application</span>
+                    <span>Continue & Verify Email</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -785,7 +1009,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               <CheckCircle2 className="w-7 h-7" />
             </div>
 
-            <h3 className="text-lg font-bold text-slate-900 mb-1">Partner Profile Activated!</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-1">Email Verified & Activated!</h3>
             <p className="text-xs text-slate-500 mb-4">Synchronizing B2B operating dashboard...</p>
 
             <div className="flex items-center justify-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-4 py-2 rounded-xl">

@@ -2,8 +2,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   Star, Lock, Mail, Shield, ArrowRight, Eye, EyeOff,
-  CheckCircle2, AlertCircle, Building2, UserCheck, Sparkles, ChevronDown,
-  Globe, Phone, FileText, Check, ArrowLeft, Search, Layers, MapPin, Briefcase
+  CheckCircle2, AlertCircle, Building2, UserCheck, ChevronDown,
+  Globe, Phone, FileText, Check, Search, MapPin, Briefcase
 } from 'lucide-react';
 
 interface Props {
@@ -38,7 +38,7 @@ const SPECIALIZATION_OPTIONS = [
   'Business & Investor Visa'
 ];
 
-// ─── CUSTOM PROFESSIONAL DROPDOWN ──────────────────────────────────────────
+// ─── CUSTOM HOMEPAGE-INSPIRED DROPDOWN ─────────────────────────────────────
 function CustomSelect({
   value,
   onChange,
@@ -86,7 +86,7 @@ function CustomSelect({
   return (
     <div className="relative w-full" ref={ref}>
       {label && (
-        <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+        <label className="block text-xs font-semibold text-slate-700 mb-1.5">
           {label}
         </label>
       )}
@@ -94,21 +94,21 @@ function CustomSelect({
       {/* Trigger Button */}
       <div
         onClick={() => setOpen(!open)}
-        className={`w-full h-12 px-3.5 sm:px-4 rounded-2xl bg-slate-50 border transition-all flex items-center justify-between cursor-pointer select-none ${
+        className={`w-full h-11 px-3.5 sm:px-4 rounded-xl sm:rounded-2xl bg-white border transition-all flex items-center justify-between cursor-pointer select-none ${
           open
-            ? 'border-[#00A86B] ring-2 ring-[#00A86B]/20 bg-white shadow-xs'
-            : 'border-slate-200 hover:border-slate-300 hover:bg-slate-100/60'
+            ? 'border-[#00A878] ring-2 ring-[#00A878]/15 bg-white shadow-xs'
+            : 'border-slate-200/90 hover:border-slate-300 hover:bg-slate-50/70'
         }`}
       >
         <div className="flex items-center gap-2.5 min-w-0 pr-2">
           {Icon && <Icon className="w-4 h-4 text-slate-400 shrink-0" />}
-          {selectedOpt?.icon && <selectedOpt.icon className="w-4 h-4 text-[#00A86B] shrink-0" />}
+          {selectedOpt?.icon && <selectedOpt.icon className="w-4 h-4 text-[#00A878] shrink-0" />}
           <div className="min-w-0 truncate">
-            <span className="text-xs sm:text-sm font-bold text-slate-900 truncate block">
+            <span className="text-xs sm:text-[13px] font-medium text-slate-900 truncate block">
               {selectedOpt ? selectedOpt.label : <span className="text-slate-400 font-normal">{placeholder}</span>}
             </span>
             {selectedOpt?.sub && (
-              <span className="text-[10px] text-slate-400 font-medium truncate block leading-none mt-0.5">
+              <span className="text-[11px] text-slate-500 font-normal truncate block leading-none mt-0.5">
                 {selectedOpt.sub}
               </span>
             )}
@@ -117,14 +117,14 @@ function CustomSelect({
 
         <ChevronDown
           className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
-            open ? 'rotate-180 text-[#00A86B]' : ''
+            open ? 'rotate-180 text-[#00A878]' : ''
           }`}
         />
       </div>
 
       {/* Dropdown Floating Menu */}
       {open && (
-        <div className="absolute top-[calc(100%+6px)] left-0 w-full z-[99999] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-[22px] shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 animate-fadeIn ring-1 ring-black/5 max-h-[260px] overflow-hidden flex flex-col">
+        <div className="absolute top-[calc(100%+6px)] left-0 w-full z-[99999] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 animate-fadeIn ring-1 ring-black/5 max-h-[250px] overflow-hidden flex flex-col">
           {searchable && (
             <div className="relative mb-2 shrink-0">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
@@ -132,8 +132,8 @@ function CustomSelect({
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search..."
-                className="w-full h-8 pl-8 pr-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                placeholder="Type to search..."
+                className="w-full h-8 pl-8 pr-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#00A878]"
                 autoFocus
               />
             </div>
@@ -153,26 +153,26 @@ function CustomSelect({
                       setOpen(false);
                       setQuery('');
                     }}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left cursor-pointer transition-colors ${
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left cursor-pointer transition-colors ${
                       isSelected
-                        ? 'bg-emerald-50 text-emerald-900 font-bold border border-emerald-200/60'
+                        ? 'bg-emerald-50 text-emerald-900 font-semibold border border-emerald-200/60'
                         : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 pr-2">
                       {OptIcon && (
-                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#00A86B] text-white' : 'bg-slate-100 text-slate-500'}`}>
-                          <OptIcon className="w-3.5 h-3.5" />
+                        <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#00A878] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                          <OptIcon className="w-3 h-3" />
                         </div>
                       )}
                       <div className="min-w-0 truncate">
-                        <div className="text-xs truncate">{opt.label}</div>
+                        <div className="text-xs sm:text-[13px] truncate">{opt.label}</div>
                         {opt.sub && (
-                          <div className="text-[10px] text-slate-400 font-normal truncate mt-0.5">{opt.sub}</div>
+                          <div className="text-[11px] text-slate-400 font-normal truncate mt-0.5">{opt.sub}</div>
                         )}
                       </div>
                     </div>
-                    {isSelected && <Check className="w-4 h-4 text-[#00A86B] shrink-0" />}
+                    {isSelected && <Check className="w-4 h-4 text-[#00A878] shrink-0" />}
                   </button>
                 );
               })
@@ -186,7 +186,7 @@ function CustomSelect({
   );
 }
 
-// ─── MAIN PORTAL COMPONENT ──────────────────────────────────────────────────
+// ─── MAIN AUTH PORTAL COMPONENT ─────────────────────────────────────────────
 export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
   const [role, setRole] = useState<'country_partner' | 'state_partner' | 'referral_consultant'>('country_partner');
@@ -299,16 +299,16 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f6f8] relative flex items-center justify-center p-4 sm:p-6 overflow-hidden select-none font-sans" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif' }}>
+    <div className="min-h-screen bg-[#f8f9fb] font-sans antialiased relative flex items-center justify-center p-4 sm:p-6 overflow-hidden select-none" style={{ fontFamily: '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       
-      {/* Ambient Glow Gradients */}
-      <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-emerald-100/50 blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-teal-100/40 blur-[140px] pointer-events-none" />
-      <div className="absolute top-[35%] right-[20%] w-[400px] h-[400px] rounded-full bg-slate-200/50 blur-[100px] pointer-events-none" />
+      {/* Soft Ambient Background Glows */}
+      <div className="absolute top-[-10%] left-[-10%] w-[550px] h-[550px] rounded-full bg-emerald-100/50 blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[550px] h-[550px] rounded-full bg-teal-100/40 blur-[140px] pointer-events-none" />
+      <div className="absolute top-[35%] right-[20%] w-[380px] h-[380px] rounded-full bg-slate-200/50 blur-[100px] pointer-events-none" />
 
-      {/* Main Container */}
+      {/* Main Container Card */}
       <div className={`w-full ${mode === 'register' ? 'max-w-[540px]' : 'max-w-[450px]'} relative z-10 transition-all duration-300`}>
-        <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/90 rounded-[32px] p-6 sm:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] text-slate-900">
+        <div className="bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-[0_15px_40px_rgba(0,0,0,0.05)] text-slate-900">
 
           {/* Header & Logo */}
           <div className="text-center mb-6">
@@ -318,24 +318,24 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                 alt="TravlTik Official Logo"
                 className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 hover:scale-105"
               />
-              <div className="text-[10px] font-black text-slate-500 tracking-[0.2em] uppercase mt-1">
+              <div className="text-[11px] font-semibold text-slate-500 tracking-[0.16em] uppercase mt-1">
                 CHANNEL PARTNER PORTAL
               </div>
             </div>
 
-            <div className="flex justify-center mb-3">
-              <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-0.5 rounded-full shadow-2xs">
-                <Star className="w-3 h-3 text-[#00A86B] fill-current" /> Platinum Partner Network
+            <div className="flex justify-center mb-2">
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-0.5 rounded-full shadow-2xs">
+                <Star className="w-3 h-3 text-[#00A878] fill-current" /> Platinum Partner Network
               </span>
             </div>
           </div>
 
           {/* Mode Switcher Segmented Control */}
-          <div className="flex bg-slate-100/80 p-1 rounded-2xl mb-6 border border-slate-200/70">
+          <div className="flex bg-slate-100 p-1 rounded-2xl mb-6 border border-slate-200/70">
             <button
               type="button"
               onClick={() => { setMode('login'); setError(null); }}
-              className={`flex-1 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+              className={`flex-1 py-2 rounded-xl text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
                 mode === 'login'
                   ? 'bg-white text-slate-900 shadow-sm'
                   : 'text-slate-500 hover:text-slate-800'
@@ -346,9 +346,9 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
             <button
               type="button"
               onClick={() => { setMode('register'); setError(null); }}
-              className={`flex-1 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+              className={`flex-1 py-2 rounded-xl text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
                 mode === 'register'
-                  ? 'bg-[#00A86B] text-white shadow-sm'
+                  ? 'bg-[#00A878] text-white shadow-sm'
                   : 'text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -358,7 +358,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
           {/* Error Message */}
           {error && (
-            <div className="mb-5 p-3.5 rounded-2xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-red-700 text-xs animate-fadeIn font-medium">
+            <div className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-red-700 text-xs animate-fadeIn font-medium">
               <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
               <div className="flex-1">{error}</div>
             </div>
@@ -377,36 +377,36 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
               {/* Email */}
               <div>
-                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Official Email
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type="email"
                     required
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
                     placeholder="partner@globalhorizons.com"
-                    className="w-full h-12 pl-11 pr-4 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B] font-medium"
+                    className="w-full h-11 pl-10 pr-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] transition-all"
                   />
                 </div>
               </div>
 
               {/* Password */}
               <div>
-                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Account Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type={showLoginPassword ? 'text' : 'password'}
                     required
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-12 pl-11 pr-11 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B] font-medium"
+                    className="w-full h-11 pl-10 pr-11 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] transition-all"
                   />
                   <button
                     type="button"
@@ -419,9 +419,9 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               </div>
 
               {/* Security Banner */}
-              <div className="bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-3 flex items-center gap-2.5">
-                <Shield className="w-4 h-4 text-[#00A86B] shrink-0" />
-                <p className="text-[11px] text-emerald-900 font-semibold">
+              <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-xl p-3 flex items-center gap-2.5">
+                <Shield className="w-4 h-4 text-[#00A878] shrink-0" />
+                <p className="text-xs text-emerald-900 font-medium leading-normal">
                   4-Tier Hierarchy Security Protected by TravlTik Network Engine.
                 </p>
               </div>
@@ -430,7 +430,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 rounded-2xl bg-[#00A86B] hover:bg-emerald-600 text-white text-sm font-black tracking-wide flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
+                className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-[#00A878] hover:bg-[#008A62] text-white text-xs sm:text-sm font-semibold tracking-normal flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -454,7 +454,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                     setLoginPassword('TravlTik2026!');
                     setRole('country_partner');
                   }}
-                  className="text-[11px] font-bold text-emerald-800 hover:text-emerald-900 bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-xl cursor-pointer"
+                  className="text-xs font-semibold text-emerald-800 hover:text-emerald-900 bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-xl cursor-pointer transition-colors"
                 >
                   ⚡ Fill Demo Country Partner
                 </button>
@@ -466,16 +466,16 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
           {mode === 'register' && (
             <form onSubmit={handleRegister} className="space-y-4">
 
-              {/* Custom Role Segmented Control */}
+              {/* Role Segmented Buttons */}
               <div>
-                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-2">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Select Partner Category *
                 </label>
                 <div className="grid grid-cols-3 gap-1.5 bg-slate-100 p-1 rounded-2xl border border-slate-200/60">
                   <button
                     type="button"
                     onClick={() => setRole('country_partner')}
-                    className={`py-2 px-1 rounded-xl text-[11px] font-black cursor-pointer transition-all ${
+                    className={`py-2 px-1 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
                       role === 'country_partner'
                         ? 'bg-slate-900 text-white shadow-sm'
                         : 'text-slate-600 hover:text-slate-900'
@@ -486,7 +486,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                   <button
                     type="button"
                     onClick={() => setRole('state_partner')}
-                    className={`py-2 px-1 rounded-xl text-[11px] font-black cursor-pointer transition-all ${
+                    className={`py-2 px-1 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
                       role === 'state_partner'
                         ? 'bg-slate-900 text-white shadow-sm'
                         : 'text-slate-600 hover:text-slate-900'
@@ -497,7 +497,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                   <button
                     type="button"
                     onClick={() => setRole('referral_consultant')}
-                    className={`py-2 px-1 rounded-xl text-[11px] font-black cursor-pointer transition-all ${
+                    className={`py-2 px-1 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
                       role === 'referral_consultant'
                         ? 'bg-slate-900 text-white shadow-sm'
                         : 'text-slate-600 hover:text-slate-900'
@@ -513,7 +513,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Legal Entity / Company Name *
                       </label>
                       <input
@@ -522,11 +522,11 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regCompany}
                         onChange={(e) => setRegCompany(e.target.value)}
                         placeholder="Global Horizons Pvt. Ltd."
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Contact Person Name *
                       </label>
                       <input
@@ -535,14 +535,14 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regContactName}
                         onChange={(e) => setRegContactName(e.target.value)}
                         placeholder="Johnathan Davis"
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Corporate Email *
                       </label>
                       <input
@@ -551,11 +551,11 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regEmail}
                         onChange={(e) => setRegEmail(e.target.value)}
                         placeholder="director@globalhorizons.com"
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         WhatsApp / Phone (+Code)
                       </label>
                       <input
@@ -563,13 +563,13 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regPhone}
                         onChange={(e) => setRegPhone(e.target.value)}
                         placeholder="+1 (555) 019-2834"
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {/* Custom Operating Country Dropdown with Search */}
+                    {/* Custom Operating Country Dropdown */}
                     <CustomSelect
                       label="Operating Country *"
                       value={regCountry}
@@ -580,7 +580,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                     />
 
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Tax ID / Business Reg #
                       </label>
                       <input
@@ -588,7 +588,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regTaxId}
                         onChange={(e) => setRegTaxId(e.target.value)}
                         placeholder="EIN-9283749"
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
                   </div>
@@ -600,7 +600,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Agency Name *
                       </label>
                       <input
@@ -609,11 +609,11 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regCompany}
                         onChange={(e) => setRegCompany(e.target.value)}
                         placeholder="Pacific Visa Solutions"
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Contact Person Name *
                       </label>
                       <input
@@ -622,14 +622,14 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regContactName}
                         onChange={(e) => setRegContactName(e.target.value)}
                         placeholder="Robert Chen"
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Official Email *
                       </label>
                       <input
@@ -638,11 +638,11 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regEmail}
                         onChange={(e) => setRegEmail(e.target.value)}
                         placeholder="agency@pacificvisa.com"
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
 
-                    {/* Custom Operating State Dropdown with Search */}
+                    {/* Custom Operating State Dropdown */}
                     <CustomSelect
                       label="Operating State / Region *"
                       value={regState}
@@ -660,7 +660,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Consultant Full Name *
                       </label>
                       <input
@@ -669,11 +669,11 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regContactName}
                         onChange={(e) => setRegContactName(e.target.value)}
                         placeholder="Sarah Jenkins"
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         Consultant Email *
                       </label>
                       <input
@@ -682,7 +682,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regEmail}
                         onChange={(e) => setRegEmail(e.target.value)}
                         placeholder="sarah@immigrationpro.com"
-                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
                   </div>
@@ -712,11 +712,11 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
               {/* Password Field */}
               <div>
-                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Create Password (Min. 8 characters) *
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type={showRegPassword ? 'text' : 'password'}
                     required
@@ -724,7 +724,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                     value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-12 pl-11 pr-11 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                    className="w-full h-11 pl-10 pr-11 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                   />
                   <button
                     type="button"
@@ -737,9 +737,9 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               </div>
 
               {/* Notice */}
-              <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 flex items-start gap-2.5">
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex items-start gap-2.5">
                 <Shield className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
-                <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
+                <p className="text-xs text-slate-600 font-normal leading-relaxed">
                   Upon registration, your account will be placed into the TravlTik HQ approval queue with status <strong>PENDING_APPROVAL</strong>.
                 </p>
               </div>
@@ -748,7 +748,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 rounded-2xl bg-[#00A86B] hover:bg-emerald-600 text-white text-sm font-black tracking-wide flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
+                className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-[#00A878] hover:bg-[#008A62] text-white text-xs sm:text-sm font-semibold tracking-normal flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -770,7 +770,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
         {/* Footer info */}
         <div className="text-center mt-5">
-          <p className="text-[11px] text-slate-400 font-medium">
+          <p className="text-xs text-slate-400 font-normal">
             TravlTik Global Immigration & Mobility Platform &copy; {new Date().getFullYear()}
           </p>
         </div>
@@ -779,15 +779,15 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
       {/* Success Modal */}
       {successModal && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)' }}>
-          <div className="bg-white rounded-[32px] max-w-[460px] w-full p-7 text-center shadow-2xl animate-fadeIn border border-slate-100">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mx-auto mb-4 text-[#00A86B]">
+          <div className="bg-white rounded-[28px] max-w-[460px] w-full p-7 text-center shadow-2xl animate-fadeIn border border-slate-100">
+            <div className="w-16 h-16 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mx-auto mb-4 text-[#00A878]">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
-            <h3 className="text-xl font-black text-slate-900 mb-2">{successModal.title}</h3>
-            <p className="text-xs text-slate-600 leading-relaxed mb-4">{successModal.message}</p>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">{successModal.title}</h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">{successModal.message}</p>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold rounded-full mb-6">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold rounded-full mb-6">
               <Shield className="w-3.5 h-3.5" /> Status: {successModal.status}
             </div>
 
@@ -797,7 +797,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                 setSuccessModal(null);
                 setMode('login');
               }}
-              className="w-full h-12 rounded-2xl bg-[#00A86B] text-white text-sm font-black tracking-wide cursor-pointer hover:bg-emerald-600 transition-colors"
+              className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-[#00A878] text-white text-xs sm:text-sm font-semibold tracking-normal cursor-pointer hover:bg-[#008A62] transition-colors"
             >
               Back to Sign In
             </button>

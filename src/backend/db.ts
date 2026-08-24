@@ -453,6 +453,66 @@ export async function runMigrations() {
     );
   `);
   await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_user_journey_email ON user_journey_checklists (user_email);`);
+
+  // ── CHANNEL PARTNER TABLES ──
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS channel_partners (
+      id SERIAL PRIMARY KEY,
+      company_name VARCHAR(200) NOT NULL,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      password_hash VARCHAR(255) NOT NULL,
+      contact_person VARCHAR(150),
+      phone VARCHAR(50),
+      country VARCHAR(100) DEFAULT 'United States',
+      tier VARCHAR(50) DEFAULT 'platinum',
+      role VARCHAR(50) DEFAULT 'country_partner',
+      status VARCHAR(50) DEFAULT 'active',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS state_partners (
+      id SERIAL PRIMARY KEY,
+      country_partner_id INTEGER NOT NULL REFERENCES channel_partners(id) ON DELETE CASCADE,
+      partner_name VARCHAR(200) NOT NULL,
+      company_name VARCHAR(200),
+      operating_state VARCHAR(100) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      phone VARCHAR(50),
+      status VARCHAR(50) DEFAULT 'pending_hq_approval',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_state_partners_cp ON state_partners (country_partner_id);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_state_partners_status ON state_partners (status);`);
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS referral_consultants (
+      id SERIAL PRIMARY KEY,
+      country_partner_id INTEGER NOT NULL REFERENCES channel_partners(id) ON DELETE CASCADE,
+      state_partner_id INTEGER REFERENCES state_partners(id) ON DELETE SET NULL,
+      consultant_name VARCHAR(200) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      phone VARCHAR(50),
+      region VARCHAR(100),
+      speciality VARCHAR(100),
+      status VARCHAR(50) DEFAULT 'pending_workflow',
+      revenue NUMERIC(10,2) DEFAULT 0,
+      commission NUMERIC(10,2) DEFAULT 0,
+      leads_count INTEGER DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_ref_cons_cp ON referral_consultants (country_partner_id);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_ref_cons_status ON referral_consultants (status);`);
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS partner_sessions (
+      token VARCHAR(255) PRIMARY KEY,
+      partner_id INTEGER NOT NULL REFERENCES channel_partners(id) ON DELETE CASCADE,
+      expires_at TIMESTAMP NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_partner_sessions_token ON partner_sessions (token);`);
   })();
   return migrationsPromise;
 }

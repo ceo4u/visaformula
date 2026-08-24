@@ -1,0 +1,20 @@
+---
+// src/pages/channel-partner/dashboard.astro
+import Layout from '../../layouts/Layout.astro';
+import ChannelPartnerDashboard from '../../components/channel-partner/ChannelPartnerDashboard';
+
+// Session protection: Verify cookie before rendering
+const token = Astro.cookies.get('cp_sid')?.value;
+if (!token) {
+  return Astro.redirect('/channel-partner/login');
+}
+---
+
+<Layout 
+  title="Channel Partner Operating System | TravlTik" 
+  description="TravlTik Channel Partner Management Dashboard — Live B2B multi-tier network management."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <ChannelPartnerDashboard client:only="react" />
+</Layout>

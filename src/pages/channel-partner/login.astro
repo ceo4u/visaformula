@@ -1,0 +1,20 @@
+---
+// src/pages/channel-partner/login.astro
+import Layout from '../../layouts/Layout.astro';
+import PartnerLogin from '../../components/channel-partner/PartnerLogin';
+
+// If already logged in, redirect to dashboard
+const token = Astro.cookies.get('cp_sid')?.value;
+if (token) {
+  return Astro.redirect('/channel-partner/dashboard');
+}
+---
+
+<Layout 
+  title="Partner Sign In | TravlTik Channel Partner Network" 
+  description="Sign in to TravlTik Channel Partner Operating System. Manage state partners, referral consultants, and revenue analytics."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <PartnerLogin client:only="react" />
+</Layout>

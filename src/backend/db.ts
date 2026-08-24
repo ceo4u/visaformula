@@ -3,11 +3,16 @@ import pg from 'pg';
 let pool: pg.Pool | null = null;
 let useSSL = true;
 
+const DEFAULT_DATABASE_URL = 'postgresql://neondb_owner:npg_U4qJKmCVdn5t@ep-long-recipe-aolj8kyf.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require';
+
 function createPoolInstance(forceNoSSL = false) {
   if (pool) {
     try { pool.end(); } catch(e) {}
   }
-  let connStr = (import.meta?.env?.DATABASE_URL as string || process.env.DATABASE_URL || '').trim();
+  let connStr = (import.meta?.env?.DATABASE_URL as string || process.env.DATABASE_URL || DEFAULT_DATABASE_URL).trim();
+  if (!connStr) {
+    connStr = DEFAULT_DATABASE_URL;
+  }
   if (forceNoSSL || !useSSL) {
     connStr = connStr.replace('sslmode=require', 'sslmode=disable');
     pool = new pg.Pool({

@@ -519,6 +519,8 @@ export async function runMigrations() {
     ALTER TABLE state_partners ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255);
     ALTER TABLE state_partners ADD COLUMN IF NOT EXISTS contact_person VARCHAR(150);
     ALTER TABLE referral_consultants ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255);
+    ALTER TABLE state_partners ALTER COLUMN country_partner_id DROP NOT NULL;
+    ALTER TABLE referral_consultants ALTER COLUMN country_partner_id DROP NOT NULL;
   `);
   })();
   return migrationsPromise;

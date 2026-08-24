@@ -28,11 +28,11 @@ export const GET: APIRoute = async ({ cookies }) => {
     const cpId = session.partner_id;
 
     const [spRes, rcRes, spTotal, rcApproved, rcPending] = await Promise.all([
-      pool.query('SELECT id, partner_name, company_name, operating_state, email, phone, status, created_at FROM state_partners WHERE country_partner_id = $1 ORDER BY created_at DESC', [cpId]),
-      pool.query('SELECT id, consultant_name, email, phone, region, speciality, status, revenue, commission, leads_count, state_partner_id, created_at FROM referral_consultants WHERE country_partner_id = $1 ORDER BY created_at DESC', [cpId]),
-      pool.query('SELECT COUNT(*) FROM state_partners WHERE country_partner_id = $1', [cpId]),
-      pool.query('SELECT COUNT(*) FROM referral_consultants WHERE country_partner_id = $1 AND status = $2', [cpId, 'approved']),
-      pool.query('SELECT COUNT(*) FROM referral_consultants WHERE country_partner_id = $1 AND status = $2', [cpId, 'pending_workflow']),
+      pool.query('SELECT id, partner_name, company_name, operating_state, email, phone, status, created_at FROM state_partners WHERE country_partner_id = $1 OR country_partner_id IS NULL ORDER BY created_at DESC', [cpId]),
+      pool.query('SELECT id, consultant_name, email, phone, region, speciality, status, revenue, commission, leads_count, state_partner_id, created_at FROM referral_consultants WHERE country_partner_id = $1 OR country_partner_id IS NULL ORDER BY created_at DESC', [cpId]),
+      pool.query('SELECT COUNT(*) FROM state_partners WHERE country_partner_id = $1 OR country_partner_id IS NULL', [cpId]),
+      pool.query('SELECT COUNT(*) FROM referral_consultants WHERE (country_partner_id = $1 OR country_partner_id IS NULL) AND status = $2', [cpId, 'approved']),
+      pool.query('SELECT COUNT(*) FROM referral_consultants WHERE (country_partner_id = $1 OR country_partner_id IS NULL) AND (status = $2 OR status = $3)', [cpId, 'pending_workflow', 'PENDING_APPROVAL']),
     ]);
 
     const totalRevenue = rcRes.rows.reduce((s: number, r: any) => s + parseFloat(r.revenue || '0'), 0);

@@ -82,8 +82,8 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       // Get or assign parent country partner
-      let cpId = 1;
-      const cpRes = await pool.query('SELECT id FROM channel_partners WHERE status = $1 ORDER BY id ASC LIMIT 1', ['active']);
+      let cpId: number | null = null;
+      const cpRes = await pool.query('SELECT id FROM channel_partners ORDER BY id ASC LIMIT 1');
       if (cpRes.rows.length > 0) {
         cpId = cpRes.rows[0].id;
       }
@@ -119,8 +119,8 @@ export const POST: APIRoute = async ({ request }) => {
         });
       }
 
-      let cpId = 1;
-      const cpRes = await pool.query('SELECT id FROM channel_partners WHERE status = $1 ORDER BY id ASC LIMIT 1', ['active']);
+      let cpId: number | null = null;
+      const cpRes = await pool.query('SELECT id FROM channel_partners ORDER BY id ASC LIMIT 1');
       if (cpRes.rows.length > 0) {
         cpId = cpRes.rows[0].id;
       }

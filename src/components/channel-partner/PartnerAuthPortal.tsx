@@ -1,9 +1,9 @@
 // src/components/channel-partner/PartnerAuthPortal.tsx
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Star, Lock, Mail, Shield, ArrowRight, Eye, EyeOff,
   CheckCircle2, AlertCircle, Building2, UserCheck, Sparkles, ChevronDown,
-  Globe, Phone, FileText, Check, ArrowLeft
+  Globe, Phone, FileText, Check, ArrowLeft, Search, Layers, MapPin, Briefcase
 } from 'lucide-react';
 
 interface Props {
@@ -24,6 +24,169 @@ const US_STATES = [
   'South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'
 ];
 
+const ROLES_OPTIONS = [
+  { value: 'country_partner', label: 'Country Partner', sub: 'Tier 1 - Master Network', icon: Globe },
+  { value: 'state_partner', label: 'State Partner', sub: 'Tier 2 - Regional Network', icon: Building2 },
+  { value: 'referral_consultant', label: 'Referral Consultant', sub: 'Tier 3 - Direct Advisory', icon: UserCheck },
+];
+
+const SPECIALIZATION_OPTIONS = [
+  'Study Visa & Admissions',
+  'Work Migration & Permits',
+  'PR & Permanent Residency',
+  'Tourist & Visitor Visa',
+  'Business & Investor Visa'
+];
+
+// ─── CUSTOM PROFESSIONAL DROPDOWN ──────────────────────────────────────────
+function CustomSelect({
+  value,
+  onChange,
+  options,
+  placeholder = 'Select option...',
+  label,
+  searchable = false,
+  icon: Icon
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  options: (string | { value: string; label: string; sub?: string; icon?: any })[];
+  placeholder?: string;
+  label?: string;
+  searchable?: boolean;
+  icon?: any;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const normalizedOptions = options.map(opt =>
+    typeof opt === 'string' ? { value: opt, label: opt } : opt
+  );
+
+  const selectedOpt = normalizedOptions.find(o => o.value === value);
+
+  const filteredOptions = query
+    ? normalizedOptions.filter(o =>
+        o.label.toLowerCase().includes(query.toLowerCase()) ||
+        (o.sub && o.sub.toLowerCase().includes(query.toLowerCase()))
+      )
+    : normalizedOptions;
+
+  return (
+    <div className="relative w-full" ref={ref}>
+      {label && (
+        <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
+          {label}
+        </label>
+      )}
+
+      {/* Trigger Button */}
+      <div
+        onClick={() => setOpen(!open)}
+        className={`w-full h-12 px-3.5 sm:px-4 rounded-2xl bg-slate-50 border transition-all flex items-center justify-between cursor-pointer select-none ${
+          open
+            ? 'border-[#00A86B] ring-2 ring-[#00A86B]/20 bg-white shadow-xs'
+            : 'border-slate-200 hover:border-slate-300 hover:bg-slate-100/60'
+        }`}
+      >
+        <div className="flex items-center gap-2.5 min-w-0 pr-2">
+          {Icon && <Icon className="w-4 h-4 text-slate-400 shrink-0" />}
+          {selectedOpt?.icon && <selectedOpt.icon className="w-4 h-4 text-[#00A86B] shrink-0" />}
+          <div className="min-w-0 truncate">
+            <span className="text-xs sm:text-sm font-bold text-slate-900 truncate block">
+              {selectedOpt ? selectedOpt.label : <span className="text-slate-400 font-normal">{placeholder}</span>}
+            </span>
+            {selectedOpt?.sub && (
+              <span className="text-[10px] text-slate-400 font-medium truncate block leading-none mt-0.5">
+                {selectedOpt.sub}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <ChevronDown
+          className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
+            open ? 'rotate-180 text-[#00A86B]' : ''
+          }`}
+        />
+      </div>
+
+      {/* Dropdown Floating Menu */}
+      {open && (
+        <div className="absolute top-[calc(100%+6px)] left-0 w-full z-[99999] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-[22px] shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 animate-fadeIn ring-1 ring-black/5 max-h-[260px] overflow-hidden flex flex-col">
+          {searchable && (
+            <div className="relative mb-2 shrink-0">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search..."
+                className="w-full h-8 pl-8 pr-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                autoFocus
+              />
+            </div>
+          )}
+
+          <div className="overflow-y-auto space-y-1 pr-1 scrollbar-thin">
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((opt) => {
+                const isSelected = opt.value === value;
+                const OptIcon = opt.icon;
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => {
+                      onChange(opt.value);
+                      setOpen(false);
+                      setQuery('');
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left cursor-pointer transition-colors ${
+                      isSelected
+                        ? 'bg-emerald-50 text-emerald-900 font-bold border border-emerald-200/60'
+                        : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                      {OptIcon && (
+                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#00A86B] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                          <OptIcon className="w-3.5 h-3.5" />
+                        </div>
+                      )}
+                      <div className="min-w-0 truncate">
+                        <div className="text-xs truncate">{opt.label}</div>
+                        {opt.sub && (
+                          <div className="text-[10px] text-slate-400 font-normal truncate mt-0.5">{opt.sub}</div>
+                        )}
+                      </div>
+                    </div>
+                    {isSelected && <Check className="w-4 h-4 text-[#00A86B] shrink-0" />}
+                  </button>
+                );
+              })
+            ) : (
+              <div className="py-4 text-center text-xs text-slate-400">No results found</div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── MAIN PORTAL COMPONENT ──────────────────────────────────────────────────
 export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
   const [role, setRole] = useState<'country_partner' | 'state_partner' | 'referral_consultant'>('country_partner');
@@ -39,9 +202,9 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
   const [regEmail, setRegEmail] = useState('');
   const [regPhone, setRegPhone] = useState('');
   const [regCountry, setRegCountry] = useState('United States');
-  const [regState, setRegState] = useState('');
+  const [regState, setRegState] = useState('California');
   const [regTaxId, setRegTaxId] = useState('');
-  const [regSpeciality, setRegSpeciality] = useState('Student Visa');
+  const [regSpeciality, setRegSpeciality] = useState('Study Visa & Admissions');
   const [regPassword, setRegPassword] = useState('');
   const [showRegPassword, setShowRegPassword] = useState(false);
 
@@ -81,7 +244,6 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
     e.preventDefault();
     setError(null);
 
-    // Frontend validations
     if (regPassword.length < 8) {
       setError('Password must be at least 8 characters long.');
       return;
@@ -105,10 +267,10 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
       } else if (role === 'state_partner') {
         payload.agency_name = regCompany;
         payload.contact_person = regContactName;
-        payload.operating_state = regState || 'California';
+        payload.operating_state = regState;
       } else if (role === 'referral_consultant') {
         payload.consultant_name = regContactName;
-        payload.state = regState || 'California';
+        payload.state = regState;
         payload.specialization = regSpeciality;
       }
 
@@ -139,7 +301,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
   return (
     <div className="min-h-screen bg-[#f4f6f8] relative flex items-center justify-center p-4 sm:p-6 overflow-hidden select-none font-sans" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif' }}>
       
-      {/* Soft Ambient Glow Gradients */}
+      {/* Ambient Glow Gradients */}
       <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-emerald-100/50 blur-[130px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-teal-100/40 blur-[140px] pointer-events-none" />
       <div className="absolute top-[35%] right-[20%] w-[400px] h-[400px] rounded-full bg-slate-200/50 blur-[100px] pointer-events-none" />
@@ -148,7 +310,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
       <div className={`w-full ${mode === 'register' ? 'max-w-[540px]' : 'max-w-[450px]'} relative z-10 transition-all duration-300`}>
         <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/90 rounded-[32px] p-6 sm:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] text-slate-900">
 
-          {/* Official Site Logo & Header */}
+          {/* Header & Logo */}
           <div className="text-center mb-6">
             <div className="flex flex-col items-center justify-center gap-1.5 mb-2.5">
               <img
@@ -162,13 +324,13 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
             </div>
 
             <div className="flex justify-center mb-3">
-              <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-0.5 rounded-full shadow-2xs">
                 <Star className="w-3 h-3 text-[#00A86B] fill-current" /> Platinum Partner Network
               </span>
             </div>
           </div>
 
-          {/* Mode Switcher Segmented Control (Sign In vs Register) */}
+          {/* Mode Switcher Segmented Control */}
           <div className="flex bg-slate-100/80 p-1 rounded-2xl mb-6 border border-slate-200/70">
             <button
               type="button"
@@ -205,24 +367,13 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
           {/* ═══════════ TAB 1: SIGN IN FORM ═══════════ */}
           {mode === 'login' && (
             <form onSubmit={handleLogin} className="space-y-4">
-              {/* Role Selector */}
-              <div>
-                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
-                  Partner Level
-                </label>
-                <div className="relative">
-                  <select
-                    value={role}
-                    onChange={(e: any) => setRole(e.target.value)}
-                    className="w-full h-12 px-4 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B] cursor-pointer appearance-none"
-                  >
-                    <option value="country_partner">Country Partner (Tier 1 - Master Network)</option>
-                    <option value="state_partner">State Partner (Tier 2 - Regional Network)</option>
-                    <option value="referral_consultant">Referral Consultant (Tier 3 - Direct Advisory)</option>
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                </div>
-              </div>
+              {/* Custom Role Dropdown */}
+              <CustomSelect
+                label="Partner Level"
+                value={role}
+                onChange={(val: any) => setRole(val)}
+                options={ROLES_OPTIONS}
+              />
 
               {/* Email */}
               <div>
@@ -315,7 +466,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
           {mode === 'register' && (
             <form onSubmit={handleRegister} className="space-y-4">
 
-              {/* Role Segmented Buttons */}
+              {/* Custom Role Segmented Control */}
               <div>
                 <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-2">
                   Select Partner Category *
@@ -371,7 +522,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regCompany}
                         onChange={(e) => setRegCompany(e.target.value)}
                         placeholder="Global Horizons Pvt. Ltd."
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
                     <div>
@@ -384,7 +535,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regContactName}
                         onChange={(e) => setRegContactName(e.target.value)}
                         placeholder="Johnathan Davis"
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
                   </div>
@@ -400,7 +551,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regEmail}
                         onChange={(e) => setRegEmail(e.target.value)}
                         placeholder="director@globalhorizons.com"
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
                     <div>
@@ -412,24 +563,22 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regPhone}
                         onChange={(e) => setRegPhone(e.target.value)}
                         placeholder="+1 (555) 019-2834"
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
-                        Operating Country *
-                      </label>
-                      <select
-                        value={regCountry}
-                        onChange={(e) => setRegCountry(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B] cursor-pointer"
-                      >
-                        {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-                      </select>
-                    </div>
+                    {/* Custom Operating Country Dropdown with Search */}
+                    <CustomSelect
+                      label="Operating Country *"
+                      value={regCountry}
+                      onChange={(val) => setRegCountry(val)}
+                      options={COUNTRIES}
+                      searchable={true}
+                      icon={Globe}
+                    />
+
                     <div>
                       <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
                         Tax ID / Business Reg #
@@ -439,7 +588,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regTaxId}
                         onChange={(e) => setRegTaxId(e.target.value)}
                         placeholder="EIN-9283749"
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
                   </div>
@@ -460,7 +609,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regCompany}
                         onChange={(e) => setRegCompany(e.target.value)}
                         placeholder="Pacific Visa Solutions"
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
                     <div>
@@ -473,7 +622,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regContactName}
                         onChange={(e) => setRegContactName(e.target.value)}
                         placeholder="Robert Chen"
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
                   </div>
@@ -489,22 +638,19 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regEmail}
                         onChange={(e) => setRegEmail(e.target.value)}
                         placeholder="agency@pacificvisa.com"
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
-                    <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
-                        Operating State / Region *
-                      </label>
-                      <select
-                        value={regState}
-                        onChange={(e) => setRegState(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B] cursor-pointer"
-                      >
-                        <option value="">Select Operating State...</option>
-                        {US_STATES.map(s => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                    </div>
+
+                    {/* Custom Operating State Dropdown with Search */}
+                    <CustomSelect
+                      label="Operating State / Region *"
+                      value={regState}
+                      onChange={(val) => setRegState(val)}
+                      options={US_STATES}
+                      searchable={true}
+                      icon={MapPin}
+                    />
                   </div>
                 </>
               )}
@@ -523,7 +669,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regContactName}
                         onChange={(e) => setRegContactName(e.target.value)}
                         placeholder="Sarah Jenkins"
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
                     <div>
@@ -536,41 +682,30 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         value={regEmail}
                         onChange={(e) => setRegEmail(e.target.value)}
                         placeholder="sarah@immigrationpro.com"
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                        className="w-full h-12 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
-                        Assigned State
-                      </label>
-                      <select
-                        value={regState}
-                        onChange={(e) => setRegState(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B] cursor-pointer"
-                      >
-                        <option value="">Select State...</option>
-                        {US_STATES.map(s => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-1.5">
-                        Specialization
-                      </label>
-                      <select
-                        value={regSpeciality}
-                        onChange={(e) => setRegSpeciality(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B] cursor-pointer"
-                      >
-                        <option value="Study Visa">Study Visa & Admissions</option>
-                        <option value="Work Migration">Work Migration & Permits</option>
-                        <option value="PR & Citizenship">PR & Permanent Residency</option>
-                        <option value="Tourist & Visitor">Tourist & Visitor Visa</option>
-                        <option value="Business & Investor">Business & Investor Visa</option>
-                      </select>
-                    </div>
+                    {/* Custom Assigned State Dropdown */}
+                    <CustomSelect
+                      label="Assigned State"
+                      value={regState}
+                      onChange={(val) => setRegState(val)}
+                      options={US_STATES}
+                      searchable={true}
+                      icon={MapPin}
+                    />
+
+                    {/* Custom Specialization Dropdown */}
+                    <CustomSelect
+                      label="Specialization"
+                      value={regSpeciality}
+                      onChange={(val) => setRegSpeciality(val)}
+                      options={SPECIALIZATION_OPTIONS}
+                      icon={Briefcase}
+                    />
                   </div>
                 </>
               )}
@@ -589,7 +724,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                     value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-11 pl-11 pr-11 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
+                    className="w-full h-12 pl-11 pr-11 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#00A86B]/30 focus:border-[#00A86B]"
                   />
                   <button
                     type="button"

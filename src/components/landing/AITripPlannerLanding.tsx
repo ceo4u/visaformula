@@ -613,6 +613,160 @@ const getDestinationVisitData = (destination: string) => {
   };
 };
 
+const getAIVisaVerdict = (passport: string, destination: string, purpose: string) => {
+  const p = (passport || 'India').toLowerCase().trim();
+  const d = (destination || 'United Kingdom').toLowerCase().trim();
+  const pur = (purpose || 'study').toLowerCase().trim();
+
+  // Tier 1 High Mobility / ESTA eligible passports
+  const isEstaPassport = ['united states', 'usa', 'us', 'united kingdom', 'uk', 'canada', 'australia', 'germany', 'france', 'japan', 'singapore', 'ireland', 'new zealand', 'italy', 'spain', 'netherlands', 'sweden', 'norway', 'switzerland', 'south korea'].some(c => p.includes(c));
+
+  // STUDY PURPOSE
+  if (pur === 'study') {
+    const studyData = getDestinationStudyData(destination);
+    return {
+      type: 'visa_required',
+      badge: 'Official Student Visa Required',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      headline: `Valid Official Student Visa Required for ${destination}`,
+      summary: `Based on your ${passport || 'Indian'} passport and Study Abroad purpose, you need to apply for a valid ${studyData.defaultVisaType} before departing for ${destination}.`,
+      actionMsg: `Here is your AI-researched ideal 8-step pathway with tied-up university matches, real tuition fees, living costs, and VFS biometrics checklist:`,
+      processingTime: '15 – 21 Working Days',
+      fundsRequired: studyData.totalProof,
+      visaType: studyData.defaultVisaType,
+      admissionDoc: studyData.admissionDocName,
+      isEsta: false
+    };
+  }
+
+  // WORK PURPOSE
+  if (pur === 'work') {
+    return {
+      type: 'visa_required',
+      badge: 'Sponsored Work Visa Required',
+      badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40',
+      headline: `Sponsored Work Visa & Employment Permit Required for ${destination}`,
+      summary: `Based on your ${passport || 'Indian'} passport, you cannot work on a visitor visa. You require an approved employer sponsorship and legal work permit to enter ${destination}.`,
+      actionMsg: `Here is your ideal employment pathway, employer sponsorship guidelines, and visa filing roadmap:`,
+      processingTime: '3 – 6 Weeks',
+      fundsRequired: 'Employer Job Offer + Relocation Fund',
+      visaType: `${destination} Skilled Worker / Employment Visa`,
+      admissionDoc: 'Certificate of Sponsorship / LMIA / Work Permit',
+      isEsta: false
+    };
+  }
+
+  // PR / MIGRATION
+  if (pur === 'pr') {
+    return {
+      type: 'visa_required',
+      badge: 'Permanent Residency Pathway',
+      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+      headline: `Permanent Residency & Points-Based Immigration for ${destination}`,
+      summary: `Based on your ${passport || 'Indian'} passport, you are eligible for points-based Permanent Residency and Express Entry in ${destination}.`,
+      actionMsg: `Here is your comprehensive points audit, CRS/Score calculator, and document filing roadmap:`,
+      processingTime: '6 – 12 Months',
+      fundsRequired: 'Settlement Funds Proof',
+      visaType: `${destination} Permanent Residence (PR)`,
+      admissionDoc: 'ITA / EOI Invitation to Apply',
+      isEsta: false
+    };
+  }
+
+  // VISIT / TOURISM / BUSINESS
+  if (isEstaPassport) {
+    if (d.includes('usa') || d.includes('america') || d.includes('united states')) {
+      return {
+        type: 'esta_eligible',
+        badge: 'ESTA Eligible (No Embassy Visa Required)',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        headline: `You can go without an embassy visa using ESTA!`,
+        summary: `Good news! Based on your ${passport} passport, you qualify for the US Visa Waiver Program (VWP). You do NOT need to visit an embassy for a sticker visa; you only require a fast online ESTA authorization for stays up to 90 days.`,
+        actionMsg: `Here is your ideal US ESTA travel pathway, entry checklist, and itinerary:`,
+        processingTime: 'Instant / Within 72 Hours',
+        fundsRequired: 'Credit Card / Valid Passport / Return Ticket',
+        visaType: 'US ESTA (Electronic System for Travel Authorization)',
+        admissionDoc: 'ESTA Confirmation Number',
+        isEsta: true
+      };
+    }
+    if (d.includes('canada')) {
+      return {
+        type: 'esta_eligible',
+        badge: 'eTA Eligible (Instant Online Authorization)',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        headline: `You can travel without a sticker visa using Canada eTA!`,
+        summary: `Based on your ${passport} passport, you qualify for an Electronic Travel Authorization (eTA). No physical embassy appointment or paper visa required for tourism up to 6 months.`,
+        actionMsg: `Here is your ideal Canada visit roadmap, flight packages, and entry requirements:`,
+        processingTime: 'Instant / Within Minutes',
+        fundsRequired: '$7 CAD eTA Fee + Return Flight',
+        visaType: 'Canada eTA (Electronic Travel Authorization)',
+        admissionDoc: 'Approved eTA Number',
+        isEsta: true
+      };
+    }
+    if (d.includes('australia')) {
+      return {
+        type: 'esta_eligible',
+        badge: 'ETA Eligible (Subclass 601)',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        headline: `You can travel without an embassy visa using Australia ETA!`,
+        summary: `Based on your ${passport} passport, you qualify for the Australian Electronic Travel Authority (ETA Subclass 601) through the Australian ETA app for stays up to 3 months per visit.`,
+        actionMsg: `Here is your ideal Australia holiday pathway and fast-track clearance steps:`,
+        processingTime: 'Instant via Australian ETA App',
+        fundsRequired: 'AUD $20 Service Fee',
+        visaType: 'Australia ETA (Subclass 601)',
+        admissionDoc: 'Digital ETA Grant Notice',
+        isEsta: true
+      };
+    }
+    if (d.includes('uae') || d.includes('dubai')) {
+      return {
+        type: 'esta_eligible',
+        badge: 'Visa on Arrival (30 Days Free)',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        headline: `You get 30-Day Visa on Arrival in UAE!`,
+        summary: `Based on your ${passport} passport, you receive a free 30-day Visa on Arrival at Dubai/Abu Dhabi immigration. No prior visa application required.`,
+        actionMsg: `Here is your ideal Dubai tourist itinerary, holiday passes, and entry checklist:`,
+        processingTime: 'Instant on Airport Arrival',
+        fundsRequired: 'Return Flight + Hotel Booking',
+        visaType: 'UAE 30-Day Visa on Arrival',
+        admissionDoc: 'Passport Stamp at Immigration',
+        isEsta: true
+      };
+    }
+    if (d.includes('uk') || d.includes('united kingdom') || d.includes('london')) {
+      return {
+        type: 'esta_eligible',
+        badge: 'Visa-Free Entry (Up to 6 Months)',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        headline: `You can visit the UK Visa-Free for up to 6 months!`,
+        summary: `Based on your ${passport} passport, you do NOT require a visa for tourism or business visits to the United Kingdom for stays up to 6 months (UK ETA applies).`,
+        actionMsg: `Here is your ideal UK holiday itinerary and travel checklist:`,
+        processingTime: 'Instant Entry via ePassport Gates',
+        fundsRequired: 'Return Ticket + Proof of Accommodation',
+        visaType: 'UK Standard Visitor Visa Waiver / UK ETA',
+        admissionDoc: 'Valid ePassport',
+        isEsta: true
+      };
+    }
+  }
+
+  // Default: Standard Embassy Tourist Visa Required
+  return {
+    type: 'visa_required',
+    badge: 'Valid Tourist Visa Required',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+    headline: `Valid Tourist / Visitor Visa Required for ${destination}`,
+    summary: `Based on your ${passport || 'Indian'} passport, you need to apply for a valid ${destination} Visitor Visa (Embassy / VFS sticker or e-Visa) before your trip.`,
+    actionMsg: `Here is your researched ideal tourist pathway, financial requirements, and VFS slot booking guidance:`,
+    processingTime: '10 – 15 Working Days',
+    fundsRequired: 'Bank Balance + 6 Months Statement',
+    visaType: `${destination} Standard Tourist / Visitor Visa`,
+    admissionDoc: 'VFS Appointment & Valid Passport',
+    isEsta: false
+  };
+};
 
 const studyQualificationOptions = [
   { value: '12th', label: '12th / High School', icon: '🏫', desc: 'Higher Secondary' },
@@ -1313,40 +1467,43 @@ export function AITripPlannerLanding() {
   const handleGeneratePathway = () => {
     setIsGenerating(true);
     
+    // Accurately map purpose from inputs
+    let purpose = travelPurpose || 'study';
+    const looking = (serviceLookingFor || '').toLowerCase();
+    const serv = (selectedServiceType || '').toLowerCase();
+    if (looking.includes('study') || serv.includes('student')) purpose = 'study';
+    else if (looking.includes('tourist') || looking.includes('visit') || serv.includes('visit') || serv.includes('tourist')) purpose = 'visit';
+    else if (looking.includes('work') || serv.includes('work') || serv.includes('job')) purpose = 'work';
+    else if (looking.includes('pr') || serv.includes('pr') || serv.includes('migration')) purpose = 'pr';
+    else if (looking.includes('business') || serv.includes('business')) purpose = 'business';
+
+    setTravelPurpose(purpose);
+    setHasVisaAlready('no');
+    setHasGenerated(true);
+
+    const dest = journeyDestination && journeyDestination !== 'Country' ? journeyDestination : 'United Kingdom';
+    const pass = passportCountry || 'India';
+
     // Auto-save search parameters to user journey
     autoSaveJourney({
-      destination: journeyDestination || 'UAE',
-      passport_country: passportCountry || 'India',
-      purpose: travelPurpose || 'study',
+      destination: dest,
+      passport_country: pass,
+      purpose: purpose,
       service_type: selectedServiceType || 'Visa',
       origin_city: originCity || 'Mumbai',
-      looking_for: serviceLookingFor || 'Visa & Immigration'
+      looking_for: serviceLookingFor || 'Visa & Immigration',
+      has_visa: false
     });
 
-    const params = new URLSearchParams();
-    if (journeyDestination && journeyDestination !== 'Country') {
-      params.set('country', journeyDestination);
-    }
-    
-    // Map service category
-    let categoryParam = selectedServiceType;
-    if (!categoryParam || categoryParam === 'Service') {
-      if (serviceLookingFor.includes('Study') || travelPurpose === 'study') categoryParam = 'Student Visa';
-      else if (serviceLookingFor.includes('Work') || travelPurpose === 'work') categoryParam = 'Work Permit';
-      else if (serviceLookingFor.includes('Tourist') || serviceLookingFor.includes('Visit') || travelPurpose === 'visit') categoryParam = 'Visit';
-      else if (serviceLookingFor.includes('Business') || travelPurpose === 'business') categoryParam = 'Business Visa';
-      else if (serviceLookingFor.includes('PR') || travelPurpose === 'pr') categoryParam = 'PR';
-      else categoryParam = 'Student Visa';
-    }
-    params.set('category', categoryParam);
-
-    if (originCity && originCity !== 'City') {
-      params.set('city', originCity);
-    }
-
     setTimeout(() => {
-      window.location.href = `/find-experts?${params.toString()}`;
-    }, 450);
+      setIsGenerating(false);
+      setTimeout(() => {
+        const el = document.getElementById('ai-pathway-research-verdict') || document.getElementById('need-visa-pathway-dashboard');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }, 600);
   };
 
   const handleNoVisaLeadSubmit = async (e: React.FormEvent) => {
@@ -3052,37 +3209,119 @@ return (
           )}
 
           {/* ── FLOW 2: NOTEBOOK ARCHITECTURE (HAVE VISA? = NO) ── */}
-          {travelScopeTab === 'international' && hasVisaAlready === 'no' && (
-            <div id="need-visa-pathway-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
-              
-              {/* BRANCH A: PURPOSE = STUDY (8 STEPS NOTEBOOK ARCHITECTURE) */}
-              {(travelPurpose === 'study' || !travelPurpose) && (
-                <div className="space-y-6">
-                  
-                  {/* Top Pathway Header */}
-                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider mb-2">
-                        <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Flow 2A: Study Abroad &amp; University Pathway (8 Steps)</span>
+          {travelScopeTab === 'international' && hasVisaAlready === 'no' && (() => {
+            const aiVerdict = getAIVisaVerdict(passportCountry || 'India', journeyDestination || 'United Kingdom', travelPurpose || 'study');
+
+            return (
+              <div id="need-visa-pathway-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
+                
+                {/* ── REAL-TIME AI COMPLIANCE & RESEARCH VERDICT HERO BANNER ── */}
+                <div id="ai-pathway-research-verdict" className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+
+                  <div className="relative z-10 space-y-5">
+                    {/* Top Row: AI Status Badge & Research Meta */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800/80">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black uppercase tracking-wider">
+                        <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
+                        <span>TravlTik AI • Real-Time Visa &amp; Pathway Engine</span>
                       </div>
-                      <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                        Target Pathway: Study Abroad in {journeyDestination || 'Top Universities'}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
-                        8-Step notebook architecture: university shortlisting, document gathering, funds audit, readiness score &amp; VFS slot booking.
+
+                      <div className="flex items-center gap-2">
+                        <span className={`px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider border ${aiVerdict.badgeColor}`}>
+                          {aiVerdict.badge}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Main Headline & AI Explanation */}
+                    <div className="space-y-2.5">
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight leading-snug">
+                        {aiVerdict.headline}
+                      </h2>
+                      <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-4xl">
+                        {aiVerdict.summary}
+                      </p>
+                      <p className="text-xs sm:text-sm font-semibold text-emerald-400">
+                        {aiVerdict.actionMsg}
                       </p>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2 shrink-0">
-                      <div className="px-3.5 py-1.5 rounded-2xl bg-white/10 border border-white/15 text-white text-xs font-bold">
-                        <span>Passport: {passportCountry || 'India'}</span>
+                    {/* 4-Item Quick Audit Matrix */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 sm:p-3.5">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                          Current Passport
+                        </span>
+                        <span className="text-xs sm:text-sm font-black text-white flex items-center gap-1.5 truncate">
+                          <span>{passportCountryOptions.find(o => o.value === passportCountry)?.icon || '🇮🇳'}</span>
+                          <span>{passportCountry || 'India'}</span>
+                        </span>
                       </div>
-                      <div className="px-3.5 py-1.5 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
-                        <span>Readiness Score: {studyReadinessScore}%</span>
+
+                      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 sm:p-3.5">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                          Destination Country
+                        </span>
+                        <span className="text-xs sm:text-sm font-black text-white flex items-center gap-1.5 truncate">
+                          <span>{journeyDestinationOptions.find(o => o.value === journeyDestination)?.icon || '🇬🇧'}</span>
+                          <span>{journeyDestination || 'United Kingdom'}</span>
+                        </span>
+                      </div>
+
+                      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 sm:p-3.5">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                          Estimated Timeline
+                        </span>
+                        <span className="text-xs sm:text-sm font-black text-cyan-300 flex items-center gap-1.5 truncate">
+                          <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                          <span>{aiVerdict.processingTime}</span>
+                        </span>
+                      </div>
+
+                      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 sm:p-3.5">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                          Financial Threshold
+                        </span>
+                        <span className="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5 truncate">
+                          <Check className="w-3.5 h-3.5 text-amber-400" />
+                          <span>{aiVerdict.fundsRequired}</span>
+                        </span>
                       </div>
                     </div>
+
                   </div>
+                </div>
+
+                {/* BRANCH A: PURPOSE = STUDY (8 STEPS NOTEBOOK ARCHITECTURE) */}
+                {(travelPurpose === 'study' || !travelPurpose) && (
+                  <div className="space-y-6">
+                    
+                    {/* Top Pathway Header */}
+                    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider mb-2">
+                          <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Flow 2A: Study Abroad &amp; University Pathway (8 Steps)</span>
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                          Target Pathway: Study Abroad in {journeyDestination || 'Top Universities'}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
+                          8-Step notebook architecture: university shortlisting, document gathering, funds audit, readiness score &amp; VFS slot booking.
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2 shrink-0">
+                        <div className="px-3.5 py-1.5 rounded-2xl bg-white/10 border border-white/15 text-white text-xs font-bold">
+                          <span>Passport: {passportCountry || 'India'}</span>
+                        </div>
+                        <div className="px-3.5 py-1.5 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
+                          <span>Readiness Score: {studyReadinessScore}%</span>
+                        </div>
+                      </div>
+                    </div>
 
                   {/* 8-Step Study Notebook Grid */}
                   <div className="space-y-6 sm:space-y-8 max-w-5xl mx-auto">
@@ -3966,7 +4205,8 @@ return (
               </div>
 
             </div>
-          )}
+          );
+        })()}
 
           {/* ── 3. MULTI-TAB GLOBAL SEARCH & FILTER WIDGET ── */}
           {travelScopeTab === 'international' && (

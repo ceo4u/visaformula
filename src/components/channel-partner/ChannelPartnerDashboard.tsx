@@ -9,6 +9,7 @@ import {
   AlertCircle, Shield, Building2, Network, BadgeCheck, Wallet,
   Loader2, Sparkles, Briefcase
 } from 'lucide-react';
+import PartnerSettingsView from './PartnerSettingsView';
 
 interface PartnerProfile {
   company_name: string;
@@ -270,7 +271,6 @@ function StatCard({ icon: Icon, iconBg, label, value, sub, positive }: { icon: a
 
 // ─── STATUS BADGE COMPONENT ──────────────────────────────────────────────────
 function StatusBadge({ status }: { status: string }) {
-  const norm = (status || 'active').toLowerCase();
   return (
     <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 shadow-2xs">
       <span className="w-1.5 h-1.5 rounded-full bg-[#00A878]" />
@@ -282,13 +282,13 @@ function StatusBadge({ status }: { status: string }) {
 // ─── HIERARCHY PILL BADGE ────────────────────────────────────────────────────
 function HierarchyBadge() {
   return (
-    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100/90 border border-slate-200 px-3 py-1 rounded-full">
+    <div className="inline-flex items-center gap-2 text-xs sm:text-[13px] font-semibold text-slate-700 bg-slate-50 border border-slate-200/90 px-3.5 py-1 rounded-full shadow-2xs">
       <span className="text-slate-400">TravlTik HQ</span>
-      <ChevronRight className="w-3 h-3 text-slate-400" />
+      <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
       <span className="text-[#00A878] font-bold">Country Partner</span>
-      <ChevronRight className="w-3 h-3 text-slate-400" />
+      <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
       <span className="text-slate-500">State Partners</span>
-      <ChevronRight className="w-3 h-3 text-slate-400" />
+      <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
       <span className="text-slate-500">Consultants</span>
     </div>
   );
@@ -347,7 +347,7 @@ function AddStatePartnerModal({ onClose, onSuccess }: { onClose: () => void; onS
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-semibold text-slate-700 block mb-1.5">Contact Person *</label>
                 <input required value={form.partner_name} onChange={e => setForm(f => ({...f, partner_name: e.target.value}))}
@@ -371,7 +371,7 @@ function AddStatePartnerModal({ onClose, onSuccess }: { onClose: () => void; onS
                 className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-xs sm:text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] bg-white" placeholder="Pacific Visa Solutions LLC" />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-semibold text-slate-700 block mb-1.5">Official Email *</label>
                 <input required type="email" value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))}
@@ -470,7 +470,7 @@ function AddConsultantModal({ onClose, statePartners, onSuccess }: { onClose: ()
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-semibold text-slate-700 block mb-1.5">Consultant Name *</label>
                 <input required value={form.consultant_name} onChange={e => setForm(f => ({...f, consultant_name: e.target.value}))}
@@ -493,7 +493,7 @@ function AddConsultantModal({ onClose, statePartners, onSuccess }: { onClose: ()
                 className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-xs sm:text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] bg-white" placeholder="consultant@domain.com" />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-semibold text-slate-700 block mb-1.5">Phone Number</label>
                 <input value={form.phone} onChange={e => setForm(f => ({...f, phone: e.target.value}))}
@@ -635,18 +635,98 @@ export default function ChannelPartnerDashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-[#f4f6f8] overflow-hidden select-none" style={{ fontFamily: '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div className="flex h-screen bg-[#f8f9fb] overflow-hidden select-none" style={{ fontFamily: '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 
-      {/* Mobile Drawer Overlay */}
-      {mobileOpen && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 lg:hidden" onClick={() => setMobileOpen(false)} />
-      )}
+      {/* ═══════════ MOBILE DRAWER OVERLAY & SIDEBAR ═══════════ */}
+      <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-xs" onClick={() => setMobileOpen(false)} />
+        <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-4 transform transition-transform duration-300 overflow-y-auto ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className="space-y-4">
+            {/* Mobile Header Logo */}
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex flex-col items-start gap-1">
+                <img src="/logo.png" alt="TravlTik Official Logo" className="h-8 w-auto object-contain" />
+                <div className="text-[10px] font-semibold text-slate-400 tracking-[0.16em] uppercase">
+                  CHANNEL PARTNER
+                </div>
+              </div>
+              <button onClick={() => setMobileOpen(false)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 cursor-pointer">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
 
-      {/* ═══════════ LEFT SIDEBAR ═══════════ */}
-      <aside className={`hidden lg:flex flex-col h-full bg-[#0a0f1a] text-white ${sidebarCollapsed ? 'w-[72px]' : 'w-[260px]'} transition-all duration-300 shrink-0 z-30`}>
+            {/* Mobile Nav Links */}
+            <nav className="space-y-1">
+              {NAV_LINKS.map(item => {
+                const isActive = active === item.id || item.children?.some(c => c.id === active);
+                return (
+                  <div key={item.id}>
+                    <button
+                      onClick={() => {
+                        setActive(item.id);
+                        if (!item.children) setMobileOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl font-semibold text-xs sm:text-[13px] transition-all cursor-pointer ${
+                        isActive && !item.children
+                          ? 'bg-[#00A878] text-white shadow-sm'
+                          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <item.icon className={`w-4 h-4 ${isActive && !item.children ? 'text-white' : 'text-slate-500'}`} />
+                        <span>{item.label}</span>
+                      </div>
+                      {item.children && <ChevronDown className="w-3.5 h-3.5 text-slate-400" />}
+                    </button>
+                    {item.children && (
+                      <div className="ml-7 mt-1 space-y-0.5">
+                        {item.children.map(child => (
+                          <button
+                            key={child.id}
+                            onClick={() => {
+                              setActive(child.id);
+                              setMobileOpen(false);
+                            }}
+                            className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium cursor-pointer transition-colors ${
+                              active === child.id ? 'bg-emerald-50 text-[#00A878] font-semibold' : 'text-slate-500 hover:text-slate-800'
+                            }`}
+                          >
+                            <span>{child.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+          </div>
 
-        {/* Top-Left Header Branding */}
-        <div className={`flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'justify-between px-5'} pt-5 pb-4 border-b border-white/10`}>
+          {/* Mobile User Card */}
+          <div className="pt-4 border-t border-slate-100 mt-4">
+            <div className="flex items-center justify-between bg-slate-50 rounded-2xl p-2.5 border border-slate-200/80">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-[#00A878] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                  {(partner?.company_name || 'GH').substring(0, 2).toUpperCase()}
+                </div>
+                <div className="min-w-0 truncate">
+                  <div className="text-xs font-semibold text-slate-900 truncate">{partner?.company_name || 'Global Horizons'}</div>
+                  <div className="text-[10px] text-slate-500">{partner?.country || 'United States'}</div>
+                </div>
+              </div>
+              <button onClick={handleLogout} className="p-1.5 text-slate-400 hover:text-rose-600 cursor-pointer">
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      {/* ═══════════ DESKTOP WHITE SIDEBAR ═══════════ */}
+      <aside className={`hidden lg:flex flex-col h-full bg-white border-r border-slate-200/80 ${sidebarCollapsed ? 'w-[76px]' : 'w-[260px]'} transition-all duration-300 shrink-0 z-30 select-none shadow-[2px_0_12px_rgba(0,0,0,0.015)]`}>
+
+        {/* Top-Left Header Branding (White Background & Official Logo) */}
+        <div className={`flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'justify-between px-5'} pt-5 pb-4 border-b border-slate-100`}>
           {!sidebarCollapsed ? (
             <div>
               <div className="flex flex-col items-start gap-1 mb-1.5">
@@ -660,26 +740,26 @@ export default function ChannelPartnerDashboard() {
                 </div>
               </div>
               <div>
-                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-300 bg-emerald-950/80 border border-emerald-700/60 px-2.5 py-0.5 rounded-full shadow-2xs">
+                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-2.5 py-0.5 rounded-full shadow-2xs">
                   <Star className="w-2.5 h-2.5 fill-current text-[#00A878]" /> Platinum Partner
                 </span>
               </div>
             </div>
           ) : (
-            <div className="w-9 h-9 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center p-1.5">
+            <div className="w-9 h-9 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center p-1.5 shadow-2xs">
               <img src="/logo.png" alt="Logo" className="h-6 w-auto object-contain" />
             </div>
           )}
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="hidden lg:flex w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 items-center justify-center cursor-pointer transition-colors shrink-0"
+            className="hidden lg:flex w-6 h-6 rounded-lg bg-slate-100 hover:bg-slate-200 items-center justify-center cursor-pointer transition-colors shrink-0 text-slate-500"
           >
-            {sidebarCollapsed ? <ChevronRight className="w-3.5 h-3.5 text-slate-400" /> : <ChevronLeft className="w-3.5 h-3.5 text-slate-400" />}
+            {sidebarCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
           </button>
         </div>
 
         {/* Navigation Items */}
-        <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+        <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-1">
           {NAV_LINKS.map(item => {
             const isActive = active === item.id || item.children?.some(c => c.id === active);
             return (
@@ -687,13 +767,15 @@ export default function ChannelPartnerDashboard() {
                 <button
                   onClick={() => setActive(item.id)}
                   className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3.5'} py-2.5 rounded-2xl transition-all text-left cursor-pointer ${
-                    isActive && !item.children ? 'bg-[#00A878] text-white shadow-md shadow-emerald-900/30 font-semibold'
-                    : isActive ? 'bg-white/10 text-white font-semibold'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5 font-medium'
+                    isActive && !item.children
+                      ? 'bg-[#00A878] text-white shadow-sm font-semibold'
+                      : isActive
+                      ? 'bg-slate-100 text-slate-900 font-semibold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium'
                   }`}
                   title={sidebarCollapsed ? item.label : undefined}
                 >
-                  <item.icon size={17} className="shrink-0" />
+                  <item.icon size={17} className={`shrink-0 ${isActive && !item.children ? 'text-white' : 'text-slate-500'}`} />
                   {!sidebarCollapsed && (
                     <span className="text-xs sm:text-[13px] flex-1 truncate">{item.label}</span>
                   )}
@@ -705,7 +787,7 @@ export default function ChannelPartnerDashboard() {
                         key={child.id}
                         onClick={() => setActive(child.id)}
                         className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium cursor-pointer transition-colors ${
-                          active === child.id ? 'bg-white/15 text-white font-semibold' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                          active === child.id ? 'bg-emerald-50 text-[#00A878] font-semibold' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                         }`}
                       >
                         <span>{child.label}</span>
@@ -720,71 +802,76 @@ export default function ChannelPartnerDashboard() {
 
         {/* User Card at Bottom Left */}
         {!sidebarCollapsed ? (
-          <div className="p-3 border-t border-white/10">
-            <div className="flex items-center gap-2.5 bg-white/5 border border-white/5 rounded-2xl p-2.5">
+          <div className="p-3 border-t border-slate-100">
+            <div className="flex items-center gap-2.5 bg-slate-50 border border-slate-200/80 rounded-2xl p-2.5">
               <div className="w-8 h-8 rounded-xl bg-[#00A878] text-white text-xs font-bold flex items-center justify-center shrink-0 shadow-xs">
                 {(partner?.company_name || 'GH').substring(0, 2).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-semibold text-white truncate">{partner?.company_name || 'Global Horizons Pvt.'}</div>
-                <div className="flex items-center gap-1 text-[10px] text-slate-400">
+                <div className="text-xs font-semibold text-slate-900 truncate">{partner?.company_name || 'Global Horizons Pvt.'}</div>
+                <div className="flex items-center gap-1 text-[10px] text-slate-500">
                   <MapPin className="w-2.5 h-2.5 text-[#00A878]" />{partner?.country || 'United States'}
                 </div>
               </div>
-              <button onClick={handleLogout} title="Sign Out" className="text-slate-400 hover:text-rose-400 transition-colors cursor-pointer p-1">
+              <button onClick={handleLogout} title="Sign Out" className="text-slate-400 hover:text-rose-600 transition-colors cursor-pointer p-1">
                 <LogOut className="w-4 h-4" />
               </button>
             </div>
           </div>
         ) : (
-          <div className="p-2 border-t border-white/10 flex justify-center">
-            <button onClick={handleLogout} title="Sign Out" className="text-slate-400 hover:text-rose-400 p-2 cursor-pointer">
+          <div className="p-2 border-t border-slate-100 flex justify-center">
+            <button onClick={handleLogout} title="Sign Out" className="text-slate-400 hover:text-rose-600 p-2 cursor-pointer">
               <LogOut className="w-4 h-4" />
             </button>
           </div>
         )}
       </aside>
 
-      {/* ═══════════ MAIN PANEL ═══════════ */}
+      {/* ═══════════ MAIN CONTENT PANEL ═══════════ */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-        {/* Top Header Bar */}
-        <header className="bg-white/90 backdrop-blur-xl border-b border-slate-200/90 h-15 flex items-center justify-between px-4 sm:px-6 shrink-0 shadow-xs z-20">
-          <div className="flex items-center gap-3">
+        {/* Top Header Bar (Spacious & Prominent) */}
+        <header className="bg-white/95 backdrop-blur-2xl border-b border-slate-200/90 min-h-[76px] sm:min-h-[86px] flex items-center justify-between px-5 sm:px-8 shrink-0 shadow-[0_2px_12px_rgba(0,0,0,0.02)] z-20 transition-all">
+          <div className="flex items-center gap-3.5">
+            {/* Mobile Hamburger & Logo */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden w-9 h-9 rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors"
+              className="lg:hidden w-11 h-11 rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors text-slate-800 shadow-2xs"
             >
-              <Menu className="w-4.5 h-4.5 text-slate-700" size={18} />
+              <Menu className="w-5 h-5" />
             </button>
-            <div>
-              <h1 className="text-sm sm:text-base font-bold text-slate-900">{sectionTitle[active] || active}</h1>
-              <div className="hidden sm:flex items-center gap-1 text-xs text-slate-400">
+            <div className="lg:hidden flex items-center gap-2">
+              <img src="/logo.png" alt="TravlTik" className="h-8 w-auto object-contain" />
+            </div>
+
+            <div className="hidden sm:flex flex-col gap-1.5">
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none">{sectionTitle[active] || active}</h1>
+              <div className="flex items-center gap-1">
                 <HierarchyBadge />
               </div>
             </div>
           </div>
 
           {/* Upper Right Corner Controls */}
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            <div className="hidden md:flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-full text-xs font-semibold">
-              <span className="w-2 h-2 rounded-full bg-[#00A878] animate-ping inline-block mr-0.5" />
-              <span>{partner?.country || 'United States'} &bull; Tier 1 Master</span>
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl text-xs sm:text-[13px] font-bold shadow-2xs">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#00A878] animate-ping inline-block mr-0.5" />
+              <span>{partner?.country || 'United States'} &bull; Tier 1 Master Partner</span>
             </div>
 
             <button
               onClick={fetchDashboardData}
               title="Refresh Live Data"
-              className="w-9 h-9 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors text-slate-600"
+              className="w-11 h-11 rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors text-slate-700 shadow-2xs"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className="w-4.5 h-4.5" />
             </button>
 
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1.5 px-3 h-9 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-4 h-11 rounded-2xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-800 text-xs sm:text-sm font-bold transition-colors cursor-pointer shadow-2xs"
             >
-              <LogOut className="w-3.5 h-3.5" />
+              <LogOut className="w-4 h-4 text-slate-500 hover:text-rose-600" />
               <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
@@ -960,7 +1047,7 @@ export default function ChannelPartnerDashboard() {
                   </button>
 
                   {/* Net Commission Callout */}
-                  <div className="bg-[#0a0f1a] rounded-2xl p-4 text-white border border-white/5">
+                  <div className="bg-slate-900 rounded-2xl p-4 text-white">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-medium text-slate-400">Total Net Commission</span>
                       <span className="text-xs sm:text-sm font-bold text-[#00A878]">${metrics.my_commission.toLocaleString()}</span>
@@ -1108,6 +1195,11 @@ export default function ChannelPartnerDashboard() {
                 </div>
               </div>
             </div>
+          )}
+
+          {/* ═══════════ TAB 5: SETTINGS ═══════════ */}
+          {active === 'settings' && (
+            <PartnerSettingsView />
           )}
 
         </main>

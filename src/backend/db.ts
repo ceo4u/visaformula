@@ -521,11 +521,35 @@ export async function runMigrations() {
 
   await p.query(`
     ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS tax_id VARCHAR(100);
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS business_address TEXT;
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS logo_url TEXT;
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS invite_code VARCHAR(50) DEFAULT 'CP-USA-001';
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS require_manual_approval BOOLEAN DEFAULT true;
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS bank_name VARCHAR(100);
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS account_number VARCHAR(100);
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS swift_ifsc VARCHAR(50);
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS account_holder VARCHAR(150);
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS payout_frequency VARCHAR(50) DEFAULT 'monthly';
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS notify_email_leads BOOLEAN DEFAULT true;
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS notify_whatsapp_leads BOOLEAN DEFAULT false;
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS notify_payouts BOOLEAN DEFAULT true;
+
     ALTER TABLE state_partners ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255);
     ALTER TABLE state_partners ADD COLUMN IF NOT EXISTS contact_person VARCHAR(150);
     ALTER TABLE referral_consultants ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255);
     ALTER TABLE state_partners ALTER COLUMN country_partner_id DROP NOT NULL;
     ALTER TABLE referral_consultants ALTER COLUMN country_partner_id DROP NOT NULL;
+
+    CREATE TABLE IF NOT EXISTS partner_team_members (
+      id SERIAL PRIMARY KEY,
+      partner_id INTEGER NOT NULL REFERENCES channel_partners(id) ON DELETE CASCADE,
+      name VARCHAR(150) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      role VARCHAR(50) DEFAULT 'Manager',
+      status VARCHAR(50) DEFAULT 'Active',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_partner_team_pid ON partner_team_members (partner_id);
   `);
   })();
   return migrationsPromise;

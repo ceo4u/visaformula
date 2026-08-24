@@ -27,7 +27,8 @@ const {
   canonical,
   schema,
   hideHeader = false,
-  hideFooter = false
+  hideFooter = false,
+  hideWidgets = false
 } = Astro.props;
 
 const currentUrl = canonical || Astro.url.href;
@@ -35,6 +36,8 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const isJobs = Astro.url.pathname === '/jobs' || Astro.url.pathname === '/jobs/';
 const isTours = Astro.url.pathname === '/tours' || Astro.url.pathname === '/tours/';
 const isEvents = Astro.url.pathname.startsWith('/events');
+const isChannelPartner = Astro.url.pathname.startsWith('/channel-partner');
+const shouldHideWidgets = hideWidgets || isChannelPartner;
 const isTransparentHeaderPage = isJobs || isTours || isEvents;
 ---
 
@@ -91,7 +94,7 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
   </main>
   {!hideFooter && <Footer />}
 
-  <VisaMatchWidget client:idle />
-  <TalkToUs client:idle />
+  {!shouldHideWidgets && <VisaMatchWidget client:idle />}
+  {!shouldHideWidgets && <TalkToUs client:idle />}
 </body>
 </html>

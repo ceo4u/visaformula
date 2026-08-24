@@ -3,12 +3,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   LayoutDashboard, Users, BarChart2, Target, UserCheck, DollarSign,
   Megaphone, AlertTriangle, GraduationCap, Settings, ChevronDown,
-  ChevronRight, TrendingUp, TrendingDown, Plus, Eye, Check, X,
-  Edit2, ArrowRightLeft, Search, Download, Bell, LogOut,
-  MapPin, Globe, Star, Clock, RefreshCw, ArrowUpRight,
-  Banknote, ChevronLeft, Menu, Layers, CheckCircle2, XCircle,
+  ChevronRight, TrendingUp, Plus, Eye, Check, X,
+  Search, Bell, LogOut, MapPin, Globe, Star, RefreshCw, ArrowUpRight,
+  Banknote, ChevronLeft, Menu, CheckCircle2,
   AlertCircle, Shield, Building2, Network, BadgeCheck, Wallet,
-  MoreHorizontal, Loader2, Sparkles, Inbox, Briefcase
+  Loader2, Sparkles, Briefcase
 } from 'lucide-react';
 
 interface PartnerProfile {
@@ -64,7 +63,6 @@ const NAV_LINKS = [
     children: [
       { id: 'state-partners', label: 'State Partners' },
       { id: 'referral-consultants', label: 'Referral Consultants' },
-      { id: 'pending-approvals', label: 'Pending Approvals', badge: true },
     ]
   },
   { id: 'business', icon: BarChart2, label: 'Business Overview' },
@@ -92,11 +90,11 @@ const US_STATES = [
 ];
 
 const SPECIALIZATION_OPTIONS = [
-  'Student Visa',
-  'Work Permit',
-  'PR / Migration',
-  'Tourist / Visitor',
-  'Business Visa'
+  'Study Visa & Admissions',
+  'Work Migration & Permits',
+  'PR & Permanent Residency',
+  'Tourist & Visitor Visa',
+  'Business & Investor Visa'
 ];
 
 // ─── CUSTOM PROFESSIONAL DROPDOWN ──────────────────────────────────────────
@@ -147,29 +145,28 @@ function CustomSelect({
   return (
     <div className="relative w-full" ref={ref}>
       {label && (
-        <label className="block text-[11px] font-bold text-slate-600 mb-1.5">
+        <label className="block text-xs font-semibold text-slate-700 mb-1.5">
           {label}
         </label>
       )}
 
-      {/* Trigger Button */}
       <div
         onClick={() => setOpen(!open)}
-        className={`w-full h-11 px-3.5 rounded-2xl bg-slate-50 border transition-all flex items-center justify-between cursor-pointer select-none ${
+        className={`w-full h-11 px-3.5 rounded-2xl bg-white border transition-all flex items-center justify-between cursor-pointer select-none ${
           open
-            ? 'border-[#00A86B] ring-2 ring-[#00A86B]/20 bg-white shadow-xs'
-            : 'border-slate-200 hover:border-slate-300 hover:bg-slate-100/60'
+            ? 'border-[#00A878] ring-2 ring-[#00A878]/15 bg-white shadow-xs'
+            : 'border-slate-200/90 hover:border-slate-300 hover:bg-slate-50/70'
         }`}
       >
         <div className="flex items-center gap-2.5 min-w-0 pr-2">
           {Icon && <Icon className="w-4 h-4 text-slate-400 shrink-0" />}
-          {selectedOpt?.icon && <selectedOpt.icon className="w-4 h-4 text-[#00A86B] shrink-0" />}
+          {selectedOpt?.icon && <selectedOpt.icon className="w-4 h-4 text-[#00A878] shrink-0" />}
           <div className="min-w-0 truncate">
-            <span className="text-xs sm:text-sm font-bold text-slate-900 truncate block">
+            <span className="text-xs sm:text-[13px] font-medium text-slate-900 truncate block">
               {selectedOpt ? selectedOpt.label : <span className="text-slate-400 font-normal">{placeholder}</span>}
             </span>
             {selectedOpt?.sub && (
-              <span className="text-[10px] text-slate-400 font-medium truncate block leading-none mt-0.5">
+              <span className="text-[11px] text-slate-500 font-normal truncate block leading-none mt-0.5">
                 {selectedOpt.sub}
               </span>
             )}
@@ -178,14 +175,13 @@ function CustomSelect({
 
         <ChevronDown
           className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
-            open ? 'rotate-180 text-[#00A86B]' : ''
+            open ? 'rotate-180 text-[#00A878]' : ''
           }`}
         />
       </div>
 
-      {/* Dropdown Floating Menu */}
       {open && (
-        <div className="absolute top-[calc(100%+6px)] left-0 w-full z-[99999] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-[22px] shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 animate-fadeIn ring-1 ring-black/5 max-h-[240px] overflow-hidden flex flex-col">
+        <div className="absolute top-[calc(100%+6px)] left-0 w-full z-[99999] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 animate-fadeIn ring-1 ring-black/5 max-h-[250px] overflow-hidden flex flex-col">
           {searchable && (
             <div className="relative mb-2 shrink-0">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
@@ -193,8 +189,8 @@ function CustomSelect({
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search..."
-                className="w-full h-8 pl-8 pr-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
+                placeholder="Type to search..."
+                className="w-full h-8 pl-8 pr-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#00A878]"
                 autoFocus
               />
             </div>
@@ -216,24 +212,24 @@ function CustomSelect({
                     }}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left cursor-pointer transition-colors ${
                       isSelected
-                        ? 'bg-emerald-50 text-emerald-900 font-bold border border-emerald-200/60'
+                        ? 'bg-emerald-50 text-emerald-900 font-semibold border border-emerald-200/60'
                         : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium'
                     }`}
                   >
-                    <div className="flex items-center gap-2 min-w-0 pr-2">
+                    <div className="flex items-center gap-2.5 min-w-0 pr-2">
                       {OptIcon && (
-                        <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#00A86B] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#00A878] text-white' : 'bg-slate-100 text-slate-500'}`}>
                           <OptIcon className="w-3 h-3" />
                         </div>
                       )}
                       <div className="min-w-0 truncate">
-                        <div className="text-xs truncate">{opt.label}</div>
+                        <div className="text-xs sm:text-[13px] truncate">{opt.label}</div>
                         {opt.sub && (
-                          <div className="text-[10px] text-slate-400 font-normal truncate mt-0.5">{opt.sub}</div>
+                          <div className="text-[11px] text-slate-400 font-normal truncate mt-0.5">{opt.sub}</div>
                         )}
                       </div>
                     </div>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0" />}
+                    {isSelected && <Check className="w-4 h-4 text-[#00A878] shrink-0" />}
                   </button>
                 );
               })
@@ -247,59 +243,58 @@ function CustomSelect({
   );
 }
 
-// ─── STATUS BADGE COMPONENT ──────────────────────────────────────────────────
-function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, { label: string; cls: string; icon: React.ReactNode }> = {
-    approved:            { label: 'Approved',            cls: 'bg-emerald-50 text-emerald-800 border-emerald-200', icon: <CheckCircle2 className="w-3 h-3" /> },
-    active:              { label: 'Active',              cls: 'bg-emerald-50 text-emerald-800 border-emerald-200', icon: <CheckCircle2 className="w-3 h-3" /> },
-    pending_hq_approval: { label: 'Pending HQ Approval', cls: 'bg-violet-50 text-violet-800 border-violet-200', icon: <Shield className="w-3 h-3" /> },
-    pending_workflow:    { label: 'Pending Workflow',    cls: 'bg-amber-50 text-amber-800 border-amber-200',   icon: <Clock className="w-3 h-3" /> },
-    rejected:            { label: 'Rejected',            cls: 'bg-red-50 text-red-800 border-red-200',         icon: <XCircle className="w-3 h-3" /> },
-  };
-  const cfg = map[status] ?? { label: status, cls: 'bg-slate-50 text-slate-700 border-slate-200', icon: <Clock className="w-3 h-3" /> };
+// ─── APPLE STAT CARD COMPONENT ──────────────────────────────────────────────
+function StatCard({ icon: Icon, iconBg, label, value, sub, positive }: { icon: any; iconBg: string; label: string; value: string | number; sub?: string; positive?: boolean }) {
   return (
-    <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border whitespace-nowrap ${cfg.cls}`}>
-      {cfg.icon}{cfg.label}
-    </span>
-  );
-}
-
-// ─── HIERARCHY BREADCRUMB ─────────────────────────────────────────────────────
-function HierarchyBadge() {
-  return (
-    <div className="flex items-center gap-1 flex-wrap text-[10px] font-bold text-slate-400">
-      {['TravlTik HQ', 'Country Partner', 'State Partner', 'Consultant', 'Leads'].map((tier, i, arr) => (
-        <React.Fragment key={tier}>
-          <span className={i === 1 ? 'text-[#00A86B]' : ''}>{tier}</span>
-          {i < arr.length - 1 && <ChevronRight className="w-3 h-3 text-slate-300" />}
-        </React.Fragment>
-      ))}
-    </div>
-  );
-}
-
-// ─── STAT CARD ────────────────────────────────────────────────────────────────
-function StatCard({ icon: Icon, label, value, sub, iconBg, positive = true }: any) {
-  return (
-    <div className="bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-[26px] p-4 sm:p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      <div className="flex items-start justify-between gap-2 mb-2.5">
-        <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${iconBg}`}>
+    <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[24px] p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all">
+      <div className="flex items-center justify-between mb-3">
+        <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shadow-xs ${iconBg}`}>
           <Icon className="w-5 h-5" />
         </div>
         {sub && (
-          <span className={`flex items-center gap-0.5 text-[11px] font-bold px-2 py-0.5 rounded-full ${positive ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
-            {positive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+          <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-0.5 ${
+            positive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-slate-100 text-slate-600'
+          }`}>
+            {positive && <TrendingUp className="w-3 h-3" />}
             {sub}
           </span>
         )}
       </div>
-      <div className="text-2xl font-black text-slate-900 tracking-tight leading-none mb-1">{value}</div>
-      <div className="text-[11px] font-semibold text-slate-500 leading-tight">{label}</div>
+      <div className="text-2xl sm:text-[26px] font-extrabold text-slate-900 tracking-tight leading-none mb-1">
+        {value}
+      </div>
+      <div className="text-xs font-medium text-slate-500">{label}</div>
     </div>
   );
 }
 
-// ─── ADD STATE PARTNER MODAL (PERSISTS TO DB) ─────────────────────────────────
+// ─── STATUS BADGE COMPONENT ──────────────────────────────────────────────────
+function StatusBadge({ status }: { status: string }) {
+  const norm = (status || 'active').toLowerCase();
+  return (
+    <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 shadow-2xs">
+      <span className="w-1.5 h-1.5 rounded-full bg-[#00A878]" />
+      Active
+    </span>
+  );
+}
+
+// ─── HIERARCHY PILL BADGE ────────────────────────────────────────────────────
+function HierarchyBadge() {
+  return (
+    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100/90 border border-slate-200 px-3 py-1 rounded-full">
+      <span className="text-slate-400">TravlTik HQ</span>
+      <ChevronRight className="w-3 h-3 text-slate-400" />
+      <span className="text-[#00A878] font-bold">Country Partner</span>
+      <ChevronRight className="w-3 h-3 text-slate-400" />
+      <span className="text-slate-500">State Partners</span>
+      <ChevronRight className="w-3 h-3 text-slate-400" />
+      <span className="text-slate-500">Consultants</span>
+    </div>
+  );
+}
+
+// ─── ADD STATE PARTNER MODAL ─────────────────────────────────────────────────
 function AddStatePartnerModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
   const [form, setForm] = useState({ partner_name: '', company_name: '', operating_state: 'California', email: '', phone: '' });
   const [loading, setLoading] = useState(false);
@@ -324,27 +319,21 @@ function AddStatePartnerModal({ onClose, onSuccess }: { onClose: () => void; onS
       setDone(true);
       onSuccess();
     } catch (err: any) {
-      setError(err.message || 'Error occurred while saving to database.');
+      setError(err.message || 'Error occurred while saving.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-end sm:items-center justify-center p-0 sm:p-4" style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)' }}>
-      <div className="bg-white w-full sm:max-w-[480px] rounded-t-[32px] sm:rounded-[28px] shadow-2xl overflow-hidden animate-fadeIn">
-        <div className="flex justify-center pt-3 sm:hidden">
-          <div className="w-10 h-1 rounded-full bg-slate-200" />
-        </div>
-        <div className="flex items-center justify-between px-6 pt-4 pb-4 border-b border-slate-100">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }}>
+      <div className="bg-white w-full max-w-[480px] rounded-[28px] shadow-2xl overflow-hidden animate-fadeIn border border-slate-100">
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100">
           <div>
-            <h3 className="text-base font-black text-slate-900">Add State Partner</h3>
-            <p className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
-              <Shield className="w-3 h-3 text-violet-500" />
-              Persists with status <strong className="text-violet-700">PENDING_HQ_APPROVAL</strong>
-            </p>
+            <h3 className="text-base font-bold text-slate-900">Add State Partner</h3>
+            <p className="text-xs text-slate-500 mt-0.5">Expand your regional state network</p>
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors">
+          <button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors">
             <X className="w-4 h-4 text-slate-500" />
           </button>
         </div>
@@ -360,9 +349,9 @@ function AddStatePartnerModal({ onClose, onSuccess }: { onClose: () => void; onS
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[11px] font-bold text-slate-600 block mb-1.5">Contact / Partner Name *</label>
+                <label className="text-xs font-semibold text-slate-700 block mb-1.5">Contact Person *</label>
                 <input required value={form.partner_name} onChange={e => setForm(f => ({...f, partner_name: e.target.value}))}
-                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B]/25 focus:border-[#00A86B] bg-slate-50/50" placeholder="John Smith" />
+                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-xs sm:text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] bg-white" placeholder="Robert Chen" />
               </div>
               <div>
                 <CustomSelect
@@ -377,49 +366,39 @@ function AddStatePartnerModal({ onClose, onSuccess }: { onClose: () => void; onS
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-slate-600 block mb-1.5">Company / Agency Name</label>
+              <label className="text-xs font-semibold text-slate-700 block mb-1.5">Agency / Company Name</label>
               <input value={form.company_name} onChange={e => setForm(f => ({...f, company_name: e.target.value}))}
-                className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B]/25 focus:border-[#00A86B] bg-slate-50/50" placeholder="Pacific Visa Solutions LLC" />
+                className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-xs sm:text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] bg-white" placeholder="Pacific Visa Solutions LLC" />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[11px] font-bold text-slate-600 block mb-1.5">Official Email *</label>
+                <label className="text-xs font-semibold text-slate-700 block mb-1.5">Official Email *</label>
                 <input required type="email" value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))}
-                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B]/25 focus:border-[#00A86B] bg-slate-50/50" placeholder="partner@domain.com" />
+                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-xs sm:text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] bg-white" placeholder="partner@domain.com" />
               </div>
               <div>
-                <label className="text-[11px] font-bold text-slate-600 block mb-1.5">Contact Number</label>
+                <label className="text-xs font-semibold text-slate-700 block mb-1.5">Contact Phone</label>
                 <input value={form.phone} onChange={e => setForm(f => ({...f, phone: e.target.value}))}
-                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B]/25 focus:border-[#00A86B] bg-slate-50/50" placeholder="+1 555 000 0000" />
+                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-xs sm:text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] bg-white" placeholder="+1 555 000 0000" />
               </div>
             </div>
 
-            <div className="bg-violet-50 border border-violet-200 rounded-2xl p-3 flex gap-2.5">
-              <Shield className="w-4 h-4 text-violet-600 shrink-0 mt-0.5" />
-              <p className="text-[11px] text-violet-800 font-medium">
-                Record will be inserted into PostgreSQL database. Requires TravlTik HQ verification before state territory unlocks.
-              </p>
-            </div>
-
-            <div className="flex gap-3 pt-1">
-              <button type="button" onClick={onClose} className="flex-1 h-12 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">Cancel</button>
-              <button type="submit" disabled={loading} className="flex-1 h-12 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold cursor-pointer transition-colors flex items-center justify-center gap-2">
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Submit to DB →'}
+            <div className="flex gap-3 pt-2">
+              <button type="button" onClick={onClose} className="flex-1 h-11 rounded-2xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">Cancel</button>
+              <button type="submit" disabled={loading} className="flex-1 h-11 rounded-2xl bg-[#00A878] hover:bg-[#008A62] text-white text-xs font-semibold cursor-pointer transition-colors flex items-center justify-center gap-2 shadow-sm shadow-emerald-500/20">
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save State Partner'}
               </button>
             </div>
           </form>
         ) : (
           <div className="p-8 text-center">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-8 h-8 text-[#00A86B]" />
+            <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mx-auto mb-3">
+              <CheckCircle2 className="w-7 h-7 text-[#00A878]" />
             </div>
-            <h4 className="text-lg font-black text-slate-900 mb-1">State Partner Added!</h4>
-            <p className="text-sm text-slate-500 mb-2">Saved directly to database table.</p>
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-violet-800 bg-violet-50 border border-violet-200 px-3 py-1.5 rounded-full">
-              <Shield className="w-3 h-3" /> PENDING_HQ_APPROVAL
-            </span>
-            <button onClick={onClose} className="w-full mt-6 h-12 rounded-2xl bg-[#00A86B] text-white text-sm font-bold cursor-pointer hover:bg-emerald-600 transition-colors">Done</button>
+            <h4 className="text-base font-bold text-slate-900 mb-1">State Partner Activated!</h4>
+            <p className="text-xs text-slate-500 mb-4">Saved directly to your regional network.</p>
+            <button onClick={onClose} className="w-full h-11 rounded-2xl bg-[#00A878] text-white text-xs font-semibold cursor-pointer hover:bg-[#008A62] transition-colors">Done</button>
           </div>
         )}
       </div>
@@ -427,9 +406,9 @@ function AddStatePartnerModal({ onClose, onSuccess }: { onClose: () => void; onS
   );
 }
 
-// ─── ADD CONSULTANT MODAL (PERSISTS TO DB) ────────────────────────────────────
+// ─── ADD CONSULTANT MODAL ─────────────────────────────────────────────────────
 function AddConsultantModal({ onClose, statePartners, onSuccess }: { onClose: () => void; statePartners: StatePartner[]; onSuccess: () => void }) {
-  const [form, setForm] = useState({ consultant_name: '', email: '', phone: '', state_partner_id: '', region: '', speciality: 'Student Visa' });
+  const [form, setForm] = useState({ consultant_name: '', email: '', phone: '', state_partner_id: '', region: '', speciality: 'Study Visa & Admissions' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -462,7 +441,7 @@ function AddConsultantModal({ onClose, statePartners, onSuccess }: { onClose: ()
   };
 
   const partnerOptions = [
-    { value: '', label: 'Direct Country Partner / Unassigned' },
+    { value: '', label: 'Direct Country Partner (HQ Assigned)' },
     ...statePartners.map(sp => ({
       value: String(sp.id),
       label: `${sp.partner_name} (${sp.operating_state})`
@@ -470,20 +449,14 @@ function AddConsultantModal({ onClose, statePartners, onSuccess }: { onClose: ()
   ];
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-end sm:items-center justify-center p-0 sm:p-4" style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)' }}>
-      <div className="bg-white w-full sm:max-w-[480px] rounded-t-[32px] sm:rounded-[28px] shadow-2xl overflow-hidden animate-fadeIn">
-        <div className="flex justify-center pt-3 sm:hidden">
-          <div className="w-10 h-1 rounded-full bg-slate-200" />
-        </div>
-        <div className="flex items-center justify-between px-6 pt-4 pb-4 border-b border-slate-100">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }}>
+      <div className="bg-white w-full max-w-[480px] rounded-[28px] shadow-2xl overflow-hidden animate-fadeIn border border-slate-100">
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100">
           <div>
-            <h3 className="text-base font-black text-slate-900">Register Referral Consultant</h3>
-            <p className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
-              <Clock className="w-3 h-3 text-amber-500" />
-              Persists with status <strong className="text-amber-700">PENDING_WORKFLOW</strong>
-            </p>
+            <h3 className="text-base font-bold text-slate-900">Register Referral Consultant</h3>
+            <p className="text-xs text-slate-500 mt-0.5">Onboard licensed immigration advisor</p>
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors">
+          <button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors">
             <X className="w-4 h-4 text-slate-500" />
           </button>
         </div>
@@ -499,9 +472,9 @@ function AddConsultantModal({ onClose, statePartners, onSuccess }: { onClose: ()
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[11px] font-bold text-slate-600 block mb-1.5">Consultant Name *</label>
+                <label className="text-xs font-semibold text-slate-700 block mb-1.5">Consultant Name *</label>
                 <input required value={form.consultant_name} onChange={e => setForm(f => ({...f, consultant_name: e.target.value}))}
-                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B]/25 focus:border-[#00A86B] bg-slate-50/50" placeholder="Priya Sharma" />
+                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-xs sm:text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] bg-white" placeholder="Priya Sharma" />
               </div>
               <div>
                 <CustomSelect
@@ -515,16 +488,16 @@ function AddConsultantModal({ onClose, statePartners, onSuccess }: { onClose: ()
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-slate-600 block mb-1.5">Official Email *</label>
+              <label className="text-xs font-semibold text-slate-700 block mb-1.5">Official Email *</label>
               <input required type="email" value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))}
-                className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B]/25 focus:border-[#00A86B] bg-slate-50/50" placeholder="consultant@domain.com" />
+                className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-xs sm:text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] bg-white" placeholder="consultant@domain.com" />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[11px] font-bold text-slate-600 block mb-1.5">Phone Number</label>
+                <label className="text-xs font-semibold text-slate-700 block mb-1.5">Phone Number</label>
                 <input value={form.phone} onChange={e => setForm(f => ({...f, phone: e.target.value}))}
-                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B]/25 focus:border-[#00A86B] bg-slate-50/50" placeholder="+1 555 000 0000" />
+                  className="w-full h-11 px-3.5 rounded-2xl border border-slate-200 text-xs sm:text-[13px] font-medium focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878] bg-white" placeholder="+1 555 000 0000" />
               </div>
               <div>
                 <CustomSelect
@@ -537,115 +510,23 @@ function AddConsultantModal({ onClose, statePartners, onSuccess }: { onClose: ()
               </div>
             </div>
 
-            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex gap-2.5">
-              <Clock className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-              <p className="text-[11px] text-amber-800 font-medium">
-                Saves to database as <strong>PENDING_WORKFLOW</strong>. You can approve from the Pending Approvals tab immediately.
-              </p>
-            </div>
-
-            <div className="flex gap-3 pt-1">
-              <button type="button" onClick={onClose} className="flex-1 h-12 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">Cancel</button>
-              <button type="submit" disabled={loading} className="flex-1 h-12 rounded-2xl bg-[#00A86B] hover:bg-emerald-600 text-white text-sm font-bold cursor-pointer transition-colors flex items-center justify-center gap-2">
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Register in DB →'}
+            <div className="flex gap-3 pt-2">
+              <button type="button" onClick={onClose} className="flex-1 h-11 rounded-2xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors">Cancel</button>
+              <button type="submit" disabled={loading} className="flex-1 h-11 rounded-2xl bg-[#00A878] hover:bg-[#008A62] text-white text-xs font-semibold cursor-pointer transition-colors flex items-center justify-center gap-2 shadow-sm shadow-emerald-500/20">
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Consultant'}
               </button>
             </div>
           </form>
         ) : (
           <div className="p-8 text-center">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-8 h-8 text-[#00A86B]" />
+            <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mx-auto mb-3">
+              <CheckCircle2 className="w-7 h-7 text-[#00A878]" />
             </div>
-            <h4 className="text-lg font-black text-slate-900 mb-1">Consultant Registered!</h4>
-            <p className="text-sm text-slate-500 mb-2">Saved to referral consultants table.</p>
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full">
-              <Clock className="w-3 h-3" /> PENDING_WORKFLOW
-            </span>
-            <button onClick={onClose} className="w-full mt-6 h-12 rounded-2xl bg-[#00A86B] text-white text-sm font-bold cursor-pointer hover:bg-emerald-600 transition-colors">Done</button>
+            <h4 className="text-base font-bold text-slate-900 mb-1">Consultant Activated!</h4>
+            <p className="text-xs text-slate-500 mb-4">Saved directly to active referral network.</p>
+            <button onClick={onClose} className="w-full h-11 rounded-2xl bg-[#00A878] text-white text-xs font-semibold cursor-pointer hover:bg-[#008A62] transition-colors">Done</button>
           </div>
         )}
-      </div>
-    </div>
-  );
-}
-
-// ─── TRANSFER CONSULTANT MODAL ────────────────────────────────────────────────
-function TransferConsultantModal({ consultant, statePartners, onClose, onSuccess }: { consultant: ReferralConsultant; statePartners: StatePartner[]; onClose: () => void; onSuccess: () => void }) {
-  const [targetPartnerId, setTargetPartnerId] = useState<string>('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleTransfer = async () => {
-    if (!targetPartnerId) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch('/api/partner/approvals/process', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'consultant',
-          id: consultant.id,
-          action: 'transfer',
-          transfer_to_state_partner_id: parseInt(targetPartnerId, 10)
-        })
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.message || 'Transfer failed.');
-      onSuccess();
-      onClose();
-    } catch (err: any) {
-      setError(err.message || 'Failed to transfer.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const partnerOptions = statePartners.map(sp => ({
-    value: String(sp.id),
-    label: `${sp.partner_name} — ${sp.operating_state}`
-  }));
-
-  return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)' }}>
-      <div className="bg-white w-full max-w-[420px] rounded-[28px] shadow-2xl p-6 animate-fadeIn">
-        <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-          <div>
-            <h3 className="text-base font-black text-slate-900">Transfer Consultant</h3>
-            <p className="text-xs text-slate-500">{consultant.consultant_name}</p>
-          </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center cursor-pointer">
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-
-        {error && (
-          <div className="p-3 mb-4 rounded-xl bg-red-50 text-red-700 text-xs font-medium">
-            {error}
-          </div>
-        )}
-
-        <div className="space-y-4">
-          <CustomSelect
-            label="Select Target State Partner"
-            value={targetPartnerId}
-            onChange={(val) => setTargetPartnerId(val)}
-            options={partnerOptions}
-            placeholder="Choose State Partner..."
-            icon={Building2}
-          />
-
-          <div className="flex gap-3 pt-2">
-            <button onClick={onClose} className="flex-1 h-11 rounded-2xl border border-slate-200 text-xs font-bold text-slate-700">Cancel</button>
-            <button
-              onClick={handleTransfer}
-              disabled={!targetPartnerId || loading}
-              className="flex-1 h-11 rounded-2xl bg-slate-900 text-white text-xs font-bold flex items-center justify-center gap-1.5 disabled:opacity-50"
-            >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Confirm Transfer'}
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -660,7 +541,6 @@ export default function ChannelPartnerDashboard() {
   // Modals
   const [showAddPartner, setShowAddPartner] = useState(false);
   const [showAddConsultant, setShowAddConsultant] = useState(false);
-  const [transferringConsultant, setTransferringConsultant] = useState<ReferralConsultant | null>(null);
 
   // Dynamic Data States (from Neon DB)
   const [loading, setLoading] = useState(true);
@@ -680,7 +560,6 @@ export default function ChannelPartnerDashboard() {
   // Search & Filters
   const [search, setSearch] = useState('');
   const [filterState, setFilterState] = useState('All');
-  const [filterStatus, setFilterStatus] = useState('All');
 
   // Fetch real-time data from database
   const fetchDashboardData = async () => {
@@ -708,23 +587,6 @@ export default function ChannelPartnerDashboard() {
     fetchDashboardData();
   }, []);
 
-  // Process Approval Action
-  const handleApprovalAction = async (id: number, action: 'approve' | 'reject') => {
-    try {
-      const res = await fetch('/api/partner/approvals/process', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'consultant', id, action })
-      });
-      const data = await res.json();
-      if (data.success) {
-        fetchDashboardData();
-      }
-    } catch (err) {
-      console.error('[Approval] Failed to process action:', err);
-    }
-  };
-
   // Logout handler
   const handleLogout = async () => {
     try {
@@ -733,15 +595,12 @@ export default function ChannelPartnerDashboard() {
     window.location.href = '/channel-partner/login';
   };
 
-  const pendingCount = metrics.pending_consultants;
-
   // Filtered consultants
   const filteredConsultants = consultants.filter((c) => {
     const q = search.toLowerCase();
     const matchQ = c.consultant_name.toLowerCase().includes(q) || (c.state_partner_name || '').toLowerCase().includes(q);
     const matchState = filterState === 'All' || c.region === filterState || (c.state_partner_name || '').includes(filterState);
-    const matchStatus = filterStatus === 'All' || c.status === filterStatus;
-    return matchQ && matchState && matchStatus;
+    return matchQ && matchState;
   });
 
   const sectionTitle: Record<string, string> = {
@@ -749,7 +608,6 @@ export default function ChannelPartnerDashboard() {
     network: 'My Network',
     'state-partners': 'State Partners',
     'referral-consultants': 'Referral Consultants',
-    'pending-approvals': 'Pending Approvals',
     business: 'Business Overview',
     leads: 'Leads & Enquiries',
     performance: 'Consultants Performance',
@@ -764,12 +622,12 @@ export default function ChannelPartnerDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#070b14] flex flex-col items-center justify-center p-6 text-white select-none">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00A86B] to-emerald-400 flex items-center justify-center mb-4 shadow-lg shadow-emerald-900/50 animate-pulse">
-          <Globe className="w-6 h-6 text-white" />
+      <div className="min-h-screen bg-[#f8f9fb] flex flex-col items-center justify-center p-6 text-slate-900 select-none" style={{ fontFamily: '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+        <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mb-4 shadow-sm animate-pulse">
+          <Globe className="w-7 h-7 text-[#00A878]" />
         </div>
-        <div className="flex items-center gap-2.5 text-sm font-bold text-slate-300">
-          <Loader2 className="w-4 h-4 animate-spin text-[#00A86B]" />
+        <div className="flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-slate-700">
+          <Loader2 className="w-4 h-4 animate-spin text-[#00A878]" />
           <span>Synchronizing Multi-Tier Channel Network...</span>
         </div>
       </div>
@@ -777,39 +635,39 @@ export default function ChannelPartnerDashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-[#f1f3f5] overflow-hidden font-sans select-none" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif' }}>
+    <div className="flex h-screen bg-[#f4f6f8] overflow-hidden select-none" style={{ fontFamily: '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 
       {/* Mobile Drawer Overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMobileOpen(false)} />
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 lg:hidden" onClick={() => setMobileOpen(false)} />
       )}
 
-      {/* Sidebar - Desktop */}
-      <aside className={`hidden lg:flex flex-col h-full bg-[#0a0f1a] text-white ${sidebarCollapsed ? 'w-[70px]' : 'w-[250px]'} transition-all duration-300 shrink-0`}>
+      {/* ═══════════ LEFT SIDEBAR ═══════════ */}
+      <aside className={`hidden lg:flex flex-col h-full bg-[#0a0f1a] text-white ${sidebarCollapsed ? 'w-[72px]' : 'w-[260px]'} transition-all duration-300 shrink-0 z-30`}>
 
         {/* Top-Left Header Branding */}
-        <div className={`flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'justify-between px-5'} pt-5 pb-4 border-b border-white/5`}>
+        <div className={`flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'justify-between px-5'} pt-5 pb-4 border-b border-white/10`}>
           {!sidebarCollapsed ? (
             <div>
               <div className="flex flex-col items-start gap-1 mb-1.5">
                 <img
                   src="/logo.png"
                   alt="TravlTik Official Logo"
-                  className="h-8 w-auto object-contain brightness-0 invert"
+                  className="h-8 w-auto object-contain"
                 />
-                <div className="text-[9px] font-black text-slate-400 tracking-[0.2em] uppercase leading-none">
+                <div className="text-[10px] font-semibold text-slate-400 tracking-[0.16em] uppercase leading-none mt-1">
                   CHANNEL PARTNER
                 </div>
               </div>
               <div>
-                <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider text-emerald-950 bg-[#00A86B] px-2.5 py-0.5 rounded-full shadow-sm shadow-emerald-500/20">
-                  <Star className="w-2.5 h-2.5 fill-current" /> Platinum Partner
+                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-300 bg-emerald-950/80 border border-emerald-700/60 px-2.5 py-0.5 rounded-full shadow-2xs">
+                  <Star className="w-2.5 h-2.5 fill-current text-[#00A878]" /> Platinum Partner
                 </span>
               </div>
             </div>
           ) : (
-            <div className="w-8 h-8 rounded-xl bg-[#00A86B] flex items-center justify-center shadow-md shadow-emerald-900/40 p-1">
-              <img src="/logo.png" alt="Logo" className="h-5 w-auto object-contain brightness-0 invert" />
+            <div className="w-9 h-9 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center p-1.5">
+              <img src="/logo.png" alt="Logo" className="h-6 w-auto object-contain" />
             </div>
           )}
           <button
@@ -828,16 +686,16 @@ export default function ChannelPartnerDashboard() {
               <div key={item.id}>
                 <button
                   onClick={() => setActive(item.id)}
-                  className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} py-2.5 rounded-2xl transition-all text-left cursor-pointer ${
-                    isActive && !item.children ? 'bg-[#00A86B] text-white shadow-lg shadow-emerald-900/25'
-                    : isActive ? 'bg-white/5 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3.5'} py-2.5 rounded-2xl transition-all text-left cursor-pointer ${
+                    isActive && !item.children ? 'bg-[#00A878] text-white shadow-md shadow-emerald-900/30 font-semibold'
+                    : isActive ? 'bg-white/10 text-white font-semibold'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5 font-medium'
                   }`}
                   title={sidebarCollapsed ? item.label : undefined}
                 >
-                  <item.icon size={18} className="shrink-0" />
+                  <item.icon size={17} className="shrink-0" />
                   {!sidebarCollapsed && (
-                    <span className="text-[13px] font-semibold flex-1 truncate">{item.label}</span>
+                    <span className="text-xs sm:text-[13px] flex-1 truncate">{item.label}</span>
                   )}
                 </button>
                 {!sidebarCollapsed && item.children && (
@@ -846,16 +704,11 @@ export default function ChannelPartnerDashboard() {
                       <button
                         key={child.id}
                         onClick={() => setActive(child.id)}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-[12px] font-semibold cursor-pointer transition-colors ${
-                          active === child.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                        className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium cursor-pointer transition-colors ${
+                          active === child.id ? 'bg-white/15 text-white font-semibold' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
                         }`}
                       >
                         <span>{child.label}</span>
-                        {child.badge && pendingCount > 0 && (
-                          <span className="min-w-[18px] h-[18px] bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center px-1">
-                            {pendingCount}
-                          </span>
-                        )}
                       </button>
                     ))}
                   </div>
@@ -865,38 +718,38 @@ export default function ChannelPartnerDashboard() {
           })}
         </nav>
 
-        {/* User Card at Bottom */}
+        {/* User Card at Bottom Left */}
         {!sidebarCollapsed ? (
-          <div className="p-3 border-t border-white/5">
-            <div className="flex items-center gap-2.5 bg-white/5 rounded-2xl p-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#00A86B] to-emerald-400 flex items-center justify-center font-black text-white text-xs shrink-0">
+          <div className="p-3 border-t border-white/10">
+            <div className="flex items-center gap-2.5 bg-white/5 border border-white/5 rounded-2xl p-2.5">
+              <div className="w-8 h-8 rounded-xl bg-[#00A878] text-white text-xs font-bold flex items-center justify-center shrink-0 shadow-xs">
                 {(partner?.company_name || 'GH').substring(0, 2).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-black text-white truncate">{partner?.company_name || 'Global Horizons Pvt.'}</div>
+                <div className="text-xs font-semibold text-white truncate">{partner?.company_name || 'Global Horizons Pvt.'}</div>
                 <div className="flex items-center gap-1 text-[10px] text-slate-400">
-                  <MapPin className="w-2.5 h-2.5" />{partner?.country || 'United States'}
+                  <MapPin className="w-2.5 h-2.5 text-[#00A878]" />{partner?.country || 'United States'}
                 </div>
               </div>
-              <button onClick={handleLogout} title="Sign Out" className="text-slate-400 hover:text-red-400 transition-colors cursor-pointer p-1">
+              <button onClick={handleLogout} title="Sign Out" className="text-slate-400 hover:text-rose-400 transition-colors cursor-pointer p-1">
                 <LogOut className="w-4 h-4" />
               </button>
             </div>
           </div>
         ) : (
-          <div className="p-2 border-t border-white/5 flex justify-center">
-            <button onClick={handleLogout} title="Sign Out" className="text-slate-400 hover:text-red-400 p-2">
+          <div className="p-2 border-t border-white/10 flex justify-center">
+            <button onClick={handleLogout} title="Sign Out" className="text-slate-400 hover:text-rose-400 p-2 cursor-pointer">
               <LogOut className="w-4 h-4" />
             </button>
           </div>
         )}
       </aside>
 
-      {/* Main Panel */}
+      {/* ═══════════ MAIN PANEL ═══════════ */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-        {/* Top Navigation Bar */}
-        <header className="bg-white/90 backdrop-blur-xl border-b border-slate-200/80 h-14 flex items-center justify-between px-4 sm:px-6 shrink-0 shadow-sm">
+        {/* Top Header Bar */}
+        <header className="bg-white/90 backdrop-blur-xl border-b border-slate-200/90 h-15 flex items-center justify-between px-4 sm:px-6 shrink-0 shadow-xs z-20">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(true)}
@@ -905,38 +758,34 @@ export default function ChannelPartnerDashboard() {
               <Menu className="w-4.5 h-4.5 text-slate-700" size={18} />
             </button>
             <div>
-              <h1 className="text-[14px] font-black text-slate-900">{sectionTitle[active] || active}</h1>
-              <div className="hidden sm:flex items-center gap-1 text-[10px] text-slate-400">
+              <h1 className="text-sm sm:text-base font-bold text-slate-900">{sectionTitle[active] || active}</h1>
+              <div className="hidden sm:flex items-center gap-1 text-xs text-slate-400">
                 <HierarchyBadge />
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setActive('pending-approvals')}
-              className="relative w-9 h-9 rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors"
-            >
-              <Bell className="w-4 h-4 text-slate-600" />
-              {pendingCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center px-1">
-                  {pendingCount}
-                </span>
-              )}
-            </button>
+          {/* Upper Right Corner Controls */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="hidden md:flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-full text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-[#00A878] animate-ping inline-block mr-0.5" />
+              <span>{partner?.country || 'United States'} &bull; Tier 1 Master</span>
+            </div>
+
             <button
               onClick={fetchDashboardData}
               title="Refresh Live Data"
-              className="w-9 h-9 rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors"
+              className="w-9 h-9 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors text-slate-600"
             >
-              <RefreshCw className="w-4 h-4 text-slate-600" />
+              <RefreshCw className="w-4 h-4" />
             </button>
+
             <button
               onClick={handleLogout}
-              className="hidden sm:flex items-center gap-1.5 px-3 h-9 rounded-2xl bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-700 text-xs font-bold transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3 h-9 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span>Logout</span>
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         </header>
@@ -944,14 +793,14 @@ export default function ChannelPartnerDashboard() {
         {/* Dashboard Main Scroll Area */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-5 lg:p-6">
 
-          {/* 1. DASHBOARD VIEW */}
+          {/* ═══════════ TAB 1: DASHBOARD OVERVIEW ═══════════ */}
           {active === 'dashboard' && (
             <div className="space-y-5">
               {/* Top Metrics Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
                 <StatCard
                   icon={DollarSign}
-                  iconBg="bg-emerald-100 text-[#00A86B]"
+                  iconBg="bg-emerald-50 text-[#00A878] border border-emerald-200/50"
                   label="Total Revenue"
                   value={`$${metrics.total_revenue.toLocaleString()}`}
                   sub="+0.0%"
@@ -959,7 +808,7 @@ export default function ChannelPartnerDashboard() {
                 />
                 <StatCard
                   icon={Banknote}
-                  iconBg="bg-blue-100 text-blue-600"
+                  iconBg="bg-blue-50 text-blue-600 border border-blue-200/50"
                   label="My Commission"
                   value={`$${metrics.my_commission.toLocaleString()}`}
                   sub="+0.0%"
@@ -967,7 +816,7 @@ export default function ChannelPartnerDashboard() {
                 />
                 <StatCard
                   icon={Globe}
-                  iconBg="bg-violet-100 text-violet-600"
+                  iconBg="bg-purple-50 text-purple-600 border border-purple-200/50"
                   label="Active State Partners"
                   value={metrics.state_partners_count}
                   sub="In Network"
@@ -975,7 +824,7 @@ export default function ChannelPartnerDashboard() {
                 />
                 <StatCard
                   icon={Users}
-                  iconBg="bg-amber-100 text-amber-600"
+                  iconBg="bg-amber-50 text-amber-600 border border-amber-200/50"
                   label="Approved Consultants"
                   value={metrics.approved_consultants}
                   sub="Active"
@@ -983,7 +832,7 @@ export default function ChannelPartnerDashboard() {
                 />
                 <StatCard
                   icon={Target}
-                  iconBg="bg-cyan-100 text-cyan-600"
+                  iconBg="bg-teal-50 text-teal-600 border border-teal-200/50"
                   label="Total Leads Generated"
                   value={metrics.total_leads.toLocaleString()}
                   sub="Leads"
@@ -991,7 +840,7 @@ export default function ChannelPartnerDashboard() {
                 />
                 <StatCard
                   icon={TrendingUp}
-                  iconBg="bg-rose-100 text-rose-500"
+                  iconBg="bg-rose-50 text-rose-500 border border-rose-200/50"
                   label="Network Conversion"
                   value={`${metrics.conversion_rate}%`}
                   sub="Rate"
@@ -1003,30 +852,30 @@ export default function ChannelPartnerDashboard() {
               <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
 
                 {/* Left Card: Network & Coverage */}
-                <div className="xl:col-span-2 bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all">
+                <div className="xl:col-span-2 bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
                   <div className="flex items-start justify-between mb-4 gap-2 flex-wrap">
                     <div>
-                      <h2 className="text-[15px] font-black text-slate-900">Regional Network Coverage</h2>
-                      <p className="text-xs text-slate-400 mt-0.5">
-                        {statePartners.length} State Partners &bull; {consultants.length} Total Consultants
+                      <h2 className="text-base font-bold text-slate-900">Regional Network Coverage</h2>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {statePartners.length} State Partners &bull; {consultants.length} Active Consultants
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={() => setShowAddPartner(true)} className="text-[11px] font-bold px-3 py-1.5 rounded-xl bg-slate-900 text-white cursor-pointer hover:bg-slate-800 flex items-center gap-1">
-                        <Plus className="w-3 h-3" /> State Partner
+                      <button onClick={() => setShowAddPartner(true)} className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-900 text-white cursor-pointer hover:bg-slate-800 flex items-center gap-1">
+                        <Plus className="w-3.5 h-3.5" /> State Partner
                       </button>
-                      <button onClick={() => setShowAddConsultant(true)} className="text-[11px] font-bold px-3 py-1.5 rounded-xl bg-[#00A86B] text-white cursor-pointer hover:bg-emerald-600 flex items-center gap-1">
-                        <Plus className="w-3 h-3" /> Consultant
+                      <button onClick={() => setShowAddConsultant(true)} className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-[#00A878] text-white cursor-pointer hover:bg-[#008A62] flex items-center gap-1">
+                        <Plus className="w-3.5 h-3.5" /> Consultant
                       </button>
                     </div>
                   </div>
 
                   {/* Active States Chips */}
                   {statePartners.length > 0 ? (
-                    <div className="bg-slate-50/80 border border-slate-200/60 rounded-2xl p-4 mb-4 flex flex-wrap gap-1.5">
+                    <div className="bg-slate-50/80 border border-slate-200/60 rounded-2xl p-3.5 mb-4 flex flex-wrap gap-1.5">
                       {statePartners.map(sp => (
-                        <span key={sp.id} className="text-[11px] font-bold px-2.5 py-1 rounded-full border bg-emerald-50 text-emerald-800 border-emerald-200 flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                        <span key={sp.id} className="text-xs font-medium px-2.5 py-1 rounded-full border bg-emerald-50 text-emerald-800 border-emerald-200 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#00A878]" />
                           {sp.operating_state} &bull; {sp.partner_name}
                         </span>
                       ))}
@@ -1034,10 +883,10 @@ export default function ChannelPartnerDashboard() {
                   ) : (
                     <div className="bg-slate-50/80 border border-slate-200/60 rounded-2xl p-6 mb-4 text-center">
                       <Globe className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-                      <p className="text-xs font-bold text-slate-600 mb-1">No State Partners added yet</p>
-                      <p className="text-[11px] text-slate-400 mb-3">Expand your regional network across states by clicking '+ Add State Partner'.</p>
-                      <button onClick={() => setShowAddPartner(true)} className="inline-flex items-center gap-1 text-xs font-bold bg-slate-900 text-white px-3.5 py-1.5 rounded-xl cursor-pointer">
-                        <Plus className="w-3 h-3" /> Add State Partner
+                      <p className="text-xs font-bold text-slate-700 mb-1">No State Partners added yet</p>
+                      <p className="text-xs text-slate-500 mb-3">Expand your regional network across states by clicking '+ Add State Partner'.</p>
+                      <button onClick={() => setShowAddPartner(true)} className="inline-flex items-center gap-1 text-xs font-semibold bg-slate-900 text-white px-3.5 py-1.5 rounded-xl cursor-pointer">
+                        <Plus className="w-3.5 h-3.5" /> Add State Partner
                       </button>
                     </div>
                   )}
@@ -1049,16 +898,16 @@ export default function ChannelPartnerDashboard() {
                         <thead>
                           <tr className="border-b border-slate-100">
                             {['Operating State', 'Partner Name', 'Email', 'Status', ''].map(h => (
-                              <th key={h} className="text-left text-[10px] font-black text-slate-400 uppercase tracking-wider py-2 pr-3">{h}</th>
+                              <th key={h} className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider py-2 pr-3">{h}</th>
                             ))}
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50/80">
                           {statePartners.map(sp => (
                             <tr key={sp.id} className="hover:bg-slate-50/50 transition-colors">
-                              <td className="py-3 pr-3 text-[12px] font-bold text-slate-700">{sp.operating_state}</td>
-                              <td className="py-3 pr-3 text-[12px] font-semibold text-slate-800">{sp.partner_name}</td>
-                              <td className="py-3 pr-3 text-[11px] text-slate-500">{sp.email}</td>
+                              <td className="py-3 pr-3 text-xs sm:text-[13px] font-semibold text-slate-900">{sp.operating_state}</td>
+                              <td className="py-3 pr-3 text-xs sm:text-[13px] font-medium text-slate-700">{sp.partner_name}</td>
+                              <td className="py-3 pr-3 text-xs text-slate-500">{sp.email}</td>
                               <td className="py-3 pr-3"><StatusBadge status={sp.status} /></td>
                               <td className="py-3 text-right">
                                 <button onClick={() => setActive('state-partners')} className="w-7 h-7 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer">
@@ -1073,52 +922,50 @@ export default function ChannelPartnerDashboard() {
                   )}
                 </div>
 
-                {/* Right Card: Quick Actions & Pending Approvals */}
-                <div className="bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 shadow-sm hover:shadow-md transition-all space-y-3">
-                  <h2 className="text-[15px] font-black text-slate-900">Quick Actions</h2>
+                {/* Right Card: Quick Actions */}
+                <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] space-y-3">
+                  <h2 className="text-base font-bold text-slate-900">Quick Actions</h2>
 
                   <button onClick={() => setShowAddPartner(true)} className="w-full flex items-center gap-3 p-4 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 transition-all active:scale-[0.98] text-left cursor-pointer group">
                     <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center shrink-0 group-hover:bg-white/20 transition-colors">
-                      <Building2 className="w-5 h-5" />
+                      <Building2 className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[13px] font-black">+ Add State Partner</div>
-                      <div className="text-[10px] text-slate-400 mt-0.5">Persists to PENDING_HQ_APPROVAL</div>
+                      <div className="text-xs sm:text-[13px] font-bold">+ Add State Partner</div>
+                      <div className="text-[11px] text-slate-400 mt-0.5">Expand regional state network</div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-slate-200 transition-colors shrink-0" />
+                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors shrink-0" />
                   </button>
 
-                  <button onClick={() => setShowAddConsultant(true)} className="w-full flex items-center gap-3 p-4 rounded-2xl bg-[#00A86B] text-white hover:bg-emerald-600 transition-all active:scale-[0.98] text-left cursor-pointer group">
+                  <button onClick={() => setShowAddConsultant(true)} className="w-full flex items-center gap-3 p-4 rounded-2xl bg-[#00A878] text-white hover:bg-[#008A62] transition-all active:scale-[0.98] text-left cursor-pointer group shadow-sm shadow-emerald-500/20">
                     <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0 group-hover:bg-white/25 transition-colors">
-                      <UserCheck className="w-5 h-5" />
+                      <UserCheck className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[13px] font-black">+ Register Consultant</div>
-                      <div className="text-[10px] text-emerald-100 mt-0.5">Enters PENDING_WORKFLOW</div>
+                      <div className="text-xs sm:text-[13px] font-bold">+ Register Consultant</div>
+                      <div className="text-[11px] text-emerald-100 mt-0.5">Onboard licensed migration advisor</div>
                     </div>
                     <ArrowUpRight className="w-4 h-4 text-emerald-200 group-hover:text-white transition-colors shrink-0" />
                   </button>
 
-                  <button onClick={() => setActive('pending-approvals')} className="w-full flex items-center gap-3 p-4 rounded-2xl bg-red-50 border border-red-200/80 hover:bg-red-100/80 transition-all active:scale-[0.98] text-left cursor-pointer">
-                    <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
-                      <AlertCircle className="w-5 h-5 text-red-600" />
+                  <button onClick={() => setActive('referral-consultants')} className="w-full flex items-center gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200/80 hover:bg-slate-100 transition-all active:scale-[0.98] text-left cursor-pointer">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0 text-[#00A878]">
+                      <BadgeCheck className="w-5 h-5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[13px] font-black text-slate-900">Review Pending Approvals</div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">{pendingCount} awaiting country partner action</div>
+                      <div className="text-xs sm:text-[13px] font-bold text-slate-900">Network Directory</div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">{consultants.length} active consultants</div>
                     </div>
-                    <span className="bg-red-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shrink-0">
-                      {pendingCount}
-                    </span>
+                    <ArrowUpRight className="w-4 h-4 text-slate-400" />
                   </button>
 
-                  {/* Earnings Callout */}
-                  <div className="bg-[#0a0f1a] rounded-2xl p-4 text-white">
+                  {/* Net Commission Callout */}
+                  <div className="bg-[#0a0f1a] rounded-2xl p-4 text-white border border-white/5">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[11px] font-bold text-slate-400">Total Net Commission</span>
-                      <span className="text-xs font-black text-[#00A86B]">${metrics.my_commission.toLocaleString()}</span>
+                      <span className="text-xs font-medium text-slate-400">Total Net Commission</span>
+                      <span className="text-xs sm:text-sm font-bold text-[#00A878]">${metrics.my_commission.toLocaleString()}</span>
                     </div>
-                    <button onClick={() => setActive('earnings')} className="w-full mt-2 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold flex items-center justify-center gap-1 transition-colors">
+                    <button onClick={() => setActive('earnings')} className="w-full mt-2 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center justify-center gap-1 transition-colors cursor-pointer">
                       View Earnings Report <ArrowUpRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -1128,223 +975,152 @@ export default function ChannelPartnerDashboard() {
             </div>
           )}
 
-          {/* 2. REFERRAL CONSULTANTS TAB */}
+          {/* ═══════════ TAB 2: REFERRAL CONSULTANTS ═══════════ */}
           {(active === 'network' || active === 'referral-consultants') && (
-            <div className="bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all">
+            <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
                 <div>
-                  <h2 className="text-[15px] font-black text-slate-900">Referral Consultants</h2>
-                  <p className="text-[11px] text-slate-400 mt-0.5">{consultants.length} consultants registered in database</p>
+                  <h2 className="text-base font-bold text-slate-900">Referral Consultants</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">{consultants.length} active advisors in database</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <div className="relative">
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                     <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..."
-                      className="pl-8 pr-3 h-9 w-36 text-[12px] rounded-2xl border border-slate-200 bg-slate-50/80 focus:outline-none focus:ring-2 focus:ring-[#00A86B]/20 focus:border-[#00A86B]" />
+                      className="pl-8 pr-3 h-9 w-40 text-xs rounded-2xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]" />
                   </div>
-                  <button onClick={() => setShowAddConsultant(true)} className="h-9 px-3.5 bg-[#00A86B] hover:bg-emerald-600 text-white text-[12px] font-bold rounded-2xl flex items-center gap-1.5 cursor-pointer transition-colors">
+                  <button onClick={() => setShowAddConsultant(true)} className="h-9 px-3.5 bg-[#00A878] hover:bg-[#008A62] text-white text-xs font-semibold rounded-2xl flex items-center gap-1.5 cursor-pointer transition-colors shadow-sm shadow-emerald-500/20">
                     <Plus className="w-3.5 h-3.5" /> Register Consultant
                   </button>
                 </div>
               </div>
 
-              {/* Consultants Table */}
               {filteredConsultants.length > 0 ? (
-                <>
-                  <div className="hidden md:block overflow-x-auto">
-                    <table className="w-full min-w-[700px]">
-                      <thead>
-                        <tr className="border-b border-slate-100">
-                          {['Consultant', 'State Partner', 'Speciality', 'Status', 'Revenue', 'Commission', 'Leads', 'Actions'].map(h => (
-                            <th key={h} className="text-left text-[10px] font-black text-slate-400 uppercase tracking-wider py-2.5 pr-3 last:text-center">{h}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-50">
-                        {filteredConsultants.map(c => (
-                          <tr key={c.id} className="hover:bg-slate-50/60 transition-colors">
-                            <td className="py-3 pr-3">
-                              <div className="text-[12px] font-bold text-slate-900">{c.consultant_name}</div>
-                              <div className="text-[10px] text-slate-400">{c.email}</div>
-                            </td>
-                            <td className="py-3 pr-3 text-[11px] font-semibold text-slate-600">{c.state_partner_name || 'Unassigned'}</td>
-                            <td className="py-3 pr-3 text-[11px] text-slate-600">{c.speciality || 'General'}</td>
-                            <td className="py-3 pr-3"><StatusBadge status={c.status} /></td>
-                            <td className="py-3 pr-3 text-[12px] font-black text-slate-900">${parseFloat(c.revenue as any || 0).toLocaleString()}</td>
-                            <td className="py-3 pr-3 text-[12px] font-bold text-[#00A86B]">${parseFloat(c.commission as any || 0).toLocaleString()}</td>
-                            <td className="py-3 pr-3 text-[12px] font-bold text-slate-700">{c.leads_count}</td>
-                            <td className="py-3 text-center">
-                              <div className="flex items-center justify-center gap-1">
-                                {c.status === 'pending_workflow' && (
-                                  <>
-                                    <button onClick={() => handleApprovalAction(c.id, 'approve')} title="Approve" className="w-7 h-7 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 flex items-center justify-center cursor-pointer">
-                                      <Check className="w-3.5 h-3.5 text-[#00A86B]" />
-                                    </button>
-                                    <button onClick={() => handleApprovalAction(c.id, 'reject')} title="Reject" className="w-7 h-7 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 flex items-center justify-center cursor-pointer">
-                                      <X className="w-3.5 h-3.5 text-red-600" />
-                                    </button>
-                                  </>
-                                )}
-                                <button onClick={() => setTransferringConsultant(c)} title="Transfer State Partner" className="w-7 h-7 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer">
-                                  <ArrowRightLeft className="w-3.5 h-3.5 text-slate-600" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[700px]">
+                    <thead>
+                      <tr className="border-b border-slate-100">
+                        {['Consultant Name', 'Speciality', 'Assigned State Partner', 'Revenue', 'Commission', 'Leads', 'Status'].map(h => (
+                          <th key={h} className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider py-2.5 pr-4">{h}</th>
                         ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* Mobile Card List */}
-                  <div className="md:hidden space-y-3">
-                    {filteredConsultants.map(c => (
-                      <div key={c.id} className="bg-slate-50/80 border border-slate-200/60 rounded-2xl p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <div className="text-[13px] font-bold text-slate-900">{c.consultant_name}</div>
-                            <div className="text-[10px] text-slate-400">{c.email}</div>
-                          </div>
-                          <StatusBadge status={c.status} />
-                        </div>
-                        <div className="text-xs text-slate-600 mb-3">Partner: <strong>{c.state_partner_name || 'Unassigned'}</strong></div>
-                        <div className="flex gap-2">
-                          {c.status === 'pending_workflow' && (
-                            <>
-                              <button onClick={() => handleApprovalAction(c.id, 'approve')} className="flex-1 h-9 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-center gap-1">
-                                <Check className="w-3.5 h-3.5" /> Approve
-                              </button>
-                              <button onClick={() => handleApprovalAction(c.id, 'reject')} className="flex-1 h-9 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold flex items-center justify-center gap-1">
-                                <X className="w-3.5 h-3.5" /> Reject
-                              </button>
-                            </>
-                          )}
-                          <button onClick={() => setTransferringConsultant(c)} className="flex-1 h-9 rounded-2xl bg-slate-100 text-slate-700 text-xs font-bold flex items-center justify-center gap-1">
-                            <ArrowRightLeft className="w-3.5 h-3.5" /> Transfer
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                      {filteredConsultants.map(c => (
+                        <tr key={c.id} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-3 pr-4">
+                            <div className="text-xs sm:text-[13px] font-semibold text-slate-900">{c.consultant_name}</div>
+                            <div className="text-[11px] text-slate-400">{c.email}</div>
+                          </td>
+                          <td className="py-3 pr-4 text-xs font-medium text-slate-700">{c.speciality || 'Study Visa'}</td>
+                          <td className="py-3 pr-4 text-xs font-medium text-slate-600">{c.state_partner_name || 'Direct Country Partner'}</td>
+                          <td className="py-3 pr-4 text-xs font-semibold text-slate-900">${parseFloat(String(c.revenue || 0)).toLocaleString()}</td>
+                          <td className="py-3 pr-4 text-xs font-semibold text-[#00A878]">${parseFloat(String(c.commission || 0)).toLocaleString()}</td>
+                          <td className="py-3 pr-4 text-xs font-medium text-slate-600">{c.leads_count || 0}</td>
+                          <td className="py-3 pr-4"><StatusBadge status={c.status} /></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               ) : (
-                <div className="py-16 text-center">
-                  <Users className="w-10 h-10 mx-auto mb-2 text-slate-200" />
-                  <p className="text-sm font-bold text-slate-600 mb-1">No Referral Consultants in your network yet</p>
-                  <p className="text-xs text-slate-400 mb-4">Click below to register consultants under your state partners.</p>
-                  <button onClick={() => setShowAddConsultant(true)} className="inline-flex items-center gap-1.5 text-xs font-bold bg-[#00A86B] text-white px-4 py-2 rounded-2xl cursor-pointer">
-                    <Plus className="w-3.5 h-3.5" /> Register Consultant
-                  </button>
+                <div className="py-12 text-center text-slate-400">
+                  <Users className="w-10 h-10 mx-auto mb-2 text-slate-300" />
+                  <p className="text-xs font-semibold text-slate-600">No consultants registered yet</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Click '+ Register Consultant' to add advisors to your network.</p>
                 </div>
               )}
             </div>
           )}
 
-          {/* 3. STATE PARTNERS TAB */}
+          {/* ═══════════ TAB 3: STATE PARTNERS ═══════════ */}
           {active === 'state-partners' && (
-            <div className="bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all">
-              <div className="flex items-center justify-between mb-5">
+            <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
                 <div>
-                  <h2 className="text-[15px] font-black text-slate-900">State Partners</h2>
-                  <p className="text-[11px] text-slate-400 mt-0.5">{statePartners.length} regional partners assigned</p>
+                  <h2 className="text-base font-bold text-slate-900">State Partners Network</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">{statePartners.length} regional state partners active</p>
                 </div>
-                <button onClick={() => setShowAddPartner(true)} className="h-9 px-4 bg-slate-900 text-white text-[12px] font-bold rounded-2xl flex items-center gap-1.5 hover:bg-slate-800 cursor-pointer transition-colors">
+                <button onClick={() => setShowAddPartner(true)} className="h-9 px-3.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-2xl flex items-center gap-1.5 cursor-pointer transition-colors">
                   <Plus className="w-3.5 h-3.5" /> Add State Partner
                 </button>
               </div>
 
               {statePartners.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {statePartners.map(sp => (
-                    <div key={sp.id} className="border border-slate-200/70 bg-slate-50/60 rounded-2xl p-4 hover:shadow-md transition-all">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-[11px] font-black text-slate-700">
-                          {sp.partner_name.substring(0, 2).toUpperCase()}
-                        </div>
-                        <StatusBadge status={sp.status} />
-                      </div>
-                      <h3 className="text-[13px] font-black text-slate-900 mb-0.5 leading-tight">{sp.partner_name}</h3>
-                      <div className="text-[10px] text-slate-400 mb-3 flex items-center gap-1"><MapPin className="w-3 h-3" />{sp.operating_state}</div>
-                      <div className="text-[11px] text-slate-600 mb-1 truncate">{sp.email}</div>
-                      <div className="text-[10px] text-slate-400">{sp.phone || 'No phone registered'}</div>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[600px]">
+                    <thead>
+                      <tr className="border-b border-slate-100">
+                        {['Operating State', 'Partner Name', 'Company Name', 'Email', 'Phone', 'Status'].map(h => (
+                          <th key={h} className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider py-2.5 pr-4">{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                      {statePartners.map(sp => (
+                        <tr key={sp.id} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="py-3 pr-4 text-xs sm:text-[13px] font-semibold text-slate-900">{sp.operating_state}</td>
+                          <td className="py-3 pr-4 text-xs sm:text-[13px] font-medium text-slate-800">{sp.partner_name}</td>
+                          <td className="py-3 pr-4 text-xs text-slate-600">{sp.company_name || '—'}</td>
+                          <td className="py-3 pr-4 text-xs text-slate-500">{sp.email}</td>
+                          <td className="py-3 pr-4 text-xs text-slate-500">{sp.phone || '—'}</td>
+                          <td className="py-3 pr-4"><StatusBadge status={sp.status} /></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               ) : (
-                <div className="py-16 text-center">
-                  <Building2 className="w-10 h-10 mx-auto mb-2 text-slate-200" />
-                  <p className="text-sm font-bold text-slate-600 mb-1">No State Partners registered yet</p>
-                  <p className="text-xs text-slate-400 mb-4">Add state partners to establish regional operational presence.</p>
-                  <button onClick={() => setShowAddPartner(true)} className="inline-flex items-center gap-1.5 text-xs font-bold bg-slate-900 text-white px-4 py-2 rounded-2xl cursor-pointer">
-                    <Plus className="w-3.5 h-3.5" /> + Add State Partner
-                  </button>
+                <div className="py-12 text-center text-slate-400">
+                  <Building2 className="w-10 h-10 mx-auto mb-2 text-slate-300" />
+                  <p className="text-xs font-semibold text-slate-600">No state partners added yet</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Click '+ Add State Partner' to expand your state network.</p>
                 </div>
               )}
             </div>
           )}
 
-          {/* 4. PENDING APPROVALS TAB */}
-          {active === 'pending-approvals' && (
-            <div className="bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all">
-              <div className="flex items-center justify-between mb-5">
+          {/* ═══════════ TAB 4: MY EARNINGS / BUSINESS / OTHER ═══════════ */}
+          {(active === 'business' || active === 'earnings' || active === 'payouts' || active === 'analytics') && (
+            <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] space-y-5">
+              <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-[15px] font-black text-slate-900">Pending Approvals Queue</h2>
-                  <p className="text-[11px] text-slate-400 mt-0.5">{consultants.filter(c => c.status === 'pending_workflow').length} consultants in <strong>PENDING_WORKFLOW</strong></p>
+                  <h2 className="text-base font-bold text-slate-900">Earnings & Payouts Analytics</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">Real-time commission breakdown</p>
+                </div>
+                <div className="px-3 py-1 bg-emerald-50 border border-emerald-200 text-[#00A878] rounded-full text-xs font-semibold">
+                  Payout Status: Auto-Settled
                 </div>
               </div>
 
-              {consultants.filter(c => c.status === 'pending_workflow').length > 0 ? (
-                <div className="space-y-3">
-                  {consultants.filter(c => c.status === 'pending_workflow').map(c => (
-                    <div key={c.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border border-amber-200/80 bg-amber-50/60 rounded-2xl">
-                      <div>
-                        <div className="text-[13px] font-black text-slate-900">{c.consultant_name}</div>
-                        <div className="text-[11px] text-slate-500">{c.email} &bull; Assigned: {c.state_partner_name || 'Direct Country Partner'}</div>
-                        <div className="flex items-center gap-1 text-[10px] font-bold text-amber-700 mt-1">
-                          <Clock className="w-3 h-3" /> PENDING_WORKFLOW
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <button onClick={() => handleApprovalAction(c.id, 'approve')} className="h-9 px-4 bg-[#00A86B] hover:bg-emerald-600 text-white text-[12px] font-bold rounded-2xl flex items-center gap-1.5 cursor-pointer">
-                          <Check className="w-3.5 h-3.5" /> Approve Consultant
-                        </button>
-                        <button onClick={() => handleApprovalAction(c.id, 'reject')} className="h-9 px-4 bg-white border border-red-200 text-red-600 text-[12px] font-bold rounded-2xl flex items-center gap-1.5 cursor-pointer hover:bg-red-50">
-                          <X className="w-3.5 h-3.5" /> Reject
-                        </button>
-                        <button onClick={() => setTransferringConsultant(c)} className="h-9 px-3 bg-white border border-slate-200 text-slate-700 text-[12px] font-bold rounded-2xl flex items-center gap-1.5 cursor-pointer hover:bg-slate-50">
-                          <ArrowRightLeft className="w-3.5 h-3.5" /> Transfer
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+                  <div className="text-xs font-medium text-slate-500 mb-1">Gross Network Revenue</div>
+                  <div className="text-2xl font-bold text-slate-900">${metrics.total_revenue.toLocaleString()}</div>
                 </div>
-              ) : (
-                <div className="py-16 text-center">
-                  <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-[#00A86B] opacity-60" />
-                  <p className="text-sm font-bold text-slate-600">All approvals are up to date!</p>
-                  <p className="text-xs text-slate-400 mt-0.5">No pending items requiring Country Partner sign-off.</p>
+                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200/70">
+                  <div className="text-xs font-medium text-emerald-800 mb-1">Your Net Commission</div>
+                  <div className="text-2xl font-bold text-emerald-900">${metrics.my_commission.toLocaleString()}</div>
                 </div>
-              )}
-            </div>
-          )}
-
-          {/* Fallback for other tabs */}
-          {!['dashboard', 'network', 'referral-consultants', 'state-partners', 'pending-approvals'].includes(active) && (
-            <div className="bg-white/80 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-12 text-center shadow-sm">
-              <Layers className="w-12 h-12 mx-auto mb-3 text-slate-200" />
-              <h2 className="text-[16px] font-black text-slate-800 mb-1">{sectionTitle[active]}</h2>
-              <p className="text-[13px] text-slate-400">Integrated with database tables &bull; Multi-tier channel analytics active.</p>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+                  <div className="text-xs font-medium text-slate-500 mb-1">Conversion Efficiency</div>
+                  <div className="text-2xl font-bold text-slate-900">{metrics.conversion_rate}%</div>
+                </div>
+              </div>
             </div>
           )}
 
         </main>
       </div>
 
-      {/* Operation Modals */}
+      {/* ═══════════ MODALS ═══════════ */}
       {showAddPartner && (
         <AddStatePartnerModal
           onClose={() => setShowAddPartner(false)}
-          onSuccess={() => { setShowAddPartner(false); fetchDashboardData(); }}
+          onSuccess={() => {
+            setShowAddPartner(false);
+            fetchDashboardData();
+          }}
         />
       )}
 
@@ -1352,16 +1128,10 @@ export default function ChannelPartnerDashboard() {
         <AddConsultantModal
           statePartners={statePartners}
           onClose={() => setShowAddConsultant(false)}
-          onSuccess={() => { setShowAddConsultant(false); fetchDashboardData(); }}
-        />
-      )}
-
-      {transferringConsultant && (
-        <TransferConsultantModal
-          consultant={transferringConsultant}
-          statePartners={statePartners}
-          onClose={() => setTransferringConsultant(null)}
-          onSuccess={() => { setTransferringConsultant(null); fetchDashboardData(); }}
+          onSuccess={() => {
+            setShowAddConsultant(false);
+            fetchDashboardData();
+          }}
         />
       )}
 

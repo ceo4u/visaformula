@@ -20,7 +20,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     if (!consultant_name || !email) return new Response(JSON.stringify({ success: false, message: 'Name and email are required.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     const pool = getPool();
     const res = await pool.query(
-      `INSERT INTO referral_consultants (country_partner_id, state_partner_id, consultant_name, email, phone, region, speciality, status) VALUES ($1,$2,$3,$4,$5,$6,$7,'pending_workflow') RETURNING *`,
+      `INSERT INTO referral_consultants (country_partner_id, state_partner_id, consultant_name, email, phone, region, speciality, status) VALUES ($1,$2,$3,$4,$5,$6,$7,'approved') RETURNING *`,
       [cpId, state_partner_id || null, consultant_name, email, phone || '', region || '', speciality || '']
     );
     return new Response(JSON.stringify({ success: true, consultant: res.rows[0] }), { status: 201, headers: { 'Content-Type': 'application/json' } });

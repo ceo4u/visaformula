@@ -9,7 +9,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     await runMigrations();
     const pool = getPool();
-    const { email, password, role } = await request.json();
+    const { email, password, role = 'country_partner' } = await request.json();
 
     if (!email || !password) {
       return new Response(JSON.stringify({ success: false, message: 'Email and password are required.' }), {
@@ -20,24 +20,19 @@ export const POST: APIRoute = async ({ request }) => {
 
     const cleanEmail = email.trim().toLowerCase();
 
-    // Check if channel partner exists
+    // 1. Check channel_partners table
     let res = await pool.query('SELECT * FROM channel_partners WHERE LOWER(email) = LOWER($1)', [cleanEmail]);
 
-    // If no partner exists in DB, or this is a demo partner setup, auto-create the initial Country Partner account
-    if (res.rows.length === 0) {
-      // Auto-provision initial Country Partner for quick onboarding
+    // If demo email or initial bootstrap
+    if (res.rows.length === 0 && cleanEmail === 'partner@globalhorizons.com') {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
-      const companyName = cleanEmail.includes('@') 
-        ? cleanEmail.split('@')[0].replace(/[^a-zA-Z0-9]/g, ' ').toUpperCase() + ' PARTNERS'
-        : 'GLOBAL HORIZONS PVT. LTD.';
-
       const insertRes = await pool.query(
         `INSERT INTO channel_partners (company_name, email, password_hash, contact_person, country, tier, role, status)
          VALUES ($1, $2, $3, $4, $5, $6, $7, 'active')
          RETURNING *`,
         [
-          companyName || 'GLOBAL HORIZONS PVT. LTD.',
+          'GLOBAL HORIZONS PVT. LTD.',
           cleanEmail,
           hashedPassword,
           'Country Director',
@@ -49,16 +44,45 @@ export const POST: APIRoute = async ({ request }) => {
       res = insertRes;
     }
 
+    if (res.rows.length === 0) {
+      return new Response(JSON.stringify({ success: false, message: 'No registered partner account found with this email address.' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const partner = res.rows[0];
     const match = await bcrypt.compare(password, partner.password_hash);
     if (!match) {
-      return new Response(JSON.stringify({ success: false, message: 'Invalid credentials. Please check your password.' }), {
+      return new Response(JSON.stringify({ success: false, message: 'Incorrect password. Please try again.' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
-    // Create session
+    // Check review status
+    const statusNormalized = (partner.status || '').toUpperCase();
+    if (statusNormalized.includes('PENDING') || statusNormalized === 'UNDER_REVIEW') {
+      return new Response(JSON.stringify({
+        success: false,
+        message: 'Your account is currently under review by TravlTik HQ. You will receive an email once activated.'
+      }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (statusNormalized === 'REJECTED' || statusNormalized === 'SUSPENDED') {
+      return new Response(JSON.stringify({
+        success: false,
+        message: 'This partner account is inactive. Please contact partner support.'
+      }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Active -> Create session token
     const token = crypto.randomBytes(32).toString('hex');
     const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
     await pool.query(

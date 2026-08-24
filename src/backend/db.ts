@@ -513,6 +513,13 @@ export async function runMigrations() {
     );
   `);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_partner_sessions_token ON partner_sessions (token);`);
+
+  await p.query(`
+    ALTER TABLE channel_partners ADD COLUMN IF NOT EXISTS tax_id VARCHAR(100);
+    ALTER TABLE state_partners ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255);
+    ALTER TABLE state_partners ADD COLUMN IF NOT EXISTS contact_person VARCHAR(150);
+    ALTER TABLE referral_consultants ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255);
+  `);
   })();
   return migrationsPromise;
 }

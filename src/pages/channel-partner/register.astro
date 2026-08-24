@@ -1,5 +1,5 @@
 ---
-// src/pages/channel-partner/login.astro
+// src/pages/channel-partner/register.astro
 import Layout from '../../layouts/Layout.astro';
 import PartnerAuthPortal from '../../components/channel-partner/PartnerAuthPortal';
 
@@ -11,10 +11,10 @@ if (token) {
 ---
 
 <Layout 
-  title="Partner Sign In | TravlTik Channel Partner Network" 
-  description="Sign in to TravlTik Channel Partner Operating System. Manage state partners, referral consultants, and revenue analytics."
+  title="Partner Registration | TravlTik Channel Partner Network" 
+  description="Register as a Country Partner, State Partner, or Referral Consultant on the TravlTik Channel Partner Platform."
   hideHeader={true}
   hideFooter={true}
 >
-  <PartnerAuthPortal client:only="react" initialMode="login" />
+  <PartnerAuthPortal client:only="react" initialMode="register" />
 </Layout>

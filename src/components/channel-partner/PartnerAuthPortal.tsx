@@ -210,8 +210,8 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
   // State Management
   const [loading, setLoading] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successModal, setSuccessModal] = useState<{ title: string; message: string; status: string } | null>(null);
 
   // Handle Login Submit
   const handleLogin = async (e: React.FormEvent) => {
@@ -231,10 +231,12 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
         throw new Error(data.message || 'Login failed. Please check your credentials.');
       }
 
-      window.location.href = '/channel-partner/dashboard';
+      setIsRedirecting(true);
+      setTimeout(() => {
+        window.location.href = '/channel-partner/dashboard';
+      }, 600);
     } catch (err: any) {
       setError(err.message || 'An error occurred during sign in.');
-    } finally {
       setLoading(false);
     }
   };
@@ -285,15 +287,14 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
         throw new Error(data.message || 'Registration failed.');
       }
 
-      setSuccessModal({
-        title: 'Registration Submitted!',
-        message: data.message,
-        status: data.status || 'PENDING_APPROVAL'
-      });
+      // Smooth loading transition directly to dashboard
+      setIsRedirecting(true);
+      setTimeout(() => {
+        window.location.href = '/channel-partner/dashboard';
+      }, 700);
 
     } catch (err: any) {
       setError(err.message || 'Registration failed. Please try again.');
-    } finally {
       setLoading(false);
     }
   };
@@ -776,31 +777,21 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
         </div>
       </div>
 
-      {/* Success Modal */}
-      {successModal && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)' }}>
-          <div className="bg-white rounded-[28px] max-w-[460px] w-full p-7 text-center shadow-2xl animate-fadeIn border border-slate-100">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mx-auto mb-4 text-[#00A878]">
-              <CheckCircle2 className="w-8 h-8" />
+      {/* Instant Activation Loading HUD Overlay */}
+      {isRedirecting && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4" style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(12px)' }}>
+          <div className="bg-white rounded-[28px] max-w-[400px] w-full p-8 text-center shadow-2xl border border-slate-200/90 animate-fadeIn">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mx-auto mb-4 text-[#00A878] shadow-sm">
+              <CheckCircle2 className="w-7 h-7" />
             </div>
 
-            <h3 className="text-xl font-bold text-slate-900 mb-2">{successModal.title}</h3>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">{successModal.message}</p>
+            <h3 className="text-lg font-bold text-slate-900 mb-1">Partner Profile Activated!</h3>
+            <p className="text-xs text-slate-500 mb-4">Synchronizing B2B operating dashboard...</p>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold rounded-full mb-6">
-              <Shield className="w-3.5 h-3.5" /> Status: {successModal.status}
+            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-4 py-2 rounded-xl">
+              <div className="w-4 h-4 border-2 border-[#00A878] border-t-transparent rounded-full animate-spin shrink-0" />
+              <span>Launching Workspace...</span>
             </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                setSuccessModal(null);
-                setMode('login');
-              }}
-              className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-[#00A878] text-white text-xs sm:text-sm font-semibold tracking-normal cursor-pointer hover:bg-[#008A62] transition-colors"
-            >
-              Back to Sign In
-            </button>
           </div>
         </div>
       )}

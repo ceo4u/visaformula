@@ -60,26 +60,9 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Check review status
-    const statusNormalized = (partner.status || '').toUpperCase();
-    if (statusNormalized.includes('PENDING') || statusNormalized === 'UNDER_REVIEW') {
-      return new Response(JSON.stringify({
-        success: false,
-        message: 'Your account is currently under review by TravlTik HQ. You will receive an email once activated.'
-      }), {
-        status: 403,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    if (statusNormalized === 'REJECTED' || statusNormalized === 'SUSPENDED') {
-      return new Response(JSON.stringify({
-        success: false,
-        message: 'This partner account is inactive. Please contact partner support.'
-      }), {
-        status: 403,
-        headers: { 'Content-Type': 'application/json' }
-      });
+    // Auto-activate account if status was previously pending
+    if (partner.status !== 'active') {
+      await pool.query("UPDATE channel_partners SET status = 'active' WHERE id = $1", [partner.id]);
     }
 
     // Active -> Create session token

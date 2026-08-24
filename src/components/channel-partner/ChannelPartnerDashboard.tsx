@@ -1167,37 +1167,225 @@ export default function ChannelPartnerDashboard() {
             </div>
           )}
 
-          {/* ═══════════ TAB 4: MY EARNINGS / BUSINESS / OTHER ═══════════ */}
+          {/* ═══════════ TAB 4: MY EARNINGS / BUSINESS / PAYOUTS ═══════════ */}
           {(active === 'business' || active === 'earnings' || active === 'payouts' || active === 'analytics') && (
             <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] space-y-5">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                 <div>
                   <h2 className="text-base font-bold text-slate-900">Earnings & Payouts Analytics</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">Real-time commission breakdown</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Real-time commission breakdown and automated payout history.</p>
                 </div>
-                <div className="px-3 py-1 bg-emerald-50 border border-emerald-200 text-[#00A878] rounded-full text-xs font-semibold">
-                  Payout Status: Auto-Settled
+                <div className="px-3.5 py-1.5 bg-emerald-50 border border-emerald-200 text-[#00A878] rounded-full text-xs font-semibold">
+                  Payout Status: Auto-Settled (Weekly/Monthly)
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/70">
                   <div className="text-xs font-medium text-slate-500 mb-1">Gross Network Revenue</div>
-                  <div className="text-2xl font-bold text-slate-900">${metrics.total_revenue.toLocaleString()}</div>
+                  <div className="text-2xl font-black text-slate-900">${metrics.total_revenue.toLocaleString()}</div>
+                  <div className="text-[11px] text-slate-400 mt-1">Processed across your territory</div>
                 </div>
-                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200/70">
-                  <div className="text-xs font-medium text-emerald-800 mb-1">Your Net Commission</div>
-                  <div className="text-2xl font-bold text-emerald-900">${metrics.my_commission.toLocaleString()}</div>
+                <div className="p-5 rounded-2xl bg-emerald-50/80 border border-emerald-200/80">
+                  <div className="text-xs font-medium text-emerald-800 mb-1">Your Net Override Commission</div>
+                  <div className="text-2xl font-black text-emerald-900">${metrics.my_commission.toLocaleString()}</div>
+                  <div className="text-[11px] text-emerald-700 mt-1">Ready for settlement payout</div>
                 </div>
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
-                  <div className="text-xs font-medium text-slate-500 mb-1">Conversion Efficiency</div>
-                  <div className="text-2xl font-bold text-slate-900">{metrics.conversion_rate}%</div>
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/70">
+                  <div className="text-xs font-medium text-slate-500 mb-1">Network Conversion Rate</div>
+                  <div className="text-2xl font-black text-slate-900">{metrics.conversion_rate}%</div>
+                  <div className="text-[11px] text-slate-400 mt-1">Leads to successful visas</div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* ═══════════ TAB 5: SETTINGS ═══════════ */}
+          {/* ═══════════ TAB 5: LEADS & ENQUIRIES ═══════════ */}
+          {active === 'leads' && (
+            <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                <div>
+                  <h2 className="text-base font-bold text-slate-900">Territory Client Leads & Enquiries</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">Real-time visa applicants assigned across your consultant network.</p>
+                </div>
+                <div className="px-3.5 py-1.5 bg-blue-50 border border-blue-200 text-blue-800 rounded-full text-xs font-semibold">
+                  {metrics.total_leads} Total Leads
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[650px]">
+                  <thead>
+                    <tr className="border-b border-slate-100">
+                      {['Applicant Name', 'Target Destination', 'Assigned Consultant', 'State Region', 'Status', 'Date'].map(h => (
+                        <th key={h} className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider py-2.5 pr-4">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-50">
+                    <tr className="hover:bg-slate-50/60 transition-colors">
+                      <td className="py-3 pr-4">
+                        <div className="text-xs sm:text-[13px] font-bold text-slate-900">Arjun Mehta</div>
+                        <div className="text-[11px] text-slate-400">Student Visa Inquiry</div>
+                      </td>
+                      <td className="py-3 pr-4 text-xs font-semibold text-slate-700">United States (F-1)</td>
+                      <td className="py-3 pr-4 text-xs font-medium text-slate-800">Priya Sharma</td>
+                      <td className="py-3 pr-4 text-xs text-slate-500">California</td>
+                      <td className="py-3 pr-4">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                          In Progress
+                        </span>
+                      </td>
+                      <td className="py-3 pr-4 text-xs text-slate-400">Today</td>
+                    </tr>
+                    <tr className="hover:bg-slate-50/60 transition-colors">
+                      <td className="py-3 pr-4">
+                        <div className="text-xs sm:text-[13px] font-bold text-slate-900">Sarah Jenkins</div>
+                        <div className="text-[11px] text-slate-400">Skilled Migration</div>
+                      </td>
+                      <td className="py-3 pr-4 text-xs font-semibold text-slate-700">Canada (Express Entry)</td>
+                      <td className="py-3 pr-4 text-xs font-medium text-slate-800">Robert Chen</td>
+                      <td className="py-3 pr-4 text-xs text-slate-500">Texas</td>
+                      <td className="py-3 pr-4">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-800 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">
+                          Consultation Booked
+                        </span>
+                      </td>
+                      <td className="py-3 pr-4 text-xs text-slate-400">Yesterday</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* ═══════════ TAB 6: CONSULTANTS PERFORMANCE ═══════════ */}
+          {active === 'performance' && (
+            <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] space-y-5">
+              <div className="border-b border-slate-100 pb-4">
+                <h2 className="text-base font-bold text-slate-900">Consultants Performance & Leaderboard</h2>
+                <p className="text-xs text-slate-500 mt-0.5">Top-producing referral consultants ranked by revenue and client satisfaction.</p>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[650px]">
+                  <thead>
+                    <tr className="border-b border-slate-100">
+                      {['Rank', 'Consultant', 'State Partner', 'Processed Leads', 'Revenue Volume', 'Commission Generated'].map(h => (
+                        <th key={h} className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider py-2.5 pr-4">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-50">
+                    {consultants.length > 0 ? consultants.map((c, idx) => (
+                      <tr key={c.id} className="hover:bg-slate-50/60 transition-colors">
+                        <td className="py-3 pr-4 text-xs font-bold text-slate-500">#{idx + 1}</td>
+                        <td className="py-3 pr-4 text-xs sm:text-[13px] font-bold text-slate-900">{c.consultant_name}</td>
+                        <td className="py-3 pr-4 text-xs text-slate-600">{c.state_partner_name || 'Direct HQ'}</td>
+                        <td className="py-3 pr-4 text-xs text-slate-700">{c.leads_count || 0}</td>
+                        <td className="py-3 pr-4 text-xs font-bold text-slate-900">${parseFloat(String(c.revenue || 0)).toLocaleString()}</td>
+                        <td className="py-3 pr-4 text-xs font-bold text-[#00A878]">${parseFloat(String(c.commission || 0)).toLocaleString()}</td>
+                      </tr>
+                    )) : (
+                      <tr>
+                        <td colSpan={6} className="py-8 text-center text-xs text-slate-400">No performance records found yet.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* ═══════════ TAB 7: MARKETING TOOLS ═══════════ */}
+          {active === 'marketing' && (
+            <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] space-y-5">
+              <div className="border-b border-slate-100 pb-4">
+                <h2 className="text-base font-bold text-slate-900">Partner Marketing Kit & Growth Assets</h2>
+                <p className="text-xs text-slate-500 mt-0.5">High-resolution brand assets, client brochures, and territory marketing collaterals.</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-xs sm:text-[13px] font-bold text-slate-900">Official Partner Certificate</h3>
+                    <p className="text-[11px] text-slate-500 mt-1">Authorized Platinum Country Partner certificate badge for websites.</p>
+                  </div>
+                  <button onClick={() => window.open('/logo.png', '_blank')} className="mt-4 w-full h-9 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50 cursor-pointer">
+                    Download Asset
+                  </button>
+                </div>
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-xs sm:text-[13px] font-bold text-slate-900">Visa Consultation Brochure</h3>
+                    <p className="text-[11px] text-slate-500 mt-1">Customizable 8-page PDF guide for prospective student and migration clients.</p>
+                  </div>
+                  <button onClick={() => window.open('/services', '_blank')} className="mt-4 w-full h-9 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50 cursor-pointer">
+                    Preview Brochure
+                  </button>
+                </div>
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-xs sm:text-[13px] font-bold text-slate-900">Social Media Campaign Pack</h3>
+                    <p className="text-[11px] text-slate-500 mt-1">Instagram, LinkedIn, and Facebook banner templates with TravlTik branding.</p>
+                  </div>
+                  <button onClick={() => window.open('/logo.png', '_blank')} className="mt-4 w-full h-9 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50 cursor-pointer">
+                    Download Pack
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ═══════════ TAB 8: DISPUTES ═══════════ */}
+          {active === 'disputes' && (
+            <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] space-y-5">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div>
+                  <h2 className="text-base font-bold text-slate-900">Territory Disputes & Lead Attribution</h2>
+                  <p className="text-xs text-slate-500 mt-0.5">Submit conflict resolution tickets directly to TravlTik HQ Legal & Compliance.</p>
+                </div>
+                <button onClick={() => alert('Support ticket raised. HQ Compliance will respond within 24 business hours.')} className="px-4 h-9 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 cursor-pointer">
+                  + Raise Conflict Ticket
+                </button>
+              </div>
+
+              <div className="py-8 text-center text-slate-400">
+                <CheckCircle2 className="w-9 h-9 mx-auto mb-2 text-emerald-500" />
+                <p className="text-xs font-semibold text-slate-700">No Active Disputes in Territory</p>
+                <p className="text-[11px] text-slate-400 mt-0.5">All consultant leads and commission splits are operating without conflict.</p>
+              </div>
+            </div>
+          )}
+
+          {/* ═══════════ TAB 9: TRAINING & REPORT ═══════════ */}
+          {active === 'training' && (
+            <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-[28px] p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] space-y-5">
+              <div className="border-b border-slate-100 pb-4">
+                <h2 className="text-base font-bold text-slate-900">Partner Knowledgebase & Operating SOPs</h2>
+                <p className="text-xs text-slate-500 mt-0.5">Standard Operating Procedures, compliance guidelines, and network expansion playbooks.</p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs sm:text-[13px] font-bold text-slate-900">Master SOP: Multi-Tier State Partner Onboarding</div>
+                    <div className="text-[11px] text-slate-500">Step-by-step guide for recruiting and verifying state-level agency partners.</div>
+                  </div>
+                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-xl">Verified Guide</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs sm:text-[13px] font-bold text-slate-900">Global Immigration Compliance Framework</div>
+                    <div className="text-[11px] text-slate-500">Legal responsibilities for US, Canada, UK, and Australia student/work applications.</div>
+                  </div>
+                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-xl">Mandatory</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ═══════════ TAB 10: SETTINGS ═══════════ */}
           {active === 'settings' && (
             <PartnerSettingsView />
           )}

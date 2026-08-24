@@ -1,5 +1,6 @@
 ---
 // src/pages/channel-partner.astro
+export const prerender = false;
 const token = Astro.cookies.get('cp_sid')?.value;
 if (token) {
   return Astro.redirect('/channel-partner/dashboard');

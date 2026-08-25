@@ -3912,8 +3912,146 @@ return (
 
                 </div>
 
+                {/* ── BRANCH 0: VISA-FREE / ESTA / VISA ON ARRIVAL (NO EMBASSY VISA REQUIRED) ── */}
+                {aiVerdict.isEsta && (
+                  <div className="space-y-6 animate-fadeIn">
+                    
+                    {/* Header Banner */}
+                    <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/80 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+                      <div className="space-y-2">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black uppercase tracking-wider">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                          <span>Fast-Track Electronic Clearance Eligible</span>
+                        </div>
+                        <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                          No Embassy Visa Required for {journeyDestination || 'Abroad'}!
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                          Based on your <strong>{passportCountry || 'United Kingdom'}</strong> passport, you qualify for visa-free entry or instant online electronic authorization. You do not need to attend embassy appointments, paper file submissions, or submit financial sponsorship proofs.
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                        <div className="px-4 py-2 rounded-2xl bg-white/10 border border-white/15 text-white text-xs font-bold flex items-center gap-2">
+                          <img
+                            src={`https://flagcdn.com/w40/${getCountryCode(passportCountry || 'India')}.png`}
+                            alt="Passport"
+                            className="w-4 h-4 rounded-full object-cover"
+                          />
+                          <span>Passport: {passportCountry || 'UK'}</span>
+                        </div>
+                        <div className="px-4 py-2 rounded-2xl bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 text-xs font-black flex items-center gap-1.5">
+                          <span>Status: 100% Eligible</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 3-Column Fast-Track Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                      
+                      {/* Card 1: Digital Entry Permit */}
+                      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-sm space-y-4 flex flex-col justify-between">
+                        <div className="space-y-3">
+                          <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black">
+                            <QrCode className="w-5 h-5 text-[#00A86B]" />
+                          </div>
+                          <h4 className="text-base font-black text-slate-900">
+                            1. Digital Entry Authorization
+                          </h4>
+                          <p className="text-xs text-slate-500 leading-relaxed">
+                            {aiVerdict.visaType} required before boarding your flight. Fast electronic confirmation issued in minutes.
+                          </p>
+                          <div className="p-3 bg-emerald-50/70 border border-emerald-200/70 rounded-2xl">
+                            <span className="text-[11px] font-bold text-emerald-900 block">Processing Time</span>
+                            <span className="text-xs font-extrabold text-[#00A86B]">{aiVerdict.processingTime}</span>
+                          </div>
+                        </div>
+
+                        <a
+                          href={journeyDestination?.toLowerCase().includes('singapore') ? 'https://eservices.ica.gov.sg/sgarrivalcard/' : journeyDestination?.toLowerCase().includes('usa') ? 'https://esta.cbp.dhs.gov/' : journeyDestination?.toLowerCase().includes('canada') ? 'https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada/eta.html' : 'https://www.emirates.com/'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-xs"
+                        >
+                          <span>Fill Digital Entry Form</span>
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+
+                      {/* Card 2: Airport Boarding Checklist */}
+                      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-sm space-y-4 flex flex-col justify-between">
+                        <div className="space-y-3">
+                          <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-black">
+                            <Plane className="w-5 h-5 text-blue-600" />
+                          </div>
+                          <h4 className="text-base font-black text-slate-900">
+                            2. Airport Boarding Checklist
+                          </h4>
+                          <p className="text-xs text-slate-500 leading-relaxed">
+                            Have these 3 simple documents ready at airline check-in & immigration e-Gates:
+                          </p>
+                          <ul className="space-y-2 text-xs font-semibold text-slate-700">
+                            <li className="flex items-center gap-2">
+                              <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
+                              <span>Valid ePassport (6+ Months)</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
+                              <span>Confirmed Return / Onward Flight</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
+                              <span>Hotel / Stay Address Confirmation</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="p-2.5 bg-blue-50/70 border border-blue-200/70 rounded-2xl text-center">
+                          <span className="text-[11px] font-bold text-blue-900">⚡ No physical embassy visit required</span>
+                        </div>
+                      </div>
+
+                      {/* Card 3: Curated Holiday Tour Packages */}
+                      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-sm space-y-4 flex flex-col justify-between">
+                        <div className="space-y-3">
+                          <div className="w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-black">
+                            <Compass className="w-5 h-5 text-purple-600" />
+                          </div>
+                          <h4 className="text-base font-black text-slate-900">
+                            3. Popular {journeyDestination || 'Holiday'} Itineraries
+                          </h4>
+                          <p className="text-xs text-slate-500 leading-relaxed">
+                            Handpicked vacation passes & city highlights for your trip:
+                          </p>
+                          <div className="space-y-2">
+                            {currentVisitData.packages.map((pkg, idx) => (
+                              <div key={idx} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+                                <div className="min-w-0 pr-2">
+                                  <div className="text-xs font-bold text-slate-900 truncate">{pkg.name}</div>
+                                  <div className="text-[10px] text-slate-500">{pkg.days} • {pkg.price}</div>
+                                </div>
+                                <span className="text-[10px] font-black text-[#00A86B] shrink-0">Explore →</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <a
+                          href="/tours"
+                          className="w-full py-2.5 px-4 bg-[#00A86B] hover:bg-[#008f5a] text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-600/25"
+                        >
+                          <span>Explore Holiday Packages</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+
+                    </div>
+
+                  </div>
+                )}
+
                 {/* BRANCH A: PURPOSE = STUDY (8 STEPS NOTEBOOK ARCHITECTURE) */}
-                {(travelPurpose === 'study' || !travelPurpose) && (
+                {!aiVerdict.isEsta && (travelPurpose === 'study' || !travelPurpose) && (
                   <div className="space-y-6">
                     
                     {/* Top Pathway Header (Clean Modern Card) */}
@@ -4580,8 +4718,8 @@ return (
                 </div>
               )}
 
-              {/* BRANCH B: PURPOSE = VISIT (TOURIST / FAMILY - DYNAMICALLY RESOLVED) */}
-              {travelPurpose === 'visit' && (
+              {/* BRANCH B: PURPOSE = VISIT (TOURIST / FAMILY - VISA REQUIRED ONLY) ── */}
+              {!aiVerdict.isEsta && travelPurpose === 'visit' && (
                 <div className="space-y-6">
                   
                   {/* Top Pathway Header */}

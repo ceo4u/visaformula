@@ -12,7 +12,7 @@ export const GET: APIRoute = async ({ request }) => {
     const channelSlug = url.searchParams.get('channel') || 'russia-mbbs-2026';
 
     const pool = getPool();
-    const [messagesRes, channelsRes, seniorsRes, resourcesRes, statsRes] = await Promise.all([
+    const [messagesRes, channelsRes, membersRes, resourcesRes, statsRes] = await Promise.all([
       pool.query(
         `SELECT id, channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at
          FROM chat_messages
@@ -28,9 +28,17 @@ export const GET: APIRoute = async ({ request }) => {
       ),
       pool.query(
         `SELECT DISTINCT ON (name) id, name, avatar_url, university, status
-         FROM verified_seniors
-         ORDER BY name ASC, id ASC
-         LIMIT 10`
+         FROM (
+           SELECT id, business_name as name, COALESCE(profile_photo, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80') as avatar_url, COALESCE(advisor_type, 'Licensed Visa Expert') as university, 'Online' as status 
+           FROM experts 
+           WHERE business_name IS NOT NULL AND TRIM(business_name) != ''
+           UNION ALL
+           SELECT id, TRIM(first_name || ' ' || COALESCE(last_name, '')) as name, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80' as avatar_url, 'Verified Member' as university, 'Online' as status 
+           FROM seekers 
+           WHERE first_name IS NOT NULL AND TRIM(first_name) != ''
+         ) members
+         ORDER BY name ASC
+         LIMIT 8`
       ),
       pool.query(
         `SELECT DISTINCT ON (title) id, channel_slug, title, file_size, file_type, download_url
@@ -43,25 +51,25 @@ export const GET: APIRoute = async ({ request }) => {
       pool.query(
         `SELECT 
           (SELECT COUNT(*) FROM seekers) as seeker_count,
-          (SELECT COUNT(*) FROM verified_seniors) as senior_count,
+          (SELECT COUNT(*) FROM experts) as expert_count,
           (SELECT COUNT(*) FROM chat_messages WHERE channel_slug = $1) as channel_messages_count`,
         [channelSlug]
       )
     ]);
 
     const seekerCount = parseInt(statsRes.rows[0]?.seeker_count || '0', 10);
-    const seniorCount = parseInt(statsRes.rows[0]?.senior_count || '0', 10);
+    const expertCount = parseInt(statsRes.rows[0]?.expert_count || '0', 10);
 
     return new Response(JSON.stringify({
       success: true,
       channel: channelSlug,
       messages: messagesRes.rows,
       channels: channelsRes.rows,
-      seniors: seniorsRes.rows,
+      seniors: membersRes.rows,
       resources: resourcesRes.rows,
       stats: {
-        online_seniors: seniorCount > 0 ? seniorCount : 12,
-        total_members: seekerCount > 0 ? seekerCount : 480
+        online_seniors: expertCount > 0 ? expertCount : membersRes.rows.length,
+        total_members: (seekerCount + expertCount) > 0 ? (seekerCount + expertCount) : 480
       }
     }), {
       status: 200,
@@ -118,7 +126,7 @@ export const POST: APIRoute = async ({ request }) => {
         ? `${authUser.user.first_name || ''} ${authUser.user.last_name || ''}`.trim() || authUser.user.email.split('@')[0]
         : authUser.user.business_name || 'Verified Expert';
       finalUserId = `${authUser.type}_${authUser.user.id}`;
-      finalAvatar = authUser.user.profile_photo_url || authUser.user.avatar_url || finalAvatar;
+      finalAvatar = authUser.user.profile_photo || authUser.user.avatar_url || finalAvatar;
       if (authUser.type === 'expert') isSenior = true;
     } else if (sender_name && sender_name !== 'Aman Verma') {
       finalSenderName = sender_name.trim();

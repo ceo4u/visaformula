@@ -80,7 +80,7 @@ export default function CommunityHub() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [seniors, setSeniors] = useState<SeniorMember[]>([]);
   const [resources, setResources] = useState<PinnedFile[]>([]);
-  const [stats, setStats] = useState<CommunityStats>({ online_seniors: 5, total_members: 480 });
+  const [stats, setStats] = useState<CommunityStats>({ online_seniors: 8, total_members: 480 });
   const [loading, setLoading] = useState(true);
 
   // Search & Filter
@@ -89,9 +89,7 @@ export default function CommunityHub() {
 
   // User Auth State
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
-  const [guestName, setGuestName] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [showGuestNameModal, setShowGuestNameModal] = useState(false);
 
   // Composer
   const [inputText, setInputText] = useState('');
@@ -115,19 +113,19 @@ export default function CommunityHub() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // 1. Fetch Auth State
+  // 1. Fetch Auth State from real Session / LocalStorage
   const checkAuth = async () => {
     try {
       if (typeof window !== 'undefined') {
         const stored = localStorage.getItem('visaformula_user');
         if (stored && stored !== 'null') {
           const parsed = JSON.parse(stored);
-          if (parsed && (parsed.displayName || parsed.email)) {
+          if (parsed && (parsed.displayName || parsed.email || parsed.first_name)) {
             setCurrentUser({
-              uid: parsed.uid || `seeker_${parsed.id || '1'}`,
-              displayName: parsed.displayName || parsed.first_name || parsed.email?.split('@')[0] || 'Member',
+              uid: parsed.uid || `user_${parsed.id || 'current'}`,
+              displayName: parsed.displayName || `${parsed.first_name || ''} ${parsed.last_name || ''}`.trim() || parsed.email?.split('@')[0] || 'Member',
               email: parsed.email,
-              photoURL: parsed.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+              photoURL: parsed.photoURL || parsed.profile_photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
             });
           }
         }
@@ -140,7 +138,7 @@ export default function CommunityHub() {
           uid: data.user.uid,
           displayName: data.user.displayName || 'Member',
           email: data.user.email,
-          photoURL: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+          photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
         });
       }
     } catch (err) {
@@ -148,7 +146,7 @@ export default function CommunityHub() {
     }
   };
 
-  // 2. Fetch Live Feed from Backend
+  // 2. Fetch Live Feed from PostgreSQL Backend
   const fetchFeed = async (channelSlug: string, isPolling = false) => {
     try {
       if (!isPolling) setLoading(true);
@@ -198,14 +196,14 @@ export default function CommunityHub() {
     scrollToBottom();
   }, [messages]);
 
-  // 3. Send Message Action
+  // 3. Send Message to PostgreSQL Backend
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!inputText.trim() || sending) return;
 
     const senderDisplayName = currentUser
       ? currentUser.displayName
-      : guestName.trim() || 'Aman Verma';
+      : 'Guest Member';
     const senderAvatar = currentUser?.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
     const userId = currentUser ? currentUser.uid : 'guest-user';
 
@@ -257,7 +255,7 @@ export default function CommunityHub() {
     }
   };
 
-  // 4. Emoji Reaction Action
+  // 4. Emoji Reaction Action (Persisted to Database)
   const handleReaction = async (messageId: number, emoji: string) => {
     setMessages((prev) =>
       prev.map((msg) => {
@@ -443,7 +441,7 @@ export default function CommunityHub() {
 
           </div>
 
-          {/* Bottom User Profile Card (Dynamic Real User from Auth) */}
+          {/* Bottom User Profile Card (Dynamic Real Logged-in User or Guest) */}
           <div className="relative pt-3 mt-2 border-t border-slate-100">
             <div className="flex items-center justify-between">
               <div
@@ -451,20 +449,26 @@ export default function CommunityHub() {
                 className="flex items-center gap-2.5 min-w-0 cursor-pointer group"
               >
                 <div className="relative shrink-0">
-                  <img
-                    src={currentUser?.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
-                    alt={currentUser ? currentUser.displayName : 'Aman Verma'}
-                    className="w-9 h-9 rounded-full object-cover border border-slate-200 group-hover:ring-2 group-hover:ring-[#00A86B]/40 transition-all"
-                  />
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#00A86B] ring-2 ring-white" />
+                  {currentUser?.photoURL ? (
+                    <img
+                      src={currentUser.photoURL}
+                      alt={currentUser.displayName}
+                      className="w-9 h-9 rounded-full object-cover border border-slate-200 group-hover:ring-2 group-hover:ring-[#00A86B]/40 transition-all"
+                    />
+                  ) : (
+                    <div className="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs border border-slate-200 group-hover:ring-2 group-hover:ring-[#00A86B]/40 transition-all">
+                      {currentUser ? currentUser.displayName.slice(0, 2).toUpperCase() : <UserIcon className="w-4 h-4 text-slate-400" />}
+                    </div>
+                  )}
+                  <span className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full ring-2 ring-white ${currentUser ? 'bg-[#00A86B]' : 'bg-slate-400'}`} />
                 </div>
                 <div className="min-w-0 truncate">
                   <div className="text-xs font-black text-slate-900 truncate">
-                    {currentUser ? currentUser.displayName : 'Aman Verma'}
+                    {currentUser ? currentUser.displayName : 'Guest Visitor'}
                   </div>
                   <div className="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
-                    <span>{currentUser ? 'Online (Verified)' : 'Online (Member)'}</span>
+                    <span className={`w-1.5 h-1.5 rounded-full ${currentUser ? 'bg-[#00A86B]' : 'bg-slate-400'}`} />
+                    <span>{currentUser ? 'Online (Verified)' : 'Click to Log In'}</span>
                   </div>
                 </div>
               </div>
@@ -553,7 +557,7 @@ export default function CommunityHub() {
                 <span className="text-slate-300">|</span>
                 <span className="flex items-center gap-1.5 text-xs font-bold text-slate-600">
                   <span className="w-2 h-2 rounded-full bg-[#00A86B]" />
-                  {seniors.length || 5} Seniors Online
+                  {stats.online_seniors || seniors.length || 8} Seniors Online
                 </span>
               </div>
             </div>
@@ -785,7 +789,7 @@ export default function CommunityHub() {
            ───────────────────────────────────────────────────────────── */}
         <aside className="lg:col-span-3 xl:col-span-3 flex flex-col gap-3.5 overflow-y-auto no-scrollbar shrink-0">
           
-          {/* Card 1: Online Members - Dynamic from PostgreSQL */}
+          {/* Card 1: Online Members - Real from PostgreSQL */}
           <div className="bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-4 sm:p-5 space-y-3.5">
             <div className="flex items-center justify-between pb-1">
               <div className="flex items-center gap-2">
@@ -795,15 +799,15 @@ export default function CommunityHub() {
                 </h3>
               </div>
               <span className="text-[11px] font-black text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
-                {seniors.length || 5}
+                {stats.online_seniors || seniors.length || 8}
               </span>
             </div>
 
             <div className="flex items-center justify-between text-xs font-bold text-slate-400">
-              <span>Verified Seniors</span>
+              <span>Verified Experts & Members</span>
               <button
                 type="button"
-                onClick={() => showToast('Viewing all verified seniors directory')}
+                onClick={() => showToast('Viewing all verified members directory')}
                 className="text-[#00A86B] text-[11px] font-bold hover:underline cursor-pointer"
               >
                 See all
@@ -837,7 +841,7 @@ export default function CommunityHub() {
                       </div>
                       <div className="flex items-center gap-1 text-[10px] font-bold text-[#00A86B]">
                         <Star className="w-2.5 h-2.5 fill-current" />
-                        <span>Verified Senior</span>
+                        <span>{s.university || 'Verified Advisor'}</span>
                       </div>
                     </div>
                   </div>

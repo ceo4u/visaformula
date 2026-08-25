@@ -2,10 +2,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Hash, Search, Paperclip, Smile, Star, Users,
-  Bell, MoreVertical, X,
-  FileText, MessageSquare, Check,
+  Bell, MoreVertical, X, Lock, Sparkles, CheckCircle2,
+  FileText, MessageSquare, Check, ArrowRight,
   Mic, Volume2, PhoneCall, Home, Megaphone, 
-  GraduationCap, Heart, Building2, Luggage, UserCheck, Menu
+  GraduationCap, Heart, Building2, Luggage, UserCheck, Menu, ShieldCheck
 } from 'lucide-react';
 
 interface Channel {
@@ -16,6 +16,8 @@ interface Channel {
   icon?: string;
   badge_icon?: string;
   unread_count?: number;
+  description: string;
+  members_count: string;
 }
 
 interface ChatMessage {
@@ -55,9 +57,33 @@ const CATEGORIES = [
 ];
 
 const COMMUNITY_CHANNELS: Channel[] = [
-  { id: 1, slug: 'russia-mbbs-2026', name: 'russia-mbbs-2026', category: 'MBBS Abroad Guide', badge_icon: 'users' },
-  { id: 2, slug: 'delhi-to-moscow-flights', name: 'delhi-to-moscow-flights', category: 'Travel & Accommodation', badge_icon: 'pin' },
-  { id: 3, slug: 'dorm-sharing', name: 'dorm-sharing', category: 'Travel & Accommodation', badge_icon: 'building' },
+  { 
+    id: 1, 
+    slug: 'russia-mbbs-2026', 
+    name: 'russia-mbbs-2026', 
+    category: 'MBBS Abroad Guide', 
+    badge_icon: 'users',
+    description: 'Official verified student network for Russia MBBS 2026 admissions, apostille verification, hostel accommodations, and winter preparation.',
+    members_count: '1,420+ Members'
+  },
+  { 
+    id: 2, 
+    slug: 'delhi-to-moscow-flights', 
+    name: 'delhi-to-moscow-flights', 
+    category: 'Travel & Accommodation', 
+    badge_icon: 'pin',
+    description: 'Group flight bookings, baggage allowances, student transit visa tips, and finding flight companions from Delhi, Mumbai, and Chennai.',
+    members_count: '680+ Members'
+  },
+  { 
+    id: 3, 
+    slug: 'dorm-sharing', 
+    name: 'dorm-sharing', 
+    category: 'Travel & Accommodation', 
+    badge_icon: 'building',
+    description: 'Find compatible hostel roommates, off-campus shared flats, and verified university dormitory lease guidance.',
+    members_count: '890+ Members'
+  },
 ];
 
 const SENIOR_MEMBERS: SeniorMember[] = [
@@ -122,6 +148,8 @@ const INITIAL_MESSAGES: ChatMessage[] = [
 
 export default function CommunityHub() {
   const [activeChannel, setActiveChannel] = useState('russia-mbbs-2026');
+  // State tracking joined channels
+  const [joinedChannels, setJoinedChannels] = useState<string[]>([]);
   const [channelSearch, setChannelSearch] = useState('');
   const [inputText, setInputText] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
@@ -143,6 +171,13 @@ export default function CommunityHub() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const handleJoinChannel = (slug: string) => {
+    if (!joinedChannels.includes(slug)) {
+      setJoinedChannels((prev) => [...prev, slug]);
+      showToast(`🎉 You joined #${slug}! Welcome to the group.`);
+    }
+  };
 
   const handleSendMessage = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -185,6 +220,9 @@ export default function CommunityHub() {
     );
   };
 
+  const currentChannelObj = COMMUNITY_CHANNELS.find((c) => c.slug === activeChannel) || COMMUNITY_CHANNELS[0];
+  const isCurrentChannelJoined = joinedChannels.includes(activeChannel);
+
   return (
     <div
       className="min-h-screen w-full bg-[#eef2f6] p-2.5 sm:p-4 lg:p-6 flex items-center justify-center font-sans antialiased text-slate-900 select-none overflow-x-hidden"
@@ -204,7 +242,7 @@ export default function CommunityHub() {
           
           <div className="space-y-4 overflow-y-auto no-scrollbar pr-1">
             
-            {/* Top Row: macOS Traffic Lights + TravlTik Logo */}
+            {/* Top Row: macOS Traffic Lights + Clean TravlTik Community Emblem */}
             <div className="space-y-3 pb-1">
               {/* Traffic Light Dots */}
               <div className="flex items-center justify-between">
@@ -220,18 +258,16 @@ export default function CommunityHub() {
                 )}
               </div>
 
-              {/* Logo Header */}
-              <a href="/" className="flex items-center gap-2.5 pt-1 group">
-                <img
-                  src="/logo.png?v=8"
-                  alt="TravlTik"
-                  className="h-9 w-auto object-contain transition-transform group-hover:scale-105"
-                />
+              {/* Exact Brand Header matching Screenshot */}
+              <a href="/" className="flex items-center gap-3 pt-1 group">
+                <div className="w-10 h-10 rounded-full bg-[#00A86B] text-white flex items-center justify-center shadow-xs shrink-0 group-hover:scale-105 transition-transform">
+                  <GraduationCap className="w-5 h-5" />
+                </div>
                 <div className="flex flex-col">
                   <span className="text-base font-black text-slate-900 leading-tight">
                     TravlTik
                   </span>
-                  <span className="text-[11px] font-semibold text-slate-400">
+                  <span className="text-[11px] font-semibold text-slate-400 mt-0.5">
                     Community
                   </span>
                 </div>
@@ -262,6 +298,8 @@ export default function CommunityHub() {
               <div className="space-y-1">
                 {COMMUNITY_CHANNELS.map((ch) => {
                   const isActive = activeChannel === ch.slug;
+                  const isJoined = joinedChannels.includes(ch.slug);
+
                   return (
                     <button
                       key={ch.id}
@@ -281,15 +319,22 @@ export default function CommunityHub() {
                         <span className="truncate">{ch.name}</span>
                       </div>
 
-                      {ch.badge_icon === 'users' && (
-                        <Users className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                      )}
-                      {ch.badge_icon === 'pin' && (
-                        <Megaphone className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                      )}
-                      {ch.badge_icon === 'building' && (
-                        <Building2 className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                      )}
+                      <div className="flex items-center gap-1.5">
+                        {!isJoined && !isActive && (
+                          <span className="text-[9px] bg-slate-100 text-slate-500 font-bold px-1.5 py-0.5 rounded-md">
+                            Join
+                          </span>
+                        )}
+                        {ch.badge_icon === 'users' && (
+                          <Users className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                        )}
+                        {ch.badge_icon === 'pin' && (
+                          <Megaphone className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                        )}
+                        {ch.badge_icon === 'building' && (
+                          <Building2 className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                        )}
+                      </div>
                     </button>
                   );
                 })}
@@ -347,7 +392,7 @@ export default function CommunityHub() {
         </aside>
 
         {/* ─────────────────────────────────────────────────────────────
-            COLUMN 2: CENTER CHAT STREAM (6 COLS)
+            COLUMN 2: CENTER CHAT STREAM (6 COLS) OR JOIN GROUP GATE
            ───────────────────────────────────────────────────────────── */}
         <main className="lg:col-span-6 xl:col-span-6 flex flex-col justify-between overflow-hidden gap-3.5 min-w-0">
           
@@ -399,140 +444,209 @@ export default function CommunityHub() {
             </div>
           </div>
 
-          {/* Floating Chat Messages Area */}
-          <div className="flex-1 overflow-y-auto p-1 sm:p-2 space-y-4 no-scrollbar">
-            {messages.map((msg) => {
-              const isSelf = msg.is_self;
-
-              return (
-                <div
-                  key={msg.id}
-                  className={`flex items-start gap-3 w-full ${
-                    isSelf ? 'justify-end' : 'justify-start'
-                  }`}
-                >
-                  {/* Avatar Left (if not self) */}
-                  {!isSelf && (
-                    <img
-                      src={msg.sender_avatar}
-                      alt={msg.sender_name}
-                      className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
-                    />
-                  )}
-
-                  {/* Message Bubble Card */}
-                  <div
-                    className={`relative rounded-[26px] p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border transition-all max-w-[85%] sm:max-w-[78%] ${
-                      isSelf
-                        ? 'bg-[#f0fbf7] border-emerald-100/90 text-slate-900 rounded-tr-sm'
-                        : 'bg-white border-slate-200/80 text-slate-900 rounded-tl-sm'
-                    }`}
-                  >
-                    {/* Header: Name + Verified Senior Badge */}
-                    <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                      <span className="text-xs sm:text-[13px] font-black text-slate-900">
-                        {msg.sender_name}
-                      </span>
-                      {msg.is_verified_senior && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.2 rounded-full">
-                          <Star className="w-2.5 h-2.5 fill-current" />
-                          <span>Verified Senior</span>
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Content Text */}
-                    <p className="text-xs sm:text-[13px] font-medium text-slate-700 leading-relaxed whitespace-pre-line">
-                      {msg.content.includes('@Priya Nair') ? (
-                        <>
-                          <span className="text-[#00A86B] font-bold">@Priya Nair</span>
-                          {msg.content.replace('@Priya Nair', '')}
-                        </>
-                      ) : (
-                        msg.content
-                      )}
-                    </p>
-
-                    {/* Timestamp */}
-                    <div className="text-[10px] font-semibold text-slate-400 mt-2">
-                      {msg.time}
-                    </div>
-
-                    {/* Floating Reaction Pill (Bottom Right) */}
-                    {msg.reactions && msg.reactions.length > 0 && (
-                      <div className="absolute -bottom-3 right-4 flex items-center gap-1">
-                        {msg.reactions.map((r, i) => (
-                          <button
-                            key={i}
-                            type="button"
-                            onClick={() => handleReaction(msg.id, r.emoji)}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-slate-200 shadow-sm text-xs font-bold text-slate-800 hover:scale-105 transition-transform cursor-pointer"
-                          >
-                            <span>{r.emoji}</span>
-                            <span className="text-[11px] font-black text-slate-600">{r.count}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Avatar Right (if self) */}
-                  {isSelf && (
-                    <img
-                      src={msg.sender_avatar}
-                      alt={msg.sender_name}
-                      className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
-                    />
-                  )}
+          {/* ══════════════════════════════════════════════════════════
+              BRANCH A: USER HAS NOT JOINED GROUP YET -> SHOW JOIN GATE
+             ══════════════════════════════════════════════════════════ */}
+          {!isCurrentChannelJoined ? (
+            <div className="flex-1 bg-white rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.02)] p-6 sm:p-10 flex flex-col items-center justify-center text-center space-y-6 animate-fadeIn overflow-y-auto">
+              
+              {/* Group Emblem */}
+              <div className="relative">
+                <div className="w-20 h-20 rounded-3xl bg-[#00A86B]/10 border border-[#00A86B]/20 flex items-center justify-center text-[#00A86B] shadow-inner-sm">
+                  <Hash className="w-10 h-10" />
                 </div>
-              );
-            })}
-            <div ref={messagesEndRef} />
-          </div>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#00A86B] text-white flex items-center justify-center shadow-md">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+              </div>
 
-          {/* Bottom Floating Composer Card */}
-          <form
-            onSubmit={handleSendMessage}
-            className="bg-white rounded-[26px] sm:rounded-[30px] border border-slate-200/80 shadow-[0_6px_25px_rgba(0,0,0,0.03)] p-2 sm:p-2.5 flex items-center gap-2 shrink-0"
-          >
-            <button
-              type="button"
-              onClick={() => showToast('Attachment options')}
-              className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors shrink-0"
-              title="Attach File"
-            >
-              <Paperclip className="w-4 h-4" />
-            </button>
+              {/* Title & Info */}
+              <div className="space-y-2 max-w-md">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200/80 text-xs font-black">
+                  <span className="w-2 h-2 rounded-full bg-[#00A86B] animate-pulse" />
+                  <span>Official University Community</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                  Join #{currentChannelObj.name}
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium">
+                  {currentChannelObj.description}
+                </p>
+              </div>
 
-            <input
-              ref={inputRef}
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 bg-transparent border-none text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none px-2"
-            />
+              {/* Highlights Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full max-w-md text-left">
+                <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200/70">
+                  <div className="text-xs font-black text-slate-900">85 Seniors</div>
+                  <div className="text-[11px] text-slate-500 font-medium">Live Q&A Mentorship</div>
+                </div>
+                <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200/70">
+                  <div className="text-xs font-black text-slate-900">{currentChannelObj.members_count}</div>
+                  <div className="text-[11px] text-slate-500 font-medium">2026 Batch Peers</div>
+                </div>
+                <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 col-span-2 sm:col-span-1">
+                  <div className="text-xs font-black text-slate-900">Official Files</div>
+                  <div className="text-[11px] text-slate-500 font-medium">Apostille Guides</div>
+                </div>
+              </div>
 
-            <button
-              type="button"
-              onClick={() => {
-                setInputText((prev) => prev + ' 👋');
-                inputRef.current?.focus();
-              }}
-              className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors shrink-0"
-              title="Emoji"
-            >
-              <Smile className="w-4 h-4" />
-            </button>
+              {/* Join Action CTA */}
+              <div className="space-y-3 w-full max-w-sm">
+                <button
+                  type="button"
+                  onClick={() => handleJoinChannel(activeChannel)}
+                  className="w-full py-3.5 bg-[#00A86B] hover:bg-[#008f5a] text-white text-sm font-black rounded-2xl shadow-md shadow-emerald-600/30 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+                >
+                  <span>Join Community Group</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <p className="text-[11px] text-slate-400 font-medium">
+                  Free to join &bull; Verified student network &bull; Moderated 24/7
+                </p>
+              </div>
 
-            <button
-              type="submit"
-              disabled={!inputText.trim()}
-              className="px-5 py-2.5 bg-[#00A86B] hover:bg-[#008f5a] disabled:opacity-40 text-white text-xs font-black rounded-2xl shadow-sm shadow-emerald-600/30 transition-all cursor-pointer shrink-0 active:scale-95"
-            >
-              Send
-            </button>
-          </form>
+            </div>
+          ) : (
+            /* ══════════════════════════════════════════════════════════
+                BRANCH B: USER HAS JOINED -> FULL INTERACTIVE CHAT STREAM
+               ══════════════════════════════════════════════════════════ */
+            <>
+              {/* Floating Chat Messages Area */}
+              <div className="flex-1 overflow-y-auto p-1 sm:p-2 space-y-4 no-scrollbar">
+                {messages.map((msg) => {
+                  const isSelf = msg.is_self;
+
+                  return (
+                    <div
+                      key={msg.id}
+                      className={`flex items-start gap-3 w-full ${
+                        isSelf ? 'justify-end' : 'justify-start'
+                      }`}
+                    >
+                      {/* Avatar Left (if not self) */}
+                      {!isSelf && (
+                        <img
+                          src={msg.sender_avatar}
+                          alt={msg.sender_name}
+                          className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
+                        />
+                      )}
+
+                      {/* Message Bubble Card */}
+                      <div
+                        className={`relative rounded-[26px] p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border transition-all max-w-[85%] sm:max-w-[78%] ${
+                          isSelf
+                            ? 'bg-[#f0fbf7] border-emerald-100/90 text-slate-900 rounded-tr-sm'
+                            : 'bg-white border-slate-200/80 text-slate-900 rounded-tl-sm'
+                        }`}
+                      >
+                        {/* Header: Name + Verified Senior Badge */}
+                        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                          <span className="text-xs sm:text-[13px] font-black text-slate-900">
+                            {msg.sender_name}
+                          </span>
+                          {msg.is_verified_senior && (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.2 rounded-full">
+                              <Star className="w-2.5 h-2.5 fill-current" />
+                              <span>Verified Senior</span>
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Content Text */}
+                        <p className="text-xs sm:text-[13px] font-medium text-slate-700 leading-relaxed whitespace-pre-line">
+                          {msg.content.includes('@Priya Nair') ? (
+                            <>
+                              <span className="text-[#00A86B] font-bold">@Priya Nair</span>
+                              {msg.content.replace('@Priya Nair', '')}
+                            </>
+                          ) : (
+                            msg.content
+                          )}
+                        </p>
+
+                        {/* Timestamp */}
+                        <div className="text-[10px] font-semibold text-slate-400 mt-2">
+                          {msg.time}
+                        </div>
+
+                        {/* Floating Reaction Pill (Bottom Right) */}
+                        {msg.reactions && msg.reactions.length > 0 && (
+                          <div className="absolute -bottom-3 right-4 flex items-center gap-1">
+                            {msg.reactions.map((r, i) => (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={() => handleReaction(msg.id, r.emoji)}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-slate-200 shadow-sm text-xs font-bold text-slate-800 hover:scale-105 transition-transform cursor-pointer"
+                              >
+                                <span>{r.emoji}</span>
+                                <span className="text-[11px] font-black text-slate-600">{r.count}</span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Avatar Right (if self) */}
+                      {isSelf && (
+                        <img
+                          src={msg.sender_avatar}
+                          alt={msg.sender_name}
+                          className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Bottom Floating Composer Card */}
+              <form
+                onSubmit={handleSendMessage}
+                className="bg-white rounded-[26px] sm:rounded-[30px] border border-slate-200/80 shadow-[0_6px_25px_rgba(0,0,0,0.03)] p-2 sm:p-2.5 flex items-center gap-2 shrink-0"
+              >
+                <button
+                  type="button"
+                  onClick={() => showToast('Attachment options')}
+                  className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors shrink-0"
+                  title="Attach File"
+                >
+                  <Paperclip className="w-4 h-4" />
+                </button>
+
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  placeholder="Type your message..."
+                  className="flex-1 bg-transparent border-none text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none px-2"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInputText((prev) => prev + ' 👋');
+                    inputRef.current?.focus();
+                  }}
+                  className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors shrink-0"
+                  title="Emoji"
+                >
+                  <Smile className="w-4 h-4" />
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={!inputText.trim()}
+                  className="px-5 py-2.5 bg-[#00A86B] hover:bg-[#008f5a] disabled:opacity-40 text-white text-xs font-black rounded-2xl shadow-sm shadow-emerald-600/30 transition-all cursor-pointer shrink-0 active:scale-95"
+                >
+                  Send
+                </button>
+              </form>
+            </>
+          )}
 
         </main>
 

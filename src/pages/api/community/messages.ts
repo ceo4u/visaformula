@@ -26,9 +26,9 @@ export const GET: APIRoute = async ({ request }) => {
          ORDER BY category ASC, id ASC`
       ),
       pool.query(
-        `SELECT id, name, avatar_url, university, status
+        `SELECT DISTINCT ON (name) id, name, avatar_url, university, status
          FROM verified_seniors
-         ORDER BY id ASC`
+         ORDER BY name ASC, id ASC`
       ),
       pool.query(
         `SELECT id, channel_slug, title, file_size, file_type, download_url

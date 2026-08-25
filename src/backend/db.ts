@@ -584,6 +584,7 @@ export async function runMigrations() {
       status VARCHAR(50) DEFAULT 'Online',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_seniors_name ON verified_seniors (name);
 
     CREATE TABLE IF NOT EXISTS pinned_resources (
       id SERIAL PRIMARY KEY,
@@ -615,7 +616,7 @@ export async function runMigrations() {
       ('Vikram Joshi', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', 'Sechenov First MSMU (5th Year)', 'Online'),
       ('Simran Kaur', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80', 'Pavlov First St. Petersburg (2nd Year)', 'Online'),
       ('Aditya Kumar', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80', 'Bashkir State Medical University (Intern)', 'Online')
-    ON CONFLICT DO NOTHING;
+    ON CONFLICT (name) DO NOTHING;
 
     -- Seed pinned resources if empty
     INSERT INTO pinned_resources (channel_slug, title, file_size, file_type, download_url)

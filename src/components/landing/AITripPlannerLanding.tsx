@@ -520,6 +520,119 @@ const getDestinationStudyData = (destination: string) => {
       ]
     };
   }
+  if (d.includes('russia') || d.includes('moscow') || d.includes('saint petersburg')) {
+    return {
+      country: 'Russia',
+      currency: 'RUB (₽) / USD ($)',
+      currencySymbol: '₽',
+      admissionDocName: 'Ministry of Internal Affairs (MVD) Official Invitation & Admission Letter',
+      defaultUni: 'Moscow State University (MSU)',
+      defaultFee: '$4,500 USD (~420,000 RUB) / yr',
+      defaultLiving: '$2,400 USD (~220,000 RUB) / yr',
+      totalProof: '$6,900 USD (~640,000 RUB)',
+      casNumber: 'MVD-RU-MSU-2026-991',
+      unis: [
+        { name: 'Moscow State University (MSU)', city: 'Moscow', rank: '#87 Global', fee: '$4,800 USD/yr', accept: 'High Match' },
+        { name: 'Sechenov First MSMU', city: 'Moscow', rank: '#1 Medical in Russia', fee: '$6,200 USD/yr', accept: 'High Match' },
+        { name: 'Kazan Federal University', city: 'Kazan, Tatarstan', rank: 'Top Central Medical', fee: '$4,200 USD/yr', accept: 'High Match' },
+        { name: 'Pavlov First St. Petersburg SPMU', city: 'St. Petersburg', rank: 'Top Historic Medical', fee: '$5,100 USD/yr', accept: 'High Match' },
+      ],
+      loanPartners: 'SBI Global Student Loan, Canara Bank, HDFC Credila',
+      insurance: 'Russian Compulsory Voluntary Medical Insurance (VMI)',
+      vfsText: 'Russian Visa Application Centre (VFS Global / Russian Embassy)',
+      defaultVisaType: 'Russian National Student Visa (Category D - 90 Days Entry, Renewable)',
+      defaultConditions: [
+        'Apostilled educational certificates & NEET score mandatory',
+        'Certified HIV & Medical Fitness test within 3 months',
+        'Migration registration (FMS/MVD) required within 7 working days',
+        'Part-time work permitted during studies under Federal Law No. 16-FZ'
+      ]
+    };
+  }
+  if (d.includes('singapore')) {
+    return {
+      country: 'Singapore',
+      currency: 'SGD ($)',
+      currencySymbol: 'SGD $',
+      admissionDocName: 'Student Pass In-Principle Approval (IPA Letter) via SOLAR',
+      defaultUni: 'National University of Singapore (NUS)',
+      defaultFee: 'SGD $32,000 / yr',
+      defaultLiving: 'SGD $14,000 / yr',
+      totalProof: 'SGD $46,000 (~$34,500 USD)',
+      casNumber: 'ICA-SOLAR-SG-8821',
+      unis: [
+        { name: 'National University of Singapore (NUS)', city: 'Singapore', rank: '#8 Global', fee: 'SGD $32,000/yr', accept: 'Competitive' },
+        { name: 'Nanyang Technological University (NTU)', city: 'Singapore', rank: '#15 Global', fee: 'SGD $31,000/yr', accept: 'Competitive' },
+        { name: 'Singapore Management University (SMU)', city: 'Singapore', rank: 'Top Business & Law', fee: 'SGD $28,000/yr', accept: 'High Match' },
+        { name: 'Singapore University of Technology & Design (SUTD)', city: 'Singapore', rank: 'Top Tech & AI', fee: 'SGD $29,000/yr', accept: 'High Match' },
+      ],
+      loanPartners: 'DBS Bank, POSB, HDFC Credila, Prodigy Finance',
+      insurance: 'University Mandatory Medical Insurance Scheme (Group H&S)',
+      vfsText: 'Immigration & Checkpoints Authority (ICA Singapore / SOLAR)',
+      defaultVisaType: 'Singapore Student Pass (ICA SOLAR Portal)',
+      defaultConditions: [
+        'Work up to 16h/week during term time for MOM approved institutions',
+        'Undergo mandatory ICA medical checkup upon arrival in Singapore',
+        'Digital Student Pass issued via MyICA portal'
+      ]
+    };
+  }
+  if (d.includes('france') || d.includes('paris')) {
+    return {
+      country: 'France',
+      currency: 'EUR (€)',
+      currencySymbol: '€',
+      admissionDocName: 'EEF Attestation & Campus France Acceptance Letter',
+      defaultUni: 'Sorbonne University Paris',
+      defaultFee: '€3,770 (PG) / yr',
+      defaultLiving: '€7,380 / yr (€615/month)',
+      totalProof: '€11,150 EUR (~$12,000 USD)',
+      casNumber: 'EEF-PARIS-2026-771',
+      unis: [
+        { name: 'Sorbonne University', city: 'Paris', rank: '#59 Global', fee: '€3,770/yr', accept: 'High Match' },
+        { name: 'Paris-Saclay University', city: 'Paris-Saclay', rank: '#15 Global Science', fee: '€3,770/yr', accept: 'Competitive' },
+        { name: 'HEC Paris', city: 'Jouy-en-Josas', rank: '#1 Global Business', fee: '€29,000/yr', accept: 'Competitive' },
+        { name: 'INSA Lyon', city: 'Lyon', rank: 'Top French Engineering', fee: '€3,770/yr', accept: 'High Match' },
+      ],
+      loanPartners: 'BNP Paribas, Société Générale, HDFC Credila',
+      insurance: 'French Social Security (Sécurité Sociale - 100% Free for Students)',
+      vfsText: 'VFS Global France Visa Centre / TLScontact France',
+      defaultVisaType: 'VLS-TS (Long-Stay Visa Equivalent to Residence Permit)',
+      defaultConditions: [
+        'Work up to 60% of annual legal working time (964 hours/year)',
+        'Validate VLS-TS online via ANEF portal within 3 months of arrival',
+        'Eligible for CAF housing allowance (APL up to €200/month)'
+      ]
+    };
+  }
+  if (d.includes('japan') || d.includes('tokyo')) {
+    return {
+      country: 'Japan',
+      currency: 'JPY (¥)',
+      currencySymbol: '¥',
+      admissionDocName: 'Certificate of Eligibility (COE) from Japanese Immigration',
+      defaultUni: 'University of Tokyo',
+      defaultFee: '¥535,800 (~$3,600 USD) / yr',
+      defaultLiving: '¥1,200,000 (~$8,000 USD) / yr',
+      totalProof: '¥1,735,800 JPY (~$11,600 USD)',
+      casNumber: 'COE-TOKYO-ISA-9941',
+      unis: [
+        { name: 'University of Tokyo', city: 'Tokyo', rank: '#28 Global', fee: '¥535,800/yr', accept: 'Competitive' },
+        { name: 'Kyoto University', city: 'Kyoto', rank: '#46 Global', fee: '¥535,800/yr', accept: 'High Match' },
+        { name: 'Osaka University', city: 'Osaka', rank: '#80 Global', fee: '¥535,800/yr', accept: 'High Match' },
+        { name: 'Waseda University', city: 'Tokyo', rank: '#1 Private in Japan', fee: '¥1,100,000/yr', accept: 'High Match' },
+      ],
+      loanPartners: 'JASSO Scholarships, MEXT Fellowships, HDFC Credila',
+      insurance: 'Japanese National Health Insurance (NHI - 70% coverage)',
+      vfsText: 'VFS Japan Visa Application Centre / Embassy of Japan',
+      defaultVisaType: 'College Student Visa (Ryuugaku)',
+      defaultConditions: [
+        'Work up to 28 hours/week with Shikakugai Katsudou Kyoka work permit',
+        'Register local residence (Juminhyo) at Ward Office within 14 days',
+        'Receive Residence Card (Zairyu Card) at Tokyo/Osaka airport upon arrival'
+      ]
+    };
+  }
   // Default: Canada
   return {
     country: 'Canada',
@@ -560,6 +673,16 @@ const getDestinationVisitData = (destination: string) => {
       ],
       fundsText: 'Bank statement showing minimum AED 11,000 (~$3,000 USD) available funds.',
       vfsSlotText: 'Book VFS Dubai Biometrics / Apply Direct Online e-Visa'
+    };
+  }
+  if (d.includes('russia') || d.includes('moscow')) {
+    return {
+      packages: [
+        { name: 'Moscow Red Square & St. Petersburg Imperial Tour', price: '₽95,000 (~$1,050 USD)', days: '7 Days / 6 Nights' },
+        { name: 'Baikal Lake & Golden Ring Heritage Circuit', price: '₽145,000 (~$1,600 USD)', days: '9 Days / 8 Nights' }
+      ],
+      fundsText: 'Official Tourist Voucher & Confirmation from certified Russian tour operator.',
+      vfsSlotText: 'Book Russian Visa Application Centre (VFS Global) Appointment'
     };
   }
   if (d.includes('uk') || d.includes('united kingdom') || d.includes('london')) {
@@ -618,10 +741,10 @@ const getAIVisaVerdict = (passport: string, destination: string, purpose: string
   const d = (destination || 'United Kingdom').toLowerCase().trim();
   const pur = (purpose || 'study').toLowerCase().trim();
 
-  // Tier 1 High Mobility / ESTA eligible passports
+  // Tier 1 High Mobility / ESTA / VWP eligible passports
   const isEstaPassport = ['united states', 'usa', 'us', 'united kingdom', 'uk', 'canada', 'australia', 'germany', 'france', 'japan', 'singapore', 'ireland', 'new zealand', 'italy', 'spain', 'netherlands', 'sweden', 'norway', 'switzerland', 'south korea'].some(c => p.includes(c));
 
-  // STUDY PURPOSE
+  // 1. STUDY PURPOSE
   if (pur === 'study') {
     const studyData = getDestinationStudyData(destination);
     return {
@@ -631,7 +754,7 @@ const getAIVisaVerdict = (passport: string, destination: string, purpose: string
       headline: `Valid Official Student Visa Required for ${destination}`,
       summary: `Based on your ${passport || 'Indian'} passport and Study Abroad purpose, you need to apply for a valid ${studyData.defaultVisaType} before departing for ${destination}.`,
       actionMsg: `Here is your AI-researched ideal 8-step pathway with tied-up university matches, real tuition fees, living costs, and VFS biometrics checklist:`,
-      processingTime: '15 – 21 Working Days',
+      processingTime: studyData.country === 'Russia' ? '10 – 15 Working Days' : studyData.country === 'Germany' ? '4 – 6 Weeks (APS Verified)' : '15 – 21 Working Days',
       fundsRequired: studyData.totalProof,
       visaType: studyData.defaultVisaType,
       admissionDoc: studyData.admissionDocName,
@@ -639,8 +762,38 @@ const getAIVisaVerdict = (passport: string, destination: string, purpose: string
     };
   }
 
-  // WORK PURPOSE
+  // 2. WORK PURPOSE
   if (pur === 'work') {
+    let workVisaName = `${destination} Skilled Worker / Employment Visa`;
+    let workDocName = 'Certificate of Sponsorship / LMIA / Work Permit';
+    let workTime = '3 – 6 Weeks';
+
+    if (d.includes('canada')) {
+      workVisaName = 'Canada Employer-Specific Work Permit / LMIA';
+      workDocName = 'Positive LMIA & Job Offer Letter';
+      workTime = '4 – 8 Weeks';
+    } else if (d.includes('uk') || d.includes('united kingdom')) {
+      workVisaName = 'UK Skilled Worker Visa (CoS)';
+      workDocName = 'Certificate of Sponsorship (CoS - Min £38,700)';
+      workTime = '3 Weeks (Priority: 5 Days)';
+    } else if (d.includes('usa') || d.includes('united states')) {
+      workVisaName = 'US H-1B / L-1 Specialty Worker Visa';
+      workDocName = 'Form I-129 & Approved Form I-797 Notice';
+      workTime = '2 – 4 Months (Premium: 15 Days)';
+    } else if (d.includes('australia')) {
+      workVisaName = 'Australia Subclass 482 (TSS) / Subclass 186';
+      workDocName = 'Approved Nomination & Skills Assessment';
+      workTime = '4 – 7 Weeks';
+    } else if (d.includes('germany')) {
+      workVisaName = 'Germany EU Blue Card / Opportunity Card (Chancenkarte)';
+      workDocName = 'Employment Contract / Anabin Degree Recognition';
+      workTime = '3 – 5 Weeks';
+    } else if (d.includes('uae') || d.includes('dubai')) {
+      workVisaName = 'UAE 2-Year Employment Residence Visa & Green Visa';
+      workDocName = 'MOHRE Work Permit & Attested Degree';
+      workTime = '5 – 7 Working Days';
+    }
+
     return {
       type: 'visa_required',
       badge: 'Sponsored Work Visa Required',
@@ -648,16 +801,34 @@ const getAIVisaVerdict = (passport: string, destination: string, purpose: string
       headline: `Sponsored Work Visa & Employment Permit Required for ${destination}`,
       summary: `Based on your ${passport || 'Indian'} passport, you cannot work on a visitor visa. You require an approved employer sponsorship and legal work permit to enter ${destination}.`,
       actionMsg: `Here is your ideal employment pathway, employer sponsorship guidelines, and visa filing roadmap:`,
-      processingTime: '3 – 6 Weeks',
+      processingTime: workTime,
       fundsRequired: 'Employer Job Offer + Relocation Fund',
-      visaType: `${destination} Skilled Worker / Employment Visa`,
-      admissionDoc: 'Certificate of Sponsorship / LMIA / Work Permit',
+      visaType: workVisaName,
+      admissionDoc: workDocName,
       isEsta: false
     };
   }
 
-  // PR / MIGRATION
+  // 3. PR / PERMANENT RESIDENCY
   if (pur === 'pr') {
+    let prVisaName = `${destination} Permanent Residence (PR)`;
+    let prDocName = 'ITA / EOI Invitation to Apply';
+    let prTime = '6 – 12 Months';
+
+    if (d.includes('canada')) {
+      prVisaName = 'Canada Express Entry (FSW / CEC) & PNP';
+      prDocName = 'ECA Report + IELTS General (CLB 9) + CRS Score';
+      prTime = '6 Months (Standard Processing)';
+    } else if (d.includes('australia')) {
+      prVisaName = 'Australia Subclass 189 / 190 Skilled Independent PR';
+      prDocName = 'SkillSelect EOI + Positive VETASSESS/ACS Assessment';
+      prTime = '6 – 9 Months';
+    } else if (d.includes('germany')) {
+      prVisaName = 'Germany Niederlassungserlaubnis (Permanent Settlement)';
+      prDocName = 'B1 German Language + 21-27 Months Pension Proof';
+      prTime = '2 – 3 Years via EU Blue Card';
+    }
+
     return {
       type: 'visa_required',
       badge: 'Permanent Residency Pathway',
@@ -665,43 +836,103 @@ const getAIVisaVerdict = (passport: string, destination: string, purpose: string
       headline: `Permanent Residency & Points-Based Immigration for ${destination}`,
       summary: `Based on your ${passport || 'Indian'} passport, you are eligible for points-based Permanent Residency and Express Entry in ${destination}.`,
       actionMsg: `Here is your comprehensive points audit, CRS/Score calculator, and document filing roadmap:`,
-      processingTime: '6 – 12 Months',
-      fundsRequired: 'Settlement Funds Proof',
-      visaType: `${destination} Permanent Residence (PR)`,
-      admissionDoc: 'ITA / EOI Invitation to Apply',
+      processingTime: prTime,
+      fundsRequired: 'Settlement Funds Proof (POF)',
+      visaType: prVisaName,
+      admissionDoc: prDocName,
       isEsta: false
     };
   }
 
-  // VISIT / TOURISM / BUSINESS
+  // 4. BUSINESS & INVESTOR
+  if (pur === 'business') {
+    let bizName = `${destination} Business / Investor Visa`;
+    if (d.includes('uae') || d.includes('dubai')) bizName = 'UAE 10-Year Golden Visa / Freezone Investor Visa';
+    else if (d.includes('canada')) bizName = 'Canada Start-up Visa (SUV) & Intra-Company Transfer (C12)';
+    else if (d.includes('usa')) bizName = 'US EB-5 Immigrant Investor / E-2 Treaty Investor Visa';
+    else if (d.includes('uk')) bizName = 'UK Innovator Founder Visa';
+
+    return {
+      type: 'visa_required',
+      badge: 'Business & Investor Visa',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      headline: `Business & Investor Pathway for ${destination}`,
+      summary: `Based on your profile, you are eligible for business expansion, company incorporation, and residency-by-investment in ${destination}.`,
+      actionMsg: `Here is your business registration roadmap, capital requirement audit, and corporate visa guidance:`,
+      processingTime: '2 – 8 Weeks',
+      fundsRequired: 'Business Capital / Proof of Investment',
+      visaType: bizName,
+      admissionDoc: 'Trade License / Business Plan / Endorsement',
+      isEsta: false
+    };
+  }
+
+  // 5. VISIT / TOURISM / SHORT STAY
+  // High-Mobility Passport Cases
   if (isEstaPassport) {
     if (d.includes('usa') || d.includes('america') || d.includes('united states')) {
+      const isCanada = p.includes('canada');
       return {
         type: 'esta_eligible',
-        badge: 'ESTA Eligible (No Embassy Visa Required)',
+        badge: isCanada ? 'Visa-Free Entry (Passport Only)' : 'ESTA Eligible (No Embassy Visa Required)',
         badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-        headline: `You can go without an embassy visa using ESTA!`,
-        summary: `Good news! Based on your ${passport} passport, you qualify for the US Visa Waiver Program (VWP). You do NOT need to visit an embassy for a sticker visa; you only require a fast online ESTA authorization for stays up to 90 days.`,
-        actionMsg: `Here is your ideal US ESTA travel pathway, entry checklist, and itinerary:`,
-        processingTime: 'Instant / Within 72 Hours',
-        fundsRequired: 'Credit Card / Valid Passport / Return Ticket',
-        visaType: 'US ESTA (Electronic System for Travel Authorization)',
-        admissionDoc: 'ESTA Confirmation Number',
+        headline: isCanada ? `You can travel to the USA Visa-Free with Canadian Passport!` : `You can go without an embassy visa using ESTA!`,
+        summary: isCanada
+          ? `As a Canadian citizen, you do not need a visa or ESTA to enter the United States for tourism or business under INA 212(d)(4)(B). Simply present your valid Canadian passport at US border pre-clearance.`
+          : `Good news! Based on your ${passport} passport, you qualify for the US Visa Waiver Program (VWP). You do NOT need to visit an embassy for a sticker visa; you only require a fast online ESTA authorization for stays up to 90 days.`,
+        actionMsg: `Here is your ideal US travel pathway, entry checklist, and itinerary:`,
+        processingTime: isCanada ? 'Instant on Border Pre-Clearance' : 'Instant / Within 72 Hours',
+        fundsRequired: 'Credit Card / Return Ticket',
+        visaType: isCanada ? 'US Visa Exemption (Canadian Citizen)' : 'US ESTA (Electronic System for Travel Authorization)',
+        admissionDoc: isCanada ? 'Valid Canadian Passport' : 'ESTA Confirmation Number',
         isEsta: true
       };
     }
     if (d.includes('canada')) {
+      const isUS = p.includes('united states') || p.includes('usa') || p.includes('us');
       return {
         type: 'esta_eligible',
-        badge: 'eTA Eligible (Instant Online Authorization)',
+        badge: isUS ? 'Visa-Free Entry (US Passport Only)' : 'eTA Eligible (Instant Online Authorization)',
         badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-        headline: `You can travel without a sticker visa using Canada eTA!`,
-        summary: `Based on your ${passport} passport, you qualify for an Electronic Travel Authorization (eTA). No physical embassy appointment or paper visa required for tourism up to 6 months.`,
+        headline: isUS ? `You can enter Canada Visa-Free with your US Passport!` : `You can travel without a sticker visa using Canada eTA!`,
+        summary: isUS
+          ? `As a US citizen, you do not need a visa or an eTA to visit Canada. You can enter with your valid US passport for up to 6 months.`
+          : `Based on your ${passport} passport, you qualify for an Electronic Travel Authorization (eTA). No physical embassy appointment or paper visa required for tourism up to 6 months.`,
         actionMsg: `Here is your ideal Canada visit roadmap, flight packages, and entry requirements:`,
-        processingTime: 'Instant / Within Minutes',
-        fundsRequired: '$7 CAD eTA Fee + Return Flight',
-        visaType: 'Canada eTA (Electronic Travel Authorization)',
-        admissionDoc: 'Approved eTA Number',
+        processingTime: isUS ? 'Instant on Border Inspection' : 'Instant / Within Minutes',
+        fundsRequired: isUS ? 'Valid US Passport' : '$7 CAD eTA Fee + Return Flight',
+        visaType: isUS ? 'Canada Visa-Exempt (US Citizen)' : 'Canada eTA (Electronic Travel Authorization)',
+        admissionDoc: isUS ? 'Valid US Passport' : 'Approved eTA Number',
+        isEsta: true
+      };
+    }
+    if (d.includes('uae') || d.includes('dubai')) {
+      return {
+        type: 'esta_eligible',
+        badge: 'Visa on Arrival (30 Days Free)',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        headline: `You get 30-Day Visa on Arrival in UAE!`,
+        summary: `Based on your ${passport} passport, you receive a free 30-day Visa on Arrival at Dubai/Abu Dhabi immigration. No prior visa application or embassy fee required.`,
+        actionMsg: `Here is your ideal Dubai tourist itinerary, holiday passes, and entry checklist:`,
+        processingTime: 'Instant on Airport Arrival',
+        fundsRequired: 'Return Flight + Hotel Booking',
+        visaType: 'UAE 30-Day Visa on Arrival',
+        admissionDoc: 'Passport Stamp at Immigration',
+        isEsta: true
+      };
+    }
+    if (d.includes('uk') || d.includes('united kingdom') || d.includes('london')) {
+      return {
+        type: 'esta_eligible',
+        badge: 'Visa-Free Entry (Up to 6 Months)',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        headline: `You can visit the UK Visa-Free for up to 6 months!`,
+        summary: `Based on your ${passport} passport, you do NOT require a visa for tourism or business visits to the United Kingdom for stays up to 6 months (UK ETA applies). Fast-track ePassport gates available on arrival.`,
+        actionMsg: `Here is your ideal UK holiday itinerary and travel checklist:`,
+        processingTime: 'Instant Entry via ePassport Gates',
+        fundsRequired: 'Return Ticket + Proof of Accommodation',
+        visaType: 'UK Standard Visitor Visa Waiver / UK ETA',
+        admissionDoc: 'Valid ePassport',
         isEsta: true
       };
     }
@@ -720,36 +951,180 @@ const getAIVisaVerdict = (passport: string, destination: string, purpose: string
         isEsta: true
       };
     }
-    if (d.includes('uae') || d.includes('dubai')) {
+    if (d.includes('germany') || d.includes('schengen') || d.includes('france') || d.includes('italy') || d.includes('spain') || d.includes('switzerland')) {
       return {
         type: 'esta_eligible',
-        badge: 'Visa on Arrival (30 Days Free)',
+        badge: 'Schengen Visa-Free (90 Days)',
         badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-        headline: `You get 30-Day Visa on Arrival in UAE!`,
-        summary: `Based on your ${passport} passport, you receive a free 30-day Visa on Arrival at Dubai/Abu Dhabi immigration. No prior visa application required.`,
-        actionMsg: `Here is your ideal Dubai tourist itinerary, holiday passes, and entry checklist:`,
+        headline: `You can visit 29 Schengen Countries Visa-Free for 90 Days!`,
+        summary: `Based on your ${passport} passport, you do not need a Schengen visa for short stays up to 90 days within any 180-day period across all 29 European Schengen member states.`,
+        actionMsg: `Here is your ideal Europe tour itinerary, flight routes, and travel pass breakdown:`,
+        processingTime: 'Instant at EU Border Control',
+        fundsRequired: 'Valid Passport (3+ months validity) + Return Ticket',
+        visaType: 'Schengen Short-Stay Visa Waiver',
+        admissionDoc: 'Valid Passport Stamp / ETIAS',
+        isEsta: true
+      };
+    }
+    if (d.includes('singapore')) {
+      return {
+        type: 'esta_eligible',
+        badge: 'Visa-Free Entry (30 to 90 Days)',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        headline: `You can visit Singapore Visa-Free!`,
+        summary: `Based on your ${passport} passport, you are eligible for Visa-Free entry into Singapore for up to 30 to 90 days. Simply submit the free electronic SG Arrival Card (SGAC) within 3 days before arrival.`,
+        actionMsg: `Here is your Singapore tourist itinerary, SG Arrival Card guide, and top attractions:`,
+        processingTime: 'Instant at Changi e-Gates',
+        fundsRequired: 'SG Arrival Card Confirmation + Return Flight',
+        visaType: 'Singapore Visa Exemption',
+        admissionDoc: 'Electronic SG Arrival Card (SGAC)',
+        isEsta: true
+      };
+    }
+    if (d.includes('japan')) {
+      return {
+        type: 'esta_eligible',
+        badge: 'Visa-Free Entry (90 Days)',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        headline: `You can visit Japan Visa-Free for 90 Days!`,
+        summary: `Based on your ${passport} passport, you qualify for visa exemption for temporary visitor status up to 90 days for tourism and business trips.`,
+        actionMsg: `Here is your Japan Rail Pass guide, Tokyo-Kyoto itinerary, and Visit Japan Web clearance:`,
         processingTime: 'Instant on Airport Arrival',
-        fundsRequired: 'Return Flight + Hotel Booking',
-        visaType: 'UAE 30-Day Visa on Arrival',
-        admissionDoc: 'Passport Stamp at Immigration',
+        fundsRequired: 'Visit Japan Web QR Code + Return Ticket',
+        visaType: 'Japan Temporary Visitor Visa Exemption',
+        admissionDoc: 'Landing Permission QR Code',
         isEsta: true
       };
     }
-    if (d.includes('uk') || d.includes('united kingdom') || d.includes('london')) {
-      return {
-        type: 'esta_eligible',
-        badge: 'Visa-Free Entry (Up to 6 Months)',
-        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-        headline: `You can visit the UK Visa-Free for up to 6 months!`,
-        summary: `Based on your ${passport} passport, you do NOT require a visa for tourism or business visits to the United Kingdom for stays up to 6 months (UK ETA applies).`,
-        actionMsg: `Here is your ideal UK holiday itinerary and travel checklist:`,
-        processingTime: 'Instant Entry via ePassport Gates',
-        fundsRequired: 'Return Ticket + Proof of Accommodation',
-        visaType: 'UK Standard Visitor Visa Waiver / UK ETA',
-        admissionDoc: 'Valid ePassport',
-        isEsta: true
-      };
-    }
+  }
+
+  // Non-VWP Passports (India, Nepal, Bangladesh, Sri Lanka, Pakistan, Philippines, Nigeria, etc.)
+  if (d.includes('uae') || d.includes('dubai')) {
+    return {
+      type: 'visa_required',
+      badge: 'UAE Tourist e-Visa (30/60 Days)',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      headline: `Fast Online UAE Tourist e-Visa Available for ${passport || 'Indian'} Passport!`,
+      summary: `Based on your ${passport || 'Indian'} passport, you can apply for an official 30-Day or 60-Day UAE Tourist e-Visa 100% online with 24–48 hours approval. *Special Rule: If you hold a valid US Visa/Green Card, UK Visa/PR, or EU Schengen Visa, you receive a 14-Day Visa on Arrival directly at Dubai airport.*`,
+      actionMsg: `Here is your ideal Dubai tourist itinerary, holiday passes, and entry checklist:`,
+      processingTime: '24 – 48 Hours (e-Visa) / Instant (with US/UK/EU Visa)',
+      fundsRequired: 'Return Flight + Hotel Booking / AED 3,000 proof',
+      visaType: 'UAE 30/60-Day Tourist e-Visa (or 14-Day VoA)',
+      admissionDoc: 'Approved GDRFA/ICP Electronic Visa Copy',
+      isEsta: false
+    };
+  }
+
+  if (d.includes('uk') || d.includes('united kingdom') || d.includes('london')) {
+    return {
+      type: 'visa_required',
+      badge: 'UK Standard Visitor Visa (6 Months)',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      headline: `UK Standard Visitor Visa Required for ${passport || 'Indian'} Passport`,
+      summary: `Based on your ${passport || 'Indian'} passport, you require a 6-month multiple-entry UK Standard Visitor Visa applied online through GOV.UK, followed by biometrics at your nearest VFS Global centre.`,
+      actionMsg: `Here is your UK tourist itinerary, financial documentation requirements, and VFS slot booking guidance:`,
+      processingTime: '15 Working Days (Priority: 5 Days)',
+      fundsRequired: 'Bank Balance showing minimum £3,500 GBP available + 6 months statement',
+      visaType: 'UK Standard Visitor Visa (Subclass V-1)',
+      admissionDoc: 'VFS Biometrics Appointment & Passport Submission',
+      isEsta: false
+    };
+  }
+
+  if (d.includes('usa') || d.includes('united states') || d.includes('america')) {
+    return {
+      type: 'visa_required',
+      badge: 'US B1/B2 Visitor Visa (10 Years)',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      headline: `US B1/B2 Tourist Visa Required for ${passport || 'Indian'} Passport`,
+      summary: `Based on your ${passport || 'Indian'} passport, you need to file an online DS-160 application and schedule appointments for VAC Biometrics and a US Embassy Consular Interview. Upon approval, a 10-Year Multiple Entry Visa is granted.`,
+      actionMsg: `Here is your DS-160 checklist, consular interview preparation guide, and travel roadmap:`,
+      processingTime: 'Based on Embassy Interview Slot Availability',
+      fundsRequired: '$185 USD MRV Fee + Bank Statement ($4,000+ USD)',
+      visaType: 'US B1/B2 Non-Immigrant Visitor Visa',
+      admissionDoc: 'DS-160 Barcode & Embassy Appointment Confirmation',
+      isEsta: false
+    };
+  }
+
+  if (d.includes('canada')) {
+    return {
+      type: 'visa_required',
+      badge: 'Canada Visitor Visa (TRV - 10 Years)',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      headline: `Canada Temporary Resident Visa (TRV) Required for ${passport || 'Indian'} Passport`,
+      summary: `Based on your ${passport || 'Indian'} passport, you require a Canadian Temporary Resident Visa (TRV) applied through the IRCC portal, with mandatory biometrics at VFS Global. Issued up to passport validity (up to 10 years).`,
+      actionMsg: `Here is your Canada holiday itinerary, financial sponsorship checklist, and VFS biometrics roadmap:`,
+      processingTime: '20 – 30 Working Days',
+      fundsRequired: '$100 CAD Visa Fee + $85 CAD Biometrics + Bank Proof ($3,500+ CAD)',
+      visaType: 'Canada Visitor Visa (TRV - Subclass V-1)',
+      admissionDoc: 'IRCC Biometric Instruction Letter (BIL) & VFS Appointment',
+      isEsta: false
+    };
+  }
+
+  if (d.includes('australia')) {
+    return {
+      type: 'visa_required',
+      badge: 'Australia Visitor Visa (Subclass 600)',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      headline: `Australia Visitor Visa (Subclass 600) Required for ${passport || 'Indian'} Passport`,
+      summary: `Based on your ${passport || 'Indian'} passport, you can apply online for the Australia Visitor Visa (Subclass 600 - Tourist Stream) via ImmiAccount, with biometrics collected at VFS Australian Biometrics Collection Centre.`,
+      actionMsg: `Here is your Australia holiday tour, financial proof checklist, and ImmiAccount application steps:`,
+      processingTime: '15 – 25 Working Days',
+      fundsRequired: 'AUD $190 Visa Fee + Bank Balance (AUD $5,000+)',
+      visaType: 'Australia Visitor Visa (Subclass 600 - Tourist Stream)',
+      admissionDoc: 'ImmiAccount Electronic Visa Grant Notice',
+      isEsta: false
+    };
+  }
+
+  if (d.includes('germany') || d.includes('schengen') || d.includes('france') || d.includes('italy') || d.includes('spain') || d.includes('switzerland')) {
+    return {
+      type: 'visa_required',
+      badge: 'Schengen Short-Stay Visa (Type C)',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      headline: `Schengen Short-Stay Visa (Type C) Required for ${destination}`,
+      summary: `Based on your ${passport || 'Indian'} passport, you need to apply for a Schengen Type C Tourist Visa through VFS Global / TLScontact. Valid for travel across all 29 European Schengen member states for up to 90 days.`,
+      actionMsg: `Here is your Europe holiday itinerary, flight reservations, and €30,000 Schengen insurance checklist:`,
+      processingTime: '15 Working Days',
+      fundsRequired: '€90 EUR Visa Fee + Bank Statement showing €3,000+ available balance',
+      visaType: 'Schengen Short-Stay Visa (Type C)',
+      admissionDoc: 'VFS Appointment Confirmation & Travel Insurance Certificate',
+      isEsta: false
+    };
+  }
+
+  if (d.includes('singapore')) {
+    return {
+      type: 'visa_required',
+      badge: 'Singapore Tourist e-Visa (SAVE)',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      headline: `Singapore Tourist e-Visa Required for ${passport || 'Indian'} Passport`,
+      summary: `Based on your ${passport || 'Indian'} passport, you need an authorized Singapore entry e-Visa (processed via ICA SAVE system through authorized agents), plus the electronic SG Arrival Card (SGAC) submitted within 3 days of travel.`,
+      actionMsg: `Here is your Singapore tourist itinerary, SG Arrival Card submission, and Universal Studios holiday pass:`,
+      processingTime: '3 – 5 Working Days',
+      fundsRequired: 'SGD $30 Visa Fee + Return Flight & Hotel Voucher',
+      visaType: 'Singapore Electronic Entry Visa (e-Visa)',
+      admissionDoc: 'Approved ICA Electronic Visa (e-Visa PDF)',
+      isEsta: false
+    };
+  }
+
+  if (d.includes('russia') || d.includes('moscow')) {
+    return {
+      type: 'visa_required',
+      badge: 'Russian Tourist Visa / e-Visa',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      headline: `Russian Tourist Visa Required for ${passport || 'Indian'} Passport`,
+      summary: `Based on your ${passport || 'Indian'} passport, you can apply for an official Russian Tourist Visa (or 16-day Russian Unified Electronic Visa - e-Visa) with an official Tourist Confirmation voucher from a registered Russian operator.`,
+      actionMsg: `Here is your Moscow-St. Petersburg itinerary, registered voucher checklist, and VFS submission guide:`,
+      processingTime: '4 – 7 Working Days (e-Visa) / 10 Days (Sticker)',
+      fundsRequired: '$52 USD e-Visa Fee + Medical Insurance ($30,000+ coverage)',
+      visaType: 'Russian Tourist e-Visa / Single-Entry Tourist Visa',
+      admissionDoc: 'Approved Electronic Visa Notification / Tourist Voucher',
+      isEsta: false
+    };
   }
 
   // Default: Standard Embassy Tourist Visa Required
@@ -1330,40 +1705,47 @@ export function AITripPlannerLanding() {
   const parseQueryToFormState = (query: string) => {
     const q = query.toLowerCase();
     
-    // Check passport
+    // 1. Check passport nationality
     if (q.includes('indian') || q.includes('india')) setPassportCountry('India');
-    else if (q.includes('nepal')) setPassportCountry('Nepal');
-    else if (q.includes('bangladesh')) setPassportCountry('Bangladesh');
-    else if (q.includes('sri lanka')) setPassportCountry('Sri Lanka');
-    else if (q.includes('nigeria')) setPassportCountry('Nigeria');
-    else if (q.includes('pakistan')) setPassportCountry('Pakistan');
-    else if (q.includes('philippines')) setPassportCountry('Philippines');
-    else if (q.includes('us ') || q.includes('usa') || q.includes('american')) setPassportCountry('United States');
-    else if (q.includes('uk ') || q.includes('british')) setPassportCountry('United Kingdom');
+    else if (q.includes('canadian') || q.includes('canada')) setPassportCountry('Canada');
+    else if (q.includes('nepal') || q.includes('nepalese')) setPassportCountry('Nepal');
+    else if (q.includes('bangladesh') || q.includes('bangladeshi')) setPassportCountry('Bangladesh');
+    else if (q.includes('sri lanka') || q.includes('sri lankan')) setPassportCountry('Sri Lanka');
+    else if (q.includes('nigeria') || q.includes('nigerian')) setPassportCountry('Nigeria');
+    else if (q.includes('pakistan') || q.includes('pakistani')) setPassportCountry('Pakistan');
+    else if (q.includes('philippines') || q.includes('filipino')) setPassportCountry('Philippines');
+    else if (q.includes('us ') || q.includes('usa') || q.includes('american') || q.includes('united states')) setPassportCountry('United States');
+    else if (q.includes('uk ') || q.includes('british') || q.includes('england') || q.includes('united kingdom')) setPassportCountry('United Kingdom');
     else if (q.includes('australian') || q.includes('australia')) setPassportCountry('Australia');
+    else if (q.includes('emirati') || q.includes('uae')) setPassportCountry('UAE');
 
-    // Check destination
-    if (q.includes('uae') || q.includes('dubai')) setJourneyDestination('UAE');
-    else if (q.includes('canada')) setJourneyDestination('Canada');
-    else if (q.includes('uk') || q.includes('london') || q.includes('britain') || q.includes('united kingdom')) setJourneyDestination('United Kingdom');
-    else if (q.includes('usa') || q.includes('united states') || q.includes('america')) setJourneyDestination('United States');
-    else if (q.includes('australia') || q.includes('sydney') || q.includes('melbourne')) setJourneyDestination('Australia');
-    else if (q.includes('germany') || q.includes('berlin') || q.includes('munich')) setJourneyDestination('Germany');
+    // 2. Check destination country
+    if (q.includes('uae') || q.includes('dubai') || q.includes('abu dhabi') || q.includes('sharjah')) setJourneyDestination('UAE');
+    else if (q.includes('russia') || q.includes('moscow') || q.includes('saint petersburg') || q.includes('kazan')) setJourneyDestination('Russia');
+    else if (q.includes('canada') || q.includes('toronto') || q.includes('vancouver') || q.includes('montreal')) setJourneyDestination('Canada');
+    else if (q.includes('uk') || q.includes('london') || q.includes('britain') || q.includes('united kingdom') || q.includes('edinburgh') || q.includes('manchester')) setJourneyDestination('United Kingdom');
+    else if (q.includes('usa') || q.includes('united states') || q.includes('america') || q.includes('new york') || q.includes('california')) setJourneyDestination('United States');
+    else if (q.includes('australia') || q.includes('sydney') || q.includes('melbourne') || q.includes('brisbane')) setJourneyDestination('Australia');
+    else if (q.includes('germany') || q.includes('berlin') || q.includes('munich') || q.includes('frankfurt')) setJourneyDestination('Germany');
+    else if (q.includes('france') || q.includes('paris') || q.includes('lyon')) setJourneyDestination('France');
+    else if (q.includes('japan') || q.includes('tokyo') || q.includes('osaka') || q.includes('kyoto')) setJourneyDestination('Japan');
+    else if (q.includes('singapore')) setJourneyDestination('Singapore');
     else if (q.includes('new zealand') || q.includes('auckland')) setJourneyDestination('New Zealand');
     else if (q.includes('ireland') || q.includes('dublin')) setJourneyDestination('Ireland');
-    else if (q.includes('singapore')) setJourneyDestination('Singapore');
 
-    // Check purpose
-    if (q.includes('study') || q.includes('student') || q.includes('master') || q.includes('bachelor') || q.includes('university') || q.includes('college')) {
+    // 3. Check exact travel/visa purpose
+    if (q.includes('study') || q.includes('student') || q.includes('mbbs') || q.includes('medicine') || q.includes('doctor') || q.includes('master') || q.includes('bachelor') || q.includes('university') || q.includes('college') || q.includes('ielts') || q.includes('admission')) {
       setTravelPurpose('study');
-    } else if (q.includes('tourist') || q.includes('visit') || q.includes('holiday') || q.includes('travel')) {
+    } else if (q.includes('tourist') || q.includes('visit') || q.includes('holiday') || q.includes('travel') || q.includes('flight') || q.includes('sightseeing') || q.includes('vacation')) {
       setTravelPurpose('visit');
-    } else if (q.includes('work') || q.includes('job') || q.includes('permit') || q.includes('h-1b') || q.includes('lmia')) {
+    } else if (q.includes('work') || q.includes('job') || q.includes('permit') || q.includes('h-1b') || q.includes('h1b') || q.includes('lmia') || q.includes('skilled worker') || q.includes('employment') || q.includes('sponsorship')) {
       setTravelPurpose('work');
-    } else if (q.includes('pr') || q.includes('permanent') || q.includes('migration') || q.includes('express entry') || q.includes('pnp')) {
+    } else if (q.includes('pr') || q.includes('permanent') || q.includes('migration') || q.includes('express entry') || q.includes('pnp') || q.includes('green card') || q.includes('settle')) {
       setTravelPurpose('pr');
-    } else if (q.includes('business') || q.includes('investor') || q.includes('startup')) {
+    } else if (q.includes('business') || q.includes('investor') || q.includes('startup') || q.includes('golden visa') || q.includes('company setup')) {
       setTravelPurpose('business');
+    } else if (q.includes('transit') || q.includes('stopover')) {
+      setTravelPurpose('transit');
     }
   };
 

@@ -111,7 +111,37 @@ const journeyDestinationOptions = [
   { value: 'Singapore', label: 'Singapore', icon: '🇸🇬', desc: 'EP, S-Pass & Global Investor' },
   { value: 'France', label: 'France / Schengen', icon: '🇫🇷', desc: 'Talent Passport & Europe Stay' },
   { value: 'Japan', label: 'Japan', icon: '🇯🇵', desc: 'SSW & Skilled Professional' },
+  { value: 'Russia', label: 'Russia', icon: '🇷🇺', desc: 'MBBS & Higher Education' },
 ];
+
+// Helper to get 2-letter ISO country code for rich flag logo rendering
+const getCountryCode = (country: string): string => {
+  const c = (country || '').toLowerCase().trim();
+  if (c.includes('united kingdom') || c === 'uk' || c.includes('britain') || c.includes('england') || c.includes('london')) return 'gb';
+  if (c.includes('united states') || c === 'usa' || c === 'us' || c.includes('america')) return 'us';
+  if (c.includes('india')) return 'in';
+  if (c.includes('canada')) return 'ca';
+  if (c.includes('australia')) return 'au';
+  if (c.includes('united arab emirates') || c.includes('uae') || c.includes('dubai') || c.includes('abu dhabi')) return 'ae';
+  if (c.includes('singapore')) return 'sg';
+  if (c.includes('germany') || c.includes('berlin') || c.includes('munich')) return 'de';
+  if (c.includes('france') || c.includes('paris')) return 'fr';
+  if (c.includes('japan') || c.includes('tokyo')) return 'jp';
+  if (c.includes('russia') || c.includes('moscow')) return 'ru';
+  if (c.includes('new zealand') || c.includes('auckland')) return 'nz';
+  if (c.includes('ireland') || c.includes('dublin')) return 'ie';
+  if (c.includes('nepal')) return 'np';
+  if (c.includes('bangladesh')) return 'bd';
+  if (c.includes('sri lanka')) return 'lk';
+  if (c.includes('pakistan')) return 'pk';
+  if (c.includes('philippines')) return 'ph';
+  if (c.includes('nigeria')) return 'ng';
+  if (c.includes('italy')) return 'it';
+  if (c.includes('spain')) return 'es';
+  if (c.includes('switzerland')) return 'ch';
+  if (c.includes('netherlands')) return 'nl';
+  return 'un';
+};
 
 
 const checklistCountryOptions = [
@@ -2287,9 +2317,17 @@ return (
                             }}
                             className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
-                            <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
-                              {journeyDestination || 'Country'}
-                            </span>
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <img
+                                src={`https://flagcdn.com/w40/${getCountryCode(journeyDestination || 'United Kingdom')}.png`}
+                                alt={journeyDestination || 'Country'}
+                                className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200"
+                                onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                              />
+                              <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
+                                {journeyDestination || 'Country'}
+                              </span>
+                            </div>
                             <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-blue-600' : ''}`} />
 
                             {isJourneyDestOpen && (
@@ -2309,8 +2347,13 @@ return (
                                       }}
                                       className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                     >
-                                      <div className="flex items-center gap-2 min-w-0">
-                                        <span className="text-base">{opt.icon}</span>
+                                      <div className="flex items-center gap-2.5 min-w-0">
+                                        <img
+                                          src={`https://flagcdn.com/w40/${getCountryCode(opt.value)}.png`}
+                                          alt={opt.label}
+                                          className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200"
+                                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                                        />
                                         <span className="truncate">{opt.label}</span>
                                       </div>
                                       {journeyDestination === opt.value && <Check className="w-4 h-4 text-[#00A86B]" />}
@@ -2386,9 +2429,12 @@ return (
                             className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
                             <div className="flex items-center gap-1.5 min-w-0">
-                              <span className="text-sm shrink-0">
-                                {passportCountry ? (passportCountryOptions.find(o => o.value === passportCountry)?.icon || '🇮🇳') : '🇮🇳'}
-                              </span>
+                              <img
+                                src={`https://flagcdn.com/w40/${getCountryCode(passportCountry || 'India')}.png`}
+                                alt={passportCountry || 'Country'}
+                                className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200"
+                                onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                              />
                               <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
                                 {passportCountry || 'Country'}
                               </span>
@@ -2413,8 +2459,13 @@ return (
                                       }}
                                       className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                     >
-                                      <div className="flex items-center gap-2 min-w-0">
-                                        <span className="text-base">{opt.icon}</span>
+                                      <div className="flex items-center gap-2.5 min-w-0">
+                                        <img
+                                          src={`https://flagcdn.com/w40/${getCountryCode(opt.value)}.png`}
+                                          alt={opt.label}
+                                          className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200"
+                                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                                        />
                                         <span className="truncate">{opt.label}</span>
                                       </div>
                                     </button>
@@ -3774,15 +3825,22 @@ return (
                     {/* Row 1: Current Passport */}
                     <div className="bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between shadow-2xs transition-all cursor-pointer group">
                       <div className="flex items-center gap-3.5 min-w-0">
-                        <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-xl sm:text-2xl shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
-                          {passportCountryOptions.find(o => o.value === passportCountry)?.icon || '🇨🇦'}
+                        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-slate-100 border border-slate-200/90 flex items-center justify-center shadow-xs shrink-0 overflow-hidden group-hover:scale-105 transition-transform p-0.5">
+                          <img
+                            src={`https://flagcdn.com/w160/${getCountryCode(passportCountry || 'India')}.png`}
+                            alt={passportCountry || 'Passport Country'}
+                            className="w-full h-full object-cover rounded-full shadow-2xs"
+                            onError={(e) => {
+                              (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w160/un.png';
+                            }}
+                          />
                         </div>
                         <div className="min-w-0">
                           <span className="text-[10px] sm:text-[11px] font-extrabold text-slate-400 uppercase tracking-wider block">
                             Current Passport
                           </span>
                           <span className="text-sm sm:text-base font-black text-slate-900 block truncate mt-0.5">
-                            {passportCountry || 'Canada'}
+                            {passportCountry || 'India'}
                           </span>
                         </div>
                       </div>
@@ -3798,15 +3856,22 @@ return (
                     {/* Row 2: Destination Country */}
                     <div className="bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between shadow-2xs transition-all cursor-pointer group">
                       <div className="flex items-center gap-3.5 min-w-0">
-                        <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-xl sm:text-2xl shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
-                          {journeyDestinationOptions.find(o => o.value === journeyDestination)?.icon || '🇦🇪'}
+                        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-slate-100 border border-slate-200/90 flex items-center justify-center shadow-xs shrink-0 overflow-hidden group-hover:scale-105 transition-transform p-0.5">
+                          <img
+                            src={`https://flagcdn.com/w160/${getCountryCode(journeyDestination || 'United Kingdom')}.png`}
+                            alt={journeyDestination || 'Destination Country'}
+                            className="w-full h-full object-cover rounded-full shadow-2xs"
+                            onError={(e) => {
+                              (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w160/un.png';
+                            }}
+                          />
                         </div>
                         <div className="min-w-0">
                           <span className="text-[10px] sm:text-[11px] font-extrabold text-slate-400 uppercase tracking-wider block">
                             Destination Country
                           </span>
                           <span className="text-sm sm:text-base font-black text-slate-900 block truncate mt-0.5">
-                            {journeyDestination || 'UAE'}
+                            {journeyDestination || 'United Kingdom'}
                           </span>
                         </div>
                       </div>

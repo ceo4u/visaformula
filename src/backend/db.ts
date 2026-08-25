@@ -627,30 +627,8 @@ export async function runMigrations() {
       ('russia-mbbs-2026', 'VFS Russia Student Visa Checklist.pdf', '1.2 MB', 'pdf', '#')
     ON CONFLICT DO NOTHING;
 
-    -- Seed starter messages for russia-mbbs-2026 if empty
-    INSERT INTO chat_messages (channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at)
-    SELECT 'russia-mbbs-2026', 'senior-ananya', 'Ananya Sharma', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80', true, 'Hey everyone! How''s the weather in Moscow these days?', '[{"emoji":"❤️","count":12}]'::jsonb, NOW() - INTERVAL '35 minutes'
-    WHERE NOT EXISTS (SELECT 1 FROM chat_messages WHERE channel_slug = 'russia-mbbs-2026' AND sender_name = 'Ananya Sharma');
-
-    INSERT INTO chat_messages (channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at)
-    SELECT 'russia-mbbs-2026', 'senior-rohit', 'Rohit Mehta', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', true, 'It''s getting colder now, around -5°C today.\nMake sure to carry warm clothes!', '[{"emoji":"👍","count":8}]'::jsonb, NOW() - INTERVAL '25 minutes'
-    WHERE NOT EXISTS (SELECT 1 FROM chat_messages WHERE channel_slug = 'russia-mbbs-2026' AND sender_name = 'Rohit Mehta');
-
-    INSERT INTO chat_messages (channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at)
-    SELECT 'russia-mbbs-2026', 'senior-priya', 'Priya Nair', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', true, 'Anyone going to the university this week?\nLet''s catch up!', '[{"emoji":"👏","count":6}]'::jsonb, NOW() - INTERVAL '15 minutes'
-    WHERE NOT EXISTS (SELECT 1 FROM chat_messages WHERE channel_slug = 'russia-mbbs-2026' AND sender_name = 'Priya Nair');
-
-    INSERT INTO chat_messages (channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at)
-    SELECT 'russia-mbbs-2026', 'senior-karan', 'Karan Singh', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80', true, '@Priya Nair I''ll be there on Wednesday.\nLet me know!', '[{"emoji":"💯","count":5}]'::jsonb, NOW() - INTERVAL '5 minutes'
-    WHERE NOT EXISTS (SELECT 1 FROM chat_messages WHERE channel_slug = 'russia-mbbs-2026' AND sender_name = 'Karan Singh');
-
-    INSERT INTO chat_messages (channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at)
-    SELECT 'delhi-to-moscow-flights', 'senior-arjun', 'Arjun Patel', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', true, 'Group departure from IGI Delhi on September 14th via Gulf Air. Extra 10kg baggage allowance confirmed with university group ticket! ✈️', '[{"emoji":"🔥","count":14}]'::jsonb, NOW() - INTERVAL '40 minutes'
-    WHERE NOT EXISTS (SELECT 1 FROM chat_messages WHERE channel_slug = 'delhi-to-moscow-flights');
-
-    INSERT INTO chat_messages (channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at)
-    SELECT 'dorm-sharing', 'senior-neha', 'Neha Reddy', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80', true, 'Hostel Block 4 2-seater renovated rooms are filling up. Make sure to submit your roommate preference form before August 30th! 🏢', '[{"emoji":"👍","count":9}]'::jsonb, NOW() - INTERVAL '30 minutes'
-    WHERE NOT EXISTS (SELECT 1 FROM chat_messages WHERE channel_slug = 'dorm-sharing');
+    -- Clean up any dummy test messages so community starts purely with real user chats
+    DELETE FROM chat_messages WHERE user_id LIKE 'senior-%' OR user_id LIKE 'user-arjun' OR user_id LIKE 'user-neha' OR user_id = 'user-current';
   `);
   })();
   return migrationsPromise;

@@ -678,10 +678,18 @@ export default function CommunityHub() {
                 );
               })
             ) : (
-              <div className="py-24 text-center space-y-2 text-slate-400">
-                <MessageSquare className="w-8 h-8 text-slate-300 mx-auto" />
-                <h4 className="text-sm font-bold text-slate-700">No messages in this channel yet</h4>
-                <p className="text-xs text-slate-400">Start the conversation for the 2026 intake!</p>
+              <div className="h-full min-h-[320px] flex flex-col items-center justify-center text-center p-6 space-y-3">
+                <div className="w-14 h-14 rounded-3xl bg-emerald-50 text-[#00A86B] flex items-center justify-center border border-emerald-100/80 shadow-xs">
+                  <MessageSquare className="w-7 h-7" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-black text-slate-800">
+                    No messages in #{currentChannelObj.name} yet
+                  </h4>
+                  <p className="text-xs text-slate-400 max-w-xs mx-auto font-medium">
+                    Send a message below to start the peer discussion with seniors & batchmates!
+                  </p>
+                </div>
               </div>
             )}
             <div ref={messagesEndRef} />

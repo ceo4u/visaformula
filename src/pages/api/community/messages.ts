@@ -28,12 +28,7 @@ export const GET: APIRoute = async ({ request }) => {
       ),
       pool.query(
         `SELECT DISTINCT ON (name) id, name, avatar_url, university, status
-         FROM (
-           SELECT id, name, avatar_url, university, status FROM verified_seniors
-           UNION ALL
-           SELECT id, business_name as name, COALESCE(profile_photo_url, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80') as avatar_url, company_name as university, 'Online' as status 
-           FROM experts WHERE verified = true
-         ) s
+         FROM verified_seniors
          ORDER BY name ASC, id ASC
          LIMIT 10`
       ),

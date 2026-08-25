@@ -596,6 +596,8 @@ export async function runMigrations() {
       download_url VARCHAR(255),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+    DELETE FROM pinned_resources a USING pinned_resources b WHERE a.id > b.id AND a.title = b.title;
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_pinned_resources_title ON pinned_resources (title, channel_slug);
 
     -- Seed default channels if empty
     INSERT INTO community_channels (slug, name, category, icon, unread_count, description)

@@ -4,7 +4,7 @@ import {
   Hash, Search, Paperclip, Smile, Star, Users,
   Bell, MoreVertical, X, Check, ArrowRight,
   FileText, MessageSquare, Send, LogIn, LogOut,
-  Megaphone, GraduationCap, Heart, Building2, Luggage, Plane, Menu, MessageCircle, User as UserIcon
+  Megaphone, GraduationCap, Heart, Building2, Luggage, Plane, Menu, MessageCircle, User as UserIcon, UserPlus
 } from 'lucide-react';
 
 interface Channel {
@@ -58,6 +58,11 @@ interface AuthUser {
   photoURL?: string;
 }
 
+interface CommunityStats {
+  online_seniors: number;
+  total_members: number;
+}
+
 const CATEGORIES = [
   { id: 'announcements', name: 'Announcements', icon: Megaphone },
   { id: 'visa', name: 'Visa & Documents', icon: FileText },
@@ -75,6 +80,7 @@ export default function CommunityHub() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [seniors, setSeniors] = useState<SeniorMember[]>([]);
   const [resources, setResources] = useState<PinnedFile[]>([]);
+  const [stats, setStats] = useState<CommunityStats>({ online_seniors: 5, total_members: 480 });
   const [loading, setLoading] = useState(true);
 
   // Search & Filter
@@ -83,7 +89,9 @@ export default function CommunityHub() {
 
   // User Auth State
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [guestName, setGuestName] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showGuestNameModal, setShowGuestNameModal] = useState(false);
 
   // Composer
   const [inputText, setInputText] = useState('');
@@ -107,18 +115,17 @@ export default function CommunityHub() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // 1. Fetch Auth State from Backend / LocalStorage
+  // 1. Fetch Auth State
   const checkAuth = async () => {
     try {
-      // Immediate localStorage check
       if (typeof window !== 'undefined') {
         const stored = localStorage.getItem('visaformula_user');
-        if (stored) {
+        if (stored && stored !== 'null') {
           const parsed = JSON.parse(stored);
-          if (parsed && parsed.email) {
+          if (parsed && (parsed.displayName || parsed.email)) {
             setCurrentUser({
-              uid: parsed.uid || 'user-local',
-              displayName: parsed.displayName || parsed.first_name || 'Aman Verma',
+              uid: parsed.uid || `seeker_${parsed.id || '1'}`,
+              displayName: parsed.displayName || parsed.first_name || parsed.email?.split('@')[0] || 'Member',
               email: parsed.email,
               photoURL: parsed.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
             });
@@ -126,13 +133,12 @@ export default function CommunityHub() {
         }
       }
 
-      // Verify with backend session endpoint
       const res = await fetch('/api/auth/me');
       const data = await res.json();
       if (data.status === 'success' && data.user) {
         setCurrentUser({
           uid: data.user.uid,
-          displayName: data.user.displayName || 'Aman Verma',
+          displayName: data.user.displayName || 'Member',
           email: data.user.email,
           photoURL: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
         });
@@ -142,7 +148,7 @@ export default function CommunityHub() {
     }
   };
 
-  // 2. Fetch Live Feed from PostgreSQL Backend
+  // 2. Fetch Live Feed from Backend
   const fetchFeed = async (channelSlug: string, isPolling = false) => {
     try {
       if (!isPolling) setLoading(true);
@@ -161,6 +167,9 @@ export default function CommunityHub() {
         }
         if (data.messages) {
           setMessages(data.messages);
+        }
+        if (data.stats) {
+          setStats(data.stats);
         }
       }
     } catch (err) {
@@ -189,15 +198,16 @@ export default function CommunityHub() {
     scrollToBottom();
   }, [messages]);
 
-  // 3. Send Message to PostgreSQL Backend
+  // 3. Send Message Action
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!inputText.trim() || sending) return;
 
-    // Check if user is logged in
-    const senderName = currentUser ? currentUser.displayName : 'Aman Verma';
+    const senderDisplayName = currentUser
+      ? currentUser.displayName
+      : guestName.trim() || 'Aman Verma';
     const senderAvatar = currentUser?.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
-    const userId = currentUser ? currentUser.uid : 'user-guest';
+    const userId = currentUser ? currentUser.uid : 'guest-user';
 
     const messageContent = inputText.trim();
     setInputText('');
@@ -209,7 +219,7 @@ export default function CommunityHub() {
       id: tempId,
       channel_slug: activeChannel,
       user_id: userId,
-      sender_name: senderName,
+      sender_name: senderDisplayName,
       sender_avatar: senderAvatar,
       is_verified_senior: false,
       is_self: true,
@@ -227,7 +237,7 @@ export default function CommunityHub() {
         body: JSON.stringify({
           channel_slug: activeChannel,
           content: messageContent,
-          sender_name: senderName,
+          sender_name: senderDisplayName,
           sender_avatar: senderAvatar,
           user_id: userId,
           is_verified_senior: false
@@ -247,7 +257,7 @@ export default function CommunityHub() {
     }
   };
 
-  // 4. React with Emoji (Persisted to Database)
+  // 4. Emoji Reaction Action
   const handleReaction = async (messageId: number, emoji: string) => {
     setMessages((prev) =>
       prev.map((msg) => {
@@ -308,7 +318,7 @@ export default function CommunityHub() {
           
           <div className="space-y-4 overflow-y-auto no-scrollbar pr-1">
             
-            {/* Top Row: macOS Traffic Lights + Official TravlTik Logo */}
+            {/* Top Row: macOS Traffic Lights + Brand Logo */}
             <div className="space-y-3.5 pb-1">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -348,7 +358,7 @@ export default function CommunityHub() {
               </kbd>
             </div>
 
-            {/* Section: CHANNELS (Dynamic from DB) */}
+            {/* Section: CHANNELS (Dynamic from PostgreSQL) */}
             <div className="space-y-1.5 pt-1">
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1 block">
                 Channels
@@ -390,7 +400,7 @@ export default function CommunityHub() {
                     );
                   })
                 ) : (
-                  <div className="text-[11px] text-slate-400 p-2">No channels match filter</div>
+                  <div className="text-[11px] text-slate-400 p-2">No channels found</div>
                 )}
               </div>
             </div>
@@ -436,12 +446,15 @@ export default function CommunityHub() {
           {/* Bottom User Profile Card (Dynamic Real User from Auth) */}
           <div className="relative pt-3 mt-2 border-t border-slate-100">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5 min-w-0">
+              <div
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="flex items-center gap-2.5 min-w-0 cursor-pointer group"
+              >
                 <div className="relative shrink-0">
                   <img
                     src={currentUser?.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
-                    alt={currentUser ? currentUser.displayName : 'User'}
-                    className="w-9 h-9 rounded-full object-cover border border-slate-200"
+                    alt={currentUser ? currentUser.displayName : 'Aman Verma'}
+                    className="w-9 h-9 rounded-full object-cover border border-slate-200 group-hover:ring-2 group-hover:ring-[#00A86B]/40 transition-all"
                   />
                   <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#00A86B] ring-2 ring-white" />
                 </div>
@@ -451,7 +464,7 @@ export default function CommunityHub() {
                   </div>
                   <div className="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
-                    <span>{currentUser ? 'Online' : 'Online (Member)'}</span>
+                    <span>{currentUser ? 'Online (Verified)' : 'Online (Member)'}</span>
                   </div>
                 </div>
               </div>
@@ -471,6 +484,9 @@ export default function CommunityHub() {
               <div className="absolute bottom-14 left-0 w-full bg-white border border-slate-200 rounded-2xl shadow-xl p-2 space-y-1 animate-fadeIn z-50">
                 {currentUser ? (
                   <>
+                    <div className="px-3 py-1.5 text-[11px] font-medium text-slate-400 border-b border-slate-100">
+                      Logged in as <strong className="text-slate-700">{currentUser.email}</strong>
+                    </div>
                     <a
                       href="/dashboard"
                       className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100"
@@ -491,13 +507,22 @@ export default function CommunityHub() {
                     </button>
                   </>
                 ) : (
-                  <a
-                    href="/login?redirect=/community"
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-black text-[#00A86B] bg-emerald-50 hover:bg-emerald-100"
-                  >
-                    <LogIn className="w-4 h-4" />
-                    <span>Log In to Account</span>
-                  </a>
+                  <>
+                    <a
+                      href="/login?redirect=/community"
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-black text-[#00A86B] bg-emerald-50 hover:bg-emerald-100"
+                    >
+                      <LogIn className="w-4 h-4" />
+                      <span>Log In to Account</span>
+                    </a>
+                    <a
+                      href="/signup"
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100"
+                    >
+                      <UserPlus className="w-4 h-4 text-slate-400" />
+                      <span>Create Free Account</span>
+                    </a>
+                  </>
                 )}
               </div>
             )}
@@ -528,7 +553,7 @@ export default function CommunityHub() {
                 <span className="text-slate-300">|</span>
                 <span className="flex items-center gap-1.5 text-xs font-bold text-slate-600">
                   <span className="w-2 h-2 rounded-full bg-[#00A86B]" />
-                  85 Seniors Online
+                  {seniors.length || 5} Seniors Online
                 </span>
               </div>
             </div>
@@ -549,7 +574,7 @@ export default function CommunityHub() {
               >
                 <Bell className="w-4 h-4" />
                 <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#00A86B] text-white text-[9px] font-black flex items-center justify-center">
-                  3
+                  {seniors.length > 0 ? seniors.length : 3}
                 </span>
               </button>
 
@@ -608,14 +633,7 @@ export default function CommunityHub() {
 
                       {/* Content Text */}
                       <p className="text-xs sm:text-[13px] font-medium text-slate-700 leading-relaxed whitespace-pre-line">
-                        {msg.content.includes('@Priya Nair') ? (
-                          <>
-                            <span className="text-[#00A86B] font-bold">@Priya Nair</span>
-                            {msg.content.replace('@Priya Nair', '')}
-                          </>
-                        ) : (
-                          msg.content
-                        )}
+                        {msg.content}
                       </p>
 
                       {/* Timestamp */}
@@ -767,7 +785,7 @@ export default function CommunityHub() {
            ───────────────────────────────────────────────────────────── */}
         <aside className="lg:col-span-3 xl:col-span-3 flex flex-col gap-3.5 overflow-y-auto no-scrollbar shrink-0">
           
-          {/* Card 1: Online Members (85) - Dynamic from PostgreSQL */}
+          {/* Card 1: Online Members - Dynamic from PostgreSQL */}
           <div className="bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-4 sm:p-5 space-y-3.5">
             <div className="flex items-center justify-between pb-1">
               <div className="flex items-center gap-2">
@@ -777,7 +795,7 @@ export default function CommunityHub() {
                 </h3>
               </div>
               <span className="text-[11px] font-black text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
-                85
+                {seniors.length || 5}
               </span>
             </div>
 
@@ -839,7 +857,7 @@ export default function CommunityHub() {
             </div>
           </div>
 
-          {/* Card 2: Pinned Resources - Dynamic from PostgreSQL */}
+          {/* Card 2: Pinned Resources - Deduplicated from PostgreSQL */}
           <div className="bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-4 sm:p-5 space-y-3.5 flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between pb-1">

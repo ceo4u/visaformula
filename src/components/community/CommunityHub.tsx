@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Hash, Search, Paperclip, Smile, Star, Users,
   Bell, MoreVertical, X, Check, ArrowRight,
-  FileText, MessageSquare, Send,
-  Megaphone, GraduationCap, Heart, Building2, Luggage, Plane, Menu, MessageCircle
+  FileText, MessageSquare, Send, LogIn, LogOut,
+  Megaphone, GraduationCap, Heart, Building2, Luggage, Plane, Menu, MessageCircle, User as UserIcon
 } from 'lucide-react';
 
 interface Channel {
@@ -14,25 +14,32 @@ interface Channel {
   category: string;
   badge_icon?: string;
   unread_count?: number;
+  description?: string;
+}
+
+interface Reaction {
+  emoji: string;
+  count: number;
 }
 
 interface ChatMessage {
   id: number;
   channel_slug: string;
+  user_id?: string;
   sender_name: string;
   sender_avatar: string;
   is_verified_senior: boolean;
   is_self?: boolean;
   content: string;
-  time: string;
-  reactions: { emoji: string; count: number }[];
+  reactions: Reaction[];
+  created_at: string;
 }
 
 interface SeniorMember {
   id: number;
   name: string;
   avatar_url: string;
-  is_verified: boolean;
+  university?: string;
   status: 'Online' | 'Offline';
 }
 
@@ -41,6 +48,14 @@ interface PinnedFile {
   title: string;
   file_size: string;
   file_type: string;
+  download_url?: string;
+}
+
+interface AuthUser {
+  uid: string;
+  displayName: string;
+  email: string;
+  photoURL?: string;
 }
 
 const CATEGORIES = [
@@ -52,77 +67,31 @@ const CATEGORIES = [
   { id: 'student', name: 'Student Life', icon: Heart },
 ];
 
-const COMMUNITY_CHANNELS: Channel[] = [
-  { id: 1, slug: 'russia-mbbs-2026', name: 'russia-mbbs-2026', category: 'MBBS Abroad Guide', badge_icon: 'users' },
-  { id: 2, slug: 'delhi-to-moscow-flights', name: 'delhi-to-moscow-flights', category: 'Travel & Accommodation', badge_icon: 'plane' },
-  { id: 3, slug: 'dorm-sharing', name: 'dorm-sharing', category: 'Travel & Accommodation', badge_icon: 'building' },
-];
-
-const SENIOR_MEMBERS: SeniorMember[] = [
-  { id: 1, name: 'Arjun Patel', avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', is_verified: true, status: 'Online' },
-  { id: 2, name: 'Neha Reddy', avatar_url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80', is_verified: true, status: 'Online' },
-  { id: 3, name: 'Vikram Joshi', avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', is_verified: true, status: 'Online' },
-  { id: 4, name: 'Simran Kaur', avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80', is_verified: true, status: 'Online' },
-  { id: 5, name: 'Aditya Kumar', avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80', is_verified: true, status: 'Online' },
-];
-
-const PINNED_RESOURCES: PinnedFile[] = [
-  { id: 1, title: 'Russia MBBS Admission Process 2026.pdf', file_size: '2.4 MB', file_type: 'PDF' },
-  { id: 2, title: 'Moscow State University Hostel Guide.pdf', file_size: '1.8 MB', file_type: 'PDF' },
-];
-
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: 1,
-    channel_slug: 'russia-mbbs-2026',
-    sender_name: 'Ananya Sharma',
-    sender_avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-    is_verified_senior: true,
-    is_self: false,
-    content: "Hey everyone! How's the weather in Moscow these days?",
-    time: '10:24 AM',
-    reactions: [{ emoji: '❤️', count: 12 }]
-  },
-  {
-    id: 2,
-    channel_slug: 'russia-mbbs-2026',
-    sender_name: 'Rohit Mehta',
-    sender_avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    is_verified_senior: true,
-    is_self: true,
-    content: "It's getting colder now, around -5°C today.\nMake sure to carry warm clothes!",
-    time: '10:26 AM',
-    reactions: [{ emoji: '👍', count: 8 }]
-  },
-  {
-    id: 3,
-    channel_slug: 'russia-mbbs-2026',
-    sender_name: 'Priya Nair',
-    sender_avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    is_verified_senior: true,
-    is_self: false,
-    content: "Anyone going to the university this week?\nLet's catch up!",
-    time: '10:28 AM',
-    reactions: [{ emoji: '👏', count: 6 }]
-  },
-  {
-    id: 4,
-    channel_slug: 'russia-mbbs-2026',
-    sender_name: 'Karan Singh',
-    sender_avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-    is_verified_senior: true,
-    is_self: false,
-    content: "@Priya Nair I'll be there on Wednesday.\nLet me know!",
-    time: '10:30 AM',
-    reactions: [{ emoji: '💯', count: 5 }]
-  }
-];
+const EMOJI_OPTIONS = ['❤️', '👍', '🔥', '💯', '👏', '🎉', '👋', '🚀'];
 
 export default function CommunityHub() {
   const [activeChannel, setActiveChannel] = useState('russia-mbbs-2026');
+  const [channels, setChannels] = useState<Channel[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [seniors, setSeniors] = useState<SeniorMember[]>([]);
+  const [resources, setResources] = useState<PinnedFile[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Search & Filter
   const [channelSearch, setChannelSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // User Auth State
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  // Composer
   const [inputText, setInputText] = useState('');
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const [sending, setSending] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [msgEmojiPickerId, setMsgEmojiPickerId] = useState<number | null>(null);
+
+  // UI state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
@@ -138,49 +107,186 @@ export default function CommunityHub() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // 1. Fetch Auth State from Backend / LocalStorage
+  const checkAuth = async () => {
+    try {
+      // Immediate localStorage check
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('visaformula_user');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.email) {
+            setCurrentUser({
+              uid: parsed.uid || 'user-local',
+              displayName: parsed.displayName || parsed.first_name || 'Aman Verma',
+              email: parsed.email,
+              photoURL: parsed.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+            });
+          }
+        }
+      }
+
+      // Verify with backend session endpoint
+      const res = await fetch('/api/auth/me');
+      const data = await res.json();
+      if (data.status === 'success' && data.user) {
+        setCurrentUser({
+          uid: data.user.uid,
+          displayName: data.user.displayName || 'Aman Verma',
+          email: data.user.email,
+          photoURL: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+        });
+      }
+    } catch (err) {
+      console.warn('[Community Auth Check]', err);
+    }
+  };
+
+  // 2. Fetch Live Feed from PostgreSQL Backend
+  const fetchFeed = async (channelSlug: string, isPolling = false) => {
+    try {
+      if (!isPolling) setLoading(true);
+      const res = await fetch(`/api/community/messages?channel=${channelSlug}`);
+      const data = await res.json();
+
+      if (data.success) {
+        if (data.channels && data.channels.length > 0) {
+          setChannels(data.channels);
+        }
+        if (data.seniors && data.seniors.length > 0) {
+          setSeniors(data.seniors);
+        }
+        if (data.resources && data.resources.length > 0) {
+          setResources(data.resources);
+        }
+        if (data.messages) {
+          setMessages(data.messages);
+        }
+      }
+    } catch (err) {
+      console.error('[Community Feed Error]', err);
+    } finally {
+      if (!isPolling) setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    fetchFeed(activeChannel);
+
+    // Live background polling every 4 seconds
+    const interval = setInterval(() => {
+      fetchFeed(activeChannel, true);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [activeChannel]);
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = (e?: React.FormEvent) => {
+  // 3. Send Message to PostgreSQL Backend
+  const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!inputText.trim()) return;
+    if (!inputText.trim() || sending) return;
 
-    const newMsg: ChatMessage = {
-      id: Date.now(),
+    // Check if user is logged in
+    const senderName = currentUser ? currentUser.displayName : 'Aman Verma';
+    const senderAvatar = currentUser?.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
+    const userId = currentUser ? currentUser.uid : 'user-guest';
+
+    const messageContent = inputText.trim();
+    setInputText('');
+    setSending(true);
+
+    // Optimistic UI update
+    const tempId = Date.now();
+    const optimisticMsg: ChatMessage = {
+      id: tempId,
       channel_slug: activeChannel,
-      sender_name: 'Aman Verma',
-      sender_avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
-      is_verified_senior: true,
+      user_id: userId,
+      sender_name: senderName,
+      sender_avatar: senderAvatar,
+      is_verified_senior: false,
       is_self: true,
-      content: inputText.trim(),
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      reactions: []
+      content: messageContent,
+      reactions: [],
+      created_at: new Date().toISOString()
     };
 
-    setMessages((prev) => [...prev, newMsg]);
-    setInputText('');
+    setMessages((prev) => [...prev, optimisticMsg]);
+
+    try {
+      const res = await fetch('/api/community/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          channel_slug: activeChannel,
+          content: messageContent,
+          sender_name: senderName,
+          sender_avatar: senderAvatar,
+          user_id: userId,
+          is_verified_senior: false
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.message) {
+        setMessages((prev) =>
+          prev.map((msg) => (msg.id === tempId ? { ...data.message, is_self: true } : msg))
+        );
+      }
+    } catch (err) {
+      console.error('[Send Message Error]', err);
+      showToast('Failed to send message. Please retry.');
+    } finally {
+      setSending(false);
+    }
   };
 
-  const handleReaction = (msgId: number, emoji: string) => {
+  // 4. React with Emoji (Persisted to Database)
+  const handleReaction = async (messageId: number, emoji: string) => {
     setMessages((prev) =>
       prev.map((msg) => {
-        if (msg.id !== msgId) return msg;
-        const exists = msg.reactions.find((r) => r.emoji === emoji);
-        if (exists) {
-          return {
-            ...msg,
-            reactions: msg.reactions.map((r) =>
-              r.emoji === emoji ? { ...r, count: r.count + 1 } : r
-            )
-          };
+        if (msg.id !== messageId) return msg;
+        const reactions = Array.isArray(msg.reactions) ? [...msg.reactions] : [];
+        const idx = reactions.findIndex((r) => r.emoji === emoji);
+        if (idx >= 0) {
+          reactions[idx] = { ...reactions[idx], count: reactions[idx].count + 1 };
+        } else {
+          reactions.push({ emoji, count: 1 });
         }
-        return {
-          ...msg,
-          reactions: [...msg.reactions, { emoji, count: 1 }]
-        };
+        return { ...msg, reactions };
       })
     );
+    setMsgEmojiPickerId(null);
+
+    try {
+      await fetch('/api/community/messages/react', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message_id: messageId, emoji })
+      });
+    } catch (err) {
+      console.error('[React Error]', err);
+    }
+  };
+
+  // Filter Channels
+  const filteredChannels = channels.filter((ch) => {
+    const matchesSearch = ch.name.toLowerCase().includes(channelSearch.toLowerCase());
+    const matchesCategory = selectedCategory ? ch.category.toLowerCase().includes(selectedCategory.toLowerCase()) : true;
+    return matchesSearch && matchesCategory;
+  });
+
+  const currentChannelObj = channels.find((c) => c.slug === activeChannel) || {
+    id: 1,
+    slug: 'russia-mbbs-2026',
+    name: 'russia-mbbs-2026',
+    category: 'MBBS Abroad Guide'
   };
 
   return (
@@ -202,9 +308,8 @@ export default function CommunityHub() {
           
           <div className="space-y-4 overflow-y-auto no-scrollbar pr-1">
             
-            {/* Top Row: macOS Traffic Lights + Brand Header */}
+            {/* Top Row: macOS Traffic Lights + Official TravlTik Logo */}
             <div className="space-y-3.5 pb-1">
-              {/* Traffic Light Dots */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e] cursor-pointer" />
@@ -218,7 +323,7 @@ export default function CommunityHub() {
                 )}
               </div>
 
-              {/* Exact Brand Header matching Screenshot */}
+              {/* Exact Brand Logo matching Screenshot */}
               <a href="/" className="flex items-center gap-2.5 pt-0.5 group">
                 <img
                   src="/logo.png?v=8"
@@ -243,65 +348,82 @@ export default function CommunityHub() {
               </kbd>
             </div>
 
-            {/* Section: CHANNELS */}
+            {/* Section: CHANNELS (Dynamic from DB) */}
             <div className="space-y-1.5 pt-1">
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1 block">
                 Channels
               </span>
 
               <div className="space-y-1">
-                {COMMUNITY_CHANNELS.map((ch) => {
-                  const isActive = activeChannel === ch.slug;
-                  return (
-                    <button
-                      key={ch.id}
-                      type="button"
-                      onClick={() => {
-                        setActiveChannel(ch.slug);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-black transition-all cursor-pointer ${
-                        isActive
-                          ? 'bg-[#00A86B] text-white shadow-sm shadow-emerald-600/30'
-                          : 'text-slate-700 hover:bg-slate-100/80'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 truncate">
-                        <Hash className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                        <span className="truncate">{ch.name}</span>
-                      </div>
+                {filteredChannels.length > 0 ? (
+                  filteredChannels.map((ch) => {
+                    const isActive = activeChannel === ch.slug;
+                    return (
+                      <button
+                        key={ch.id}
+                        type="button"
+                        onClick={() => {
+                          setActiveChannel(ch.slug);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-black transition-all cursor-pointer ${
+                          isActive
+                            ? 'bg-[#00A86B] text-white shadow-sm shadow-emerald-600/30'
+                            : 'text-slate-700 hover:bg-slate-100/80'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 truncate">
+                          <Hash className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                          <span className="truncate">{ch.name}</span>
+                        </div>
 
-                      {ch.badge_icon === 'users' && (
-                        <Users className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                      )}
-                      {ch.badge_icon === 'plane' && (
-                        <Plane className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                      )}
-                      {ch.badge_icon === 'building' && (
-                        <Building2 className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                      )}
-                    </button>
-                  );
-                })}
+                        {ch.slug.includes('russia') && (
+                          <Users className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                        )}
+                        {ch.slug.includes('flight') && (
+                          <Plane className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                        )}
+                        {ch.slug.includes('dorm') && (
+                          <Building2 className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                        )}
+                      </button>
+                    );
+                  })
+                ) : (
+                  <div className="text-[11px] text-slate-400 p-2">No channels match filter</div>
+                )}
               </div>
             </div>
 
             {/* Section: CATEGORIES */}
             <div className="space-y-1 pt-1.5">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1 block">
-                Categories
-              </span>
+              <div className="flex items-center justify-between px-1">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                  Categories
+                </span>
+                {selectedCategory && (
+                  <button
+                    onClick={() => setSelectedCategory(null)}
+                    className="text-[10px] text-[#00A86B] font-bold hover:underline"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
               <div className="space-y-0.5">
                 {CATEGORIES.map((cat) => {
                   const Icon = cat.icon;
+                  const isSelected = selectedCategory === cat.name;
                   return (
                     <button
                       key={cat.id}
                       type="button"
-                      onClick={() => showToast(`Filtered by ${cat.name}`)}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors cursor-pointer text-left"
+                      onClick={() => setSelectedCategory(isSelected ? null : cat.name)}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer text-left ${
+                        isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                      }`}
                     >
-                      <Icon className="w-4 h-4 text-slate-400 shrink-0" />
+                      <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#00A86B]' : 'text-slate-400'}`} />
                       <span className="truncate">{cat.name}</span>
                     </button>
                   );
@@ -311,38 +433,80 @@ export default function CommunityHub() {
 
           </div>
 
-          {/* Bottom User Profile Row */}
-          <div className="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="relative shrink-0">
-                <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80"
-                  alt="Aman Verma"
-                  className="w-9 h-9 rounded-full object-cover border border-slate-200"
-                />
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#00A86B] ring-2 ring-white" />
-              </div>
-              <div className="min-w-0 truncate">
-                <div className="text-xs font-black text-slate-900 truncate">Aman Verma</div>
-                <div className="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" /> Online
+          {/* Bottom User Profile Card (Dynamic Real User from Auth) */}
+          <div className="relative pt-3 mt-2 border-t border-slate-100">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="relative shrink-0">
+                  <img
+                    src={currentUser?.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
+                    alt={currentUser ? currentUser.displayName : 'User'}
+                    className="w-9 h-9 rounded-full object-cover border border-slate-200"
+                  />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#00A86B] ring-2 ring-white" />
+                </div>
+                <div className="min-w-0 truncate">
+                  <div className="text-xs font-black text-slate-900 truncate">
+                    {currentUser ? currentUser.displayName : 'Aman Verma'}
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                    <span>{currentUser ? 'Online' : 'Online (Member)'}</span>
+                  </div>
                 </div>
               </div>
+
+              <button
+                type="button"
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                title="Account Settings"
+              >
+                <MoreVertical className="w-4 h-4" />
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => showToast('Profile options')}
-              className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-            >
-              <MoreVertical className="w-4 h-4" />
-            </button>
+            {/* Profile Popup Menu */}
+            {showProfileMenu && (
+              <div className="absolute bottom-14 left-0 w-full bg-white border border-slate-200 rounded-2xl shadow-xl p-2 space-y-1 animate-fadeIn z-50">
+                {currentUser ? (
+                  <>
+                    <a
+                      href="/dashboard"
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100"
+                    >
+                      <UserIcon className="w-4 h-4 text-slate-400" />
+                      <span>My User Dashboard</span>
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        localStorage.removeItem('visaformula_user');
+                        window.location.href = '/login';
+                      }}
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 text-left"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Log Out</span>
+                    </button>
+                  </>
+                ) : (
+                  <a
+                    href="/login?redirect=/community"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-black text-[#00A86B] bg-emerald-50 hover:bg-emerald-100"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    <span>Log In to Account</span>
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
         </aside>
 
         {/* ─────────────────────────────────────────────────────────────
-            COLUMN 2: CENTER CHAT STREAM (6 COLS)
+            COLUMN 2: CENTER CHAT STREAM (6 COLS) - REAL DATABASE FEED
            ───────────────────────────────────────────────────────────── */}
         <main className="lg:col-span-6 xl:col-span-6 flex flex-col justify-between overflow-hidden gap-3.5 min-w-0">
           
@@ -359,7 +523,7 @@ export default function CommunityHub() {
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-50 border border-slate-200/70">
                 <Hash className="w-4 h-4 text-[#00A86B]" />
                 <span className="text-xs sm:text-sm font-black text-slate-900">
-                  {activeChannel}
+                  {currentChannelObj.name}
                 </span>
                 <span className="text-slate-300">|</span>
                 <span className="flex items-center gap-1.5 text-xs font-bold text-slate-600">
@@ -398,69 +562,70 @@ export default function CommunityHub() {
             </div>
           </div>
 
-          {/* Floating Chat Messages Area */}
+          {/* Floating Chat Messages Area (Live DB rows) */}
           <div className="flex-1 overflow-y-auto p-1 sm:p-2 space-y-4 no-scrollbar">
-            {messages.map((msg) => {
-              const isSelf = msg.is_self;
+            {messages.length > 0 ? (
+              messages.map((msg) => {
+                const isSelf = msg.is_self || (currentUser && msg.user_id === currentUser.uid) || msg.sender_name === (currentUser?.displayName || 'Aman Verma');
+                const timeFormatted = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-              return (
-                <div
-                  key={msg.id}
-                  className={`flex items-start gap-3 w-full ${
-                    isSelf ? 'justify-end' : 'justify-start'
-                  }`}
-                >
-                  {/* Avatar Left (if not self) */}
-                  {!isSelf && (
-                    <img
-                      src={msg.sender_avatar}
-                      alt={msg.sender_name}
-                      className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
-                    />
-                  )}
-
-                  {/* Message Bubble Card */}
+                return (
                   <div
-                    className={`relative rounded-[26px] p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border transition-all max-w-[85%] sm:max-w-[78%] ${
-                      isSelf
-                        ? 'bg-[#edfbf6] border-emerald-100/90 text-slate-900 rounded-tr-sm'
-                        : 'bg-white border-slate-200/80 text-slate-900 rounded-tl-sm'
+                    key={msg.id}
+                    className={`flex items-start gap-3 w-full ${
+                      isSelf ? 'justify-end' : 'justify-start'
                     }`}
                   >
-                    {/* Header: Name + Verified Senior Badge */}
-                    <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                      <span className="text-xs sm:text-[13px] font-black text-slate-900">
-                        {msg.sender_name}
-                      </span>
-                      {msg.is_verified_senior && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.2 rounded-full">
-                          <Star className="w-2.5 h-2.5 fill-current" />
-                          <span>Verified Senior</span>
+                    {/* Avatar Left (if not self) */}
+                    {!isSelf && (
+                      <img
+                        src={msg.sender_avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80'}
+                        alt={msg.sender_name}
+                        className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
+                      />
+                    )}
+
+                    {/* Message Bubble Card */}
+                    <div
+                      className={`relative rounded-[26px] p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border transition-all max-w-[85%] sm:max-w-[78%] ${
+                        isSelf
+                          ? 'bg-[#edfbf6] border-emerald-100/90 text-slate-900 rounded-tr-sm'
+                          : 'bg-white border-slate-200/80 text-slate-900 rounded-tl-sm'
+                      }`}
+                    >
+                      {/* Header: Name + Verified Senior Badge */}
+                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                        <span className="text-xs sm:text-[13px] font-black text-slate-900">
+                          {msg.sender_name}
                         </span>
-                      )}
-                    </div>
+                        {msg.is_verified_senior && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.2 rounded-full">
+                            <Star className="w-2.5 h-2.5 fill-current" />
+                            <span>Verified Senior</span>
+                          </span>
+                        )}
+                      </div>
 
-                    {/* Content Text */}
-                    <p className="text-xs sm:text-[13px] font-medium text-slate-700 leading-relaxed whitespace-pre-line">
-                      {msg.content.includes('@Priya Nair') ? (
-                        <>
-                          <span className="text-[#00A86B] font-bold">@Priya Nair</span>
-                          {msg.content.replace('@Priya Nair', '')}
-                        </>
-                      ) : (
-                        msg.content
-                      )}
-                    </p>
+                      {/* Content Text */}
+                      <p className="text-xs sm:text-[13px] font-medium text-slate-700 leading-relaxed whitespace-pre-line">
+                        {msg.content.includes('@Priya Nair') ? (
+                          <>
+                            <span className="text-[#00A86B] font-bold">@Priya Nair</span>
+                            {msg.content.replace('@Priya Nair', '')}
+                          </>
+                        ) : (
+                          msg.content
+                        )}
+                      </p>
 
-                    {/* Timestamp */}
-                    <div className="text-[10px] font-semibold text-slate-400 mt-2">
-                      {msg.time}
-                    </div>
+                      {/* Timestamp */}
+                      <div className="text-[10px] font-semibold text-slate-400 mt-2">
+                        {timeFormatted}
+                      </div>
 
-                    {/* Floating Reaction Pill (Bottom Right) */}
-                    {msg.reactions && msg.reactions.length > 0 && (
+                      {/* Floating Reaction Pill (Bottom Right) */}
                       <div className="absolute -bottom-3 right-4 flex items-center gap-1">
-                        {msg.reactions.map((r, i) => (
+                        {msg.reactions && msg.reactions.map((r, i) => (
                           <button
                             key={i}
                             type="button"
@@ -471,32 +636,65 @@ export default function CommunityHub() {
                             <span className="text-[11px] font-black text-slate-600">{r.count}</span>
                           </button>
                         ))}
+
+                        {/* Reaction Picker Button */}
+                        <div className="relative">
+                          <button
+                            type="button"
+                            onClick={() => setMsgEmojiPickerId(msgEmojiPickerId === msg.id ? null : msg.id)}
+                            className="w-6 h-6 rounded-full bg-white hover:bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center text-xs shadow-xs cursor-pointer"
+                            title="Add Reaction"
+                          >
+                            <Smile className="w-3 h-3" />
+                          </button>
+
+                          {msgEmojiPickerId === msg.id && (
+                            <div className="absolute bottom-8 right-0 z-50 bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 flex gap-1 animate-fadeIn">
+                              {EMOJI_OPTIONS.map((emoji) => (
+                                <button
+                                  key={emoji}
+                                  type="button"
+                                  onClick={() => handleReaction(msg.id, emoji)}
+                                  className="w-7 h-7 rounded-xl hover:bg-slate-100 flex items-center justify-center text-sm cursor-pointer"
+                                >
+                                  {emoji}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
+                    </div>
+
+                    {/* Avatar Right (if self) */}
+                    {isSelf && (
+                      <img
+                        src={msg.sender_avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
+                        alt={msg.sender_name}
+                        className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
+                      />
                     )}
                   </div>
-
-                  {/* Avatar Right (if self) */}
-                  {isSelf && (
-                    <img
-                      src={msg.sender_avatar}
-                      alt={msg.sender_name}
-                      className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
-                    />
-                  )}
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className="py-24 text-center space-y-2 text-slate-400">
+                <MessageSquare className="w-8 h-8 text-slate-300 mx-auto" />
+                <h4 className="text-sm font-bold text-slate-700">No messages in this channel yet</h4>
+                <p className="text-xs text-slate-400">Start the conversation for the 2026 intake!</p>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Bottom Floating Composer Card with Send Button */}
+          {/* Bottom Floating Composer Card with Real Send DB Action */}
           <form
             onSubmit={handleSendMessage}
             className="bg-white rounded-[26px] sm:rounded-[30px] border border-slate-200/80 shadow-[0_6px_25px_rgba(0,0,0,0.03)] p-2 sm:p-2.5 flex items-center gap-2 shrink-0"
           >
             <button
               type="button"
-              onClick={() => showToast('Attach file / document')}
+              onClick={() => showToast('Select PDF checklist or image to upload')}
               className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors shrink-0"
               title="Attach File"
             >
@@ -512,22 +710,41 @@ export default function CommunityHub() {
               className="flex-1 bg-transparent border-none text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none px-2"
             />
 
-            <button
-              type="button"
-              onClick={() => {
-                setInputText((prev) => prev + ' 👋');
-                inputRef.current?.focus();
-              }}
-              className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors shrink-0"
-              title="Emoji"
-            >
-              <Smile className="w-4 h-4" />
-            </button>
+            {/* Composer Emoji Picker */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors shrink-0"
+                title="Emoji"
+              >
+                <Smile className="w-4 h-4" />
+              </button>
+
+              {showEmojiPicker && (
+                <div className="absolute bottom-11 right-0 z-50 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 grid grid-cols-4 gap-1 animate-fadeIn">
+                  {EMOJI_OPTIONS.map((emoji) => (
+                    <button
+                      key={emoji}
+                      type="button"
+                      onClick={() => {
+                        setInputText((prev) => prev + emoji);
+                        setShowEmojiPicker(false);
+                        inputRef.current?.focus();
+                      }}
+                      className="w-8 h-8 rounded-xl hover:bg-slate-100 flex items-center justify-center text-sm cursor-pointer"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Solid Emerald Green Send Button */}
             <button
               type="submit"
-              disabled={!inputText.trim()}
+              disabled={!inputText.trim() || sending}
               className="w-10 h-10 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white flex items-center justify-center cursor-pointer disabled:opacity-40 transition-all shrink-0 shadow-sm shadow-emerald-600/30 active:scale-95"
               title="Send Message"
             >
@@ -538,13 +755,12 @@ export default function CommunityHub() {
         </main>
 
         {/* ─────────────────────────────────────────────────────────────
-            COLUMN 3: RIGHT SIDEBAR (ONLINE MEMBERS & PINNED) - 3 COLS
+            COLUMN 3: RIGHT SIDEBAR (ONLINE MEMBERS & PINNED RESOURCES)
            ───────────────────────────────────────────────────────────── */}
         <aside className="lg:col-span-3 xl:col-span-3 flex flex-col gap-3.5 overflow-y-auto no-scrollbar shrink-0">
           
-          {/* Card 1: Online Members (85) */}
+          {/* Card 1: Online Members (85) - Dynamic from PostgreSQL */}
           <div className="bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-4 sm:p-5 space-y-3.5">
-            {/* Header */}
             <div className="flex items-center justify-between pb-1">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B]" />
@@ -561,22 +777,22 @@ export default function CommunityHub() {
               <span>Verified Seniors</span>
               <button
                 type="button"
-                onClick={() => showToast('Viewing all verified seniors')}
+                onClick={() => showToast('Viewing all verified seniors directory')}
                 className="text-[#00A86B] text-[11px] font-bold hover:underline cursor-pointer"
               >
                 See all
               </button>
             </div>
 
-            {/* Seniors List */}
+            {/* Seniors List from PostgreSQL */}
             <div className="space-y-2 pt-1">
-              {SENIOR_MEMBERS.map((s) => (
+              {seniors.map((s) => (
                 <div
                   key={s.id}
                   onClick={() => {
                     setInputText(`@${s.name} `);
                     inputRef.current?.focus();
-                    showToast(`Mentioning @${s.name}`);
+                    showToast(`Mentioning @${s.name} in chat`);
                   }}
                   className="p-2 rounded-2xl bg-slate-50/70 hover:bg-emerald-50/50 border border-slate-200/60 flex items-center justify-between transition-colors group cursor-pointer"
                 >
@@ -615,7 +831,7 @@ export default function CommunityHub() {
             </div>
           </div>
 
-          {/* Card 2: Pinned Resources */}
+          {/* Card 2: Pinned Resources - Dynamic from PostgreSQL */}
           <div className="bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-4 sm:p-5 space-y-3.5 flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between pb-1">
@@ -633,7 +849,7 @@ export default function CommunityHub() {
 
               {/* Resource items */}
               <div className="space-y-2">
-                {PINNED_RESOURCES.map((r) => (
+                {resources.map((r) => (
                   <div
                     key={r.id}
                     className="p-2.5 rounded-2xl bg-slate-50/70 hover:bg-slate-100/80 border border-slate-200/60 flex items-center justify-between gap-2.5 transition-colors group cursor-pointer"
@@ -648,7 +864,7 @@ export default function CommunityHub() {
                           {r.title}
                         </div>
                         <div className="text-[10px] text-slate-400 font-semibold">
-                          {r.file_size} • {r.file_type}
+                          {r.file_size} • {r.file_type.toUpperCase()}
                         </div>
                       </div>
                     </div>

@@ -584,6 +584,7 @@ export async function runMigrations() {
       status VARCHAR(50) DEFAULT 'Online',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+    DELETE FROM verified_seniors a USING verified_seniors b WHERE a.id > b.id AND a.name = b.name;
     CREATE UNIQUE INDEX IF NOT EXISTS idx_seniors_name ON verified_seniors (name);
 
     CREATE TABLE IF NOT EXISTS pinned_resources (

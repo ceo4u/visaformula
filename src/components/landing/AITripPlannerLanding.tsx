@@ -1229,7 +1229,7 @@ export function AITripPlannerLanding() {
   const [isOriginCityOpen, setIsOriginCityOpen] = useState(false);
   const originCityRef = useRef<HTMLDivElement>(null);
 
-  const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes' | null>(null);
+  const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes' | null>('no');
   
   // Custom dropdown open states for Journey Form
   const [isPassportOpen, setIsPassportOpen] = useState(false);
@@ -1275,7 +1275,7 @@ export function AITripPlannerLanding() {
 
   // Generator & Dashboard Trigger States
   const [isGenerating, setIsGenerating] = useState(false);
-  const [hasGenerated, setHasGenerated] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(true);
 
   // Flow 2A: Study Abroad 8-Step Engine States
   const [studyQualification, setStudyQualification] = useState<'12th' | 'bachelors' | 'masters' | 'diploma'>('bachelors');
@@ -1761,19 +1761,8 @@ export function AITripPlannerLanding() {
         purpose: travelPurpose || 'study'
       });
     } else {
-      setHasGenerated(false);
-      autoSaveJourney({
-        destination: journeyDestination || 'UAE',
-        passport_country: passportCountry || 'India',
-        purpose: travelPurpose || 'study',
-        has_visa: false
-      });
-      setTimeout(() => {
-        const el = document.getElementById('need-visa-pathway-dashboard');
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 150);
+      setHasVisaAlready('no');
+      handleGeneratePathway();
     }
   };
 
@@ -1791,17 +1780,14 @@ export function AITripPlannerLanding() {
 
     setTravelPurpose(targetPurpose);
     setSearchPrompt(`${pillLabel} to ${journeyDestination || 'UAE'}`);
+    setHasVisaAlready('no');
+    setHasGenerated(true);
 
     // Auto-scroll down to the target pathway section
     setTimeout(() => {
-      if (hasVisaAlready === 'yes') {
-        const el = document.getElementById('parental-security-engine-dashboard');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        const el = document.getElementById('need-visa-pathway-dashboard');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 150);
+      const el = document.getElementById('ai-pathway-research-verdict') || document.getElementById('need-visa-pathway-dashboard');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
   };
 
       const handleViewInDashboard = () => {
@@ -3618,8 +3604,8 @@ return (
             </div>
           )}
 
-          {/* ── FLOW 2: NOTEBOOK ARCHITECTURE (HAVE VISA? = NO) ── */}
-          {travelScopeTab === 'international' && !isGenerating && hasGenerated && hasVisaAlready === 'no' && (() => {
+          {/* ── FLOW 2: NOTEBOOK ARCHITECTURE (HAVE VISA? = NO / DEFAULT) ── */}
+          {travelScopeTab === 'international' && !isGenerating && hasGenerated && hasVisaAlready !== 'yes' && (() => {
             const aiVerdict = getAIVisaVerdict(passportCountry || 'India', journeyDestination || 'United Kingdom', travelPurpose || 'study');
 
             return (

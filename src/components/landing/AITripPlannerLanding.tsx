@@ -2143,10 +2143,10 @@ return (
       />
 
       {/* ── 1. HERO SECTION (THIN & SLEEK PURE WHITE DESIGN) ── */}
-      <section className="relative w-full overflow-visible bg-white pt-1 sm:pt-2 pb-2 sm:pb-4 px-2.5 sm:px-6 lg:px-8">
+      <section className="relative w-full overflow-visible bg-[#fbfbfd] pt-3.5 sm:pt-5 lg:pt-6 pb-3 sm:pb-5 px-2.5 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
-        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-100 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
+        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
           
           {/* High-Resolution Generated Travel Photograph Background */}
           <div 

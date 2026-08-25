@@ -4059,13 +4059,13 @@ return (
                       <div>
                         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00A86B]/20 text-emerald-300 border border-[#00A86B]/40 text-[10px] font-black uppercase tracking-wider mb-2">
                           <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>Flow 2A: Study Abroad &amp; University Pathway (8 Steps)</span>
+                          <span>Flow 2A: Study Abroad &amp; University Pathway (6 Steps)</span>
                         </div>
                         <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
                           Target Pathway: Study Abroad in {journeyDestination || 'Top Universities'}
                         </h3>
                         <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
-                          8-Step notebook architecture: university shortlisting, document gathering, funds audit, readiness score &amp; VFS slot booking.
+                          6-Step notebook architecture: university shortlisting, document gathering, funds audit &amp; VFS slot booking.
                         </p>
                       </div>
 
@@ -4079,7 +4079,7 @@ return (
                       </div>
                     </div>
 
-                  {/* 8-Step Study Notebook Grid */}
+                  {/* 6-Step Study Notebook Grid */}
                   <div className="space-y-6 sm:space-y-8 max-w-5xl mx-auto">
                     
                     
@@ -4100,7 +4100,7 @@ return (
                           </div>
                         </div>
                         <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-xs font-bold">
-                          Step 1 of 8
+                          Step 1 of 6
                         </span>
                       </div>
 
@@ -4292,7 +4292,7 @@ return (
                           </div>
                         </div>
                         <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold">
-                          Step 2 of 8
+                          Step 2 of 6
                         </span>
                       </div>
 
@@ -4518,7 +4518,7 @@ return (
                           </div>
                         </div>
                         <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold">
-                          Step 4 of 8
+                          Step 4 of 6
                         </span>
                       </div>
 
@@ -4566,72 +4566,16 @@ return (
                       </div>
                     </div>
 
-                    {/* STEP 5: Dynamic Readiness Score */}
-                    <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-lg space-y-5 text-left">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1.5">
-                            <span className="w-7 h-7 rounded-xl bg-[#00A86B] text-white flex items-center justify-center font-black text-xs">5</span>
-                            <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">Step 5: Dynamic Visa Readiness Score</span>
-                          </div>
-                          <h4 className="text-2xl sm:text-3xl font-black text-white">
-                            Visa Approval Likelihood: <span className="text-emerald-400">{studyReadinessScore}%</span>
-                          </h4>
-                          <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl">
-                            Algorithmic scoring based on academic qualification, language proficiency, verified funds docket for {journeyDestination || 'destination'}, and university offer status.
-                          </p>
-                        </div>
-
-                        <div className="shrink-0">
-                          {studyReadinessScore >= 95 ? (
-                            <div className="bg-emerald-500/20 border border-emerald-500/40 p-4 rounded-2xl text-center">
-                              <div className="text-xs sm:text-sm font-black text-emerald-300">⭐ High Profile Strength</div>
-                              <div className="text-xs text-slate-200 mt-0.5">Self-Apply Recommended</div>
-                              <a
-                                href="/self-apply"
-                                className="mt-2.5 inline-block px-5 py-2 bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black rounded-xl transition-all shadow-md"
-                              >
-                                Self Apply Now →
-                              </a>
-                            </div>
-                          ) : (
-                            <div className="bg-amber-500/20 border border-amber-500/40 p-4 rounded-2xl text-center">
-                              <div className="text-xs sm:text-sm font-black text-amber-300">Profile Boost Needed (&lt;95%)</div>
-                              <div className="text-xs text-slate-200 mt-0.5">Specialist Guidance Suggested</div>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const formEl = document.getElementById('study-lead-capture-section');
-                                  if (formEl) formEl.scrollIntoView({ behavior: 'smooth' });
-                                }}
-                                className="mt-2.5 inline-block px-5 py-2 bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black rounded-xl transition-all shadow-md cursor-pointer"
-                              >
-                                📞 Contact Expert to Enhance Profile
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Progress Bar */}
-                      <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-                        <div
-                          className="bg-gradient-to-r from-emerald-400 to-[#00A86B] h-full rounded-full transition-all duration-500"
-                          style={{ width: `${studyReadinessScore}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* STEP 6: Admission Re-Check */}
+                    {/* STEP 5: Admission Re-Check */}
                     <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5 text-left">
                       <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                         <div className="flex items-center gap-3">
                           <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-black text-sm sm:text-base shadow-xs">
-                            6
+                            5
                           </span>
                           <div>
                             <h4 className="text-base sm:text-lg font-black text-slate-900">
-                              Step 6: Admission Re-Check
+                              Step 5: Admission Re-Check
                             </h4>
                             <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
                               Re-verify documents alongside {currentStudyData.admissionDocName}
@@ -4639,7 +4583,7 @@ return (
                           </div>
                         </div>
                         <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-xs font-bold">
-                          Step 6 of 8
+                          Step 5 of 6
                         </span>
                       </div>
 
@@ -4660,16 +4604,16 @@ return (
                       </div>
                     </div>
 
-                    {/* STEPS 7 & 8: VFS Appointment Booking & Final Application Submission */}
+                    {/* STEP 6: VFS Appointment Booking & Final Application Submission */}
                     <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-5 text-left">
                       <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                         <div className="flex items-center gap-3">
                           <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center font-black text-sm sm:text-base shadow-xs">
-                            7 &amp; 8
+                            6
                           </span>
                           <div>
                             <h4 className="text-base sm:text-lg font-black text-slate-900">
-                              Step 7 &amp; 8: Slot Booking &amp; Final Visa Filing
+                              Step 6: Slot Booking &amp; Final Visa Filing
                             </h4>
                             <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
                               Biometric appointment booking &amp; official embassy dossier submission
@@ -4677,14 +4621,14 @@ return (
                           </div>
                         </div>
                         <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold">
-                          Step 7 &amp; 8 of 8
+                          Step 6 of 6
                         </span>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex flex-col justify-between gap-3">
                           <div>
-                            <div className="text-xs sm:text-sm font-black text-slate-900">Step 7: Appointment Slot</div>
+                            <div className="text-xs sm:text-sm font-black text-slate-900">Appointment Slot Booking</div>
                             <div className="text-xs text-slate-500 mt-1">{currentStudyData.vfsText}</div>
                           </div>
                           <a
@@ -4697,7 +4641,7 @@ return (
 
                         <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex flex-col justify-between gap-3">
                           <div>
-                            <div className="text-xs sm:text-sm font-black text-slate-900">Step 8: Final Visa Filing</div>
+                            <div className="text-xs sm:text-sm font-black text-slate-900">Final Visa Filing</div>
                             <div className="text-xs text-slate-500 mt-1">Dossier lock &amp; embassy tracking generation</div>
                           </div>
                           <button

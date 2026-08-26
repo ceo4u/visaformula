@@ -250,7 +250,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         verdictTitle: "Visa-Exempt for Tourism & Business (Up to 90 Days)",
         verdictSummary: `${passport} passport holders do not need a visa for short-term tourism or business visits to Singapore lasting up to 90 days. A valid SG Arrival Card (SGAC) with electronic health declaration is mandatory prior to check-in.`,
         digitalCardName: "SG Arrival Card (SGAC)",
-        digitalCardDesc: "Must be submitted online within 3 days prior to your arrival date in Singapore. Free electronic submission.",
+        digitalCardDesc: "Free online submission within 3 days before entry.",
         sources: ["ICA Singapore Official", "High Commission Diplomatic API", "IATA Timatic 2026"],
         maxStay: "90 Days",
         conditionsForVisa: [
@@ -661,176 +661,89 @@ export function VisaCountryResultPortal({
 
 
       
-      {/* ── SECTION 1.5: DYNAMIC AI OVERVIEW & ENTRY REQUIREMENTS INTELLIGENCE CARD ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
-        <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm text-left space-y-6">
+      {/* ── SECTION 1.5: SLEEK ATLYS-STYLE AI INTELLIGENCE CARD ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div className="bg-[#FAFAFA] border border-slate-200/80 rounded-[28px] p-5 sm:p-7 shadow-xs text-left transition-all">
           
-          {/* Header Strip with Live Pulse Badge */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          {/* Header & Verdict Pill */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200/60">
             <div className="flex items-center gap-2.5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold shadow-2xs">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>✨ AI Exemption &amp; Requirement Engine</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-[#00A86B] animate-pulse" />
+                <span>AI Visa Engine</span>
               </div>
-              <span className="text-xs font-medium text-slate-400 hidden sm:inline">•</span>
-              <span className="text-xs font-semibold text-slate-600 hidden sm:inline">
-                Real-time Consular Sync
+              <span className="text-xs text-slate-400">•</span>
+              <span className="text-xs text-slate-500 font-medium">
+                Live Consular Regulations
               </span>
             </div>
 
-            {/* Source Verification Badges */}
-            <div className="flex flex-wrap items-center gap-2">
-              {aiIntel.sources.map((src, idx) => (
-                <span key={idx} className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200/60 flex items-center gap-1">
-                  <span>🏛️</span>
-                  <span>{src}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-medium text-slate-400 flex items-center gap-1">
+                <span>Verified by IATA Timatic &amp; {countryName} Consular API</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Verdict Highlight */}
+          <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
+                  aiIntel.isExempt ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'
+                }`}>
+                  {aiIntel.isExempt ? 'VISA-FREE ENTRY' : 'OFFICIAL PASS REQUIRED'}
                 </span>
-              ))}
+                <span className="text-xs font-bold text-slate-900">
+                  {aiIntel.verdictTitle}
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-4xl">
+                {aiIntel.verdictSummary}
+              </p>
             </div>
           </div>
 
-          {/* Core Dynamic Verdict Banner */}
-          <div className={`p-5 sm:p-6 rounded-2xl border transition-all ${
-            aiIntel.isExempt
-              ? 'bg-gradient-to-r from-emerald-50/90 via-teal-50/50 to-white border-emerald-200'
-              : 'bg-gradient-to-r from-indigo-50/90 via-slate-50/50 to-white border-indigo-200'
-          }`}>
-            <div className="flex items-start gap-4">
-              <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 text-white font-bold shadow-xs ${
-                aiIntel.isExempt ? 'bg-emerald-600' : 'bg-indigo-600'
-              }`}>
-                {aiIntel.isExempt ? <CheckCircle2 className="w-5 h-5" /> : <ShieldCheck className="w-5 h-5" />}
-              </div>
-
-              <div className="space-y-1.5 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 tracking-tight">
-                    {aiIntel.verdictTitle}
-                  </h3>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
-                    aiIntel.isExempt ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'
-                  }`}>
-                    {aiIntel.isExempt ? 'VISA-FREE' : 'VISA REQUIRED'}
-                  </span>
-                </div>
-                <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                  {aiIntel.verdictSummary}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* 2-Column Grid: Entry Requirements vs When Do You Need a Visa */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-1">
+          {/* 4 Crisp Minimalist Chips */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 pt-2">
             
-            {/* Column 1 (7 Cols): Entry Requirements Checklist */}
-            <div className="lg:col-span-7 space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  MANDATORY BORDER CHECKLIST
-                </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                  {countryName} Entry
-                </span>
+            <div className="bg-white border border-slate-200/70 rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
+              <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0 text-sm">
+                🛂
               </div>
-
-              <div className="space-y-2.5">
-                
-                {/* 1. Passport Validity */}
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="w-3.5 h-3.5 stroke-[3]" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-900">Passport Validity (6+ Months)</h4>
-                    <p className="text-[11px] text-slate-600 font-medium mt-0.5">
-                      Your {passportCountry} passport must be valid for at least 6 months beyond your entry date with at least 2 blank pages.
-                    </p>
-                  </div>
-                </div>
-
-                {/* 2. Mandatory Digital Card */}
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="w-3.5 h-3.5 stroke-[3]" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-xs font-bold text-slate-900">{aiIntel.digitalCardName}</h4>
-                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 uppercase">MANDATORY</span>
-                    </div>
-                    <p className="text-[11px] text-slate-600 font-medium mt-0.5">
-                      {aiIntel.digitalCardDesc}
-                    </p>
-                  </div>
-                </div>
-
-                {/* 3. Proof of Onward Travel */}
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="w-3.5 h-3.5 stroke-[3]" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-900">Proof of Return / Onward Journey</h4>
-                    <p className="text-[11px] text-slate-600 font-medium mt-0.5">
-                      Confirmed departure flight ticket out of {countryName} within the permissible stay period.
-                    </p>
-                  </div>
-                </div>
-
-                {/* 4. Funds & Accommodation */}
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="w-3.5 h-3.5 stroke-[3]" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-900">Sufficient Funds &amp; Stay Proof</h4>
-                    <p className="text-[11px] text-slate-600 font-medium mt-0.5">
-                      Proof of financial capacity (bank cards/cash) and confirmed hotel reservation or host invitation.
-                    </p>
-                  </div>
-                </div>
-
+              <div className="min-w-0">
+                <span className="text-[10px] text-slate-400 block font-medium">Passport</span>
+                <span className="text-xs font-bold text-slate-800 truncate block">6+ Months Validity</span>
               </div>
             </div>
 
-            {/* Column 2 (5 Cols): "When Do You Need a Visa?" Clarification */}
-            <div className="lg:col-span-5 bg-slate-50/80 border border-slate-200/90 rounded-2xl p-5 space-y-4 flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-indigo-600" />
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                    When do you need a visa?
-                  </h4>
-                </div>
-
-                <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                  Even if your passport qualifies for tourist entry, an official visa or specialized pass is mandatory if:
-                </p>
-
-                <div className="space-y-2">
-                  {aiIntel.conditionsForVisa.map((cond, i) => (
-                    <div key={i} className="flex items-start gap-2 text-xs font-medium text-slate-700">
-                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
-                      <span className="leading-snug">{cond}</span>
-                    </div>
-                  ))}
-                </div>
+            <div className="bg-white border border-slate-200/70 rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
+              <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0 text-sm">
+                📋
               </div>
+              <div className="min-w-0">
+                <span className="text-[10px] text-slate-400 block font-medium">Mandatory Card</span>
+                <span className="text-xs font-bold text-slate-800 truncate block">{aiIntel.digitalCardName.split(' ')[0]} {aiIntel.digitalCardName.split(' ')[1] || 'Card'}</span>
+              </div>
+            </div>
 
-              {/* Action Routing Pill */}
-              <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between gap-2">
-                <span className="text-[11px] font-semibold text-slate-500">
-                  Need official visa filing?
-                </span>
-                <button
-                  type="button"
-                  onClick={handleOpenApplicationModal}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
-                >
-                  <span>Apply with TravlTik</span>
-                  <ArrowRight className="w-3 h-3" />
-                </button>
+            <div className="bg-white border border-slate-200/70 rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
+              <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0 text-sm">
+                ✈️
+              </div>
+              <div className="min-w-0">
+                <span className="text-[10px] text-slate-400 block font-medium">Return Ticket</span>
+                <span className="text-xs font-bold text-slate-800 truncate block">Onward Flight Proof</span>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200/70 rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
+              <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0 text-sm">
+                💳
+              </div>
+              <div className="min-w-0">
+                <span className="text-[10px] text-slate-400 block font-medium">Accommodation</span>
+                <span className="text-xs font-bold text-slate-800 truncate block">Stay &amp; Funds Proof</span>
               </div>
             </div>
 

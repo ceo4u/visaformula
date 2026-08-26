@@ -2731,108 +2731,7 @@ return (
 
         
 
-          {/* ── HOW TRAVLTIK WORKS SECTION ── */}
-          <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-14 px-4 sm:px-6 lg:px-8 text-center animate-fadeIn">
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-8 sm:mb-12">
-              How TravlTik Works?
-            </h3>
-
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 lg:gap-8 relative max-w-5xl mx-auto">
-              
-              {/* Step 1: Search */}
-              <div className="flex flex-col items-center text-center group flex-1">
-                <div className="relative mb-3 flex items-center justify-center">
-                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
-                    1
-                  </span>
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0f7ff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.05)] group-hover:scale-105 transition-transform">
-                    <Search className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2]" />
-                  </div>
-                </div>
-                <h4 className="text-base font-bold text-slate-900 mt-2">Search</h4>
-                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
-                  Find services, destinations or trusted experts
-                </p>
-              </div>
-
-              {/* Arrow Connector 1 -> 2 */}
-              <div className="hidden md:flex items-center justify-center shrink-0 -mt-10 px-1 text-slate-300">
-                <svg className="w-12 h-6 text-slate-300" viewBox="0 0 50 12" fill="none">
-                  <path d="M0 6H42M42 6L36 1M42 6L36 11" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-
-              {/* Step 2: Compare */}
-              <div className="flex flex-col items-center text-center group flex-1">
-                <div className="relative mb-3 flex items-center justify-center">
-                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
-                    2
-                  </span>
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0f7ff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.05)] group-hover:scale-105 transition-transform">
-                    <svg className="w-8 h-8 sm:w-9 sm:h-9 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="9" y1="6" x2="20" y2="6"></line>
-                      <line x1="9" y1="12" x2="20" y2="12"></line>
-                      <line x1="9" y1="18" x2="20" y2="18"></line>
-                      <circle cx="4" cy="6" r="1.5" fill="currentColor"></circle>
-                      <circle cx="4" cy="12" r="1.5" fill="currentColor"></circle>
-                      <circle cx="4" cy="18" r="1.5" fill="currentColor"></circle>
-                    </svg>
-                  </div>
-                </div>
-                <h4 className="text-base font-bold text-slate-900 mt-2">Compare</h4>
-                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
-                  Compare options, reviews &amp; prices
-                </p>
-              </div>
-
-              {/* Arrow Connector 2 -> 3 */}
-              <div className="hidden md:flex items-center justify-center shrink-0 -mt-10 px-1 text-slate-300">
-                <svg className="w-12 h-6 text-slate-300" viewBox="0 0 50 12" fill="none">
-                  <path d="M0 6H42M42 6L36 1M42 6L36 11" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-
-              {/* Step 3: Connect */}
-              <div className="flex flex-col items-center text-center group flex-1">
-                <div className="relative mb-3 flex items-center justify-center">
-                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
-                    3
-                  </span>
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0fdf4] border border-emerald-100 flex items-center justify-center text-[#16a34a] shadow-[0_4px_20px_rgba(22,163,74,0.05)] group-hover:scale-105 transition-transform">
-                    <ShieldCheck className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2]" />
-                  </div>
-                </div>
-                <h4 className="text-base font-bold text-slate-900 mt-2">Connect</h4>
-                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
-                  Connect with verified experts &amp; book with confidence
-                </p>
-              </div>
-
-              {/* Arrow Connector 3 -> 4 */}
-              <div className="hidden md:flex items-center justify-center shrink-0 -mt-10 px-1 text-slate-300">
-                <svg className="w-12 h-6 text-slate-300" viewBox="0 0 50 12" fill="none">
-                  <path d="M0 6H42M42 6L36 1M42 6L36 11" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-
-              {/* Step 4: Travel */}
-              <div className="flex flex-col items-center text-center group flex-1">
-                <div className="relative mb-3 flex items-center justify-center">
-                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
-                    4
-                  </span>
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0f7ff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.05)] group-hover:scale-105 transition-transform">
-                    <Send className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2] -rotate-12 translate-x-0.5" />
-                  </div>
-                </div>
-                <h4 className="text-base font-bold text-slate-900 mt-2">Travel</h4>
-                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
-                  Plan, prepare and enjoy your journey
-                </p>
-              </div>
-
-            </div>
-          </div>
+          
 
 </section>
       )}
@@ -3228,6 +3127,111 @@ return (
               ))}
             </div>
           </div>
+          
+          {/* ── HOW TRAVLTIK WORKS SECTION ── */}
+          <div className="w-full max-w-6xl mx-auto mt-12 sm:mt-16 px-4 sm:px-6 lg:px-8 text-center animate-fadeIn">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-8 sm:mb-12">
+              How TravlTik Works?
+            </h3>
+
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 lg:gap-8 relative max-w-5xl mx-auto">
+              
+              {/* Step 1: Search */}
+              <div className="flex flex-col items-center text-center group flex-1">
+                <div className="relative mb-3 flex items-center justify-center">
+                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
+                    1
+                  </span>
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0f7ff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.05)] group-hover:scale-105 transition-transform">
+                    <Search className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2]" />
+                  </div>
+                </div>
+                <h4 className="text-base font-bold text-slate-900 mt-2">Search</h4>
+                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
+                  Find services, destinations or trusted experts
+                </p>
+              </div>
+
+              {/* Arrow Connector 1 -> 2 */}
+              <div className="hidden md:flex items-center justify-center shrink-0 -mt-10 px-1 text-slate-300">
+                <svg className="w-12 h-6 text-slate-300" viewBox="0 0 50 12" fill="none">
+                  <path d="M0 6H42M42 6L36 1M42 6L36 11" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+
+              {/* Step 2: Compare */}
+              <div className="flex flex-col items-center text-center group flex-1">
+                <div className="relative mb-3 flex items-center justify-center">
+                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
+                    2
+                  </span>
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0f7ff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.05)] group-hover:scale-105 transition-transform">
+                    <svg className="w-8 h-8 sm:w-9 sm:h-9 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="9" y1="6" x2="20" y2="6"></line>
+                      <line x1="9" y1="12" x2="20" y2="12"></line>
+                      <line x1="9" y1="18" x2="20" y2="18"></line>
+                      <circle cx="4" cy="6" r="1.5" fill="currentColor"></circle>
+                      <circle cx="4" cy="12" r="1.5" fill="currentColor"></circle>
+                      <circle cx="4" cy="18" r="1.5" fill="currentColor"></circle>
+                    </svg>
+                  </div>
+                </div>
+                <h4 className="text-base font-bold text-slate-900 mt-2">Compare</h4>
+                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
+                  Compare options, reviews &amp; prices
+                </p>
+              </div>
+
+              {/* Arrow Connector 2 -> 3 */}
+              <div className="hidden md:flex items-center justify-center shrink-0 -mt-10 px-1 text-slate-300">
+                <svg className="w-12 h-6 text-slate-300" viewBox="0 0 50 12" fill="none">
+                  <path d="M0 6H42M42 6L36 1M42 6L36 11" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+
+              {/* Step 3: Connect */}
+              <div className="flex flex-col items-center text-center group flex-1">
+                <div className="relative mb-3 flex items-center justify-center">
+                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
+                    3
+                  </span>
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0fdf4] border border-emerald-100 flex items-center justify-center text-[#16a34a] shadow-[0_4px_20px_rgba(22,163,74,0.05)] group-hover:scale-105 transition-transform">
+                    <ShieldCheck className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2]" />
+                  </div>
+                </div>
+                <h4 className="text-base font-bold text-slate-900 mt-2">Connect</h4>
+                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
+                  Connect with verified experts &amp; book with confidence
+                </p>
+              </div>
+
+              {/* Arrow Connector 3 -> 4 */}
+              <div className="hidden md:flex items-center justify-center shrink-0 -mt-10 px-1 text-slate-300">
+                <svg className="w-12 h-6 text-slate-300" viewBox="0 0 50 12" fill="none">
+                  <path d="M0 6H42M42 6L36 1M42 6L36 11" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+
+              {/* Step 4: Travel */}
+              <div className="flex flex-col items-center text-center group flex-1">
+                <div className="relative mb-3 flex items-center justify-center">
+                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
+                    4
+                  </span>
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0f7ff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.05)] group-hover:scale-105 transition-transform">
+                    <Send className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2] -rotate-12 translate-x-0.5" />
+                  </div>
+                </div>
+                <h4 className="text-base font-bold text-slate-900 mt-2">Travel</h4>
+                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
+                  Plan, prepare and enjoy your journey
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+
           {/* ── EXPLORE CLASSIFIEDS SECTION (1:1 PIXEL-PERFECT MOCKUP) ── */}
           <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-14 px-2 sm:px-0 text-left">
             <div className="flex items-center justify-between mb-4 sm:mb-5">

@@ -458,7 +458,7 @@ export function VisaCountryResultPortal({
 
             {/* Country Title */}
             <div className="space-y-1">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black text-white tracking-tight leading-[1.1] drop-shadow-sm">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white tracking-tight leading-[1.1] drop-shadow-sm">
                 {countryName} Visa {flagEmoji}
               </h1>
               <p className="text-sm sm:text-lg text-slate-200 font-normal sm:font-medium max-w-2xl leading-relaxed pt-1">
@@ -494,10 +494,10 @@ export function VisaCountryResultPortal({
         <div className="bg-slate-50/90 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-5 sm:p-7 shadow-sm text-left flex flex-col md:flex-row md:items-center justify-between gap-5 transition-all">
           
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-medium uppercase tracking-wider">
               <span>Step 0 • Visa Status Gate</span>
             </div>
-            <h2 className="text-lg sm:text-xl font-heading font-black text-slate-900 tracking-tight">
+            <h2 className="text-base sm:text-lg font-heading font-semibold text-slate-900 text-slate-900 tracking-tight">
               Do you already have a valid visa for {countryName}?
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 font-normal leading-normal">
@@ -510,7 +510,7 @@ export function VisaCountryResultPortal({
             <button
               type="button"
               onClick={() => setHasVisaAlready('yes')}
-              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer flex items-center gap-2 ${
+              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 ${
                 hasVisaAlready === 'yes'
                   ? 'bg-slate-900 text-white shadow-md'
                   : 'text-slate-700 hover:text-slate-900'
@@ -523,7 +523,7 @@ export function VisaCountryResultPortal({
             <button
               type="button"
               onClick={() => setHasVisaAlready('no')}
-              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer flex items-center gap-2 ${
+              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 ${
                 hasVisaAlready === 'no'
                   ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/20'
                   : 'text-slate-700 hover:text-slate-900'
@@ -555,7 +555,7 @@ export function VisaCountryResultPortal({
                     <Shield className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-heading font-black text-slate-900 leading-tight">
+                    <h3 className="text-base sm:text-lg font-heading font-semibold text-slate-900 text-slate-900 leading-tight">
                       Visa Verification &amp; Expiry
                     </h3>
                     <p className="text-xs text-slate-500 font-medium mt-0.5">
@@ -564,7 +564,7 @@ export function VisaCountryResultPortal({
                   </div>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-black shrink-0">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold shrink-0">
                   <Clock className="w-3.5 h-3.5 text-emerald-600" />
                   <span>{daysLeft}d valid</span>
                 </div>
@@ -572,7 +572,7 @@ export function VisaCountryResultPortal({
 
               {/* Visa Title Input */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-medium text-slate-600 uppercase tracking-wider mb-1.5">
                   Visa Class / Approved Subclass
                 </label>
                 <input
@@ -580,33 +580,33 @@ export function VisaCountryResultPortal({
                   value={approvedVisaType}
                   onChange={(e) => setApprovedVisaType(e.target.value)}
                   placeholder="e.g. Student Subclass 500 / Tourist Permit"
-                  className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
+                  className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
                 />
               </div>
 
               {/* Approval & Expiry Dates */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-medium text-slate-600 uppercase tracking-wider mb-1.5">
                     Approval Date
                   </label>
                   <input
                     type="date"
                     value={approvalDate}
                     onChange={(e) => setApprovalDate(e.target.value)}
-                    className="w-full h-11 px-3 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
+                    className="w-full h-11 px-3 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-medium text-slate-600 uppercase tracking-wider mb-1.5">
                     Expiry Date
                   </label>
                   <input
                     type="date"
                     value={validityDate}
                     onChange={(e) => setValidityDate(e.target.value)}
-                    className="w-full h-11 px-3 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
+                    className="w-full h-11 px-3 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
                   />
                 </div>
               </div>
@@ -618,7 +618,7 @@ export function VisaCountryResultPortal({
                     <QrCode className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                    <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                       Scan Visa Grant Letter
                     </h4>
                     <p className="text-[11px] text-slate-500 font-medium">
@@ -639,7 +639,7 @@ export function VisaCountryResultPortal({
                   type="button"
                   onClick={() => visaFileRef.current?.click()}
                   disabled={isOcrScanning}
-                  className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black shrink-0 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs disabled:opacity-75"
+                  className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shrink-0 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs disabled:opacity-75"
                 >
                   {isOcrScanning ? (
                     <>
@@ -658,11 +658,11 @@ export function VisaCountryResultPortal({
               {/* Active Conditions Checklist */}
               <div className="border border-slate-200 rounded-2xl p-4 space-y-3 bg-white">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4 text-[#00A86B]" />
                     <span>MANDATORY CONDITIONS</span>
                   </span>
-                  <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
                     {ocrConditions.length} Active
                   </span>
                 </div>
@@ -703,7 +703,7 @@ export function VisaCountryResultPortal({
                           setIsAddingCond(false);
                         }
                       }}
-                      className="px-3 py-1.5 bg-[#00A86B] text-white text-xs font-bold rounded-xl"
+                      className="px-3 py-1.5 bg-[#00A86B] text-white text-xs font-medium rounded-xl"
                     >
                       Save
                     </button>
@@ -712,7 +712,7 @@ export function VisaCountryResultPortal({
                   <button
                     type="button"
                     onClick={() => setIsAddingCond(true)}
-                    className="text-xs font-bold text-[#00A86B] hover:underline flex items-center gap-1 pt-1"
+                    className="text-xs font-medium text-[#00A86B] hover:underline flex items-center gap-1 pt-1"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add custom condition manually</span>
@@ -724,7 +724,7 @@ export function VisaCountryResultPortal({
               <button
                 type="button"
                 onClick={handleShareWhatsApp}
-                className="w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-600/25 active:scale-[0.98] cursor-pointer"
+                className="w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-600/25 active:scale-[0.98] cursor-pointer"
               >
                 <Share2 className="w-4 h-4" />
                 <span>{copiedShare ? 'Status Copied to Clipboard!' : '📱 Share Safety Checklist with Parents (WhatsApp)'}</span>
@@ -739,14 +739,14 @@ export function VisaCountryResultPortal({
               <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-sm space-y-5">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div>
-                    <h3 className="text-base sm:text-lg font-heading font-black text-slate-900 leading-tight">
+                    <h3 className="text-base sm:text-lg font-heading font-semibold text-slate-900 text-slate-900 leading-tight">
                       Parent's Peace-of-Mind Roadmap
                     </h3>
                     <p className="text-xs text-slate-500 font-medium mt-0.5">
                       6 essential safeguards before boarding your flight.
                     </p>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] font-black text-xs border border-emerald-200">
+                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] font-semibold text-xs border border-emerald-200">
                     6 Protections
                   </span>
                 </div>
@@ -758,11 +758,11 @@ export function VisaCountryResultPortal({
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xl">✈️</span>
-                        <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">
+                        <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">
                           TRANSIT
                         </span>
                       </div>
-                      <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                         1. Flight &amp; Layover Transit Check
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium mt-0.5">
@@ -781,7 +781,7 @@ export function VisaCountryResultPortal({
                     <button
                       type="button"
                       onClick={() => ticketFileRef.current?.click()}
-                      className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
+                      className={`w-full py-2 px-3 rounded-xl text-xs font-medium transition-all shadow-xs cursor-pointer ${
                         ticketUploaded
                           ? 'bg-emerald-100 text-[#00A86B]'
                           : 'bg-slate-900 hover:bg-slate-800 text-white'
@@ -796,11 +796,11 @@ export function VisaCountryResultPortal({
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xl">🚗</span>
-                        <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                        <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
                           AIRPORT PICKUP
                         </span>
                       </div>
-                      <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                         2. Driver &amp; Terminal Chauffeur
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium mt-0.5">
@@ -811,7 +811,7 @@ export function VisaCountryResultPortal({
                     <button
                       type="button"
                       onClick={() => setDriverBooked(!driverBooked)}
-                      className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
+                      className={`w-full py-2 px-3 rounded-xl text-xs font-medium transition-all shadow-xs cursor-pointer ${
                         driverBooked
                           ? 'bg-emerald-100 text-[#00A86B]'
                           : 'bg-[#00A86B] hover:bg-[#008f5a] text-white'
@@ -826,11 +826,11 @@ export function VisaCountryResultPortal({
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xl">🏡</span>
-                        <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                        <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
                           ESCROW HOUSING
                         </span>
                       </div>
-                      <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                         3. Secure Student / Expat Housing
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium mt-0.5">
@@ -840,7 +840,7 @@ export function VisaCountryResultPortal({
 
                     <a
                       href="/classifieds?category=accommodation"
-                      className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1 transition-all text-center"
+                      className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium flex items-center justify-center gap-1 transition-all text-center"
                     >
                       <span>Find Verified Housing</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
@@ -852,11 +852,11 @@ export function VisaCountryResultPortal({
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xl">👥</span>
-                        <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
+                        <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
                           COMMUNITY
                         </span>
                       </div>
-                      <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                         4. Peer Network Group
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium mt-0.5">
@@ -867,7 +867,7 @@ export function VisaCountryResultPortal({
                     <button
                       type="button"
                       onClick={() => setPeerJoined(!peerJoined)}
-                      className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
+                      className={`w-full py-2 px-3 rounded-xl text-xs font-medium transition-all shadow-xs cursor-pointer ${
                         peerJoined
                           ? 'bg-emerald-100 text-[#00A86B]'
                           : 'bg-[#5865F2] hover:bg-[#4752C4] text-white'
@@ -882,11 +882,11 @@ export function VisaCountryResultPortal({
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xl">💳</span>
-                        <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                        <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
                           0% MARKUP
                         </span>
                       </div>
-                      <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                         5. Multi-Currency Card &amp; 5G eSIM
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium mt-0.5">
@@ -897,7 +897,7 @@ export function VisaCountryResultPortal({
                     <button
                       type="button"
                       onClick={() => setEsimOrdered(!esimOrdered)}
-                      className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
+                      className={`w-full py-2 px-3 rounded-xl text-xs font-medium transition-all shadow-xs cursor-pointer ${
                         esimOrdered
                           ? 'bg-emerald-100 text-[#00A86B]'
                           : 'bg-slate-900 hover:bg-slate-800 text-white'
@@ -912,11 +912,11 @@ export function VisaCountryResultPortal({
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xl">📄</span>
-                        <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">
+                        <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">
                           CUSTOMS RULES
                         </span>
                       </div>
-                      <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                         6. Customs Cash &amp; Doctor Prescription
                       </h4>
                       <p className="text-[11px] text-slate-500 font-medium mt-0.5">
@@ -924,7 +924,7 @@ export function VisaCountryResultPortal({
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-3 text-xs font-bold text-slate-700">
+                    <div className="flex items-center gap-3 text-xs font-medium text-slate-600">
                       <label className="flex items-center gap-1.5 cursor-pointer">
                         <input
                           type="checkbox"
@@ -951,7 +951,7 @@ export function VisaCountryResultPortal({
 
               {/* On-Arrival Readiness OS Accordion */}
               <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-sm space-y-4">
-                <h3 className="text-base sm:text-lg font-heading font-black text-slate-900 pb-2 border-b border-slate-100">
+                <h3 className="text-base sm:text-lg font-heading font-semibold text-slate-900 text-slate-900 pb-2 border-b border-slate-100">
                   On-Arrival Readiness OS ({countryName})
                 </h3>
 
@@ -975,7 +975,7 @@ export function VisaCountryResultPortal({
                         className="flex items-center justify-between cursor-pointer select-none"
                         onClick={() => setOpenArrivalStep(openArrivalStep === idx ? null : idx)}
                       >
-                        <h4 className="text-xs sm:text-sm font-black text-slate-900">{step.title}</h4>
+                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">{step.title}</h4>
                         <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openArrivalStep === idx ? 'rotate-180' : ''}`} />
                       </div>
                       {openArrivalStep === idx && (
@@ -1008,14 +1008,14 @@ export function VisaCountryResultPortal({
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
                       Smart Profile Matcher
                     </span>
-                    <span className="text-xs font-bold text-slate-400">
+                    <span className="text-xs font-medium text-slate-400">
                       Purpose: {activePurposeTab.toUpperCase()}
                     </span>
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-heading font-black text-slate-900 tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
                     Tell us about your trip to {countryName}
                   </h3>
                 </div>
@@ -1029,9 +1029,9 @@ export function VisaCountryResultPortal({
                       onClick={() => {
                         setActivePurposeTab(p);
                       }}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-bold capitalize transition-all cursor-pointer ${
+                      className={`px-3.5 py-1.5 rounded-lg text-xs font-medium capitalize transition-all cursor-pointer ${
                         activePurposeTab === p
-                          ? 'bg-white text-slate-900 shadow-xs font-black'
+                          ? 'bg-white text-slate-900 shadow-xs font-semibold'
                           : 'text-slate-500 hover:text-slate-900'
                       }`}
                     >
@@ -1047,11 +1047,11 @@ export function VisaCountryResultPortal({
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Q1: Qualification */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">1. Highest Qualification</label>
+                      <label className="block text-xs font-medium text-slate-600">1. Highest Qualification</label>
                       <select
                         value={studyQual}
                         onChange={(e) => setStudyQual(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>12th Grade / High School</option>
                         <option>Bachelor's Degree</option>
@@ -1062,11 +1062,11 @@ export function VisaCountryResultPortal({
 
                     {/* Q2: Target Degree */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">2. Target Degree in {countryName}</label>
+                      <label className="block text-xs font-medium text-slate-600">2. Target Degree in {countryName}</label>
                       <select
                         value={studyTarget}
                         onChange={(e) => setStudyTarget(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>Bachelor's (UG Degree)</option>
                         <option>Master's (PG / MS)</option>
@@ -1077,11 +1077,11 @@ export function VisaCountryResultPortal({
 
                     {/* Q3: Target Intake */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">3. Target Intake</label>
+                      <label className="block text-xs font-medium text-slate-600">3. Target Intake</label>
                       <select
                         value={studyIntake}
                         onChange={(e) => setStudyIntake(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>Fall 2026 (Aug - Sep)</option>
                         <option>Spring 2027 (Jan - Feb)</option>
@@ -1091,11 +1091,11 @@ export function VisaCountryResultPortal({
 
                     {/* Q4: Budget & Funding */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">4. Financial Proof / Funds</label>
+                      <label className="block text-xs font-medium text-slate-600">4. Financial Proof / Funds</label>
                       <select
                         value={studyBudget}
                         onChange={(e) => setStudyBudget(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>Self-Funded Liquid Funds (₹25L+)</option>
                         <option>Education Loan Required</option>
@@ -1112,11 +1112,11 @@ export function VisaCountryResultPortal({
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Q1: Trip Status */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">1. Trip Planning Status</label>
+                      <label className="block text-xs font-medium text-slate-600">1. Trip Planning Status</label>
                       <select
                         value={visitPlanStatus}
                         onChange={(e) => setVisitPlanStatus(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>Need Curated Tour Packages</option>
                         <option>I have my Itinerary &amp; Hotel</option>
@@ -1126,11 +1126,11 @@ export function VisaCountryResultPortal({
 
                     {/* Q2: Travel Timing */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">2. Tentative Travel Timing</label>
+                      <label className="block text-xs font-medium text-slate-600">2. Tentative Travel Timing</label>
                       <select
                         value={visitTiming}
                         onChange={(e) => setVisitTiming(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>Within 30 Days (Fast-Track)</option>
                         <option>In 1 to 3 Months</option>
@@ -1140,11 +1140,11 @@ export function VisaCountryResultPortal({
 
                     {/* Q3: Travellers */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">3. Group / Travellers</label>
+                      <label className="block text-xs font-medium text-slate-600">3. Group / Travellers</label>
                       <select
                         value={visitTravellers}
                         onChange={(e) => setVisitTravellers(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>Solo Traveller</option>
                         <option>Couple / Honeymoon</option>
@@ -1155,11 +1155,11 @@ export function VisaCountryResultPortal({
 
                     {/* Q4: Stay Preference */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">4. Accommodation Preference</label>
+                      <label className="block text-xs font-medium text-slate-600">4. Accommodation Preference</label>
                       <select
                         value={visitStay}
                         onChange={(e) => setVisitStay(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>4-5 Star Luxury Resorts</option>
                         <option>Boutique City Hotels</option>
@@ -1176,11 +1176,11 @@ export function VisaCountryResultPortal({
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Q1: Exp */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">1. Total Experience</label>
+                      <label className="block text-xs font-medium text-slate-600">1. Total Experience</label>
                       <select
                         value={workExp}
                         onChange={(e) => setWorkExp(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>0 - 2 Years (Entry Level)</option>
                         <option>3 - 5 Years (Mid-Senior)</option>
@@ -1191,11 +1191,11 @@ export function VisaCountryResultPortal({
 
                     {/* Q2: Job Offer */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">2. Sponsoring Job Offer</label>
+                      <label className="block text-xs font-medium text-slate-600">2. Sponsoring Job Offer</label>
                       <select
                         value={workOffer}
                         onChange={(e) => setWorkOffer(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>Actively Seeking Sponsoring Job</option>
                         <option>Have Confirmed Sponsor Offer</option>
@@ -1205,11 +1205,11 @@ export function VisaCountryResultPortal({
 
                     {/* Q3: Domain */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">3. Industry Domain</label>
+                      <label className="block text-xs font-medium text-slate-600">3. Industry Domain</label>
                       <select
                         value={workDomain}
                         onChange={(e) => setWorkDomain(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>Tech / IT / Software / AI</option>
                         <option>Healthcare &amp; Nursing</option>
@@ -1220,11 +1220,11 @@ export function VisaCountryResultPortal({
 
                     {/* Q4: Credential Assessment */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-bold text-slate-700">4. Credential Assessment</label>
+                      <label className="block text-xs font-medium text-slate-600">4. Credential Assessment</label>
                       <select
                         value={workAssess}
                         onChange={(e) => setWorkAssess(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
                       >
                         <option>Need WES / ACS Credential Evaluation</option>
                         <option>Already Assessed &amp; Approved</option>
@@ -1240,7 +1240,7 @@ export function VisaCountryResultPortal({
                 <span className="font-bold text-slate-500">
                   Profile matched with 100% {countryName} visa compliance requirements.
                 </span>
-                <span className="font-black text-[#00A86B]">
+                <span className="font-semibold text-[#00A86B]">
                   Live Pricing &amp; Application Ready Below ↓
                 </span>
               </div>
@@ -1258,10 +1258,10 @@ export function VisaCountryResultPortal({
                 {/* 1. 4 Quick Specification Pill Cards */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
                       Length of Stay
                     </span>
-                    <span className="text-base sm:text-lg font-black text-slate-900 block mt-1">
+                    <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
                       {lengthOfStay}
                     </span>
                     <span className="text-[11px] font-bold text-emerald-600 block mt-0.5">
@@ -1270,10 +1270,10 @@ export function VisaCountryResultPortal({
                   </div>
 
                   <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
                       Validity
                     </span>
-                    <span className="text-base sm:text-lg font-black text-slate-900 block mt-1">
+                    <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
                       {validity}
                     </span>
                     <span className="text-[11px] font-bold text-blue-600 block mt-0.5">
@@ -1282,10 +1282,10 @@ export function VisaCountryResultPortal({
                   </div>
 
                   <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
                       Entry Type
                     </span>
-                    <span className="text-base sm:text-lg font-black text-slate-900 block mt-1">
+                    <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
                       {entryType.split('/')[0].trim()}
                     </span>
                     <span className="text-[11px] font-bold text-purple-600 block mt-0.5">
@@ -1294,10 +1294,10 @@ export function VisaCountryResultPortal({
                   </div>
 
                   <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
                       Processing Time
                     </span>
-                    <span className="text-base sm:text-lg font-black text-slate-900 block mt-1">
+                    <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
                       {processingDays} Days
                     </span>
                     <span className="text-[11px] font-bold text-amber-600 block mt-0.5">
@@ -1309,10 +1309,10 @@ export function VisaCountryResultPortal({
                 {/* 2. ATLYS 3-STEP VISUAL PROGRESSION */}
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <span className="text-xs font-black uppercase tracking-wider text-[#00A86B]">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
                       Effortless 3-Step Process
                     </span>
-                    <h2 className="text-2xl sm:text-3xl font-heading font-black text-slate-900 tracking-tight">
+                    <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900 tracking-tight">
                       How getting your {countryName} visa works
                     </h2>
                   </div>
@@ -1321,15 +1321,15 @@ export function VisaCountryResultPortal({
                     
                     {/* Step 1 */}
                     <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0 font-black text-lg">
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0 font-semibold text-lg">
                         1
                       </div>
                       <div className="space-y-1 flex-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-base font-black text-slate-900">
+                          <h3 className="text-base font-semibold text-slate-900">
                             Scan your passport on your phone
                           </h3>
-                          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
+                          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
                             2 Mins
                           </span>
                         </div>
@@ -1341,15 +1341,15 @@ export function VisaCountryResultPortal({
 
                     {/* Step 2 */}
                     <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 font-black text-lg">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 font-semibold text-lg">
                         2
                       </div>
                       <div className="space-y-1 flex-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-base font-black text-slate-900">
+                          <h3 className="text-base font-semibold text-slate-900">
                             TravlTik files directly with the embassy
                           </h3>
-                          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
                             Direct Line
                           </span>
                         </div>
@@ -1361,15 +1361,15 @@ export function VisaCountryResultPortal({
 
                     {/* Step 3 */}
                     <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 font-black text-lg">
+                      <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 font-semibold text-lg">
                         3
                       </div>
                       <div className="space-y-1 flex-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-base font-black text-slate-900">
+                          <h3 className="text-base font-semibold text-slate-900">
                             Receive your stamped e-Visa on WhatsApp &amp; Email
                           </h3>
-                          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
+                          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
                             Guaranteed
                           </span>
                         </div>
@@ -1387,12 +1387,12 @@ export function VisaCountryResultPortal({
                   <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -z-0" />
                   
                   <div className="relative z-10 space-y-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-black uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-semibold uppercase tracking-wider">
                       <ShieldCheck className="w-4 h-4 text-emerald-400" />
                       <span>Obsidian Bank-Grade Passport Vault</span>
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl font-heading font-black text-white tracking-tight leading-snug">
+                    <h3 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-white tracking-tight leading-snug">
                       Your passport is protected by ₹5,00,000 transit insurance
                     </h3>
 
@@ -1402,16 +1402,16 @@ export function VisaCountryResultPortal({
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
                       <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span className="text-xs font-bold text-slate-400 block">Insurance Cover</span>
-                        <span className="text-sm sm:text-base font-black text-white mt-0.5 block">₹5,00,000</span>
+                        <span className="text-xs font-medium text-slate-400 block">Insurance Cover</span>
+                        <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">₹5,00,000</span>
                       </div>
                       <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span className="text-xs font-bold text-slate-400 block">Transit Security</span>
-                        <span className="text-sm sm:text-base font-black text-emerald-400 mt-0.5 block">GPS Tracked</span>
+                        <span className="text-xs font-medium text-slate-400 block">Transit Security</span>
+                        <span className="text-sm sm:text-base font-semibold text-emerald-400 mt-0.5 block">GPS Tracked</span>
                       </div>
                       <div className="p-3 rounded-2xl bg-white/5 border border-white/10 col-span-2 sm:col-span-1">
-                        <span className="text-xs font-bold text-slate-400 block">Approval Record</span>
-                        <span className="text-sm sm:text-base font-black text-white mt-0.5 block">99.4% Highest</span>
+                        <span className="text-xs font-medium text-slate-400 block">Approval Record</span>
+                        <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">99.4% Highest</span>
                       </div>
                     </div>
                   </div>
@@ -1421,10 +1421,10 @@ export function VisaCountryResultPortal({
                 <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
-                      <span className="text-xs font-black uppercase tracking-wider text-[#00A86B]">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
                         Clear Advantage
                       </span>
-                      <h2 className="text-xl sm:text-2xl font-heading font-black text-slate-900 tracking-tight">
+                      <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
                         Applying with TravlTik vs Doing It Yourself
                       </h2>
                     </div>
@@ -1433,7 +1433,7 @@ export function VisaCountryResultPortal({
                       <button
                         type="button"
                         onClick={() => setActiveTimelineTab('travltik')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                           activeTimelineTab === 'travltik' ? 'bg-[#00A86B] text-white shadow-xs' : 'text-slate-600'
                         }`}
                       >
@@ -1442,7 +1442,7 @@ export function VisaCountryResultPortal({
                       <button
                         type="button"
                         onClick={() => setActiveTimelineTab('diy')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                           activeTimelineTab === 'diy' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600'
                         }`}
                       >
@@ -1512,10 +1512,10 @@ export function VisaCountryResultPortal({
                 {/* 5. REQUIRED DOCUMENTS CHECKLIST */}
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <span className="text-xs font-black uppercase tracking-wider text-[#00A86B]">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
                       Simple Paperwork
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-heading font-black text-slate-900 tracking-tight">
+                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
                       Documents required for {countryName} Visa
                     </h2>
                   </div>
@@ -1526,7 +1526,7 @@ export function VisaCountryResultPortal({
                         <FileText className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                           Original Passport / Clear Scan
                         </h4>
                         <p className="text-[11px] text-slate-500 mt-0.5">
@@ -1540,7 +1540,7 @@ export function VisaCountryResultPortal({
                         <Camera className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                           1 Passport Photo / Clean Selfie
                         </h4>
                         <p className="text-[11px] text-slate-500 mt-0.5">
@@ -1554,7 +1554,7 @@ export function VisaCountryResultPortal({
                         <Plane className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                           Confirmed Flight Itinerary
                         </h4>
                         <p className="text-[11px] text-slate-500 mt-0.5">
@@ -1568,7 +1568,7 @@ export function VisaCountryResultPortal({
                         <Building2 className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-black text-slate-900">
+                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
                           Hotel Booking / Stay Proof
                         </h4>
                         <p className="text-[11px] text-slate-500 mt-0.5">
@@ -1582,10 +1582,10 @@ export function VisaCountryResultPortal({
                 {/* 6. EXPANDABLE FAQ ACCORDION */}
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <span className="text-xs font-black uppercase tracking-wider text-[#00A86B]">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
                       Got Questions?
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-heading font-black text-slate-900 tracking-tight">
+                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
                       Frequently Asked Questions
                     </h2>
                   </div>
@@ -1598,7 +1598,7 @@ export function VisaCountryResultPortal({
                           <button
                             type="button"
                             onClick={() => setActiveFaq(isOpen ? null : idx)}
-                            className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left font-black text-xs sm:text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer select-none"
+                            className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left font-semibold text-xs sm:text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer select-none"
                           >
                             <span>{faq.question}</span>
                             <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
@@ -1627,22 +1627,22 @@ export function VisaCountryResultPortal({
                     <div className="flex items-center gap-2.5">
                       <Zap className="w-4 h-4 text-[#00A86B] shrink-0" />
                       <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 block">
+                        <span className="text-[10px] font-medium uppercase tracking-wider text-emerald-800 block">
                           Delivery Guarantee
                         </span>
-                        <span className="text-xs sm:text-sm font-black text-emerald-950">
+                        <span className="text-xs sm:text-sm font-semibold text-emerald-950">
                           {guaranteedDate}
                         </span>
                       </div>
                     </div>
-                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-200/80 text-emerald-900">
+                    <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-200/80 text-emerald-900">
                       ON-TIME
                     </span>
                   </div>
 
                   {/* Visa Plan Selector Pills */}
                   <div className="space-y-2">
-                    <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider">
+                    <label className="block text-xs font-medium text-slate-700 uppercase tracking-wider">
                       Select Visa Option
                     </label>
 
@@ -1661,11 +1661,11 @@ export function VisaCountryResultPortal({
                           >
                             <div className="min-w-0 flex-1">
                               <div className="flex items-center gap-2">
-                                <span className="text-xs sm:text-sm font-black text-slate-900 truncate">
+                                <span className="text-xs sm:text-sm font-semibold text-slate-900 truncate">
                                   {v.label}
                                 </span>
                                 {v.popular && (
-                                  <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-500 text-white uppercase tracking-wider">
+                                  <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-emerald-500 text-white uppercase tracking-wider">
                                     POPULAR
                                   </span>
                                 )}
@@ -1676,7 +1676,7 @@ export function VisaCountryResultPortal({
                             </div>
 
                             <div className="text-right shrink-0">
-                              <span className="text-sm sm:text-base font-black text-slate-900 block">
+                              <span className="text-sm sm:text-base font-semibold text-slate-900 block">
                                 ₹{(v.govFee + v.servFee).toLocaleString()}
                               </span>
                               <span className="text-[10px] text-slate-400 font-bold block">
@@ -1691,7 +1691,7 @@ export function VisaCountryResultPortal({
 
                   {/* Doorstep Pincode Checker */}
                   <div className="space-y-1.5 pt-1">
-                    <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider">
+                    <label className="block text-xs font-medium text-slate-700 uppercase tracking-wider">
                       Doorstep Document Pickup
                     </label>
 
@@ -1703,12 +1703,12 @@ export function VisaCountryResultPortal({
                         value={pincode}
                         onChange={(e) => handlePincodeCheck(e.target.value)}
                         placeholder="Enter 6-digit Pincode"
-                        className="w-full h-11 pl-10 pr-24 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                        className="w-full h-11 pl-10 pr-24 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
                       />
                       
                       <div className="absolute right-2.5">
                         {pincodeStatus === 'supported' ? (
-                          <span className="text-[10px] font-extrabold text-[#00A86B] bg-emerald-100 px-2 py-1 rounded-xl flex items-center gap-1">
+                          <span className="text-[10px] font-medium text-[#00A86B] bg-emerald-100 px-2 py-1 rounded-xl flex items-center gap-1">
                             <Check className="w-3 h-3 stroke-[3]" />
                             <span>Supported</span>
                           </span>
@@ -1724,7 +1724,7 @@ export function VisaCountryResultPortal({
                   {/* Travellers Counter */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider">
+                      <label className="text-xs font-medium text-slate-700 uppercase tracking-wider">
                         Number of Travellers
                       </label>
                       
@@ -1737,7 +1737,7 @@ export function VisaCountryResultPortal({
                         >
                           -
                         </button>
-                        <span className="w-6 text-center font-black text-slate-900 text-sm">
+                        <span className="w-6 text-center font-semibold text-slate-900 text-sm">
                           {travellerCount}
                         </span>
                         <button
@@ -1761,7 +1761,7 @@ export function VisaCountryResultPortal({
                     <div className="flex items-center justify-between text-slate-600">
                       <span className="flex items-center gap-1">
                         TravlTik Concierge &amp; Filing
-                        <span className="text-[9px] text-emerald-700 font-extrabold bg-emerald-50 px-1.5 py-0.5 rounded">PROMO</span>
+                        <span className="text-[9px] text-emerald-700 font-medium bg-emerald-50 px-1.5 py-0.5 rounded">PROMO</span>
                       </span>
                       <span className="font-bold text-slate-900">₹{totalServFee.toLocaleString()}</span>
                     </div>
@@ -1774,10 +1774,10 @@ export function VisaCountryResultPortal({
                   {/* Total Amount Header */}
                   <div className="flex items-baseline justify-between pt-1">
                     <div>
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                      <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
                         Total Amount
                       </span>
-                      <span className="text-2xl sm:text-3xl font-black text-slate-900">
+                      <span className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                         ₹{grandTotal.toLocaleString()}
                       </span>
                     </div>
@@ -1790,7 +1790,7 @@ export function VisaCountryResultPortal({
                   <button
                     type="button"
                     onClick={handleOpenApplicationModal}
-                    className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white font-black text-sm sm:text-base tracking-wide shadow-xl shadow-slate-900/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white font-semibold text-sm sm:text-base tracking-wide shadow-xl shadow-slate-900/20 transition-all cursor-pointer flex items-center justify-center gap-2"
                   >
                     <span>Start Application</span>
                     <ArrowRight className="w-4 h-4 stroke-[3]" />
@@ -1802,7 +1802,7 @@ export function VisaCountryResultPortal({
                       href="https://wa.me/912264231551"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex-1 py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                      className="flex-1 py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
                     >
                       <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
                       <span>WhatsApp Help</span>
@@ -1810,7 +1810,7 @@ export function VisaCountryResultPortal({
 
                     <a
                       href="tel:+912264231551"
-                      className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                      className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
                     >
                       <Phone className="w-3.5 h-3.5 text-slate-700" />
                       <span>Call Support</span>
@@ -1834,17 +1834,17 @@ export function VisaCountryResultPortal({
           {/* ── MOBILE FLOATING STICKY ACTION BAR ── */}
           <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex items-center justify-between gap-4 shadow-2xl">
             <div>
-              <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">
+              <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
                 Guaranteed {guaranteedDate.split(',')[0]}
               </span>
-              <span className="text-lg font-black text-slate-900">
+              <span className="text-lg font-semibold text-slate-900">
                 ₹{grandTotal.toLocaleString()}
               </span>
             </div>
 
             <button
               onClick={handleOpenApplicationModal}
-              className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs tracking-wide shadow-md cursor-pointer active:scale-95"
+              className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs tracking-wide shadow-md cursor-pointer active:scale-95"
             >
               Start Application
             </button>
@@ -1868,11 +1868,11 @@ export function VisaCountryResultPortal({
 
             {/* Modal Title */}
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-[10px] font-black uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] text-[10px] font-semibold uppercase tracking-wider mb-2">
                 <Sparkles className="w-3.5 h-3.5 text-[#00A86B]" />
                 <span>{countryName} Visa Application</span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-heading font-black text-slate-900 tracking-tight">
+              <h3 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
                 Applicant &amp; Travel Details
               </h3>
               <p className="text-xs text-slate-500 mt-1">
@@ -1883,7 +1883,7 @@ export function VisaCountryResultPortal({
             {/* Selected Booking Summary Strip */}
             <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
               <div>
-                <span className="text-xs font-black text-slate-900 block">
+                <span className="text-xs font-semibold text-slate-900 block">
                   {countryName} • {currentVariant.label}
                 </span>
                 <span className="text-[11px] text-slate-500 font-semibold block">
@@ -1891,7 +1891,7 @@ export function VisaCountryResultPortal({
                 </span>
               </div>
               <div className="text-right">
-                <span className="text-base font-black text-slate-900 block">
+                <span className="text-base font-semibold text-slate-900 block">
                   ₹{grandTotal.toLocaleString()}
                 </span>
                 <span className="text-[10px] text-emerald-600 font-bold block">
@@ -1906,7 +1906,7 @@ export function VisaCountryResultPortal({
               {/* First & Last Name */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
                     First Name *
                   </label>
                   <input
@@ -1915,12 +1915,12 @@ export function VisaCountryResultPortal({
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     placeholder="First name"
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
+                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
                     Last Name *
                   </label>
                   <input
@@ -1929,7 +1929,7 @@ export function VisaCountryResultPortal({
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder="Last name"
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
+                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
                   />
                 </div>
               </div>
@@ -1937,7 +1937,7 @@ export function VisaCountryResultPortal({
               {/* Email & Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
                     Email (for e-Visa delivery) *
                   </label>
                   <input
@@ -1946,12 +1946,12 @@ export function VisaCountryResultPortal({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
+                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
                     Mobile Number *
                   </label>
                   <div className="flex gap-2">
@@ -1959,7 +1959,7 @@ export function VisaCountryResultPortal({
                       type="text"
                       value={countryCode}
                       onChange={(e) => setCountryCode(e.target.value)}
-                      className="w-16 h-11 px-2 rounded-xl border border-slate-300 text-xs font-bold text-center bg-slate-100 text-slate-900"
+                      className="w-16 h-11 px-2 rounded-xl border border-slate-300 text-xs font-medium text-center bg-slate-100 text-slate-900"
                     />
                     <input
                       type="tel"
@@ -1967,7 +1967,7 @@ export function VisaCountryResultPortal({
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="98765 43210"
-                      className="flex-1 h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
+                      className="flex-1 h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
                     />
                   </div>
                 </div>
@@ -1976,7 +1976,7 @@ export function VisaCountryResultPortal({
               {/* Date of Birth & Tentative Travel Date */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
                     Date of Birth *
                   </label>
                   <input
@@ -1984,12 +1984,12 @@ export function VisaCountryResultPortal({
                     required
                     value={dob}
                     onChange={(e) => setDob(e.target.value)}
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
+                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
                     Tentative Travel Date *
                   </label>
                   <input
@@ -1997,7 +1997,7 @@ export function VisaCountryResultPortal({
                     required
                     value={travelDate}
                     onChange={(e) => setTravelDate(e.target.value)}
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
+                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
                   />
                 </div>
               </div>
@@ -2005,7 +2005,7 @@ export function VisaCountryResultPortal({
               {/* Doorstep Pickup Address & Pincode */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
                     Complete Address (for document pickup &amp; delivery) *
                   </label>
                   <input
@@ -2014,12 +2014,12 @@ export function VisaCountryResultPortal({
                     value={pickupAddress}
                     onChange={(e) => setPickupAddress(e.target.value)}
                     placeholder="Flat / Building, Area, Landmark, City"
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
+                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
                     Pincode *
                   </label>
                   <input
@@ -2029,7 +2029,7 @@ export function VisaCountryResultPortal({
                     value={pincode}
                     onChange={(e) => handlePincodeCheck(e.target.value)}
                     placeholder="6-digit Pincode"
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
+                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
                   />
                 </div>
               </div>
@@ -2044,7 +2044,7 @@ export function VisaCountryResultPortal({
               <button
                 type="submit"
                 disabled={isSubmittingModal}
-                className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-black text-sm tracking-wide shadow-xl shadow-slate-900/20 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-75"
+                className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm tracking-wide shadow-xl shadow-slate-900/20 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-75"
               >
                 {isSubmittingModal ? (
                   <>

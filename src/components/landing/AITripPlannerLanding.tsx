@@ -3197,22 +3197,22 @@ return (
             </div>
           </div>
           
-          {/* ── HOW TRAVLTIK WORKS SECTION (SQUIRCLE CARDS MATCHING CARD 1 UNIFORMITY) ── */}
-          <div className="w-full max-w-6xl mx-auto mt-12 sm:mt-16 px-4 sm:px-6 lg:px-8 text-left animate-fadeIn">
+          {/* ── HOW TRAVLTIK WORKS SECTION (WRAPPED IN POPULAR DESTINATIONS MATCHING CARD CONTAINER) ── */}
+          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
             
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-2">
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
               <div>
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] flex items-center gap-1.5 mb-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
-                  Simple 4-Step Process
-                </span>
-                <h3 className="text-xl sm:text-3xl font-heading font-bold text-slate-900 tracking-tight">
+                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
                   How TravlTik Works?
                 </h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                  End-to-end verified visa &amp; travel pathways in 4 easy steps.
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                End-to-end verified visa &amp; travel pathways in 4 easy steps.
-              </p>
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                Simple 4-Step Process
+              </span>
             </div>
 
             {/* 4 Squircle Cards Grid (100% Uniform Styling Matching Card 1) */}
@@ -3245,16 +3245,16 @@ return (
               ].map((card, i) => (
                 <div 
                   key={i}
-                  className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[190px]"
+                  className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px]"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                  <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
                     {card.icon}
                   </div>
-                  <div className="mt-6">
-                    <span className="text-xs sm:text-sm text-slate-500 font-medium block">
+                  <div className="mt-5">
+                    <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
                       {card.step}
                     </span>
-                    <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
+                    <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
                       {card.title}
                     </h4>
                     <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">

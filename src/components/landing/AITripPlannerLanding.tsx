@@ -1,7 +1,7 @@
 import { ALL_COUNTRIES, getCountryCodeByName } from '../../data/countries';
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Globe, Home, Building2, UserCheck, LayoutGrid, Upload,
   RefreshCw,
   Sparkles,

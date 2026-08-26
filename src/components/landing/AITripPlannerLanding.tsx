@@ -1199,7 +1199,6 @@ const courseLevelOptions = [
 
 
 const lookingForOptions = [
-  { value: 'visa', label: 'Visa, Immigration, Travel...', icon: '✈️' },
   { value: 'student', label: 'Student Visa & Admissions', icon: '🎓' },
   { value: 'work', label: 'Work Permit & Overseas Jobs', icon: '💼' },
   { value: 'pr', label: 'Permanent Residency & Migration', icon: '🛂' },
@@ -1248,8 +1247,8 @@ export function AITripPlannerLanding() {
   // Journey Engine Form State
   const [passportCountry, setPassportCountry] = useState('');
   const [journeyDestination, setJourneyDestination] = useState('');
-  const [travelPurpose, setTravelPurpose] = useState('');
-  const [serviceLookingFor, setServiceLookingFor] = useState('Visa & Immigration');
+  const [travelPurpose, setTravelPurpose] = useState('student');
+  const [serviceLookingFor, setServiceLookingFor] = useState('Student Visa & Admissions');
   const [isLookingForOpen, setIsLookingForOpen] = useState(false);
   const lookingForRef = useRef<HTMLDivElement>(null);
 
@@ -2283,8 +2282,8 @@ return (
                         </div>
                       </div>
 
-                      {/* Sub-row with 3 fields (3 Columns in mobile row, 6 cols on desktop) */}
-                      <div className="grid grid-cols-3 lg:col-span-6 gap-1.5 sm:gap-3">
+                      {/* Sub-row with 2 fields: Going to & Passport Country */}
+                      <div className="grid grid-cols-2 lg:col-span-6 gap-2 sm:gap-3">
                         
                         {/* Field 2: Going to (Country) */}
                         <div className="relative">
@@ -2296,7 +2295,6 @@ return (
                             onClick={() => {
                               setIsJourneyDestOpen(!isJourneyDestOpen);
                               setIsLookingForOpen(false);
-                              setIsServiceTypeOpen(false);
                               setIsOriginCityOpen(false);
                             }}
                             className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
@@ -2349,55 +2347,7 @@ return (
                           </div>
                         </div>
 
-                        {/* Field 3: Service Type */}
-                        <div className="relative">
-                          <label className="block text-[10px] sm:text-xs font-black text-slate-800 mb-1 truncate">
-                            Service Type
-                          </label>
-                          <div
-                            ref={serviceTypeRef}
-                            onClick={() => {
-                              setIsServiceTypeOpen(!isServiceTypeOpen);
-                              setIsLookingForOpen(false);
-                              setIsJourneyDestOpen(false);
-                              setIsOriginCityOpen(false);
-                            }}
-                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
-                          >
-                            <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
-                              {selectedServiceType || 'Service'}
-                            </span>
-                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isServiceTypeOpen ? 'rotate-180 text-blue-600' : ''}`} />
-
-                            {isServiceTypeOpen && (
-                              <div
-                                className="absolute top-[calc(100%+8px)] left-0 w-[240px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <div className="space-y-1">
-                                  {serviceTypeOptions.map((opt) => (
-                                    <button
-                                      key={opt.value}
-                                      type="button"
-                                      onClick={() => {
-                                        setSelectedServiceType(opt.label);
-                                        setIsServiceTypeOpen(false);
-                                      }}
-                                      className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
-                                    >
-                                      <div className="flex items-center gap-2 min-w-0">
-                                        <span className="text-base">{opt.icon}</span>
-                                        <span className="truncate">{opt.label}</span>
-                                      </div>
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Field 4: Passport Country */}
+                        {/* Field 3: Passport Country */}
                         <div className="relative">
                           <label className="block text-[10px] sm:text-xs font-black text-slate-800 mb-1 truncate">
                             Passport Country
@@ -2408,7 +2358,6 @@ return (
                               setIsOriginCityOpen(!isOriginCityOpen);
                               setIsLookingForOpen(false);
                               setIsJourneyDestOpen(false);
-                              setIsServiceTypeOpen(false);
                             }}
                             className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
@@ -2828,26 +2777,35 @@ return (
             </div>
           </div>
 
-          {/* QUICK-PILL INTENT TAGS (TIGHTLY POSITIONED DIRECTLY UNDER TOGGLE) */}
-          <div className="mt-1 flex flex-nowrap items-center justify-start sm:justify-center gap-2 sm:gap-3 max-w-6xl mx-auto w-full overflow-x-auto no-scrollbar pb-2 px-2 sm:px-0">
-            {categoryPills.map((pill) => {
-              const isSelected = selectedPill === pill.id;
-              return (
-                <button 
-                  key={pill.id} 
-                  type="button" 
-                  onClick={() => handlePillClick(pill.id, pill.label)}
-                  className={`flex flex-col items-center justify-center bg-white border rounded-2xl px-3.5 py-2.5 shadow-2xs hover:shadow-md transition-all shrink-0 min-w-[90px] sm:min-w-[100px] h-[76px] cursor-pointer select-none ${
-                    isSelected ? 'border-[#00A86B] ring-2 ring-[#00A86B]/20 bg-emerald-50/40' : 'border-slate-200/80 hover:border-[#00A86B]'
-                  }`}
-                >
-                  <span className="text-xl sm:text-2xl leading-none">{pill.emoji}</span>
-                  <span className={`text-[11px] sm:text-xs font-bold mt-1.5 whitespace-nowrap leading-tight ${isSelected ? 'text-[#00A86B]' : 'text-slate-700'}`}>
-                    {pill.label}
-                  </span>
-                </button>
-              );
-            })}
+          {/* TOP TRAVEL CATEGORIES HEADING & QUICK-PILL INTENT TAGS */}
+          <div className="mt-3 sm:mt-4 max-w-6xl mx-auto w-full px-2 sm:px-0">
+            <div className="flex items-center justify-center sm:justify-start gap-2 mb-2 px-1">
+              <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                Top Travel Categories
+              </span>
+            </div>
+
+            <div className="flex flex-nowrap items-center justify-start sm:justify-center gap-2 sm:gap-3 w-full overflow-x-auto no-scrollbar pb-2">
+              {categoryPills.map((pill) => {
+                const isSelected = selectedPill === pill.id;
+                return (
+                  <button 
+                    key={pill.id} 
+                    type="button" 
+                    onClick={() => handlePillClick(pill.id, pill.label)}
+                    className={`flex flex-col items-center justify-center bg-white border rounded-2xl px-3.5 py-2.5 shadow-2xs hover:shadow-md transition-all shrink-0 min-w-[90px] sm:min-w-[100px] h-[76px] cursor-pointer select-none ${
+                      isSelected ? 'border-[#00A86B] ring-2 ring-[#00A86B]/20 bg-emerald-50/40' : 'border-slate-200/80 hover:border-[#00A86B]'
+                    }`}
+                  >
+                    <span className="text-xl sm:text-2xl leading-none">{pill.emoji}</span>
+                    <span className={`text-[11px] sm:text-xs font-bold mt-1.5 whitespace-nowrap leading-tight ${isSelected ? 'text-[#00A86B]' : 'text-slate-700'}`}>
+                      {pill.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
         </section>
@@ -3605,254 +3563,6 @@ return (
 
             return (
               <div id="need-visa-pathway-dashboard" className="w-full max-w-6xl mx-auto mt-8 text-left animate-fadeIn space-y-6">
-                
-                {/* ── REAL-TIME AI COMPLIANCE & RESEARCH VERDICT HERO BANNER (PIXEL-PERFECT APPLE LUXURY DESIGN AS SHOWN IN IMAGE 1) ── */}
-                <div id="ai-pathway-research-verdict" className="bg-white border border-slate-100 rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 md:p-10 shadow-[0_20px_70px_rgba(0,0,0,0.06)] relative overflow-hidden text-left font-sans">
-                  
-                  {/* TOP SECTION: Sparkle Icon, Formatted Headline, Description + 3D Passport Mockup Graphic */}
-                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 relative">
-                    
-                    {/* Left: Sparkle Icon + Headline + Body text */}
-                    <div className="flex-1 space-y-3 sm:space-y-4 min-w-0">
-                      {/* Glowing Emerald Sparkle Icon Box */}
-                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[#00A86B] text-white flex items-center justify-center shadow-lg shadow-emerald-600/25">
-                        <Sparkles className="w-6 h-6 stroke-[2.5]" />
-                      </div>
-
-                      {/* Main Heading with Highlighted Key Terms */}
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-[1.18]">
-                        {(() => {
-                          const h = aiVerdict.headline;
-                          if (h.includes('30-Day Visa')) {
-                            const parts = h.split('30-Day Visa');
-                            return (
-                              <>
-                                {parts[0]}
-                                <span className="text-[#00A86B]">30-Day Visa</span>
-                                {parts[1]}
-                              </>
-                            );
-                          }
-                          if (h.includes('Visa on Arrival')) {
-                            const parts = h.split('Visa on Arrival');
-                            return (
-                              <>
-                                {parts[0]}
-                                <span className="text-[#00A86B]">Visa on Arrival</span>
-                                {parts[1]}
-                              </>
-                            );
-                          }
-                          if (h.includes('Student Visa')) {
-                            const parts = h.split('Student Visa');
-                            return (
-                              <>
-                                {parts[0]}
-                                <span className="text-[#00A86B]">Student Visa</span>
-                                {parts[1]}
-                              </>
-                            );
-                          }
-                          if (h.includes('ESTA')) {
-                            const parts = h.split('ESTA');
-                            return (
-                              <>
-                                {parts[0]}
-                                <span className="text-[#00A86B]">ESTA</span>
-                                {parts[1]}
-                              </>
-                            );
-                          }
-                          if (h.includes('eTA')) {
-                            const parts = h.split('eTA');
-                            return (
-                              <>
-                                {parts[0]}
-                                <span className="text-[#00A86B]">eTA</span>
-                                {parts[1]}
-                              </>
-                            );
-                          }
-                          return h;
-                        })()}
-                      </h2>
-
-                      {/* Body Description */}
-                      <p className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed max-w-xl">
-                        {aiVerdict.summary}
-                      </p>
-                    </div>
-
-                    {/* Right: 3D Passport & Boarding Pass Graphic Illustration */}
-                    <div className="shrink-0 relative hidden sm:flex items-center justify-center w-48 sm:w-56 h-44 sm:h-48 self-center md:self-start">
-                      {/* Ambient Soft Mint Glow */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-emerald-200/40 via-teal-100/30 to-transparent rounded-full filter blur-xl scale-95 -z-10" />
-
-                      {/* Angled Background Boarding Pass */}
-                      <div className="absolute -left-2 top-4 w-28 h-36 bg-gradient-to-br from-white/90 to-emerald-50/70 border border-emerald-200/80 rounded-2xl shadow-sm rotate-[-16deg] p-2.5 flex flex-col justify-between transform transition-transform duration-300 hover:rotate-[-20deg]">
-                        <div className="flex items-center justify-between border-b border-dashed border-emerald-200 pb-1.5">
-                          <Plane className="w-3.5 h-3.5 text-emerald-600 rotate-45" />
-                          <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">BOARDING PASS</span>
-                        </div>
-                        <div className="space-y-0.5 text-[8px] font-bold text-slate-700">
-                          <div className="text-slate-400">FLIGHT</div>
-                          <div className="font-mono text-[9px] text-slate-900">EK-502 &bull; GATE 14</div>
-                        </div>
-                        <div className="h-3.5 flex items-center gap-0.5 justify-center opacity-70">
-                          <div className="w-0.5 h-full bg-slate-800" />
-                          <div className="w-1 h-full bg-slate-800" />
-                          <div className="w-0.5 h-full bg-slate-800" />
-                          <div className="w-1.5 h-full bg-slate-800" />
-                          <div className="w-0.5 h-full bg-slate-800" />
-                          <div className="w-1 h-full bg-slate-800" />
-                          <div className="w-0.5 h-full bg-slate-800" />
-                        </div>
-                      </div>
-
-                      {/* 3D Realistic Green Passport */}
-                      <div className="relative z-10 w-32 h-44 bg-gradient-to-br from-[#1a3f30] via-[#234e3d] to-[#122e23] border border-[#2e5e4b] rounded-2xl shadow-[0_16px_35px_rgba(18,46,35,0.35)] p-3 text-center text-amber-200 flex flex-col justify-between rotate-[10deg] transform transition-transform duration-300 hover:rotate-[6deg] hover:scale-105 select-none cursor-pointer">
-                        {/* Gold Foil Spine Reflection */}
-                        <div className="absolute left-1.5 top-0 bottom-0 w-1 bg-gradient-to-r from-white/20 to-transparent rounded-l" />
-
-                        <div className="text-[9px] font-black tracking-widest text-[#f5d77f] uppercase">
-                          {passportCountry || 'CANADA'}
-                        </div>
-
-                        {/* Gold Emblem / Leaf Crest */}
-                        <div className="my-auto flex flex-col items-center">
-                          <div className="w-10 h-10 rounded-full border border-[#f5d77f]/40 flex items-center justify-center p-1.5">
-                            <span className="text-xl">
-                              {passportCountry === 'Canada' ? '🍁' : passportCountry === 'India' ? '🦁' : '🦅'}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="space-y-1">
-                          <div className="text-[8px] font-black tracking-widest text-[#f5d77f] uppercase">
-                            PASSPORT
-                          </div>
-                          <div className="w-4 h-2.5 mx-auto border border-[#f5d77f]/60 rounded-xs flex items-center justify-center opacity-80">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#f5d77f]" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  {/* MIDDLE SECTION: Soft Mint Destination & Itinerary Banner */}
-                  <div className="mt-6 sm:mt-7 bg-gradient-to-r from-emerald-50/90 via-teal-50/60 to-emerald-50/90 border border-emerald-100/90 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4.5 flex items-center justify-between gap-4 shadow-2xs">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#00A86B] text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <Check className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3]" />
-                      </div>
-                      <p className="text-xs sm:text-sm font-bold text-slate-800 leading-snug">
-                        {aiVerdict.actionMsg}
-                      </p>
-                    </div>
-
-                    {/* Landmark / Dubai Skyline Visual */}
-                    <div className="shrink-0 flex items-center gap-2">
-                      <img
-                        src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=180&auto=format&fit=crop&q=80"
-                        alt="Destination Skyline"
-                        className="h-10 sm:h-12 w-20 sm:w-24 rounded-xl object-cover border border-emerald-200/80 shadow-2xs hidden sm:block"
-                      />
-                    </div>
-                  </div>
-
-                  {/* BOTTOM SECTION: 3 Separate Clean Apple-Style Pill Rows */}
-                  <div className="mt-5 sm:mt-6 space-y-3">
-                    
-                    {/* Row 1: Current Passport */}
-                    <div className="bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between shadow-2xs transition-all cursor-pointer group">
-                      <div className="flex items-center gap-3.5 min-w-0">
-                        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-slate-100 border border-slate-200/90 flex items-center justify-center shadow-xs shrink-0 overflow-hidden group-hover:scale-105 transition-transform p-0.5">
-                          <img
-                            src={`https://flagcdn.com/w160/${getCountryCode(passportCountry || 'India')}.png`}
-                            alt={passportCountry || 'Passport Country'}
-                            className="w-full h-full object-cover rounded-full shadow-2xs"
-                            onError={(e) => {
-                              (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w160/un.png';
-                            }}
-                          />
-                        </div>
-                        <div className="min-w-0">
-                          <span className="text-[10px] sm:text-[11px] font-extrabold text-slate-400 uppercase tracking-wider block">
-                            Current Passport
-                          </span>
-                          <span className="text-sm sm:text-base font-black text-slate-900 block truncate mt-0.5">
-                            {passportCountry || 'India'}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                        <span className="bg-emerald-50 text-[#00A86B] border border-emerald-200/80 text-xs font-black px-3 sm:px-3.5 py-1 rounded-full shadow-2xs">
-                          Valid
-                        </span>
-                        <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-colors" />
-                      </div>
-                    </div>
-
-                    {/* Row 2: Destination Country */}
-                    <div className="bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between shadow-2xs transition-all cursor-pointer group">
-                      <div className="flex items-center gap-3.5 min-w-0">
-                        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-slate-100 border border-slate-200/90 flex items-center justify-center shadow-xs shrink-0 overflow-hidden group-hover:scale-105 transition-transform p-0.5">
-                          <img
-                            src={`https://flagcdn.com/w160/${getCountryCode(journeyDestination || 'United Kingdom')}.png`}
-                            alt={journeyDestination || 'Destination Country'}
-                            className="w-full h-full object-cover rounded-full shadow-2xs"
-                            onError={(e) => {
-                              (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w160/un.png';
-                            }}
-                          />
-                        </div>
-                        <div className="min-w-0">
-                          <span className="text-[10px] sm:text-[11px] font-extrabold text-slate-400 uppercase tracking-wider block">
-                            Destination Country
-                          </span>
-                          <span className="text-sm sm:text-base font-black text-slate-900 block truncate mt-0.5">
-                            {journeyDestination || 'United Kingdom'}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                        <span className="bg-emerald-50 text-[#00A86B] border border-emerald-200/80 text-xs font-black px-3 sm:px-3.5 py-1 rounded-full shadow-2xs">
-                          {aiVerdict.badge.includes('(') ? aiVerdict.badge.split('(')[0].trim() : aiVerdict.badge}
-                        </span>
-                        <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-colors" />
-                      </div>
-                    </div>
-
-                    {/* Row 3: Estimated Timeline */}
-                    <div className="bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between shadow-2xs transition-all cursor-pointer group">
-                      <div className="flex items-center gap-3.5 min-w-0">
-                        <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-blue-50 border border-blue-200/80 flex items-center justify-center text-blue-600 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
-                          <Clock className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div className="min-w-0">
-                          <span className="text-[10px] sm:text-[11px] font-extrabold text-slate-400 uppercase tracking-wider block">
-                            Estimated Timeline
-                          </span>
-                          <span className="text-sm sm:text-base font-black text-blue-700 block truncate mt-0.5">
-                            {aiVerdict.processingTime}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                        <span className="bg-blue-50 text-blue-700 border border-blue-200/80 text-xs font-black px-3 sm:px-3.5 py-1 rounded-full shadow-2xs">
-                          Instant on Airport Arrival
-                        </span>
-                        <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-colors" />
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
 
                 {/* ── BRANCH 0: VISA-FREE / ESTA / VISA ON ARRIVAL (NO EMBASSY VISA REQUIRED) ── */}
                 {aiVerdict.isEsta && (

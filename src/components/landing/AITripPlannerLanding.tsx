@@ -3197,7 +3197,7 @@ return (
             </div>
           </div>
           
-          {/* ── HOW TRAVLTIK WORKS SECTION (SQUIRCLE CARDS MATCHING SCREENSHOT) ── */}
+          {/* ── HOW TRAVLTIK WORKS SECTION (SQUIRCLE CARDS MATCHING CARD 1 UNIFORMITY) ── */}
           <div className="w-full max-w-6xl mx-auto mt-12 sm:mt-16 px-4 sm:px-6 lg:px-8 text-left animate-fadeIn">
             
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-2">
@@ -3215,88 +3215,54 @@ return (
               </p>
             </div>
 
-            {/* 4 Squircle Cards Grid (Matching Screenshot geometry) */}
+            {/* 4 Squircle Cards Grid (100% Uniform Styling Matching Card 1) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-              
-              {/* Card 1: Search */}
-              <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group h-auto min-h-[190px]">
-                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                  <Search className="w-6 h-6 text-slate-900 stroke-[1.8]" />
+              {[
+                {
+                  step: "Step 1 • Discover",
+                  title: "Search",
+                  desc: "Find services, destinations or trusted global experts",
+                  icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                },
+                {
+                  step: "Step 2 • Evaluate",
+                  title: "Compare",
+                  desc: "Compare verified options, ratings & transparent fees",
+                  icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                },
+                {
+                  step: "Step 3 • Escrow Protection",
+                  title: "Connect",
+                  desc: "Connect with licensed consultants with 100% escrow safety",
+                  icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                },
+                {
+                  step: "Step 4 • Fly Confident",
+                  title: "Travel",
+                  desc: "Doorstep visa delivery & real-time border journey alerts",
+                  icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                }
+              ].map((card, i) => (
+                <div 
+                  key={i}
+                  className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[190px]"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                    {card.icon}
+                  </div>
+                  <div className="mt-6">
+                    <span className="text-xs sm:text-sm text-slate-500 font-medium block">
+                      {card.step}
+                    </span>
+                    <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
+                      {card.title}
+                    </h4>
+                    <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                      {card.desc}
+                    </p>
+                  </div>
                 </div>
-                <div className="mt-6">
-                  <span className="text-xs sm:text-sm text-slate-500 font-medium block">
-                    Step 1 • Discover
-                  </span>
-                  <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
-                    Search
-                  </h4>
-                  <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                    Find services, destinations or trusted global experts
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 2: Compare */}
-              <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group h-auto min-h-[190px]">
-                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                  <svg className="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="8" y1="6" x2="21" y2="6"></line>
-                    <line x1="8" y1="12" x2="21" y2="12"></line>
-                    <line x1="8" y1="18" x2="21" y2="18"></line>
-                    <circle cx="3" cy="6" r="1.5" fill="currentColor"></circle>
-                    <circle cx="3" cy="12" r="1.5" fill="currentColor"></circle>
-                    <circle cx="3" cy="18" r="1.5" fill="currentColor"></circle>
-                  </svg>
-                </div>
-                <div className="mt-6">
-                  <span className="text-xs sm:text-sm text-slate-500 font-medium block">
-                    Step 2 • Evaluate
-                  </span>
-                  <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
-                    Compare
-                  </h4>
-                  <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                    Compare verified options, ratings &amp; transparent fees
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 3: Connect */}
-              <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group h-auto min-h-[190px]">
-                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                  <ShieldCheck className="w-6 h-6 text-slate-900 stroke-[1.8]" />
-                </div>
-                <div className="mt-6">
-                  <span className="text-xs sm:text-sm text-slate-500 font-medium block">
-                    Step 3 • Escrow Protection
-                  </span>
-                  <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
-                    Connect
-                  </h4>
-                  <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                    Connect with licensed consultants with 100% escrow safety
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 4: Travel */}
-              <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group h-auto min-h-[190px]">
-                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                  <Send className="w-6 h-6 text-slate-900 stroke-[1.8] -rotate-12 translate-x-0.5" />
-                </div>
-                <div className="mt-6">
-                  <span className="text-xs sm:text-sm text-slate-500 font-medium block">
-                    Step 4 • Fly Confident
-                  </span>
-                  <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
-                    Travel
-                  </h4>
-                  <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                    Doorstep visa delivery &amp; real-time border journey alerts
-                  </p>
-                </div>
-              </div>
-
+              ))}
             </div>
           </div>
 

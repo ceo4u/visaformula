@@ -1634,204 +1634,7 @@ export function VisaCountryResultPortal({
                   </div>
                 </div>
 
-                {/* 4. TRAVLTIK VS DIY COMPARISON MATRIX */}
-                <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
-                        Clear Advantage
-                      </span>
-                      <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
-                        Applying with TravlTik vs Doing It Yourself
-                      </h2>
-                    </div>
-
-                    <div className="inline-flex p-1 bg-slate-100 rounded-xl self-start sm:self-center">
-                      <button
-                        type="button"
-                        onClick={() => setActiveTimelineTab('travltik')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                          activeTimelineTab === 'travltik' ? 'bg-[#00A86B] text-white shadow-xs' : 'text-slate-600'
-                        }`}
-                      >
-                        With TravlTik
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setActiveTimelineTab('diy')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                          activeTimelineTab === 'diy' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600'
-                        }`}
-                      >
-                        DIY (On Your Own)
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="border border-slate-200/90 rounded-3xl overflow-hidden shadow-2xs">
-                    <div className="divide-y divide-slate-100">
-                      {[
-                        {
-                          feature: 'Application Filing Time',
-                          travltik: '2 minutes on phone (Instant OCR auto-fill)',
-                          diy: '2-3 hours filling tedious government forms',
-                          highlight: true
-                        },
-                        {
-                          feature: 'Photo & Document Check',
-                          travltik: 'AI millimeter verification & auto background clean',
-                          diy: 'High risk of rejection due to wrong sizing',
-                          highlight: true
-                        },
-                        {
-                          feature: 'Passport Collection',
-                          travltik: 'Free doorstep pickup & return in barcoded envelope',
-                          diy: 'Physical trip to VFS center & long queues',
-                          highlight: false
-                        },
-                        {
-                          feature: 'Real-Time Updates',
-                          travltik: 'Live WhatsApp & SMS notifications at every step',
-                          diy: 'Checking slow government portals repeatedly',
-                          highlight: false
-                        },
-                        {
-                          feature: 'Rejection Guarantee',
-                          travltik: '100% Service Fee Refund & ₹5 Lakh Transit Cover',
-                          diy: 'Zero refund, fees forfeited',
-                          highlight: true
-                        },
-                      ].map((row, idx) => (
-                        <div key={idx} className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center hover:bg-slate-50/60 transition-colors">
-                          <div className="sm:col-span-4 font-bold text-xs sm:text-sm text-slate-900">
-                            {row.feature}
-                          </div>
-                          
-                          <div className={`sm:col-span-4 text-xs font-semibold flex items-center gap-2 ${
-                            activeTimelineTab === 'travltik' ? 'text-emerald-700 font-bold bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-200' : 'text-slate-600'
-                          }`}>
-                            <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
-                            <span>{row.travltik}</span>
-                          </div>
-
-                          <div className={`sm:col-span-4 text-xs font-semibold flex items-center gap-2 ${
-                            activeTimelineTab === 'diy' ? 'text-red-700 font-bold bg-rose-50/80 p-2.5 rounded-xl border border-rose-200' : 'text-slate-400 line-through'
-                          }`}>
-                            <X className="w-4 h-4 text-red-500 shrink-0" />
-                            <span>{row.diy}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* 5. REQUIRED DOCUMENTS CHECKLIST */}
-                <div className="space-y-4">
-                  <div className="space-y-1 text-center sm:text-left">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
-                      Simple Paperwork
-                    </span>
-                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight">
-                      Documents required for {countryName} Visa
-                    </h2>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
-                      <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
-                        <FileText className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
-                          Original Passport / Clear Scan
-                        </h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
-                          Valid for at least 6 months beyond travel date with 2 blank pages.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
-                      <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                        <Camera className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
-                          1 Passport Photo / Clean Selfie
-                        </h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
-                          White background. Take selfie on phone, our AI formats it automatically.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
-                      <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                        <Plane className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
-                          Confirmed Flight Itinerary
-                        </h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
-                          Return or onward ticket. Don't worry, TravlTik can provide embassy itinerary holding.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
-                      <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                        <Building2 className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
-                          Hotel Booking / Stay Proof
-                        </h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
-                          Verified hotel reservation or host invitation letter for immigration stamping.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 6. EXPANDABLE FAQ ACCORDION */}
-                <div className="space-y-4">
-                  <div className="space-y-1 text-center sm:text-left">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
-                      Got Questions?
-                    </span>
-                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight">
-                      Frequently Asked Questions
-                    </h2>
-                  </div>
-
-                  <div className="border border-slate-200/90 rounded-3xl overflow-hidden divide-y divide-slate-100 shadow-2xs">
-                    {faqs.map((faq, idx) => {
-                      const isOpen = activeFaq === idx;
-                      return (
-                        <div key={idx} className="bg-white">
-                          <button
-                            type="button"
-                            onClick={() => setActiveFaq(isOpen ? null : idx)}
-                            className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left font-semibold text-xs sm:text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer select-none"
-                          >
-                            <span>{faq.question}</span>
-                            <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
-                          </button>
-
-                          {isOpen && (
-                            <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-                              {faq.answer}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
+                
               </div>
 
               {/* ── RIGHT COLUMN (5 COLS): STICKY HIGH-CONVERTING BOOKING WIDGET ── */}
@@ -2046,6 +1849,209 @@ export function VisaCountryResultPortal({
               </div>
 
             </div>
+          
+            {/* ── CENTERED FULL-WIDTH SECTIONS: COMPARISON MATRIX, DOCUMENTS CHECKLIST & FAQS ── */}
+            <div className="max-w-4xl mx-auto space-y-12 sm:space-y-16 mt-14 sm:mt-20 text-left">
+              {/* 4. TRAVLTIK VS DIY COMPARISON MATRIX */}
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
+                        Clear Advantage
+                      </span>
+                      <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
+                        Applying with TravlTik vs Doing It Yourself
+                      </h2>
+                    </div>
+
+                    <div className="inline-flex p-1 bg-slate-100 rounded-xl self-start sm:self-center">
+                      <button
+                        type="button"
+                        onClick={() => setActiveTimelineTab('travltik')}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                          activeTimelineTab === 'travltik' ? 'bg-[#00A86B] text-white shadow-xs' : 'text-slate-600'
+                        }`}
+                      >
+                        With TravlTik
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setActiveTimelineTab('diy')}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                          activeTimelineTab === 'diy' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600'
+                        }`}
+                      >
+                        DIY (On Your Own)
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="border border-slate-200/90 rounded-3xl overflow-hidden shadow-2xs">
+                    <div className="divide-y divide-slate-100">
+                      {[
+                        {
+                          feature: 'Application Filing Time',
+                          travltik: '2 minutes on phone (Instant OCR auto-fill)',
+                          diy: '2-3 hours filling tedious government forms',
+                          highlight: true
+                        },
+                        {
+                          feature: 'Photo & Document Check',
+                          travltik: 'AI millimeter verification & auto background clean',
+                          diy: 'High risk of rejection due to wrong sizing',
+                          highlight: true
+                        },
+                        {
+                          feature: 'Passport Collection',
+                          travltik: 'Free doorstep pickup & return in barcoded envelope',
+                          diy: 'Physical trip to VFS center & long queues',
+                          highlight: false
+                        },
+                        {
+                          feature: 'Real-Time Updates',
+                          travltik: 'Live WhatsApp & SMS notifications at every step',
+                          diy: 'Checking slow government portals repeatedly',
+                          highlight: false
+                        },
+                        {
+                          feature: 'Rejection Guarantee',
+                          travltik: '100% Service Fee Refund & ₹5 Lakh Transit Cover',
+                          diy: 'Zero refund, fees forfeited',
+                          highlight: true
+                        },
+                      ].map((row, idx) => (
+                        <div key={idx} className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center hover:bg-slate-50/60 transition-colors">
+                          <div className="sm:col-span-4 font-bold text-xs sm:text-sm text-slate-900">
+                            {row.feature}
+                          </div>
+                          
+                          <div className={`sm:col-span-4 text-xs font-semibold flex items-center gap-2 ${
+                            activeTimelineTab === 'travltik' ? 'text-emerald-700 font-bold bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-200' : 'text-slate-600'
+                          }`}>
+                            <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
+                            <span>{row.travltik}</span>
+                          </div>
+
+                          <div className={`sm:col-span-4 text-xs font-semibold flex items-center gap-2 ${
+                            activeTimelineTab === 'diy' ? 'text-red-700 font-bold bg-rose-50/80 p-2.5 rounded-xl border border-rose-200' : 'text-slate-400 line-through'
+                          }`}>
+                            <X className="w-4 h-4 text-red-500 shrink-0" />
+                            <span>{row.diy}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 5. REQUIRED DOCUMENTS CHECKLIST */}
+                <div className="space-y-4">
+                  <div className="space-y-1 text-center sm:text-left">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
+                      Simple Paperwork
+                    </span>
+                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight">
+                      Documents required for {countryName} Visa
+                    </h2>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
+                      <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
+                        <FileText className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
+                          Original Passport / Clear Scan
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                          Valid for at least 6 months beyond travel date with 2 blank pages.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
+                      <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                        <Camera className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
+                          1 Passport Photo / Clean Selfie
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                          White background. Take selfie on phone, our AI formats it automatically.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
+                      <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                        <Plane className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
+                          Confirmed Flight Itinerary
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                          Return or onward ticket. Don't worry, TravlTik can provide embassy itinerary holding.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
+                      <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                        <Building2 className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
+                          Hotel Booking / Stay Proof
+                        </h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                          Verified hotel reservation or host invitation letter for immigration stamping.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 6. EXPANDABLE FAQ ACCORDION */}
+                <div className="space-y-4">
+                  <div className="space-y-1 text-center sm:text-left">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
+                      Got Questions?
+                    </span>
+                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight">
+                      Frequently Asked Questions
+                    </h2>
+                  </div>
+
+                  <div className="border border-slate-200/90 rounded-3xl overflow-hidden divide-y divide-slate-100 shadow-2xs">
+                    {faqs.map((faq, idx) => {
+                      const isOpen = activeFaq === idx;
+                      return (
+                        <div key={idx} className="bg-white">
+                          <button
+                            type="button"
+                            onClick={() => setActiveFaq(isOpen ? null : idx)}
+                            className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left font-semibold text-xs sm:text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer select-none"
+                          >
+                            <span>{faq.question}</span>
+                            <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                          </button>
+
+                          {isOpen && (
+                            <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                              {faq.answer}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+              </div>
+
           </section>
 
           {/* ── MOBILE FLOATING STICKY ACTION BAR ── */}

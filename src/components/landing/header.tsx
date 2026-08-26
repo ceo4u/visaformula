@@ -47,7 +47,7 @@ function DropdownMenu({ label, items, align = 'left' }: {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <button className="flex items-center gap-1 text-[14px] font-bold text-slate-800 hover:text-[#00a896] transition-colors whitespace-nowrap py-2 cursor-pointer">
+      <button className="flex items-center gap-1 text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#00a896] transition-colors whitespace-nowrap py-2 cursor-pointer font-plus-jakarta">
         {label}
         <ChevronDown size={14} className={`transition-transform duration-200 text-slate-500 ${open ? 'rotate-180 text-[#00a896]' : ''}`} />
       </button>
@@ -95,7 +95,7 @@ export function Header() {
         <nav className="hidden lg:flex items-center gap-7">
           <DropdownMenu label="Find Experts" items={findConsultantsItems} />
           
-          <a href="/services/apply-visa" className="text-[14px] font-bold text-slate-800 hover:text-[#00a896] transition-colors whitespace-nowrap py-2">
+          <a href="/services/apply-visa" className="text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#00a896] transition-colors whitespace-nowrap py-2 font-plus-jakarta">
             Self Apply
           </a>
 

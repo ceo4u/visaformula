@@ -595,6 +595,71 @@ export function VisaCountryResultPortal({
         </div>
       </section>
 
+      {/* ── STEP 0: CORE DECISION GATE ("Have Visa Already?") ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8 flex items-center justify-center">
+        <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2.5 px-6 sm:px-8 shadow-sm inline-flex items-center gap-4 sm:gap-6 transition-all">
+          
+          <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">
+            Have Visa Already?
+          </span>
+
+          {/* Toggle Capsule Track */}
+          <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60">
+            
+            {/* NO button */}
+            <button
+              type="button"
+              onClick={() => setHasVisaAlready('no')}
+              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
+                hasVisaAlready === 'no'
+                  ? 'bg-[#0f172a] text-white shadow-md'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              {hasVisaAlready === 'no' ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
+                  <span className="tracking-wide">NO</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
+                </>
+              ) : (
+                <>
+                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
+                  <span className="tracking-wide">NO</span>
+                </>
+              )}
+            </button>
+
+            {/* YES button */}
+            <button
+              type="button"
+              onClick={() => setHasVisaAlready('yes')}
+              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
+                hasVisaAlready === 'yes'
+                  ? 'bg-[#0f172a] text-white shadow-md'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              {hasVisaAlready === 'yes' ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
+                  <span className="tracking-wide">YES</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
+                </>
+              ) : (
+                <>
+                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
+                  <span className="tracking-wide">YES</span>
+                </>
+              )}
+            </button>
+
+          </div>
+
+        </div>
+      </section>
+
+
       
       {/* ── SECTION 1.5: DYNAMIC AI OVERVIEW & ENTRY REQUIREMENTS INTELLIGENCE CARD ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
@@ -774,69 +839,7 @@ export function VisaCountryResultPortal({
         </div>
       </section>
 
-{/* ── STEP 0: CORE DECISION GATE ("Have Visa Already?") ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8 flex items-center justify-center">
-        <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2.5 px-6 sm:px-8 shadow-sm inline-flex items-center gap-4 sm:gap-6 transition-all">
-          
-          <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">
-            Have Visa Already?
-          </span>
 
-          {/* Toggle Capsule Track */}
-          <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60">
-            
-            {/* NO button */}
-            <button
-              type="button"
-              onClick={() => setHasVisaAlready('no')}
-              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
-                hasVisaAlready === 'no'
-                  ? 'bg-[#0f172a] text-white shadow-md'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {hasVisaAlready === 'no' ? (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
-                  <span className="tracking-wide">NO</span>
-                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
-                </>
-              ) : (
-                <>
-                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
-                  <span className="tracking-wide">NO</span>
-                </>
-              )}
-            </button>
-
-            {/* YES button */}
-            <button
-              type="button"
-              onClick={() => setHasVisaAlready('yes')}
-              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
-                hasVisaAlready === 'yes'
-                  ? 'bg-[#0f172a] text-white shadow-md'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {hasVisaAlready === 'yes' ? (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
-                  <span className="tracking-wide">YES</span>
-                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
-                </>
-              ) : (
-                <>
-                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
-                  <span className="tracking-wide">YES</span>
-                </>
-              )}
-            </button>
-
-          </div>
-
-        </div>
-      </section>
 
       {/* ══════════════════════════════════════════════════════════════════════════ */}
       {/* ── BRANCH 1: USER SELECTS "YES" (PRE-DEPARTURE OS & PARENTAL SECURITY) ── */}

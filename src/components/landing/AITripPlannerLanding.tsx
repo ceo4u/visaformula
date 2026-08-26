@@ -2413,10 +2413,10 @@ return (
                           </div>
                         </div>
 
-                        {/* Field 4: From (Country) */}
+                        {/* Field 4: Passport Country */}
                         <div className="relative">
                           <label className="block text-[10px] sm:text-xs font-black text-slate-800 mb-1 truncate">
-                            From
+                            Passport Country
                           </label>
                           <div
                             ref={originCityRef}
@@ -4830,79 +4830,6 @@ return (
 
                 </div>
               )}
-
-              {/* FALLBACK / WORK / PR / GENERAL LEAD CAPTURE SECTION */}
-              <div id="study-lead-capture-section" className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-sm text-left">
-                {leadSubmittedSuccess ? (
-                  <div className="text-center py-6 space-y-3 animate-fadeIn">
-                    <div className="w-16 h-16 rounded-3xl bg-emerald-50 border border-emerald-200 text-[#00A86B] flex items-center justify-center mx-auto text-3xl shadow-sm">
-                      ✅
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-black text-slate-900">
-                      Profile Evaluation Request Received!
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-md mx-auto leading-relaxed">
-                      Our certified <strong>{journeyDestination || 'Visa'}</strong> specialist will review your profile and reach out to you on <strong>{leadContactPref === 'whatsapp' ? 'WhatsApp' : 'Phone'}</strong> ({leadPhoneNumber}) shortly.
-                    </p>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="mb-6 pb-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                      <div>
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200 text-[10px] font-black uppercase tracking-wider mb-1.5">
-                          <Sparkles className="w-3 h-3" />
-                          <span>1-on-1 Specialist Matchmaker</span>
-                        </div>
-                        <h3 className="text-lg sm:text-xl font-black text-slate-900">
-                          Need Expert Profile Enhancement for {journeyDestination || 'Abroad'}?
-                        </h3>
-                        <p className="text-xs text-slate-500 mt-0.5">
-                          Get your SOP, financial proof, and visa file reviewed by certified immigration lawyers.
-                        </p>
-                      </div>
-                    </div>
-
-                    <form onSubmit={handleNoVisaLeadSubmit} className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1.5">Full Name *</label>
-                        <input
-                          type="text"
-                          required
-                          value={leadFullName}
-                          onChange={(e) => setLeadFullName(e.target.value)}
-                          placeholder="Your full name"
-                          className="w-full h-11 px-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1.5">Phone / WhatsApp *</label>
-                        <input
-                          type="tel"
-                          required
-                          value={leadPhoneNumber}
-                          onChange={(e) => setLeadPhoneNumber(e.target.value)}
-                          placeholder="+91 98765 43210"
-                          className="w-full h-11 px-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#00A86B]"
-                        />
-                      </div>
-
-                      <div>
-                        <button
-                          type="submit"
-                          disabled={leadSubmitting}
-                          className={`w-full h-11 font-extrabold text-xs sm:text-sm rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 ${
-                            'bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30'
-                          }`}
-                        >
-                          <PhoneCall className={`w-4 h-4 ${hasVisaAlready === 'no' ? 'text-cyan-400' : 'text-emerald-100'}`} />
-                          <span>{leadSubmitting ? 'Connecting...' : 'Request Free Specialist Callback'}</span>
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                )}
-              </div>
 
             </div>
           );

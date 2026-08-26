@@ -1803,22 +1803,19 @@ export function AITripPlannerLanding() {
     if (pillId === 'student') targetPurpose = 'study';
     else if (pillId === 'work') targetPurpose = 'work';
     else if (pillId === 'pr') targetPurpose = 'pr';
-    else if (pillId === 'tourist') targetPurpose = 'visit';
+    else if (pillId === 'tourist') targetPurpose = 'tourism';
     else if (pillId === 'business') targetPurpose = 'business';
     else if (pillId === 'nomad') targetPurpose = 'work';
     else if (pillId === 'ielts') targetPurpose = 'study';
     else if (pillId === 'emergency') targetPurpose = 'visit';
 
     setTravelPurpose(targetPurpose);
-    setSearchPrompt(`${pillLabel} to ${journeyDestination || 'UAE'}`);
-    setHasVisaAlready('no');
-    setHasGenerated(true);
+    const dest = journeyDestination && journeyDestination !== 'Country' ? journeyDestination : 'United Kingdom';
+    const pass = passportCountry || 'India';
+    const destSlug = dest.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-    // Auto-scroll down to the target pathway section
-    setTimeout(() => {
-      const el = document.getElementById('ai-pathway-research-verdict') || document.getElementById('need-visa-pathway-dashboard');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 80);
+    // Seamlessly navigate to dynamic country visa page
+    window.location.href = `/visa/${destSlug}?passport=${encodeURIComponent(pass)}&purpose=${encodeURIComponent(targetPurpose)}`;
   };
 
       const handleViewInDashboard = () => {
@@ -1865,15 +1862,13 @@ export function AITripPlannerLanding() {
   const handleGeneratePathway = () => {
     setIsGenerating(true);
     setHasGenerated(false);
-    setLoadingProgress(20);
-    setLoadingStep(0);
     
     // Accurately map purpose from inputs
     let purpose = travelPurpose || 'study';
     const looking = (serviceLookingFor || '').toLowerCase();
     const serv = (selectedServiceType || '').toLowerCase();
     if (looking.includes('study') || serv.includes('student')) purpose = 'study';
-    else if (looking.includes('tourist') || looking.includes('visit') || serv.includes('visit') || serv.includes('tourist')) purpose = 'visit';
+    else if (looking.includes('tourist') || looking.includes('visit') || serv.includes('visit') || serv.includes('tourist')) purpose = 'tourism';
     else if (looking.includes('work') || serv.includes('work') || serv.includes('job')) purpose = 'work';
     else if (looking.includes('pr') || serv.includes('pr') || serv.includes('migration')) purpose = 'pr';
     else if (looking.includes('business') || serv.includes('business')) purpose = 'business';
@@ -1895,41 +1890,20 @@ export function AITripPlannerLanding() {
       has_visa: false
     });
 
-    // Auto-scroll down to loading HUD
-    setTimeout(() => {
-      const loadEl = document.getElementById('pathway-generator-status');
-      if (loadEl) loadEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 50);
+    const destSlug = dest.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'united-kingdom';
 
-    // Step 1: Checking treaties & waiver
+    // Step 1: Checking treaties & fast-track
     setTimeout(() => {
       setLoadingStep(1);
       setLoadingProgress(50);
-    }, 300);
+    }, 150);
 
-    // Step 2: Fetching university & costs
+    // Step 2: Finalizing itinerary & redirecting to dedicated visa page
     setTimeout(() => {
       setLoadingStep(2);
-      setLoadingProgress(75);
-    }, 600);
-
-    // Step 3: Finalizing roadmap
-    setTimeout(() => {
-      setLoadingStep(3);
       setLoadingProgress(100);
-    }, 900);
-
-    // Complete: Reveal results & smooth scroll
-    setTimeout(() => {
-      setIsGenerating(false);
-      setHasGenerated(true);
-      setTimeout(() => {
-        const el = document.getElementById('ai-pathway-research-verdict') || document.getElementById('need-visa-pathway-dashboard');
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
-    }, 1200);
+      window.location.href = `/visa/${destSlug}?passport=${encodeURIComponent(pass)}&purpose=${encodeURIComponent(purpose)}`;
+    }, 400);
   };
 
   const handleNoVisaLeadSubmit = async (e: React.FormEvent) => {

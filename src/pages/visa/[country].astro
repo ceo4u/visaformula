@@ -1,0 +1,34 @@
+---
+// src/pages/visa/[country].astro
+import Layout from '../../layouts/Layout.astro';
+import { VisaCountryResultPortal } from '../../components/visa/VisaCountryResultPortal';
+
+export const prerender = false;
+
+const { country } = Astro.params;
+const passport = Astro.url.searchParams.get('passport') || 'India';
+const purpose = Astro.url.searchParams.get('purpose') || 'tourism';
+
+const countryClean = (country || 'destination')
+  .split('-')
+  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+  .join(' ');
+
+const pageTitle = `${countryClean} Visa for ${passport} Citizens | Doorstep Application`;
+const pageDesc = `Get your ${countryClean} visa from the comfort of your home with guaranteed fast-track clearance, doorstep document collection, and 99.4% approval record.`;
+---
+
+<Layout 
+  title={pageTitle}
+  description={pageDesc}
+  keywords={`${countryClean} visa, ${countryClean} tourist visa, apply ${countryClean} visa online, ${countryClean} visa fees, ${countryClean} visa for ${passport}`}
+>
+  <div class="min-h-screen bg-[#FDFBF7]">
+    <VisaCountryResultPortal 
+      client:load 
+      countrySlug={country || 'uae'} 
+      initialPassport={passport} 
+      initialPurpose={purpose} 
+    />
+  </div>
+</Layout>

@@ -2219,22 +2219,6 @@ return (
                   )}
                 </button>
 
-                {/* Tab 3: Explore */}
-                <button
-                  type="button"
-                  onClick={() => setTravelScopeTab('explore')}
-                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
-                    travelScopeTab === 'explore'
-                      ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
-                  }`}
-                >
-                  <span>Explore</span>
-                  {travelScopeTab === 'explore' && (
-                    <div className="absolute top-0 left-3 right-3 h-[3px] bg-purple-600 rounded-full" />
-                  )}
-                </button>
-
               </div>
 
               {/* Large Premium Search Card (Exact Mobile & Desktop Layout) */}
@@ -2247,10 +2231,10 @@ return (
                     {/* Desktop & Mobile Responsive Grid */}
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-3.5 items-end">
                       
-                      {/* Field 1: I am looking for (Full width on mobile, 4 cols on desktop) */}
+                      {/* Field 1: Purpose (Full width on mobile, 4 cols on desktop) */}
                       <div className="lg:col-span-4 relative">
                         <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
-                          I am looking for
+                          Purpose
                         </label>
                         <div
                           ref={lookingForRef}
@@ -2716,48 +2700,6 @@ return (
                     </div>
                   );
                 })()}
-
-                {/* TAB 3: EXPLORE DESTINATIONS */}
-                {travelScopeTab === 'explore' && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end animate-fadeIn">
-                    <div className="relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">Destination Region</label>
-                      <input
-                        type="text"
-                        value={searchCountry}
-                        onChange={(e) => setSearchCountry(e.target.value)}
-                        placeholder="e.g. Europe, Middle East, UK"
-                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
-                      />
-                    </div>
-                    <div className="relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">Purpose of Visit</label>
-                      <input
-                        type="text"
-                        value={searchLocation}
-                        onChange={(e) => setSearchLocation(e.target.value)}
-                        placeholder="e.g. Study, Work, Holiday, PR"
-                        className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
-                      />
-                    </div>
-                    <div className="relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">Duration Style</label>
-                      <div className="bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center text-xs sm:text-sm font-semibold text-slate-700">
-                        ⚡ Instant AI Pathway Match
-                      </div>
-                    </div>
-                    <div>
-                      <button
-                        type="button"
-                        onClick={handleGlobalSearch}
-                        className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
-                      >
-                        <Compass className="w-4 h-4 text-cyan-400" />
-                        <span>Explore Guides →</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
 
               </div>
 

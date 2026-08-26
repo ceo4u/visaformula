@@ -1,3 +1,4 @@
+import { ALL_COUNTRIES, getCountryCodeByName } from '../../data/countries';
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -1264,6 +1265,23 @@ export function AITripPlannerLanding() {
   
   // Custom dropdown open states for Journey Form
   const [isPassportOpen, setIsPassportOpen] = useState(false);
+  
+  // Searchable Country Dropdown States (240+ Global Countries)
+  const [destSearchQuery, setDestSearchQuery] = useState('');
+  const [passportSearchQuery, setPassportSearchQuery] = useState('');
+
+  const filteredDestCountries = useMemo(() => {
+    if (!destSearchQuery.trim()) return ALL_COUNTRIES;
+    const q = destSearchQuery.toLowerCase().trim();
+    return ALL_COUNTRIES.filter(c => c.name.toLowerCase().includes(q) || c.code.toLowerCase().startsWith(q));
+  }, [destSearchQuery]);
+
+  const filteredPassportCountries = useMemo(() => {
+    if (!passportSearchQuery.trim()) return ALL_COUNTRIES;
+    const q = passportSearchQuery.toLowerCase().trim();
+    return ALL_COUNTRIES.filter(c => c.name.toLowerCase().includes(q) || c.code.toLowerCase().startsWith(q));
+  }, [passportSearchQuery]);
+
   const [isJourneyDestOpen, setIsJourneyDestOpen] = useState(false);
   const [isPurposeOpen, setIsPurposeOpen] = useState(false);
   const passportRef = useRef<HTMLDivElement>(null);
@@ -2261,7 +2279,7 @@ return (
                         
                         {/* Field 2: Going to (Country) */}
                         <div className="relative">
-                          <label className="block text-[10px] sm:text-xs font-black text-slate-800 mb-1 truncate">
+                          <label className="block text-[10px] sm:text-xs font-bold text-slate-800 mb-1 truncate">
                             Going to
                           </label>
                           <div
@@ -2271,50 +2289,75 @@ return (
                               setIsLookingForOpen(false);
                               setIsOriginCityOpen(false);
                             }}
-                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
+                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
-                            <div className="flex items-center gap-1.5 min-w-0">
+                            <div className="flex items-center gap-2 min-w-0">
                               <img
-                                src={`https://flagcdn.com/w40/${getCountryCode(journeyDestination || 'United Kingdom')}.png`}
+                                src={`https://flagcdn.com/w40/${getCountryCodeByName(journeyDestination || 'Singapore')}.png`}
                                 alt={journeyDestination || 'Country'}
-                                className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200"
+                                className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
                                 onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
                               />
-                              <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
-                                {journeyDestination || 'Country'}
+                              <span className="text-xs sm:text-sm font-semibold text-slate-900 truncate">
+                                {journeyDestination || 'Select Destination'}
                               </span>
                             </div>
-                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
 
                             {isJourneyDestOpen && (
                               <div
-                                className="absolute top-[calc(100%+8px)] left-0 w-[240px] sm:w-[260px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10"
+                                className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left"
                                 onClick={(e) => e.stopPropagation()}
                               >
-                                <div className="space-y-1">
-                                  {journeyDestinationOptions.map((opt) => (
-                                    <button
-                                      key={opt.value}
-                                      type="button"
-                                      onClick={() => {
-                                        setJourneyDestination(opt.value);
-                                        setIsJourneyDestOpen(false);
-                                        autoSaveJourney({ destination: opt.value });
-                                      }}
-                                      className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
-                                    >
-                                      <div className="flex items-center gap-2.5 min-w-0">
-                                        <img
-                                          src={`https://flagcdn.com/w40/${getCountryCode(opt.value)}.png`}
-                                          alt={opt.label}
-                                          className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200"
-                                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
-                                        />
-                                        <span className="truncate">{opt.label}</span>
-                                      </div>
-                                      {journeyDestination === opt.value && <Check className="w-4 h-4 text-[#00A86B]" />}
-                                    </button>
-                                  ))}
+                                {/* Search Input */}
+                                <div className="relative mb-2 shrink-0">
+                                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                  <input
+                                    type="text"
+                                    value={destSearchQuery}
+                                    onChange={(e) => setDestSearchQuery(e.target.value)}
+                                    placeholder="Type country (e.g. Br, Brazil)..."
+                                    autoFocus
+                                    className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white"
+                                  />
+                                </div>
+
+                                {/* Dynamic Filtered 240+ Countries List */}
+                                <div className="space-y-0.5 overflow-y-auto no-scrollbar flex-1 max-h-[240px]">
+                                  {filteredDestCountries.length === 0 ? (
+                                    <div className="py-4 text-center text-xs text-slate-400 font-medium">
+                                      No country found for "{destSearchQuery}"
+                                    </div>
+                                  ) : (
+                                    filteredDestCountries.map((opt) => (
+                                      <button
+                                        key={opt.name}
+                                        type="button"
+                                        onClick={() => {
+                                          setJourneyDestination(opt.name);
+                                          setIsJourneyDestOpen(false);
+                                          setDestSearchQuery('');
+                                          autoSaveJourney({ destination: opt.name });
+                                        }}
+                                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-left cursor-pointer transition-colors ${
+                                          journeyDestination === opt.name
+                                            ? 'bg-emerald-50 text-emerald-900'
+                                            : 'text-slate-700 hover:bg-slate-50'
+                                        }`}
+                                      >
+                                        <div className="flex items-center gap-2.5 min-w-0">
+                                          <img
+                                            src={`https://flagcdn.com/w40/${opt.code}.png`}
+                                            alt={opt.name}
+                                            className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                                            onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                                          />
+                                          <span className="truncate">{opt.name}</span>
+                                        </div>
+                                        {journeyDestination === opt.name && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                      </button>
+                                    ))
+                                  )}
                                 </div>
                               </div>
                             )}
@@ -2323,7 +2366,7 @@ return (
 
                         {/* Field 3: Passport Country */}
                         <div className="relative">
-                          <label className="block text-[10px] sm:text-xs font-black text-slate-800 mb-1 truncate">
+                          <label className="block text-[10px] sm:text-xs font-bold text-slate-800 mb-1 truncate">
                             Passport Country
                           </label>
                           <div
@@ -2333,50 +2376,76 @@ return (
                               setIsLookingForOpen(false);
                               setIsJourneyDestOpen(false);
                             }}
-                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-blue-500 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
+                            className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
-                            <div className="flex items-center gap-1.5 min-w-0">
+                            <div className="flex items-center gap-2 min-w-0">
                               <img
-                                src={`https://flagcdn.com/w40/${getCountryCode(passportCountry || 'India')}.png`}
+                                src={`https://flagcdn.com/w40/${getCountryCodeByName(passportCountry || 'India')}.png`}
                                 alt={passportCountry || 'Country'}
-                                className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200"
+                                className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
                                 onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
                               />
-                              <span className="text-[11px] sm:text-xs font-bold text-slate-900 truncate">
-                                {passportCountry || 'Country'}
+                              <span className="text-xs sm:text-sm font-semibold text-slate-900 truncate">
+                                {passportCountry || 'Select Passport'}
                               </span>
                             </div>
-                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
 
                             {isOriginCityOpen && (
                               <div
-                                className="absolute top-[calc(100%+8px)] right-0 sm:left-0 w-[220px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10"
+                                className="absolute top-[calc(100%+8px)] right-0 sm:left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left"
                                 onClick={(e) => e.stopPropagation()}
                               >
-                                <div className="space-y-1">
-                                  {passportCountryOptions.map((opt) => (
-                                    <button
-                                      key={opt.value}
-                                      type="button"
-                                      onClick={() => {
-                                        setPassportCountry(opt.value);
-                                        setOriginCity(opt.label);
-                                        setIsOriginCityOpen(false);
-                                        autoSaveJourney({ passport_country: opt.value });
-                                      }}
-                                      className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
-                                    >
-                                      <div className="flex items-center gap-2.5 min-w-0">
-                                        <img
-                                          src={`https://flagcdn.com/w40/${getCountryCode(opt.value)}.png`}
-                                          alt={opt.label}
-                                          className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200"
-                                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
-                                        />
-                                        <span className="truncate">{opt.label}</span>
-                                      </div>
-                                    </button>
-                                  ))}
+                                {/* Search Input */}
+                                <div className="relative mb-2 shrink-0">
+                                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                  <input
+                                    type="text"
+                                    value={passportSearchQuery}
+                                    onChange={(e) => setPassportSearchQuery(e.target.value)}
+                                    placeholder="Type passport (e.g. Br, Brazil)..."
+                                    autoFocus
+                                    className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white"
+                                  />
+                                </div>
+
+                                {/* Dynamic Filtered 240+ Countries List */}
+                                <div className="space-y-0.5 overflow-y-auto no-scrollbar flex-1 max-h-[240px]">
+                                  {filteredPassportCountries.length === 0 ? (
+                                    <div className="py-4 text-center text-xs text-slate-400 font-medium">
+                                      No country found for "{passportSearchQuery}"
+                                    </div>
+                                  ) : (
+                                    filteredPassportCountries.map((opt) => (
+                                      <button
+                                        key={opt.name}
+                                        type="button"
+                                        onClick={() => {
+                                          setPassportCountry(opt.name);
+                                          setOriginCity(opt.name);
+                                          setIsOriginCityOpen(false);
+                                          setPassportSearchQuery('');
+                                          autoSaveJourney({ passport_country: opt.name });
+                                        }}
+                                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-left cursor-pointer transition-colors ${
+                                          passportCountry === opt.name
+                                            ? 'bg-emerald-50 text-emerald-900'
+                                            : 'text-slate-700 hover:bg-slate-50'
+                                        }`}
+                                      >
+                                        <div className="flex items-center gap-2.5 min-w-0">
+                                          <img
+                                            src={`https://flagcdn.com/w40/${opt.code}.png`}
+                                            alt={opt.name}
+                                            className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                                            onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                                          />
+                                          <span className="truncate">{opt.name}</span>
+                                        </div>
+                                        {passportCountry === opt.name && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                      </button>
+                                    ))
+                                  )}
                                 </div>
                               </div>
                             )}
@@ -3128,104 +3197,104 @@ return (
             </div>
           </div>
           
-          {/* ── HOW TRAVLTIK WORKS SECTION ── */}
-          <div className="w-full max-w-6xl mx-auto mt-12 sm:mt-16 px-4 sm:px-6 lg:px-8 text-center animate-fadeIn">
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-8 sm:mb-12">
-              How TravlTik Works?
-            </h3>
+          {/* ── HOW TRAVLTIK WORKS SECTION (SQUIRCLE CARDS MATCHING SCREENSHOT) ── */}
+          <div className="w-full max-w-6xl mx-auto mt-12 sm:mt-16 px-4 sm:px-6 lg:px-8 text-left animate-fadeIn">
+            
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-2">
+              <div>
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] flex items-center gap-1.5 mb-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                  Simple 4-Step Process
+                </span>
+                <h3 className="text-xl sm:text-3xl font-heading font-bold text-slate-900 tracking-tight">
+                  How TravlTik Works?
+                </h3>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                End-to-end verified visa &amp; travel pathways in 4 easy steps.
+              </p>
+            </div>
 
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 lg:gap-8 relative max-w-5xl mx-auto">
+            {/* 4 Squircle Cards Grid (Matching Screenshot geometry) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
               
-              {/* Step 1: Search */}
-              <div className="flex flex-col items-center text-center group flex-1">
-                <div className="relative mb-3 flex items-center justify-center">
-                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
-                    1
-                  </span>
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0f7ff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.05)] group-hover:scale-105 transition-transform">
-                    <Search className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2]" />
-                  </div>
+              {/* Card 1: Search */}
+              <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group h-auto min-h-[190px]">
+                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                  <Search className="w-6 h-6 text-slate-900 stroke-[1.8]" />
                 </div>
-                <h4 className="text-base font-bold text-slate-900 mt-2">Search</h4>
-                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
-                  Find services, destinations or trusted experts
-                </p>
-              </div>
-
-              {/* Arrow Connector 1 -> 2 */}
-              <div className="hidden md:flex items-center justify-center shrink-0 -mt-10 px-1 text-slate-300">
-                <svg className="w-12 h-6 text-slate-300" viewBox="0 0 50 12" fill="none">
-                  <path d="M0 6H42M42 6L36 1M42 6L36 11" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-
-              {/* Step 2: Compare */}
-              <div className="flex flex-col items-center text-center group flex-1">
-                <div className="relative mb-3 flex items-center justify-center">
-                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
-                    2
+                <div className="mt-6">
+                  <span className="text-xs sm:text-sm text-slate-500 font-medium block">
+                    Step 1 • Discover
                   </span>
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0f7ff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.05)] group-hover:scale-105 transition-transform">
-                    <svg className="w-8 h-8 sm:w-9 sm:h-9 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="9" y1="6" x2="20" y2="6"></line>
-                      <line x1="9" y1="12" x2="20" y2="12"></line>
-                      <line x1="9" y1="18" x2="20" y2="18"></line>
-                      <circle cx="4" cy="6" r="1.5" fill="currentColor"></circle>
-                      <circle cx="4" cy="12" r="1.5" fill="currentColor"></circle>
-                      <circle cx="4" cy="18" r="1.5" fill="currentColor"></circle>
-                    </svg>
-                  </div>
+                  <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
+                    Search
+                  </h4>
+                  <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                    Find services, destinations or trusted global experts
+                  </p>
                 </div>
-                <h4 className="text-base font-bold text-slate-900 mt-2">Compare</h4>
-                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
-                  Compare options, reviews &amp; prices
-                </p>
               </div>
 
-              {/* Arrow Connector 2 -> 3 */}
-              <div className="hidden md:flex items-center justify-center shrink-0 -mt-10 px-1 text-slate-300">
-                <svg className="w-12 h-6 text-slate-300" viewBox="0 0 50 12" fill="none">
-                  <path d="M0 6H42M42 6L36 1M42 6L36 11" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-
-              {/* Step 3: Connect */}
-              <div className="flex flex-col items-center text-center group flex-1">
-                <div className="relative mb-3 flex items-center justify-center">
-                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
-                    3
+              {/* Card 2: Compare */}
+              <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group h-auto min-h-[190px]">
+                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                  <svg className="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <circle cx="3" cy="6" r="1.5" fill="currentColor"></circle>
+                    <circle cx="3" cy="12" r="1.5" fill="currentColor"></circle>
+                    <circle cx="3" cy="18" r="1.5" fill="currentColor"></circle>
+                  </svg>
+                </div>
+                <div className="mt-6">
+                  <span className="text-xs sm:text-sm text-slate-500 font-medium block">
+                    Step 2 • Evaluate
                   </span>
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0fdf4] border border-emerald-100 flex items-center justify-center text-[#16a34a] shadow-[0_4px_20px_rgba(22,163,74,0.05)] group-hover:scale-105 transition-transform">
-                    <ShieldCheck className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2]" />
-                  </div>
+                  <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
+                    Compare
+                  </h4>
+                  <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                    Compare verified options, ratings &amp; transparent fees
+                  </p>
                 </div>
-                <h4 className="text-base font-bold text-slate-900 mt-2">Connect</h4>
-                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
-                  Connect with verified experts &amp; book with confidence
-                </p>
               </div>
 
-              {/* Arrow Connector 3 -> 4 */}
-              <div className="hidden md:flex items-center justify-center shrink-0 -mt-10 px-1 text-slate-300">
-                <svg className="w-12 h-6 text-slate-300" viewBox="0 0 50 12" fill="none">
-                  <path d="M0 6H42M42 6L36 1M42 6L36 11" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-
-              {/* Step 4: Travel */}
-              <div className="flex flex-col items-center text-center group flex-1">
-                <div className="relative mb-3 flex items-center justify-center">
-                  <span className="absolute top-0 left-0 w-6 h-6 rounded-full bg-[#eff6ff] text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 z-10 shadow-2xs">
-                    4
+              {/* Card 3: Connect */}
+              <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group h-auto min-h-[190px]">
+                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                  <ShieldCheck className="w-6 h-6 text-slate-900 stroke-[1.8]" />
+                </div>
+                <div className="mt-6">
+                  <span className="text-xs sm:text-sm text-slate-500 font-medium block">
+                    Step 3 • Escrow Protection
                   </span>
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#f0f7ff] border border-blue-100 flex items-center justify-center text-blue-600 shadow-[0_4px_20px_rgba(37,99,235,0.05)] group-hover:scale-105 transition-transform">
-                    <Send className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2] -rotate-12 translate-x-0.5" />
-                  </div>
+                  <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
+                    Connect
+                  </h4>
+                  <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                    Connect with licensed consultants with 100% escrow safety
+                  </p>
                 </div>
-                <h4 className="text-base font-bold text-slate-900 mt-2">Travel</h4>
-                <p className="text-xs text-slate-500 font-normal mt-1 max-w-[170px] leading-relaxed">
-                  Plan, prepare and enjoy your journey
-                </p>
+              </div>
+
+              {/* Card 4: Travel */}
+              <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[28px] p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group h-auto min-h-[190px]">
+                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                  <Send className="w-6 h-6 text-slate-900 stroke-[1.8] -rotate-12 translate-x-0.5" />
+                </div>
+                <div className="mt-6">
+                  <span className="text-xs sm:text-sm text-slate-500 font-medium block">
+                    Step 4 • Fly Confident
+                  </span>
+                  <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5 tracking-tight">
+                    Travel
+                  </h4>
+                  <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                    Doorstep visa delivery &amp; real-time border journey alerts
+                  </p>
+                </div>
               </div>
 
             </div>

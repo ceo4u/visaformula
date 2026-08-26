@@ -160,10 +160,10 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="inline-flex items-center justify-center text-[#00A86B] border-2 border-[#00A86B] hover:bg-emerald-50/70 px-5 py-2 rounded-xl text-[14px] font-extrabold transition-all duration-200 whitespace-nowrap active:scale-95">
+                <a href="/login" id="login-btn" class="inline-flex items-center justify-center text-slate-800 border-2 border-slate-300 hover:bg-slate-50 px-5 py-2 rounded-xl text-[14px] font-extrabold transition-all duration-200 whitespace-nowrap active:scale-95">
                     Log in
                 </a>
-                <a href="/signup" id="signup-btn" class="inline-flex items-center justify-center bg-[#00A86B] hover:bg-[#008f5a] text-white !text-white px-6 py-2.5 rounded-xl text-[14px] font-extrabold transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap">
+                <a href="/signup" id="signup-btn" class="inline-flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white !text-white px-6 py-2.5 rounded-xl text-[14px] font-extrabold transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap">
                     Sign Up
                 </a>
             </div>
@@ -288,12 +288,13 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Mobile Portal Auth Actions -->
             <div id="mobile-nav-auth-buttons" class="py-4 flex flex-col gap-2">
-                <a href="/login" class="block text-center py-2.5 border-2 border-[#00A86B] text-[#00A86B] font-bold text-sm rounded-xl hover:bg-emerald-50/50 transition-colors">
+                <a href="/login" class="block text-center py-2.5 border-2 border-slate-300 text-slate-800 font-bold text-sm rounded-xl hover:bg-slate-50 transition-colors">
                     Log in
                 </a>
-                <a href="/signup" class="block text-center py-2.5 bg-[#00A86B] hover:bg-[#008f5a] text-white font-bold text-sm rounded-xl transition-colors shadow-md">
+                <a href="/signup" class="block text-center py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm rounded-xl transition-colors shadow-md">
                     Sign Up
                 </a>
+            </div>
             <!-- Mobile Profile Actions (Visible when logged in) -->
             <div id="mobile-nav-profile-block" class="hidden py-4 border-t border-slate-200/60 flex flex-col gap-2 font-sans">
                 <div class="px-2 py-1">

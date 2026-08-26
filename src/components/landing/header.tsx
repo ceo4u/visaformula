@@ -116,14 +116,14 @@ export function Header() {
 
           <a
             href="/login"
-            className="text-[13px] font-bold text-[#3b0764] border border-[#3b0764]/40 hover:bg-purple-50 hover:border-[#3b0764] px-4 py-2 rounded-xl transition-all shadow-2xs"
+            className="text-[13px] font-bold text-slate-800 border border-slate-300 hover:bg-slate-50 hover:border-slate-400 px-4 py-2 rounded-xl transition-all shadow-2xs"
           >
             Log in
           </a>
 
           <a
             href="/signup"
-            className="bg-[#3b0764] hover:bg-[#2d054e] text-white font-bold text-[13px] px-5 py-2.5 rounded-xl transition-all shadow-md shadow-purple-900/20 active:scale-95"
+            className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-[13px] px-5 py-2.5 rounded-xl transition-all shadow-md shadow-slate-900/20 active:scale-95"
           >
             Sign Up
           </a>
@@ -131,7 +131,7 @@ export function Header() {
 
         {/* Hamburger (Mobile / Tablet) */}
         <button
-          className="lg:hidden p-2 text-slate-800 hover:text-[#3b0764] cursor-pointer"
+          className="lg:hidden p-2 text-slate-800 hover:text-slate-900 cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -142,16 +142,16 @@ export function Header() {
       {menuOpen && (
         <div className="lg:hidden bg-white border-t border-slate-200 shadow-xl max-h-[85vh] overflow-y-auto">
           <div className="p-4 space-y-2 text-xs font-bold">
-            <a href="/find-experts" className="block px-3 py-2.5 text-slate-800 hover:text-[#3b0764] rounded-lg">Find Experts</a>
-            <a href="/services/apply-visa" className="block px-3 py-2.5 text-slate-800 hover:text-[#3b0764] rounded-lg">Self Apply</a>
-            <a href="/services/visa-documentation" className="block px-3 py-2.5 text-slate-800 hover:text-[#3b0764] rounded-lg">Visa Services</a>
-            <a href="/visa-guide" className="block px-3 py-2.5 text-slate-800 hover:text-[#3b0764] rounded-lg">Latest News & offers</a>
-            <a href="/migration-tools" className="block px-3 py-2.5 text-slate-800 hover:text-[#3b0764] rounded-lg">AI Tools</a>
-            <a href="/support" className="block px-3 py-2.5 text-slate-800 hover:text-[#3b0764] rounded-lg">Contact</a>
+            <a href="/find-experts" className="block px-3 py-2.5 text-slate-800 hover:text-slate-900 rounded-lg">Find Experts</a>
+            <a href="/services/apply-visa" className="block px-3 py-2.5 text-slate-800 hover:text-slate-900 rounded-lg">Self Apply</a>
+            <a href="/services/visa-documentation" className="block px-3 py-2.5 text-slate-800 hover:text-slate-900 rounded-lg">Visa Services</a>
+            <a href="/visa-guide" className="block px-3 py-2.5 text-slate-800 hover:text-slate-900 rounded-lg">Latest News & offers</a>
+            <a href="/migration-tools" className="block px-3 py-2.5 text-slate-800 hover:text-slate-900 rounded-lg">AI Tools</a>
+            <a href="/support" className="block px-3 py-2.5 text-slate-800 hover:text-slate-900 rounded-lg">Contact</a>
 
             <div className="flex gap-3 px-1 pt-3 border-t border-slate-100 mt-2">
-              <a href="/login" className="flex-1 text-center py-2.5 text-xs font-bold text-[#3b0764] border border-[#3b0764] rounded-xl">Log in</a>
-              <a href="/signup" className="flex-1 text-center py-2.5 text-xs font-bold text-white bg-[#3b0764] hover:bg-[#2d054e] rounded-xl shadow-sm">Sign Up</a>
+              <a href="/login" className="flex-1 text-center py-2.5 text-xs font-bold text-slate-800 border border-slate-300 rounded-xl hover:bg-slate-50">Log in</a>
+              <a href="/signup" className="flex-1 text-center py-2.5 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl shadow-sm">Sign Up</a>
             </div>
           </div>
         </div>

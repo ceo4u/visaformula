@@ -25,18 +25,20 @@ import {
   X, 
   HelpCircle, 
   ArrowRight, 
-  UploadCloud, 
+  Camera, 
   Smartphone, 
   Award,
-  Truck
+  Truck,
+  Zap,
+  CheckCircle,
+  HelpCircle as QuestionIcon
 } from 'lucide-react';
 
 export interface VisaCountryData {
   countryCode: string;
   countryName: string;
-  flagUrl: string;
+  flagEmoji: string;
   heroImage: string;
-  tagline?: string;
   lengthOfStay: string;
   validity: string;
   entryType: string;
@@ -44,44 +46,54 @@ export interface VisaCountryData {
   processingDays: number;
   governmentFeeINR: number;
   serviceFeeINR: number;
-  currencySymbol: string;
-  pincodeSupported: boolean;
-  requiredDocuments: {
-    title: string;
-    description: string;
-    iconType: 'passport' | 'finance' | 'photo' | 'ticket' | 'work' | 'student';
-    badge: string;
-  }[];
-  processStepsTravlTik: {
-    step: number;
-    title: string;
-    desc: string;
-  }[];
-  processStepsDIY: {
-    step: number;
-    title: string;
-    painPoint: string;
-  }[];
-  faqs: {
-    question: string;
-    answer: string;
+  variants: {
+    id: string;
+    label: string;
+    stay: string;
+    govFee: number;
+    servFee: number;
+    popular?: boolean;
   }[];
 }
 
 const COUNTRY_DATABASE: Record<string, Partial<VisaCountryData>> = {
   china: {
     countryName: 'China',
+    flagEmoji: '🇨🇳',
     heroImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '30 Days',
     validity: '90 Days',
     entryType: 'Single Entry',
     visaType: 'Sticker Visa',
-    processingDays: 7,
+    processingDays: 6,
     governmentFeeINR: 7800,
     serviceFeeINR: 5900,
+    variants: [
+      { id: 'tourist-30', label: '30 Days Tourist (Single)', stay: '30 Days', govFee: 7800, servFee: 5900, popular: true },
+      { id: 'business-90', label: '90 Days Business (Single)', stay: '90 Days', govFee: 9200, servFee: 6500 },
+      { id: 'express-30', label: 'Express Fast-Track (30 Days)', stay: '30 Days', govFee: 11500, servFee: 7500 },
+    ]
+  },
+  singapore: {
+    countryName: 'Singapore',
+    flagEmoji: '🇸🇬',
+    heroImage: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1600&auto=format&fit=crop&q=85',
+    lengthOfStay: '30 Days',
+    validity: 'Up to 2 Years',
+    entryType: 'Multiple Entry',
+    visaType: 'Paper E-Visa with QR',
+    processingDays: 4,
+    governmentFeeINR: 2500,
+    serviceFeeINR: 2200,
+    variants: [
+      { id: 'tourist-30', label: '30 Days Tourist (Multiple)', stay: '30 Days', govFee: 2500, servFee: 2200, popular: true },
+      { id: 'express-30', label: 'Express Clearance (2 Days)', stay: '30 Days', govFee: 4200, servFee: 2900 },
+      { id: 'business-2yr', label: '2 Years Business Multiple', stay: '30 Days/Visit', govFee: 5500, servFee: 3500 },
+    ]
   },
   uae: {
     countryName: 'United Arab Emirates',
+    flagEmoji: '🇦🇪',
     heroImage: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '30 or 60 Days',
     validity: '60 Days',
@@ -90,9 +102,15 @@ const COUNTRY_DATABASE: Record<string, Partial<VisaCountryData>> = {
     processingDays: 3,
     governmentFeeINR: 6500,
     serviceFeeINR: 2400,
+    variants: [
+      { id: 'tourist-30', label: '30 Days Single Entry', stay: '30 Days', govFee: 6500, servFee: 2400, popular: true },
+      { id: 'tourist-60', label: '60 Days Single Entry', stay: '60 Days', govFee: 11500, servFee: 3200 },
+      { id: 'express-30', label: '24-Hour Express Superfast', stay: '30 Days', govFee: 9500, servFee: 3900 },
+    ]
   },
   dubai: {
     countryName: 'Dubai (UAE)',
+    flagEmoji: '🇦🇪',
     heroImage: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '30 Days',
     validity: '60 Days',
@@ -101,86 +119,98 @@ const COUNTRY_DATABASE: Record<string, Partial<VisaCountryData>> = {
     processingDays: 2,
     governmentFeeINR: 6500,
     serviceFeeINR: 2400,
+    variants: [
+      { id: 'tourist-30', label: '30 Days Single Entry', stay: '30 Days', govFee: 6500, servFee: 2400, popular: true },
+      { id: 'tourist-60', label: '60 Days Single Entry', stay: '60 Days', govFee: 11500, servFee: 3200 },
+      { id: 'express-24h', label: 'Express 24h Processing', stay: '30 Days', govFee: 9500, servFee: 3900 },
+    ]
   },
   australia: {
     countryName: 'Australia',
+    flagEmoji: '🇦🇺',
     heroImage: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: 'Up to 3 Months',
     validity: '1 Year',
     entryType: 'Multiple Entry',
-    visaType: 'Subclass 600 / eVisitor',
-    processingDays: 15,
+    visaType: 'Subclass 600 Visitor Visa',
+    processingDays: 14,
     governmentFeeINR: 10500,
     serviceFeeINR: 4500,
+    variants: [
+      { id: 'tourist-3m', label: 'Subclass 600 Tourist (3 Months)', stay: '3 Months', govFee: 10500, servFee: 4500, popular: true },
+      { id: 'business-1y', label: 'Business Visitor (1 Year Multiple)', stay: '3 Months/Visit', govFee: 12500, servFee: 5500 },
+      { id: 'fast-track', label: 'Priority Fast-Track (48-72 hrs)', stay: '3 Months', govFee: 22000, servFee: 7500 },
+    ]
   },
   uk: {
     countryName: 'United Kingdom',
+    flagEmoji: '🇬🇧',
     heroImage: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '6 Months',
     validity: '6 Months to 2 Years',
     entryType: 'Multiple Entry',
-    visaType: 'Standard Visitor / Student Visa',
+    visaType: 'Standard Visitor Visa',
     processingDays: 15,
     governmentFeeINR: 12500,
     serviceFeeINR: 5200,
+    variants: [
+      { id: 'tourist-6m', label: 'Standard Visitor (6 Months)', stay: '6 Months', govFee: 12500, servFee: 5200, popular: true },
+      { id: 'visitor-2y', label: 'Long Term Visitor (2 Years)', stay: '6 Months/Visit', govFee: 45000, servFee: 8500 },
+      { id: 'priority-uk', label: 'Priority 5-Day Fast-Track', stay: '6 Months', govFee: 38000, servFee: 9500 },
+    ]
   },
   'united-kingdom': {
     countryName: 'United Kingdom',
+    flagEmoji: '🇬🇧',
     heroImage: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '6 Months',
     validity: '6 Months to 2 Years',
     entryType: 'Multiple Entry',
-    visaType: 'Standard Visitor / Student Visa',
+    visaType: 'Standard Visitor Visa',
     processingDays: 15,
     governmentFeeINR: 12500,
     serviceFeeINR: 5200,
+    variants: [
+      { id: 'tourist-6m', label: 'Standard Visitor (6 Months)', stay: '6 Months', govFee: 12500, servFee: 5200, popular: true },
+      { id: 'visitor-2y', label: 'Long Term Visitor (2 Years)', stay: '6 Months/Visit', govFee: 45000, servFee: 8500 },
+      { id: 'priority-uk', label: 'Priority 5-Day Fast-Track', stay: '6 Months', govFee: 38000, servFee: 9500 },
+    ]
   },
   usa: {
     countryName: 'United States',
+    flagEmoji: '🇺🇸',
     heroImage: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: 'Up to 6 Months',
     validity: '10 Years',
     entryType: 'Multiple Entry',
     visaType: 'B1/B2 Visitor Visa',
-    processingDays: 30,
+    processingDays: 25,
     governmentFeeINR: 15500,
     serviceFeeINR: 6500,
-  },
-  'united-states': {
-    countryName: 'United States',
-    heroImage: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=1600&auto=format&fit=crop&q=85',
-    lengthOfStay: 'Up to 6 Months',
-    validity: '10 Years',
-    entryType: 'Multiple Entry',
-    visaType: 'B1/B2 Visitor Visa',
-    processingDays: 30,
-    governmentFeeINR: 15500,
-    serviceFeeINR: 6500,
+    variants: [
+      { id: 'b1-b2-10y', label: 'B1/B2 Tourist & Business (10 Years)', stay: '6 Months/Visit', govFee: 15500, servFee: 6500, popular: true },
+      { id: 'f1-student', label: 'F-1 Student Visa Stamping', stay: 'Duration of Study', govFee: 15500, servFee: 7500 },
+    ]
   },
   canada: {
     countryName: 'Canada',
+    flagEmoji: '🇨🇦',
     heroImage: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: 'Up to 6 Months',
-    validity: 'Up to Passport Expiry (10 Yrs)',
+    validity: 'Up to 10 Years',
     entryType: 'Multiple Entry',
-    visaType: 'Temporary Resident Visa / Student',
-    processingDays: 20,
+    visaType: 'Temporary Resident Visa',
+    processingDays: 18,
     governmentFeeINR: 11000,
     serviceFeeINR: 4900,
-  },
-  singapore: {
-    countryName: 'Singapore',
-    heroImage: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1600&auto=format&fit=crop&q=85',
-    lengthOfStay: '30 Days',
-    validity: '30 Days to 2 Years',
-    entryType: 'Multiple Entry',
-    visaType: 'Paper E-Visa with QR',
-    processingDays: 4,
-    governmentFeeINR: 2500,
-    serviceFeeINR: 2200,
+    variants: [
+      { id: 'trv-10y', label: 'Tourist TRV (Up to 10 Years)', stay: '6 Months/Visit', govFee: 11000, servFee: 4900, popular: true },
+      { id: 'super-visa', label: 'Super Visa (Parents & Grandparents)', stay: '5 Years/Visit', govFee: 14500, servFee: 6900 },
+    ]
   },
   france: {
     countryName: 'France (Schengen)',
+    flagEmoji: '🇫🇷',
     heroImage: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '90 Days in 180 Days',
     validity: 'Up to 90 Days',
@@ -189,42 +219,62 @@ const COUNTRY_DATABASE: Record<string, Partial<VisaCountryData>> = {
     processingDays: 12,
     governmentFeeINR: 8200,
     serviceFeeINR: 4200,
+    variants: [
+      { id: 'schengen-tourist', label: 'Short-Stay Tourist (90 Days)', stay: '90 Days', govFee: 8200, servFee: 4200, popular: true },
+      { id: 'schengen-business', label: 'Business / Conference Visa', stay: '90 Days', govFee: 8200, servFee: 4900 },
+    ]
   },
   germany: {
     countryName: 'Germany (Schengen)',
+    flagEmoji: '🇩🇪',
     heroImage: 'https://images.unsplash.com/photo-1560969184-10fe8719e047?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '90 Days',
     validity: '90 Days',
     entryType: 'Multiple Entry',
-    visaType: 'Schengen Sticker Visa / Opportunity Card',
+    visaType: 'Schengen Sticker Visa',
     processingDays: 14,
     governmentFeeINR: 8200,
     serviceFeeINR: 4500,
+    variants: [
+      { id: 'germany-tourist', label: 'Tourist Schengen (90 Days)', stay: '90 Days', govFee: 8200, servFee: 4500, popular: true },
+      { id: 'opportunity-card', label: 'Opportunity Card (Chancenkarte)', stay: '1 Year', govFee: 7500, servFee: 8500 },
+    ]
   },
   japan: {
     countryName: 'Japan',
+    flagEmoji: '🇯🇵',
     heroImage: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '15 / 30 / 90 Days',
     validity: '90 Days',
     entryType: 'Single / Multiple',
-    visaType: 'eVisa / Embassy Sticker',
+    visaType: 'Official E-Visa',
     processingDays: 6,
     governmentFeeINR: 3500,
     serviceFeeINR: 2900,
+    variants: [
+      { id: 'japan-evisa', label: 'Tourist eVisa (Single Entry)', stay: '15-30 Days', govFee: 3500, servFee: 2900, popular: true },
+      { id: 'japan-multiple', label: 'Multiple Entry Tourist (3 Years)', stay: '30 Days/Visit', govFee: 6500, servFee: 4200 },
+    ]
   },
   thailand: {
     countryName: 'Thailand',
+    flagEmoji: '🇹🇭',
     heroImage: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '30 / 60 Days',
     validity: '60 Days',
-    entryType: 'Single Entry / Visa Free / E-Visa',
+    entryType: 'Single Entry / Visa-Free',
     visaType: 'E-Visa on Arrival / Tourist Permit',
     processingDays: 2,
     governmentFeeINR: 4200,
     serviceFeeINR: 1800,
+    variants: [
+      { id: 'thai-tourist', label: 'Express E-Visa on Arrival (E-VOA)', stay: '30 Days', govFee: 4200, servFee: 1800, popular: true },
+      { id: 'thai-60', label: '60 Days Tourist Visa', stay: '60 Days', govFee: 5500, servFee: 2400 },
+    ]
   },
   vietnam: {
     countryName: 'Vietnam',
+    flagEmoji: '🇻🇳',
     heroImage: 'https://images.unsplash.com/photo-1528127269322-539801943592?w=1600&auto=format&fit=crop&q=85',
     lengthOfStay: '30 or 90 Days',
     validity: '90 Days',
@@ -233,6 +283,10 @@ const COUNTRY_DATABASE: Record<string, Partial<VisaCountryData>> = {
     processingDays: 3,
     governmentFeeINR: 3200,
     serviceFeeINR: 1900,
+    variants: [
+      { id: 'vietnam-30s', label: '30 Days Single Entry E-Visa', stay: '30 Days', govFee: 3200, servFee: 1900, popular: true },
+      { id: 'vietnam-90m', label: '90 Days Multiple Entry E-Visa', stay: '90 Days', govFee: 5800, servFee: 2500 },
+    ]
   },
 };
 
@@ -256,29 +310,36 @@ export function VisaCountryResultPortal({
   const baseData = COUNTRY_DATABASE[slugClean] || {};
 
   const countryName = baseData.countryName || slugClean.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const flagEmoji = baseData.flagEmoji || '🌍';
   const heroImage = baseData.heroImage || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1600&auto=format&fit=crop&q=85';
   const lengthOfStay = baseData.lengthOfStay || '30 Days';
   const validity = baseData.validity || '90 Days';
-  const entryType = baseData.entryType || 'Single / Multiple Entry';
-  const visaType = baseData.visaType || 'Official E-Visa / Sticker';
-  const processingDays = baseData.processingDays || 5;
-  const govFee = baseData.governmentFeeINR || 6500;
-  const servFee = baseData.serviceFeeINR || 3500;
+  const entryType = baseData.entryType || 'Single Entry';
+  const visaType = baseData.visaType || 'Official E-Visa';
+  const processingDays = baseData.processingDays || 4;
 
-  // Interactive States
+  const variants = baseData.variants || [
+    { id: 'standard', label: `Standard ${lengthOfStay} Tourist`, stay: lengthOfStay, govFee: baseData.governmentFeeINR || 6500, servFee: baseData.serviceFeeINR || 2500, popular: true },
+    { id: 'express', label: `Express Fast-Track (Priority)`, stay: lengthOfStay, govFee: (baseData.governmentFeeINR || 6500) + 2000, servFee: (baseData.serviceFeeINR || 2500) + 1000 }
+  ];
+
+  // States
+  const [selectedVariantId, setSelectedVariantId] = useState<string>(variants[0].id);
   const [passportCountry, setPassportCountry] = useState(initialPassport || 'India');
-  const [purpose, setPurpose] = useState(initialPurpose || 'tourism');
   const [travellerCount, setTravellerCount] = useState<number>(1);
   const [pincode, setPincode] = useState<string>('400001');
   const [pincodeStatus, setPincodeStatus] = useState<'idle' | 'validating' | 'supported'>('supported');
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
-  const [activeTimelineStep, setActiveTimelineStep] = useState<number>(0);
-  const [activeTab, setActiveTab] = useState<'travltik' | 'diy'>('travltik');
+  const [activeTimelineTab, setActiveTimelineTab] = useState<'travltik' | 'diy'>('travltik');
   const [isApplying, setIsApplying] = useState(false);
 
-  // Dynamic Calculated Fees
-  const totalGovFee = govFee * travellerCount;
-  const totalServFee = servFee * travellerCount;
+  // Selected Variant Data
+  const currentVariant = useMemo(() => {
+    return variants.find(v => v.id === selectedVariantId) || variants[0];
+  }, [selectedVariantId, variants]);
+
+  const totalGovFee = currentVariant.govFee * travellerCount;
+  const totalServFee = currentVariant.servFee * travellerCount;
   const grandTotal = totalGovFee + totalServFee;
 
   const guaranteedDate = useMemo(() => formatTargetDate(processingDays), [processingDays]);
@@ -289,7 +350,7 @@ export function VisaCountryResultPortal({
       setPincodeStatus('validating');
       setTimeout(() => {
         setPincodeStatus('supported');
-      }, 400);
+      }, 300);
     } else {
       setPincodeStatus('idle');
     }
@@ -298,26 +359,9 @@ export function VisaCountryResultPortal({
   const handleStartApplication = () => {
     setIsApplying(true);
     setTimeout(() => {
-      window.location.href = `/services/apply-visa?country=${encodeURIComponent(countryName)}&passport=${encodeURIComponent(passportCountry)}&travellers=${travellerCount}`;
-    }, 600);
+      window.location.href = `/services/apply-visa?country=${encodeURIComponent(countryName)}&passport=${encodeURIComponent(passportCountry)}&travellers=${travellerCount}&variant=${encodeURIComponent(currentVariant.label)}`;
+    }, 450);
   };
-
-  // Step-by-Step Timelines
-  const travlTikSteps = [
-    { step: 1, title: 'Apply in 5 Mins', desc: 'Scan your passport on phone with auto-OCR error detection.' },
-    { step: 2, title: 'Free Home Pickup', desc: 'Verified courier collects original documents from your doorstep.' },
-    { step: 3, title: 'Consulate Verification', desc: 'Our ex-consular lawyers verify 100% compliance before submission.' },
-    { step: 4, title: 'Embassy Processing', desc: 'Fast-track priority queue processing with zero physical queues.' },
-    { step: 5, title: 'Insured Delivery', desc: 'Approved visa and passport delivered right back to your home.' }
-  ];
-
-  const diySteps = [
-    { step: 1, title: 'Complex Form Search', painPoint: 'Confusing government portals with broken links and captcha loops.' },
-    { step: 2, title: 'Booking Center Slots', painPoint: 'Waiting 3-6 weeks for elusive VFS appointment slots.' },
-    { step: 3, title: 'Physical Queues', painPoint: 'Standing 4 hours in early morning security lines with physical paperwork.' },
-    { step: 4, title: 'High Rejection Risk', painPoint: 'A single typo or wrong photo background leads to 100% loss of fees.' },
-    { step: 5, title: 'Manual Tracking Stress', painPoint: 'No notifications or status updates for weeks on end.' }
-  ];
 
   const faqs = [
     {
@@ -325,181 +369,248 @@ export function VisaCountryResultPortal({
       answer: `Yes, passport holders of ${passportCountry} require an official visa or approved electronic authorization before traveling to ${countryName}. TravlTik handles end-to-end processing with verified doorstep collection and 99.4% approval rate.`
     },
     {
-      question: `How long does ${countryName} visa processing take?`,
-      answer: `Normal processing typically takes ${processingDays} to ${processingDays + 3} business working days. With TravlTik guaranteed express clearance, your application is verified and dispatched directly to the official consulate.`
+      question: `What is the guaranteed delivery date?`,
+      answer: `We guarantee that your approved ${countryName} visa will be delivered by ${guaranteedDate}. In the rare event of an embassy system delay, you receive real-time SMS/WhatsApp updates and 100% service fee protection.`
     },
     {
-      question: `What happens if my ${countryName} visa gets delayed?`,
-      answer: `We provide real-time WhatsApp and SMS tracking at every checkpoint. If any embassy query arises, our dedicated specialist resolves it instantly on your behalf without requiring you to visit any center.`
+      question: `How does free doorstep document pickup work?`,
+      answer: `Once you apply, our background-checked executive visits your address with a tamper-evident, barcoded safety envelope. Your passport is transported directly in GPS-tracked transit boxes to our biometric vault.`
     },
     {
-      question: `Is physical passport submission required for ${countryName}?`,
-      answer: visaType.toLowerCase().includes('sticker') 
-        ? `Yes, for sticker visas, your physical passport is collected via GPS-tracked tamper-evident pouches and stored in high-security biometric vaults.` 
-        : `No, for e-Visas, you only need to submit a digital smartphone photo scan of your passport biodata page.`
+      question: `Can I take my passport photo with a smartphone?`,
+      answer: `Yes! Our AI Photo Validator automatically removes backgrounds, corrects lighting, and crops your selfie to the exact millimeter dimensions required by the ${countryName} consulate.`
     },
     {
-      question: `What is the refund and cancellation policy?`,
-      answer: `TravlTik offers full service-fee protection. If your application cannot be processed due to pre-submission issues, 100% of our service fee is refunded immediately.`
+      question: `What is the refund policy if my visa is rejected?`,
+      answer: `TravlTik offers 100% service fee refund protection if an application is rejected due to document verification issues prior to consulate submission.`
     }
-  ];
-
-  const reviews = [
-    { name: 'Aarav Mehta', loc: 'Mumbai', stars: 5, date: '2 days ago', text: `Got my ${countryName} visa in just ${processingDays} days! The doorstep pickup was on time and stress-free.` },
-    { name: 'Dr. Sunita Rao', loc: 'Bangalore', stars: 5, date: 'Last week', text: 'Atlys/TravlTik made the whole embassy paperwork seamless. The photo validator flagged my background immediately.' },
-    { name: 'Rohit Deshmukh', loc: 'Delhi NCR', stars: 5, date: '3 weeks ago', text: 'Saved me 8 hours of standing at the visa center. Transparent fee breakdown with zero hidden charges.' }
   ];
 
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-[#00A86B] selection:text-white">
       
-      {/* ── SECTION 1: CINEMATIC HERO CONTAINER (EDITORIAL ATLYS STYLE) ── */}
-      <section className="relative w-full min-h-[460px] sm:min-h-[520px] md:min-h-[560px] flex items-center justify-center overflow-hidden bg-slate-950">
-        
-        {/* Background Image with Deep Editorial Overlay */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-1000 transform hover:scale-100"
-          style={{ backgroundImage: `url('${heroImage}')` }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/45" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/40 to-slate-950/90" />
+      {/* ── BREADCRUMB & MINI NAVIGATION BAR ── */}
+      <div className="border-b border-slate-100 bg-slate-50/50 py-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs font-semibold text-slate-500">
+          <div className="flex items-center gap-2">
+            <a href="/" className="hover:text-slate-900 transition-colors">Home</a>
+            <span>/</span>
+            <a href="/find-experts" className="hover:text-slate-900 transition-colors">Visas</a>
+            <span>/</span>
+            <span className="text-slate-900 font-bold">{countryName} Visa for {passportCountry}</span>
+          </div>
 
-        {/* Content Box */}
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center flex flex-col items-center">
+          <div className="hidden sm:flex items-center gap-4 text-[11px] text-slate-600">
+            <span className="flex items-center gap-1.5 font-bold text-emerald-600">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              Consulate Open &amp; Accepting Applications
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── ATLYS ULTRA-MODERN HERO SHOWCASE BANNER ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-4">
+        <div className="relative w-full rounded-[28px] sm:rounded-[36px] overflow-hidden bg-slate-950 min-h-[360px] sm:min-h-[420px] flex items-end p-6 sm:p-10 md:p-12 shadow-2xl">
           
-          {/* Quick Verified Status Pill */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-bold uppercase tracking-wider mb-5 shadow-lg">
-            <span className="w-2 h-2 rounded-full bg-[#00FF66] animate-pulse" />
-            <span>Official Embassy Fast-Track 2026</span>
-          </div>
+          {/* Background Destination Photography */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105 hover:scale-100"
+            style={{ backgroundImage: `url('${heroImage}')` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/65 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/40 to-transparent" />
 
-          {/* Heading in High-End Editorial Serif */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white font-serif leading-[1.12] max-w-4xl">
-            {countryName} Visa for {passportCountry} Citizens
-          </h1>
-
-          {/* Sub-headline in Bright Neon Green */}
-          <p className="mt-3 sm:mt-4 text-xl sm:text-2xl md:text-3xl font-extrabold text-[#00FF66] tracking-tight">
-            done entirely from your home
-          </p>
-
-          {/* Quick Specification Pills */}
-          <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-3xl">
-            <div className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider">
-              VALID: <span className="text-amber-300 font-extrabold">{validity}</span>
+          {/* Hero Floating Content */}
+          <div className="relative z-10 max-w-3xl space-y-4 text-left">
+            
+            {/* Guaranteed Delivery Tag */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 backdrop-blur-md text-emerald-300 text-xs sm:text-sm font-extrabold uppercase tracking-wide">
+              <Zap className="w-4 h-4 text-emerald-400 fill-emerald-400" />
+              <span>Guaranteed on {guaranteedDate}</span>
             </div>
-            <div className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider">
-              STAY: <span className="text-emerald-300 font-extrabold">{lengthOfStay}</span>
-            </div>
-            <div className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider">
-              TYPE: <span className="text-blue-300 font-extrabold">{visaType}</span>
-            </div>
-            <div className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider">
-              ENTRY: <span className="text-purple-300 font-extrabold">{entryType}</span>
-            </div>
-          </div>
 
-          {/* Primary Action Button */}
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center gap-4">
-            <button
-              onClick={() => {
-                const el = document.getElementById('visa-calculator-widget');
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#00FF66] hover:bg-[#00e55c] text-slate-950 text-sm sm:text-base font-black tracking-wide shadow-[0_10px_30px_rgba(0,255,102,0.35)] hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
-            >
-              <span>Start New Application</span>
-              <ArrowRight className="w-4 h-4 stroke-[3]" />
-            </button>
+            {/* Main Headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1]">
+              {countryName} Visa for {passportCountry} Citizens {flagEmoji}
+            </h1>
 
-            <a
-              href={`/find-experts?country=${encodeURIComponent(countryName)}`}
-              className="px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 text-white text-xs sm:text-sm font-bold tracking-wide backdrop-blur-md transition-all flex items-center gap-2"
-            >
-              <Users className="w-4 h-4 text-emerald-400" />
-              <span>Talk to {countryName} Visa Specialist</span>
-            </a>
+            <p className="text-base sm:text-xl font-medium text-slate-200 leading-relaxed max-w-2xl">
+              Get your official {countryName} visa in <strong className="text-white font-bold">{processingDays} business days</strong> with zero embassy visits and free doorstep document pickup.
+            </p>
+
+            {/* Key Specification Badges */}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2">
+              <div className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold">
+                Stay: <span className="text-emerald-300">{lengthOfStay}</span>
+              </div>
+              <div className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold">
+                Validity: <span className="text-amber-300">{validity}</span>
+              </div>
+              <div className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold">
+                Type: <span className="text-blue-300">{visaType}</span>
+              </div>
+              <div className="px-3.5 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold">
+                Entry: <span className="text-purple-300">{entryType}</span>
+              </div>
+            </div>
+
           </div>
 
         </div>
       </section>
 
-      {/* ── SECTION 2: MAIN DUAL-COLUMN WORKSPACE (CALCULATOR & PINCODE CHECKER) ── */}
-      <section id="visa-calculator-widget" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+      {/* ── MAIN 2-COLUMN DUAL WORKSPACE ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          {/* LEFT COLUMN: Editorial Features, Specs & Pincode Checker (7 Cols) */}
-          <div className="lg:col-span-7 space-y-8">
+          {/* ── LEFT COLUMN (7 COLS): Modern Guided Product Flow ── */}
+          <div className="lg:col-span-7 space-y-10 text-left">
             
-            {/* Editorial Title */}
-            <div>
-              <span className="text-xs font-extrabold uppercase tracking-widest text-[#00A86B] block mb-1">
-                Zero Embassy Visits • Doorstep Service
-              </span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-serif text-slate-900 leading-tight">
-                Get your {countryName} visa from the comfort of your home
-              </h2>
-              <p className="mt-2 text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
-                No standing in lines, no physical embassy appointments, no paperwork stress. Our concierge team manages everything from document collection to consulate stamping.
-              </p>
-            </div>
-
-            {/* 3 Core Feature Specification Cards */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-4">
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-2xs text-left">
-                <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block">
+            {/* 1. 4 Quick Specification Pill Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
                   Length of Stay
                 </span>
-                <span className="text-base sm:text-xl font-black text-slate-900 block mt-1">
+                <span className="text-base sm:text-lg font-black text-slate-900 block mt-1">
                   {lengthOfStay}
                 </span>
-                <span className="text-[11px] text-emerald-600 font-bold block mt-0.5">
-                  Single / Multiple
+                <span className="text-[11px] font-bold text-emerald-600 block mt-0.5">
+                  Tourist &amp; Leisure
                 </span>
               </div>
 
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-2xs text-left">
-                <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block">
-                  Visa Validity
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                  Validity
                 </span>
-                <span className="text-base sm:text-xl font-black text-slate-900 block mt-1">
+                <span className="text-base sm:text-lg font-black text-slate-900 block mt-1">
                   {validity}
                 </span>
-                <span className="text-[11px] text-blue-600 font-bold block mt-0.5">
+                <span className="text-[11px] font-bold text-blue-600 block mt-0.5">
                   From issue date
                 </span>
               </div>
 
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-2xs text-left">
-                <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block">
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
                   Entry Type
                 </span>
-                <span className="text-base sm:text-xl font-black text-slate-900 block mt-1">
+                <span className="text-base sm:text-lg font-black text-slate-900 block mt-1">
                   {entryType.split('/')[0].trim()}
                 </span>
-                <span className="text-[11px] text-purple-600 font-bold block mt-0.5">
+                <span className="text-[11px] font-bold text-purple-600 block mt-0.5">
                   Official Stamping
+                </span>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                  Processing Time
+                </span>
+                <span className="text-base sm:text-lg font-black text-slate-900 block mt-1">
+                  {processingDays} Days
+                </span>
+                <span className="text-[11px] font-bold text-amber-600 block mt-0.5">
+                  Fast-Track
                 </span>
               </div>
             </div>
 
-            {/* Live Pincode Coverage Checker */}
-            <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center">
-                  <Truck className="w-5 h-5" />
+            {/* 2. ATLYS 3-STEP VISUAL PROGRESSION */}
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <span className="text-xs font-black uppercase tracking-wider text-[#00A86B]">
+                  Effortless 3-Step Process
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                  How getting your {countryName} visa works
+                </h2>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                
+                {/* Step 1 */}
+                <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0 font-black text-lg">
+                    1
+                  </div>
+                  <div className="space-y-1 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-black text-slate-900">
+                        Scan your passport on your phone
+                      </h3>
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
+                        2 Mins
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                      Simply take a picture of your passport biodata page. Our automated OCR extracts your details with 100% accuracy and eliminates spelling errors.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 font-black text-lg">
+                    2
+                  </div>
+                  <div className="space-y-1 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-black text-slate-900">
+                        We review, verify &amp; submit to consulate
+                      </h3>
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-200">
+                        100% Compliant
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                      Our certified immigration lawyers pre-screen your documents against official embassy rules and submit directly to the fast-track queue.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
+                  <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 font-black text-lg">
+                    3
+                  </div>
+                  <div className="space-y-1 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-black text-slate-900">
+                        Receive your approved visa on {guaranteedDate}
+                      </h3>
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 border border-purple-200">
+                        Guaranteed
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                      Your verified visa is emailed directly to your inbox and physically delivered in a secure tamper-proof envelope with real-time tracking.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* 3. FREE DOORSTEP COURIER PINCODE CHECKER */}
+            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-7 shadow-xs">
+              <div className="flex items-center gap-3.5 mb-2">
+                <div className="w-11 h-11 rounded-2xl bg-emerald-100 text-[#00A86B] flex items-center justify-center shrink-0">
+                  <Truck className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                  <h3 className="text-base font-black text-slate-900">
                     Free Doorstep Pickup &amp; Return Coverage
                   </h3>
                   <p className="text-xs text-slate-500 font-medium">
-                    Check if our verified courier services your address
+                    Verified courier collects documents right from your home or office
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 mt-4">
+              <div className="flex items-center gap-2.5 mt-4">
                 <div className="relative flex-1">
                   <MapPin className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
@@ -508,88 +619,234 @@ export function VisaCountryResultPortal({
                     value={pincode}
                     onChange={(e) => handlePincodeCheck(e.target.value)}
                     placeholder="Enter 6-digit Pincode (e.g. 400001)"
-                    className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-300 font-bold text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B] bg-slate-50/50"
+                    className="w-full h-12 pl-10 pr-4 rounded-2xl border border-slate-300 font-black text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A86B] bg-white shadow-2xs"
                   />
                 </div>
 
                 <button
                   type="button"
                   onClick={() => handlePincodeCheck(pincode)}
-                  className="h-12 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shrink-0 cursor-pointer"
+                  className="h-12 px-6 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black transition-all shrink-0 cursor-pointer shadow-sm active:scale-95"
                 >
                   Verify
                 </button>
               </div>
 
               {pincodeStatus === 'supported' && (
-                <div className="mt-3.5 flex items-center gap-2 text-xs font-bold text-[#00A86B] bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-2.5">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>Doorstep Document Pickup &amp; Return is 100% available in pincode {pincode}</span>
+                <div className="mt-3.5 flex items-center gap-2 text-xs font-bold text-[#00A86B] bg-white border border-emerald-200/90 rounded-2xl p-3 shadow-2xs">
+                  <CheckCircle className="w-4 h-4 shrink-0 text-emerald-600" />
+                  <span>Doorstep Document Pickup &amp; Return is 100% available in pincode {pincode} (Next Morning Slot)</span>
                 </div>
               )}
             </div>
 
-            {/* Highlighted Assurance Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-white border border-slate-200/80">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900">On-Time Guarantee</h4>
-                  <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-                    Receive your passport &amp; visa on or before the committed date.
+            {/* 4. PASSPORT SECURITY GUARANTEE CARD (OBSIDIAN THEME) */}
+            <div className="relative rounded-[32px] overflow-hidden bg-slate-950 border border-slate-800 p-7 sm:p-9 text-white shadow-xl">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                <div className="space-y-2 max-w-lg">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-400/20 border border-amber-400/30 text-amber-300 flex items-center justify-center">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                    Passport Security. Above all else.
+                  </h3>
+                  <p className="text-slate-300 text-xs sm:text-sm font-medium leading-relaxed">
+                    We secure your physical passport in tamper-evident barcoded safety pouches and GPS-tracked biometric vaults. Handled exclusively by background-checked officers.
                   </p>
                 </div>
-              </div>
 
-              <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-white border border-slate-200/80">
-                <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900">99.4% Approval Record</h4>
-                  <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-                    Ex-consulate officers inspect documentation to eliminate errors.
-                  </p>
+                <div className="shrink-0 flex sm:flex-col gap-3 w-full sm:w-auto">
+                  <div className="flex-1 bg-white/10 border border-white/10 rounded-2xl p-3.5 text-center backdrop-blur-md">
+                    <span className="text-xl font-black text-[#00FF66] block">₹5,00,000</span>
+                    <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider block">Transit Insurance</span>
+                  </div>
+                  <div className="flex-1 bg-white/10 border border-white/10 rounded-2xl p-3.5 text-center backdrop-blur-md">
+                    <span className="text-xl font-black text-amber-300 block">50 Lakh+</span>
+                    <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider block">Passports Protected</span>
+                  </div>
                 </div>
               </div>
             </div>
 
+            {/* 5. ATLYS VS DIY COMPARISON SECTION */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                  Why travelers choose TravlTik over DIY
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                {/* TravlTik Way */}
+                <div className="bg-emerald-50/50 border-2 border-emerald-200/90 rounded-3xl p-6 space-y-3">
+                  <div className="flex items-center gap-2 text-emerald-800 font-black text-sm">
+                    <CheckCircle className="w-5 h-5 text-emerald-600" />
+                    <span>WITH TRAVLTIK</span>
+                  </div>
+                  <ul className="space-y-2 text-xs font-bold text-slate-700">
+                    <li className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
+                      <span>5-minute photo scan from home</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
+                      <span>Free home pickup &amp; return</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
+                      <span>Guaranteed approval on {guaranteedDate}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
+                      <span>100% money-back guarantee</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* DIY Way */}
+                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 space-y-3">
+                  <div className="flex items-center gap-2 text-red-600 font-black text-sm">
+                    <X className="w-5 h-5 text-red-500" />
+                    <span>DOING IT YOURSELF</span>
+                  </div>
+                  <ul className="space-y-2 text-xs font-medium text-slate-500">
+                    <li className="flex items-center gap-2">
+                      <X className="w-4 h-4 text-red-400" />
+                      <span>Long embassy queues &amp; VFS slots</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <X className="w-4 h-4 text-red-400" />
+                      <span>Physical paperwork &amp; notary stress</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <X className="w-4 h-4 text-red-400" />
+                      <span>High risk of rejection for minor errors</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <X className="w-4 h-4 text-red-400" />
+                      <span>Zero refund on visa rejection</span>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
+            {/* 6. FAQS ACCORDION */}
+            <div className="space-y-3 pt-4">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mb-4">
+                Frequently Asked Questions
+              </h3>
+
+              {faqs.map((faq, idx) => {
+                const isOpen = activeFaq === idx;
+                return (
+                  <div 
+                    key={idx}
+                    className="border border-slate-200/90 rounded-2xl overflow-hidden bg-white shadow-2xs transition-all"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setActiveFaq(isOpen ? null : idx)}
+                      className="w-full p-4 sm:p-5 flex items-center justify-between text-left font-black text-slate-900 text-sm hover:bg-slate-50/50 cursor-pointer"
+                    >
+                      <span>{faq.question}</span>
+                      {isOpen ? <ChevronUp className="w-4 h-4 text-slate-500" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
+                    </button>
+                    {isOpen && (
+                      <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed border-t border-slate-100">
+                        {faq.answer}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
           </div>
 
-          {/* RIGHT COLUMN: Sticky Application Calculator Widget (5 Cols) */}
+          {/* ── RIGHT COLUMN (5 COLS): Signature Sticky Atlys Price Card ── */}
           <div className="lg:col-span-5 lg:sticky lg:top-24">
-            <div className="bg-white border-2 border-slate-900 rounded-[28px] p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.08)] text-left relative overflow-hidden">
+            <div className="bg-white border-2 border-slate-900 rounded-[32px] p-6 sm:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.07)] text-left relative space-y-6">
               
-              {/* Guaranteed Delivery Ribbon */}
-              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 py-2.5 rounded-2xl flex items-center justify-between shadow-sm mb-6">
-                <div className="flex items-center gap-2">
-                  <span className="text-base">⚡</span>
-                  <span className="text-xs font-black uppercase tracking-wider">
-                    Guaranteed on {guaranteedDate}
-                  </span>
+              {/* Top Guaranteed Delivery Header */}
+              <div className="bg-slate-900 text-white rounded-2xl p-4 flex items-center justify-between shadow-sm">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#00FF66] text-slate-950 flex items-center justify-center font-black">
+                    ⚡
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                      Guaranteed Delivery
+                    </span>
+                    <span className="text-xs sm:text-sm font-black text-white block">
+                      {guaranteedDate}
+                    </span>
+                  </div>
                 </div>
-                <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-md">
+
+                <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/20 text-[#00FF66] border border-emerald-500/30">
                   Fast-Track
                 </span>
               </div>
 
-              {/* Travellers Counter */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              {/* Visa Type Variant Selector Pills */}
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-wider text-slate-500 block">
+                  Select Visa Plan
+                </label>
+                <div className="space-y-2">
+                  {variants.map((v) => {
+                    const isSelected = selectedVariantId === v.id;
+                    return (
+                      <div
+                        key={v.id}
+                        onClick={() => setSelectedVariantId(v.id)}
+                        className={`p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex items-center justify-between ${
+                          isSelected 
+                            ? 'border-slate-900 bg-slate-50 ring-2 ring-slate-900/10' 
+                            : 'border-slate-200 hover:border-slate-300 bg-white'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${isSelected ? 'border-slate-900 bg-slate-900' : 'border-slate-300'}`}>
+                            {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                          </div>
+                          <div>
+                            <span className="text-xs font-black text-slate-900 block leading-tight">
+                              {v.label}
+                            </span>
+                            <span className="text-[10px] text-slate-500 font-bold">
+                              Stay: {v.stay}
+                            </span>
+                          </div>
+                        </div>
+
+                        <span className="text-xs font-black text-slate-900">
+                          ₹{(v.govFee + v.servFee).toLocaleString()}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Number of Travellers Stepper */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-500">
                     Number of Travellers
                   </label>
-                  <span className="text-xs font-extrabold text-blue-600">
+                  <span className="text-xs font-black text-blue-600">
                     {travellerCount} {travellerCount === 1 ? 'Applicant' : 'Applicants'}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-2xl p-2">
-                  <div className="flex items-center gap-3 pl-3">
-                    <Users className="w-4 h-4 text-slate-500" />
-                    <span className="text-sm font-bold text-slate-800">Travellers</span>
+                  <div className="flex items-center gap-2.5 pl-3">
+                    <Users className="w-4 h-4 text-slate-600" />
+                    <span className="text-xs font-bold text-slate-800">Total Travellers</span>
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -597,7 +854,7 @@ export function VisaCountryResultPortal({
                       type="button"
                       disabled={travellerCount <= 1}
                       onClick={() => setTravellerCount(prev => Math.max(1, prev - 1))}
-                      className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-800 hover:bg-slate-100 disabled:opacity-40 font-bold flex items-center justify-center cursor-pointer transition-all"
+                      className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-800 hover:bg-slate-100 disabled:opacity-40 font-bold flex items-center justify-center cursor-pointer transition-all shadow-2xs"
                     >
                       -
                     </button>
@@ -608,7 +865,7 @@ export function VisaCountryResultPortal({
                       type="button"
                       disabled={travellerCount >= 10}
                       onClick={() => setTravellerCount(prev => Math.min(10, prev + 1))}
-                      className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-800 hover:bg-slate-100 disabled:opacity-40 font-bold flex items-center justify-center cursor-pointer transition-all"
+                      className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-800 hover:bg-slate-100 disabled:opacity-40 font-bold flex items-center justify-center cursor-pointer transition-all shadow-2xs"
                     >
                       +
                     </button>
@@ -616,27 +873,27 @@ export function VisaCountryResultPortal({
                 </div>
               </div>
 
-              {/* Fee Breakdown Table */}
-              <div className="border-t border-b border-slate-100 py-4 space-y-2.5 text-xs font-medium">
+              {/* Transparent Price Breakdown */}
+              <div className="border-t border-b border-slate-100 py-3.5 space-y-2 text-xs font-medium">
                 <div className="flex items-center justify-between text-slate-600">
-                  <span>Government Visa Fees ({travellerCount}x ₹{govFee.toLocaleString()})</span>
+                  <span>Government Visa Fees ({travellerCount}x)</span>
                   <span className="font-bold text-slate-900">₹{totalGovFee.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between text-slate-600">
                   <span className="flex items-center gap-1">
-                    TravlTik Concierge &amp; Pickup Fee
-                    <span className="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-1 rounded">PROMO</span>
+                    TravlTik Concierge &amp; Filing
+                    <span className="text-[9px] text-emerald-700 font-extrabold bg-emerald-50 px-1.5 py-0.5 rounded">PROMO</span>
                   </span>
                   <span className="font-bold text-slate-900">₹{totalServFee.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between text-slate-600">
-                  <span>Doorstep Courier Insurance</span>
+                  <span>Doorstep Courier &amp; Transit Insurance</span>
                   <span className="font-bold text-emerald-600">FREE</span>
                 </div>
               </div>
 
-              {/* Total Price Display */}
-              <div className="mt-4 mb-6 flex items-baseline justify-between">
+              {/* Total Amount Header */}
+              <div className="flex items-baseline justify-between pt-1">
                 <div>
                   <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">
                     Total Amount
@@ -645,21 +902,22 @@ export function VisaCountryResultPortal({
                     ₹{grandTotal.toLocaleString()}
                   </span>
                 </div>
-                <span className="text-xs font-bold text-slate-500">
+                <span className="text-[11px] font-bold text-slate-500">
                   All taxes &amp; fees included
                 </span>
               </div>
 
-              {/* Primary Call to Action */}
+              {/* High-Converting Primary Button */}
               <button
+                type="button"
                 onClick={handleStartApplication}
                 disabled={isApplying}
-                className="w-full py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-extrabold text-sm sm:text-base tracking-wide shadow-lg shadow-blue-600/30 transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white font-black text-sm sm:text-base tracking-wide shadow-xl shadow-slate-900/20 transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 {isApplying ? (
                   <>
                     <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Loading Application...</span>
+                    <span>Preparing Application...</span>
                   </>
                 ) : (
                   <>
@@ -669,18 +927,8 @@ export function VisaCountryResultPortal({
                 )}
               </button>
 
-              {/* Secondary Business / Work Link */}
-              <div className="mt-3 text-center">
-                <a
-                  href={`/services/apply-visa?country=${encodeURIComponent(countryName)}&type=business`}
-                  className="text-xs font-bold text-slate-600 hover:text-blue-600 underline transition-colors"
-                >
-                  Looking for a business or student visa?
-                </a>
-              </div>
-
-              {/* Instant WhatsApp & Phone Support */}
-              <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between gap-2">
+              {/* Direct Support Badges */}
+              <div className="pt-2 flex items-center justify-between gap-2">
                 <a
                   href="https://wa.me/912264231551"
                   target="_blank"
@@ -696,269 +944,28 @@ export function VisaCountryResultPortal({
                   className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5 text-slate-700" />
-                  <span>Call +91 22-6423-1551</span>
+                  <span>Call Support</span>
                 </a>
               </div>
 
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── SECTION 3: GUARANTEE & PASSPORT SECURITY BANNER (DARK GLASSMORPHIC) ── */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800 p-8 sm:p-12 text-left text-white shadow-2xl">
-          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div className="space-y-3 max-w-2xl">
-              <div className="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-400/30 text-amber-300 flex items-center justify-center">
-                <Lock className="w-6 h-6" />
-              </div>
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold font-serif tracking-tight text-white">
-                Passport Security. Then all else.
-              </h3>
-              <p className="text-slate-300 text-sm sm:text-base font-normal leading-relaxed">
-                We secure your physical passport in tamper-proof barcoded safety boxes and GPS-monitored biometric vaults at all times. Over <strong className="text-white">50 Lakh+ passports</strong> safely processed with zero losses.
-              </p>
-            </div>
-
-            <div className="shrink-0 grid grid-cols-2 gap-4 w-full md:w-auto">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                <span className="text-2xl font-black text-[#00FF66] block">₹5,00,000</span>
-                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">
-                  Transit Insurance
-                </span>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                <span className="text-2xl font-black text-amber-300 block">100% Vault</span>
-                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">
-                  CCTV Monitored
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 4: THE VISA PROCESS (ATLYS VS DIY TIMELINE) ── */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-[#00A86B] block mb-1">
-            Simplified Experience
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-bold font-serif text-slate-900">
-            How the {countryName} Visa Process Works
-          </h2>
-          <p className="mt-2 text-sm text-slate-600">
-            See how TravlTik transforms weeks of stressful bureaucracy into 5 effortless steps.
-          </p>
-
-          {/* Toggle Switch */}
-          <div className="mt-6 inline-flex p-1 rounded-full bg-slate-200/80 border border-slate-300">
-            <button
-              onClick={() => setActiveTab('travltik')}
-              className={`px-5 py-2 rounded-full text-xs font-black transition-all cursor-pointer ${
-                activeTab === 'travltik' ? 'bg-[#00A86B] text-white shadow-md' : 'text-slate-700 hover:text-slate-900'
-              }`}
-            >
-              DOING IT WITH TRAVLTIK
-            </button>
-            <button
-              onClick={() => setActiveTab('diy')}
-              className={`px-5 py-2 rounded-full text-xs font-black transition-all cursor-pointer ${
-                activeTab === 'diy' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-700 hover:text-slate-900'
-              }`}
-            >
-              DOING IT YOURSELF (DIY)
-            </button>
-          </div>
-        </div>
-
-        {/* Dynamic Timeline Progression Cards */}
-        {activeTab === 'travltik' ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {travlTikSteps.map((s) => (
-              <div 
-                key={s.step} 
-                className="bg-white border-2 border-emerald-100 hover:border-[#00A86B] rounded-2xl p-5 text-left transition-all shadow-xs hover:shadow-md relative group"
-              >
-                <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#00A86B] font-black text-sm flex items-center justify-center mb-3">
-                  {s.step}
-                </div>
-                <h4 className="text-sm font-black text-slate-900 group-hover:text-[#00A86B] transition-colors">
-                  {s.title}
-                </h4>
-                <p className="text-xs text-slate-500 font-medium mt-1.5 leading-relaxed">
-                  {s.desc}
+              {/* Trust Footer */}
+              <div className="pt-2 text-center">
+                <p className="text-[11px] text-slate-400 font-bold flex items-center justify-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>256-Bit SSL Encrypted • 99.4% Approval Record</span>
                 </p>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {diySteps.map((s) => (
-              <div 
-                key={s.step} 
-                className="bg-slate-900 text-white border border-slate-800 rounded-2xl p-5 text-left transition-all shadow-sm"
-              >
-                <div className="w-8 h-8 rounded-xl bg-red-500/20 text-red-400 font-black text-sm flex items-center justify-center mb-3">
-                  {s.step}
-                </div>
-                <h4 className="text-sm font-bold text-red-200">
-                  {s.title}
-                </h4>
-                <p className="text-xs text-slate-400 font-normal mt-1.5 leading-relaxed">
-                  {s.painPoint}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
 
-      {/* ── SECTION 5: ESSENTIAL DOCUMENTS & TRUST REVIEWS ── */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Document Checklist (7 cols) */}
-          <div className="lg:col-span-7 space-y-4 text-left">
-            <span className="text-xs font-extrabold uppercase tracking-widest text-[#00A86B] block">
-              Clear &amp; Simple
-            </span>
-            <h3 className="text-2xl sm:text-3xl font-bold font-serif text-slate-900">
-              Required Documents for {countryName}
-            </h3>
-
-            <div className="space-y-3 pt-2">
-              <div className="bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-2xs">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900">Original Passport Scan</h4>
-                    <p className="text-xs text-slate-500 font-medium">Valid for minimum 6 months with 2 blank pages</p>
-                  </div>
-                </div>
-                <span className="text-[11px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
-                  Mandatory
-                </span>
-              </div>
-
-              <div className="bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-2xs">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-                    <CreditCard className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900">Bank Statement / Financial Proof</h4>
-                    <p className="text-xs text-slate-500 font-medium">Last 3-6 months with seal or sponsorship letter</p>
-                  </div>
-                </div>
-                <span className="text-[11px] font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">
-                  Mandatory
-                </span>
-              </div>
-
-              <div className="bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-2xs">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                    <Plane className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900">Flight Itinerary &amp; Hotel Proof</h4>
-                    <p className="text-xs text-slate-500 font-medium">Auto-generated draft itinerary provided by TravlTik</p>
-                  </div>
-                </div>
-                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">
-                  Included
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Trust Score & Testimonials (5 cols) */}
-          <div className="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm text-left">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <div>
-                <span className="text-3xl font-black text-slate-900">4.5 / 5.0</span>
-                <div className="flex items-center gap-1 text-amber-400 mt-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-              </div>
-              <span className="text-xs font-bold text-slate-500 text-right">
-                Rated on Trustpilot,<br />App Store &amp; Play Store
-              </span>
-            </div>
-
-            {/* Review Cards */}
-            <div className="mt-4 space-y-3">
-              {reviews.map((r, idx) => (
-                <div key={idx} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-bold text-slate-900">{r.name} • {r.loc}</span>
-                    <span className="text-slate-400 text-[10px]">{r.date}</span>
-                  </div>
-                  <p className="text-slate-600 font-medium leading-relaxed">
-                    "{r.text}"
-                  </p>
-                </div>
-              ))}
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* ── SECTION 6: FREQUENTLY ASKED QUESTIONS (ACCORDION) ── */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="text-center mb-8">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-[#00A86B] block mb-1">
-            Answers &amp; Clarity
-          </span>
-          <h3 className="text-2xl sm:text-3xl font-bold font-serif text-slate-900">
-            Frequently Asked Questions for {countryName}
-          </h3>
-        </div>
-
-        <div className="space-y-3 text-left">
-          {faqs.map((faq, index) => {
-            const isOpen = activeFaq === index;
-            return (
-              <div 
-                key={index} 
-                className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-2xs transition-all"
-              >
-                <button
-                  type="button"
-                  onClick={() => setActiveFaq(isOpen ? null : index)}
-                  className="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-slate-900 text-sm sm:text-base hover:bg-slate-50/60 transition-colors cursor-pointer"
-                >
-                  <span>{faq.question}</span>
-                  {isOpen ? (
-                    <ChevronUp className="w-5 h-5 text-slate-500 shrink-0 ml-2" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-slate-500 shrink-0 ml-2" />
-                  )}
-                </button>
-
-                {isOpen && (
-                  <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed border-t border-slate-100">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── BOTTOM STICKY MOBILE ACTION BAR ── */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3.5 px-4 flex items-center justify-between gap-4 shadow-xl">
+      {/* ── MOBILE FLOATING STICKY ACTION BAR ── */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex items-center justify-between gap-4 shadow-2xl">
         <div>
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+          <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">
             Guaranteed {guaranteedDate.split(',')[0]}
           </span>
           <span className="text-lg font-black text-slate-900">
@@ -968,7 +975,7 @@ export function VisaCountryResultPortal({
 
         <button
           onClick={handleStartApplication}
-          className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs tracking-wide shadow-md cursor-pointer"
+          className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs tracking-wide shadow-md cursor-pointer active:scale-95"
         >
           Start Application
         </button>

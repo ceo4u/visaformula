@@ -351,7 +351,7 @@ export function VisaCountryResultPortal({
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] text-slate-900 font-sans selection:bg-[#00A86B] selection:text-white">
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-[#00A86B] selection:text-white">
       
       {/* ── SECTION 1: CINEMATIC HERO CONTAINER (EDITORIAL ATLYS STYLE) ── */}
       <section className="relative w-full min-h-[460px] sm:min-h-[520px] md:min-h-[560px] flex items-center justify-center overflow-hidden bg-slate-950">

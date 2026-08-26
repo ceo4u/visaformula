@@ -1728,11 +1728,11 @@ export function VisaCountryResultPortal({
 
                 {/* 5. REQUIRED DOCUMENTS CHECKLIST */}
                 <div className="space-y-4">
-                  <div className="space-y-1">
+                  <div className="space-y-1 text-center sm:text-left">
                     <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
                       Simple Paperwork
                     </span>
-                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
+                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight">
                       Documents required for {countryName} Visa
                     </h2>
                   </div>
@@ -1798,11 +1798,11 @@ export function VisaCountryResultPortal({
 
                 {/* 6. EXPANDABLE FAQ ACCORDION */}
                 <div className="space-y-4">
-                  <div className="space-y-1">
+                  <div className="space-y-1 text-center sm:text-left">
                     <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
                       Got Questions?
                     </span>
-                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
+                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight">
                       Frequently Asked Questions
                     </h2>
                   </div>

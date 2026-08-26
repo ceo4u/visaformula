@@ -490,48 +490,64 @@ export function VisaCountryResultPortal({
       </section>
 
       {/* ── STEP 0: CORE DECISION GATE ("Have Visa Already?") ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
-        <div className="bg-slate-50/90 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-5 sm:p-7 shadow-sm text-left flex flex-col md:flex-row md:items-center justify-between gap-5 transition-all">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5 sm:mt-6 flex items-center justify-start">
+        <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2 px-5 sm:px-6 shadow-sm inline-flex items-center gap-4 sm:gap-6 transition-all">
           
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-medium uppercase tracking-wider">
-              <span>Step 0 • Visa Status Gate</span>
-            </div>
-            <h2 className="text-base sm:text-lg font-heading font-semibold text-slate-900 text-slate-900 tracking-tight">
-              Do you already have a valid visa for {countryName}?
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 font-normal leading-normal">
-              Select an option below so we configure your customized journey, security roadmap, or doorstep filing.
-            </p>
-          </div>
+          <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">
+            Have Visa Already?
+          </span>
 
-          {/* Decision Pill Toggle */}
-          <div className="inline-flex p-1.5 bg-slate-200/80 rounded-2xl shrink-0 gap-1.5 self-start md:self-center shadow-inner">
-            <button
-              type="button"
-              onClick={() => setHasVisaAlready('yes')}
-              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 ${
-                hasVisaAlready === 'yes'
-                  ? 'bg-slate-900 text-white shadow-md'
-                  : 'text-slate-700 hover:text-slate-900'
-              }`}
-            >
-              <CheckCircle2 className={`w-4 h-4 ${hasVisaAlready === 'yes' ? 'text-emerald-400' : 'text-slate-400'}`} />
-              <span>YES, I have a visa</span>
-            </button>
-
+          {/* Toggle Capsule Track */}
+          <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60">
+            
+            {/* NO button */}
             <button
               type="button"
               onClick={() => setHasVisaAlready('no')}
-              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 ${
+              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
                 hasVisaAlready === 'no'
-                  ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/20'
-                  : 'text-slate-700 hover:text-slate-900'
+                  ? 'bg-[#0f172a] text-white shadow-md'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              <Zap className={`w-4 h-4 ${hasVisaAlready === 'no' ? 'text-white' : 'text-slate-400'}`} />
-              <span>NO, I need a visa</span>
+              {hasVisaAlready === 'no' ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
+                  <span className="tracking-wide">NO</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
+                </>
+              ) : (
+                <>
+                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
+                  <span className="tracking-wide">NO</span>
+                </>
+              )}
             </button>
+
+            {/* YES button */}
+            <button
+              type="button"
+              onClick={() => setHasVisaAlready('yes')}
+              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
+                hasVisaAlready === 'yes'
+                  ? 'bg-[#0f172a] text-white shadow-md'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              {hasVisaAlready === 'yes' ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
+                  <span className="tracking-wide">YES</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
+                </>
+              ) : (
+                <>
+                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
+                  <span className="tracking-wide">YES</span>
+                </>
+              )}
+            </button>
+
           </div>
 
         </div>

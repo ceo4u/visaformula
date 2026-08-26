@@ -1148,7 +1148,7 @@ export function VisaCountryResultPortal({
                 </div>
               </div>
 
-              {/* Date of Birth & Passport Number */}
+              {/* Date of Birth & Tentative Travel Date */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
@@ -1165,23 +1165,6 @@ export function VisaCountryResultPortal({
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Passport Number *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={passportNumber}
-                    onChange={(e) => setPassportNumber(e.target.value.toUpperCase())}
-                    placeholder="e.g. Z1234567"
-                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold uppercase focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
-                  />
-                </div>
-              </div>
-
-              {/* Tentative Travel Date & Pickup Address */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
                     Tentative Travel Date *
                   </label>
                   <input
@@ -1192,10 +1175,27 @@ export function VisaCountryResultPortal({
                     className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-white"
                   />
                 </div>
+              </div>
+
+              {/* Doorstep Pickup Address & Pincode */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Complete Address (for document pickup & delivery) *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={pickupAddress}
+                    onChange={(e) => setPickupAddress(e.target.value)}
+                    placeholder="Flat / Building, Area, Landmark, City"
+                    className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
+                  />
+                </div>
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Doorstep Pickup Pincode *
+                    Pincode *
                   </label>
                   <input
                     type="text"
@@ -1207,21 +1207,6 @@ export function VisaCountryResultPortal({
                     className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
                   />
                 </div>
-              </div>
-
-              {/* Complete Address */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Complete Address (for document collection &amp; return delivery) *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={pickupAddress}
-                  onChange={(e) => setPickupAddress(e.target.value)}
-                  placeholder="Flat / Building, Area, Landmark, City"
-                  className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-[#00A86B] text-slate-900 bg-slate-50/50"
-                />
               </div>
 
               {/* Trust Badge */}

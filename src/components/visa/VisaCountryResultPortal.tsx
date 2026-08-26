@@ -490,8 +490,8 @@ export function VisaCountryResultPortal({
       </section>
 
       {/* ── STEP 0: CORE DECISION GATE ("Have Visa Already?") ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5 sm:mt-6 flex items-center justify-start">
-        <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2 px-5 sm:px-6 shadow-sm inline-flex items-center gap-4 sm:gap-6 transition-all">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8 flex items-center justify-center">
+        <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2.5 px-6 sm:px-8 shadow-sm inline-flex items-center gap-4 sm:gap-6 transition-all">
           
           <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">
             Have Visa Already?

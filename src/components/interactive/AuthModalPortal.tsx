@@ -53,6 +53,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     // Additional Seeker Details Collected
     const [countryCode, setCountryCode] = useState("+91");
     const [phone, setPhone] = useState("");
+    const [dateOfBirth, setDateOfBirth] = useState("");
     const [countryOfCitizenship, setCountryOfCitizenship] = useState("India");
     const [residentOf, setResidentOf] = useState("India");
     const [currentVisaStatus, setCurrentVisaStatus] = useState("Citizen");
@@ -241,6 +242,8 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     email: signupEmail,
                     password: signupPassword,
                     phone: `${countryCode} ${phone}`,
+                    date_of_birth: dateOfBirth,
+                    dob: dateOfBirth,
                     country_of_citizenship: countryOfCitizenship,
                     resident_of: residentOf,
                     passport_country: countryOfCitizenship,
@@ -704,8 +707,20 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     </div>
                                 </div>
 
-                                {/* Resident Country & Visa Status */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {/* Resident Country & Visa Status & Date of Birth */}
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <div>
+                                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                                            Date of Birth *
+                                        </label>
+                                        <input
+                                            type="date"
+                                            required
+                                            value={dateOfBirth}
+                                            onChange={(e) => setDateOfBirth(e.target.value)}
+                                            className="w-full h-11 sm:h-10 px-3 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white text-slate-900"
+                                        />
+                                    </div>
                                     <div>
                                         <label className="block text-[11px] font-bold text-slate-700 mb-1">
                                             Resident Country *

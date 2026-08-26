@@ -9,7 +9,8 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { first_name, last_name, email, password, phone, passport_country, goals, destinations, looking_for, area, city, state, zip_code, address, current_visa_status } = body;
+    const { first_name, last_name, email, password, phone, passport_country, goals, destinations, looking_for, area, city, state, zip_code, address, current_visa_status, date_of_birth, dob } = body;
+    const finalDob = date_of_birth || dob || null;
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!email || !emailRegex.test(email)) {
@@ -51,10 +52,10 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Insert seeker record
     await pool.query(`
-      INSERT INTO seekers (first_name, last_name, email, password_hash, phone, passport_country, goals, destinations, looking_for, area, city, state, zip_code, address, current_visa_status)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+      INSERT INTO seekers (first_name, last_name, email, password_hash, phone, passport_country, goals, destinations, looking_for, area, city, state, zip_code, address, current_visa_status, date_of_birth)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
       ON CONFLICT (email) DO UPDATE 
-      SET first_name = $1, last_name = $2, phone = $5, passport_country = $6, goals = $7, destinations = $8, looking_for = $9, area = $10, city = $11, state = $12, zip_code = $13, address = $14, current_visa_status = $15;
+      SET first_name = $1, last_name = $2, phone = $5, passport_country = $6, goals = $7, destinations = $8, looking_for = $9, area = $10, city = $11, state = $12, zip_code = $13, address = $14, current_visa_status = $15, date_of_birth = $16;
     `, [
       first_name, 
       last_name, 
@@ -70,7 +71,8 @@ export const POST: APIRoute = async ({ request }) => {
       state || '',
       zip_code || '',
       fullAddress || '',
-      current_visa_status || ''
+      current_visa_status || '',
+      finalDob
     ]);
 
     if (isNew) {

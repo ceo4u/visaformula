@@ -2161,10 +2161,10 @@ return (
           {/* Hero Content Container */}
           <div className="relative z-10 w-full p-3 sm:p-5 lg:pt-6 lg:pb-6 lg:px-8 text-left">
             
-            {/* Top Pill Badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/90 shadow-2xs mb-2 sm:mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-              <span className="text-[10px] sm:text-xs font-extrabold text-blue-600 tracking-tight">
+            {/* Top Pill Badge (Increased Size) */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/95 backdrop-blur-md border border-blue-200 shadow-xs mb-2.5 sm:mb-3.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
+              <span className="text-xs sm:text-sm md:text-[15px] font-black text-blue-700 tracking-tight">
                 Your Journey, Our Expertise
               </span>
             </div>

@@ -116,6 +116,7 @@ export async function runMigrations() {
     ALTER TABLE seekers ADD COLUMN IF NOT EXISTS state VARCHAR(100);
     ALTER TABLE seekers ADD COLUMN IF NOT EXISTS zip_code VARCHAR(50);
     ALTER TABLE seekers ADD COLUMN IF NOT EXISTS current_visa_status VARCHAR(100);
+    ALTER TABLE seekers ADD COLUMN IF NOT EXISTS date_of_birth VARCHAR(50);
   `);
 
   // 2. Experts Table

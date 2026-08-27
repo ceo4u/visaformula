@@ -121,13 +121,55 @@ export function DesktopHomeSection() {
   ];
 
   const destinations = [
-    { name: 'Canada', flag: 'ca', href: '/visa-guide/canada' },
-    { name: 'UK', flag: 'gb', href: '/visa-guide/uk' },
-    { name: 'USA', flag: 'us', href: '/visa-guide/usa' },
-    { name: 'Australia', flag: 'au', href: '/visa-guide/australia' },
-    { name: 'Germany', flag: 'de', href: '/visa-guide/germany' },
-    { name: 'New Zealand', flag: 'nz', href: '/visa-guide/new-zealand' },
-    { name: 'UAE', flag: 'ae', href: '/visa-guide/uae' },
+    { 
+      name: 'Canada', 
+      flag: 'ca', 
+      href: '/visa-guide/canada',
+      img: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?q=80&w=400&auto=format&fit=crop',
+      landmark: 'Canadian Rockies & Lakes'
+    },
+    { 
+      name: 'UK', 
+      flag: 'gb', 
+      href: '/visa-guide/uk',
+      img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=400&auto=format&fit=crop',
+      landmark: 'London Skyline & Landmarks'
+    },
+    { 
+      name: 'USA', 
+      flag: 'us', 
+      href: '/visa-guide/usa',
+      img: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?q=80&w=400&auto=format&fit=crop',
+      landmark: 'New York & Iconic Skyline'
+    },
+    { 
+      name: 'Australia', 
+      flag: 'au', 
+      href: '/visa-guide/australia',
+      img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=400&auto=format&fit=crop',
+      landmark: 'Sydney Coastal Harbour'
+    },
+    { 
+      name: 'Germany', 
+      flag: 'de', 
+      href: '/visa-guide/germany',
+      img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=400&auto=format&fit=crop',
+      landmark: 'Modern German Hubs'
+    },
+    { 
+      name: 'New Zealand', 
+      flag: 'nz', 
+      href: '/visa-guide/new-zealand',
+      img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=400&auto=format&fit=crop',
+      landmark: 'Dramatic Alps & Fjords'
+    },
+    { 
+      name: 'UAE', 
+      flag: 'ae', 
+      href: '/visa-guide/uae',
+      img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=400&auto=format&fit=crop',
+      landmark: 'Dubai Skyline & Marina'
+    },
   ];
 
   const classifiedTabs = ['All', 'Accommodation', 'SIM & eSIM', 'Jobs', 'Business', 'Visa Appeals'];
@@ -136,8 +178,8 @@ export function DesktopHomeSection() {
     {
       id: 'shared-room-humber-college',
       badge: 'Accommodation',
-      badgeBg: 'bg-[#059669]',
-      img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
+      badgeBg: 'bg-slate-900',
+      img: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=800&auto=format&fit=crop',
       title: 'Shared Student Room Near Humber College',
       country: 'Canada',
       category: 'Accommodation',
@@ -150,7 +192,7 @@ export function DesktopHomeSection() {
     {
       id: 'global-travel-esim-pack',
       badge: 'SIM & Connectivity',
-      badgeBg: 'bg-[#0284c7]',
+      badgeBg: 'bg-slate-900',
       img: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop',
       title: 'Instant Unlimited 5G eSIM for Canada & USA',
       country: 'Canada',
@@ -159,13 +201,13 @@ export function DesktopHomeSection() {
       location: 'Online Delivery',
       time: 'Just Now',
       price: '$29 USD',
-      priceColor: 'text-[#00a896]',
+      priceColor: 'text-slate-900',
     },
     {
       id: 'caregiver-jobs-canada',
       badge: 'Jobs Abroad',
-      badgeBg: 'bg-[#00a896]',
-      img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
+      badgeBg: 'bg-slate-900',
+      img: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop',
       title: 'Caregiver & Healthcare Jobs in Canada',
       country: 'Canada',
       category: 'Jobs',
@@ -173,12 +215,12 @@ export function DesktopHomeSection() {
       location: 'Toronto, Canada',
       time: '3 hours ago',
       price: 'FREE',
-      priceColor: 'text-[#00a896]',
+      priceColor: 'text-emerald-700 font-bold',
     },
     {
       id: 'uk-student-flat-london',
       badge: 'Accommodation',
-      badgeBg: 'bg-[#059669]',
+      badgeBg: 'bg-slate-900',
       img: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=800&auto=format&fit=crop',
       title: 'Furnished Ensuite Room in Zone 2 London',
       country: 'UK',
@@ -192,7 +234,7 @@ export function DesktopHomeSection() {
     {
       id: 'visa-consultancy-business-sale',
       badge: 'Business',
-      badgeBg: 'bg-[#0c1a2e]',
+      badgeBg: 'bg-slate-900',
       img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
       title: 'Established Visa Consultancy Office for Sale',
       country: 'UAE',
@@ -206,8 +248,8 @@ export function DesktopHomeSection() {
     {
       id: 'uk-australia-refusal-appeals',
       badge: 'Visa Appeals',
-      badgeBg: 'bg-[#d97706]',
-      img: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800&auto=format&fit=crop',
+      badgeBg: 'bg-slate-900',
+      img: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=800&auto=format&fit=crop',
       title: 'Embassy Refusal Case Review & Tribunal Appeal',
       country: 'Australia',
       category: 'Visa Appeals',
@@ -215,7 +257,7 @@ export function DesktopHomeSection() {
       location: 'Sydney, Australia',
       time: '1 day ago',
       price: 'Free Review',
-      priceColor: 'text-[#00a896]',
+      priceColor: 'text-emerald-700 font-bold',
     },
   ];
 
@@ -806,28 +848,34 @@ export function DesktopHomeSection() {
 
           </div>
 
-          {/* 3B. Popular Destinations */}
+          {/* 3B. Popular Destinations with Realistic Photography */}
           <div className="bg-white rounded-2xl px-6 py-4 shadow-sm border border-slate-100 space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-bold text-slate-900">Popular Destinations</h2>
-              <a href="/visa-guide" className="text-xs font-semibold text-[#00a896] hover:underline flex items-center gap-0.5">
+              <a href="/visa-guide" className="text-xs font-semibold text-slate-900 hover:underline flex items-center gap-0.5">
                 View All Countries <ChevronRight className="w-3.5 h-3.5" />
               </a>
             </div>
-            <div className="flex items-start justify-between gap-2">
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2.5">
               {destinations.map(d => (
-                <a key={d.name} href={d.href} className="flex flex-col items-center gap-1.5 group">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-slate-100 shadow-xs group-hover:border-[#00a896] group-hover:scale-105 transition-all">
-                    <img src={`https://flagcdn.com/w80/${d.flag}.png`} alt={d.name} className="w-full h-full object-cover" />
+                <a key={d.name} href={d.href} className="flex flex-col items-center gap-1.5 group p-1 rounded-xl hover:bg-slate-50 transition-all">
+                  <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-slate-200 shadow-xs group-hover:border-slate-900 group-hover:scale-105 transition-all">
+                    <img src={d.img} alt={d.landmark} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    <img 
+                      src={`https://flagcdn.com/w40/${d.flag}.png`} 
+                      alt={`${d.name} Flag`} 
+                      className="absolute bottom-1 right-1 w-3.5 h-2.5 object-cover rounded-xs shadow-xs border border-white/60" 
+                    />
                   </div>
-                  <span className="text-[11px] font-semibold text-slate-700 text-center leading-tight">{d.name}</span>
+                  <span className="text-[11px] font-bold text-slate-800 text-center leading-tight group-hover:text-slate-900">{d.name}</span>
                 </a>
               ))}
-              <a href="/visa-guide" className="flex flex-col items-center gap-1.5 group">
-                <div className="w-12 h-12 rounded-full bg-slate-100 border-2 border-slate-200 flex items-center justify-center group-hover:border-[#00a896] group-hover:text-[#00a896] text-slate-500 transition-all">
-                  <span className="text-base font-bold">···</span>
+              <a href="/visa-guide" className="flex flex-col items-center gap-1.5 group p-1 rounded-xl hover:bg-slate-50 transition-all">
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center group-hover:border-slate-900 group-hover:bg-slate-900 group-hover:text-white text-slate-600 transition-all shadow-xs">
+                  <span className="text-sm font-bold">···</span>
                 </div>
-                <span className="text-[11px] font-semibold text-slate-700 text-center">More</span>
+                <span className="text-[11px] font-bold text-slate-700 text-center">More</span>
               </a>
             </div>
           </div>

@@ -3291,11 +3291,11 @@ return (
                 className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-[#6366f1] text-white text-[9px] font-black uppercase tracking-wider shadow-2xs">
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
                     FEATURED
                   </span>
                   <img
-                    src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=85"
+                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=85"
                     alt="Study in Canada"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
@@ -3326,11 +3326,11 @@ return (
                 className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-[#10b981] text-white text-[9px] font-black uppercase tracking-wider shadow-2xs">
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
                     OFFER
                   </span>
                   <img
-                    src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&auto=format&fit=crop&q=85"
                     alt="Flight Tickets"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
@@ -3362,7 +3362,7 @@ return (
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
                   <img
-                    src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=85"
                     alt="Hotel Stays"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
@@ -3394,7 +3394,7 @@ return (
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
                   <img
-                    src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop&q=85"
                     alt="Outstation Cabs"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
@@ -3426,7 +3426,7 @@ return (
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
                   <img
-                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80"
+                    src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&auto=format&fit=crop&q=85"
                     alt="Holiday Packages"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"

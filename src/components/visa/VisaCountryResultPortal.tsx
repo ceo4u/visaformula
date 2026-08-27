@@ -114,6 +114,7 @@ import {
   Compass,
   DollarSign,
   Upload,
+  UploadCloud,
   ArrowUpRight,
   ExternalLink,
   BookOpen,

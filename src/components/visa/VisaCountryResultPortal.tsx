@@ -1947,66 +1947,66 @@ export function VisaCountryResultPortal({
                 {/* 5. REQUIRED DOCUMENTS CHECKLIST */}
                 <div className="space-y-4">
                   <div className="space-y-1 text-center sm:text-left">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
+                    <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#00A86B]">
                       Simple Paperwork
                     </span>
-                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight">
+                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-slate-900 tracking-tight">
                       Documents required for {countryName} Visa
                     </h2>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
-                      <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
-                        <FileText className="w-4 h-4" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
+                        <FileText className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
+                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
                           Original Passport / Clear Scan
                         </h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                           Valid for at least 6 months beyond travel date with 2 blank pages.
                         </p>
                       </div>
                     </div>
 
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
-                      <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                        <Camera className="w-4 h-4" />
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                        <Camera className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
+                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
                           1 Passport Photo / Clean Selfie
                         </h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                           White background. Take selfie on phone, our AI formats it automatically.
                         </p>
                       </div>
                     </div>
 
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
-                      <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                        <Plane className="w-4 h-4" />
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                      <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                        <Plane className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
+                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
                           Confirmed Flight Itinerary
                         </h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                           Return or onward ticket. Don't worry, TravlTik can provide embassy itinerary holding.
                         </p>
                       </div>
                     </div>
 
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-4 flex items-start gap-3.5 shadow-2xs">
-                      <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                        <Building2 className="w-4 h-4" />
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                      <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                        <Building2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-slate-900">
+                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
                           Hotel Booking / Stay Proof
                         </h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                           Verified hotel reservation or host invitation letter for immigration stamping.
                         </p>
                       </div>
@@ -2017,10 +2017,10 @@ export function VisaCountryResultPortal({
                 {/* 6. EXPANDABLE FAQ ACCORDION */}
                 <div className="space-y-4">
                   <div className="space-y-1 text-center sm:text-left">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
+                    <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#00A86B]">
                       Got Questions?
                     </span>
-                    <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight">
+                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-slate-900 tracking-tight">
                       Frequently Asked Questions
                     </h2>
                   </div>
@@ -2033,14 +2033,14 @@ export function VisaCountryResultPortal({
                           <button
                             type="button"
                             onClick={() => setActiveFaq(isOpen ? null : idx)}
-                            className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left font-semibold text-xs sm:text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer select-none"
+                            className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left font-semibold text-sm sm:text-base text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer select-none"
                           >
                             <span>{faq.question}</span>
                             <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
                           </button>
 
                           {isOpen && (
-                            <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                            <div className="px-4 sm:px-5 pb-5 pt-1 text-sm sm:text-[15px] text-slate-600 font-normal leading-relaxed">
                               {faq.answer}
                             </div>
                           )}

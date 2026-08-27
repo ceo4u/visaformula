@@ -40,6 +40,14 @@
     shape-rendering: geometricPrecision;
     -webkit-font-smoothing: antialiased;
   }
+
+  /* Refined balanced typography across the site: avoid heavy bold & ultra-thin */
+  .font-black, .font-extrabold {
+    font-weight: 700 !important;
+  }
+  .font-thin, .font-extralight, .font-light {
+    font-weight: 400 !important;
+  }
 }
 
 @layer utilities {

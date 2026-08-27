@@ -87,11 +87,11 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                             {/* Seeker Option */}
                             <div 
                                 onClick={() => setMode("seeker")} 
-                                className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-emerald-50/50 hover:bg-emerald-50/80 p-6 rounded-2xl border border-emerald-100 hover:border-[#00A86B] hover:shadow-xl transition-all font-sans"
+                                className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-slate-50 hover:bg-slate-100/80 p-6 rounded-2xl border border-slate-200 hover:border-slate-900 hover:shadow-xl transition-all font-sans"
                             >
                                 <div className="relative circle-float-1">
-                                    <div className="absolute inset-[-6px] rounded-full border-2 border-[#00A86B]/30 pulse-ring" />
-                                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#00A86B] flex items-center justify-center shadow-lg group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
+                                    <div className="absolute inset-[-6px] rounded-full border-2 border-slate-900/30 pulse-ring" />
+                                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-900 flex items-center justify-center shadow-lg group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
                                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="w-10 h-10 sm:w-12 sm:h-12">
                                             <circle cx="12" cy="8" r="3.5" fill="#ffffff" opacity="0.3" />
                                             <circle cx="12" cy="8" r="3.5" stroke="#ffffff" strokeWidth="2" fill="none" />
@@ -101,13 +101,13 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                                         </svg>
                                     </div>
                                 </div>
-                                <h2 className="mt-4 text-lg font-semibold tracking-tight text-slate-900 group-hover:text-[#00A86B] transition-colors">
+                                <h2 className="mt-4 text-lg font-semibold tracking-tight text-slate-900 group-hover:text-slate-900 transition-colors">
                                     Visa Seeker
                                 </h2>
                                 <span className="text-xs text-slate-500 max-w-[200px] mt-1 mb-4 font-medium leading-relaxed">
                                     Find, consult &amp; book immigration experts
                                 </span>
-                                <button className="w-full sm:w-auto bg-[#00A86B] hover:bg-[#008f5a] text-white px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
+                                <button className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
                                     Register as Seeker <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </button>
                             </div>

@@ -84,15 +84,15 @@ export default {
           soft: "#F5EEFA",
         },
         teal: {
-          DEFAULT: "#00A878",
-          dark: "#008A62",
-          light: "#10B981",
-          soft: "#ECFDF5",
+          DEFAULT: "#0f172a",
+          dark: "#020617",
+          light: "#1e293b",
+          soft: "#f8fafc",
         },
         persian: {
-          DEFAULT: "#00A878",
-          dark: "#008A62",
-          light: "#10B981",
+          DEFAULT: "#0f172a",
+          dark: "#020617",
+          light: "#1e293b",
         },
       },
       borderRadius: {

@@ -97,12 +97,12 @@ select {
     --primary-rgb: 72, 18, 104;
     --primary-foreground: 0 0% 100%;
     --primary-container: 278 60% 95%;
-    --secondary: 163 100% 33%; /* #00A878 TavlTik Emerald Teal */
+    --secondary: 222 47% 11%; /* #0f172a Dark Slate Navy */
     --secondary-foreground: 0 0% 100%;
-    --tertiary: 163 100% 33%; /* #00A878 TavlTik Emerald Teal */
+    --tertiary: 222 47% 11%; /* #0f172a Dark Slate Navy */
     --tertiary-foreground: 0 0% 100%;
-    --tertiary-container: 163 100% 95%;
-    --accent: 163 100% 33%; /* #00A878 TavlTik Emerald Teal */
+    --tertiary-container: 222 47% 95%;
+    --accent: 222 47% 11%; /* #0f172a Dark Slate Navy */
     --accent-foreground: 0 0% 100%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 40%;

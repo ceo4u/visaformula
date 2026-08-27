@@ -1943,97 +1943,238 @@ export function VisaCountryResultPortal({
           
             {/* ── CENTERED FULL-WIDTH SECTIONS: COMPARISON MATRIX, DOCUMENTS CHECKLIST & FAQS ── */}
             <div className="max-w-4xl mx-auto space-y-12 sm:space-y-16 mt-14 sm:mt-20 text-left">
-              {/* 4. TRAVLTIK VS DIY COMPARISON MATRIX */}
-                <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
-                        Clear Advantage
-                      </span>
-                      <h2 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
-                        Applying with TravlTik vs Doing It Yourself
-                      </h2>
-                    </div>
+              {/* 4. ATLYS-STYLE CLEAN TIMELINE COMPARISON: DOING IT WITH TRAVLTIK VS DOING IT YOURSELF */}
+              <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-10 shadow-2xs space-y-12 sm:space-y-16">
+                
+                {/* TRACK 1: DOING IT WITH TRAVLTIK */}
+                <div className="space-y-6">
+                  <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#4361ee] font-sans">
+                    Doing It With TravlTik
+                  </h3>
 
-                    <div className="inline-flex p-1 bg-slate-100 rounded-xl self-start sm:self-center">
-                      <button
-                        type="button"
-                        onClick={() => setActiveTimelineTab('travltik')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                          activeTimelineTab === 'travltik' ? 'bg-[#00A86B] text-white shadow-xs' : 'text-slate-600'
-                        }`}
-                      >
-                        With TravlTik
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setActiveTimelineTab('diy')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                          activeTimelineTab === 'diy' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600'
-                        }`}
-                      >
-                        DIY (On Your Own)
-                      </button>
+                  {/* Desktop Horizontal 4-Step Timeline */}
+                  <div className="hidden md:block relative pt-20 pb-20">
+                    {/* Connecting Line */}
+                    <div className="absolute top-1/2 -translate-y-1/2 left-8 right-8 h-1.5 bg-[#4361ee] rounded-full z-0" />
+
+                    <div className="relative z-10 grid grid-cols-4 gap-4">
+                      {/* Step 1: Top text */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="absolute bottom-[calc(50%+24px)] max-w-[170px] space-y-1 text-center">
+                          <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
+                            Submit all your documents on TravlTik
+                          </p>
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                        </div>
+                        <div className="w-10 h-10 rounded-full bg-[#4361ee] text-white font-extrabold text-sm flex items-center justify-center shadow-md">
+                          1
+                        </div>
+                      </div>
+
+                      {/* Step 2: Bottom text */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="w-10 h-10 rounded-full bg-[#4361ee] text-white font-extrabold text-sm flex items-center justify-center shadow-md">
+                          2
+                        </div>
+                        <div className="absolute top-[calc(50%+24px)] max-w-[170px] space-y-1 text-center">
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                          <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
+                            TravlTik comes to collect your passport
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Step 3: Top text */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="absolute bottom-[calc(50%+24px)] max-w-[170px] space-y-1 text-center">
+                          <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
+                            We constantly give you updates and a reliable ETA.
+                          </p>
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                        </div>
+                        <div className="w-10 h-10 rounded-full bg-[#4361ee] text-white font-extrabold text-sm flex items-center justify-center shadow-md">
+                          3
+                        </div>
+                      </div>
+
+                      {/* Step 4: Bottom text */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="w-10 h-10 rounded-full bg-[#4361ee] text-white font-extrabold text-sm flex items-center justify-center shadow-md">
+                          4
+                        </div>
+                        <div className="absolute top-[calc(50%+24px)] max-w-[180px] space-y-1 text-center">
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                          <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
+                            When approved, we drop your passport back to you!
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="border border-slate-200/90 rounded-3xl overflow-hidden shadow-2xs">
-                    <div className="divide-y divide-slate-100">
-                      {[
-                        {
-                          feature: 'Application Filing Time',
-                          travltik: '2 minutes on phone (Instant OCR auto-fill)',
-                          diy: '2-3 hours filling tedious government forms',
-                          highlight: true
-                        },
-                        {
-                          feature: 'Photo & Document Check',
-                          travltik: 'AI millimeter verification & auto background clean',
-                          diy: 'High risk of rejection due to wrong sizing',
-                          highlight: true
-                        },
-                        {
-                          feature: 'Passport Collection',
-                          travltik: 'Free doorstep pickup & return in barcoded envelope',
-                          diy: 'Physical trip to VFS center & long queues',
-                          highlight: false
-                        },
-                        {
-                          feature: 'Real-Time Updates',
-                          travltik: 'Live WhatsApp & SMS notifications at every step',
-                          diy: 'Checking slow government portals repeatedly',
-                          highlight: false
-                        },
-                        {
-                          feature: 'Rejection Guarantee',
-                          travltik: '100% Service Fee Refund & ₹5 Lakh Transit Cover',
-                          diy: 'Zero refund, fees forfeited',
-                          highlight: true
-                        },
-                      ].map((row, idx) => (
-                        <div key={idx} className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center hover:bg-slate-50/60 transition-colors">
-                          <div className="sm:col-span-4 font-bold text-xs sm:text-sm text-slate-900">
-                            {row.feature}
-                          </div>
-                          
-                          <div className={`sm:col-span-4 text-xs font-semibold flex items-center gap-2 ${
-                            activeTimelineTab === 'travltik' ? 'text-emerald-700 font-bold bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-200' : 'text-slate-600'
-                          }`}>
-                            <Check className="w-4 h-4 text-[#00A86B] shrink-0" />
-                            <span>{row.travltik}</span>
-                          </div>
-
-                          <div className={`sm:col-span-4 text-xs font-semibold flex items-center gap-2 ${
-                            activeTimelineTab === 'diy' ? 'text-red-700 font-bold bg-rose-50/80 p-2.5 rounded-xl border border-rose-200' : 'text-slate-400 line-through'
-                          }`}>
-                            <X className="w-4 h-4 text-red-500 shrink-0" />
-                            <span>{row.diy}</span>
-                          </div>
+                  {/* Mobile Vertical Flow for TravlTik */}
+                  <div className="md:hidden space-y-3">
+                    {[
+                      { step: '1', title: 'Submit all your documents on TravlTik' },
+                      { step: '2', title: 'TravlTik comes to collect your passport' },
+                      { step: '3', title: 'We constantly give you updates and a reliable ETA.' },
+                      { step: '4', title: 'When approved, we drop your passport back to you!' }
+                    ].map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-3.5 bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-2xl">
+                        <div className="w-8 h-8 rounded-full bg-[#4361ee] text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">
+                          {item.step}
                         </div>
-                      ))}
-                    </div>
+                        <p className="text-xs font-semibold text-slate-800">
+                          {item.title}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
+
+                {/* TRACK 2: DOING IT YOURSELF */}
+                <div className="space-y-6 pt-4 border-t border-slate-100">
+                  <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-slate-900 font-sans">
+                    Doing It Yourself
+                  </h3>
+
+                  {/* Desktop Horizontal 8-Step Timeline */}
+                  <div className="hidden lg:block relative pt-20 pb-20">
+                    {/* Connecting Line */}
+                    <div className="absolute top-1/2 -translate-y-1/2 left-6 right-6 h-1.5 bg-black rounded-full z-0" />
+
+                    <div className="relative z-10 grid grid-cols-8 gap-2">
+                      {/* Step 1: Top */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="absolute bottom-[calc(50%+24px)] w-[105px] space-y-1 text-center">
+                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
+                            Gather all your documents at home
+                          </p>
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                        </div>
+                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
+                          1
+                        </div>
+                      </div>
+
+                      {/* Step 2: Bottom */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
+                          2
+                        </div>
+                        <div className="absolute top-[calc(50%+24px)] w-[105px] space-y-1 text-center">
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
+                            Get your documents printed at a print shop
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Step 3: Top */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="absolute bottom-[calc(50%+24px)] w-[105px] space-y-1 text-center">
+                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
+                            Get stuck in traffic driving to the embassy
+                          </p>
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                        </div>
+                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
+                          3
+                        </div>
+                      </div>
+
+                      {/* Step 4: Bottom */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
+                          4
+                        </div>
+                        <div className="absolute top-[calc(50%+24px)] w-[105px] space-y-1 text-center">
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
+                            Spend 3+ hours at the embassy
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Step 5: Top */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="absolute bottom-[calc(50%+24px)] w-[105px] space-y-1 text-center">
+                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
+                            Get stuck in traffic on the way back home
+                          </p>
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                        </div>
+                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
+                          5
+                        </div>
+                      </div>
+
+                      {/* Step 6: Bottom */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
+                          6
+                        </div>
+                        <div className="absolute top-[calc(50%+24px)] w-[105px] space-y-1 text-center">
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
+                            Wait anxiously for your visa approval
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Step 7: Top */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="absolute bottom-[calc(50%+24px)] w-[105px] space-y-1 text-center">
+                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
+                            Go back to embassy to pick up passport
+                          </p>
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                        </div>
+                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
+                          7
+                        </div>
+                      </div>
+
+                      {/* Step 8: Bottom */}
+                      <div className="flex flex-col items-center text-center relative">
+                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
+                          8
+                        </div>
+                        <div className="absolute top-[calc(50%+24px)] w-[105px] space-y-1 text-center">
+                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
+                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
+                            Drive back home
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mobile & Tablet Step Flow for DIY */}
+                  <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {[
+                      { step: '1', title: 'Gather all your documents at home' },
+                      { step: '2', title: 'Get your documents printed at a print shop' },
+                      { step: '3', title: 'Get stuck in traffic driving to the embassy' },
+                      { step: '4', title: 'Spend 3+ hours waiting at the embassy' },
+                      { step: '5', title: 'Get stuck in traffic on the way back home' },
+                      { step: '6', title: 'Wait anxiously for your visa approval' },
+                      { step: '7', title: 'Go back to embassy to pick up passport' },
+                      { step: '8', title: 'Drive back home exhausted' }
+                    ].map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-3 bg-slate-50 border border-slate-200/80 p-3 rounded-2xl">
+                        <div className="w-7 h-7 rounded-full bg-black text-white font-bold text-xs flex items-center justify-center shrink-0">
+                          {item.step}
+                        </div>
+                        <p className="text-xs font-medium text-slate-700">
+                          {item.title}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
 
                 {/* 5. REQUIRED DOCUMENTS CHECKLIST */}
                 <div className="space-y-4">

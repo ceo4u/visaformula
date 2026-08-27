@@ -96,7 +96,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
                     </div>
 
                     <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-left text-xs text-emerald-800 font-medium">
-                        <p><strong>Next Step:</strong> Our doorstep concierge executive will contact you at <strong>{applicantPhone}</strong> to collect your physical documents in GPS-tracked safety boxes.</p>
+                        <p><strong>Next Step:</strong> Our visa verification desk is pre-screening your application. You will receive real-time embassy milestone updates and your approved e-Visa on WhatsApp (<strong>{applicantPhone}</strong>) and Email.</p>
                     </div>
                     
                     <a 

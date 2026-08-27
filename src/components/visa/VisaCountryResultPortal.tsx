@@ -367,7 +367,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
       return {
         isExempt: false,
         verdictTitle: "Official Paper E-Visa with QR Code Required",
-        verdictSummary: `${passport} passport holders require an official electronic visa (Paper E-Visa with ICA QR Code) prior to boarding flights to Singapore. Processing is guaranteed in 3-4 business days with doorstep assistance.`,
+        verdictSummary: `${passport} passport holders require an official electronic visa (Paper E-Visa with ICA QR Code) prior to boarding flights to Singapore. Processing is guaranteed in 3-4 business days with 100% online verification and expedited filing.`,
         digitalCardName: "SG Arrival Card (SGAC)",
         digitalCardDesc: "Mandatory electronic arrival declaration to be completed within 3 days of travel to Singapore.",
         sources: ["ICA Singapore Authorized Portal", "High Commission of Singapore", "IATA Database"],
@@ -388,7 +388,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     verdictTitle: isExemptGeneric ? `Visa-Exempt / Electronic Entry for ${country}` : `Official Visa Required for ${country}`,
     verdictSummary: isExemptGeneric 
       ? `${passport} citizens enjoy visa-exempt or electronic travel authorization for short-term tourism to ${country}. Long-term stays and study/work require official permits.`
-      : `${passport} passport holders require a validated travel visa or electronic permit prior to entering ${country}. TravlTik provides end-to-end doorstep concierge and expedited filing.`,
+      : `${passport} passport holders require a validated travel visa or electronic permit prior to entering ${country}. TravlTik provides end-to-end digital concierge and expedited filing.`,
     digitalCardName: `${country} Digital Arrival / Border Declaration`,
     digitalCardDesc: `Complete the official electronic entry card online before departure for fast-track biometric clearance.`,
     sources: ["Consular Affairs Department", "Diplomatic Mission API", "IATA Timatic 2026"],
@@ -589,15 +589,15 @@ export function VisaCountryResultPortal({
   const faqs = [
     {
       question: `Do ${passportCountry} citizens need a visa for ${countryName}?`,
-      answer: `Yes, passport holders of ${passportCountry} require an official visa or approved electronic authorization before traveling to ${countryName}. TravlTik handles end-to-end processing with verified doorstep collection and 99.4% approval rate.`
+      answer: `Yes, passport holders of ${passportCountry} require an official visa or approved electronic authorization before traveling to ${countryName}. TravlTik handles end-to-end online processing with instant verification and a 99.4% approval rate.`
     },
     {
       question: `What is the guaranteed delivery date?`,
-      answer: `We guarantee that your approved ${countryName} visa will be delivered by ${guaranteedDate}. In the rare event of an embassy system delay, you receive real-time SMS/WhatsApp updates and 100% service fee protection.`
+      answer: `We guarantee that your approved ${countryName} e-Visa will be sent to your WhatsApp and Email by ${guaranteedDate}. In the rare event of an embassy system delay, you receive real-time SMS/WhatsApp updates and 100% service fee protection.`
     },
     {
-      question: `How does free doorstep document pickup work?`,
-      answer: `Once you apply, our background-checked executive visits your address with a tamper-evident, barcoded safety envelope. Your passport is transported directly in GPS-tracked transit boxes to our biometric vault.`
+      question: `How does online visa filing with TravlTik work?`,
+      answer: `Simply upload your documents and passport photo directly from your smartphone. Our automated AI millimeter validator pre-screens everything for 100% compliance before official submission to the consulate.`
     },
     {
       question: `Can I take my passport photo with a smartphone?`,
@@ -1682,7 +1682,7 @@ export function VisaCountryResultPortal({
                           </span>
                         </div>
                         <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-                          Download your official electronic visa or receive your stamped physical passport delivered safely to your doorstep by {guaranteedDate}.
+                          Download your official electronic visa sent directly to your WhatsApp &amp; Email by {guaranteedDate}.
                         </p>
                       </div>
                     </div>
@@ -1697,25 +1697,25 @@ export function VisaCountryResultPortal({
                   <div className="relative z-10 space-y-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-semibold uppercase tracking-wider">
                       <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      <span>Obsidian Bank-Grade Passport Vault</span>
+                      <span>Obsidian Bank-Grade Security Vault</span>
                     </div>
 
                     <h3 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-white tracking-tight leading-snug">
-                      Your passport is protected by ₹5,00,000 transit insurance
+                      Your application is protected by 256-Bit SSL Encryption &amp; Guarantee
                     </h3>
 
                     <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed">
-                      Every physical document is sealed in individual tamper-evident barcoded bags, transported via GPS-tracked logistics, and stored in biometric surveillance vaults. Over 50 Lakh+ passports handled safely.
+                      Every document upload is digitally encrypted with bank-grade protocols and verified with consulate accuracy before submission. Over 50 Lakh+ applications handled safely.
                     </p>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
                       <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span className="text-xs font-medium text-slate-400 block">Insurance Cover</span>
-                        <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">₹5,00,000</span>
+                        <span className="text-xs font-medium text-slate-400 block">Service Cover</span>
+                        <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">100% Refund</span>
                       </div>
                       <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span className="text-xs font-medium text-slate-400 block">Transit Security</span>
-                        <span className="text-sm sm:text-base font-semibold text-emerald-400 mt-0.5 block">GPS Tracked</span>
+                        <span className="text-xs font-medium text-slate-400 block">Data Security</span>
+                        <span className="text-sm sm:text-base font-semibold text-emerald-400 mt-0.5 block">256-Bit SSL</span>
                       </div>
                       <div className="p-3 rounded-2xl bg-white/5 border border-white/10 col-span-2 sm:col-span-1">
                         <span className="text-xs font-medium text-slate-400 block">Approval Record</span>
@@ -1751,93 +1751,29 @@ export function VisaCountryResultPortal({
                     </span>
                   </div>
 
-                  {/* Visa Plan Selector Pills */}
-                  <div className="space-y-2">
-                    <label className="block text-xs font-medium text-slate-700 uppercase tracking-wider">
-                      Select Visa Option
-                    </label>
-
-                    <div className="space-y-2">
-                      {variants.map((v) => {
-                        const isSelected = selectedVariantId === v.id;
-                        return (
-                          <div
-                            key={v.id}
-                            onClick={() => setSelectedVariantId(v.id)}
-                            className={`p-3.5 rounded-2xl border-2 cursor-pointer transition-all flex items-center justify-between gap-3 ${
-                              isSelected
-                                ? 'border-[#00A86B] bg-emerald-50/40 shadow-xs ring-1 ring-[#00A86B]/20'
-                                : 'border-slate-200 hover:border-slate-300 bg-white'
-                            }`}
-                          >
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs sm:text-sm font-semibold text-slate-900 truncate">
-                                  {v.label}
-                                </span>
-                                {v.popular && (
-                                  <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-emerald-500 text-white uppercase tracking-wider">
-                                    POPULAR
-                                  </span>
-                                )}
-                              </div>
-                              <span className="text-[11px] text-slate-500 font-semibold block mt-0.5">
-                                Stay: {v.stay} • Valid 90 Days
-                              </span>
-                            </div>
-
-                            <div className="text-right shrink-0">
-                              <span className="text-sm sm:text-base font-semibold text-slate-900 block">
-                                ₹{(v.govFee + v.servFee).toLocaleString()}
-                              </span>
-                              <span className="text-[10px] text-slate-400 font-bold block">
-                                per traveller
-                              </span>
-                            </div>
-                          </div>
-                        );
-                      })}
+                  {/* Visa Details Mini Card */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
+                      <span className="text-slate-500 font-medium">Passport:</span>
+                      <span className="font-bold text-slate-900">{passportCountry}</span>
                     </div>
-                  </div>
 
-                  {/* Doorstep Pincode Checker */}
-                  <div className="space-y-1.5 pt-1">
-                    <label className="block text-xs font-medium text-slate-700 uppercase tracking-wider">
-                      Doorstep Document Pickup
-                    </label>
+                    <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
+                      <span className="text-slate-500 font-medium">Destination:</span>
+                      <span className="font-bold text-slate-900">{countryName}</span>
+                    </div>
 
-                    <div className="relative flex items-center">
-                      <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
-                      <input
-                        type="text"
-                        maxLength={6}
-                        value={pincode}
-                        onChange={(e) => handlePincodeCheck(e.target.value)}
-                        placeholder="Enter 6-digit Pincode"
-                        className="w-full h-11 pl-10 pr-24 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
-                      />
-                      
-                      <div className="absolute right-2.5">
-                        {pincodeStatus === 'supported' ? (
-                          <span className="text-[10px] font-medium text-[#00A86B] bg-emerald-100 px-2 py-1 rounded-xl flex items-center gap-1">
-                            <Check className="w-3 h-3 stroke-[3]" />
-                            <span>Supported</span>
-                          </span>
-                        ) : pincodeStatus === 'validating' ? (
-                          <span className="text-[10px] font-bold text-slate-400">Checking...</span>
-                        ) : (
-                          <span className="text-[10px] font-bold text-slate-400">Enter PIN</span>
-                        )}
+                    <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
+                      <span className="text-slate-500 font-medium">Visa Category:</span>
+                      <span className="font-bold text-emerald-700">{approvedVisaType}</span>
+                    </div>
+
+                    {/* Traveller Count Selector */}
+                    <div className="flex items-center justify-between pt-1">
+                      <div>
+                        <span className="text-xs font-bold text-slate-900 block">Number of Travellers</span>
+                        <span className="text-[11px] text-slate-400 font-medium">₹{grandTotal.toLocaleString()} total</span>
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Travellers Counter */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <label className="text-xs font-medium text-slate-700 uppercase tracking-wider">
-                        Number of Travellers
-                      </label>
                       
                       <div className="flex items-center gap-2">
                         <button
@@ -1877,7 +1813,7 @@ export function VisaCountryResultPortal({
                       <span className="font-bold text-slate-900">₹{totalServFee.toLocaleString()}</span>
                     </div>
                     <div className="flex items-center justify-between text-slate-600">
-                      <span>Doorstep Courier &amp; Transit Insurance</span>
+                      <span>Express Verification &amp; Filing</span>
                       <span className="font-bold text-emerald-600">FREE</span>
                     </div>
                   </div>
@@ -1979,7 +1915,7 @@ export function VisaCountryResultPortal({
                         <div className="absolute top-[calc(50%+24px)] max-w-[170px] space-y-1 text-center">
                           <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
                           <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
-                            TravlTik comes to collect your passport
+                            TravlTik pre-screens &amp; verifies paperwork
                           </p>
                         </div>
                       </div>
@@ -2005,7 +1941,7 @@ export function VisaCountryResultPortal({
                         <div className="absolute top-[calc(50%+24px)] max-w-[180px] space-y-1 text-center">
                           <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
                           <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
-                            When approved, we drop your passport back to you!
+                            When approved, download your official e-Visa!
                           </p>
                         </div>
                       </div>
@@ -2016,9 +1952,9 @@ export function VisaCountryResultPortal({
                   <div className="md:hidden space-y-3">
                     {[
                       { step: '1', title: 'Submit all your documents on TravlTik' },
-                      { step: '2', title: 'TravlTik comes to collect your passport' },
+                      { step: '2', title: 'TravlTik pre-screens & verifies paperwork' },
                       { step: '3', title: 'We constantly give you updates and a reliable ETA.' },
-                      { step: '4', title: 'When approved, we drop your passport back to you!' }
+                      { step: '4', title: 'When approved, download your official e-Visa!' }
                     ].map((item, idx) => (
                       <div key={idx} className="flex items-center gap-3.5 bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-2xl">
                         <div className="w-8 h-8 rounded-full bg-[#4361ee] text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">

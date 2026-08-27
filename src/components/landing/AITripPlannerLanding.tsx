@@ -3239,7 +3239,7 @@ return (
                 {
                   step: "Step 4 • Fly Confident",
                   title: "Travel",
-                  desc: "Doorstep visa delivery & real-time border journey alerts",
+                  desc: "Instant official e-Visa delivery & real-time border journey alerts",
                   icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
                 }
               ].map((card, i) => (

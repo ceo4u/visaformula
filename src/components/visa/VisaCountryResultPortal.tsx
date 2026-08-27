@@ -1,4 +1,76 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+
+// Custom sleek dropdown select component matching Atlys aesthetics
+function PortalCustomSelect({
+  value,
+  onChange,
+  options,
+  label
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  options: string[];
+  label?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const currentValue = value || options[0] || '';
+
+  return (
+    <div className="relative space-y-1.5" ref={dropdownRef}>
+      {label && <label className="block text-xs font-semibold text-slate-700">{label}</label>}
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className={`w-full h-11 px-3.5 rounded-xl border bg-white text-xs sm:text-sm font-semibold flex items-center justify-between text-slate-900 transition-all cursor-pointer shadow-2xs ${
+          open ? 'border-[#00A86B] ring-2 ring-emerald-500/20' : 'border-slate-200 hover:border-slate-300'
+        }`}
+      >
+        <span className="truncate text-left">{currentValue}</span>
+        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-[#00A86B]' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute top-full left-0 mt-1.5 w-full bg-white rounded-2xl border border-slate-200/90 shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 origin-top">
+          <div className="max-h-56 overflow-y-auto space-y-0.5">
+            {options.map((opt) => {
+              const isSelected = opt === currentValue;
+              return (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt);
+                    setOpen(false);
+                  }}
+                  className={`w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium flex items-center justify-between transition-colors cursor-pointer ${
+                    isSelected
+                      ? 'bg-emerald-50 text-emerald-800 font-semibold'
+                      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  <span className="truncate">{opt}</span>
+                  {isSelected && <Check className="w-4 h-4 text-[#00A86B] shrink-0" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 import { 
   ShieldCheck, 
   Clock, 
@@ -1306,62 +1378,54 @@ export function VisaCountryResultPortal({
                 <div className="space-y-6 animate-fadeIn">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Q1: Qualification */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">1. Highest Qualification</label>
-                      <select
-                        value={studyQual}
-                        onChange={(e) => setStudyQual(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>12th Grade / High School</option>
-                        <option>Bachelor's Degree</option>
-                        <option>Master's Degree</option>
-                        <option>Diploma / Polytechnic</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="1. Highest Qualification"
+                      value={studyQual}
+                      onChange={setStudyQual}
+                      options={[
+                        "12th Grade / High School",
+                        "Bachelor's Degree",
+                        "Master's Degree",
+                        "Diploma / Polytechnic"
+                      ]}
+                    />
 
                     {/* Q2: Target Degree */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">2. Target Degree in {countryName}</label>
-                      <select
-                        value={studyTarget}
-                        onChange={(e) => setStudyTarget(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>Bachelor's (UG Degree)</option>
-                        <option>Master's (PG / MS)</option>
-                        <option>Post-Graduate Diploma</option>
-                        <option>PhD / Doctorate</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label={`2. Target Degree in ${countryName}`}
+                      value={studyTarget}
+                      onChange={setStudyTarget}
+                      options={[
+                        "Bachelor's (UG Degree)",
+                        "Master's (PG / MS)",
+                        "Post-Graduate Diploma",
+                        "PhD / Doctorate"
+                      ]}
+                    />
 
                     {/* Q3: Target Intake */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">3. Target Intake</label>
-                      <select
-                        value={studyIntake}
-                        onChange={(e) => setStudyIntake(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>Fall 2026 (Aug - Sep)</option>
-                        <option>Spring 2027 (Jan - Feb)</option>
-                        <option>Summer 2027 (May - Jun)</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="3. Target Intake"
+                      value={studyIntake}
+                      onChange={setStudyIntake}
+                      options={[
+                        "Fall 2026 (Aug - Sep)",
+                        "Spring 2027 (Jan - Feb)",
+                        "Summer 2027 (May - Jun)"
+                      ]}
+                    />
 
                     {/* Q4: Budget & Funding */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">4. Financial Proof / Funds</label>
-                      <select
-                        value={studyBudget}
-                        onChange={(e) => setStudyBudget(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>Self-Funded Liquid Funds (₹25L+)</option>
-                        <option>Education Loan Required</option>
-                        <option>Full Scholarship / Sponsorship</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="4. Financial Proof / Funds"
+                      value={studyBudget}
+                      onChange={setStudyBudget}
+                      options={[
+                        "Self-Funded Liquid Funds (₹25L+)",
+                        "Education Loan Required",
+                        "Full Scholarship / Sponsorship"
+                      ]}
+                    />
                   </div>
                 </div>
               )}
@@ -1371,61 +1435,53 @@ export function VisaCountryResultPortal({
                 <div className="space-y-6 animate-fadeIn">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Q1: Trip Status */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">1. Trip Planning Status</label>
-                      <select
-                        value={visitPlanStatus}
-                        onChange={(e) => setVisitPlanStatus(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>Need Curated Tour Packages</option>
-                        <option>I have my Itinerary &amp; Hotel</option>
-                        <option>Visiting Family / Relatives</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="1. Trip Planning Status"
+                      value={visitPlanStatus}
+                      onChange={setVisitPlanStatus}
+                      options={[
+                        "Need Curated Tour Packages",
+                        "I have my Itinerary & Hotel",
+                        "Visiting Family / Relatives"
+                      ]}
+                    />
 
                     {/* Q2: Travel Timing */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">2. Tentative Travel Timing</label>
-                      <select
-                        value={visitTiming}
-                        onChange={(e) => setVisitTiming(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>Within 30 Days (Fast-Track)</option>
-                        <option>In 1 to 3 Months</option>
-                        <option>In 3 to 6 Months</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="2. Tentative Travel Timing"
+                      value={visitTiming}
+                      onChange={setVisitTiming}
+                      options={[
+                        "Within 30 Days (Fast-Track)",
+                        "In 1 to 3 Months",
+                        "In 3 to 6 Months"
+                      ]}
+                    />
 
                     {/* Q3: Travellers */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">3. Group / Travellers</label>
-                      <select
-                        value={visitTravellers}
-                        onChange={(e) => setVisitTravellers(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>Solo Traveller</option>
-                        <option>Couple / Honeymoon</option>
-                        <option>Family with Kids / Elders</option>
-                        <option>Corporate Business Group</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="3. Group / Travellers"
+                      value={visitTravellers}
+                      onChange={setVisitTravellers}
+                      options={[
+                        "Solo Traveller",
+                        "Couple / Honeymoon",
+                        "Family with Kids / Elders",
+                        "Corporate Business Group"
+                      ]}
+                    />
 
                     {/* Q4: Stay Preference */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">4. Accommodation Preference</label>
-                      <select
-                        value={visitStay}
-                        onChange={(e) => setVisitStay(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>4-5 Star Luxury Resorts</option>
-                        <option>Boutique City Hotels</option>
-                        <option>Serviced Apartments / Airbnb</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="4. Accommodation Preference"
+                      value={visitStay}
+                      onChange={setVisitStay}
+                      options={[
+                        "4-5 Star Luxury Resorts",
+                        "Boutique City Hotels",
+                        "Serviced Apartments / Airbnb"
+                      ]}
+                    />
                   </div>
                 </div>
               )}
@@ -1435,62 +1491,54 @@ export function VisaCountryResultPortal({
                 <div className="space-y-6 animate-fadeIn">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Q1: Exp */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">1. Total Experience</label>
-                      <select
-                        value={workExp}
-                        onChange={(e) => setWorkExp(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>0 - 2 Years (Entry Level)</option>
-                        <option>3 - 5 Years (Mid-Senior)</option>
-                        <option>6+ Years (Senior / Lead)</option>
-                        <option>10+ Years (Executive)</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="1. Total Experience"
+                      value={workExp}
+                      onChange={setWorkExp}
+                      options={[
+                        "0 - 2 Years (Entry Level)",
+                        "3 - 5 Years (Mid-Senior)",
+                        "6+ Years (Senior / Lead)",
+                        "10+ Years (Executive)"
+                      ]}
+                    />
 
                     {/* Q2: Job Offer */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">2. Sponsoring Job Offer</label>
-                      <select
-                        value={workOffer}
-                        onChange={(e) => setWorkOffer(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>Actively Seeking Sponsoring Job</option>
-                        <option>Have Confirmed Sponsor Offer</option>
-                        <option>Internal Company Transfer (ICT)</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="2. Sponsoring Job Offer"
+                      value={workOffer}
+                      onChange={setWorkOffer}
+                      options={[
+                        "Actively Seeking Sponsoring Job",
+                        "Have Confirmed Sponsor Offer",
+                        "Internal Company Transfer (ICT)"
+                      ]}
+                    />
 
                     {/* Q3: Domain */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">3. Industry Domain</label>
-                      <select
-                        value={workDomain}
-                        onChange={(e) => setWorkDomain(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>Tech / IT / Software / AI</option>
-                        <option>Healthcare &amp; Nursing</option>
-                        <option>Banking, Finance &amp; Accounting</option>
-                        <option>Civil, Mechanical &amp; Engineering</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="3. Industry Domain"
+                      value={workDomain}
+                      onChange={setWorkDomain}
+                      options={[
+                        "Tech / IT / Software / AI",
+                        "Healthcare & Nursing",
+                        "Banking, Finance & Accounting",
+                        "Civil, Mechanical & Engineering"
+                      ]}
+                    />
 
                     {/* Q4: Credential Assessment */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-medium text-slate-600">4. Credential Assessment</label>
-                      <select
-                        value={workAssess}
-                        onChange={(e) => setWorkAssess(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-xl border border-slate-300 text-xs font-medium bg-slate-50/50 text-slate-900 focus:ring-2 focus:ring-[#00A86B]"
-                      >
-                        <option>Need WES / ACS Credential Evaluation</option>
-                        <option>Already Assessed &amp; Approved</option>
-                        <option>Exempt / Not Applicable</option>
-                      </select>
-                    </div>
+                    <PortalCustomSelect
+                      label="4. Credential Assessment"
+                      value={workAssess}
+                      onChange={setWorkAssess}
+                      options={[
+                        "Need WES / ACS Credential Evaluation",
+                        "Already Assessed & Approved",
+                        "Exempt / Not Applicable"
+                      ]}
+                    />
                   </div>
                 </div>
               )}
@@ -1862,18 +1910,18 @@ export function VisaCountryResultPortal({
                   {/* Direct Support Badges */}
                   <div className="pt-2 flex items-center justify-between gap-2">
                     <a
-                      href="https://wa.me/912264231551"
+                      href="https://wa.me/917661989366?text=Hi%20TravlTik%2C%20I%20need%20help%20with%20my%20visa%20application"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex-1 py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
                     >
                       <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
                       <span>WhatsApp Help</span>
                     </a>
 
                     <a
-                      href="tel:+912264231551"
-                      className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+                      href="tel:+917661989366"
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
                     >
                       <Phone className="w-3.5 h-3.5 text-slate-700" />
                       <span>Call Support</span>

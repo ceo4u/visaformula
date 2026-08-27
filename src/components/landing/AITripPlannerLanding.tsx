@@ -3295,7 +3295,7 @@ return (
                     FEATURED
                   </span>
                   <img
-                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=85"
+                    src="https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=85"
                     alt="Study in Canada"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"

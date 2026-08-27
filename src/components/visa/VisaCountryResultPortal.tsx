@@ -1543,16 +1543,6 @@ export function VisaCountryResultPortal({
                 </div>
               )}
 
-              {/* Progress Summary Pill */}
-              <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-                <span className="font-bold text-slate-500">
-                  Profile matched with 100% {countryName} visa compliance requirements.
-                </span>
-                <span className="font-semibold text-[#00A86B]">
-                  Live Pricing &amp; Application Ready Below ↓
-                </span>
-              </div>
-
             </div>
           </section>
 

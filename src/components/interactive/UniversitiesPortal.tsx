@@ -29,6 +29,143 @@ interface University {
   ieltsMin: string;
 }
 
+interface UniversityConsultant {
+  id: string;
+  name: string;
+  agencyName: string;
+  role: string;
+  city: string;
+  countries: { name: string; flag: string }[];
+  rating: number;
+  reviews: number;
+  successRate: string;
+  license: string;
+  experience: string;
+  specialities: string[];
+  bio: string;
+  phone: string;
+  whatsapp: string;
+  image: string;
+  freeCounselling: boolean;
+}
+
+const studyConsultantsList: UniversityConsultant[] = [
+  {
+    id: "c1",
+    name: "Arjun Mehta",
+    agencyName: "Apex Study Abroad & Immigration",
+    role: "Senior Canada University Admissions Specialist",
+    city: "Hyderabad",
+    countries: [{ name: "Canada", flag: "ca" }, { name: "USA", flag: "us" }],
+    rating: 4.9,
+    reviews: 412,
+    successRate: "99.4%",
+    license: "ICCRC-R705123",
+    experience: "11+ Years",
+    specialities: ["Canada Study Permit", "PGWP Pathways", "DLI Shortlisting", "SOP Writing"],
+    bio: "Helped 1,400+ Indian students secure direct admissions and visa approvals into top Canadian institutions like U of T, UBC, McGill, Humber, and Seneca.",
+    phone: "+91 98490 12345",
+    whatsapp: "+919849012345",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=faces&q=80",
+    freeCounselling: true
+  },
+  {
+    id: "c2",
+    name: "Nisha Agarwal",
+    agencyName: "Global Scholar Consulting",
+    role: "UK & Ireland University Admissions Counsellor",
+    city: "Delhi NCR",
+    countries: [{ name: "UK", flag: "gb" }, { name: "Ireland", flag: "ie" }],
+    rating: 4.8,
+    reviews: 328,
+    successRate: "99.1%",
+    license: "British Council Certified",
+    experience: "8+ Years",
+    specialities: ["Russell Group Universities", "Graduate Route Visa", "Scholarship Grants", "IELTS Waiver"],
+    bio: "Specialized in UK Master's and Bachelor's admissions with 100% visa success track record. Facilitated over £1.2M in university scholarships.",
+    phone: "+91 98110 54321",
+    whatsapp: "+919811054321",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces&q=80",
+    freeCounselling: true
+  },
+  {
+    id: "c3",
+    name: "Dr. Sandeep Kulkarni",
+    agencyName: "EuroEd Pathways & Mobility",
+    role: "Germany & Europe Public Universities Advisor",
+    city: "Pune",
+    countries: [{ name: "Germany", flag: "de" }, { name: "Cyprus", flag: "cy" }, { name: "Austria", flag: "at" }],
+    rating: 5.0,
+    reviews: 289,
+    successRate: "98.8%",
+    license: "BAMF-Certified Consultant",
+    experience: "14+ Years",
+    specialities: ["Tuition-Free Public Universities", "APS Certificate", "Blocked Account Setup", "Chancenkarte"],
+    bio: "Assists STEM and Engineering students in gaining admission to top German TU9 universities and Cyprus 100% visa colleges with English-taught programs.",
+    phone: "+91 98220 98765",
+    whatsapp: "+919822098765",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80",
+    freeCounselling: true
+  },
+  {
+    id: "c4",
+    name: "Priya Sharma",
+    agencyName: "Southern Cross Migration & Study",
+    role: "Australia & New Zealand Certified Counsellor",
+    city: "Mumbai",
+    countries: [{ name: "Australia", flag: "au" }, { name: "New Zealand", flag: "nz" }],
+    rating: 4.9,
+    reviews: 512,
+    successRate: "99.2%",
+    license: "MARA-1804210 / QEAC Certified",
+    experience: "10+ Years",
+    specialities: ["Group of Eight (Go8)", "Subclass 500 Visa", "Genuine Student (GS) Prep", "Post-Study Work"],
+    bio: "Ex-admissions officer guiding students through Australian university offers, GTE/GS statement drafting, and seamless student visa grant processing.",
+    phone: "+91 98200 45678",
+    whatsapp: "+919820045678",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=faces&q=80",
+    freeCounselling: true
+  },
+  {
+    id: "c5",
+    name: "Karthik Reddy",
+    agencyName: "Silicon Valley Student Visas",
+    role: "USA STEM Universities & F-1 Visa Strategist",
+    city: "Bangalore",
+    countries: [{ name: "USA", flag: "us" }],
+    rating: 4.8,
+    reviews: 375,
+    successRate: "98.5%",
+    license: "AIRC Certified Counsellor",
+    experience: "9+ Years",
+    specialities: ["F-1 Visa Mock Interviews", "STEM OPT 3-Year", "I-20 Shortlisting", "Assistantships"],
+    bio: "Expert in F-1 Visa mock interviews and funding guidance for MS in CS, Data Science, AI, and MBA programs at top tier US universities.",
+    phone: "+91 98450 78901",
+    whatsapp: "+919845078901",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces&q=80",
+    freeCounselling: true
+  },
+  {
+    id: "c6",
+    name: "Vikram Singh",
+    agencyName: "Gulf & Asia EduLink",
+    role: "Singapore & Dubai International Campuses Expert",
+    city: "Ahmedabad",
+    countries: [{ name: "Singapore", flag: "sg" }, { name: "UAE", flag: "ae" }, { name: "Cyprus", flag: "cy" }],
+    rating: 4.7,
+    reviews: 215,
+    successRate: "99.0%",
+    license: "Global EduPartner Verified",
+    experience: "7+ Years",
+    specialities: ["Fast-Track Student Pass", "Affordable Living Hubs", "October & Jan Intakes", "Corporate Internships"],
+    bio: "Direct university partner for Curtin Singapore, James Cook, Middlesex Dubai, and European universities with direct employment links.",
+    phone: "+91 98790 23456",
+    whatsapp: "+919879023456",
+    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=faces&q=80",
+    freeCounselling: true
+  }
+];
+
 const initialUniversities: University[] = [
   {
     id: "cyprus-october-intake",
@@ -98,24 +235,24 @@ const initialUniversities: University[] = [
   },
   {
     id: "3",
-    name: "University College London (UCL)",
-    location: "London, United Kingdom",
+    name: "Imperial College London",
+    location: "London, UK",
     country: "UK",
     countryCode: "gb",
     category: "IT & Tech",
-    tuition: "GBP £24K–£35K",
+    tuition: "£32K–£44K",
     tuitionNote: "per year",
-    posted: "3h ago",
+    posted: "3d ago",
     degreeType: "Master's",
     pgwp: true,
     scholarships: false,
     featured: true,
     urgent: false,
-    logo: "https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?w=200&h=200&fit=crop&q=90",
-    heroImg: "/images/univ_ucl_night.png",
-    tags: ["Russell Group", "No GRE required", "Post-Study Visa"],
-    desc: "UCL is a premier global university offering excellent pathways for graduate visa sponsorship and professional employment in the UK.",
-    rank: "#9 Global",
+    logo: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=200&h=200&fit=crop&q=90",
+    heroImg: "/images/univ_imperial_night.png",
+    tags: ["World Top 10", "UK Graduate Visa Eligible", "Global Tech Network"],
+    desc: "Global leader in science, engineering and medicine. Graduates receive automatic 2-year post-study work authorization under the UK Graduate Route.",
+    rank: "#6 Global",
     ieltsMin: "7.0 Overall"
   },
   {
@@ -125,8 +262,8 @@ const initialUniversities: University[] = [
     country: "Germany",
     countryCode: "de",
     category: "Engineering",
-    tuition: "€0 - €4K",
-    tuitionNote: "per year (Free)",
+    tuition: "€0 (Free Tuition)",
+    tuitionNote: "admin fee only",
     posted: "5d ago",
     degreeType: "Master's",
     pgwp: true,
@@ -173,9 +310,14 @@ const countryCards = [
 ];
 
 const streamsList = ["All Categories", "Higher Education", "IT & Tech", "Business", "Engineering", "Arts"];
-const countriesList = ["All Countries", "Cyprus", "Canada", "Australia", "UK", "Singapore"];
+const countriesList = ["All Countries", "Cyprus", "Canada", "Australia", "UK", "USA", "Germany", "Singapore", "Ireland", "New Zealand"];
+const consultantCitiesList = ["All Cities", "Hyderabad", "Delhi NCR", "Mumbai", "Bangalore", "Pune", "Ahmedabad", "Remote"];
 
 export function UniversitiesPortal() {
+  // Main Search Mode: 'universities' | 'consultants'
+  const [activeMode, setActiveMode] = useState<"universities" | "consultants">("universities");
+
+  // Universities search state
   const [universities, setUniversities] = useState(initialUniversities);
   const [saved, setSaved] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -185,6 +327,17 @@ export function UniversitiesPortal() {
   const [activeUniv, setActiveUniv] = useState<University | null>(null);
   const [pgwpOnly, setPgwpOnly] = useState(false);
   const [scholarshipOnly, setScholarshipOnly] = useState(false);
+
+  // Consultants search state
+  const [consultantSearch, setConsultantSearch] = useState("");
+  const [consultantCountry, setConsultantCountry] = useState("All Countries");
+  const [consultantCity, setConsultantCity] = useState("All Cities");
+  const [consultants, setConsultants] = useState<UniversityConsultant[]>(studyConsultantsList);
+  const [activeConsultant, setActiveConsultant] = useState<UniversityConsultant | null>(null);
+  const [counsellingModalOpen, setCounsellingModalOpen] = useState(false);
+  const [counsellingSuccess, setCounsellingSuccess] = useState(false);
+  const [studentForm, setStudentForm] = useState({ name: "", phone: "", email: "", targetCountry: "Canada", course: "Master's Degree" });
+
   const [toastMsg, setToastMsg] = useState("");
   const [toastOn, setToastOn] = useState(false);
 
@@ -193,6 +346,20 @@ export function UniversitiesPortal() {
       const searchParams = new URLSearchParams(window.location.search);
       const countryParam = searchParams.get("country");
       const adParam = searchParams.get("ad");
+      const tabParam = searchParams.get("tab") || searchParams.get("mode") || searchParams.get("category");
+      
+      if (tabParam === "consultants" || tabParam === "consultant" || tabParam === "experts" || tabParam === "student") {
+        setActiveMode("consultants");
+      }
+
+      if (countryParam) {
+        const foundC = countriesList.find(c => c.toLowerCase() === countryParam.toLowerCase());
+        if (foundC) {
+          setSelectedCountry(foundC);
+          setConsultantCountry(foundC);
+        }
+      }
+
       if (adParam === "cyprus" || countryParam?.toLowerCase() === "cyprus") {
         const cyprusItem = initialUniversities.find(u => u.country.toLowerCase() === "cyprus");
         if (cyprusItem) {
@@ -213,30 +380,70 @@ export function UniversitiesPortal() {
     showToast(saved.includes(id) ? "Removed from saved" : "Saved to bookmarks!");
   };
 
+  // Universities filtering
   const applyFilters = () => {
     let f = initialUniversities;
     if (searchQuery) f = f.filter(u =>
       u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.location.toLowerCase().includes(searchQuery.toLowerCase())
+      u.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      u.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
     );
-    if (selectedCountry !== "All Countries") f = f.filter(u => u.country === selectedCountry);
-    if (selectedCategory !== "All Categories") f = f.filter(u => u.category === selectedCategory);
+    if (selectedCountry !== "All Countries") f = f.filter(u => u.country.toLowerCase() === selectedCountry.toLowerCase());
+    if (selectedCategory !== "All Categories") f = f.filter(u => u.category.toLowerCase() === selectedCategory.toLowerCase());
     if (pgwpOnly) f = f.filter(u => u.pgwp);
     if (scholarshipOnly) f = f.filter(u => u.scholarships);
     setUniversities(f);
-    showToast(`${f.length} universities found`);
   };
 
+  // Consultants filtering
+  const applyConsultantFilters = () => {
+    let f = studyConsultantsList;
+    if (consultantSearch.trim()) {
+      const q = consultantSearch.toLowerCase();
+      f = f.filter(c => 
+        c.name.toLowerCase().includes(q) ||
+        c.agencyName.toLowerCase().includes(q) ||
+        c.role.toLowerCase().includes(q) ||
+        c.specialities.some(s => s.toLowerCase().includes(q)) ||
+        c.bio.toLowerCase().includes(q)
+      );
+    }
+    if (consultantCountry !== "All Countries") {
+      f = f.filter(c => c.countries.some(country => country.name.toLowerCase() === consultantCountry.toLowerCase()));
+    }
+    if (consultantCity !== "All Cities") {
+      f = f.filter(c => c.city.toLowerCase() === consultantCity.toLowerCase());
+    }
+    setConsultants(f);
+  };
+
+  React.useEffect(() => {
+    applyFilters();
+  }, [searchQuery, selectedCountry, selectedCategory, pgwpOnly, scholarshipOnly]);
+
+  React.useEffect(() => {
+    applyConsultantFilters();
+  }, [consultantSearch, consultantCountry, consultantCity]);
+
   const clearFilters = () => {
-    setSearchQuery(""); setSelectedCountry("All Countries");
-    setSelectedCategory("All Categories"); setActiveChip("All Universities");
-    setPgwpOnly(false); setScholarshipOnly(false);
-    setUniversities(initialUniversities); showToast("Filters cleared");
+    setSearchQuery("");
+    setSelectedCountry("All Countries");
+    setSelectedCategory("All Categories");
+    setActiveChip("All Universities");
+    setPgwpOnly(false);
+    setScholarshipOnly(false);
+    setUniversities(initialUniversities);
+  };
+
+  const clearConsultantFilters = () => {
+    setConsultantSearch("");
+    setConsultantCountry("All Countries");
+    setConsultantCity("All Cities");
+    setConsultants(studyConsultantsList);
   };
 
   const filterByChip = (chip: string) => {
     setActiveChip(chip);
-    if (chip === "All Universities") { setUniversities(initialUniversities); return; }
     const map: Record<string, string> = {
       "IT & Tech": "IT & Tech", "Business": "Business",
       "Engineering": "Engineering", "Arts": "Arts"
@@ -322,260 +529,583 @@ export function UniversitiesPortal() {
               </div>
           </div>
 
-          {/* Search bar below the banner */}
-          <div id="univ-search-bar" className="mt-8 bg-white border border-slate-200/50 rounded-3xl p-5 shadow-xl max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-7 gap-3 items-center">
-              <div className="md:col-span-3">
-                <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5 text-left">University / Course</label>
-                <div className="relative">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                  <input
-                    type="text"
-                    placeholder="Search e.g. Toronto, MBA, Computer Science..."
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all"
-                  />
-                </div>
-              </div>
-              <div className="md:col-span-2">
-                <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5 text-left">Country</label>
-                <div className="relative">
-                  <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                  <select
-                    value={selectedCountry}
-                    onChange={e => setSelectedCountry(e.target.value)}
-                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all appearance-none cursor-pointer"
-                  >
-                    {countriesList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
-                  </select>
-                </div>
-              </div>
-              <div className="md:col-span-2">
-                <label className="text-[10px] font-medium tracking-normal text-slate-400 block mb-1.5 text-left">Category</label>
-                <div className="relative">
-                  <GraduationCap className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
-                  <select
-                    value={selectedCategory}
-                    onChange={e => setSelectedCategory(e.target.value)}
-                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-black transition-all appearance-none cursor-pointer"
-                  >
-                    {streamsList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-6 mt-3 pt-3 border-t border-slate-100">
-              <label className="flex items-center gap-2 cursor-pointer" onClick={() => setPgwpOnly(!pgwpOnly)}>
-                <div className={`w-9 h-5 rounded-full transition-all relative ${pgwpOnly ? "bg-black" : "bg-gray-200"}`}>
-                  <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${pgwpOnly ? "left-4" : "left-0.5"}`} />
-                </div>
-                <span className="text-xs font-semibold text-[#475569]">PGWP Eligible Only</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer" onClick={() => setScholarshipOnly(!scholarshipOnly)}>
-                <div className={`w-9 h-5 rounded-full transition-all relative ${scholarshipOnly ? "bg-black" : "bg-gray-200"}`}>
-                  <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${scholarshipOnly ? "left-4" : "left-0.5"}`} />
-                </div>
-                <span className="text-xs font-semibold text-[#475569]">Scholarships Available</span>
-              </label>
-            </div>
-          </div>
-
-          {/* Chips */}
-          <div className="flex gap-2 flex-wrap mt-5 justify-center">
-            {["All Universities", "IT & Tech", "Business", "Engineering", "Arts"].map(chip => (
+          {/* Search bar below the banner with Mode Switcher */}
+          <div id="univ-search-bar" className="mt-8 bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-6 shadow-xl max-w-4xl mx-auto space-y-4">
+            {/* Mode Switcher Tabs */}
+            <div className="flex items-center justify-center p-1 bg-slate-100 rounded-2xl max-w-md mx-auto">
               <button
-                key={chip}
-                onClick={() => filterByChip(chip)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold border shrink-0 transition-all outline-none ${
-                  activeChip === chip
-                    ? "bg-black text-white border-black shadow-sm"
-                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                type="button"
+                onClick={() => setActiveMode("universities")}
+                className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  activeMode === "universities"
+                    ? "bg-slate-900 text-white shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                {chip}
+                <Building2 className="w-4 h-4" />
+                <span>Explore Universities</span>
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={() => setActiveMode("consultants")}
+                className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  activeMode === "consultants"
+                    ? "bg-slate-900 text-white shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <Users className="w-4 h-4" />
+                <span>Find University Consultants</span>
+              </button>
+            </div>
+
+            {/* MODE 1: UNIVERSITIES SEARCH FORM */}
+            {activeMode === "universities" ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-7 gap-3 items-center">
+                  <div className="md:col-span-3">
+                    <label className="text-[10px] font-bold tracking-normal text-slate-500 block mb-1.5 text-left">University / Course</label>
+                    <div className="relative">
+                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                      <input
+                        type="text"
+                        placeholder="Search e.g. Toronto, MBA, Computer Science..."
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-bold tracking-normal text-slate-500 block mb-1.5 text-left">Destination Country</label>
+                    <div className="relative">
+                      <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                      <select
+                        value={selectedCountry}
+                        onChange={e => setSelectedCountry(e.target.value)}
+                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all appearance-none cursor-pointer"
+                      >
+                        {countriesList.map(c => <option key={c} value={c} className="text-slate-900 bg-white">{c}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-bold tracking-normal text-slate-500 block mb-1.5 text-left">Field / Discipline</label>
+                    <div className="relative">
+                      <GraduationCap className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                      <select
+                        value={selectedCategory}
+                        onChange={e => setSelectedCategory(e.target.value)}
+                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all appearance-none cursor-pointer"
+                      >
+                        {streamsList.map(c => <option key={c} value={c} className="text-slate-900 bg-white">{c}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-6 mt-2 pt-3 border-t border-slate-100">
+                  <label className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setPgwpOnly(!pgwpOnly)}>
+                    <div className={`w-9 h-5 rounded-full transition-all relative ${pgwpOnly ? "bg-slate-900" : "bg-slate-200"}`}>
+                      <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${pgwpOnly ? "left-4" : "left-0.5"}`} />
+                    </div>
+                    <span className="text-xs font-semibold text-slate-700">PGWP Eligible Only</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setScholarshipOnly(!scholarshipOnly)}>
+                    <div className={`w-9 h-5 rounded-full transition-all relative ${scholarshipOnly ? "bg-slate-900" : "bg-slate-200"}`}>
+                      <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${scholarshipOnly ? "left-4" : "left-0.5"}`} />
+                    </div>
+                    <span className="text-xs font-semibold text-slate-700">Scholarships Available</span>
+                  </label>
+                </div>
+              </>
+            ) : (
+              /* MODE 2: CONSULTANTS SEARCH FORM */
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-7 gap-3 items-center">
+                  <div className="md:col-span-3">
+                    <label className="text-[10px] font-bold tracking-normal text-slate-500 block mb-1.5 text-left">Search Consultant / Agency</label>
+                    <div className="relative">
+                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                      <input
+                        type="text"
+                        placeholder="Search e.g. Arjun Mehta, Canada Visa, SOP..."
+                        value={consultantSearch}
+                        onChange={e => setConsultantSearch(e.target.value)}
+                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-bold tracking-normal text-slate-500 block mb-1.5 text-left">Country Specialty</label>
+                    <div className="relative">
+                      <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                      <select
+                        value={consultantCountry}
+                        onChange={e => setConsultantCountry(e.target.value)}
+                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all appearance-none cursor-pointer"
+                      >
+                        {countriesList.map(c => <option key={c} value={c} className="text-slate-900 bg-white">{c}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-bold tracking-normal text-slate-500 block mb-1.5 text-left">Consultant City</label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                      <select
+                        value={consultantCity}
+                        onChange={e => setConsultantCity(e.target.value)}
+                        className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all appearance-none cursor-pointer"
+                      >
+                        {consultantCitiesList.map(c => <option key={c} value={c} className="text-slate-900 bg-white">{c}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                  <span className="font-semibold text-slate-500">
+                    Showing <strong className="text-slate-900">{consultants.length}</strong> verified study abroad experts
+                  </span>
+                  <button
+                    type="button"
+                    onClick={clearConsultantFilters}
+                    className="text-slate-700 hover:text-slate-900 font-bold hover:underline"
+                  >
+                    Reset Filters
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Chips (Only for Universities Mode) */}
+          {activeMode === "universities" && (
+            <div className="flex gap-2 flex-wrap mt-5 justify-center">
+              {["All Universities", "IT & Tech", "Business", "Engineering", "Arts"].map(chip => (
+                <button
+                  key={chip}
+                  onClick={() => filterByChip(chip)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold border shrink-0 transition-all outline-none cursor-pointer ${
+                    activeChip === chip
+                      ? "bg-slate-900 text-white border-slate-900 shadow-sm"
+                      : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* STATS BAR */}
+        <div className="bg-white border-b border-slate-100">
+          <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap gap-6 items-center justify-between">
+            <div className="flex items-center gap-8 flex-wrap">
+              {[
+                { icon: Library, value: "150+", label: "Verified Universities" },
+                { icon: Users, value: "850+", label: "Certified Study Consultants" },
+                { icon: Globe, value: "20+", label: "Target Countries" },
+                { icon: BadgeCheck, value: "99.4%", label: "Visa Approval Rate" },
+              ].map(s => {
+                const Icon = s.icon;
+                return (
+                  <div key={s.label} className="flex items-center gap-2">
+                    <Icon className="w-4 h-4 text-slate-900" />
+                    <span className="font-sans font-extrabold text-slate-900 text-base">{s.value}</span>
+                    <span className="text-[11px] font-bold text-slate-500">{s.label}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-          {/* STATS BAR */}
-          <div className="bg-white border-b border-slate-100">
-            <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap gap-6 items-center justify-between">
-              <div className="flex items-center gap-8 flex-wrap">
-                {[
-                  { icon: Library, value: "150+", label: "Verified Universities" },
-                  { icon: Globe, value: "20+", label: "Target Countries" },
-                  { icon: BadgeCheck, value: "100%", label: "PGWP / PSW Vetted" },
-                  { icon: Users, value: "12K+", label: "Student Visas Filed" },
-                ].map(s => {
-                  const Icon = s.icon;
-                  return (
-                    <div key={s.label} className="flex items-center gap-2">
-                      <Icon className="w-4 h-4 text-black" />
-                      <span className="font-sans font-extrabold text-black text-base">{s.value}</span>
-                      <span className="text-[11px] font-bold text-[#475569]">{s.label}</span>
+        {/* ======================================================= */}
+        {/* VIEW 1: UNIVERSITIES LISTINGS GRID */}
+        {/* ======================================================= */}
+        {activeMode === "universities" ? (
+          <>
+            {/* DESTINATION CARDS */}
+            <div className="max-w-6xl mx-auto px-6 pt-12 pb-2 text-left">
+              <div className="flex items-end justify-between mb-6">
+                <div>
+                  <span className="text-[11px] font-semibold text-slate-900 tracking-wider block mb-1">Browse by Destination</span>
+                  <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Study?</h2>
+                </div>
+                <button onClick={clearFilters} className="text-xs font-bold text-slate-900 hover:underline outline-none cursor-pointer">View All →</button>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                {countryCards.map(c => (
+                  <div
+                    key={c.name}
+                    onClick={() => filterByCountry(c.name)}
+                    className="group relative overflow-hidden rounded-2xl cursor-pointer h-40 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <img src={c.img} alt={c.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a2e]/75 via-[#0c1a2e]/20 to-transparent"></div>
+                    <div className="absolute top-2.5 right-2.5 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1 shadow border border-white/50">
+                      <img src={`https://flagcdn.com/w40/${c.code}.png`} alt="flag" className="h-3 rounded" />
                     </div>
-                  );
-                })}
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <div className="text-white font-sans font-extrabold text-sm leading-snug">{c.name}</div>
+                      <div className="text-indigo-100 text-xs font-bold mt-0.5">{c.jobs}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
 
-          {/* DESTINATION CARDS */}
-          <div className="max-w-6xl mx-auto px-6 pt-12 pb-2 text-left">
-            <div className="flex items-end justify-between mb-6">
-              <div>
-                <span className="text-[11px] font-semibold text-[#ef4444] tracking-wider block mb-1">Browse by Destination</span>
-                <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Study?</h2>
-              </div>
-              <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">View All →</button>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-              {countryCards.map(c => (
-                <div
-                  key={c.name}
-                  onClick={() => filterByCountry(c.name)}
-                  className="group relative overflow-hidden rounded-2xl cursor-pointer h-40 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                >
-                  <img src={c.img} alt={c.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a2e]/75 via-[#0c1a2e]/20 to-transparent"></div>
-                  <div className="absolute top-2.5 right-2.5 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1 shadow border border-white/50">
-                    <img src={`https://flagcdn.com/w40/${c.code}.png`} alt="flag" className="h-3 rounded" />
+            {/* MAIN LISTINGS GRID */}
+            <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
+              {/* SIDEBAR */}
+              <aside className="lg:col-span-3">
+                <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm sticky top-28 space-y-5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-sans font-bold text-sm text-slate-900 flex items-center gap-1.5">
+                      <Filter className="w-3.5 h-3.5 text-slate-900" /> Filters
+                    </h3>
+                    <button onClick={clearFilters} className="text-xs font-bold text-slate-900 hover:underline outline-none cursor-pointer">Clear all</button>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <div className="text-white font-sans font-extrabold text-sm leading-snug">{c.name}</div>
-                    <div className="text-indigo-100 text-xs font-bold mt-0.5">{c.jobs}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* MAIN LISTINGS GRID */}
-          <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
-            {/* SIDEBAR */}
-            <aside className="lg:col-span-3">
-              <div className="bg-white border border-black/20 rounded-2xl p-5 shadow-sm sticky top-28 space-y-5">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-sans font-bold text-sm text-navy flex items-center gap-1.5">
-                    <Filter className="w-3.5 h-3.5 text-black" /> Filters
-                  </h3>
-                  <button onClick={clearFilters} className="text-xs font-bold text-black hover:underline outline-none">Clear all</button>
-                </div>
+                  <div className="h-px bg-slate-100"></div>
 
-                <div className="h-px bg-slate-100"></div>
-
-                {/* Country checkboxes */}
-                <div className="space-y-2">
-                  <span className="text-xs font-light text-[#359FC2] tracking-normal block">Country</span>
-                  {[
-                    { flag: "🇨🇾", label: "Cyprus",          count: "15" },
-                    { flag: "🇨🇦", label: "Canada",          count: "150" },
-                    { flag: "🇸🇬", label: "Singapore",        count: "45"   },
-                    { flag: "🇬🇧", label: "United Kingdom",  count: "120"   },
-                    { flag: "🇦🇺", label: "Australia",       count: "85"   },
-                  ].map(item => (
-                    <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-medium group">
-                      <input type="checkbox" className="rounded border-slate-200 w-4 h-4 accent-black" />
-                      <span className="flex-1 group-hover:text-navy transition-colors">{item.flag} {item.label}</span>
-                      <span className="text-[10px] text-slate-400 font-bold">{item.count}</span>
-                    </label>
-                  ))}
-                </div>
-
-                <div className="h-px bg-slate-100"></div>
-
-                {/* Stream Category checkboxes */}
-                <div className="space-y-2">
-                  <span className="text-xs font-light text-[#359FC2] tracking-normal block">Field / Stream</span>
-                  {[
-                    { icon: Code2,        label: "IT & Tech",    count: "78" },
-                    { icon: Stethoscope,  label: "Healthcare",   count: "35" },
-                    { icon: HardHat,      label: "Engineering",  count: "62" },
-                    { icon: ChefHat,      label: "Hospitality",  count: "24" },
-                    { icon: GraduationCap,label: "Education",    count: "40" },
-                  ].map(item => {
-                    const CategoryIcon = item.icon;
-                    return (
-                      <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-[#475569] font-medium group">
-                        <input type="checkbox" className="rounded border-slate-200 w-4 h-4 accent-black" />
-                        <CategoryIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-black transition-colors" />
-                        <span className="flex-1 group-hover:text-navy transition-colors">{item.label}</span>
+                  {/* Country checkboxes */}
+                  <div className="space-y-2">
+                    <span className="text-xs font-bold text-slate-800 tracking-normal block">Country</span>
+                    {[
+                      { flag: "🇨🇾", label: "Cyprus",          count: "15" },
+                      { flag: "🇨🇦", label: "Canada",          count: "150" },
+                      { flag: "🇸🇬", label: "Singapore",        count: "45"   },
+                      { flag: "🇬🇧", label: "United Kingdom",  count: "120"   },
+                      { flag: "🇦🇺", label: "Australia",       count: "85"   },
+                    ].map(item => (
+                      <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-slate-600 font-medium group">
+                        <input type="checkbox" className="rounded border-slate-200 w-4 h-4 accent-slate-900" />
+                        <span className="flex-1 group-hover:text-slate-900 transition-colors">{item.flag} {item.label}</span>
                         <span className="text-[10px] text-slate-400 font-bold">{item.count}</span>
                       </label>
-                    );
-                  })}
+                    ))}
+                  </div>
+
+                  <div className="h-px bg-slate-100"></div>
+
+                  {/* Stream Category checkboxes */}
+                  <div className="space-y-2">
+                    <span className="text-xs font-bold text-slate-800 tracking-normal block">Field / Stream</span>
+                    {[
+                      { icon: Code2,        label: "IT & Tech",    count: "78" },
+                      { icon: Stethoscope,  label: "Healthcare",   count: "35" },
+                      { icon: HardHat,      label: "Engineering",  count: "62" },
+                      { icon: ChefHat,      label: "Hospitality",  count: "24" },
+                      { icon: GraduationCap,label: "Education",    count: "40" },
+                    ].map(item => {
+                      const CategoryIcon = item.icon;
+                      return (
+                        <label key={item.label} className="flex items-center gap-2 cursor-pointer text-xs text-slate-600 font-medium group">
+                          <input type="checkbox" className="rounded border-slate-200 w-4 h-4 accent-slate-900" />
+                          <CategoryIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-900 transition-colors" />
+                          <span className="flex-1 group-hover:text-slate-900 transition-colors">{item.label}</span>
+                          <span className="text-[10px] text-slate-400 font-bold">{item.count}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+
+                  <div className="h-px bg-slate-100"></div>
+
+                  {/* Perks toggles */}
+                  <div className="space-y-2">
+                    <span className="text-xs font-bold text-slate-800 tracking-normal block">Student Visa Perks</span>
+                    <label className="flex items-center gap-2 cursor-pointer" onClick={() => setPgwpOnly(!pgwpOnly)}>
+                      <div className={`w-9 h-5 rounded-full transition-all relative ${pgwpOnly ? "bg-slate-900" : "bg-slate-200"}`}>
+                        <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${pgwpOnly ? "left-4" : "left-0.5"}`} />
+                      </div>
+                      <span className="text-xs text-slate-600 font-semibold">PGWP Eligible</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer" onClick={() => setScholarshipOnly(!scholarshipOnly)}>
+                      <div className={`w-9 h-5 rounded-full transition-all relative ${scholarshipOnly ? "bg-slate-900" : "bg-slate-200"}`}>
+                        <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${scholarshipOnly ? "left-4" : "left-0.5"}`} />
+                      </div>
+                      <span className="text-xs text-slate-600 font-semibold">Scholarships Available</span>
+                    </label>
+                  </div>
+
+                  <button
+                    onClick={applyFilters}
+                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs shadow-md hover:shadow-lg transition-all outline-none cursor-pointer"
+                  >
+                    Apply Filters
+                  </button>
+                </div>
+              </aside>
+
+              {/* LISTINGS */}
+              <div className="lg:col-span-9 space-y-4">
+                <div className="bg-gradient-to-r from-slate-50 to-white border border-slate-200 border-l-4 border-l-slate-900 rounded-2xl p-4 flex gap-3">
+                  <Zap className="w-5 h-5 text-slate-900 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-extrabold text-slate-900 mb-0.5">Verified Student Visa Pathways</h4>
+                    <p className="text-[11px] text-slate-600 font-semibold leading-normal">Every listing includes verified post-graduation work permit (PGWP) guides. Get admission assistance in one tap.</p>
+                  </div>
                 </div>
 
-                <div className="h-px bg-slate-100"></div>
-
-                {/* Perks toggles */}
-                <div className="space-y-2">
-                  <span className="text-xs font-light text-[#359FC2] tracking-normal block">Student Visa Perks</span>
-                  <label className="flex items-center gap-2 cursor-pointer" onClick={() => setPgwpOnly(!pgwpOnly)}>
-                    <div className={`w-9 h-5 rounded-full transition-all relative ${pgwpOnly ? "bg-black" : "bg-gray-200"}`}>
-                      <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${pgwpOnly ? "left-4" : "left-0.5"}`} />
-                    </div>
-                    <span className="text-xs text-[#475569] font-semibold">PGWP Eligible</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer" onClick={() => setScholarshipOnly(!scholarshipOnly)}>
-                    <div className={`w-9 h-5 rounded-full transition-all relative ${scholarshipOnly ? "bg-black" : "bg-gray-200"}`}>
-                      <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${scholarshipOnly ? "left-4" : "left-0.5"}`} />
-                    </div>
-                    <span className="text-xs text-[#475569] font-semibold">Scholarships Available</span>
-                  </label>
-                </div>
-
-                <button
-                  onClick={applyFilters}
-                  className="w-full bg-black hover:bg-neutral-900 text-white font-bold py-2.5 rounded-xl text-xs shadow-md hover:shadow-lg transition-all outline-none"
-                >
-                  Apply Filters
-                </button>
-              </div>
-            </aside>
-
-            {/* LISTINGS */}
-            <div className="lg:col-span-9 space-y-4">
-              <div className="bg-gradient-to-r from-indigo-50/50 to-white border border-indigo-150 border-l-4 border-l-black rounded-2xl p-4 flex gap-3">
-                <Zap className="w-5 h-5 text-black shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-extrabold text-indigo-750 mb-0.5">Verified Student Visa Pathways</h4>
-                  <p className="text-[11px] text-[#475569] font-semibold leading-normal">Every listing includes verified post-graduation work permit (PGWP) guides. Get admission assistance in one tap.</p>
-                </div>
-              </div>
-
-              {universities.map(univ => (
-                <div
-                  key={univ.id}
-                  onClick={() => setActiveUniv(univ)}
-                  className="bg-white border border-slate-200/90 rounded-[22px] p-5 hover:shadow-xl hover:border-[#159BB8]/60 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start justify-between relative group shadow-xs"
-                >
-                  <div className="flex gap-4 items-center w-full">
-                    <img src={univ.logo} alt={univ.name} className="w-16 h-16 rounded-[18px] object-cover border border-slate-100 shrink-0 shadow-sm" />
-                    <div className="flex-grow min-w-0">
-                      <h3 className="font-sans font-bold text-lg text-[#159BB8] mb-1.5 leading-snug group-hover:text-[#0b6e83] transition-colors">{univ.name}</h3>
-                      <div className="flex flex-wrap items-center gap-2.5 text-xs text-slate-600 font-semibold">
-                        <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#ef4444]" />{univ.location}</span>
-                        <span className="text-slate-300">•</span>
-                        <span className="flex items-center gap-1"><DollarSign className="w-3.5 h-3.5 text-indigo-500" />{univ.tuition} <span className="text-slate-400 font-normal">{univ.tuitionNote}</span></span>
+                {universities.map(univ => (
+                  <div
+                    key={univ.id}
+                    onClick={() => setActiveUniv(univ)}
+                    className="bg-white border border-slate-200/90 rounded-[22px] p-5 hover:shadow-xl hover:border-slate-900/40 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start justify-between relative group shadow-xs"
+                  >
+                    <div className="flex gap-4 items-center w-full">
+                      <img src={univ.logo} alt={univ.name} className="w-16 h-16 rounded-[18px] object-cover border border-slate-100 shrink-0 shadow-sm" />
+                      <div className="flex-grow min-w-0">
+                        <h3 className="font-sans font-bold text-lg text-slate-900 mb-1.5 leading-snug group-hover:text-slate-700 transition-colors">{univ.name}</h3>
+                        <div className="flex flex-wrap items-center gap-2.5 text-xs text-slate-600 font-semibold">
+                          <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-slate-900" />{univ.location}</span>
+                          <span className="text-slate-300">•</span>
+                          <span className="flex items-center gap-1"><DollarSign className="w-3.5 h-3.5 text-slate-900" />{univ.tuition} <span className="text-slate-400 font-normal">{univ.tuitionNote}</span></span>
+                        </div>
                       </div>
                     </div>
+                    <div className="flex sm:flex-col items-end justify-between sm:justify-center gap-3 w-full sm:w-auto shrink-0 border-t sm:border-t-0 border-slate-100 pt-3 sm:pt-0">
+                      <div className="text-[11px] text-slate-400 font-medium tracking-wide">{univ.posted}</div>
+                      <button className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs tracking-wide px-5 py-2 rounded-full flex items-center gap-1.5 transition-all outline-none shrink-0 shadow-sm active:scale-95 cursor-pointer">
+                        <span>Details</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex sm:flex-col items-end justify-between sm:justify-center gap-3 w-full sm:w-auto shrink-0 border-t sm:border-t-0 border-slate-100 pt-3 sm:pt-0">
-                    <div className="text-[11px] text-slate-400 font-medium tracking-wide">{univ.posted}</div>
-                    <button className="bg-black hover:bg-neutral-900 text-white font-bold text-xs tracking-wide px-5 py-2 rounded-full flex items-center gap-1.5 transition-all outline-none shrink-0 shadow-sm active:scale-95">
-                      <span>Details</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          /* ======================================================= */
+          /* VIEW 2: UNIVERSITY CONSULTANTS LISTINGS GRID */
+          /* ======================================================= */
+          <div className="max-w-6xl mx-auto px-6 py-10 space-y-6 text-left">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-100">
+              <div>
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Verified Network</span>
+                <h2 className="font-sans font-extrabold text-2xl text-slate-900">Certified University Admissions Consultants</h2>
+                <p className="text-xs text-slate-500 mt-0.5">Connect directly with licensed education counsellors for college shortlisting, SOPs, scholarships &amp; student visas.</p>
+              </div>
+              <a
+                href="https://wa.me/917661989366?text=Hi%20TravlTik,%20I%20need%20help%20finding%20the%20best%20study%20abroad%20consultant"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-5 py-3 rounded-2xl flex items-center gap-2 shadow-md transition-all self-start sm:self-auto"
+              >
+                <span>Free Concierge Match</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+
+            {consultants.length === 0 ? (
+              <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-3">
+                <Users className="w-12 h-12 text-slate-300 mx-auto" />
+                <h3 className="text-base font-bold text-slate-900">No consultants found for this filter</h3>
+                <p className="text-xs text-slate-500">Try changing your destination country or city filter.</p>
+                <button
+                  onClick={clearConsultantFilters}
+                  className="bg-slate-900 text-white text-xs font-bold px-6 py-2.5 rounded-full hover:bg-slate-800 transition-all cursor-pointer"
+                >
+                  View All Consultants
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {consultants.map(consultant => (
+                  <div
+                    key={consultant.id}
+                    className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-sm hover:shadow-xl hover:border-slate-900/30 transition-all duration-300 flex flex-col justify-between space-y-4"
+                  >
+                    <div className="space-y-3.5">
+                      {/* Top Header */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-3.5">
+                          <img
+                            src={consultant.image}
+                            alt={consultant.name}
+                            className="w-14 h-14 rounded-2xl object-cover border border-slate-200 shadow-xs"
+                          />
+                          <div>
+                            <div className="flex items-center gap-1.5">
+                              <h3 className="font-bold text-base text-slate-900 leading-tight">{consultant.name}</h3>
+                              <BadgeCheck className="w-4 h-4 text-emerald-600 fill-emerald-100" />
+                            </div>
+                            <p className="text-xs font-semibold text-slate-600 mt-0.5">{consultant.agencyName}</p>
+                            <span className="text-[10px] font-medium text-slate-400 flex items-center gap-1 mt-0.5">
+                              <MapPin className="w-3 h-3 text-slate-400" /> {consultant.city} • {consultant.experience}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Rating & License Badge */}
+                        <div className="text-right">
+                          <div className="inline-flex items-center gap-1 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded-lg text-xs font-bold text-amber-700">
+                            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            <span>{consultant.rating}</span>
+                            <span className="text-[10px] text-amber-600 font-normal">({consultant.reviews})</span>
+                          </div>
+                          <span className="block text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-wider">
+                            {consultant.license}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Bio */}
+                      <p className="text-xs text-slate-600 font-normal leading-relaxed line-clamp-2">
+                        {consultant.bio}
+                      </p>
+
+                      {/* Country Badges */}
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">Admissions:</span>
+                        {consultant.countries.map(c => (
+                          <span
+                            key={c.name}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-200"
+                          >
+                            <img src={`https://flagcdn.com/w40/${c.flag}.png`} alt={c.name} className="w-3.5 h-2.5 object-cover rounded-xs" />
+                            <span>{c.name}</span>
+                          </span>
+                        ))}
+                        <span className="ml-auto text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                          {consultant.successRate} Visa Rate
+                        </span>
+                      </div>
+
+                      {/* Specialities tags */}
+                      <div className="flex items-center gap-1.5 flex-wrap pt-1">
+                        {consultant.specialities.map((spec, i) => (
+                          <span key={i} className="text-[10px] font-medium text-slate-600 bg-slate-50 border border-slate-200/70 px-2 py-0.5 rounded-md">
+                            {spec}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
+                      <a
+                        href={`https://wa.me/${consultant.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${consultant.name}, I found your profile on TravlTik for university admission and student visa guidance.`)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs"
+                      >
+                        <Zap className="w-3.5 h-3.5" />
+                        <span>Chat on WhatsApp</span>
+                      </a>
+
+                      <button
+                        type="button"
+                        onClick={() => handleBookCounselling(consultant)}
+                        className="py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                      >
+                        <span>Book Counselling</span>
+                      </button>
+                    </div>
                   </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* COUNSELLING MODAL */}
+        {counsellingModalOpen && activeConsultant && (
+          <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 font-sans">
+            <div className="bg-white rounded-3xl max-w-md w-full p-6 relative shadow-2xl border border-slate-200 text-left space-y-4">
+              <button
+                type="button"
+                onClick={() => setCounsellingModalOpen(false)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold flex items-center justify-center transition-all cursor-pointer"
+              >
+                ✕
+              </button>
+
+              <div>
+                <div className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider mb-2">
+                  100% Free 1-on-1 Profile Assessment
                 </div>
-              ))}
+                <h3 className="font-bold text-lg text-slate-900">Book Session with {activeConsultant.name}</h3>
+                <p className="text-xs text-slate-500 mt-0.5">{activeConsultant.role} ({activeConsultant.agencyName})</p>
+              </div>
+
+              {counsellingSuccess ? (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center space-y-2">
+                  <BadgeCheck className="w-12 h-12 text-emerald-600 mx-auto" />
+                  <h4 className="font-bold text-base text-emerald-950">Request Confirmed!</h4>
+                  <p className="text-xs text-emerald-800">
+                    {activeConsultant.name} will contact you on WhatsApp &amp; Phone ({studentForm.phone || "your number"}) within 2 hours.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={submitCounsellingForm} className="space-y-3">
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 block mb-1">Your Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Rahul Sharma"
+                      value={studentForm.name}
+                      onChange={e => setStudentForm({ ...studentForm, name: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="text-[11px] font-bold text-slate-700 block mb-1">WhatsApp Phone</label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="+91 98765 43210"
+                        value={studentForm.phone}
+                        onChange={e => setStudentForm({ ...studentForm, phone: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-bold text-slate-700 block mb-1">Target Country</label>
+                      <select
+                        value={studentForm.targetCountry}
+                        onChange={e => setStudentForm({ ...studentForm, targetCountry: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900"
+                      >
+                        {["Canada", "UK", "USA", "Australia", "Germany", "Cyprus", "Singapore", "Ireland"].map(c => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 block mb-1">Target Degree / Course</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Master's in Computer Science, MBA, B.Tech"
+                      value={studentForm.course}
+                      onChange={e => setStudentForm({ ...studentForm, course: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs tracking-wide shadow-md transition-all cursor-pointer mt-2"
+                  >
+                    Confirm Free Profile Assessment
+                  </button>
+                </form>
+              )}
             </div>
           </div>
+        )}
 
           {/* AD DETAIL POPUP MODAL */}
           {activeUniv && (

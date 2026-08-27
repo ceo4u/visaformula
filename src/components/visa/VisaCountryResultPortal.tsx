@@ -1605,45 +1605,93 @@ export function VisaCountryResultPortal({
           <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-14">
             
             {/* ================================================== */}
-            {/* 1. INSTANT DIRECT VERDICT BANNER (Gemini AI Overview) */}
+            {/* 1. INSTANT DIRECT VERDICT BANNER (Clean Google Gemini AI Overview) */}
             {/* ================================================== */}
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-[#0c1a2e] text-white p-6 sm:p-8 shadow-xl border border-slate-800 text-left">
-              {/* Soft Gemini Sparkle Ambient Aura */}
-              <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-teal-500/15 via-emerald-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-              
-              <div className="relative z-10 space-y-4">
-                {/* Header Pill with Green Status Indicator */}
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-xs font-semibold text-teal-200">
-                    <Sparkles className="w-4 h-4 text-teal-300 animate-pulse" />
-                    <span>✨ Visa Status Resolution</span>
-                  </div>
+            <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-6 text-left transition-all hover:shadow-md">
+              {/* Subtle Ambient Gemini AI Gradient Header Glow */}
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-teal-500 via-[#00a896] to-blue-500" />
+              <div className="absolute -top-16 -right-16 w-64 h-64 bg-teal-50/70 rounded-full blur-3xl pointer-events-none" />
 
-                  <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full px-3.5 py-1 text-xs font-semibold shadow-xs">
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
-                    <span>{aiIntel.isExempt ? "VISA NOT REQUIRED" : "ELECTRONIC ENTRY REQUIRED"}</span>
-                  </div>
+              {/* Top Header Pill Row */}
+              <div className="flex flex-wrap items-center justify-between gap-3 relative z-10 pb-4 border-b border-slate-100">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200/80 text-xs font-bold text-slate-800">
+                  <Sparkles className="w-4 h-4 text-[#00a896]" />
+                  <span>✨ AI Visa &amp; Entry Resolution</span>
                 </div>
 
-                {/* Direct Verdict Sentence */}
-                <div className="space-y-2">
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white leading-snug">
-                    {passportCountry} passport holders traveling to {countryName} for tourism or short stays {aiIntel.isExempt ? "up to 90 days do not need a visa." : "require an official e-Visa or entry authorization before departure."}
-                  </h2>
-                  <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed max-w-3xl">
-                    {aiIntel.verdictSummary}
-                  </p>
+                <div className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-bold shadow-2xs border ${
+                  aiIntel.isExempt
+                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200/80'
+                    : 'bg-blue-50 text-blue-800 border-blue-200/80'
+                }`}>
+                  <span className={`w-2 h-2 rounded-full animate-ping ${aiIntel.isExempt ? 'bg-emerald-500' : 'bg-blue-500'}`} />
+                  <span>{aiIntel.isExempt ? "VISA NOT REQUIRED (Up to 90 Days)" : "ELECTRONIC ENTRY / VISA REQUIRED"}</span>
                 </div>
+              </div>
 
-                {/* Source Verification Footer */}
-                <div className="flex items-center gap-3 pt-2 text-[11px] text-slate-400 font-medium border-t border-white/10">
-                  <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-                    <BadgeCheck className="w-4 h-4 text-emerald-400" />
-                    Verified via official consular intelligence
+              {/* Direct Clear Verdict Sentence & Spaced Description */}
+              <div className="space-y-3 relative z-10">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-950 leading-snug tracking-tight font-sans">
+                  {activePurposeTab === 'study' 
+                    ? `${passportCountry} students traveling to ${countryName} require an approved Student Pass / Visa before departure.`
+                    : activePurposeTab === 'work'
+                    ? `${passportCountry} professionals traveling to ${countryName} require an approved Work Pass / Employment Visa.`
+                    : aiIntel.isExempt
+                    ? `${passportCountry} passport holders traveling to ${countryName} for tourism or short stays do not need a visa.`
+                    : `${passportCountry} passport holders traveling to ${countryName} require an official e-Visa or entry authorization before departure.`
+                  }
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-3xl">
+                  {aiIntel.verdictSummary}
+                </p>
+              </div>
+
+              {/* Structured 3-Card Key Facts Breakdown */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1 relative z-10">
+                <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-left space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                    1. Entry Status
                   </span>
-                  <span>•</span>
-                  <span>Updated for 2026 Travel Season</span>
+                  <span className="text-sm font-bold text-slate-900 block truncate">
+                    {aiIntel.isExempt ? 'Visa-Exempt (Tourist / Visit)' : 'Official E-Visa Required'}
+                  </span>
+                  <span className="text-[11px] font-medium text-emerald-700 block">
+                    {aiIntel.isExempt ? 'Instant Airport Clearance' : '3–5 Days Processing'}
+                  </span>
                 </div>
+
+                <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-left space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                    2. Max Allowed Stay
+                  </span>
+                  <span className="text-sm font-bold text-slate-900 block truncate">
+                    {aiIntel.maxStay || 'Up to 90 Days'}
+                  </span>
+                  <span className="text-[11px] font-medium text-slate-500 block">
+                    Per calendar visit
+                  </span>
+                </div>
+
+                <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-left space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                    3. Digital Requirement
+                  </span>
+                  <span className="text-sm font-bold text-slate-900 block truncate">
+                    {aiIntel.digitalCardName || 'Digital Arrival Declaration'}
+                  </span>
+                  <span className="text-[11px] font-medium text-blue-700 block">
+                    Mandatory online filing
+                  </span>
+                </div>
+              </div>
+
+              {/* Source Verification Footer */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-4 border-t border-slate-100 text-[11px] text-slate-500 font-medium relative z-10">
+                <div className="flex items-center gap-1.5 text-emerald-700 font-bold">
+                  <BadgeCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Verified via official consular rules &amp; IATA Timatic</span>
+                </div>
+                <span className="text-slate-400">Updated for 2026 Global Travel Season</span>
               </div>
             </div>
 

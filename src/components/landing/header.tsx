@@ -116,7 +116,7 @@ export function Header() {
 
           <a
             href="/login"
-            className="inline-flex items-center justify-center border-2 border-slate-300 hover:border-slate-900 bg-white hover:bg-slate-50 text-[#0c1a2e] px-4.5 py-2 rounded-xl text-[14px] font-bold transition-all shadow-2xs active:scale-95 whitespace-nowrap"
+            className="inline-flex items-center justify-center border-2 border-slate-300 hover:border-slate-900 bg-white hover:bg-slate-50 text-[#0c1a2e] px-6 py-2.5 min-w-[96px] rounded-xl text-[14px] font-bold transition-all shadow-2xs active:scale-95 whitespace-nowrap cursor-pointer"
           >
             Log in
           </a>

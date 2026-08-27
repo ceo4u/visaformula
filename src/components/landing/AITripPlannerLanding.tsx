@@ -3198,7 +3198,267 @@ return (
           )}
 
           {/* ======================================================= */}
-          {/* ── 4. FIND UNIVERSITIES & CONSULTANTS SEARCH SECTION ── */}
+          {/* ── 4. HOW TRAVLTIK WORKS SECTION (ABOVE MAGIC SEARCH) ── */}
+          {/* ======================================================= */}
+          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
+            
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+              <div>
+                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                  How TravlTik Works?
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                  End-to-end verified visa &amp; travel pathways in 4 easy steps.
+                </p>
+              </div>
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                Simple 4-Step Process
+              </span>
+            </div>
+
+            {/* 4 Squircle Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              {[
+                {
+                  step: "Step 1 • Discover",
+                  title: "Search",
+                  desc: "Find services, destinations or trusted global experts",
+                  icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                },
+                {
+                  step: "Step 2 • Evaluate",
+                  title: "Compare",
+                  desc: "Compare verified options, ratings & transparent fees",
+                  icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                },
+                {
+                  step: "Step 3 • Escrow Protection",
+                  title: "Connect",
+                  desc: "Connect with licensed consultants with 100% escrow safety",
+                  icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                },
+                {
+                  step: "Step 4 • Fly Confident",
+                  title: "Travel",
+                  desc: "Instant official e-Visa delivery & real-time border journey alerts",
+                  icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                }
+              ].map((card, i) => (
+                <div 
+                  key={i}
+                  className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px]"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                    {card.icon}
+                  </div>
+                  <div className="mt-5">
+                    <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
+                      {card.step}
+                    </span>
+                    <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
+                      {card.title}
+                    </h4>
+                    <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                      {card.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ======================================================= */}
+          {/* ── 5. EXPLORE CLASSIFIEDS SECTION (ABOVE MAGIC SEARCH) ── */}
+          {/* ======================================================= */}
+          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 px-2 sm:px-0 text-left">
+            <div className="flex items-center justify-between mb-4 sm:mb-5">
+              <div>
+                <h3 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">Explore Classifieds</h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-normal mt-0.5">Find great offers from trusted providers</p>
+              </div>
+              <a
+                href="/classifieds"
+                className="text-xs sm:text-sm font-semibold text-[#16a34a] hover:underline"
+              >
+                View All
+              </a>
+            </div>
+
+            {/* 5 Offer Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+              
+              {/* Card 1: Study in Canada */}
+              <a
+                href="/universities?country=Canada"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
+              >
+                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
+                    FEATURED
+                  </span>
+                  <img
+                    src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop"
+                    alt="Study in Canada"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
+                      Study in Canada
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
+                      Get admission in top universities
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.8</span>
+                    </div>
+                    <span className="text-slate-500 font-medium">Canada</span>
+                  </div>
+                </div>
+              </a>
+
+              {/* Card 2: Flight Tickets */}
+              <a
+                href="/find-experts?category=flight"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
+              >
+                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
+                    OFFER
+                  </span>
+                  <img
+                    src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800&auto=format&fit=crop"
+                    alt="Flight Tickets"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
+                      Flight Tickets
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
+                      Domestic &amp; International flight deals
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.6</span>
+                    </div>
+                    <span className="text-slate-500 font-medium">All Routes</span>
+                  </div>
+                </div>
+              </a>
+
+              {/* Card 3: Hotel Stays */}
+              <a
+                href="/classifieds?category=hotels"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
+              >
+                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=85"
+                    alt="Hotel Stays"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
+                      Hotel Stays
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
+                      Best hotel deals across India
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.7</span>
+                    </div>
+                    <span className="text-slate-500 font-medium">1000+ Hotels</span>
+                  </div>
+                </div>
+              </a>
+
+              {/* Card 4: Outstation Cabs */}
+              <a
+                href="/classifieds?category=cabs"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
+              >
+                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop&q=85"
+                    alt="Outstation Cabs"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
+                      Outstation Cabs
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
+                      Safe &amp; reliable cabs at best prices
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.5</span>
+                    </div>
+                    <span className="text-slate-500 font-medium">All India</span>
+                  </div>
+                </div>
+              </a>
+
+              {/* Card 5: Holiday Packages */}
+              <a
+                href="/tours"
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer col-span-2 sm:col-span-1"
+              >
+                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&auto=format&fit=crop&q=85"
+                    alt="Holiday Packages"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
+                      Holiday Packages
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
+                      Amazing holiday packages
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-slate-800">4.6</span>
+                    </div>
+                    <span className="text-slate-500 font-medium">All India</span>
+                  </div>
+                </div>
+              </a>
+
+            </div>
+          </div>
+
+          {/* ======================================================= */}
+          {/* ── 6. FIND UNIVERSITIES & CONSULTANTS SEARCH (MAGIC SEARCH) ── */}
           {/* ======================================================= */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
             
@@ -3446,7 +3706,7 @@ return (
           </div>
 
           {/* ======================================================= */}
-          {/* ── 4B. COMPACT CAPSULE: JOIN EXPAT & STUDENT COMMUNITY ── */}
+          {/* ── 7. COMPACT CAPSULE: JOIN EXPAT & STUDENT COMMUNITY ── */}
           {/* ======================================================= */}
           <section className="max-w-6xl mx-auto mt-6 flex items-center justify-center animate-fadeIn px-3">
             <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2.5 px-4 sm:px-7 shadow-xs inline-flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-center gap-3 sm:gap-6 transition-all hover:shadow-md">
@@ -3492,267 +3752,7 @@ return (
           </section>
 
           {/* ======================================================= */}
-          {/* ── 5. HOW TRAVLTIK WORKS SECTION ── */}
-          {/* ======================================================= */}
-          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
-            
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-              <div>
-                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                  How TravlTik Works?
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                  End-to-end verified visa &amp; travel pathways in 4 easy steps.
-                </p>
-              </div>
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
-                Simple 4-Step Process
-              </span>
-            </div>
-
-            {/* 4 Squircle Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-              {[
-                {
-                  step: "Step 1 • Discover",
-                  title: "Search",
-                  desc: "Find services, destinations or trusted global experts",
-                  icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                },
-                {
-                  step: "Step 2 • Evaluate",
-                  title: "Compare",
-                  desc: "Compare verified options, ratings & transparent fees",
-                  icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                },
-                {
-                  step: "Step 3 • Escrow Protection",
-                  title: "Connect",
-                  desc: "Connect with licensed consultants with 100% escrow safety",
-                  icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                },
-                {
-                  step: "Step 4 • Fly Confident",
-                  title: "Travel",
-                  desc: "Instant official e-Visa delivery & real-time border journey alerts",
-                  icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                }
-              ].map((card, i) => (
-                <div 
-                  key={i}
-                  className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px]"
-                >
-                  <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                    {card.icon}
-                  </div>
-                  <div className="mt-5">
-                    <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
-                      {card.step}
-                    </span>
-                    <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
-                      {card.title}
-                    </h4>
-                    <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                      {card.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ======================================================= */}
-          {/* ── 6. EXPLORE CLASSIFIEDS SECTION (NOW UNDER HOW IT WORKS) ── */}
-          {/* ======================================================= */}
-          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 px-2 sm:px-0 text-left">
-            <div className="flex items-center justify-between mb-4 sm:mb-5">
-              <div>
-                <h3 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">Explore Classifieds</h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-normal mt-0.5">Find great offers from trusted providers</p>
-              </div>
-              <a
-                href="/classifieds"
-                className="text-xs sm:text-sm font-semibold text-[#16a34a] hover:underline"
-              >
-                View All
-              </a>
-            </div>
-
-            {/* 5 Offer Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-              
-              {/* Card 1: Study in Canada */}
-              <a
-                href="/universities?country=Canada"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
-              >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
-                    FEATURED
-                  </span>
-                  <img
-                    src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop"
-                    alt="Study in Canada"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Study in Canada
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Get admission in top universities
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.8</span>
-                    </div>
-                    <span className="text-slate-500 font-medium">Canada</span>
-                  </div>
-                </div>
-              </a>
-
-              {/* Card 2: Flight Tickets */}
-              <a
-                href="/find-experts?category=flight"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
-              >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
-                    OFFER
-                  </span>
-                  <img
-                    src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800&auto=format&fit=crop"
-                    alt="Flight Tickets"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Flight Tickets
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Domestic &amp; International flight deals
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.6</span>
-                    </div>
-                    <span className="text-slate-500 font-medium">All Routes</span>
-                  </div>
-                </div>
-              </a>
-
-              {/* Card 3: Hotel Stays */}
-              <a
-                href="/classifieds?category=hotels"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
-              >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=85"
-                    alt="Hotel Stays"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Hotel Stays
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Best hotel deals across India
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.7</span>
-                    </div>
-                    <span className="text-slate-500 font-medium">1000+ Hotels</span>
-                  </div>
-                </div>
-              </a>
-
-              {/* Card 4: Outstation Cabs */}
-              <a
-                href="/classifieds?category=cabs"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
-              >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop&q=85"
-                    alt="Outstation Cabs"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Outstation Cabs
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Safe &amp; reliable cabs at best prices
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.5</span>
-                    </div>
-                    <span className="text-slate-500 font-medium">All India</span>
-                  </div>
-                </div>
-              </a>
-
-              {/* Card 5: Holiday Packages */}
-              <a
-                href="/tours"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer col-span-2 sm:col-span-1"
-              >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&auto=format&fit=crop&q=85"
-                    alt="Holiday Packages"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Holiday Packages
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Amazing holiday packages
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.6</span>
-                    </div>
-                    <span className="text-slate-500 font-medium">All India</span>
-                  </div>
-                </div>
-              </a>
-
-            </div>
-          </div>
-
-          {/* ======================================================= */}
-          {/* ── 7. EASY SEARCH & POPULAR DESTINATIONS SECTION ── */}
+          {/* ── 8. EASY SEARCH & POPULAR DESTINATIONS SECTION ── */}
           {/* ======================================================= */}
           <div id="easy-search" className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left scroll-mt-24">
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">

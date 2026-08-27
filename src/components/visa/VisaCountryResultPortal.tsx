@@ -1718,26 +1718,26 @@ export function VisaCountryResultPortal({
                 
               </div>
 
-              {/* ── RIGHT COLUMN (5 COLS): STICKY HIGH-CONVERTING BOOKING WIDGET ── */}
+              {/* ── RIGHT COLUMN (5 COLS): STICKY VISA CONSULTANCY & EXPERT ASSISTANCE ── */}
               <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
                 
                 <div className="bg-white border-2 border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-xl shadow-slate-900/5 space-y-6 text-left relative overflow-hidden">
                   
-                  {/* Delivery Guarantee Pill */}
-                  <div className="bg-emerald-50 border border-emerald-200/90 rounded-2xl p-3.5 flex items-center justify-between gap-3">
+                  {/* Status Pill */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2.5">
-                      <Zap className="w-4 h-4 text-[#00A86B] shrink-0" />
+                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                       <div>
-                        <span className="text-[10px] font-medium uppercase tracking-wider text-emerald-800 block">
-                          Delivery Guarantee
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+                          Official Visa Assistance
                         </span>
-                        <span className="text-xs sm:text-sm font-semibold text-emerald-950">
-                          {guaranteedDate}
+                        <span className="text-xs sm:text-sm font-bold text-slate-900">
+                          {countryName} Visa Application Support
                         </span>
                       </div>
                     </div>
-                    <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-200/80 text-emerald-900">
-                      ON-TIME
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                      VERIFIED
                     </span>
                   </div>
 
@@ -1758,83 +1758,30 @@ export function VisaCountryResultPortal({
                       <span className="font-bold text-emerald-700">{approvedVisaType}</span>
                     </div>
 
-                    {/* Traveller Count Selector */}
-                    <div className="flex items-center justify-between pt-1">
-                      <div>
-                        <span className="text-xs font-bold text-slate-900 block">Number of Travellers</span>
-                        <span className="text-[11px] text-slate-400 font-medium">₹{grandTotal.toLocaleString()} total</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          disabled={travellerCount <= 1}
-                          onClick={() => setTravellerCount(prev => Math.max(1, prev - 1))}
-                          className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-800 hover:bg-slate-100 disabled:opacity-40 font-bold flex items-center justify-center cursor-pointer transition-all shadow-2xs"
-                        >
-                          -
-                        </button>
-                        <span className="w-6 text-center font-semibold text-slate-900 text-sm">
-                          {travellerCount}
-                        </span>
-                        <button
-                          type="button"
-                          disabled={travellerCount >= 10}
-                          onClick={() => setTravellerCount(prev => Math.min(10, prev + 1))}
-                          className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-800 hover:bg-slate-100 disabled:opacity-40 font-bold flex items-center justify-center cursor-pointer transition-all shadow-2xs"
-                        >
-                          +
-                        </button>
-                      </div>
+                    <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
+                      <span className="text-slate-500 font-medium">Estimated Processing:</span>
+                      <span className="font-bold text-slate-900">3–5 Business Days</span>
                     </div>
-                  </div>
 
-                  {/* Transparent Price Breakdown */}
-                  <div className="border-t border-b border-slate-100 py-3.5 space-y-2 text-xs font-medium">
-                    <div className="flex items-center justify-between text-slate-600">
-                      <span>Government Visa Fees ({travellerCount}x)</span>
+                    <div className="flex items-center justify-between text-xs pt-1">
+                      <span className="text-slate-500 font-medium">Embassy Fee Guide:</span>
                       <span className="font-bold text-slate-900">₹{totalGovFee.toLocaleString()}</span>
                     </div>
-                    <div className="flex items-center justify-between text-slate-600">
-                      <span className="flex items-center gap-1">
-                        TravlTik Concierge &amp; Filing
-                        <span className="text-[9px] text-emerald-700 font-medium bg-emerald-50 px-1.5 py-0.5 rounded">PROMO</span>
-                      </span>
-                      <span className="font-bold text-slate-900">₹{totalServFee.toLocaleString()}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-slate-600">
-                      <span>Express Verification &amp; Filing</span>
-                      <span className="font-bold text-emerald-600">FREE</span>
-                    </div>
                   </div>
 
-                  {/* Total Amount Header */}
-                  <div className="flex items-baseline justify-between pt-1">
-                    <div>
-                      <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
-                        Total Amount
-                      </span>
-                      <span className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-                        ₹{grandTotal.toLocaleString()}
-                      </span>
-                    </div>
-                    <span className="text-[11px] font-bold text-slate-500">
-                      All taxes &amp; fees included
-                    </span>
-                  </div>
-
-                  {/* High-Converting Primary Button */}
-                  <button
-                    type="button"
-                    onClick={handleOpenApplicationModal}
+                  {/* Primary Contact CTA */}
+                  <a
+                    href="https://wa.me/917661989366?text=Hi%20TravlTik%2C%20I%20need%20expert%20visa%20assistance%20for%20my%20application"
+                    target="_blank"
+                    rel="noreferrer"
                     className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white font-semibold text-sm sm:text-base tracking-wide shadow-xl shadow-slate-900/20 transition-all cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <span>Start Application</span>
+                    <span>Talk to Visa Specialist</span>
                     <ArrowRight className="w-4 h-4 stroke-[3]" />
-                  </button>
+                  </a>
 
                   {/* Direct Support Badges */}
-                  <div className="pt-2 flex items-center justify-between gap-2">
+                  <div className="pt-1 flex items-center justify-between gap-2">
                     <a
                       href="https://wa.me/917661989366?text=Hi%20TravlTik%2C%20I%20need%20help%20with%20my%20visa%20application"
                       target="_blank"
@@ -1842,7 +1789,7 @@ export function VisaCountryResultPortal({
                       className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
                     >
                       <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>WhatsApp Help</span>
+                      <span>WhatsApp Chat</span>
                     </a>
 
                     <a
@@ -1855,10 +1802,10 @@ export function VisaCountryResultPortal({
                   </div>
 
                   {/* Trust Footer */}
-                  <div className="pt-2 text-center">
+                  <div className="pt-2 text-center border-t border-slate-100">
                     <p className="text-[11px] text-slate-400 font-bold flex items-center justify-center gap-1.5">
                       <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>256-Bit SSL Encrypted • 99.4% Approval Record</span>
+                      <span>Verified Consultants • 99.4% Approval Record</span>
                     </p>
                   </div>
 
@@ -1867,240 +1814,8 @@ export function VisaCountryResultPortal({
 
             </div>
           
-            {/* ── CENTERED FULL-WIDTH SECTIONS: COMPARISON MATRIX, DOCUMENTS CHECKLIST & FAQS ── */}
+            {/* ── CENTERED FULL-WIDTH SECTIONS: DOCUMENTS CHECKLIST & FAQS ── */}
             <div className="max-w-4xl mx-auto space-y-12 sm:space-y-16 mt-14 sm:mt-20 text-left">
-              {/* 4. ATLYS-STYLE CLEAN TIMELINE COMPARISON: DOING IT WITH TRAVLTIK VS DOING IT YOURSELF */}
-              <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-10 shadow-2xs space-y-12 sm:space-y-16">
-                
-                {/* TRACK 1: DOING IT WITH TRAVLTIK */}
-                <div className="space-y-6">
-                  <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#4361ee] font-sans">
-                    Doing It With TravlTik
-                  </h3>
-
-                  {/* Desktop Horizontal 4-Step Timeline */}
-                  <div className="hidden md:block relative pt-20 pb-20">
-                    {/* Connecting Line */}
-                    <div className="absolute top-1/2 -translate-y-1/2 left-8 right-8 h-1.5 bg-[#4361ee] rounded-full z-0" />
-
-                    <div className="relative z-10 grid grid-cols-4 gap-4">
-                      {/* Step 1: Top text */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="absolute bottom-[calc(50%+24px)] max-w-[170px] space-y-1 text-center">
-                          <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
-                            Submit all your documents on TravlTik
-                          </p>
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                        </div>
-                        <div className="w-10 h-10 rounded-full bg-[#4361ee] text-white font-extrabold text-sm flex items-center justify-center shadow-md">
-                          1
-                        </div>
-                      </div>
-
-                      {/* Step 2: Bottom text */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="w-10 h-10 rounded-full bg-[#4361ee] text-white font-extrabold text-sm flex items-center justify-center shadow-md">
-                          2
-                        </div>
-                        <div className="absolute top-[calc(50%+24px)] max-w-[170px] space-y-1 text-center">
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                          <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
-                            TravlTik pre-screens &amp; verifies paperwork
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Step 3: Top text */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="absolute bottom-[calc(50%+24px)] max-w-[170px] space-y-1 text-center">
-                          <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
-                            We constantly give you updates and a reliable ETA.
-                          </p>
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                        </div>
-                        <div className="w-10 h-10 rounded-full bg-[#4361ee] text-white font-extrabold text-sm flex items-center justify-center shadow-md">
-                          3
-                        </div>
-                      </div>
-
-                      {/* Step 4: Bottom text */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="w-10 h-10 rounded-full bg-[#4361ee] text-white font-extrabold text-sm flex items-center justify-center shadow-md">
-                          4
-                        </div>
-                        <div className="absolute top-[calc(50%+24px)] max-w-[180px] space-y-1 text-center">
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                          <p className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug">
-                            When approved, download your official e-Visa!
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Mobile Vertical Flow for TravlTik */}
-                  <div className="md:hidden space-y-3">
-                    {[
-                      { step: '1', title: 'Submit all your documents on TravlTik' },
-                      { step: '2', title: 'TravlTik pre-screens & verifies paperwork' },
-                      { step: '3', title: 'We constantly give you updates and a reliable ETA.' },
-                      { step: '4', title: 'When approved, download your official e-Visa!' }
-                    ].map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-3.5 bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-2xl">
-                        <div className="w-8 h-8 rounded-full bg-[#4361ee] text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">
-                          {item.step}
-                        </div>
-                        <p className="text-xs font-semibold text-slate-800">
-                          {item.title}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* TRACK 2: DOING IT YOURSELF */}
-                <div className="space-y-6 pt-4 border-t border-slate-100">
-                  <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-slate-900 font-sans">
-                    Doing It Yourself
-                  </h3>
-
-                  {/* Desktop Horizontal 8-Step Timeline */}
-                  <div className="hidden lg:block relative pt-20 pb-20">
-                    {/* Connecting Line */}
-                    <div className="absolute top-1/2 -translate-y-1/2 left-6 right-6 h-1.5 bg-black rounded-full z-0" />
-
-                    <div className="relative z-10 grid grid-cols-8 gap-2">
-                      {/* Step 1: Top */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="absolute bottom-[calc(50%+24px)] w-[105px] space-y-1 text-center">
-                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
-                            Gather all your documents at home
-                          </p>
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                        </div>
-                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
-                          1
-                        </div>
-                      </div>
-
-                      {/* Step 2: Bottom */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
-                          2
-                        </div>
-                        <div className="absolute top-[calc(50%+24px)] w-[105px] space-y-1 text-center">
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
-                            Get your documents printed at a print shop
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Step 3: Top */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="absolute bottom-[calc(50%+24px)] w-[105px] space-y-1 text-center">
-                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
-                            Get stuck in traffic driving to the embassy
-                          </p>
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                        </div>
-                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
-                          3
-                        </div>
-                      </div>
-
-                      {/* Step 4: Bottom */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
-                          4
-                        </div>
-                        <div className="absolute top-[calc(50%+24px)] w-[105px] space-y-1 text-center">
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
-                            Spend 3+ hours at the embassy
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Step 5: Top */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="absolute bottom-[calc(50%+24px)] w-[105px] space-y-1 text-center">
-                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
-                            Get stuck in traffic on the way back home
-                          </p>
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                        </div>
-                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
-                          5
-                        </div>
-                      </div>
-
-                      {/* Step 6: Bottom */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
-                          6
-                        </div>
-                        <div className="absolute top-[calc(50%+24px)] w-[105px] space-y-1 text-center">
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
-                            Wait anxiously for your visa approval
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Step 7: Top */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="absolute bottom-[calc(50%+24px)] w-[105px] space-y-1 text-center">
-                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
-                            Go back to embassy to pick up passport
-                          </p>
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                        </div>
-                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
-                          7
-                        </div>
-                      </div>
-
-                      {/* Step 8: Bottom */}
-                      <div className="flex flex-col items-center text-center relative">
-                        <div className="w-9 h-9 rounded-full bg-black text-white font-extrabold text-xs flex items-center justify-center shadow-md">
-                          8
-                        </div>
-                        <div className="absolute top-[calc(50%+24px)] w-[105px] space-y-1 text-center">
-                          <span className="block text-slate-400 text-xs font-mono font-medium">|</span>
-                          <p className="text-[11px] font-semibold text-slate-700 leading-snug">
-                            Drive back home
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Mobile & Tablet Step Flow for DIY */}
-                  <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {[
-                      { step: '1', title: 'Gather all your documents at home' },
-                      { step: '2', title: 'Get your documents printed at a print shop' },
-                      { step: '3', title: 'Get stuck in traffic driving to the embassy' },
-                      { step: '4', title: 'Spend 3+ hours waiting at the embassy' },
-                      { step: '5', title: 'Get stuck in traffic on the way back home' },
-                      { step: '6', title: 'Wait anxiously for your visa approval' },
-                      { step: '7', title: 'Go back to embassy to pick up passport' },
-                      { step: '8', title: 'Drive back home exhausted' }
-                    ].map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-3 bg-slate-50 border border-slate-200/80 p-3 rounded-2xl">
-                        <div className="w-7 h-7 rounded-full bg-black text-white font-bold text-xs flex items-center justify-center shrink-0">
-                          {item.step}
-                        </div>
-                        <p className="text-xs font-medium text-slate-700">
-                          {item.title}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
 
                 {/* 5. REQUIRED DOCUMENTS CHECKLIST */}
                 <div className="space-y-4">
@@ -2216,19 +1931,21 @@ export function VisaCountryResultPortal({
           <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex items-center justify-between gap-4 shadow-2xl">
             <div>
               <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
-                Guaranteed {guaranteedDate.split(',')[0]}
+                {countryName} Visa Assistance
               </span>
-              <span className="text-lg font-semibold text-slate-900">
-                ₹{grandTotal.toLocaleString()}
+              <span className="text-sm font-bold text-slate-900">
+                Talk to Expert
               </span>
             </div>
 
-            <button
-              onClick={handleOpenApplicationModal}
+            <a
+              href="https://wa.me/917661989366?text=Hi%20TravlTik%2C%20I%20need%20expert%20visa%20assistance"
+              target="_blank"
+              rel="noreferrer"
               className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs tracking-wide shadow-md cursor-pointer active:scale-95"
             >
-              Start Application
-            </button>
+              WhatsApp Us
+            </a>
           </div>
         </>
       )}

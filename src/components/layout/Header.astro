@@ -160,7 +160,7 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="inline-flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white !text-white px-5 py-2.5 rounded-xl text-[14px] font-extrabold transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap">
+                <a href="/login" id="login-btn" class="inline-flex items-center justify-center text-[#0c1a2e] hover:text-[#00a896] px-3.5 py-2 text-[14px] xl:text-[15px] font-bold transition-colors whitespace-nowrap cursor-pointer">
                     Log in
                 </a>
                 <a href="/signup" id="signup-btn" class="inline-flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white !text-white px-6 py-2.5 rounded-xl text-[14px] font-extrabold transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap">
@@ -391,7 +391,7 @@ const isHome = pathname === '/' || pathname === '';
             // Always 100% Solid Pure White Header
             headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 scrolled-header bg-white shadow-2xs border-b border-slate-200/80 text-slate-800";
             if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png?v=6");
-            if (loginBtnEl) loginBtnEl.className = "inline-flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white !text-white px-5 py-2.5 rounded-xl text-[14px] font-extrabold transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap";
+            if (loginBtnEl) loginBtnEl.className = "inline-flex items-center justify-center text-[#0c1a2e] hover:text-[#00a896] px-3.5 py-2 text-[14px] xl:text-[15px] font-bold transition-colors whitespace-nowrap cursor-pointer";
             if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#00a896] transition-colors focus:outline-none";
             if (mobileMenuBtn) mobileMenuBtn.style.color = "#0c1a2e";
         };

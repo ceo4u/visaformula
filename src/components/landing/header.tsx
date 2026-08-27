@@ -116,7 +116,7 @@ export function Header() {
 
           <a
             href="/login"
-            className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-[13px] px-5 py-2.5 rounded-xl transition-all shadow-md shadow-slate-900/20 active:scale-95"
+            className="text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#00a896] px-3.5 py-2 transition-colors whitespace-nowrap"
           >
             Log in
           </a>

@@ -3454,92 +3454,6 @@ return (
           </div>
 
           {/* ======================================================= */}
-          {/* ── 4B. JOIN EXPAT & GLOBAL STUDENT COMMUNITY BANNER ── */}
-          {/* ======================================================= */}
-          <div className="w-full max-w-6xl mx-auto mt-6 bg-gradient-to-br from-slate-950 via-slate-900 to-[#0c1a2e] text-white border border-slate-800/90 rounded-2xl sm:rounded-[30px] p-6 sm:p-8 md:p-9 shadow-[0_20px_50px_rgba(0,0,0,0.18)] text-left relative overflow-hidden animate-fadeIn">
-            {/* Soft Ambient Glow Elements */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 sm:gap-8">
-              
-              {/* Left Column: Heading & Network Highlights */}
-              <div className="space-y-4 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                  <span>Verified Expat &amp; Student Network</span>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-snug font-sans">
-                    Join 48,000+ Global Expats &amp; International Students
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed">
-                    Connect directly with students and immigrants living in Canada, UK, USA, Germany, Australia &amp; UAE. Share visa timelines, get trusted accommodation advice, find flatmates, and join verified city WhatsApp channels.
-                  </p>
-                </div>
-
-                {/* 3 Metric Pills */}
-                <div className="flex flex-wrap items-center gap-3 pt-1">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200">
-                    <Users className="w-4 h-4 text-emerald-400" />
-                    <span>48,000+ Members</span>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200">
-                    <GraduationCap className="w-4 h-4 text-blue-400" />
-                    <span>150+ University Alumni</span>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200">
-                    <MessageSquare className="w-4 h-4 text-teal-400" />
-                    <span>City WhatsApp Groups</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column: Avatars Stack & Join Action */}
-              <div className="w-full lg:w-auto shrink-0 flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between gap-4 bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 backdrop-blur-md">
-                
-                {/* Active Seniors Avatars Stack */}
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2 overflow-hidden">
-                    <img className="inline-block h-9 w-9 rounded-full ring-2 ring-slate-900 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Expat member" />
-                    <img className="inline-block h-9 w-9 rounded-full ring-2 ring-slate-900 object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Expat member" />
-                    <img className="inline-block h-9 w-9 rounded-full ring-2 ring-slate-900 object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Expat member" />
-                    <img className="inline-block h-9 w-9 rounded-full ring-2 ring-slate-900 object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Expat member" />
-                  </div>
-                  <div>
-                    <span className="text-xs font-bold text-white block leading-tight">5,420+ Online</span>
-                    <span className="text-[10px] text-emerald-400 font-medium block">Active in Discussions</span>
-                  </div>
-                </div>
-
-                {/* Primary CTA Button */}
-                <div className="flex flex-col w-full gap-2">
-                  <a
-                    href="/community"
-                    className="w-full min-w-[200px] px-6 py-3.5 bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-teal-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
-                  >
-                    <Users className="w-4 h-4" />
-                    <span>Join Expat Community →</span>
-                  </a>
-
-                  <a
-                    href="https://wa.me/917661989366?text=Hi%20TravlTik%2C%20I%20want%20to%20join%20the%20verified%20Expat%20%26%20Student%20WhatsApp%20community"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-full px-4 py-2 bg-white/10 hover:bg-white/15 text-slate-200 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-all text-center"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Join WhatsApp City Channel</span>
-                  </a>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-          {/* ======================================================= */}
           {/* ── 5. HOW TRAVLTIK WORKS SECTION (NOW ABOVE POPULAR DESTINATIONS) ── */}
           {/* ======================================================= */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
@@ -4037,8 +3951,84 @@ return (
               </div>
             </div>
 
+          {/* ======================================================= */}
+          {/* ── JOIN EXPAT & OVERSEAS STUDENT COMMUNITY BANNER ── */}
+          {/* ======================================================= */}
+          <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-14 text-left antialiased">
+            <div className="bg-slate-900 text-white rounded-[32px] p-8 md:p-12 border border-slate-800 shadow-2xl overflow-hidden relative">
+              {/* Subtle ambient dark purple/emerald glow gradients in the background corners */}
+              <div className="absolute -top-24 -left-24 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-emerald-900/25 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800/40 via-transparent to-transparent pointer-events-none" />
+
+              <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 sm:gap-10">
+                
+                {/* Left Column: Content & Live Stats */}
+                <div className="space-y-5 max-w-2xl">
+                  {/* Top Pill Badge */}
+                  <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3.5 py-1 rounded-full text-xs font-semibold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>💬 OVERSEAS STUDENT &amp; EXPAT NETWORK</span>
+                  </div>
+
+                  {/* Headline & Sub-headline */}
+                  <div className="space-y-3">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-[1.2]">
+                      Moving or Traveling Abroad? Don't Go Alone.
+                    </h2>
+                    <p className="text-sm sm:text-base text-slate-300 font-normal leading-relaxed">
+                      Join 15,000+ Indian students, expats, and seniors already living in UAE, Canada, Russia, and Europe. Get real-time advice on housing, visas, forex, and flight buddies.
+                    </p>
+                  </div>
+
+                  {/* Live Community Stats Pill Row */}
+                  <div className="flex flex-wrap items-center gap-3 pt-1">
+                    <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-200 backdrop-blur-sm">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+                      <span>🟢 1,420+ Online Right Now</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-200 backdrop-blur-sm">
+                      <GraduationCap className="w-4 h-4 text-purple-400" />
+                      <span>🎓 85+ Verified Senior Ambassadors</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-200 backdrop-blur-sm">
+                      <Plane className="w-4 h-4 text-sky-400" />
+                      <span>✈️ 40+ Active Flight Cohorts</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: CTA Buttons */}
+                <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between gap-5 shrink-0">
+                  
+                  {/* CTA Buttons */}
+                  <div className="flex flex-col sm:flex-row w-full lg:w-auto gap-3">
+                    <a
+                      href="/community"
+                      className="bg-[#00A86B] hover:bg-[#008f5a] text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-emerald-600/30 transition-all hover:scale-105 active:scale-95 text-center text-sm flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+                    >
+                      <Users className="w-4 h-4" />
+                      <span>Join Discord Community →</span>
+                    </a>
+
+                    <a
+                      href="/community"
+                      className="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-4 rounded-full border border-white/15 backdrop-blur-md transition-all active:scale-95 text-center text-sm flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+                    >
+                      <span>Explore Country Channels</span>
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
           </div>
 
-      </div>
+        </div>
+
+    </div>
   );
 }

@@ -363,11 +363,11 @@ export default function CommunityHub() {
 
               <div className="space-y-1">
                 {filteredChannels.length > 0 ? (
-                  filteredChannels.map((ch) => {
+                  filteredChannels.map((ch, idx) => {
                     const isActive = activeChannel === ch.slug;
                     return (
                       <button
-                        key={ch.id}
+                        key={`channel-${ch.id}-${ch.slug}-${idx}`}
                         type="button"
                         onClick={() => {
                           setActiveChannel(ch.slug);
@@ -418,12 +418,12 @@ export default function CommunityHub() {
                 )}
               </div>
               <div className="space-y-0.5">
-                {CATEGORIES.map((cat) => {
+                {CATEGORIES.map((cat, idx) => {
                   const Icon = cat.icon;
                   const isSelected = selectedCategory === cat.name;
                   return (
                     <button
-                      key={cat.id}
+                      key={`cat-${cat.id}-${idx}`}
                       type="button"
                       onClick={() => setSelectedCategory(isSelected ? null : cat.name)}
                       className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer text-left ${
@@ -593,13 +593,13 @@ export default function CommunityHub() {
           {/* Floating Chat Messages Area (Live DB rows) */}
           <div className="flex-1 overflow-y-auto p-1 sm:p-2 space-y-4 no-scrollbar">
             {messages.length > 0 ? (
-              messages.map((msg) => {
+              messages.map((msg, idx) => {
                 const isSelf = msg.is_self || (currentUser && msg.user_id === currentUser.uid) || msg.sender_name === (currentUser?.displayName || 'Aman Verma');
                 const timeFormatted = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
                 return (
                   <div
-                    key={msg.id}
+                    key={`msg-${msg.id || idx}-${idx}`}
                     className={`flex items-start gap-3 w-full ${
                       isSelf ? 'justify-end' : 'justify-start'
                     }`}
@@ -815,9 +815,9 @@ export default function CommunityHub() {
 
             {/* Seniors List from PostgreSQL */}
             <div className="space-y-2 pt-1">
-              {seniors.map((s) => (
+              {seniors.map((s, idx) => (
                 <div
-                  key={s.id}
+                  key={`senior-${s.id || idx}-${idx}`}
                   onClick={() => {
                     setInputText(`@${s.name} `);
                     inputRef.current?.focus();
@@ -878,9 +878,9 @@ export default function CommunityHub() {
 
               {/* Resource items */}
               <div className="space-y-2">
-                {resources.map((r) => (
+                {resources.map((r, idx) => (
                   <div
-                    key={r.id}
+                    key={`res-${r.id || idx}-${idx}`}
                     className="p-2.5 rounded-2xl bg-slate-50/70 hover:bg-slate-100/80 border border-slate-200/60 flex items-center justify-between gap-2.5 transition-colors group cursor-pointer"
                     onClick={() => showToast(`Downloading ${r.title}...`)}
                   >

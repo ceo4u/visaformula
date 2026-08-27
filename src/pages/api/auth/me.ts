@@ -10,16 +10,16 @@ export const GET: APIRoute = async ({ request }) => {
     const token = match ? match[1] : '';
 
     if (!token) {
-      return new Response(JSON.stringify({ status: 'error', message: 'No active session.' }), {
-        status: 401,
+      return new Response(JSON.stringify({ status: 'unauthenticated', user: null }), {
+        status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
     const authResult = await verifySession(token);
     if (!authResult) {
-      return new Response(JSON.stringify({ status: 'error', message: 'Invalid or expired session.' }), {
-        status: 401,
+      return new Response(JSON.stringify({ status: 'unauthenticated', user: null }), {
+        status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
     }

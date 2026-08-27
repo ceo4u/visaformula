@@ -1366,7 +1366,71 @@ export function AITripPlannerLanding() {
 
   // Global Multi-Tab Search Widget State
   const [activeSearchTab, setActiveSearchTab] = useState<'universities' | 'consultants' | 'relocation' | 'jobs' | 'lawyers'>('universities');
-    // Multi-Tab Search Specific Filter States
+  
+  // --- Dedicated Universities & Study Abroad Consultants Search States ---
+  const [homeCourseLevel, setHomeCourseLevel] = useState('Select Course Level');
+  const [homeUniCountry, setHomeUniCountry] = useState('Select Country');
+  const [homeCourseKeyword, setHomeCourseKeyword] = useState('');
+  const [homeCourseLevelOpen, setHomeCourseLevelOpen] = useState(false);
+  const [homeUniCountryOpen, setHomeUniCountryOpen] = useState(false);
+  const [homeSearchQuery, setHomeSearchQuery] = useState('');
+  const [homeSelectedCategory, setHomeSelectedCategory] = useState('Select Category');
+  const [homeSelectedCountry, setHomeSelectedCountry] = useState('Select Country');
+  const [homeLocation, setHomeLocation] = useState('');
+  const [homeCountryOpen, setHomeCountryOpen] = useState(false);
+  const [homeCategoryOpen, setHomeCategoryOpen] = useState(false);
+
+  const homeCourseLevelsList = [
+    'Undergraduate (Bachelor\'s)',
+    'Postgraduate (Master\'s)',
+    'PhD / Doctorate',
+    'Diploma / Certificate',
+    'Language / Pathway Program'
+  ];
+
+  const homeCountriesList = [
+    'Canada', 'United Kingdom', 'United States', 'Australia', 
+    'Germany', 'Ireland', 'New Zealand', 'Singapore', 'France', 
+    'Europe', 'Schengen Countries', 'UAE', 'Other'
+  ];
+
+  const homeCategoriesList = [
+    'Student Visa', 'Work Permit / Work Visa', 'Tourist / Visitor Visa', 
+    'PR / Express Entry', 'Visa Appeals / Tribunal', 'Digital Nomad Visa', 
+    'Business & Investor Visa', 'Spousal / Dependent Visa'
+  ];
+
+  const handleHomeFindUniversities = () => {
+    const params = new URLSearchParams();
+    if (homeUniCountry && homeUniCountry !== 'Select Country') params.set('country', homeUniCountry);
+    if (homeCourseLevel && homeCourseLevel !== 'Select Course Level') params.set('level', homeCourseLevel);
+    if (homeCourseKeyword.trim()) params.set('q', homeCourseKeyword.trim());
+    window.location.href = `/universities?${params.toString()}`;
+  };
+
+  const handleHomeFindStudyConsultants = () => {
+    const params = new URLSearchParams();
+    params.set('tab', 'consultants');
+    if (homeUniCountry && homeUniCountry !== 'Select Country') params.set('country', homeUniCountry);
+    window.location.href = `/universities?${params.toString()}`;
+  };
+
+  const handleHomeConsultantSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const params = new URLSearchParams();
+    if (homeSearchQuery.trim()) {
+      params.set('q', homeSearchQuery.trim());
+    } else if (homeSelectedCategory && homeSelectedCategory !== 'Select Category') {
+      params.set('category', homeSelectedCategory);
+    }
+    if (homeSelectedCountry && homeSelectedCountry !== 'Select Country') {
+      params.set('country', homeSelectedCountry);
+    }
+    if (homeLocation.trim()) params.set('city', homeLocation.trim());
+    window.location.href = `/find-experts?${params.toString()}`;
+  };
+
+  // Multi-Tab Search Specific Filter States
   const [consultantPassport, setConsultantPassport] = useState('');
   const [consultantDestination, setConsultantDestination] = useState('');
   const [consultantPurpose, setConsultantPurpose] = useState('');
@@ -3131,7 +3195,337 @@ return (
             </div>
           )}
 
-          {/* ── 4. POPULAR DESTINATIONS SECTION (1:1 CLEAN CIRCULAR FLAGS AS IN SCREENSHOT) ── */}
+          {/* ======================================================= */}
+          {/* ── 4. FIND UNIVERSITIES & CONSULTANTS SEARCH SECTION ── */}
+          {/* ======================================================= */}
+          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
+            
+            {/* Header & Tabs */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+              <div>
+                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                  Find Universities &amp; Study Abroad Consultants
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                  Search accredited global universities or connect with certified visa and admission experts.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                <button
+                  type="button"
+                  onClick={() => setActiveSearchTab('universities')}
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+                    activeSearchTab === 'universities'
+                      ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                  }`}
+                >
+                  <GraduationCap className="w-4 h-4 stroke-[2.2]" />
+                  <span>Explore Universities</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveSearchTab('consultants')}
+                  className={`flex items-center gap-2 text-xs sm:text-sm font-bold px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+                    activeSearchTab === 'consultants'
+                      ? 'bg-teal-50 border border-teal-200 text-[#00a896] shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 border border-transparent'
+                  }`}
+                >
+                  <UserCheck className="w-4 h-4 stroke-[2.2]" />
+                  <span>Find Consultants</span>
+                </button>
+              </div>
+            </div>
+
+            {/* TAB 1: Universities Search */}
+            {activeSearchTab === 'universities' && (
+              <div className="space-y-5 animate-fadeIn">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Course Level */}
+                  <div className="relative">
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Course Level
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setHomeCourseLevelOpen(!homeCourseLevelOpen); setHomeUniCountryOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
+                    >
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <GraduationCap className="w-4.5 h-4.5 text-[#00a896] shrink-0" />
+                        <span className={`text-xs font-semibold truncate ${homeCourseLevel !== 'Select Course Level' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                          {homeCourseLevel}
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeCourseLevelOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {homeCourseLevelOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        {homeCourseLevelsList.map((lvl) => (
+                          <button key={lvl} type="button"
+                            onClick={(e) => { e.stopPropagation(); setHomeCourseLevel(lvl); setHomeCourseLevelOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeCourseLevel === lvl ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{lvl}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Study Destination Country */}
+                  <div className="relative">
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Study Destination
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setHomeUniCountryOpen(!homeUniCountryOpen); setHomeCourseLevelOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
+                    >
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <Globe className="w-4.5 h-4.5 text-slate-600 shrink-0" />
+                        <span className={`text-xs font-semibold truncate ${homeUniCountry !== 'Select Country' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                          {homeUniCountry !== 'Select Country' ? homeUniCountry : 'Select Country'}
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeUniCountryOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {homeUniCountryOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        {homeCountriesList.map((c) => (
+                          <button key={c} type="button"
+                            onClick={(e) => { e.stopPropagation(); setHomeUniCountry(c); setHomeUniCountryOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeUniCountry === c ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{c}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Subject / Major Keyword */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Subject / Course Name <span className="text-slate-400 font-normal">(Optional)</span>
+                    </label>
+                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center gap-3 transition-all shadow-xs">
+                      <Search className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                      <input
+                        type="text"
+                        value={homeCourseKeyword}
+                        onChange={(e) => setHomeCourseKeyword(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleHomeFindUniversities(); }}
+                        placeholder="e.g., Computer Science, MBA, Data Science"
+                        className="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Universities Action Buttons (Dual Actions) */}
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleHomeFindUniversities}
+                    className="w-full sm:w-auto min-w-[220px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
+                  >
+                    <Building2 className="w-4 h-4" />
+                    <span>Find Universities</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleHomeFindStudyConsultants}
+                    className="w-full sm:w-auto min-w-[220px] px-8 py-3.5 bg-slate-900 hover:bg-black active:scale-95 text-white rounded-2xl shadow-sm flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all border border-slate-800"
+                  >
+                    <MapPin className="w-4 h-4 text-teal-400" />
+                    <span>Find Study Consultants Near Me</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: Consultant Search */}
+            {activeSearchTab === 'consultants' && (
+              <div className="space-y-5 animate-fadeIn">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  {/* Name or Keyword */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Search Consultant / Agency
+                    </label>
+                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center gap-3 transition-all shadow-xs">
+                      <Search className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                      <input
+                        type="text"
+                        value={homeSearchQuery}
+                        onChange={(e) => setHomeSearchQuery(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleHomeConsultantSearch(); }}
+                        placeholder="e.g. Can-Am, Global Ed, IDP"
+                        className="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Visa Category */}
+                  <div className="relative">
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Category
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setHomeCategoryOpen(!homeCategoryOpen); setHomeCountryOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
+                    >
+                      <span className={`text-xs font-semibold truncate ${homeSelectedCategory !== 'Select Category' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                        {homeSelectedCategory}
+                      </span>
+                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeCategoryOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {homeCategoryOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        {homeCategoriesList.map((cat) => (
+                          <button key={cat} type="button"
+                            onClick={(e) => { e.stopPropagation(); setHomeSelectedCategory(cat); setHomeCategoryOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeSelectedCategory === cat ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{cat}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Country */}
+                  <div className="relative">
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      Country Specialty
+                    </label>
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setHomeCountryOpen(!homeCountryOpen); setHomeCategoryOpen(false); }}
+                      className="bg-white border border-slate-200 hover:border-[#00a896] rounded-2xl px-4 h-[52px] flex items-center justify-between gap-3 cursor-pointer transition-all shadow-xs"
+                    >
+                      <span className={`text-xs font-semibold truncate ${homeSelectedCountry !== 'Select Country' ? 'text-slate-900 font-bold' : 'text-slate-400'}`}>
+                        {homeSelectedCountry !== 'Select Country' ? homeSelectedCountry : 'Select Country'}
+                      </span>
+                      <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${homeCountryOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {homeCountryOpen && (
+                      <div className="absolute top-[calc(100%+6px)] left-0 w-full bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 max-h-60 overflow-y-auto">
+                        {homeCountriesList.map((c) => (
+                          <button key={c} type="button"
+                            onClick={(e) => { e.stopPropagation(); setHomeSelectedCountry(c); setHomeCountryOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${homeSelectedCountry === c ? 'bg-teal-50 text-[#00a896] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                          >{c}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* City / Location */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-800 leading-none mb-2 block">
+                      City / Location
+                    </label>
+                    <div className="bg-white border border-slate-200 focus-within:border-[#00a896] hover:border-slate-300 rounded-2xl px-4 h-[52px] flex items-center gap-3 transition-all shadow-xs">
+                      <MapPin className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                      <input
+                        type="text"
+                        value={homeLocation}
+                        onChange={(e) => setHomeLocation(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleHomeConsultantSearch(); }}
+                        placeholder="e.g. Hyderabad, Delhi, Remote"
+                        className="w-full text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-2 flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={handleHomeConsultantSearch}
+                    className="w-full sm:w-auto min-w-[260px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
+                  >
+                    <Search className="w-4 h-4" />
+                    <span>Search Verified Consultants</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+          </div>
+
+          {/* ======================================================= */}
+          {/* ── 5. HOW TRAVLTIK WORKS SECTION (NOW ABOVE POPULAR DESTINATIONS) ── */}
+          {/* ======================================================= */}
+          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
+            
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+              <div>
+                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                  How TravlTik Works?
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                  End-to-end verified visa &amp; travel pathways in 4 easy steps.
+                </p>
+              </div>
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                Simple 4-Step Process
+              </span>
+            </div>
+
+            {/* 4 Squircle Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              {[
+                {
+                  step: "Step 1 • Discover",
+                  title: "Search",
+                  desc: "Find services, destinations or trusted global experts",
+                  icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                },
+                {
+                  step: "Step 2 • Evaluate",
+                  title: "Compare",
+                  desc: "Compare verified options, ratings & transparent fees",
+                  icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                },
+                {
+                  step: "Step 3 • Escrow Protection",
+                  title: "Connect",
+                  desc: "Connect with licensed consultants with 100% escrow safety",
+                  icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                },
+                {
+                  step: "Step 4 • Fly Confident",
+                  title: "Travel",
+                  desc: "Instant official e-Visa delivery & real-time border journey alerts",
+                  icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                }
+              ].map((card, i) => (
+                <div 
+                  key={i}
+                  className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px]"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                    {card.icon}
+                  </div>
+                  <div className="mt-5">
+                    <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
+                      {card.step}
+                    </span>
+                    <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
+                      {card.title}
+                    </h4>
+                    <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                      {card.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ======================================================= */}
+          {/* ── 6. POPULAR DESTINATIONS SECTION (1:1 CLEAN CIRCULAR FLAGS) ── */}
+          {/* ======================================================= */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left">
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
               <div>
@@ -3193,75 +3587,6 @@ return (
                     {item.name}
                   </span>
                 </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* ── HOW TRAVLTIK WORKS SECTION (WRAPPED IN POPULAR DESTINATIONS MATCHING CARD CONTAINER) ── */}
-          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
-            
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-              <div>
-                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                  How TravlTik Works?
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                  End-to-end verified visa &amp; travel pathways in 4 easy steps.
-                </p>
-              </div>
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
-                Simple 4-Step Process
-              </span>
-            </div>
-
-            {/* 4 Squircle Cards Grid (100% Uniform Styling Matching Card 1) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-              {[
-                {
-                  step: "Step 1 • Discover",
-                  title: "Search",
-                  desc: "Find services, destinations or trusted global experts",
-                  icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                },
-                {
-                  step: "Step 2 • Evaluate",
-                  title: "Compare",
-                  desc: "Compare verified options, ratings & transparent fees",
-                  icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                },
-                {
-                  step: "Step 3 • Escrow Protection",
-                  title: "Connect",
-                  desc: "Connect with licensed consultants with 100% escrow safety",
-                  icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                },
-                {
-                  step: "Step 4 • Fly Confident",
-                  title: "Travel",
-                  desc: "Instant official e-Visa delivery & real-time border journey alerts",
-                  icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                }
-              ].map((card, i) => (
-                <div 
-                  key={i}
-                  className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px]"
-                >
-                  <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                    {card.icon}
-                  </div>
-                  <div className="mt-5">
-                    <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
-                      {card.step}
-                    </span>
-                    <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
-                      {card.title}
-                    </h4>
-                    <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                      {card.desc}
-                    </p>
-                  </div>
-                </div>
               ))}
             </div>
           </div>

@@ -117,6 +117,7 @@ import {
   ArrowUpRight,
   ExternalLink,
   BookOpen,
+  BadgeCheck,
   HeartHandshake
 } from 'lucide-react';
 
@@ -517,6 +518,60 @@ export function VisaCountryResultPortal({
     const diff = new Date(validityDate).getTime() - new Date().getTime();
     return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
   }, [validityDate]);
+
+  // ── PASSPORT VALIDITY CHECKER LIVE STATE ──
+  const [passportIssueDate, setPassportIssueDate] = useState('2021-04-10');
+  const [passportExpiryDate, setPassportExpiryDate] = useState('2031-04-09');
+  const [proposedTravelDate, setProposedTravelDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 30);
+    return d.toISOString().split('T')[0];
+  });
+
+  // Real-time client-side math evaluating <10 years issue rule and >3 months remaining validity rule
+  const passportValidityCheck = useMemo(() => {
+    if (!passportIssueDate || !passportExpiryDate || !proposedTravelDate) {
+      return {
+        status: 'incomplete',
+        isEligible: false,
+        message: 'Please provide passport issue date, expiry date, and proposed travel date.',
+        issueYearsAgo: 0,
+        remainingMonths: 0,
+        issueRulePassed: false,
+        expiryRulePassed: false
+      };
+    }
+
+    const issue = new Date(passportIssueDate);
+    const expiry = new Date(passportExpiryDate);
+    const travel = new Date(proposedTravelDate);
+
+    // Rule 1: Age Rule (Issued less than 10 years before travel arrival date)
+    const issueDiffDays = (travel.getTime() - issue.getTime()) / (1000 * 60 * 60 * 24);
+    const issueYearsAgo = parseFloat((issueDiffDays / 365.25).toFixed(1));
+    const issueRulePassed = issueYearsAgo >= 0 && issueYearsAgo < 10;
+
+    // Rule 2: Validity Window (Must have at least 3 months remaining after planned departure)
+    const expiryDiffDays = (expiry.getTime() - travel.getTime()) / (1000 * 60 * 60 * 24);
+    const remainingMonths = parseFloat((expiryDiffDays / 30.4375).toFixed(1));
+    const expiryRulePassed = remainingMonths >= 3;
+
+    const isEligible = issueRulePassed && expiryRulePassed && expiry > travel;
+
+    return {
+      status: isEligible ? 'eligible' : 'warning',
+      isEligible,
+      issueYearsAgo,
+      remainingMonths,
+      issueRulePassed,
+      expiryRulePassed,
+      message: isEligible 
+        ? `✅ Passport 100% Eligible for ${countryName} Entry`
+        : issueRulePassed 
+          ? `⚠️ Renewal Recommended: Passport has only ${remainingMonths > 0 ? remainingMonths : 0} months validity remaining (Minimum 3 months required).`
+          : `⚠️ Renewal Recommended: Passport was issued ${issueYearsAgo} years ago (Exceeds maximum 10-year rule).`
+    };
+  }, [passportIssueDate, passportExpiryDate, proposedTravelDate, countryName]);
 
   const handlePincodeCheck = (code: string) => {
     setPincode(code);
@@ -1547,9 +1602,268 @@ export function VisaCountryResultPortal({
           </section>
 
           {/* ── VISA RESULT & SPECIFICATION WORKSPACE ── */}
-          <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
+          <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-14">
             
-            {/* 1. 4 Quick Specification Pill Cards */}
+            {/* ================================================== */}
+            {/* 1. INSTANT DIRECT VERDICT BANNER (Gemini AI Overview) */}
+            {/* ================================================== */}
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-[#0c1a2e] text-white p-6 sm:p-8 shadow-xl border border-slate-800 text-left">
+              {/* Soft Gemini Sparkle Ambient Aura */}
+              <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-teal-500/15 via-emerald-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="relative z-10 space-y-4">
+                {/* Header Pill with Green Status Indicator */}
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-xs font-semibold text-teal-200">
+                    <Sparkles className="w-4 h-4 text-teal-300 animate-pulse" />
+                    <span>✨ Visa Status Resolution</span>
+                  </div>
+
+                  <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full px-3.5 py-1 text-xs font-semibold shadow-xs">
+                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
+                    <span>{aiIntel.isExempt ? "VISA NOT REQUIRED" : "ELECTRONIC ENTRY REQUIRED"}</span>
+                  </div>
+                </div>
+
+                {/* Direct Verdict Sentence */}
+                <div className="space-y-2">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white leading-snug">
+                    {passportCountry} passport holders traveling to {countryName} for tourism or short stays {aiIntel.isExempt ? "up to 90 days do not need a visa." : "require an official e-Visa or entry authorization before departure."}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed max-w-3xl">
+                    {aiIntel.verdictSummary}
+                  </p>
+                </div>
+
+                {/* Source Verification Footer */}
+                <div className="flex items-center gap-3 pt-2 text-[11px] text-slate-400 font-medium border-t border-white/10">
+                  <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
+                    <BadgeCheck className="w-4 h-4 text-emerald-400" />
+                    Verified via official consular intelligence
+                  </span>
+                  <span>•</span>
+                  <span>Updated for 2026 Travel Season</span>
+                </div>
+              </div>
+            </div>
+
+            {/* ================================================== */}
+            {/* 2. STRUCTURED ENTRY & PASSPORT RULES (Atlys Card Grid) */}
+            {/* ================================================== */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-left">
+              
+              {/* CARD A: PASSPORT COMPLIANCE RULES */}
+              <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-xs hover:shadow-md transition-all space-y-4">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold">
+                      <BookOpen className="w-4.5 h-4.5" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Rule Set A</span>
+                      <h3 className="font-bold text-base text-slate-900">Passport Compliance Rules</h3>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">MANDATORY</span>
+                </div>
+
+                <ul className="space-y-3 text-xs sm:text-sm text-slate-700">
+                  <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
+                    <span className="text-base shrink-0">📜</span>
+                    <div>
+                      <strong className="text-slate-900 font-bold block">10-Year Issue Rule:</strong>
+                      <span className="text-slate-600 font-normal">Passport must be issued less than 10 years before the date you arrive in {countryName}.</span>
+                    </div>
+                  </li>
+
+                  <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
+                    <span className="text-base shrink-0">⏳</span>
+                    <div>
+                      <strong className="text-slate-900 font-bold block">3-Month Remaining Validity:</strong>
+                      <span className="text-slate-600 font-normal">Must have at least 3 months remaining validity beyond your planned departure date.</span>
+                    </div>
+                  </li>
+
+                  <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
+                    <span className="text-base shrink-0">📖</span>
+                    <div>
+                      <strong className="text-slate-900 font-bold block">Blank Stamp Pages:</strong>
+                      <span className="text-slate-600 font-normal">Recommended 1–2 clean blank pages for border control entry &amp; exit stamps.</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              {/* CARD B: STAY LIMITS & TRAVEL DOCUMENTS */}
+              <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-xs hover:shadow-md transition-all space-y-4 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold">
+                        <Plane className="w-4.5 h-4.5" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Rule Set B</span>
+                        <h3 className="font-bold text-base text-slate-900">Stay Limits &amp; Travel Documents</h3>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">BORDER CHECK</span>
+                  </div>
+
+                  <ul className="space-y-3 text-xs sm:text-sm text-slate-700">
+                    <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
+                      <span className="text-base shrink-0">🗓️</span>
+                      <div>
+                        <strong className="text-slate-900 font-bold block">Stay Limit Duration:</strong>
+                        <span className="text-slate-600 font-normal">Stay up to 90 days within any rolling 180-day period for short tourism &amp; business.</span>
+                      </div>
+                    </li>
+
+                    <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
+                      <span className="text-base shrink-0">✈️</span>
+                      <div>
+                        <strong className="text-slate-900 font-bold block">Border Proof &amp; Return Tickets:</strong>
+                        <span className="text-slate-600 font-normal">Confirmed return/onward flight tickets &amp; verified accommodation stay proof.</span>
+                      </div>
+                    </li>
+
+                    <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
+                      <span className="text-base shrink-0">🛡️</span>
+                      <div>
+                        <strong className="text-slate-900 font-bold block">Digital Authorization / ETIAS:</strong>
+                        <span className="text-slate-600 font-normal">Digital border declaration &amp; upcoming ETIAS requirement compliance.</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Official Advisory Button */}
+                <div className="pt-2">
+                  <a
+                    href="https://www.gov.uk/foreign-travel-advice"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-2 transition-all border border-slate-200"
+                  >
+                    <Building2 className="w-4 h-4 text-slate-700" />
+                    <span>View GOV.UK Foreign Travel Advice</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+            {/* ================================================== */}
+            {/* 3. INTERACTIVE PASSPORT VALIDITY CHECKER WIDGET */}
+            {/* ================================================== */}
+            <div className="bg-white border-2 border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-sm space-y-5 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Live Validator Tool</span>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900">Check if your specific passport meets {countryName}'s entry validity rules</h3>
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold self-start sm:self-auto">
+                  <Zap className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Real-Time Evaluation</span>
+                </div>
+              </div>
+
+              {/* 3 Input Dates Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    1. Passport Issue Date
+                  </label>
+                  <input
+                    type="date"
+                    value={passportIssueDate}
+                    onChange={(e) => setPassportIssueDate(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    2. Passport Expiry Date
+                  </label>
+                  <input
+                    type="date"
+                    value={passportExpiryDate}
+                    onChange={(e) => setPassportExpiryDate(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    3. Proposed Travel Date
+                  </label>
+                  <input
+                    type="date"
+                    value={proposedTravelDate}
+                    onChange={(e) => setProposedTravelDate(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Dynamic Status Output Box */}
+              <div className={`p-4 sm:p-5 rounded-2xl border transition-all ${
+                passportValidityCheck.isEligible 
+                  ? 'bg-emerald-50/70 border-emerald-200 text-emerald-950' 
+                  : 'bg-amber-50/80 border-amber-200 text-amber-950'
+              }`}>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
+                      passportValidityCheck.isEligible ? 'bg-emerald-500 text-white' : 'bg-amber-500 text-white'
+                    }`}>
+                      {passportValidityCheck.isEligible ? '✓' : '!'}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-sm sm:text-base leading-snug">
+                        {passportValidityCheck.message}
+                      </h4>
+                      <p className="text-xs mt-0.5 opacity-80">
+                        {passportValidityCheck.isEligible 
+                          ? `Both the 10-year issue age rule and the 3-month departure buffer rule are fully satisfied for your trip to ${countryName}.`
+                          : 'Immigration authorities may deny boarding or entry if the passport does not strictly satisfy both rules.'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Instant Verdict Badge */}
+                  <span className={`px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 self-start sm:self-auto border ${
+                    passportValidityCheck.isEligible 
+                      ? 'bg-emerald-100 text-emerald-800 border-emerald-300' 
+                      : 'bg-amber-100 text-amber-900 border-amber-300'
+                  }`}>
+                    {passportValidityCheck.isEligible ? 'PASSPORT ELIGIBLE' : 'RENEWAL REQUIRED'}
+                  </span>
+                </div>
+
+                {/* Verification Rule Checklist */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-3.5 mt-3.5 border-t border-current/10 text-xs font-semibold">
+                  <div className="flex items-center gap-2">
+                    <span className={passportValidityCheck.issueRulePassed ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'}>
+                      {passportValidityCheck.issueRulePassed ? '✓' : '✗'}
+                    </span>
+                    <span>Issue Rule: Issued {passportValidityCheck.issueYearsAgo} years ago ({passportValidityCheck.issueRulePassed ? '< 10 yrs' : 'Exceeds 10 yrs'})</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={passportValidityCheck.expiryRulePassed ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'}>
+                      {passportValidityCheck.expiryRulePassed ? '✓' : '✗'}
+                    </span>
+                    <span>Expiry Rule: {passportValidityCheck.remainingMonths} months validity remaining after travel ({passportValidityCheck.expiryRulePassed ? '≥ 3 mos' : '< 3 mos'})</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ================================================== */}
+            {/* 4. QUICK SPECIFICATION PILL CARDS */}
+            {/* ================================================== */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
               <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
                 <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">

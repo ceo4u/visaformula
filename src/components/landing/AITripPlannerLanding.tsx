@@ -1380,6 +1380,7 @@ export function AITripPlannerLanding() {
   const [homeLocation, setHomeLocation] = useState('');
   const [homeCountryOpen, setHomeCountryOpen] = useState(false);
   const [homeCategoryOpen, setHomeCategoryOpen] = useState(false);
+  const [showFloatingEasySearch, setShowFloatingEasySearch] = useState(false);
 
   const homeCourseLevelsList = [
     'Undergraduate (Bachelor\'s)',
@@ -2199,7 +2200,7 @@ return (
       />
 
       {/* ── 1. HERO SECTION (THIN & SLEEK PURE WHITE DESIGN) ── */}
-      <section className="relative w-full overflow-visible bg-[#fbfbfd] pt-3.5 sm:pt-5 lg:pt-6 pb-3 sm:pb-5 px-2.5 sm:px-6 lg:px-8">
+      <section id="hero-search" className="relative w-full overflow-visible bg-[#fbfbfd] pt-3.5 sm:pt-5 lg:pt-6 pb-3 sm:pb-5 px-2.5 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
         <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
@@ -3491,7 +3492,7 @@ return (
           </section>
 
           {/* ======================================================= */}
-          {/* ── 5. HOW TRAVLTIK WORKS SECTION (NOW ABOVE POPULAR DESTINATIONS) ── */}
+          {/* ── 5. HOW TRAVLTIK WORKS SECTION ── */}
           {/* ======================================================= */}
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
             
@@ -3562,76 +3563,9 @@ return (
           </div>
 
           {/* ======================================================= */}
-          {/* ── 6. POPULAR DESTINATIONS SECTION (1:1 CLEAN CIRCULAR FLAGS) ── */}
+          {/* ── 6. EXPLORE CLASSIFIEDS SECTION (NOW UNDER HOW IT WORKS) ── */}
           {/* ======================================================= */}
-          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left">
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-              <div>
-                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                  Popular Destinations
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                  Explore top country pathways with verified consultants and university partners.
-                </p>
-              </div>
-              <a
-                href="/universities"
-                className="text-xs font-bold text-[#00A86B] hover:underline flex items-center gap-1 shrink-0"
-              >
-                <span>View All</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-
-            <div className="flex items-center justify-between gap-2 sm:gap-4 overflow-x-auto no-scrollbar py-2 px-1 text-center">
-              {[
-                { name: 'Canada', code: 'ca', country: 'Canada' },
-                { name: 'UK', code: 'gb', country: 'United Kingdom' },
-                { name: 'USA', code: 'us', country: 'United States' },
-                { name: 'Australia', code: 'au', country: 'Australia' },
-                { name: 'Germany', code: 'de', country: 'Germany' },
-                { name: 'New Zealand', code: 'nz', country: 'New Zealand' },
-                { name: 'UAE', code: 'ae', country: 'UAE' },
-                { name: 'More', code: '', country: '' }
-              ].map((item, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => {
-                    if (item.country) {
-                      setJourneyDestination(item.country);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    } else {
-                      window.location.href = '/universities';
-                    }
-                  }}
-                  className="flex flex-col items-center justify-center min-w-[68px] sm:min-w-[80px] p-2 hover:scale-105 transition-transform cursor-pointer group select-none"
-                >
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-all flex items-center justify-center bg-white border border-slate-200/80">
-                    {item.code ? (
-                      <img
-                        src={`https://flagcdn.com/w160/${item.code}.png`}
-                        alt={item.name}
-                        className="w-full h-full object-cover rounded-full"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-black text-sm">
-                        •••
-                      </div>
-                    )}
-                  </div>
-                  <span className="text-xs font-bold text-slate-800 group-hover:text-[#00A86B] truncate w-full text-center">
-                    {item.name}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-
-          {/* ── EXPLORE CLASSIFIEDS SECTION (1:1 PIXEL-PERFECT MOCKUP) ── */}
-          <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-14 px-2 sm:px-0 text-left">
+          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 px-2 sm:px-0 text-left">
             <div className="flex items-center justify-between mb-4 sm:mb-5">
               <div>
                 <h3 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">Explore Classifieds</h3>
@@ -3817,6 +3751,86 @@ return (
             </div>
           </div>
 
+          {/* ======================================================= */}
+          {/* ── 7. EASY SEARCH & POPULAR DESTINATIONS SECTION ── */}
+          {/* ======================================================= */}
+          <div id="easy-search" className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left scroll-mt-24">
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] text-[10px] font-bold uppercase tracking-wider mb-1">
+                  <Sparkles className="w-3 h-3 text-[#00A86B]" />
+                  <span>Easy Search &amp; Quick Explore</span>
+                </div>
+                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                  Popular Destinations &amp; Easy Visa Search
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                  Tap any country to instantly check visa requirements, student pathways &amp; top consultants.
+                </p>
+              </div>
+              <a
+                href="/universities"
+                className="text-xs font-bold text-[#00A86B] hover:underline flex items-center gap-1 shrink-0"
+              >
+                <span>View All</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+
+            {/* Quick Country Flag Cards */}
+            <div className="flex items-center justify-between gap-2 sm:gap-4 overflow-x-auto no-scrollbar py-2 px-1 text-center">
+              {[
+                { name: 'Canada', code: 'ca', country: 'Canada' },
+                { name: 'UK', code: 'gb', country: 'United Kingdom' },
+                { name: 'USA', code: 'us', country: 'United States' },
+                { name: 'Australia', code: 'au', country: 'Australia' },
+                { name: 'Germany', code: 'de', country: 'Germany' },
+                { name: 'New Zealand', code: 'nz', country: 'New Zealand' },
+                { name: 'UAE', code: 'ae', country: 'UAE' },
+                { name: 'France', code: 'fr', country: 'France' },
+                { name: 'Singapore', code: 'sg', country: 'Singapore' },
+                { name: 'More', code: '', country: '' }
+              ].map((item, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    if (item.country) {
+                      setJourneyDestination(item.country);
+                      const heroEl = document.getElementById('hero-search');
+                      if (heroEl) {
+                        heroEl.scrollIntoView({ behavior: 'smooth' });
+                      } else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    } else {
+                      window.location.href = '/universities';
+                    }
+                  }}
+                  className="flex flex-col items-center justify-center min-w-[68px] sm:min-w-[80px] p-2 hover:scale-105 transition-transform cursor-pointer group select-none"
+                >
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-all flex items-center justify-center bg-white border border-slate-200/80">
+                    {item.code ? (
+                      <img
+                        src={`https://flagcdn.com/w160/${item.code}.png`}
+                        alt={item.name}
+                        className="w-full h-full object-cover rounded-full"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-black text-sm">
+                        •••
+                      </div>
+                    )}
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 group-hover:text-[#00A86B] truncate w-full text-center">
+                    {item.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           
 
 
@@ -3987,8 +4001,106 @@ return (
                 </div>
               </div>
             </div>
-
           </div>
+
+        {/* ======================================================= */}
+        {/* ── FLOATING EASY SEARCH WIDGET ── */}
+        {/* ======================================================= */}
+        <aside aria-label="Easy Search Quick Launcher" className="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-40 antialiased">
+          <div className="relative">
+            {/* Quick Destination Flyout Panel */}
+            {showFloatingEasySearch && (
+              <div 
+                className="absolute bottom-[calc(100%+12px)] right-0 w-[300px] sm:w-[340px] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-3xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.18)] animate-fadeIn text-left ring-1 ring-black/5 z-50"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center font-bold">
+                      <Sparkles className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-slate-900 leading-tight">Easy Visa Search</h4>
+                      <span className="text-[10px] text-slate-400 font-medium">Select destination for instant rules</span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowFloatingEasySearch(false)}
+                    className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* 8 Instant Country Pills */}
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  {[
+                    { name: 'Canada', flag: '🇨🇦' },
+                    { name: 'United Kingdom', flag: '🇬🇧' },
+                    { name: 'United States', flag: '🇺🇸' },
+                    { name: 'Australia', flag: '🇦🇺' },
+                    { name: 'Germany', flag: '🇩🇪' },
+                    { name: 'UAE / Dubai', flag: '🇦🇪' },
+                    { name: 'France', flag: '🇫🇷' },
+                    { name: 'Singapore', flag: '🇸🇬' },
+                  ].map((c) => (
+                    <button
+                      key={c.name}
+                      type="button"
+                      onClick={() => {
+                        setJourneyDestination(c.name.split(' ')[0]);
+                        setShowFloatingEasySearch(false);
+                        const el = document.getElementById('hero-search');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="flex items-center gap-2 px-2.5 py-2 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-[#00A86B] border border-slate-200/70 text-xs font-bold text-slate-700 transition-all text-left group cursor-pointer"
+                    >
+                      <span className="text-base leading-none">{c.flag}</span>
+                      <span className="truncate group-hover:translate-x-0.5 transition-transform">{c.name}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Primary Search Launcher Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowFloatingEasySearch(false);
+                    const el = document.getElementById('hero-search');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="w-full py-2.5 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-2xl shadow-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+                >
+                  <Search className="w-3.5 h-3.5" />
+                  <span>Open Full AI Visa Planner</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
+                </button>
+              </div>
+            )}
+
+            {/* Floating Pill Capsule Trigger */}
+            <button
+              type="button"
+              onClick={() => setShowFloatingEasySearch(!showFloatingEasySearch)}
+              className="bg-slate-900 hover:bg-black text-white px-4.5 sm:px-5 py-3 rounded-full shadow-[0_12px_36px_rgba(0,0,0,0.28)] border border-slate-700/80 flex items-center gap-2.5 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group select-none backdrop-blur-md"
+              title="Easy Search - Find Visas & Destinations"
+            >
+              <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform shrink-0">
+                <Search className="w-3.5 h-3.5 stroke-[2.5]" />
+              </div>
+              <div className="text-left hidden sm:block">
+                <div className="flex items-center gap-1.5 leading-none">
+                  <span className="text-xs font-black tracking-tight text-white">Easy Search</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                </div>
+                <span className="text-[10px] text-slate-400 font-medium leading-tight">Instant Visa Rules</span>
+              </div>
+              <span className="sm:hidden text-xs font-bold text-white">Easy Search</span>
+              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-400 transition-transform duration-200 ${showFloatingEasySearch ? 'rotate-180 text-emerald-400' : ''}`} />
+            </button>
+          </div>
+        </aside>
 
       </div>
   );

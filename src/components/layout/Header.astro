@@ -31,68 +31,68 @@ const isHome = pathname === '/' || pathname === '';
         <nav class="hidden lg:flex items-center gap-3.5 xl:gap-7 font-plus-jakarta">
             <!-- 1. Find Consultants -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-medium text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
                     Find Experts
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1">
-                        <a href="/find-experts?category=student" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/find-experts?category=student" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <GraduationCap class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Student Visa Experts</span>
+                            <span class="text-[14px] font-medium">Student Visa Experts</span>
                         </a>
-                        <a href="/find-experts?category=work" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/find-experts?category=work" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Briefcase class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Work & Job Visa Experts</span>
+                            <span class="text-[14px] font-medium">Work & Job Visa Experts</span>
                         </a>
-                        <a href="/find-experts?category=pr" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/find-experts?category=pr" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">PR Agencies</span>
+                            <span class="text-[14px] font-medium">PR Agencies</span>
                         </a>
-                        <a href="/emergency" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/emergency" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Migration Agents & Lawyers</span>
+                            <span class="text-[14px] font-medium">Migration Agents & Lawyers</span>
                         </a>
                     </div>
                 </div>
             </div>
 
             <!-- 2. Self Apply -->
-            <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] hover:text-[#00a896] transition-colors whitespace-nowrap">
+            <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-medium text-slate-800 hover:text-[#00a896] transition-colors whitespace-nowrap cursor-pointer">
                 Self Apply
             </a>
 
             <!-- 3. Visa Services -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-medium text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
                     Visa Services
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
-                        <a href="/visa-documentation" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/visa-documentation" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Visa Documentation Filing</span>
+                            <span class="text-[14px] font-medium">Visa Documentation Filing</span>
                         </a>
-                        <a href="/visa-form-filing" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/visa-form-filing" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Visa Form Filing</span>
+                            <span class="text-[14px] font-medium">Visa Form Filing</span>
                         </a>
-                        <a href="/vfs-appointment" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/vfs-appointment" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Calendar class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">VFS Appointment Support</span>
+                            <span class="text-[14px] font-medium">VFS Appointment Support</span>
                         </a>
-                        <a href="/services/form-fillers" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/services/form-fillers" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <PenLine class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Visa Form Fillers</span>
+                            <span class="text-[14px] font-medium">Visa Form Fillers</span>
                         </a>
-                        <a href="/services/travel-insurance" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/services/travel-insurance" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <HeartHandshake class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Travel Insurance</span>
+                            <span class="text-[14px] font-medium">Travel Insurance</span>
                         </a>
-                        <a href="/services/airfares" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/services/airfares" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Plane class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Airfares Booking</span>
+                            <span class="text-[14px] font-medium">Airfares Booking</span>
                         </a>
                     </div>
                 </div>
@@ -100,23 +100,23 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- 4. Latest News & offers -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-medium text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
                     Latest News & offers
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[250px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
-                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Immigration News & Updates</span>
+                            <span class="text-[14px] font-medium">Immigration News & Updates</span>
                         </a>
-                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Plane class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Visa Policy Changes 2025</span>
+                            <span class="text-[14px] font-medium">Visa Policy Changes 2025</span>
                         </a>
-                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <DollarSign class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Exclusive Discounts & Offers</span>
+                            <span class="text-[14px] font-medium">Exclusive Discounts & Offers</span>
                         </a>
                     </div>
                 </div>
@@ -124,23 +124,23 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- 5. AI Tools -->
             <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-[#0c1a2e] group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none">
+                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-medium text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
                     AI Tools
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
                 </button>
                 <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
-                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Migration Tools Portal</span>
+                            <span class="text-[14px] font-medium">Migration Tools Portal</span>
                         </a>
-                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">CRS Points Calculator</span>
+                            <span class="text-[14px] font-medium">CRS Points Calculator</span>
                         </a>
-                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-semibold">Eligibility Checker</span>
+                            <span class="text-[14px] font-medium">Eligibility Checker</span>
                         </a>
                     </div>
                 </div>
@@ -150,7 +150,7 @@ const isHome = pathname === '/' || pathname === '';
         <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
         <div class="hidden lg:flex items-center gap-3.5 xl:gap-5 shrink-0 z-50 font-plus-jakarta">
             <!-- Contact Link (Replaces Globe selector) -->
-            <a href="/support" id="contact-btn" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#00A86B] transition-colors focus:outline-none">
+            <a href="/support" id="contact-btn" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-medium text-slate-800 hover:text-[#00A86B] transition-colors focus:outline-none">
                 <MessageSquare class="w-4.5 h-4.5 text-slate-500" />
                 <span>Contact</span>
             </a>
@@ -160,10 +160,10 @@ const isHome = pathname === '/' || pathname === '';
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="inline-flex items-center justify-center border-2 border-slate-300 hover:border-slate-900 bg-white hover:bg-slate-50 text-[#0c1a2e] px-6 py-2.5 min-w-[96px] rounded-xl text-[14px] font-bold transition-all duration-200 shadow-2xs active:scale-95 whitespace-nowrap cursor-pointer">
+                <a href="/login" id="login-btn" class="inline-flex items-center justify-center border border-slate-300 hover:border-slate-800 bg-white hover:bg-slate-50 text-slate-800 px-5 py-2 min-w-[88px] rounded-xl text-[14px] font-medium transition-all duration-200 shadow-2xs active:scale-95 whitespace-nowrap cursor-pointer">
                     Log in
                 </a>
-                <a href="/signup" id="signup-btn" class="inline-flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white !text-white px-6 py-2.5 rounded-xl text-[14px] font-extrabold transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap">
+                <a href="/signup" id="signup-btn" class="inline-flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white !text-white px-5 py-2 rounded-xl text-[14px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 whitespace-nowrap">
                     Sign Up
                 </a>
             </div>
@@ -175,7 +175,7 @@ const isHome = pathname === '/' || pathname === '';
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                         <span class="font-bold text-xs" id="nav-profile-avatar-letters">U</span>
                     </div>
-                    <span id="nav-profile-pill-name" class="font-bold text-xs max-w-[110px] truncate">My Account</span>
+                    <span id="nav-profile-pill-name" class="font-medium text-xs max-w-[110px] truncate">My Account</span>
                     <ChevronDown class="w-3.5 h-3.5 shrink-0 text-slate-400" />
                 </button>
                 
@@ -391,8 +391,8 @@ const isHome = pathname === '/' || pathname === '';
             // Always 100% Solid Pure White Header
             headerEl.className = "fixed top-0 left-0 w-full z-50 transition-all duration-300 scrolled-header bg-white shadow-2xs border-b border-slate-200/80 text-slate-800";
             if (logoImgEl) logoImgEl.setAttribute("src", "/logo.png?v=6");
-            if (loginBtnEl) loginBtnEl.className = "inline-flex items-center justify-center border-2 border-slate-300 hover:border-slate-900 bg-white hover:bg-slate-50 text-[#0c1a2e] px-6 py-2.5 min-w-[96px] rounded-xl text-[14px] font-bold transition-all duration-200 shadow-2xs active:scale-95 whitespace-nowrap cursor-pointer";
-            if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-bold text-[#0c1a2e] hover:text-[#00a896] transition-colors focus:outline-none";
+            if (loginBtnEl) loginBtnEl.className = "inline-flex items-center justify-center border border-slate-300 hover:border-slate-800 bg-white hover:bg-slate-50 text-slate-800 px-5 py-2 min-w-[88px] rounded-xl text-[14px] font-medium transition-all duration-200 shadow-2xs active:scale-95 whitespace-nowrap cursor-pointer";
+            if (contactBtnEl) contactBtnEl.className = "flex items-center gap-1.5 text-[14px] xl:text-[15px] font-medium text-slate-800 hover:text-[#00a896] transition-colors focus:outline-none";
             if (mobileMenuBtn) mobileMenuBtn.style.color = "#0c1a2e";
         };
 

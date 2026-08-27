@@ -3322,24 +3322,15 @@ return (
                   </div>
                 </div>
 
-                {/* Universities Action Buttons (Dual Actions) */}
-                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                {/* Universities Action Button */}
+                <div className="pt-2 flex items-center justify-center">
                   <button
                     type="button"
                     onClick={handleHomeFindUniversities}
-                    className="w-full sm:w-auto min-w-[220px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
+                    className="w-full sm:w-auto min-w-[240px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
                   >
                     <Building2 className="w-4 h-4" />
                     <span>Find Universities</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleHomeFindStudyConsultants}
-                    className="w-full sm:w-auto min-w-[220px] px-8 py-3.5 bg-slate-900 hover:bg-black active:scale-95 text-white rounded-2xl shadow-sm flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all border border-slate-800"
-                  >
-                    <MapPin className="w-4 h-4 text-teal-400" />
-                    <span>Find Study Consultants Near Me</span>
                   </button>
                 </div>
               </div>
@@ -3452,6 +3443,52 @@ return (
             )}
 
           </div>
+
+          {/* ======================================================= */}
+          {/* ── 4B. COMPACT CAPSULE: JOIN EXPAT & STUDENT COMMUNITY ── */}
+          {/* ======================================================= */}
+          <section className="max-w-6xl mx-auto mt-6 flex items-center justify-center animate-fadeIn px-3">
+            <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2.5 px-4 sm:px-7 shadow-xs inline-flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-center gap-3 sm:gap-6 transition-all hover:shadow-md">
+              
+              {/* Left Side: Discord Icon & Title */}
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-[#5865F2]/10 text-[#5865F2] flex items-center justify-center shrink-0">
+                  <svg className="w-4.5 h-4.5 fill-current" viewBox="0 0 127.14 96.36">
+                    <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
+                  </svg>
+                </div>
+                <div className="text-left">
+                  <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight block">
+                    Join Global Expat Community
+                  </span>
+                  <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>1,420+ students &amp; expats online</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Side: Toggle Capsule Button */}
+              <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60">
+                <a
+                  href="/community"
+                  className="px-4 py-1.5 rounded-full text-xs font-bold bg-[#0f172a] hover:bg-[#5865F2] text-white shadow-xs transition-all flex items-center gap-1.5 select-none active:scale-95"
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 animate-ping" />
+                  <span className="tracking-wide">JOIN DISCORD</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-emerald-400 stroke-[2.5]" />
+                </a>
+
+                <a
+                  href="/community"
+                  className="px-3 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors select-none hidden sm:inline-block"
+                >
+                  CHANNELS
+                </a>
+              </div>
+
+            </div>
+          </section>
 
           {/* ======================================================= */}
           {/* ── 5. HOW TRAVLTIK WORKS SECTION (NOW ABOVE POPULAR DESTINATIONS) ── */}
@@ -3951,84 +3988,8 @@ return (
               </div>
             </div>
 
-          {/* ======================================================= */}
-          {/* ── JOIN EXPAT & OVERSEAS STUDENT COMMUNITY BANNER ── */}
-          {/* ======================================================= */}
-          <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-14 text-left antialiased">
-            <div className="bg-slate-900 text-white rounded-[32px] p-8 md:p-12 border border-slate-800 shadow-2xl overflow-hidden relative">
-              {/* Subtle ambient dark purple/emerald glow gradients in the background corners */}
-              <div className="absolute -top-24 -left-24 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-emerald-900/25 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800/40 via-transparent to-transparent pointer-events-none" />
-
-              <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 sm:gap-10">
-                
-                {/* Left Column: Content & Live Stats */}
-                <div className="space-y-5 max-w-2xl">
-                  {/* Top Pill Badge */}
-                  <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3.5 py-1 rounded-full text-xs font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>💬 OVERSEAS STUDENT &amp; EXPAT NETWORK</span>
-                  </div>
-
-                  {/* Headline & Sub-headline */}
-                  <div className="space-y-3">
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-[1.2]">
-                      Moving or Traveling Abroad? Don't Go Alone.
-                    </h2>
-                    <p className="text-sm sm:text-base text-slate-300 font-normal leading-relaxed">
-                      Join 15,000+ Indian students, expats, and seniors already living in UAE, Canada, Russia, and Europe. Get real-time advice on housing, visas, forex, and flight buddies.
-                    </p>
-                  </div>
-
-                  {/* Live Community Stats Pill Row */}
-                  <div className="flex flex-wrap items-center gap-3 pt-1">
-                    <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-200 backdrop-blur-sm">
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-                      <span>🟢 1,420+ Online Right Now</span>
-                    </div>
-
-                    <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-200 backdrop-blur-sm">
-                      <GraduationCap className="w-4 h-4 text-purple-400" />
-                      <span>🎓 85+ Verified Senior Ambassadors</span>
-                    </div>
-
-                    <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-slate-200 backdrop-blur-sm">
-                      <Plane className="w-4 h-4 text-sky-400" />
-                      <span>✈️ 40+ Active Flight Cohorts</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Column: CTA Buttons */}
-                <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between gap-5 shrink-0">
-                  
-                  {/* CTA Buttons */}
-                  <div className="flex flex-col sm:flex-row w-full lg:w-auto gap-3">
-                    <a
-                      href="/community"
-                      className="bg-[#00A86B] hover:bg-[#008f5a] text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-emerald-600/30 transition-all hover:scale-105 active:scale-95 text-center text-sm flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
-                    >
-                      <Users className="w-4 h-4" />
-                      <span>Join Discord Community →</span>
-                    </a>
-
-                    <a
-                      href="/community"
-                      className="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-4 rounded-full border border-white/15 backdrop-blur-md transition-all active:scale-95 text-center text-sm flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
-                    >
-                      <span>Explore Country Channels</span>
-                    </a>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
           </div>
 
-        </div>
-
-    </div>
+      </div>
   );
 }

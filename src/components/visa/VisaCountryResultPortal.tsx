@@ -686,16 +686,16 @@ export function VisaCountryResultPortal({
             {/* Real-time Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-xs font-semibold shadow-xs">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="tracking-wide">Official Visa Processing • 99.4% Approval</span>
+              <span className="tracking-wide">Official Consulate Rules • 2026 Entry Policy</span>
             </div>
 
             {/* Country Title */}
             <div className="space-y-1">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white tracking-tight leading-[1.1] drop-shadow-sm">
-                {countryName} Visa {flagEmoji}
+                {countryName} Visa &amp; Entry Requirements {flagEmoji}
               </h1>
               <p className="text-sm sm:text-lg text-slate-200 font-normal sm:font-medium max-w-2xl leading-relaxed pt-1">
-                Apply online for {countryName} from the comfort of your home. Doorstep document pickup, AI photo verification &amp; guaranteed delivery.
+                Check if you need a visa, maximum length of stay, passport validity rules, and verified travel entry requirements for {countryName}.
               </p>
             </div>
 
@@ -703,17 +703,17 @@ export function VisaCountryResultPortal({
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2">
               <div className="px-3 py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs font-medium text-slate-200 flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>₹5 Lakh Transit Insurance</span>
+                <span>Official Consular Guidelines</span>
               </div>
 
               <div className="px-3 py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs font-medium text-slate-200 flex items-center gap-1.5">
                 <Clock className="w-4 h-4 text-blue-400" />
-                <span>Guaranteed in {processingDays} Days</span>
+                <span>Real-Time Policy Verification</span>
               </div>
 
               <div className="px-3 py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs font-medium text-slate-200 flex items-center gap-1.5">
-                <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                <span>4.9/5 (18,400+ reviews)</span>
+                <Sparkles className="w-4 h-4 text-amber-400 fill-amber-400" />
+                <span>Instant AI Entry Resolution</span>
               </div>
             </div>
 

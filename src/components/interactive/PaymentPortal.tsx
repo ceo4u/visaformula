@@ -314,7 +314,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
                                 <div className="flex justify-between"><span>Number of Travellers</span><span className="text-slate-900 font-bold">{travellers} Applicant(s)</span></div>
                                 <div className="flex justify-between"><span>Government Visa Fees</span><span className="text-slate-900 font-bold">₹{(amount * 0.65).toFixed(0)}</span></div>
                                 <div className="flex justify-between"><span>Concierge &amp; Filing</span><span className="text-slate-900 font-bold">₹{(amount * 0.35).toFixed(0)}</span></div>
-                                <div className="flex justify-between"><span>Doorstep Courier &amp; Insurance</span><span className="text-emerald-600 font-bold">FREE</span></div>
+                                <div className="flex justify-between"><span>Digital Verification &amp; Compliance</span><span className="text-emerald-600 font-bold">FREE</span></div>
                                 <div className="flex justify-between pt-3 border-t border-slate-100"><span className="font-bold text-slate-900 text-sm">Total Payable</span><span className="font-black text-slate-900 text-lg">₹{amount.toLocaleString()}</span></div>
                             </div>
 

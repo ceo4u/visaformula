@@ -661,89 +661,132 @@ export function VisaCountryResultPortal({
 
 
       
-      {/* ── SECTION 1.5: SLEEK ATLYS-STYLE AI INTELLIGENCE CARD ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        <div className="bg-[#FAFAFA] border border-slate-200/80 rounded-[28px] p-5 sm:p-7 shadow-xs text-left transition-all">
+      {/* ── SECTION 1.5: LUXURY ATLYS-GRADE AI INTELLIGENCE CARD ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
+        <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.03)] text-left space-y-6 relative overflow-hidden">
           
-          {/* Header & Verdict Pill */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200/60">
-            <div className="flex items-center gap-2.5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
+          {/* Top Bar: Live AI Indicator & Verified Consular Badges */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-slate-100">
+            <div className="flex items-center gap-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 text-xs font-bold shadow-2xs">
                 <span className="w-2 h-2 rounded-full bg-[#00A86B] animate-pulse" />
-                <span>AI Visa Engine</span>
+                <span>AI Visa Intelligence</span>
               </div>
-              <span className="text-xs text-slate-400">•</span>
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-slate-300 hidden sm:inline">•</span>
+              <span className="text-xs font-semibold text-slate-600 hidden sm:inline">
                 Live Consular Regulations
               </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-medium text-slate-400 flex items-center gap-1">
-                <span>Verified by IATA Timatic &amp; {countryName} Consular API</span>
+              <span className="text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-2xs">
+                <span className="text-[11px]">🏛️</span>
+                <span>Verified with IATA Timatic &amp; {countryName} Consular Engine</span>
               </span>
             </div>
           </div>
 
-          {/* Verdict Highlight */}
-          <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
-                  aiIntel.isExempt ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'
+          {/* Main Verdict Card with Subtle Glass Accent */}
+          <div className={`p-5 sm:p-6 rounded-2xl border transition-all ${
+            aiIntel.isExempt
+              ? 'bg-gradient-to-r from-emerald-50/70 via-teal-50/30 to-white border-emerald-200/80'
+              : 'bg-gradient-to-r from-indigo-50/70 via-slate-50/40 to-white border-indigo-200/80'
+          }`}>
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-2xs text-white ${
+                  aiIntel.isExempt ? 'bg-[#00A86B]' : 'bg-indigo-600'
                 }`}>
-                  {aiIntel.isExempt ? 'VISA-FREE ENTRY' : 'OFFICIAL PASS REQUIRED'}
-                </span>
-                <span className="text-xs font-bold text-slate-900">
-                  {aiIntel.verdictTitle}
-                </span>
+                  {aiIntel.isExempt ? <Check className="w-6 h-6 stroke-[2.5]" /> : <ShieldCheck className="w-6 h-6 stroke-[2]" />}
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+                      {aiIntel.verdictTitle}
+                    </h3>
+                    <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
+                      aiIntel.isExempt ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'
+                    }`}>
+                      {aiIntel.isExempt ? 'VISA-FREE' : 'PASS REQUIRED'}
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-3xl">
+                    {aiIntel.verdictSummary}
+                  </p>
+                </div>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-4xl">
-                {aiIntel.verdictSummary}
-              </p>
             </div>
           </div>
 
-          {/* 4 Crisp Minimalist Chips */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 pt-2">
+          {/* 4 Clean Visual Requirement Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-1">
             
-            <div className="bg-white border border-slate-200/70 rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
-              <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0 text-sm">
-                🛂
+            <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-4 transition-all shadow-2xs flex items-center gap-3.5 group">
+              <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-800 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
+                <FileText className="w-5 h-5 text-indigo-600 stroke-[1.8]" />
               </div>
               <div className="min-w-0">
-                <span className="text-[10px] text-slate-400 block font-medium">Passport</span>
-                <span className="text-xs font-bold text-slate-800 truncate block">6+ Months Validity</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                  Passport
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-slate-900 block truncate">
+                  6+ Months Validity
+                </span>
+                <span className="text-[11px] text-slate-500 font-medium block truncate">
+                  Min. 2 blank pages
+                </span>
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200/70 rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
-              <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0 text-sm">
-                📋
+            <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-4 transition-all shadow-2xs flex items-center gap-3.5 group">
+              <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-800 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
+                <ShieldCheck className="w-5 h-5 text-emerald-600 stroke-[1.8]" />
               </div>
               <div className="min-w-0">
-                <span className="text-[10px] text-slate-400 block font-medium">Mandatory Card</span>
-                <span className="text-xs font-bold text-slate-800 truncate block">{aiIntel.digitalCardName.split(' ')[0]} {aiIntel.digitalCardName.split(' ')[1] || 'Card'}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                  Mandatory Card
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-slate-900 block truncate">
+                  {aiIntel.digitalCardName.split('(')[0].trim()}
+                </span>
+                <span className="text-[11px] text-slate-500 font-medium block truncate">
+                  Free online submission
+                </span>
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200/70 rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
-              <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0 text-sm">
-                ✈️
+            <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-4 transition-all shadow-2xs flex items-center gap-3.5 group">
+              <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-800 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
+                <Plane className="w-5 h-5 text-sky-600 stroke-[1.8]" />
               </div>
               <div className="min-w-0">
-                <span className="text-[10px] text-slate-400 block font-medium">Return Ticket</span>
-                <span className="text-xs font-bold text-slate-800 truncate block">Onward Flight Proof</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                  Return Travel
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-slate-900 block truncate">
+                  Onward Flight Proof
+                </span>
+                <span className="text-[11px] text-slate-500 font-medium block truncate">
+                  Confirmed return ticket
+                </span>
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200/70 rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
-              <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0 text-sm">
-                💳
+            <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-4 transition-all shadow-2xs flex items-center gap-3.5 group">
+              <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-800 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
+                <Building2 className="w-5 h-5 text-amber-600 stroke-[1.8]" />
               </div>
               <div className="min-w-0">
-                <span className="text-[10px] text-slate-400 block font-medium">Accommodation</span>
-                <span className="text-xs font-bold text-slate-800 truncate block">Stay &amp; Funds Proof</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                  Stay &amp; Funds
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-slate-900 block truncate">
+                  Hotel / Host Proof
+                </span>
+                <span className="text-[11px] text-slate-500 font-medium block truncate">
+                  Sufficient travel funds
+                </span>
               </div>
             </div>
 

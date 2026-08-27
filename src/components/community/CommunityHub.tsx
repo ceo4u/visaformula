@@ -299,8 +299,7 @@ export default function CommunityHub() {
 
   return (
     <div
-      className="min-h-screen w-full bg-[#edf2f7] p-2.5 sm:p-4 lg:p-6 flex items-center justify-center font-sans antialiased text-slate-900 select-none overflow-x-hidden"
-      style={{ fontFamily: '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}
+      className="min-h-screen w-full bg-[#edf2f7] p-2.5 sm:p-4 lg:p-6 flex items-center justify-center font-plus-jakarta antialiased text-slate-900 select-none overflow-x-hidden"
     >
       {/* ═════════════════════════════════════════════════════════════════
           MAIN APP CONTAINER (3-COLUMN EXACT PIXEL-PERFECT LAYOUT)
@@ -374,7 +373,7 @@ export default function CommunityHub() {
                           setActiveChannel(ch.slug);
                           setMobileMenuOpen(false);
                         }}
-                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-black transition-all cursor-pointer ${
+                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                           isActive
                             ? 'bg-[#00A86B] text-white shadow-sm shadow-emerald-600/30'
                             : 'text-slate-700 hover:bg-slate-100/80'
@@ -463,7 +462,7 @@ export default function CommunityHub() {
                   <span className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full ring-2 ring-white ${currentUser ? 'bg-[#00A86B]' : 'bg-slate-400'}`} />
                 </div>
                 <div className="min-w-0 truncate">
-                  <div className="text-xs font-black text-slate-900 truncate">
+                  <div className="text-xs font-bold text-slate-900 truncate">
                     {currentUser ? currentUser.displayName : 'Guest Visitor'}
                   </div>
                   <div className="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
@@ -514,7 +513,7 @@ export default function CommunityHub() {
                   <>
                     <a
                       href="/login?redirect=/community"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-black text-[#00A86B] bg-emerald-50 hover:bg-emerald-100"
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-[#00A86B] bg-emerald-50 hover:bg-emerald-100"
                     >
                       <LogIn className="w-4 h-4" />
                       <span>Log In to Account</span>
@@ -551,7 +550,7 @@ export default function CommunityHub() {
 
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-50 border border-slate-200/70">
                 <Hash className="w-4 h-4 text-[#00A86B]" />
-                <span className="text-xs sm:text-sm font-black text-slate-900">
+                <span className="text-xs sm:text-sm font-bold text-slate-900">
                   {currentChannelObj.name}
                 </span>
                 <span className="text-slate-300">|</span>
@@ -577,7 +576,7 @@ export default function CommunityHub() {
                 title="Notifications"
               >
                 <Bell className="w-4 h-4" />
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#00A86B] text-white text-[9px] font-black flex items-center justify-center">
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#00A86B] text-white text-[9px] font-bold flex items-center justify-center">
                   {seniors.length > 0 ? seniors.length : 3}
                 </span>
               </button>
@@ -624,7 +623,7 @@ export default function CommunityHub() {
                     >
                       {/* Header: Name + Verified Senior Badge */}
                       <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <span className="text-xs sm:text-[13px] font-black text-slate-900">
+                        <span className="text-xs sm:text-[13px] font-bold text-slate-900">
                           {msg.sender_name}
                         </span>
                         {msg.is_verified_senior && (
@@ -655,7 +654,7 @@ export default function CommunityHub() {
                             className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-slate-200 shadow-sm text-xs font-bold text-slate-800 hover:scale-105 transition-transform cursor-pointer"
                           >
                             <span>{r.emoji}</span>
-                            <span className="text-[11px] font-black text-slate-600">{r.count}</span>
+                            <span className="text-[11px] font-bold text-slate-600">{r.count}</span>
                           </button>
                         ))}
 
@@ -705,7 +704,7 @@ export default function CommunityHub() {
                   <MessageSquare className="w-7 h-7" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-sm font-black text-slate-800">
+                  <h4 className="text-sm font-bold text-slate-800">
                     No messages in #{currentChannelObj.name} yet
                   </h4>
                   <p className="text-xs text-slate-400 max-w-xs mx-auto font-medium">
@@ -794,11 +793,11 @@ export default function CommunityHub() {
             <div className="flex items-center justify-between pb-1">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B]" />
-                <h3 className="text-xs sm:text-sm font-black text-slate-900">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-900">
                   Online Members
                 </h3>
               </div>
-              <span className="text-[11px] font-black text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
+              <span className="text-[11px] font-bold text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
                 {stats.online_seniors || seniors.length || 8}
               </span>
             </div>
@@ -836,7 +835,7 @@ export default function CommunityHub() {
                       <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-[#00A86B] ring-1 ring-white" />
                     </div>
                     <div className="min-w-0">
-                      <div className="text-xs font-black text-slate-900 truncate">
+                      <div className="text-xs font-bold text-slate-900 truncate">
                         {s.name}
                       </div>
                       <div className="flex items-center gap-1 text-[10px] font-bold text-[#00A86B]">
@@ -865,7 +864,7 @@ export default function CommunityHub() {
           <div className="bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-4 sm:p-5 space-y-3.5 flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between pb-1">
-                <h3 className="text-xs sm:text-sm font-black text-slate-900">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-900">
                   Pinned Resources
                 </h3>
                 <button

@@ -770,14 +770,14 @@ export default function CommunityHub() {
               )}
             </div>
 
-            {/* Solid Emerald Green Send Button */}
+            {/* Solid Dark Slate Send Button */}
             <button
               type="submit"
               disabled={!inputText.trim() || sending}
-              className="w-10 h-10 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white flex items-center justify-center cursor-pointer disabled:opacity-40 transition-all shrink-0 shadow-sm shadow-emerald-600/30 active:scale-95"
+              className="w-10 h-10 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white flex items-center justify-center cursor-pointer disabled:opacity-40 transition-all shrink-0 shadow-md active:scale-95"
               title="Send Message"
             >
-              <Send className="w-4 h-4 -rotate-45 -translate-y-0.5 translate-x-0.5" />
+              <Send className="w-4 h-4 -rotate-45 -translate-y-0.5 translate-x-0.5 text-white" />
             </button>
           </form>
 

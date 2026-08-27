@@ -2912,7 +2912,7 @@ return (
                     <button
                       type="button"
                       onClick={handleViewInDashboard}
-                      className="px-5 py-3 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs sm:text-sm font-black transition-all shadow-lg shadow-emerald-900/30 flex items-center justify-center gap-2 cursor-pointer"
+                      className="px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <span>View in Dashboard →</span>
                     </button>
@@ -3586,7 +3586,7 @@ return (
 
                   <a
                     href="/visa-guide"
-                    className="w-full sm:w-auto bg-[#00A86B] hover:bg-[#008f5a] text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all whitespace-nowrap cursor-pointer"
+                    className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all whitespace-nowrap cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Download PDF</span>

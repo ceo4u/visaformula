@@ -251,7 +251,7 @@ export function DesktopHomeSection() {
           </div>
 
           <div className="relative z-10 flex items-center gap-5">
-            <a href="/find-experts?category=flight" className="bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow transition whitespace-nowrap">
+            <a href="/find-experts?category=flight" className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow transition whitespace-nowrap">
               Explore Deals
             </a>
             <div className="text-right">
@@ -294,7 +294,7 @@ export function DesktopHomeSection() {
 
             <div className="flex flex-wrap gap-3 pt-1">
               <a href="/readiness"
-                className="bg-[#00a896] hover:bg-[#008f80] text-white font-medium text-xs px-5 py-3 rounded-xl shadow-xs transition-all hover-spring flex items-center gap-1.5"
+                className="bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs px-5 py-3 rounded-xl shadow-xs transition-all hover-spring flex items-center gap-1.5"
               >
                 <Sparkles className="w-3.5 h-3.5" /> Check Travel Readiness
               </a>
@@ -490,7 +490,7 @@ export function DesktopHomeSection() {
                   <button
                     type="button"
                     onClick={handleFindUniversities}
-                    className="w-full sm:w-auto min-w-[220px] px-8 py-3.5 bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white rounded-2xl shadow-md shadow-teal-700/20 flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
+                    className="w-full sm:w-auto min-w-[220px] px-8 py-3.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-2xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all"
                   >
                     <Building2 className="w-4 h-4" />
                     <span>Find Universities</span>
@@ -673,7 +673,7 @@ export function DesktopHomeSection() {
                           onClick={() => setConsultantMode(m)}
                           className={`px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                             consultantMode === m
-                              ? 'bg-[#00a896] text-white font-bold'
+                              ? 'bg-slate-900 text-white font-bold'
                               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                           }`}
                         >
@@ -687,7 +687,7 @@ export function DesktopHomeSection() {
                   <button
                     type="button"
                     onClick={() => handleConsultantSearch()}
-                    className="w-full sm:w-auto px-8 py-2.5 bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white rounded-xl shadow-sm flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all ml-auto"
+                    className="w-full sm:w-auto px-8 py-2.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-xl shadow-md flex items-center justify-center gap-2 font-bold text-xs cursor-pointer transition-all ml-auto"
                   >
                     <Search className="w-4 h-4" />
                     <span>Search Consultants</span>
@@ -797,7 +797,7 @@ export function DesktopHomeSection() {
                 </div>
                 <a
                   href={activeCategory === 'jobs' ? '/classifieds?category=Jobs' : '/find-experts?category=lawyer'}
-                  className="px-6 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-xs rounded-xl shadow-xs whitespace-nowrap transition-all"
+                  className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs whitespace-nowrap transition-all"
                 >
                   {activeCategory === 'jobs' ? 'Browse Jobs Abroad →' : 'Find Immigration Lawyers →'}
                 </a>
@@ -942,7 +942,7 @@ export function DesktopHomeSection() {
               <h3 className="font-bold text-lg text-slate-900 leading-tight">Free Embassy Document<br />Checklist Download</h3>
               <p className="text-slate-500 text-xs font-medium">Country-specific checklist for smooth visa filings.</p>
               <a href="/services/visa-documentation"
-                className="inline-flex items-center gap-2 bg-[#00a896] hover:bg-[#008f80] text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow transition-all">
+                className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow transition-all">
                 <Download className="w-4 h-4" /> Download Checklist
               </a>
             </div>

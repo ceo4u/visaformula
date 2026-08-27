@@ -298,7 +298,7 @@ export function MobileHomeSection() {
                 <div className="pt-1 space-y-2">
                   <button
                     type="submit"
-                    className="w-full bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-bold text-xs py-3 rounded-xl shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all"
+                    className="w-full bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold text-xs py-3 rounded-xl shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all"
                   >
                     <Building2 className="w-3.5 h-3.5" />
                     <span>Find Universities</span>
@@ -421,7 +421,7 @@ export function MobileHomeSection() {
                 {/* Search Button */}
                 <button
                   type="submit"
-                  className="w-full mt-2 bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white font-bold text-xs py-3 rounded-xl shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all"
+                  className="w-full mt-2 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold text-xs py-3 rounded-xl shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all"
                 >
                   <Search className="w-3.5 h-3.5" />
                   <span>Search Consultants</span>
@@ -479,7 +479,7 @@ export function MobileHomeSection() {
               <p className="text-xs text-slate-600 font-medium">Browse verified job openings, employer sponsorships, and work visas.</p>
               <a
                 href="/classifieds?category=Jobs"
-                className="inline-flex items-center justify-center gap-2 w-full bg-[#00a896] text-white text-xs font-bold py-2.5 rounded-xl shadow-xs"
+                className="inline-flex items-center justify-center gap-2 w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 rounded-xl shadow-xs"
               >
                 Browse Jobs Abroad →
               </a>

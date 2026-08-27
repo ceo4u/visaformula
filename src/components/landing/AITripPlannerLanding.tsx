@@ -3295,7 +3295,7 @@ return (
                     FEATURED
                   </span>
                   <img
-                    src="https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=85"
+                    src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop"
                     alt="Study in Canada"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
@@ -3330,7 +3330,7 @@ return (
                     OFFER
                   </span>
                   <img
-                    src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&auto=format&fit=crop&q=85"
+                    src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800&auto=format&fit=crop"
                     alt="Flight Tickets"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"

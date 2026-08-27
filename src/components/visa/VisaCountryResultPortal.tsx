@@ -1546,384 +1546,276 @@ export function VisaCountryResultPortal({
             </div>
           </section>
 
-          {/* ── ATLYS-STYLE 2-COLUMN RESULT & STICKY BOOKING WORKSPACE ── */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-              
-              {/* ── LEFT COLUMN (7 COLS): Guided Product Flow ── */}
-              <div className="lg:col-span-7 space-y-10 text-left">
-                
-                {/* 1. 4 Quick Specification Pill Cards */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
-                      Length of Stay
-                    </span>
-                    <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
-                      {lengthOfStay}
-                    </span>
-                    <span className="text-[11px] font-bold text-emerald-600 block mt-0.5">
-                      Tourist &amp; Leisure
-                    </span>
-                  </div>
-
-                  <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
-                      Validity
-                    </span>
-                    <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
-                      {validity}
-                    </span>
-                    <span className="text-[11px] font-bold text-blue-600 block mt-0.5">
-                      From issue date
-                    </span>
-                  </div>
-
-                  <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
-                      Entry Type
-                    </span>
-                    <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
-                      {entryType.split('/')[0].trim()}
-                    </span>
-                    <span className="text-[11px] font-bold text-purple-600 block mt-0.5">
-                      Official Stamping
-                    </span>
-                  </div>
-
-                  <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
-                      Processing Time
-                    </span>
-                    <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
-                      {processingDays} Days
-                    </span>
-                    <span className="text-[11px] font-bold text-amber-600 block mt-0.5">
-                      Fast-Track
-                    </span>
-                  </div>
-                </div>
-
-                {/* 2. ATLYS 3-STEP VISUAL PROGRESSION */}
-                <div className="space-y-4">
-                  <div className="space-y-1">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
-                      Effortless 3-Step Process
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900 tracking-tight">
-                      How getting your {countryName} visa works
-                    </h2>
-                  </div>
-
-                  <div className="space-y-3 pt-2">
-                    
-                    {/* Step 1 */}
-                    <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0 font-semibold text-lg">
-                        1
-                      </div>
-                      <div className="space-y-1 flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-base font-semibold text-slate-900">
-                            Scan your passport on your phone
-                          </h3>
-                          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
-                            2 Mins
-                          </span>
-                        </div>
-                        <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-                          Simply take a picture of your passport biodata page. Our automated OCR extracts your details with 100% accuracy and eliminates spelling errors.
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Step 2 */}
-                    <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 font-semibold text-lg">
-                        2
-                      </div>
-                      <div className="space-y-1 flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-base font-semibold text-slate-900">
-                            TravlTik files directly with the embassy
-                          </h3>
-                          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-                            Direct Line
-                          </span>
-                        </div>
-                        <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-                          Our in-house visa concierge pre-screens documents, pays government embassy fees, and tracks your application daily through official consulate portals.
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Step 3 */}
-                    <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 font-semibold text-lg">
-                        3
-                      </div>
-                      <div className="space-y-1 flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-base font-semibold text-slate-900">
-                            Receive your stamped e-Visa on WhatsApp &amp; Email
-                          </h3>
-                          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
-                            Guaranteed
-                          </span>
-                        </div>
-                        <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-                          Download your official electronic visa sent directly to your WhatsApp &amp; Email by {guaranteedDate}.
-                        </p>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-
-                {/* 3. OBSIDIAN PASSPORT SECURITY & ESCROW VAULT BANNER */}
-                <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -z-0" />
-                  
-                  <div className="relative z-10 space-y-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-semibold uppercase tracking-wider">
-                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      <span>Obsidian Bank-Grade Security Vault</span>
-                    </div>
-
-                    <h3 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-white tracking-tight leading-snug">
-                      Your application is protected by 256-Bit SSL Encryption &amp; Guarantee
-                    </h3>
-
-                    <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed">
-                      Every document upload is digitally encrypted with bank-grade protocols and verified with consulate accuracy before submission. Over 50 Lakh+ applications handled safely.
-                    </p>
-
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                      <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span className="text-xs font-medium text-slate-400 block">Service Cover</span>
-                        <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">100% Refund</span>
-                      </div>
-                      <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span className="text-xs font-medium text-slate-400 block">Data Security</span>
-                        <span className="text-sm sm:text-base font-semibold text-emerald-400 mt-0.5 block">256-Bit SSL</span>
-                      </div>
-                      <div className="p-3 rounded-2xl bg-white/5 border border-white/10 col-span-2 sm:col-span-1">
-                        <span className="text-xs font-medium text-slate-400 block">Approval Record</span>
-                        <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">99.4% Highest</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                
+          {/* ── VISA RESULT & SPECIFICATION WORKSPACE ── */}
+          <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
+            
+            {/* 1. 4 Quick Specification Pill Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
+                <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
+                  Length of Stay
+                </span>
+                <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
+                  {lengthOfStay}
+                </span>
+                <span className="text-[11px] font-bold text-emerald-600 block mt-0.5">
+                  Tourist &amp; Leisure
+                </span>
               </div>
 
-              {/* ── RIGHT COLUMN (5 COLS): STICKY VISA CONSULTANCY & EXPERT ASSISTANCE ── */}
-              <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
-                
-                <div className="bg-white border-2 border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-xl shadow-slate-900/5 space-y-6 text-left relative overflow-hidden">
-                  
-                  {/* Status Pill */}
-                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <div>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
-                          Official Visa Assistance
-                        </span>
-                        <span className="text-xs sm:text-sm font-bold text-slate-900">
-                          {countryName} Visa Application Support
-                        </span>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                      VERIFIED
-                    </span>
-                  </div>
-
-                  {/* Visa Details Mini Card */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
-                      <span className="text-slate-500 font-medium">Passport:</span>
-                      <span className="font-bold text-slate-900">{passportCountry}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
-                      <span className="text-slate-500 font-medium">Destination:</span>
-                      <span className="font-bold text-slate-900">{countryName}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
-                      <span className="text-slate-500 font-medium">Visa Category:</span>
-                      <span className="font-bold text-emerald-700">{approvedVisaType}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
-                      <span className="text-slate-500 font-medium">Estimated Processing:</span>
-                      <span className="font-bold text-slate-900">3–5 Business Days</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs pt-1">
-                      <span className="text-slate-500 font-medium">Embassy Fee Guide:</span>
-                      <span className="font-bold text-slate-900">₹{totalGovFee.toLocaleString()}</span>
-                    </div>
-                  </div>
-
-                  {/* Primary Contact CTA */}
-                  <a
-                    href="https://wa.me/917661989366?text=Hi%20TravlTik%2C%20I%20need%20expert%20visa%20assistance%20for%20my%20application"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white font-semibold text-sm sm:text-base tracking-wide shadow-xl shadow-slate-900/20 transition-all cursor-pointer flex items-center justify-center gap-2"
-                  >
-                    <span>Talk to Visa Specialist</span>
-                    <ArrowRight className="w-4 h-4 stroke-[3]" />
-                  </a>
-
-                  {/* Direct Support Badges */}
-                  <div className="pt-1 flex items-center justify-between gap-2">
-                    <a
-                      href="https://wa.me/917661989366?text=Hi%20TravlTik%2C%20I%20need%20help%20with%20my%20visa%20application"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
-                    >
-                      <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>WhatsApp Chat</span>
-                    </a>
-
-                    <a
-                      href="tel:+917661989366"
-                      className="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
-                    >
-                      <Phone className="w-3.5 h-3.5 text-slate-700" />
-                      <span>Call Support</span>
-                    </a>
-                  </div>
-
-                  {/* Trust Footer */}
-                  <div className="pt-2 text-center border-t border-slate-100">
-                    <p className="text-[11px] text-slate-400 font-bold flex items-center justify-center gap-1.5">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Verified Consultants • 99.4% Approval Record</span>
-                    </p>
-                  </div>
-
-                </div>
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
+                <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
+                  Validity
+                </span>
+                <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
+                  {validity}
+                </span>
+                <span className="text-[11px] font-bold text-blue-600 block mt-0.5">
+                  From issue date
+                </span>
               </div>
 
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
+                <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
+                  Entry Type
+                </span>
+                <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
+                  {entryType.split('/')[0].trim()}
+                </span>
+                <span className="text-[11px] font-bold text-purple-600 block mt-0.5">
+                  Official Stamping
+                </span>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 text-left hover:border-slate-300 transition-all">
+                <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 block">
+                  Processing Time
+                </span>
+                <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
+                  {processingDays} Days
+                </span>
+                <span className="text-[11px] font-bold text-amber-600 block mt-0.5">
+                  Fast-Track
+                </span>
+              </div>
             </div>
-          
-            {/* ── CENTERED FULL-WIDTH SECTIONS: DOCUMENTS CHECKLIST & FAQS ── */}
-            <div className="max-w-4xl mx-auto space-y-12 sm:space-y-16 mt-14 sm:mt-20 text-left">
 
-                {/* 5. REQUIRED DOCUMENTS CHECKLIST */}
-                <div className="space-y-4">
-                  <div className="space-y-1 text-center sm:text-left">
-                    <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#00A86B]">
-                      Simple Paperwork
-                    </span>
-                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-slate-900 tracking-tight">
-                      Documents required for {countryName} Visa
-                    </h2>
+            {/* 2. 3-STEP VISUAL PROGRESSION */}
+            <div className="space-y-4 text-left">
+              <div className="space-y-1">
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
+                  Effortless 3-Step Process
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900 tracking-tight">
+                  How getting your {countryName} visa works
+                </h2>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                
+                {/* Step 1 */}
+                <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0 font-semibold text-lg">
+                    1
                   </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
-                        <FileText className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Original Passport / Clear Scan
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Valid for at least 6 months beyond travel date with 2 blank pages.
-                        </p>
-                      </div>
+                  <div className="space-y-1 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-semibold text-slate-900">
+                        Scan your passport on your phone
+                      </h3>
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
+                        2 Mins
+                      </span>
                     </div>
-
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                        <Camera className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          1 Passport Photo / Clean Selfie
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          White background. Take selfie on phone, our AI formats it automatically.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                        <Plane className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Confirmed Flight Itinerary
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Return or onward ticket. Don't worry, TravlTik can provide embassy itinerary holding.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                        <Building2 className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Hotel Booking / Stay Proof
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Verified hotel reservation or host invitation letter for immigration stamping.
-                        </p>
-                      </div>
-                    </div>
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                      Simply take a picture of your passport biodata page. Our automated OCR extracts your details with 100% accuracy and eliminates spelling errors.
+                    </p>
                   </div>
                 </div>
 
-                {/* 6. EXPANDABLE FAQ ACCORDION */}
-                <div className="space-y-4">
-                  <div className="space-y-1 text-center sm:text-left">
-                    <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#00A86B]">
-                      Got Questions?
-                    </span>
-                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-slate-900 tracking-tight">
-                      Frequently Asked Questions
-                    </h2>
+                {/* Step 2 */}
+                <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 font-semibold text-lg">
+                    2
                   </div>
+                  <div className="space-y-1 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-semibold text-slate-900">
+                        TravlTik files directly with the embassy
+                      </h3>
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                        Direct Line
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                      Our in-house visa concierge pre-screens documents, pays government embassy fees, and tracks your application daily through official consulate portals.
+                    </p>
+                  </div>
+                </div>
 
-                  <div className="border border-slate-200/90 rounded-3xl overflow-hidden divide-y divide-slate-100 shadow-2xs">
-                    {faqs.map((faq, idx) => {
-                      const isOpen = activeFaq === idx;
-                      return (
-                        <div key={idx} className="bg-white">
-                          <button
-                            type="button"
-                            onClick={() => setActiveFaq(isOpen ? null : idx)}
-                            className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left font-semibold text-sm sm:text-base text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer select-none"
-                          >
-                            <span>{faq.question}</span>
-                            <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
-                          </button>
-
-                          {isOpen && (
-                            <div className="px-4 sm:px-5 pb-5 pt-1 text-sm sm:text-[15px] text-slate-600 font-normal leading-relaxed">
-                              {faq.answer}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
+                {/* Step 3 */}
+                <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row items-start gap-5 transition-all">
+                  <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 font-semibold text-lg">
+                    3
+                  </div>
+                  <div className="space-y-1 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-semibold text-slate-900">
+                        Receive your stamped e-Visa on WhatsApp &amp; Email
+                      </h3>
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
+                        Guaranteed
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                      Download your official electronic visa sent directly to your WhatsApp &amp; Email by {guaranteedDate}.
+                    </p>
                   </div>
                 </div>
 
               </div>
+            </div>
+
+            {/* 3. OBSIDIAN PASSPORT SECURITY & ESCROW VAULT BANNER */}
+            <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden text-left">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -z-0" />
+              
+              <div className="relative z-10 space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-semibold uppercase tracking-wider">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span>Obsidian Bank-Grade Security Vault</span>
+                </div>
+
+                <h3 className="text-lg sm:text-xl font-heading font-semibold tracking-tight text-white leading-snug">
+                  Your application is protected by 256-Bit SSL Encryption &amp; Guarantee
+                </h3>
+
+                <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed">
+                  Every document upload is digitally encrypted with bank-grade protocols and verified with consulate accuracy before submission. Over 50 Lakh+ applications handled safely.
+                </p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+                    <span className="text-xs font-medium text-slate-400 block">Service Cover</span>
+                    <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">100% Refund</span>
+                  </div>
+                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+                    <span className="text-xs font-medium text-slate-400 block">Data Security</span>
+                    <span className="text-sm sm:text-base font-semibold text-emerald-400 mt-0.5 block">256-Bit SSL</span>
+                  </div>
+                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10 col-span-2 sm:col-span-1">
+                    <span className="text-xs font-medium text-slate-400 block">Approval Record</span>
+                    <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">99.4% Highest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. REQUIRED DOCUMENTS CHECKLIST */}
+            <div className="space-y-4 text-left">
+              <div className="space-y-1 text-center sm:text-left">
+                <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#00A86B]">
+                  Simple Paperwork
+                </span>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-slate-900 tracking-tight">
+                  Documents required for {countryName} Visa
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
+                    <FileText className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-semibold text-slate-900">
+                      Original Passport / Clear Scan
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+                      Valid for at least 6 months beyond travel date with 2 blank pages.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <Camera className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-semibold text-slate-900">
+                      1 Passport Photo / Clean Selfie
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+                      White background. Take selfie on phone, our AI formats it automatically.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                  <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                    <Plane className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-semibold text-slate-900">
+                      Confirmed Flight Itinerary
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+                      Return or onward ticket. Don't worry, TravlTik can provide embassy itinerary holding.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                    <Building2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-semibold text-slate-900">
+                      Hotel Booking / Stay Proof
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+                      Verified hotel reservation or host invitation letter for immigration stamping.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. EXPANDABLE FAQ ACCORDION */}
+            <div className="space-y-4 text-left">
+              <div className="space-y-1 text-center sm:text-left">
+                <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#00A86B]">
+                  Got Questions?
+                </span>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-slate-900 tracking-tight">
+                  Frequently Asked Questions
+                </h2>
+              </div>
+
+              <div className="border border-slate-200/90 rounded-3xl overflow-hidden divide-y divide-slate-100 shadow-2xs">
+                {faqs.map((faq, idx) => {
+                  const isOpen = activeFaq === idx;
+                  return (
+                    <div key={idx} className="bg-white">
+                      <button
+                        type="button"
+                        onClick={() => setActiveFaq(isOpen ? null : idx)}
+                        className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left font-semibold text-sm sm:text-base text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer select-none"
+                      >
+                        <span>{faq.question}</span>
+                        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                      </button>
+
+                      {isOpen && (
+                        <div className="px-4 sm:px-5 pb-5 pt-1 text-sm sm:text-[15px] text-slate-600 font-normal leading-relaxed">
+                          {faq.answer}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
 
           </section>
 

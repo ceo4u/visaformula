@@ -641,6 +641,17 @@ export function VisaCountryResultPortal({
     setTimeout(() => setCopiedShare(false), 2500);
   };
 
+  const handleToggleVisaAlready = (val: 'no' | 'yes') => {
+    setHasVisaAlready(val);
+    setTimeout(() => {
+      const targetId = val === 'yes' ? 'pre-departure-branch' : 'visa-application-branch';
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 60);
+  };
+
   const faqs = [
     {
       question: `Do ${passportCountry} citizens need a visa for ${countryName}?`,
@@ -736,7 +747,7 @@ export function VisaCountryResultPortal({
             {/* NO button */}
             <button
               type="button"
-              onClick={() => setHasVisaAlready('no')}
+              onClick={() => handleToggleVisaAlready('no')}
               className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
                 hasVisaAlready === 'no'
                   ? 'bg-[#0f172a] text-white shadow-md'
@@ -760,7 +771,7 @@ export function VisaCountryResultPortal({
             {/* YES button */}
             <button
               type="button"
-              onClick={() => setHasVisaAlready('yes')}
+              onClick={() => handleToggleVisaAlready('yes')}
               className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
                 hasVisaAlready === 'yes'
                   ? 'bg-[#0f172a] text-white shadow-md'
@@ -928,7 +939,7 @@ export function VisaCountryResultPortal({
       {/* ── BRANCH 1: USER SELECTS "YES" (PRE-DEPARTURE OS & PARENTAL SECURITY) ── */}
       {/* ══════════════════════════════════════════════════════════════════════════ */}
       {hasVisaAlready === 'yes' && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8 animate-fadeIn">
+        <section id="pre-departure-branch" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8 animate-fadeIn scroll-mt-24">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
@@ -1388,7 +1399,7 @@ export function VisaCountryResultPortal({
       {hasVisaAlready === 'no' && (
         <>
           {/* ── 4-STEP PURPOSE-SPECIFIC INTERACTIVE QUESTIONNAIRE ── */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <section id="visa-application-branch" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 scroll-mt-24 animate-fadeIn">
             <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm text-left space-y-6">
               
               {/* Header with Step indicator */}

@@ -213,26 +213,43 @@ export const POST: APIRoute = async ({ request }) => {
     if (apiKey) {
       try {
         const ai = new GoogleGenAI({ apiKey });
+
+        // ── ZERO-HALLUCINATION SYSTEM INSTRUCTIONS ──
+        // Strict rule isolation: Never mix regulations from other jurisdictions.
+        const systemInstruction = `You are an Uncompromising Official Visa & Immigration Accuracy Engine.
+Your PRIMARY directive is to provide 100% accurate, country-specific entry rules WITHOUT hallucinating or cross-contaminating regulations from other jurisdictions.
+
+STRICT RULE ISOLATION DIRECTIVES:
+1. NEVER mix European/Schengen rules (ETIAS, 3-Month Validity, 10-Year Issue Rule) into non-Schengen destinations (UAE, Singapore, Canada, USA, etc.).
+2. GCC REGION (UAE, Saudi Arabia, Qatar, Oman, Bahrain, Kuwait): Enforce STRICT MINIMUM 6 MONTHS (180 DAYS) passport validity from the date of ARRIVAL. Never display 3-month or 10-year Schengen rules for GCC countries.
+3. SCHENGEN AREA (Germany, France, Spain, Italy, Greece, etc.): Passport minimum 3 months beyond planned departure date. Passport issued within last 10 years. ETIAS applicable (when active).
+4. SOUTH-EAST ASIA (Singapore, Thailand, Malaysia, Vietnam): Minimum 6 months passport validity from arrival. For Singapore ONLY: Mandatory SG Arrival Card (SGAC) via ICA portal within 3 days prior to arrival.
+5. Never invent or fabricate digital entry cards (arrival cards, border declarations) for countries that do NOT officially mandate them. Only Singapore (SGAC), Canada (ArriveCAN when applicable), and Australia (incoming visitor declaration) require pre-arrival digital forms.
+6. If you do not have verified, official data for a country-specific rule, state "Verify with official consular source" rather than guessing.
+
+EVALUATION OUTPUT: You are evaluating a visa readiness/application profile. Apply ONLY the rules applicable to the specified destination country.`;
+
         const promptText = `
-          Act as an official senior visa officer evaluating a visa application for ${targetCountry}.
-          Selected Visa Category: ${visaCategory}
+Destination Country: ${targetCountry}
+Selected Visa Category: ${visaCategory}
 
-          Applicant Profile Details:
-          ${JSON.stringify(profileDetails, null, 2)}
+Applicant Profile Details:
+${JSON.stringify(profileDetails, null, 2)}
 
-          Strict Evaluation Criteria:
-          - Student: Check liquid fund threshold vs tuition/living costs, IELTS/language requirements, and academic progression.
-          - Work: Check job offer status, ECA equivalency, and work experience depth.
-          - Tourist: Check 6-month bank balance stability, employer NOC, home country ties proof, and travel history.
-          - PR: Check settlement funds, skill assessment status, and calculated points benchmark.
+Strict Evaluation Criteria (apply ONLY rules applicable to ${targetCountry}):
+- Student: Check liquid fund threshold vs tuition/living costs, language test requirements (IELTS/TOEFL/PTE), and academic progression.
+- Work: Check job offer/sponsorship status, credential evaluation (ECA/WES/ACS), and work experience depth.
+- Tourist: Check minimum ${['UAE', 'United Arab Emirates', 'Dubai', 'Saudi Arabia', 'Qatar', 'Oman', 'Bahrain', 'Kuwait'].some(gcc => targetCountry.toLowerCase().includes(gcc.toLowerCase())) ? '6-month' : '3 or 6-month'} bank balance stability, employer NOC, home country ties proof, and travel history.
+- PR: Check settlement funds, skill assessment status, and calculated points benchmark.
 
-          Calculate readinessScore (0-100), status ('READY' | 'MODERATE_RISK' | 'HIGH_RISK'), breakdown scores, criticalGaps, and recommendationSummary.
+Calculate readinessScore (0-100), status ('READY' | 'MODERATE_RISK' | 'HIGH_RISK'), breakdown scores, criticalGaps, and recommendationSummary.
         `;
 
         const response = await ai.models.generateContent({
           model: 'gemini-2.0-flash',
           contents: promptText,
           config: {
+            systemInstruction,
             responseMimeType: 'application/json',
             responseSchema: {
               type: Type.OBJECT,

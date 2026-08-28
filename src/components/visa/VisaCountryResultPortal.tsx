@@ -305,6 +305,19 @@ function formatTargetDate(daysToAdd: number) {
 }
 
 
+// ── STRICT REGION CLASSIFICATION CONSTANTS ──
+// GCC Region: UAE, Saudi Arabia, Qatar, Oman, Bahrain, Kuwait
+// Rule: Passport Validity = MINIMUM 6 MONTHS from date of arrival. NO ETIAS. NO 10-Year Issue Rule.
+const GCC_COUNTRIES = ['uae', 'united arab emirates', 'dubai', 'abu dhabi', 'saudi arabia', 'ksa', 'qatar', 'oman', 'bahrain', 'kuwait'];
+
+// Schengen Area: Germany, France, Spain, Italy, Portugal, Netherlands, Belgium, Austria, Switzerland, Greece, Norway, Sweden, Denmark, Finland, Czechia, Poland, etc.
+// Rule: Passport Validity = 3 months beyond departure. Passport issued within last 10 years. ETIAS (upcoming).
+const SCHENGEN_COUNTRIES = ['germany', 'france', 'spain', 'italy', 'portugal', 'netherlands', 'belgium', 'austria', 'switzerland', 'greece', 'norway', 'sweden', 'denmark', 'finland', 'czechia', 'czech republic', 'poland', 'hungary', 'slovakia', 'slovenia', 'estonia', 'latvia', 'lithuania', 'luxembourg', 'malta', 'iceland', 'liechtenstein', 'schengen'];
+
+// Southeast Asia: Singapore, Thailand, Malaysia, Vietnam, Indonesia, Philippines, Cambodia, Myanmar
+// Rule: Passport Validity = Minimum 6 Months from date of arrival. Only Singapore has mandatory SGAC.
+const SOUTHEAST_ASIA_COUNTRIES = ['singapore', 'thailand', 'malaysia', 'vietnam', 'indonesia', 'philippines', 'cambodia', 'myanmar', 'bali'];
+
 // ── DYNAMIC AI OVERVIEW & ENTRY REQUIREMENTS ENGINE ──
 function getAIVisaIntelligence(passport: string, country: string, purpose: string) {
   const pNorm = (passport || 'India').toLowerCase();
@@ -313,7 +326,10 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
 
   const isUKorUSorEU = pNorm.includes('united kingdom') || pNorm.includes('uk') || pNorm.includes('united states') || pNorm.includes('usa') || pNorm.includes('australia') || pNorm.includes('canada');
   const isSingapore = cNorm.includes('singapore');
-  const isUAE = cNorm.includes('uae') || cNorm.includes('dubai');
+  const isUAE = GCC_COUNTRIES.some(gc => cNorm.includes(gc));
+  const isGCC = GCC_COUNTRIES.some(gc => cNorm.includes(gc));
+  const isSchengen = SCHENGEN_COUNTRIES.some(sc => cNorm.includes(sc));
+  const isSoutheastAsia = SOUTHEAST_ASIA_COUNTRIES.some(sea => cNorm.includes(sea));
   const isStudy = purNorm.includes('study');
   const isWork = purNorm.includes('work') || purNorm.includes('job');
 
@@ -385,16 +401,24 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
 
   // Generic fallback for all other countries
   const isExemptGeneric = isUKorUSorEU && !isStudy && !isWork;
+  // ZERO-HALLUCINATION: Only show a digital card name for countries that actually mandate one.
+  // Do NOT invent a generic digital arrival card for countries that do not mandate it.
+  const genericDigitalCardName = isGCC
+    ? 'UAE ICP / GDRFA eVisa Portal'
+    : null; // null = no mandatory digital card for this destination
+  const genericDigitalCardDesc = isGCC
+    ? 'Pre-arranged eVisa via UAE ICP (Abu Dhabi) or GDRFA (Dubai) portal. No on-arrival digital card required.'
+    : null;
   return {
     isExempt: isExemptGeneric,
     verdictTitle: isExemptGeneric ? `Visa-Exempt / Electronic Entry for ${country}` : `Official Visa Required for ${country}`,
     verdictSummary: isExemptGeneric 
       ? `${passport} citizens enjoy visa-exempt or electronic travel authorization for short-term tourism to ${country}. Long-term stays and study/work require official permits.`
       : `${passport} passport holders require a validated travel visa or electronic permit prior to entering ${country}. TravlTik provides end-to-end digital concierge and expedited filing.`,
-    digitalCardName: `${country} Digital Arrival / Border Declaration`,
-    digitalCardDesc: `Complete the official electronic entry card online before departure for fast-track biometric clearance.`,
+    digitalCardName: genericDigitalCardName,
+    digitalCardDesc: genericDigitalCardDesc,
     sources: ["Consular Affairs Department", "Diplomatic Mission API", "IATA Timatic 2026"],
-    maxStay: "30 to 90 Days",
+    maxStay: isGCC ? "30 to 90 Days (per visa grant)" : "30 to 90 Days",
     conditionsForVisa: [
       `Plan to stay in ${country} longer than the standard tourism allowance.`,
       "Engaging in paid employment, internships, or professional services.",
@@ -529,7 +553,21 @@ export function VisaCountryResultPortal({
     return d.toISOString().split('T')[0];
   });
 
-  // Real-time client-side math evaluating <10 years issue rule and >3 months remaining validity rule
+  // ── ZERO-HALLUCINATION RULE MATRIX ──
+  // GCC (UAE, Saudi, Qatar, Oman, Bahrain, Kuwait): 6-month validity from ARRIVAL. NO 10-year issue rule.
+  // Schengen (EU): 3-month validity beyond DEPARTURE. Passport issued within 10 years.
+  // Southeast Asia (Singapore, Thailand, Malaysia, etc.): 6-month validity from ARRIVAL.
+  // All others: 6-month validity from ARRIVAL as safe default.
+  const cNormForRule = countryName.toLowerCase();
+  const isGCCCountry = GCC_COUNTRIES.some(gc => cNormForRule.includes(gc));
+  const isSchengenCountry = SCHENGEN_COUNTRIES.some(sc => cNormForRule.includes(sc));
+  const isSEACountry = SOUTHEAST_ASIA_COUNTRIES.some(sea => cNormForRule.includes(sea));
+  // Minimum remaining months required
+  const minRequiredMonths = isSchengenCountry ? 3 : 6;
+  // Schengen: 10-year issue rule applies. GCC/SEA: NO 10-year rule.
+  const applyIssueRule = isSchengenCountry;
+
+  // Real-time client-side math
   const passportValidityCheck = useMemo(() => {
     if (!passportIssueDate || !passportExpiryDate || !proposedTravelDate) {
       return {
@@ -538,8 +576,10 @@ export function VisaCountryResultPortal({
         message: 'Please provide passport issue date, expiry date, and proposed travel date.',
         issueYearsAgo: 0,
         remainingMonths: 0,
-        issueRulePassed: false,
-        expiryRulePassed: false
+        issueRulePassed: true,
+        expiryRulePassed: false,
+        minRequiredMonths,
+        applyIssueRule
       };
     }
 
@@ -547,18 +587,19 @@ export function VisaCountryResultPortal({
     const expiry = new Date(passportExpiryDate);
     const travel = new Date(proposedTravelDate);
 
-    // Rule 1: Age Rule (Issued less than 10 years before travel arrival date)
+    // Rule 1: 10-Year Issue Age Rule — ONLY for Schengen countries
     const issueDiffDays = (travel.getTime() - issue.getTime()) / (1000 * 60 * 60 * 24);
     const issueYearsAgo = parseFloat((issueDiffDays / 365.25).toFixed(1));
-    const issueRulePassed = issueYearsAgo >= 0 && issueYearsAgo < 10;
+    const issueRulePassed = applyIssueRule ? (issueYearsAgo >= 0 && issueYearsAgo < 10) : true;
 
-    // Rule 2: Validity Window (Must have at least 3 months remaining after planned departure)
+    // Rule 2: Remaining Validity — 6 months for GCC/SEA/default, 3 months for Schengen
     const expiryDiffDays = (expiry.getTime() - travel.getTime()) / (1000 * 60 * 60 * 24);
     const remainingMonths = parseFloat((expiryDiffDays / 30.4375).toFixed(1));
-    const expiryRulePassed = remainingMonths >= 3;
+    const expiryRulePassed = remainingMonths >= minRequiredMonths;
 
     const isEligible = issueRulePassed && expiryRulePassed && expiry > travel;
 
+    const minLabel = `${minRequiredMonths} months`;
     return {
       status: isEligible ? 'eligible' : 'warning',
       isEligible,
@@ -566,13 +607,15 @@ export function VisaCountryResultPortal({
       remainingMonths,
       issueRulePassed,
       expiryRulePassed,
+      minRequiredMonths,
+      applyIssueRule,
       message: isEligible 
         ? `✅ Passport 100% Eligible for ${countryName} Entry`
-        : issueRulePassed 
-          ? `⚠️ Renewal Recommended: Passport has only ${remainingMonths > 0 ? remainingMonths : 0} months validity remaining (Minimum 3 months required).`
-          : `⚠️ Renewal Recommended: Passport was issued ${issueYearsAgo} years ago (Exceeds maximum 10-year rule).`
+        : !expiryRulePassed
+          ? `⚠️ Renewal Required: Passport has only ${remainingMonths > 0 ? remainingMonths : 0} months validity remaining (Minimum ${minLabel} required from date of arrival for ${countryName}).`
+          : `⚠️ Renewal Required: Passport was issued ${issueYearsAgo} years ago (Exceeds maximum 10-year Schengen rule).`
     };
-  }, [passportIssueDate, passportExpiryDate, proposedTravelDate, countryName]);
+  }, [passportIssueDate, passportExpiryDate, proposedTravelDate, countryName, minRequiredMonths, applyIssueRule]);
 
   const handlePincodeCheck = (code: string) => {
     setPincode(code);
@@ -1781,19 +1824,30 @@ export function VisaCountryResultPortal({
                 </div>
 
                 <ul className="space-y-3 text-xs sm:text-sm text-slate-700">
-                  <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
-                    <span className="text-base shrink-0">📜</span>
-                    <div>
-                      <strong className="text-slate-900 font-bold block">10-Year Issue Rule:</strong>
-                      <span className="text-slate-600 font-normal">Passport must be issued less than 10 years before the date you arrive in {countryName}.</span>
-                    </div>
-                  </li>
+                  {/* 10-Year Issue Rule — ONLY shown for Schengen destinations */}
+                  {isSchengenCountry && (
+                    <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
+                      <span className="text-base shrink-0">📜</span>
+                      <div>
+                        <strong className="text-slate-900 font-bold block">10-Year Issue Rule (Schengen):</strong>
+                        <span className="text-slate-600 font-normal">Passport must be issued less than 10 years before the date you arrive in {countryName}.</span>
+                      </div>
+                    </li>
+                  )}
 
+                  {/* Minimum Validity Rule — 6 months for GCC/SEA, 3 months for Schengen */}
                   <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
                     <span className="text-base shrink-0">⏳</span>
                     <div>
-                      <strong className="text-slate-900 font-bold block">3-Month Remaining Validity:</strong>
-                      <span className="text-slate-600 font-normal">Must have at least 3 months remaining validity beyond your planned departure date.</span>
+                      <strong className="text-slate-900 font-bold block">
+                        {isSchengenCountry ? '3-Month Remaining Validity:' : '6-Month Minimum Validity:'}
+                      </strong>
+                      <span className="text-slate-600 font-normal">
+                        {isSchengenCountry
+                          ? `Must have at least 3 months remaining validity beyond your planned departure date from ${countryName}.`
+                          : `Passport must be valid for a minimum of 6 months (180 days) from the date of arrival in ${countryName}. This is a strict immigration requirement.`
+                        }
+                      </span>
                     </div>
                   </li>
 
@@ -1840,13 +1894,16 @@ export function VisaCountryResultPortal({
                       </div>
                     </li>
 
-                    <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
-                      <span className="text-base shrink-0">🛡️</span>
-                      <div>
-                        <strong className="text-slate-900 font-bold block">Digital Authorization / ETIAS:</strong>
-                        <span className="text-slate-600 font-normal">Digital border declaration &amp; upcoming ETIAS requirement compliance.</span>
-                      </div>
-                    </li>
+                    {/* ETIAS — ONLY shown for Schengen destinations. Not applicable to GCC, SEA, or others. */}
+                    {isSchengenCountry && (
+                      <li className="flex items-start gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
+                        <span className="text-base shrink-0">🛡️</span>
+                        <div>
+                          <strong className="text-slate-900 font-bold block">Digital Authorization / ETIAS:</strong>
+                          <span className="text-slate-600 font-normal">Digital border declaration &amp; upcoming ETIAS requirement compliance for {countryName}.</span>
+                        </div>
+                      </li>
+                    )}
                   </ul>
                 </div>
 
@@ -1940,8 +1997,10 @@ export function VisaCountryResultPortal({
                       </h4>
                       <p className="text-xs mt-0.5 opacity-80">
                         {passportValidityCheck.isEligible 
-                          ? `Both the 10-year issue age rule and the 3-month departure buffer rule are fully satisfied for your trip to ${countryName}.`
-                          : 'Immigration authorities may deny boarding or entry if the passport does not strictly satisfy both rules.'}
+                          ? isSchengenCountry
+                            ? `Both the 10-year Schengen issue rule and the 3-month departure buffer are fully satisfied for your trip to ${countryName}.`
+                            : `The 6-month minimum validity rule (from date of arrival) is fully satisfied for your trip to ${countryName}.`
+                          : 'Immigration authorities may deny boarding or entry if the passport does not satisfy the required validity rules.'}
                       </p>
                     </div>
                   </div>
@@ -1958,17 +2017,22 @@ export function VisaCountryResultPortal({
 
                 {/* Verification Rule Checklist */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-3.5 mt-3.5 border-t border-current/10 text-xs font-semibold">
-                  <div className="flex items-center gap-2">
-                    <span className={passportValidityCheck.issueRulePassed ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'}>
-                      {passportValidityCheck.issueRulePassed ? '✓' : '✗'}
-                    </span>
-                    <span>Issue Rule: Issued {passportValidityCheck.issueYearsAgo} years ago ({passportValidityCheck.issueRulePassed ? '< 10 yrs' : 'Exceeds 10 yrs'})</span>
-                  </div>
+                  {/* 10-year issue rule row — only for Schengen */}
+                  {isSchengenCountry && (
+                    <div className="flex items-center gap-2">
+                      <span className={passportValidityCheck.issueRulePassed ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'}>
+                        {passportValidityCheck.issueRulePassed ? '✓' : '✗'}
+                      </span>
+                      <span>Schengen Issue Rule: Issued {passportValidityCheck.issueYearsAgo} years ago ({passportValidityCheck.issueRulePassed ? '< 10 yrs' : 'Exceeds 10 yrs'})</span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-2">
                     <span className={passportValidityCheck.expiryRulePassed ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'}>
                       {passportValidityCheck.expiryRulePassed ? '✓' : '✗'}
                     </span>
-                    <span>Expiry Rule: {passportValidityCheck.remainingMonths} months validity remaining after travel ({passportValidityCheck.expiryRulePassed ? '≥ 3 mos' : '< 3 mos'})</span>
+                    <span>
+                      Validity Rule: {passportValidityCheck.remainingMonths} months remaining after travel ({passportValidityCheck.expiryRulePassed ? `≥ ${passportValidityCheck.minRequiredMonths} mos ✓` : `< ${passportValidityCheck.minRequiredMonths} mos — Renewal Required`})
+                    </span>
                   </div>
                 </div>
               </div>

@@ -2231,7 +2231,7 @@ export function VisaCountryResultPortal({
                   {dynamicValidity}
                 </span>
                 <span className="text-[11px] font-bold text-blue-600 block mt-0.5">
-                  {isStudyPurpose ? 'From course start date' : 'From issue date'}
+                  {isStudyPurpose ? 'From course start date' : isWorkPurpose ? 'Employment Contract Period' : 'From issue date'}
                 </span>
               </div>
 
@@ -2240,7 +2240,7 @@ export function VisaCountryResultPortal({
                   Entry Type
                 </span>
                 <span className="text-base sm:text-lg font-semibold text-slate-900 block mt-1">
-                  {isStudyPurpose ? 'Multiple Entry' : entryType.split('/')[0].trim()}
+                  {isStudyPurpose || isWorkPurpose ? 'Multiple Entry' : entryType.split('/')[0].trim()}
                 </span>
                 <span className="text-[11px] font-bold text-purple-600 block mt-0.5">
                   Official Stamping
@@ -2255,7 +2255,7 @@ export function VisaCountryResultPortal({
                   {dynamicVisaType}
                 </span>
                 <span className="text-[11px] font-bold text-amber-600 block mt-0.5">
-                  {isStudyPurpose ? 'Institute Sponsored' : 'Direct Consular'}
+                  {isStudyPurpose ? 'Institute Sponsored' : isWorkPurpose ? 'Employer Sponsored' : 'Direct Consular'}
                 </span>
               </div>
             </div>
@@ -2406,6 +2406,76 @@ export function VisaCountryResultPortal({
                         </h4>
                         <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                           Verified proof of liquid funds, bank statements (last 6 months), or sanctioned education loan.
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                ) : isWorkPurpose ? (
+                  <>
+                    {/* Work Doc 1: MOM IPA Letter */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
+                        <FileText className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
+                          {countryName.toLowerCase().includes('singapore')
+                            ? 'MOM In-Principle Approval (IPA) Letter'
+                            : `Official ${countryName} Work Pass / IPA Approval Letter`}
+                        </h4>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+                          {countryName.toLowerCase().includes('singapore')
+                            ? 'Official pre-approval issued by Ministry of Manpower (MOM).'
+                            : 'Official pre-approval issued by immigration and labour authorities.'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Work Doc 2: Signed Employment Contract */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                        <Briefcase className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
+                          Signed Employment Contract
+                        </h4>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+                          {countryName.toLowerCase().includes('singapore')
+                            ? 'Copy of signed offer letter from licensed Singapore employer.'
+                            : `Copy of signed offer letter from licensed sponsoring employer in ${countryName}.`}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Work Doc 3: Educational & Credential Verification */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                      <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                        <GraduationCap className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
+                          Educational &amp; Credential Verification
+                        </h4>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+                          {countryName.toLowerCase().includes('singapore')
+                            ? 'Recognized University degree certificates and COMPASS qualification evaluation.'
+                            : 'Recognized degree certificates and verified credential evaluation (ECA / WES).'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Work Doc 4: Passport & Photo Upload */}
+                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
+                      <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                        <Camera className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
+                          Passport &amp; Photo Upload
+                        </h4>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+                          High-resolution passport biodata scan valid for at least 6 months with clear digital photo.
                         </p>
                       </div>
                     </div>

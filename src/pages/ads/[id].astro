@@ -1,7 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/layout/Header.astro';
-import Footer from '../../components/layout/Footer.astro';
 import { 
   Sparkles, ShieldCheck, CheckCircle2, Star, ArrowRight, ArrowLeft, 
   MessageSquare, Phone, Mail, Award, Clock, Users, Globe, BookOpen, Check
@@ -44,7 +42,7 @@ export async function getStaticPaths() {
       tagline: 'Fastest pathway to Canadian Permanent Residency for Healthcare, STEM & Trades!',
       price: 'Free Eligibility Check',
       img: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=1200&auto=format&fit=crop&q=80',
-      description: 'Get verified support for Canada Express Entry draw draws in 2025. Specialized assistance in STEM, Healthcare, Agriculture, Transport, and French Language proficiency categories.',
+      description: 'Get verified support for Canada Express Entry draw draws in 2026. Specialized assistance in STEM, Healthcare, Agriculture, Transport, and French Language proficiency categories.',
       features: [
         'CRS Score Optimization & ECA WES filing',
         'PNP (Provincial Nominee Program) nomination filings',
@@ -99,8 +97,6 @@ const { ad } = Astro.props;
 ---
 
 <Layout title={`${ad.title} | TravlTik Sponsored Ads`}>
-  <Header />
-
   <main class="bg-[#f8fafc] min-h-screen py-8 sm:py-12 font-plus-jakarta">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       
@@ -237,6 +233,4 @@ const { ad } = Astro.props;
 
     </div>
   </main>
-
-  <Footer />
 </Layout>

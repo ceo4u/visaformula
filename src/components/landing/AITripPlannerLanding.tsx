@@ -1977,11 +1977,18 @@ export function AITripPlannerLanding() {
       const destSlug = targetCountry.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'singapore';
       const destinationUrl = `/visa/${encodeURIComponent(destSlug)}?passport=${encodeURIComponent(passport.toLowerCase())}&purpose=${encodeURIComponent(selectedPurpose.toLowerCase())}`;
 
-      // Perform seamless navigation
-      window.location.assign(destinationUrl);
+      // Perform seamless navigation with foolproof fallback
+      if (typeof window !== 'undefined') {
+        window.location.href = destinationUrl;
+      }
     } catch (error) {
       console.error("Navigation error:", error);
       setIsGenerating(false);
+    } finally {
+      // Safety unlock timeout in case browser cancels or delays unload
+      setTimeout(() => {
+        setIsGenerating(false);
+      }, 4000);
     }
   };
 

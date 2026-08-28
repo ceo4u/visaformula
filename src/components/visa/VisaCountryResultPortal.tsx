@@ -1591,12 +1591,12 @@ export function VisaCountryResultPortal({
             </div>
           </div>
 
-          {/* ── SECTION 1: VISA FEES AND PROCESSING ── */}
+          {/* ── SECTION 1: VISA FEES AND PROCESSING AND TIMING ── */}
           <div className="space-y-4 pt-2">
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-emerald-600 stroke-[2.5]" />
               <h4 className="text-sm font-bold uppercase tracking-wider text-slate-950 font-heading">
-                VISA FEES AND PROCESSING
+                VISA FEES AND PROCESSING AND TIMING
               </h4>
             </div>
 

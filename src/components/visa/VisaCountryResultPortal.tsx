@@ -653,6 +653,27 @@ export function VisaCountryResultPortal({
   const grandTotal = totalGovFee + totalServFee;
   const guaranteedDate = useMemo(() => formatTargetDate(processingDays), [processingDays]);
 
+  const steps = useMemo(() => [
+    {
+      num: 1,
+      badge: '2 Mins',
+      title: 'Scan your passport on your phone',
+      desc: 'Simply take a picture of your passport biodata page. Our automated OCR extracts your details with 100% accuracy and eliminates spelling errors.'
+    },
+    {
+      num: 2,
+      badge: 'Direct Line',
+      title: 'TravlTik files directly with the embassy',
+      desc: 'Our in-house visa concierge pre-screens documents, pays government embassy fees, and tracks your application daily through official consulate portals.'
+    },
+    {
+      num: 3,
+      badge: 'Guaranteed',
+      title: 'Receive your stamped e-Visa on WhatsApp & Email',
+      desc: `Download your official electronic visa sent directly to your WhatsApp & Email by ${guaranteedDate}.`
+    }
+  ], [guaranteedDate]);
+
   // Days left calculation for Visa
   const daysLeft = useMemo(() => {
     if (!validityDate) return 240;

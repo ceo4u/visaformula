@@ -364,12 +364,12 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     if (isStudy) {
       return {
         isExempt: false,
-        verdictTitle: `Student Visa (CAS Confirmation) Required for Higher Education in the United Kingdom`,
-        verdictSummary: `${nationality} students accepted by licensed UK universities require a Student Visa with valid Confirmation of Acceptance for Studies (CAS).`,
+        verdictTitle: `${nationality} passport holders require a Student Visa for the United Kingdom`,
+        verdictSummary: `Confirmation of Acceptance for Studies (CAS) required. Includes full-time academic status and BRP / eVisa rights.`,
         entryStatus: "UK Student Visa",
         entryStatusSubtext: "3–4 Weeks Processing",
         stayDuration: "Duration of Course (1–4 Years)",
-        stayDurationSubtext: "Full-time academic degree",
+        stayDurationSubtext: "Full-time degree",
         entryType: "Multiple Entry",
         entryTypeSubtext: "Includes BRP / eVisa status",
         visaPillTag: "CONSULAR VISA REQUIRED",
@@ -410,8 +410,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else if (isWork) {
       return {
         isExempt: false,
-        verdictTitle: `Skilled Worker Visa (CoS Required) for Employment in the United Kingdom`,
-        verdictSummary: `${nationality} professionals require an approved Certificate of Sponsorship (CoS) from a licensed UK employer to work in the UK.`,
+        verdictTitle: `${nationality} passport holders require a Skilled Worker Visa for the United Kingdom`,
+        verdictSummary: `Certificate of Sponsorship (CoS) required from a licensed UK employer prior to departure.`,
         entryStatus: "Skilled Worker Visa",
         entryStatusSubtext: "3–4 Weeks Processing",
         stayDuration: "Up to 5 Years (Renewable)",
@@ -457,8 +457,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
       // UK Tourism / Standard Visitor
       return {
         isExempt: false,
-        verdictTitle: `${nationality} passport holders traveling to the United Kingdom require a Standard Visitor Visa before departure.`,
-        verdictSummary: `${nationality} passport holders must obtain a valid UK Visitor Visa prior to travel. Processing includes online application filing and mandatory VFS Global biometric appointment.`,
+        verdictTitle: `${nationality} passport holders require a visa for United Kingdom`,
+        verdictSummary: `Standard Visitor Visa required before travel. 100% verified online application with biometric support.`,
         entryStatus: "Standard Consular Visa",
         entryStatusSubtext: "~3 Weeks Standard Processing",
         stayDuration: "Up to 180 Days (6 Months)",
@@ -507,8 +507,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     if (isStudy) {
       return {
         isExempt: false,
-        verdictTitle: `F-1 Student Visa Required for Higher Education in the United States`,
-        verdictSummary: `${nationality} students admitted to SEVP-certified US universities require an approved F-1 Student Visa and valid Form I-20 to legally enter and study in the United States.`,
+        verdictTitle: `${nationality} passport holders require an F-1 Student Visa for the United States`,
+        verdictSummary: `Form I-20 and approved SEVIS required to legally enter and study in the United States.`,
         entryStatus: "F-1 Student Visa",
         entryStatusSubtext: "Requires Consular Interview",
         stayDuration: "Duration of Status (D/S — Up to 4–5 Years)",
@@ -554,8 +554,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else if (isWork) {
       return {
         isExempt: false,
-        verdictTitle: `H-1B / L-1 / O-1 Nonimmigrant Work Visa Required`,
-        verdictSummary: `${nationality} professionals require an approved Form I-797 Notice of Action and consular visa stamp to take up employment in the United States.`,
+        verdictTitle: `${nationality} passport holders require a Work Visa (H-1B / L-1) for the United States`,
+        verdictSummary: `Approved Form I-797 Notice of Action and consular visa stamp required before taking up employment.`,
         entryStatus: "H-1B / L-1 Work Visa",
         entryStatusSubtext: "Requires Consular Interview",
         stayDuration: "Up to 3 Years (Extendable to 6 Years)",
@@ -599,8 +599,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else {
       return {
         isExempt: false,
-        verdictTitle: `${nationality} passport holders traveling to the United States require a B1/B2 Visitor Visa before departure.`,
-        verdictSummary: `${nationality} passport holders must obtain an official B1/B2 Visa issued by the US Department of State prior to boarding flights to the United States.`,
+        verdictTitle: `${nationality} passport holders require a B1/B2 Visa for the United States`,
+        verdictSummary: `Non-immigrant visitor visa required prior to boarding. Valid for multiple entries up to 10 years.`,
         entryStatus: "B1/B2 Consular Visa",
         entryStatusSubtext: "Requires Consular Interview",
         stayDuration: "Up to 180 Days (6 Months)",
@@ -649,7 +649,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
       return {
         isExempt: true,
         verdictTitle: "Visa-Exempt for Tourism & Business (Up to 90 Days)",
-        verdictSummary: `${nationality} passport holders do not need a visa for short-term tourism or business visits to Singapore lasting up to 90 days. A valid SG Arrival Card (SGAC) with electronic health declaration is mandatory prior to check-in.`,
+        verdictSummary: `${nationality} passport holders do not need a visa for visits up to 90 days. Mandatory SG Arrival Card (SGAC) required prior to check-in.`,
         entryStatus: "Visa-Free / SGAC Required",
         entryStatusSubtext: "Instant Online Clearance",
         stayDuration: "Up to 90 Days",
@@ -692,8 +692,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else if (isStudy) {
       return {
         isExempt: false,
-        verdictTitle: `Student's Pass (STP via SOLAR) Required for Higher Education`,
-        verdictSummary: `${nationality} students enrolling in approved Singapore Institutes of Higher Learning (IHL) require an In-Principle Approval (IPA) Student's Pass issued by ICA Singapore before boarding.`,
+        verdictTitle: `${nationality} passport holders require a Student's Pass for Singapore`,
+        verdictSummary: `In-Principle Approval (IPA) Student's Pass issued by ICA Singapore required prior to departure.`,
         entryStatus: "Student's Pass (STP)",
         entryStatusSubtext: "5–10 Days via SOLAR",
         stayDuration: "Duration of Course (1 - 4 Years)",
@@ -740,8 +740,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else if (isWork) {
       return {
         isExempt: false,
-        verdictTitle: `Work Pass Required (Employment Pass / S Pass / MOM IPA)`,
-        verdictSummary: `${nationality} professionals seeking to work in Singapore must have an approved Ministry of Manpower (MOM) Work Pass (EP, S-Pass, or ONE Pass) secured by a licensed Singapore sponsoring employer.`,
+        verdictTitle: `${nationality} passport holders require a Work Pass for Singapore`,
+        verdictSummary: `Approved Ministry of Manpower (MOM) Work Pass (EP, S-Pass) required from sponsoring employer.`,
         entryStatus: "MOM Work Pass / IPA",
         entryStatusSubtext: "10–20 Days via myMOM",
         stayDuration: "1 to 5 Years (Renewable)",
@@ -785,8 +785,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else {
       return {
         isExempt: false,
-        verdictTitle: `${nationality} passport holders traveling to Singapore require an Official E-Visa with QR code prior to departure.`,
-        verdictSummary: `${nationality} passport holders must obtain an official electronic visa (Paper E-Visa with ICA QR Code) prior to boarding flights to Singapore. Processing is guaranteed in 3–5 business days with 100% online verification.`,
+        verdictTitle: `${nationality} passport holders require an e-Visa for Singapore`,
+        verdictSummary: `Official electronic visa required prior to departure. Instant digital processing in 3–5 days.`,
         entryStatus: "Official E-Visa Required",
         entryStatusSubtext: "3–5 Days Processing",
         stayDuration: "30 Days (Extendable)",
@@ -834,11 +834,11 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   if (isGCC) {
     return {
       isExempt: false,
-      verdictTitle: `${nationality} passport holders traveling to ${country} require an official electronic visa prior to departure.`,
-      verdictSummary: `${nationality} passport holders must obtain a valid UAE/GCC e-Visa prior to travel. Fast-track digital issuance with 100% online approval.`,
+      verdictTitle: `${nationality} passport holders require an e-Visa for ${country}`,
+      verdictSummary: `Pre-arranged official electronic visa required prior to travel. Fast-track digital issuance in 24–72 hours.`,
       entryStatus: "Official E-Visa Required",
-      entryStatusSubtext: "3–5 Days Processing",
-      stayDuration: "30 Days (Extendable)",
+      entryStatusSubtext: "24–72 Hours Processing",
+      stayDuration: "30 to 60 Days",
       stayDurationSubtext: "Per calendar visit",
       entryType: "Single / Multiple Entry",
       entryTypeSubtext: "Pre-arranged ICP/GDRFA eVisa",
@@ -881,14 +881,14 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   if (isSchengen) {
     return {
       isExempt: false,
-      verdictTitle: `${nationality} passport holders traveling to ${country} require a Schengen Short-Stay Visa (Type C).`,
-      verdictSummary: `${nationality} passport holders must obtain a valid Schengen Visa prior to departure. Requires online application filing and biometric appointment at VFS/TLS.`,
+      verdictTitle: `${nationality} passport holders require a Schengen Visa for ${country}`,
+      verdictSummary: `Short-stay visa (Type C) required before departure. Valid across all 29 European Schengen states.`,
       entryStatus: "Schengen Short-Stay Visa",
       entryStatusSubtext: "15 Calendar Days Processing",
       stayDuration: "Up to 90 Days",
       stayDurationSubtext: "Within any 180-day period",
       entryType: "Single / Multiple Entry",
-      entryTypeSubtext: "Valid across all 29 Schengen states",
+      entryTypeSubtext: "Valid in 29 Schengen states",
       visaPillTag: "CONSULAR VISA REQUIRED",
       digitalCardName: "Schengen Consular Portal",
       digitalCardDesc: "Official Schengen visa sticker in passport valid across 29 European member states.",
@@ -929,8 +929,8 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   // Case 6: Generic / Other Destinations
   return {
     isExempt: false,
-    verdictTitle: `${nationality} passport holders traveling to ${country} require a valid visa prior to departure.`,
-    verdictSummary: `${nationality} passport holders must secure verified travel authorization before boarding flights to ${country}. Fast and reliable assistance provided.`,
+    verdictTitle: `${nationality} passport holders require a visa for ${country}`,
+    verdictSummary: `Official travel authorization required before departure. Verified online application with fast turnaround.`,
     entryStatus: "Official E-Visa Required",
     entryStatusSubtext: "3–5 Days Processing",
     stayDuration: "30 Days (Extendable)",
@@ -1453,20 +1453,20 @@ export function VisaCountryResultPortal({
 
           {/* Main Verdict Card */}
           <div className="flex flex-col sm:flex-row sm:items-start gap-4 pt-1">
-            <div className="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/15 shrink-0">
-              <ShieldCheck className="w-7 h-7 stroke-[2]" />
+            <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/15 shrink-0">
+              <ShieldCheck className="w-6 h-6 stroke-[2]" />
             </div>
 
-            <div className="space-y-1 min-w-0 flex-1">
-              <div className="flex flex-wrap items-center justify-between gap-2.5">
-                <h3 className="text-xl sm:text-2xl font-heading font-bold text-slate-900 tracking-tight leading-snug">
+            <div className="space-y-1.5 min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-heading font-bold text-slate-900 tracking-tight leading-snug">
                   {aiIntel.verdictTitle}
                 </h3>
-                <span className="text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider bg-slate-900 text-white shrink-0 shadow-2xs">
+                <span className="text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider bg-slate-900 text-white shrink-0 shadow-2xs">
                   {aiIntel.stayDuration || dynamicLengthOfStay}
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl pt-0.5">
+              <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-3xl">
                 {aiIntel.verdictSummary}
               </p>
             </div>
@@ -1552,7 +1552,7 @@ export function VisaCountryResultPortal({
           </div>
 
           {/* ── SECTION 1: VISA FEES AND PROCESSING ── */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-4 pt-2">
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-[#10B981] stroke-[2.5]" />
               <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 font-heading">
@@ -1562,51 +1562,57 @@ export function VisaCountryResultPortal({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Cost Card */}
-              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 space-y-3 shadow-2xs transition-all flex flex-col justify-start h-full">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
-                  • COST &amp; OFFICIAL FEES
+              <div className="bg-[#F8FAFC] border border-slate-200/80 hover:border-slate-300 rounded-3xl p-5 sm:p-6 space-y-3 shadow-2xs transition-all flex flex-col justify-between h-full">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+                  Official Fees &amp; Costs
                 </span>
-                <div className="space-y-3">
-                  {aiIntel.feesAndProcessing?.costItems?.map((cItem: any, i: number) => (
-                    <div key={i} className="space-y-1">
-                      <span className="text-sm font-bold text-slate-900 block font-heading">{cItem.label}:</span>
-                      <span className="text-[#00A86B] font-bold text-sm sm:text-base font-heading block">{cItem.amount}</span>
-                      {cItem.note && <span className="text-xs text-slate-500 font-normal block leading-relaxed">{cItem.note}</span>}
+                <div className="space-y-2.5">
+                  {aiIntel.feesAndProcessing?.costItems?.slice(0, 2).map((cItem: any, i: number) => (
+                    <div key={i} className="flex items-baseline justify-between gap-2 border-b border-slate-200/60 pb-2 last:border-0 last:pb-0">
+                      <span className="text-xs font-semibold text-slate-700">{cItem.label}</span>
+                      <span className="text-xs sm:text-sm font-bold text-emerald-600 font-heading shrink-0">{cItem.amount}</span>
                     </div>
                   ))}
                 </div>
+                <span className="text-[11px] text-slate-400 font-normal block pt-1">
+                  Official consular rates
+                </span>
               </div>
 
               {/* Processing Time Card */}
-              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 space-y-3 shadow-2xs transition-all flex flex-col justify-start h-full">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
-                  • PROCESSING TIME &amp; SLAS
+              <div className="bg-[#F8FAFC] border border-slate-200/80 hover:border-slate-300 rounded-3xl p-5 sm:p-6 space-y-2 shadow-2xs transition-all flex flex-col justify-between h-full">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+                  Processing Time &amp; SLAs
                 </span>
-                <div className="space-y-1.5">
-                  <span className="text-sm sm:text-base font-bold text-slate-900 block font-heading">
-                    {aiIntel.feesAndProcessing?.processingTime}
+                <div className="space-y-1">
+                  <span className="text-base sm:text-lg font-bold text-slate-900 block font-heading">
+                    {aiIntel.feesAndProcessing?.processingTime || "~3 Weeks Standard"}
                   </span>
                   <p className="text-xs text-slate-500 font-normal leading-relaxed">
-                    {aiIntel.feesAndProcessing?.processingSLA}
+                    {aiIntel.feesAndProcessing?.processingSLA || "Standard consular review window."}
                   </p>
                 </div>
+                <span className="text-[11px] text-emerald-600 font-semibold block pt-1">
+                  Express options supported
+                </span>
               </div>
 
               {/* Application Window Card */}
-              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 space-y-3 shadow-2xs transition-all flex flex-col justify-start h-full">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
-                  • APPLICATION WINDOW
+              <div className="bg-[#F8FAFC] border border-slate-200/80 hover:border-slate-300 rounded-3xl p-5 sm:p-6 space-y-2 shadow-2xs transition-all flex flex-col justify-between h-full">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+                  Application &amp; Entry Window
                 </span>
-                <div className="space-y-3 text-xs text-slate-700">
-                  <div className="space-y-1">
-                    <strong className="text-sm font-bold text-slate-900 block font-heading">Allowed Filing Window:</strong>
-                    <span className="text-xs text-slate-500 font-normal leading-relaxed block">{aiIntel.feesAndProcessing?.applicationWindow}</span>
-                  </div>
-                  <div className="space-y-1 pt-2 border-t border-slate-100">
-                    <strong className="text-sm font-bold text-slate-900 block font-heading">Maximum Early Entry Buffer:</strong>
-                    <span className="text-xs text-slate-500 font-normal leading-relaxed block">{aiIntel.feesAndProcessing?.earlyEntryBuffer}</span>
-                  </div>
+                <div className="space-y-1">
+                  <span className="text-base sm:text-lg font-bold text-slate-900 block font-heading">
+                    {aiIntel.feesAndProcessing?.applicationWindow || "Apply 1 to 3 Months Ahead"}
+                  </span>
+                  <p className="text-xs text-slate-500 font-normal leading-relaxed">
+                    {aiIntel.feesAndProcessing?.earlyEntryBuffer || "Valid for travel within consular grant."}
+                  </p>
                 </div>
+                <span className="text-[11px] text-slate-400 font-normal block pt-1">
+                  Flexible travel buffer
+                </span>
               </div>
             </div>
           </div>

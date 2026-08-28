@@ -1378,7 +1378,8 @@ export function VisaCountryResultPortal({
 
   // Consultant Filter & Booking States
   const [consultantLocationQuery, setConsultantLocationQuery] = useState('');
-  const [consultantCountryFilter, setConsultantCountryFilter] = useState('All');
+  const [consultantCountryFilter, setConsultantCountryFilter] = useState('All Countries (Global)');
+  const [consultantServiceType, setConsultantServiceType] = useState('Study Visa & Admissions Filing');
   const [consultantRatingFilter, setConsultantRatingFilter] = useState('All');
   const [bookingModalConsultant, setBookingModalConsultant] = useState<StudyConsultantItem | null>(null);
   const [consultantBookedToast, setConsultantBookedToast] = useState<string | null>(null);
@@ -1800,7 +1801,7 @@ export function VisaCountryResultPortal({
 
             {/* Main Centered Headline */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black tracking-tight text-white leading-tight drop-shadow-md">
-              You need <span className="text-[#00E599] underline decoration-[#00E599]/50 underline-offset-4">{aiIntel.entryStatus || dynamicVisaType}</span>
+              You need <span className="text-[#359FC2]">{aiIntel.entryStatus || dynamicVisaType}</span>
             </h1>
 
             {/* Clean, Simple Subtitle */}
@@ -3211,7 +3212,7 @@ export function VisaCountryResultPortal({
                           : 'text-slate-700 hover:text-slate-950 hover:bg-slate-200/50'
                       }`}
                     >
-                      <Zap className="w-4 h-4 text-amber-400" />
+                      <Zap className="w-4 h-4 text-[#359FC2]" />
                       <span>Self Apply</span>
                     </button>
                   </div>
@@ -3244,9 +3245,9 @@ export function VisaCountryResultPortal({
                         <span>Search Consultants Near You</span>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                        <div className="space-y-1">
-                          <label className="block text-[11px] font-bold text-slate-600">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 items-end">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-slate-700">
                             Your City / Location / Pincode
                           </label>
                           <input
@@ -3254,41 +3255,41 @@ export function VisaCountryResultPortal({
                             value={consultantLocationQuery}
                             onChange={(e) => setConsultantLocationQuery(e.target.value)}
                             placeholder="e.g. Hyderabad, Mumbai, Delhi, Remote"
-                            className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:border-[#00A86B] focus:ring-4 focus:ring-[#00A86B]/10 transition-all shadow-2xs outline-none"
+                            className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-2xs outline-none"
                           />
                         </div>
 
-                        <div className="space-y-1">
-                          <label className="block text-[11px] font-bold text-slate-600">
-                            Destination Specialization
-                          </label>
-                          <select
+                        <div>
+                          <PortalCustomSelect
+                            label="Destination Specialization"
                             value={consultantCountryFilter}
-                            onChange={(e) => setConsultantCountryFilter(e.target.value)}
-                            className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:border-[#00A86B] focus:ring-4 focus:ring-[#00A86B]/10 transition-all shadow-2xs outline-none cursor-pointer"
-                          >
-                            <option value={countryName}>{countryName} (Current Destination)</option>
-                            <option value="All">All Countries (Global)</option>
-                            <option value="United States">United States (F-1 / SEVP)</option>
-                            <option value="United Kingdom">United Kingdom (UKVI / CAS)</option>
-                            <option value="Canada">Canada (IRCC / DLI / PAL)</option>
-                            <option value="Australia">Australia (CRICOS / Subclass 500)</option>
-                            <option value="Germany">Germany &amp; EU Blue Card</option>
-                          </select>
+                            onChange={setConsultantCountryFilter}
+                            placeholder="Select Destination"
+                            options={[
+                              `${countryName} (Current Destination)`,
+                              "All Countries (Global)",
+                              "United States (F-1 / SEVP)",
+                              "United Kingdom (UKVI / CAS)",
+                              "Canada (IRCC / DLI / PAL)",
+                              "Australia (CRICOS / Subclass 500)",
+                              "Germany & EU Blue Card"
+                            ]}
+                          />
                         </div>
 
-                        <div className="space-y-1">
-                          <label className="block text-[11px] font-bold text-slate-600">
-                            Service / Advisory Type
-                          </label>
-                          <select
-                            className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:border-[#00A86B] focus:ring-4 focus:ring-[#00A86B]/10 transition-all shadow-2xs outline-none cursor-pointer"
-                          >
-                            <option value="student">Study Visa &amp; Admissions Filing</option>
-                            <option value="legal">Visa Appeals &amp; Refusal Defense</option>
-                            <option value="sop">SOP &amp; Academic Document Review</option>
-                            <option value="interview">Embassy Visa Interview Prep</option>
-                          </select>
+                        <div>
+                          <PortalCustomSelect
+                            label="Service / Advisory Type"
+                            value={consultantServiceType}
+                            onChange={setConsultantServiceType}
+                            placeholder="Select Service"
+                            options={[
+                              "Study Visa & Admissions Filing",
+                              "Visa Appeals & Refusal Defense",
+                              "SOP & Academic Document Review",
+                              "Embassy Visa Interview Prep"
+                            ]}
+                          />
                         </div>
                       </div>
 

@@ -1246,63 +1246,85 @@ export function VisaCountryResultPortal({
             </div>
           </div>
 
-          {/* 3 Clean Visual Requirement Cards */}
+          {/* 3 Atlys-Style Clean Summary Micro-Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
             
-            {/* Card 1: Passport */}
-            <div className="bg-[#FAFAFC] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl p-4 transition-all flex items-center gap-3.5 group shadow-2xs">
-              <div className="w-11 h-11 rounded-xl bg-[#EEF2FF] flex items-center justify-center text-[#4338CA] shrink-0 group-hover:scale-105 transition-transform">
-                <FileText className="w-5 h-5 stroke-[1.8]" />
-              </div>
+            {/* Card 1: Length of Stay */}
+            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between h-32 group">
+              <Calendar className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
               <div className="min-w-0">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                  PASSPORT
+                <span className="text-xs text-slate-500 font-medium block">
+                  Length of Stay
                 </span>
-                <span className="text-sm font-bold text-slate-900 block truncate">
-                  6+ Months Validity
-                </span>
-                <span className="text-xs text-slate-500 font-medium block truncate">
-                  Min. 2 blank pages
+                <span className="text-sm sm:text-base font-bold text-slate-900 block truncate">
+                  {aiIntel.stayDuration || dynamicLengthOfStay || "Upto 30 days"}
                 </span>
               </div>
             </div>
 
-            {/* Card 2: Return Travel */}
-            <div className="bg-[#FAFAFC] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl p-4 transition-all flex items-center gap-3.5 group shadow-2xs">
-              <div className="w-11 h-11 rounded-xl bg-[#E0F2FE] flex items-center justify-center text-[#0284C7] shrink-0 group-hover:scale-105 transition-transform">
-                <Plane className="w-5 h-5 stroke-[1.8]" />
-              </div>
+            {/* Card 2: Validity */}
+            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between h-32 group">
+              <Clock className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
               <div className="min-w-0">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                  RETURN TRAVEL
+                <span className="text-xs text-slate-500 font-medium block">
+                  Validity
                 </span>
-                <span className="text-sm font-bold text-slate-900 block truncate">
-                  Onward Flight Proof
-                </span>
-                <span className="text-xs text-slate-500 font-medium block truncate">
-                  Confirmed return ticket
+                <span className="text-sm sm:text-base font-bold text-slate-900 block truncate">
+                  {currentVariant?.validity || "90 days"}
                 </span>
               </div>
             </div>
 
-            {/* Card 3: Stay & Funds */}
-            <div className="bg-[#FAFAFC] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-2xl p-4 transition-all flex items-center gap-3.5 group shadow-2xs">
-              <div className="w-11 h-11 rounded-xl bg-[#FEF3C7] flex items-center justify-center text-[#D97706] shrink-0 group-hover:scale-105 transition-transform">
-                <Building2 className="w-5 h-5 stroke-[1.8]" />
-              </div>
+            {/* Card 3: Entry */}
+            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between h-32 group">
+              <Compass className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
               <div className="min-w-0">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                  STAY &amp; FUNDS
+                <span className="text-xs text-slate-500 font-medium block">
+                  Entry
                 </span>
-                <span className="text-sm font-bold text-slate-900 block truncate">
-                  Hotel / Host Proof
-                </span>
-                <span className="text-xs text-slate-500 font-medium block truncate">
-                  Sufficient travel funds
+                <span className="text-sm sm:text-base font-bold text-slate-900 block truncate">
+                  {currentVariant?.entryType || "Single"}
                 </span>
               </div>
             </div>
 
+          </div>
+
+          {/* Atlys-Style "Check your pincode coverage" Card */}
+          <div className="bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-6 shadow-2xs space-y-3.5">
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-900">
+              <MapPin className="w-4 h-4 text-slate-900 stroke-[2.2]" />
+              <span>Check your pincode coverage</span>
+            </div>
+            
+            <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex-1 min-w-[160px] border-b-2 border-dashed border-slate-300 pb-1.5 flex items-center">
+                <input
+                  type="text"
+                  maxLength={6}
+                  value={pincode}
+                  onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
+                  placeholder="Enter 6-digit pincode"
+                  className="w-full bg-transparent text-sm sm:text-base font-mono font-bold tracking-widest text-slate-900 focus:outline-none placeholder:text-slate-400 placeholder:tracking-normal placeholder:font-sans placeholder:font-normal placeholder:text-xs"
+                />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPincodeStatus('supported')}
+                  className="px-4 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer active:scale-95 shadow-2xs"
+                >
+                  Enter
+                </button>
+                {pincodeStatus === 'supported' && (
+                  <span className="px-4 py-1.5 rounded-full bg-[#EEF2FF] text-[#4F46E5] border border-indigo-100 text-xs font-bold flex items-center gap-1.5 shadow-2xs animate-fade-in">
+                    <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>Supported</span>
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* ── SECTION 1: VISA FEES AND PROCESSING ── */}
@@ -1431,21 +1453,23 @@ export function VisaCountryResultPortal({
             </div>
           </div>
 
-          {/* ── PASSPORT SECURITY BANNER (MATCHING USER REFERENCE) ── */}
-          <div className="bg-[#F8FAFF] border border-blue-100/80 rounded-3xl p-6 sm:p-0 sm:pl-8 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 relative shadow-2xs mt-6">
+          {/* ── PASSPORT SECURITY BANNER (EXACT ATLYS DESIGN) ── */}
+          <div className="bg-[#F7F8FA] border border-slate-200/70 rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 md:p-10 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 relative shadow-2xs mt-6 min-h-[170px]">
             
             {/* Left Content */}
-            <div className="flex items-center gap-4 text-left py-4 sm:py-6 z-10">
-              <div className="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/20 shrink-0">
-                <Lock className="w-6 h-6 text-white stroke-[2.2]" />
+            <div className="flex flex-col items-start gap-3.5 text-left py-2 z-10 max-w-xl">
+              {/* Minimalist Black Lock Icon */}
+              <div className="flex items-center justify-center text-slate-900">
+                <Lock className="w-6 h-6 text-slate-900 fill-slate-900 stroke-[1.5]" />
               </div>
-              <div className="space-y-1">
-                <h4 className="text-lg sm:text-xl font-heading font-bold text-slate-900 tracking-tight">
-                  Passport Security. <span className="text-slate-900 font-bold">Then all else</span>
-                </h4>
+              
+              <div className="space-y-1.5">
+                <h3 className="text-2xl sm:text-3xl font-serif font-bold text-slate-950 tracking-tight leading-tight">
+                  Passport Security. <span className="font-serif font-normal text-slate-500">Then all else</span>
+                </h3>
                 <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
                   We secure your passport in a safe box and locker at all times.<br className="hidden sm:inline" />
-                  <strong className="text-slate-800 font-bold block sm:inline sm:mt-0 mt-0.5">Never out of our sight. 50 lakh passports securely handled already.</strong>
+                  <strong className="text-slate-950 font-bold block sm:inline sm:mt-0 mt-0.5">Never out of our sight. 50 lakh passports securely handled already.</strong>
                 </p>
               </div>
             </div>

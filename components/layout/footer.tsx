@@ -28,7 +28,7 @@ export function Footer() {
                         <h4 className="font-bold mb-5 uppercase text-[11px] tracking-widest text-slate-500">Resources</h4>
                         <ul className="space-y-3 text-sm text-slate-400">
                             <li><Link className="hover:text-white transition-colors" href="/support">Support Center</Link></li>
-                            <li><Link className="hover:text-white transition-colors" href="/about">About TravlTik</Link></li>
+                            <li><Link className="hover:text-white transition-colors" href="/find-experts">Find Verified Experts</Link></li>
                             <li><Link className="hover:text-white transition-colors" href="/emergency">Emergency Help</Link></li>
                             <li><Link className="hover:text-white transition-colors" href="/ai-assistant">AI Assistant</Link></li>
                         </ul>

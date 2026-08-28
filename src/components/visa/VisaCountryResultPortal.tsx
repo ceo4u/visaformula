@@ -1301,49 +1301,49 @@ export function VisaCountryResultPortal({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Cost Card */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-5 space-y-2.5 shadow-2xs">
+              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 space-y-3 shadow-2xs transition-all flex flex-col justify-start h-full">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
                   • COST &amp; OFFICIAL FEES
                 </span>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {aiIntel.feesAndProcessing?.costItems?.map((cItem: any, i: number) => (
-                    <div key={i} className="space-y-0.5">
-                      <span className="text-sm font-bold text-slate-900 block">{cItem.label}:</span>
-                      <span className="text-[#00A86B] font-bold text-sm block">{cItem.amount}</span>
-                      {cItem.note && <span className="text-xs text-slate-500 block leading-relaxed">{cItem.note}</span>}
+                    <div key={i} className="space-y-1">
+                      <span className="text-sm font-bold text-slate-900 block font-heading">{cItem.label}:</span>
+                      <span className="text-[#00A86B] font-bold text-sm sm:text-base font-heading block">{cItem.amount}</span>
+                      {cItem.note && <span className="text-xs text-slate-500 font-normal block leading-relaxed">{cItem.note}</span>}
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Processing Time Card */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-5 space-y-2 shadow-2xs">
+              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 space-y-3 shadow-2xs transition-all flex flex-col justify-start h-full">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
                   • PROCESSING TIME &amp; SLAS
                 </span>
-                <div className="space-y-1">
-                  <span className="text-sm font-bold text-slate-900 block">
+                <div className="space-y-1.5">
+                  <span className="text-sm sm:text-base font-bold text-slate-900 block font-heading">
                     {aiIntel.feesAndProcessing?.processingTime}
                   </span>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-slate-500 font-normal leading-relaxed">
                     {aiIntel.feesAndProcessing?.processingSLA}
                   </p>
                 </div>
               </div>
 
               {/* Application Window Card */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-5 space-y-2.5 shadow-2xs">
+              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 space-y-3 shadow-2xs transition-all flex flex-col justify-start h-full">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
                   • APPLICATION WINDOW
                 </span>
-                <div className="space-y-2 text-xs text-slate-700">
-                  <div>
-                    <strong className="text-slate-900 font-bold block text-sm">Allowed Filing Window:</strong>
-                    <span className="text-slate-500 leading-relaxed">{aiIntel.feesAndProcessing?.applicationWindow}</span>
+                <div className="space-y-3 text-xs text-slate-700">
+                  <div className="space-y-1">
+                    <strong className="text-sm font-bold text-slate-900 block font-heading">Allowed Filing Window:</strong>
+                    <span className="text-xs text-slate-500 font-normal leading-relaxed block">{aiIntel.feesAndProcessing?.applicationWindow}</span>
                   </div>
-                  <div>
-                    <strong className="text-slate-900 font-bold block text-sm">Maximum Early Entry Buffer:</strong>
-                    <span className="text-slate-500 leading-relaxed">{aiIntel.feesAndProcessing?.earlyEntryBuffer}</span>
+                  <div className="space-y-1 pt-2 border-t border-slate-100">
+                    <strong className="text-sm font-bold text-slate-900 block font-heading">Maximum Early Entry Buffer:</strong>
+                    <span className="text-xs text-slate-500 font-normal leading-relaxed block">{aiIntel.feesAndProcessing?.earlyEntryBuffer}</span>
                   </div>
                 </div>
               </div>
@@ -1361,45 +1361,45 @@ export function VisaCountryResultPortal({
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Step 1: Submission */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-5 space-y-2 shadow-2xs flex flex-col justify-start">
-                <div className="w-8 h-8 rounded-xl bg-[#F5F3FF] text-[#7C3AED] font-bold text-xs flex items-center justify-center">
+              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
+                <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
                   1
                 </div>
-                <h5 className="text-sm font-bold text-slate-900">Submission &amp; Issuance</h5>
+                <h5 className="text-sm font-bold text-slate-900 font-heading mb-1.5">Submission &amp; Issuance</h5>
                 <p className="text-xs text-slate-500 font-normal leading-relaxed">
                   {aiIntel.applicationProcess?.submission}
                 </p>
               </div>
 
               {/* Step 2: Online Form */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-5 space-y-2 shadow-2xs flex flex-col justify-start">
-                <div className="w-8 h-8 rounded-xl bg-[#EFF6FF] text-[#2563EB] font-bold text-xs flex items-center justify-center">
+              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
+                <div className="w-8 h-8 rounded-xl bg-sky-50 text-sky-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
                   2
                 </div>
-                <h5 className="text-sm font-bold text-slate-900">Online Form &amp; Barcode</h5>
+                <h5 className="text-sm font-bold text-slate-900 font-heading mb-1.5">Online Form &amp; Barcode</h5>
                 <p className="text-xs text-slate-500 font-normal leading-relaxed">
                   {aiIntel.applicationProcess?.onlineForm}
                 </p>
               </div>
 
               {/* Step 3: Appointments */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-5 space-y-2 shadow-2xs flex flex-col justify-start">
-                <div className="w-8 h-8 rounded-xl bg-[#EEF2FF] text-[#4F46E5] font-bold text-xs flex items-center justify-center">
+              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
+                <div className="w-8 h-8 rounded-xl bg-violet-50 text-violet-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
                   3
                 </div>
-                <h5 className="text-sm font-bold text-slate-900">Appointments &amp; Biometrics</h5>
+                <h5 className="text-sm font-bold text-slate-900 font-heading mb-1.5">Appointments &amp; Biometrics</h5>
                 <p className="text-xs text-slate-500 font-normal leading-relaxed">
                   {aiIntel.applicationProcess?.appointments}
                 </p>
               </div>
 
               {/* Step 4: Documents Checklist */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-5 space-y-2 shadow-2xs flex flex-col justify-start">
-                <div className="w-8 h-8 rounded-xl bg-[#F5F3FF] text-[#7C3AED] font-bold text-xs flex items-center justify-center">
+              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
+                <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
                   4
                 </div>
-                <h5 className="text-sm font-bold text-slate-900">Required Document Items</h5>
-                <ul className="text-xs text-slate-600 space-y-1.5 pt-1">
+                <h5 className="text-sm font-bold text-slate-900 font-heading mb-1.5">Required Document Items</h5>
+                <ul className="text-xs text-slate-600 space-y-1.5 pt-0.5">
                   {aiIntel.applicationProcess?.documentsAndBiometrics?.slice(0, 3).map((item: string, idx: number) => (
                     <li key={idx} className="flex items-start gap-1.5">
                       <Check className="w-3.5 h-3.5 text-[#10B981] stroke-[3] shrink-0 mt-0.5" />
@@ -1407,7 +1407,7 @@ export function VisaCountryResultPortal({
                     </li>
                   ))}
                   {aiIntel.applicationProcess?.documentsAndBiometrics?.length > 3 && (
-                    <li className="text-xs text-[#4F46E5] font-bold pt-0.5">
+                    <li className="text-xs text-[#4F46E5] font-bold pt-1">
                       + {aiIntel.applicationProcess.documentsAndBiometrics.length - 3} more verified items
                     </li>
                   )}
@@ -1416,7 +1416,7 @@ export function VisaCountryResultPortal({
             </div>
           </div>
 
-          {/* ── PASSPORT SECURITY BANNER (EXACT ATLYS DESIGN) ── */}
+          {/* ── PASSPORT SECURITY BANNER (MATCHING SITE FONT & AESTHETICS) ── */}
           <div className="bg-[#F7F8FA] border border-slate-200/70 rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 md:p-10 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 relative shadow-2xs mt-6 min-h-[170px]">
             
             {/* Left Content */}
@@ -1427,8 +1427,8 @@ export function VisaCountryResultPortal({
               </div>
               
               <div className="space-y-1.5">
-                <h3 className="text-2xl sm:text-3xl font-serif font-bold text-slate-950 tracking-tight leading-tight">
-                  Passport Security. <span className="font-serif font-normal text-slate-500">Then all else</span>
+                <h3 className="text-2xl sm:text-3xl font-heading font-bold text-slate-950 tracking-tight leading-tight">
+                  Passport Security. <span className="font-heading font-normal text-slate-500">Then all else</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
                   We secure your passport in a safe box and locker at all times.<br className="hidden sm:inline" />

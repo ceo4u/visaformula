@@ -6,8 +6,22 @@ import { VisaCountryResultPortal } from '../../components/visa/VisaCountryResult
 export const prerender = false;
 
 const { country } = Astro.params;
-const passport = Astro.url.searchParams.get('passport') || 'India';
-const purpose = Astro.url.searchParams.get('purpose') || 'tourism';
+const passport = Astro.url.searchParams.get('passport') || Astro.url.searchParams.get('from') || 'India';
+
+const rawPurpose = Astro.url.searchParams.get('purpose') || 
+                   Astro.url.searchParams.get('category') || 
+                   Astro.url.searchParams.get('type') || 
+                   Astro.url.searchParams.get('intent') || 
+                   Astro.url.searchParams.get('visa') || 
+                   Astro.url.searchParams.get('q') || 
+                   'tourism';
+
+const purposeLower = rawPurpose.toLowerCase();
+const purpose = (purposeLower.includes('student') || purposeLower.includes('study') || purposeLower.includes('education') || purposeLower.includes('university') || purposeLower.includes('course'))
+  ? 'study'
+  : (purposeLower.includes('work') || purposeLower.includes('job') || purposeLower.includes('employment') || purposeLower.includes('career'))
+  ? 'work'
+  : 'tourism';
 
 const countryClean = (country || 'destination')
   .split('-')

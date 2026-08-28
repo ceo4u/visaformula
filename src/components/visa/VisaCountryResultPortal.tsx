@@ -1001,12 +1001,52 @@ export function VisaCountryResultPortal({
 
   // ── DECISION GATE STATE ──
   const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes'>('no');
-  const [activePurposeTab, setActivePurposeTab] = useState<string>(
-    initialPurpose?.toLowerCase().includes('study') ? 'study' : 
-    initialPurpose?.toLowerCase().includes('work') ? 'work' : 'tourism'
-  );
+  
+  const [activePurposeTab, setActivePurposeTab] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      const urlPur = sp.get('purpose') || sp.get('category') || sp.get('type') || sp.get('intent') || sp.get('visa') || sp.get('q');
+      if (urlPur) {
+        const lower = urlPur.toLowerCase();
+        if (lower.includes('student') || lower.includes('study') || lower.includes('education') || lower.includes('university') || lower.includes('course')) return 'study';
+        if (lower.includes('work') || lower.includes('job') || lower.includes('employment') || lower.includes('career')) return 'work';
+      }
+    }
+    const initLower = (initialPurpose || 'tourism').toLowerCase();
+    if (initLower.includes('student') || initLower.includes('study') || initLower.includes('education') || initLower.includes('university') || initLower.includes('course')) return 'study';
+    if (initLower.includes('work') || initLower.includes('job') || initLower.includes('employment') || initLower.includes('career')) return 'work';
+    return 'tourism';
+  });
 
-  const [passportCountry, setPassportCountry] = useState(initialPassport || 'India');
+  const [passportCountry, setPassportCountry] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      const urlPass = sp.get('passport') || sp.get('from');
+      if (urlPass) return formatNationality(urlPass);
+    }
+    return formatNationality(initialPassport || 'India');
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      const urlPur = sp.get('purpose') || sp.get('category') || sp.get('type') || sp.get('intent') || sp.get('visa') || sp.get('q');
+      if (urlPur) {
+        const lower = urlPur.toLowerCase();
+        if (lower.includes('student') || lower.includes('study') || lower.includes('education') || lower.includes('university') || lower.includes('course')) {
+          setActivePurposeTab('study');
+        } else if (lower.includes('work') || lower.includes('job') || lower.includes('employment') || lower.includes('career')) {
+          setActivePurposeTab('work');
+        } else {
+          setActivePurposeTab('tourism');
+        }
+      }
+      const urlPass = sp.get('passport') || sp.get('from');
+      if (urlPass) {
+        setPassportCountry(formatNationality(urlPass));
+      }
+    }
+  }, []);
 
   // Dynamic AI Intelligence Resolution
   const aiIntel = useMemo(() => {
@@ -1428,18 +1468,18 @@ export function VisaCountryResultPortal({
       </section>
 
       {/* ── SECTION 1.5: LUXURY ATLYS-GRADE AI INTELLIGENCE CARD ── */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-6 sm:mt-8 antialiased">
-        <div className="bg-white border border-slate-200/80 rounded-[28px] sm:rounded-[32px] p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.03)] text-left space-y-6 sm:space-y-8 relative overflow-hidden">
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-6 sm:mt-8 antialiased [text-rendering:geometricPrecision]">
+        <div className="bg-white border border-slate-200 rounded-[28px] sm:rounded-[32px] p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left space-y-6 sm:space-y-8 relative overflow-hidden">
           
           {/* Top Bar: Live AI Indicator & Verified Consular Badges */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
             <div className="flex items-center gap-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0] text-xs font-semibold shadow-2xs">
-                <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse shrink-0" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-300 text-xs font-bold shadow-2xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse shrink-0" />
                 <span>✨ AI Visa &amp; Entry Resolution</span>
               </div>
-              <span className="text-xs text-slate-300 hidden sm:inline">•</span>
-              <span className="text-xs font-medium text-slate-600 hidden sm:inline">
+              <span className="text-xs text-slate-400 hidden sm:inline">•</span>
+              <span className="text-xs font-semibold text-slate-700 hidden sm:inline">
                 Live Consular Regulations
               </span>
             </div>
@@ -1453,20 +1493,20 @@ export function VisaCountryResultPortal({
 
           {/* Main Verdict Card */}
           <div className="flex flex-col sm:flex-row sm:items-start gap-4 pt-1">
-            <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/15 shrink-0">
-              <ShieldCheck className="w-6 h-6 stroke-[2]" />
+            <div className="w-12 h-12 rounded-2xl bg-slate-950 text-white flex items-center justify-center shadow-md shadow-slate-900/20 shrink-0">
+              <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
             </div>
 
             <div className="space-y-1.5 min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2.5">
-                <h3 className="text-lg sm:text-xl md:text-2xl font-heading font-bold text-slate-900 tracking-tight leading-snug">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-heading font-bold text-slate-950 tracking-tight leading-snug">
                   {aiIntel.verdictTitle}
                 </h3>
-                <span className="text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider bg-slate-900 text-white shrink-0 shadow-2xs">
+                <span className="text-[11px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider bg-slate-900 text-white shrink-0 shadow-2xs">
                   {aiIntel.stayDuration || dynamicLengthOfStay}
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-3xl">
+              <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed max-w-3xl">
                 {aiIntel.verdictSummary}
               </p>
             </div>
@@ -1476,63 +1516,63 @@ export function VisaCountryResultPortal({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
             
             {/* Card 1: Entry Status */}
-            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between min-h-[136px] group">
+            <div className="bg-[#F8FAFC] hover:bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between min-h-[136px] group">
               <div className="flex items-center justify-between">
-                <ShieldCheck className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200/70 text-slate-700">
+                <ShieldCheck className="w-6 h-6 text-slate-800 stroke-[2] group-hover:scale-105 transition-transform" />
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200 text-slate-800">
                   Status
                 </span>
               </div>
               <div className="min-w-0 pt-2">
-                <span className="text-xs text-slate-500 font-medium block">
+                <span className="text-xs text-slate-600 font-semibold block">
                   Entry Status
                 </span>
-                <span className="text-sm sm:text-base font-bold text-slate-900 block truncate">
+                <span className="text-sm sm:text-base font-bold text-slate-950 block truncate">
                   {aiIntel.entryStatus || "Official E-Visa Required"}
                 </span>
-                <span className="text-[11px] text-slate-400 font-normal block mt-0.5 truncate">
+                <span className="text-[11px] text-slate-600 font-medium block mt-0.5 truncate">
                   {aiIntel.entryStatusSubtext || "3–5 Days Processing"}
                 </span>
               </div>
             </div>
 
             {/* Card 2: Max Allowed Stay */}
-            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between min-h-[136px] group">
+            <div className="bg-[#F8FAFC] hover:bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between min-h-[136px] group">
               <div className="flex items-center justify-between">
-                <Calendar className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200/70 text-slate-700">
+                <Calendar className="w-6 h-6 text-slate-800 stroke-[2] group-hover:scale-105 transition-transform" />
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200 text-slate-800">
                   Duration
                 </span>
               </div>
               <div className="min-w-0 pt-2">
-                <span className="text-xs text-slate-500 font-medium block">
+                <span className="text-xs text-slate-600 font-semibold block">
                   Max Allowed Stay
                 </span>
-                <span className="text-sm sm:text-base font-bold text-slate-900 block truncate">
+                <span className="text-sm sm:text-base font-bold text-slate-950 block truncate">
                   {aiIntel.stayDuration || dynamicLengthOfStay || "30 Days (Extendable)"}
                 </span>
-                <span className="text-[11px] text-slate-400 font-normal block mt-0.5 truncate">
+                <span className="text-[11px] text-slate-600 font-medium block mt-0.5 truncate">
                   {aiIntel.stayDurationSubtext || "Per calendar visit"}
                 </span>
               </div>
             </div>
 
             {/* Card 3: Entry & Validity */}
-            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between min-h-[136px] group">
+            <div className="bg-[#F8FAFC] hover:bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between min-h-[136px] group">
               <div className="flex items-center justify-between">
-                <Clock className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200/70 text-slate-700">
+                <Clock className="w-6 h-6 text-slate-800 stroke-[2] group-hover:scale-105 transition-transform" />
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200 text-slate-800">
                   Type
                 </span>
               </div>
               <div className="min-w-0 pt-2">
-                <span className="text-xs text-slate-500 font-medium block">
+                <span className="text-xs text-slate-600 font-semibold block">
                   Entry &amp; Validity
                 </span>
-                <span className="text-sm sm:text-base font-bold text-slate-900 block truncate">
+                <span className="text-sm sm:text-base font-bold text-slate-950 block truncate">
                   {aiIntel.entryType || currentVariant?.entryType || "Single / Multiple"}
                 </span>
-                <span className="text-[11px] text-slate-400 font-normal block mt-0.5 truncate">
+                <span className="text-[11px] text-slate-600 font-medium block mt-0.5 truncate">
                   {aiIntel.entryTypeSubtext || currentVariant?.validity || "90 Days Validity"}
                 </span>
               </div>
@@ -1541,12 +1581,12 @@ export function VisaCountryResultPortal({
           </div>
 
           {/* Bottom Verification Strip */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100 text-xs text-slate-500 font-medium antialiased">
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200 text-xs text-slate-600 font-semibold antialiased">
             <div className="flex items-center gap-2">
-              <span className="text-emerald-600 font-bold text-sm">✓</span>
+              <span className="text-emerald-700 font-bold text-base">✓</span>
               <span>Verified via official consular rules &amp; IATA Timatic</span>
             </div>
-            <div className="flex items-center gap-1.5 text-slate-400 font-normal">
+            <div className="flex items-center gap-1.5 text-slate-500 font-medium">
               <span>Updated for 2026 Global Travel Season</span>
             </div>
           </div>
@@ -1554,63 +1594,63 @@ export function VisaCountryResultPortal({
           {/* ── SECTION 1: VISA FEES AND PROCESSING ── */}
           <div className="space-y-4 pt-2">
             <div className="flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-[#10B981] stroke-[2.5]" />
-              <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 font-heading">
+              <DollarSign className="w-5 h-5 text-emerald-600 stroke-[2.5]" />
+              <h4 className="text-sm font-bold uppercase tracking-wider text-slate-950 font-heading">
                 1. VISA FEES AND PROCESSING
               </h4>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Cost Card */}
-              <div className="bg-[#F8FAFC] border border-slate-200/80 hover:border-slate-300 rounded-3xl p-5 sm:p-6 space-y-3 shadow-2xs transition-all flex flex-col justify-between h-full">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+              <div className="bg-[#F8FAFC] border border-slate-200 hover:border-slate-300 rounded-3xl p-5 sm:p-6 space-y-3 shadow-2xs transition-all flex flex-col justify-between h-full">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 block">
                   Official Fees &amp; Costs
                 </span>
                 <div className="space-y-2.5">
                   {aiIntel.feesAndProcessing?.costItems?.slice(0, 2).map((cItem: any, i: number) => (
-                    <div key={i} className="flex items-baseline justify-between gap-2 border-b border-slate-200/60 pb-2 last:border-0 last:pb-0">
-                      <span className="text-xs font-semibold text-slate-700">{cItem.label}</span>
-                      <span className="text-xs sm:text-sm font-bold text-emerald-600 font-heading shrink-0">{cItem.amount}</span>
+                    <div key={i} className="flex items-baseline justify-between gap-2 border-b border-slate-200 pb-2 last:border-0 last:pb-0">
+                      <span className="text-xs font-bold text-slate-800">{cItem.label}</span>
+                      <span className="text-xs sm:text-sm font-extrabold text-emerald-700 font-heading shrink-0">{cItem.amount}</span>
                     </div>
                   ))}
                 </div>
-                <span className="text-[11px] text-slate-400 font-normal block pt-1">
+                <span className="text-[11px] text-slate-500 font-medium block pt-1">
                   Official consular rates
                 </span>
               </div>
 
               {/* Processing Time Card */}
-              <div className="bg-[#F8FAFC] border border-slate-200/80 hover:border-slate-300 rounded-3xl p-5 sm:p-6 space-y-2 shadow-2xs transition-all flex flex-col justify-between h-full">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+              <div className="bg-[#F8FAFC] border border-slate-200 hover:border-slate-300 rounded-3xl p-5 sm:p-6 space-y-2 shadow-2xs transition-all flex flex-col justify-between h-full">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 block">
                   Processing Time &amp; SLAs
                 </span>
                 <div className="space-y-1">
-                  <span className="text-base sm:text-lg font-bold text-slate-900 block font-heading">
+                  <span className="text-base sm:text-lg font-bold text-slate-950 block font-heading">
                     {aiIntel.feesAndProcessing?.processingTime || "~3 Weeks Standard"}
                   </span>
-                  <p className="text-xs text-slate-500 font-normal leading-relaxed">
+                  <p className="text-xs text-slate-600 font-medium leading-relaxed">
                     {aiIntel.feesAndProcessing?.processingSLA || "Standard consular review window."}
                   </p>
                 </div>
-                <span className="text-[11px] text-emerald-600 font-semibold block pt-1">
+                <span className="text-[11px] text-emerald-700 font-bold block pt-1">
                   Express options supported
                 </span>
               </div>
 
               {/* Application Window Card */}
-              <div className="bg-[#F8FAFC] border border-slate-200/80 hover:border-slate-300 rounded-3xl p-5 sm:p-6 space-y-2 shadow-2xs transition-all flex flex-col justify-between h-full">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+              <div className="bg-[#F8FAFC] border border-slate-200 hover:border-slate-300 rounded-3xl p-5 sm:p-6 space-y-2 shadow-2xs transition-all flex flex-col justify-between h-full">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 block">
                   Application &amp; Entry Window
                 </span>
                 <div className="space-y-1">
-                  <span className="text-base sm:text-lg font-bold text-slate-900 block font-heading">
+                  <span className="text-base sm:text-lg font-bold text-slate-950 block font-heading">
                     {aiIntel.feesAndProcessing?.applicationWindow || "Apply 1 to 3 Months Ahead"}
                   </span>
-                  <p className="text-xs text-slate-500 font-normal leading-relaxed">
+                  <p className="text-xs text-slate-600 font-medium leading-relaxed">
                     {aiIntel.feesAndProcessing?.earlyEntryBuffer || "Valid for travel within consular grant."}
                   </p>
                 </div>
-                <span className="text-[11px] text-slate-400 font-normal block pt-1">
+                <span className="text-[11px] text-slate-500 font-medium block pt-1">
                   Flexible travel buffer
                 </span>
               </div>
@@ -1621,60 +1661,60 @@ export function VisaCountryResultPortal({
           <div className="space-y-3 pt-2">
             <div className="flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-[#4F46E5] stroke-[2.2]" />
-              <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 font-heading">
+              <h4 className="text-sm font-bold uppercase tracking-wider text-slate-950 font-heading">
                 2. APPLICATION PROCESS
               </h4>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Step 1: Submission */}
-              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
+              <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
                 <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
                   1
                 </div>
-                <h5 className="text-sm font-bold text-slate-900 font-heading mb-1.5">Submission &amp; Issuance</h5>
-                <p className="text-xs text-slate-500 font-normal leading-relaxed">
+                <h5 className="text-sm font-bold text-slate-950 font-heading mb-1.5">Submission &amp; Issuance</h5>
+                <p className="text-xs text-slate-600 font-medium leading-relaxed">
                   {aiIntel.applicationProcess?.submission}
                 </p>
               </div>
 
               {/* Step 2: Online Form */}
-              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
+              <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
                 <div className="w-8 h-8 rounded-xl bg-sky-50 text-sky-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
                   2
                 </div>
-                <h5 className="text-sm font-bold text-slate-900 font-heading mb-1.5">Online Form &amp; Barcode</h5>
-                <p className="text-xs text-slate-500 font-normal leading-relaxed">
+                <h5 className="text-sm font-bold text-slate-950 font-heading mb-1.5">Online Form &amp; Barcode</h5>
+                <p className="text-xs text-slate-600 font-medium leading-relaxed">
                   {aiIntel.applicationProcess?.onlineForm}
                 </p>
               </div>
 
               {/* Step 3: Appointments */}
-              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
+              <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
                 <div className="w-8 h-8 rounded-xl bg-violet-50 text-violet-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
                   3
                 </div>
-                <h5 className="text-sm font-bold text-slate-900 font-heading mb-1.5">Appointments &amp; Biometrics</h5>
-                <p className="text-xs text-slate-500 font-normal leading-relaxed">
+                <h5 className="text-sm font-bold text-slate-950 font-heading mb-1.5">Appointments &amp; Biometrics</h5>
+                <p className="text-xs text-slate-600 font-medium leading-relaxed">
                   {aiIntel.applicationProcess?.appointments}
                 </p>
               </div>
 
               {/* Step 4: Documents Checklist */}
-              <div className="bg-white border border-slate-200/80 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
+              <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
                 <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
                   4
                 </div>
-                <h5 className="text-sm font-bold text-slate-900 font-heading mb-1.5">Required Document Items</h5>
-                <ul className="text-xs text-slate-600 space-y-1.5 pt-0.5">
+                <h5 className="text-sm font-bold text-slate-950 font-heading mb-1.5">Required Document Items</h5>
+                <ul className="text-xs text-slate-700 space-y-1.5 pt-0.5">
                   {aiIntel.applicationProcess?.documentsAndBiometrics?.slice(0, 3).map((item: string, idx: number) => (
                     <li key={idx} className="flex items-start gap-1.5">
-                      <Check className="w-3.5 h-3.5 text-[#10B981] stroke-[3] shrink-0 mt-0.5" />
-                      <span className="leading-snug text-slate-700 font-medium">{item}</span>
+                      <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3] shrink-0 mt-0.5" />
+                      <span className="leading-snug text-slate-800 font-medium">{item}</span>
                     </li>
                   ))}
                   {aiIntel.applicationProcess?.documentsAndBiometrics?.length > 3 && (
-                    <li className="text-xs text-[#4F46E5] font-bold pt-1">
+                    <li className="text-xs text-indigo-700 font-bold pt-1">
                       + {aiIntel.applicationProcess.documentsAndBiometrics.length - 3} more verified items
                     </li>
                   )}
@@ -2398,21 +2438,25 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* Purpose Tabs Switcher */}
-                <div className="inline-flex p-1 bg-slate-100 rounded-xl">
-                  {['study', 'tourism', 'work'].map((p) => (
+                <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200/80">
+                  {[
+                    { id: 'study', label: 'Study' },
+                    { id: 'tourism', label: 'Visit / Tourism' },
+                    { id: 'work', label: 'Work' }
+                  ].map((tab) => (
                     <button
-                      key={p}
+                      key={tab.id}
                       type="button"
                       onClick={() => {
-                        setActivePurposeTab(p);
+                        setActivePurposeTab(tab.id);
                       }}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-medium capitalize transition-all cursor-pointer ${
-                        activePurposeTab === p
-                          ? 'bg-white text-slate-900 shadow-xs font-semibold'
-                          : 'text-slate-500 hover:text-slate-900'
+                      className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        activePurposeTab === tab.id
+                          ? 'bg-slate-900 text-white shadow-xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                       }`}
                     >
-                      {p === 'tourism' ? 'Visit / Tourism' : p}
+                      {tab.label}
                     </button>
                   ))}
                 </div>

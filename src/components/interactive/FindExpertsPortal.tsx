@@ -930,7 +930,7 @@ export function FindExpertsPortal() {
                                                 />
                                             ) : null}
                                             <div className={`w-full h-full rounded-2xl bg-gradient-to-br from-[#0B0F17] via-slate-800 to-teal-900 text-white font-semibold text-xl flex items-center justify-center border border-slate-700 shadow-xs tracking-tight select-none font-sans ${e.image ? 'hidden' : ''}`}>
-                                                {(e.name || 'VF').split(' ').slice(0, 2).map((w: string) => w.charAt(0).toUpperCase()).join('')}
+                                                {(e.name || 'TT').split(' ').slice(0, 2).map((w: string) => w.charAt(0).toUpperCase()).join('')}
                                             </div>
                                             {e.isVerified && (
                                                 <span className="absolute -top-1.5 -right-1.5 bg-slate-950 text-teal-300 text-[9px] font-medium tracking-wider px-2 py-0.5 rounded-full border border-teal-400/30 shadow-xs flex items-center gap-1">

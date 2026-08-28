@@ -1,12 +1,12 @@
-# VisaFormula Hub — Project Brain & Single Source of Truth
+# TravlTik — Project Brain & Single Source of Truth
 
-Welcome, Developer or AI Agent! This document serves as the absolute, fully reverse-engineered blueprint and single source of truth for the **VisaFormula Hub** codebase. It outlines the architecture, routing mechanics, database layer, mock states, security gates, dependencies, technical debt, and crucial operational workflows.
+Welcome, Developer or AI Agent! This document serves as the absolute, fully reverse-engineered blueprint and single source of truth for the **TravlTik** codebase. It outlines the architecture, routing mechanics, database layer, mock states, security gates, dependencies, technical debt, and crucial operational workflows.
 
 ---
 
 ## 1. Project Overview & Business Value
 
-**VisaFormula** (often referred to as `visaformula` or `visahub` in directory listings) is a premium, global immigration marketplace designed to bridge the gap between visa applicants (Seekers) and immigration experts, lawyers, study consultants, translation agencies, and supporting travel businesses.
+**TravlTik** (often referred to as `visahub` or `visahub` in directory listings) is a premium, global immigration marketplace designed to bridge the gap between visa applicants (Seekers) and immigration experts, lawyers, study consultants, translation agencies, and supporting travel businesses.
 
 ### Core Value Propositions:
 1. **Directory & Search Gating**: Applicants can query visa pathways, local consultants, and target countries. Search features require authentication, generating potential lead conversions.

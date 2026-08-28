@@ -1643,7 +1643,7 @@ export function AITripPlannerLanding() {
 
   const autoSaveJourney = async (overrides: Record<string, any> = {}) => {
     setIsAutoSaving(true);
-    const email = currentUserEmail || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || 'guest@visaformula.com' : 'guest@visaformula.com');
+    const email = currentUserEmail || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || 'guest@travltik.com' : 'guest@travltik.com');
 
     const payload = {
       user_email: email,

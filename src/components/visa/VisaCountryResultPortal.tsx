@@ -911,13 +911,7 @@ export function VisaCountryResultPortal({
   const [pincode, setPincode] = useState<string>('400001');
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [activeTimelineTab, setActiveTimelineTab] = useState<'travltik' | 'diy'>('travltik');
-  const [checkedDocs, setCheckedDocs] = useState<Record<string, boolean>>({
-    'doc-1': true,
-    'doc-2': true,
-    'doc-3': true,
-    'spec-1': true,
-    'spec-2': true
-  });
+  const [checkedDocs, setCheckedDocs] = useState<Record<string, boolean>>({});
   const toggleDocCheck = (id: string) => {
     setCheckedDocs(prev => ({ ...prev, [id]: !prev[id] }));
   };
@@ -2637,215 +2631,6 @@ export function VisaCountryResultPortal({
               </div>
             </div>
 
-            {/* ================================================== */}
-            {/* 2. ATLYS-STYLE COMPARISON TIMELINE (DOING IT WITH ATLYS vs DOING IT YOURSELF) */}
-            {/* ================================================== */}
-            <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 lg:p-10 space-y-10 shadow-xs text-left overflow-x-auto">
-              
-              {/* SECTION A: DOING IT WITH TRAVLTIK */}
-              <div className="space-y-4 min-w-[640px]">
-                <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#4F46E5] font-heading">
-                  DOING IT WITH TRAVLTIK
-                </h3>
-
-                <div className="relative pt-10 pb-12">
-                  {/* Connecting Solid Bar */}
-                  <div className="absolute top-[84px] left-8 right-8 h-1 bg-[#4F46E5] -z-0 rounded-full" />
-
-                  {/* 4 Nodes */}
-                  <div className="grid grid-cols-4 relative z-10">
-                    
-                    {/* Node 1: Top text */}
-                    <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[140px]">
-                          Submit all your documents on TravlTik
-                        </span>
-                        <span className="text-slate-400 text-xs mt-1">|</span>
-                      </div>
-                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
-                        1
-                      </div>
-                      <div className="h-16" />
-                    </div>
-
-                    {/* Node 2: Bottom text */}
-                    <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-16" />
-                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
-                        2
-                      </div>
-                      <div className="h-16 flex flex-col items-center justify-start pt-2">
-                        <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[140px]">
-                          TravlTik comes to collect your passport
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Node 3: Top text */}
-                    <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[150px]">
-                          We constantly give you updates and a reliable ETA.
-                        </span>
-                        <span className="text-slate-400 text-xs mt-1">|</span>
-                      </div>
-                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
-                        3
-                      </div>
-                      <div className="h-16" />
-                    </div>
-
-                    {/* Node 4: Bottom text */}
-                    <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-16" />
-                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
-                        4
-                      </div>
-                      <div className="h-16 flex flex-col items-center justify-start pt-2">
-                        <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[150px]">
-                          When approved, we drop your passport back to you!
-                        </span>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-              {/* SECTION B: DOING IT YOURSELF */}
-              <div className="space-y-4 min-w-[740px] pt-6 border-t border-slate-100">
-                <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-black font-heading">
-                  DOING IT YOURSELF
-                </h3>
-
-                <div className="relative pt-10 pb-12">
-                  {/* Connecting Solid Black Bar */}
-                  <div className="absolute top-[84px] left-6 right-6 h-1 bg-black -z-0 rounded-full" />
-
-                  {/* 8 Nodes */}
-                  <div className="grid grid-cols-8 relative z-10">
-                    
-                    {/* Node 1: Top */}
-                    <div className="flex flex-col items-center text-center px-1">
-                      <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
-                          Gather all your documents at home
-                        </span>
-                        <span className="text-slate-400 text-xs mt-1">|</span>
-                      </div>
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
-                        1
-                      </div>
-                      <div className="h-16" />
-                    </div>
-
-                    {/* Node 2: Bottom */}
-                    <div className="flex flex-col items-center text-center px-1">
-                      <div className="h-16" />
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
-                        2
-                      </div>
-                      <div className="h-16 flex flex-col items-center justify-start pt-2">
-                        <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
-                          Get your documents printed at a print shop
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Node 3: Top */}
-                    <div className="flex flex-col items-center text-center px-1">
-                      <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
-                          Get stuck in traffic driving to the embassy
-                        </span>
-                        <span className="text-slate-400 text-xs mt-1">|</span>
-                      </div>
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
-                        3
-                      </div>
-                      <div className="h-16" />
-                    </div>
-
-                    {/* Node 4: Bottom */}
-                    <div className="flex flex-col items-center text-center px-1">
-                      <div className="h-16" />
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
-                        4
-                      </div>
-                      <div className="h-16 flex flex-col items-center justify-start pt-2">
-                        <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
-                          Spend 3+ hours at the embassy
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Node 5: Top */}
-                    <div className="flex flex-col items-center text-center px-1">
-                      <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
-                          Get stuck in traffic on the way back home
-                        </span>
-                        <span className="text-slate-400 text-xs mt-1">|</span>
-                      </div>
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
-                        5
-                      </div>
-                      <div className="h-16" />
-                    </div>
-
-                    {/* Node 6: Bottom */}
-                    <div className="flex flex-col items-center text-center px-1">
-                      <div className="h-16" />
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
-                        6
-                      </div>
-                      <div className="h-16 flex flex-col items-center justify-start pt-2">
-                        <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
-                          Wait anxiously for your visa approval
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Node 7: Top */}
-                    <div className="flex flex-col items-center text-center px-1">
-                      <div className="h-16 flex flex-col items-center justify-end pb-2">
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
-                          Go back to embassy to pick up passport
-                        </span>
-                        <span className="text-slate-400 text-xs mt-1">|</span>
-                      </div>
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
-                        7
-                      </div>
-                      <div className="h-16" />
-                    </div>
-
-                    {/* Node 8: Bottom */}
-                    <div className="flex flex-col items-center text-center px-1">
-                      <div className="h-16" />
-                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
-                        8
-                      </div>
-                      <div className="h-16 flex flex-col items-center justify-start pt-2">
-                        <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
-                          Drive back home
-                        </span>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
             {/* 3. REQUIRED DOCUMENTS CHECKLIST */}
             <div className="space-y-4 text-left">
               <div className="space-y-1 text-center sm:text-left">
@@ -3250,6 +3035,227 @@ export function VisaCountryResultPortal({
                   </table>
                 </div>
               </div>
+            </div>
+
+            {/* ================================================== */}
+            {/* 4. ATLYS-STYLE COMPARISON TIMELINE (DOING IT WITH ATLYS vs DOING IT YOURSELF) */}
+            {/* ================================================== */}
+            <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 lg:p-10 space-y-10 shadow-xs text-left overflow-x-auto">
+              
+              {/* SECTION A: DOING IT WITH TRAVLTIK */}
+              <div className="space-y-4 min-w-[640px]">
+                <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#4F46E5] font-heading">
+                  DOING IT WITH TRAVLTIK
+                </h3>
+
+                <div className="relative pt-10 pb-12">
+                  {/* Connecting Solid Bar */}
+                  <div className="absolute top-[100px] left-8 right-8 h-1 bg-[#4F46E5] -z-0 rounded-full" />
+
+                  {/* 4 Nodes */}
+                  <div className="grid grid-cols-4 relative z-10 antialiased">
+                    
+                    {/* Node 1: Top text */}
+                    <div className="flex flex-col items-center text-center px-2">
+                      <div className="h-20 flex flex-col items-center justify-end pb-2">
+                        <span className="text-xs sm:text-[13px] font-bold text-slate-900 leading-tight max-w-[160px]">
+                          Submit all your documents online on TravlTik
+                        </span>
+                        <span className="text-[11px] text-slate-500 font-normal leading-snug mt-1 max-w-[160px] hidden sm:block">
+                          Quickly scan passport &amp; upload details from your phone in 2 minutes.
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                        1
+                      </div>
+                      <div className="h-20" />
+                    </div>
+
+                    {/* Node 2: Bottom text */}
+                    <div className="flex flex-col items-center text-center px-2">
+                      <div className="h-20" />
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                        2
+                      </div>
+                      <div className="h-20 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-xs sm:text-[13px] font-bold text-slate-900 leading-tight max-w-[160px]">
+                          AI &amp; Expert Concierge verifies your application
+                        </span>
+                        <span className="text-[11px] text-slate-500 font-normal leading-snug mt-1 max-w-[160px] hidden sm:block">
+                          Our team pre-screens your documents to ensure 100% consular accuracy.
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Node 3: Top text */}
+                    <div className="flex flex-col items-center text-center px-2">
+                      <div className="h-20 flex flex-col items-center justify-end pb-2">
+                        <span className="text-xs sm:text-[13px] font-bold text-slate-900 leading-tight max-w-[160px]">
+                          We constantly give you updates and a reliable ETA.
+                        </span>
+                        <span className="text-[11px] text-slate-500 font-normal leading-snug mt-1 max-w-[160px] hidden sm:block">
+                          Track real-time progress through automated notifications.
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                        3
+                      </div>
+                      <div className="h-20" />
+                    </div>
+
+                    {/* Node 4: Bottom text */}
+                    <div className="flex flex-col items-center text-center px-2">
+                      <div className="h-20" />
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                        4
+                      </div>
+                      <div className="h-20 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-xs sm:text-[13px] font-bold text-slate-900 leading-tight max-w-[160px]">
+                          Approved e-Visa delivered to your WhatsApp &amp; Email!
+                        </span>
+                        <span className="text-[11px] text-slate-500 font-normal leading-snug mt-1 max-w-[160px] hidden sm:block">
+                          Download your official electronic visa instantly when approved.
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION B: DOING IT YOURSELF */}
+              <div className="space-y-4 min-w-[740px] pt-6 border-t border-slate-100">
+                <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-black font-heading">
+                  DOING IT YOURSELF
+                </h3>
+
+                <div className="relative pt-10 pb-12">
+                  {/* Connecting Solid Black Bar */}
+                  <div className="absolute top-[84px] left-6 right-6 h-1 bg-black -z-0 rounded-full" />
+
+                  {/* 8 Nodes */}
+                  <div className="grid grid-cols-8 relative z-10">
+                    
+                    {/* Node 1: Top */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Gather all your documents at home
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        1
+                      </div>
+                      <div className="h-16" />
+                    </div>
+
+                    {/* Node 2: Bottom */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16" />
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        2
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Get your documents printed at a print shop
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Node 3: Top */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Get stuck in traffic driving to the embassy
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        3
+                      </div>
+                      <div className="h-16" />
+                    </div>
+
+                    {/* Node 4: Bottom */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16" />
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        4
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Spend 3+ hours at the embassy
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Node 5: Top */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Get stuck in traffic on the way back home
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        5
+                      </div>
+                      <div className="h-16" />
+                    </div>
+
+                    {/* Node 6: Bottom */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16" />
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        6
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Wait anxiously for your visa approval
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Node 7: Top */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Go back to embassy to pick up passport
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        7
+                      </div>
+                      <div className="h-16" />
+                    </div>
+
+                    {/* Node 8: Bottom */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16" />
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        8
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Drive back home
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
             </div>
 
             {/* 5. EXPANDABLE FAQ ACCORDION */}

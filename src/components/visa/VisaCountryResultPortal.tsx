@@ -329,6 +329,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   const purNorm = (purpose || 'tourism').toLowerCase();
 
   const isUKorUSorEU = pNorm.includes('united kingdom') || pNorm.includes('uk') || pNorm.includes('united states') || pNorm.includes('usa') || pNorm.includes('australia') || pNorm.includes('canada');
+  const isUS = cNorm.includes('united states') || cNorm.includes('usa') || cNorm.includes('america');
   const isSingapore = cNorm.includes('singapore');
   const isUAE = GCC_COUNTRIES.some(gc => cNorm.includes(gc));
   const isGCC = GCC_COUNTRIES.some(gc => cNorm.includes(gc));
@@ -337,12 +338,137 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   const isStudy = purNorm.includes('study');
   const isWork = purNorm.includes('work') || purNorm.includes('job');
 
+  // Case 1: United States (F-1 Student Visa, H-1B Work, B1/B2 Visitor)
+  if (isUS) {
+    if (isStudy) {
+      return {
+        isExempt: false,
+        verdictTitle: "F-1 Student Visa Required for Higher Education in the United States",
+        verdictSummary: `${passport} students admitted to SEVP-certified US universities require an approved F-1 Student Visa and valid I-20 to legally enter and study in the United States.`,
+        stayDuration: "Duration of Status (D/S — Up to 4–5 Years)",
+        digitalCardName: "Form I-20 + SEVIS I-901 Approval",
+        digitalCardDesc: "SEVP-certified institution Form I-20 Certificate of Eligibility with active SEVIS ID.",
+        sources: ["US Department of State (Travel.State.Gov)", "DHS SEVP Portal", "USCIS & IATA Timatic 2026"],
+        maxStay: "Duration of Academic Degree (D/S)",
+        conditionsForVisa: [
+          "Full-time enrollment in SEVP-approved university or college.",
+          "Must maintain active status in SEVIS and valid passport (6+ months).",
+          "On-campus employment allowed up to 20 hrs/week during academic terms.",
+          "Must complete OPT/CPT authorization for off-campus internships."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "MRV Visa Application Fee", amount: "$185 (approx. ₹15,500 – ₹17,600)", note: "Mandatory Department of State consular processing fee" },
+            { label: "SEVIS I-901 Fee", amount: "$350 (approx. ₹29,500 – ₹33,300)", note: "Department of Homeland Security student database fee" }
+          ],
+          totalEstimatedINR: "₹45,000 – ₹50,900 Total Official Fees",
+          processingTime: "Consular Decision: 3–5 Business Days post-interview (Passport dispatch via BlueDart in 2–3 days)",
+          processingSLA: "Wait times vary by city (New Delhi, Mumbai, Hyderabad, Chennai, Kolkata). Urgent emergency interview requests supported.",
+          applicationWindow: "Apply up to 365 Days prior to I-20 program start date",
+          earlyEntryBuffer: "US Port of Entry arrival permitted up to 30 Days before course start date"
+        },
+        applicationProcess: {
+          submission: "1. SEVP University Admission & I-20 Issuance: University issues signed Form I-20 upon financial verification.",
+          onlineForm: "2. DS-160 Online Nonimmigrant Visa Application: Complete DS-160 online and save 10-digit CEAC barcode confirmation.",
+          appointments: "3. Two-Step Appointment Scheduling: Book VAC Biometric (Fingerprints & Photo) + Consular Visa Interview at US Embassy/Consulate.",
+          documentsAndBiometrics: [
+            "Original Passport valid for at least 6 months beyond intended stay",
+            "Signed Form I-20 Certificate of Eligibility with SEVIS ID",
+            "SEVIS I-901 Fee Payment Receipt ($350)",
+            "DS-160 Form Barcode Confirmation Sheet",
+            "Liquid Financial Proof / Bank Statements & Education Loan Sanction Letter",
+            "Academic Transcripts, Degree Certificates & Standardized Test Scores (GRE/IELTS/TOEFL)"
+          ]
+        }
+      };
+    } else if (isWork) {
+      return {
+        isExempt: false,
+        verdictTitle: "H-1B / L-1 / O-1 Nonimmigrant Work Visa Required",
+        verdictSummary: `${passport} professionals require an approved Form I-797 Notice of Action and consular visa stamp to take up employment in the United States.`,
+        stayDuration: "Up to 3 Years (Extendable to 6 Years)",
+        digitalCardName: "Form I-797 Approval Notice",
+        digitalCardDesc: "USCIS Form I-797 Petition Approval Notice.",
+        sources: ["USCIS", "US Department of State", "IATA Timatic 2026"],
+        maxStay: "3 Years (Renewable)",
+        conditionsForVisa: [
+          "Sponsoring US employer petition approval (Form I-129).",
+          "Specialty occupation degree qualification.",
+          "Must work exclusively for the approved petitioning entity."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "MRV Application Fee (H/L/O/P/Q)", amount: "$205 (approx. ₹17,200 – ₹19,500)", note: "Consular nonimmigrant petition processing fee" },
+            { label: "USCIS Petition Fees", amount: "Employer Sponsored", note: "Covered by petitioning US enterprise" }
+          ],
+          totalEstimatedINR: "₹17,200 Consular Fee",
+          processingTime: "Consular Decision: 3–5 Business Days post-interview",
+          processingSLA: "Expedited appointment slots available for critical business operations.",
+          applicationWindow: "Apply up to 90 Days before petition start date",
+          earlyEntryBuffer: "US entry permitted up to 10 Days before petition validity start date"
+        },
+        applicationProcess: {
+          submission: "1. Employer Petition: Sponsoring US company secures Form I-797 Notice of Action from USCIS.",
+          onlineForm: "2. DS-160 Form: Fill DS-160 nonimmigrant application selecting Petition-Based category.",
+          appointments: "3. Appointments: Schedule OFC Biometrics + Consular Interview.",
+          documentsAndBiometrics: [
+            "Valid Passport with minimum 6 months validity",
+            "Form I-797 Notice of Action (Original / Copy)",
+            "DS-160 Confirmation Sheet with Barcode",
+            "US Visa Appointment Confirmation Letter",
+            "Employment Offer Letter, W-2 forms / Experience credentials"
+          ]
+        }
+      };
+    } else {
+      return {
+        isExempt: false,
+        verdictTitle: "B1/B2 Visitor Visa Required for Tourism & Business",
+        verdictSummary: `${passport} passport holders require an official B1/B2 Visitor Visa issued by the US Department of State before boarding flights to the United States.`,
+        stayDuration: "Up to 6 Months per entry (10-Year Multiple Entry)",
+        digitalCardName: "ESTA / US B1/B2 Stamp",
+        digitalCardDesc: "Physical visa foil in passport or approved ESTA if dual citizen.",
+        sources: ["US Department of State", "CBP", "IATA Timatic 2026"],
+        maxStay: "6 Months per Visit",
+        conditionsForVisa: [
+          "Tourism, family visits, holidays, or short business consultations.",
+          "No employment or unauthorized work permitted under B1/B2.",
+          "Must demonstrate strong ties to home country."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "MRV Application Fee (B1/B2)", amount: "$185 (approx. ₹15,500 – ₹17,600)", note: "Department of State application fee" }
+          ],
+          totalEstimatedINR: "₹15,500 – ₹17,600",
+          processingTime: "Consular Decision: 3–5 Business Days post-interview",
+          processingSLA: "Interview scheduling slots vary by city.",
+          applicationWindow: "Apply 3 to 6 months prior to planned trip",
+          earlyEntryBuffer: "Travel permitted anytime during 10-year validity"
+        },
+        applicationProcess: {
+          submission: "1. Digital Intake: Create profile on US Travel Docs / CEAC portal.",
+          onlineForm: "2. Form DS-160: Complete tourist/business declaration and photo upload.",
+          appointments: "3. Schedule Appointments: Book Biometric appointment at VAC + Consular Interview.",
+          documentsAndBiometrics: [
+            "Current Passport valid for 6+ months",
+            "DS-160 Confirmation Barcode Page",
+            "MRV Fee Receipt & Appointment Confirmation",
+            "Financial Bank Proof / Proof of ties to home country",
+            "Tentative Travel Itinerary / Hotel Reservation"
+          ]
+        }
+      };
+    }
+  }
+
+  // Case 2: Singapore
   if (isSingapore) {
     if (isUKorUSorEU && !isStudy && !isWork) {
       return {
         isExempt: true,
         verdictTitle: "Visa-Exempt for Tourism & Business (Up to 90 Days)",
         verdictSummary: `${passport} passport holders do not need a visa for short-term tourism or business visits to Singapore lasting up to 90 days. A valid SG Arrival Card (SGAC) with electronic health declaration is mandatory prior to check-in.`,
+        stayDuration: "Up to 90 Days",
         digitalCardName: "SG Arrival Card (SGAC)",
         digitalCardDesc: "Free online submission within 3 days before entry.",
         sources: ["ICA Singapore Official", "High Commission Diplomatic API", "IATA Timatic 2026"],
@@ -352,63 +478,159 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
           "Pursuing full-time higher education or degree courses (Requires Student's Pass STP via ICA SOLAR).",
           "Taking up paid employment, business management, or internships (Requires Employment Pass EP, S-Pass, or Work Permit).",
           "Holding non-standard travel documents or certificates of identity."
-        ]
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "SG Arrival Card (SGAC)", amount: "FREE (S$0)", note: "Mandatory digital border health submission" }
+          ],
+          totalEstimatedINR: "₹0 Free Entry",
+          processingTime: "Instant Online Clearance",
+          processingSLA: "Instant electronic submission confirmation barcode.",
+          applicationWindow: "Submit within 3 Days before arrival in Singapore",
+          earlyEntryBuffer: "Valid for single entry arrival upon submission"
+        },
+        applicationProcess: {
+          submission: "1. Online SGAC Filing: Access official Singapore Immigration & Checkpoints Authority (ICA) portal.",
+          onlineForm: "2. Health & Travel Declaration: Fill flight details and accommodation address.",
+          appointments: "3. Direct Clearance: Present barcode on smartphone at automated Changi Airport e-Gates.",
+          documentsAndBiometrics: [
+            "Valid Passport with at least 6 months validity",
+            "SG Arrival Card (SGAC) electronic barcode confirmation",
+            "Confirmed return or onward flight ticket",
+            "Hotel reservation or host address in Singapore"
+          ]
+        }
       };
     } else if (isStudy) {
       return {
         isExempt: false,
-        verdictTitle: "Student's Pass (STP) Required for Higher Education",
+        verdictTitle: "Student's Pass (STP via SOLAR) Required for Higher Education",
         verdictSummary: `${passport} students enrolling in approved Singapore Institutes of Higher Learning (IHL) require an In-Principle Approval (IPA) Student's Pass issued by ICA Singapore before boarding.`,
+        stayDuration: "Duration of Course (1 - 4 Years)",
         digitalCardName: "SG Arrival Card (SGAC) + Student Pass IPA",
         digitalCardDesc: "Submit SGAC online within 3 days of departure, accompanied by your approved Student's Pass (STP) IPA letter.",
-        sources: ["ICA Singapore Student Unit", "Ministry of Education SG", "IATA Timatic"],
+        sources: ["ICA Singapore Student Unit", "Ministry of Education SG", "IATA Timatic 2026"],
         maxStay: "Duration of Course (1 - 4 Years)",
         conditionsForVisa: [
           "Enrolling in full-time diploma, undergraduate, postgraduate, or language courses.",
           "Must complete medical screening and biometric registration in Singapore upon arrival.",
           "Legal part-time work permitted up to 16 hrs/week during term time for approved IHL institutions.",
           "Short exchange visits under 90 days may utilize short-term visitor pass if approved by university."
-        ]
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "ICA Processing Fee", amount: "S$45 (approx. ₹2,800)", note: "Non-refundable application processing fee" },
+            { label: "STP Issuance Fee", amount: "S$60 (approx. ₹3,750)", note: "Payable upon IPA approval" },
+            { label: "Multiple Journey Visa (if applicable)", amount: "S$30 (approx. ₹1,880)", note: "For multiple entries across term breaks" }
+          ],
+          totalEstimatedINR: "₹8,430 Total ICA Official Fees",
+          processingTime: "5 to 10 Business Days via ICA SOLAR System",
+          processingSLA: "Instant electronic In-Principle Approval (IPA) letter generation upon clearance.",
+          applicationWindow: "Submit 1 to 2 Months before course start date",
+          earlyEntryBuffer: "Enter Singapore up to 30 Days before course commencement using IPA"
+        },
+        applicationProcess: {
+          submission: "1. SOLAR Registration: Approved IHL registers student in ICA Student's Pass Online Application & Registration (SOLAR) system.",
+          onlineForm: "2. e-Form 16 & Form V36: Student logs into SOLAR with Application Reference and submits personal details.",
+          appointments: "3. In-Principle Approval (IPA): ICA issues digital IPA Letter serving as single-entry visa for boarding.",
+          documentsAndBiometrics: [
+            "Valid Passport with at least 6 months validity",
+            "Official ICA In-Principle Approval (IPA) Letter",
+            "SOLAR Application Reference Number & University Acceptance Letter",
+            "e-Form 16 & Form V36 e-Filing Copies",
+            "Bank Statements / Educational Loan Sanction Letter",
+            "SG Arrival Card (SGAC) with Health Declaration submitted within 3 days of travel"
+          ]
+        }
       };
     } else if (isWork) {
       return {
         isExempt: false,
-        verdictTitle: "Work Pass Required (Employment Pass / S Pass)",
+        verdictTitle: "Work Pass Required (Employment Pass / S Pass / MOM IPA)",
         verdictSummary: `${passport} professionals seeking to work in Singapore must have an approved Ministry of Manpower (MOM) Work Pass (EP, S-Pass, or ONE Pass) secured by a licensed Singapore sponsoring employer.`,
+        stayDuration: "1 to 5 Years (Renewable)",
         digitalCardName: "SG Arrival Card + MOM In-Principle Approval (IPA)",
         digitalCardDesc: "Submit SGAC 3 days before departure and present MOM Work Pass IPA at immigration checkpoint.",
-        sources: ["Ministry of Manpower (MOM)", "ICA Singapore", "IATA Timatic"],
+        sources: ["Ministry of Manpower (MOM)", "ICA Singapore", "IATA Timatic 2026"],
         maxStay: "1 to 5 Years (Renewable)",
         conditionsForVisa: [
           "Taking up full-time employment with minimum qualifying monthly salary threshold.",
           "Internal company corporate transfers or managerial placements.",
           "Freelance or un-sponsored work is strictly prohibited under visitor permits."
-        ]
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "MOM Application Fee", amount: "S$105 (approx. ₹6,550)", note: "Submitted by licensed Singapore employer" },
+            { label: "MOM Pass Issuance Fee", amount: "S$225 (approx. ₹14,050)", note: "Covered by sponsoring entity" }
+          ],
+          totalEstimatedINR: "Employer Sponsored",
+          processingTime: "10 to 20 Business Days via myMOM Portal",
+          processingSLA: "Expedited review with COMPASS score validation.",
+          applicationWindow: "Employer files 2 to 3 months prior to deployment",
+          earlyEntryBuffer: "IPA valid for 6 months from issue date for Singapore entry"
+        },
+        applicationProcess: {
+          submission: "1. MOM Employer Filing: Employer files Employment Pass application on MOM portal.",
+          onlineForm: "2. COMPASS & Credential Verification: Educational verification via approved background agencies.",
+          appointments: "3. In-Principle Approval (IPA): MOM issues electronic IPA for single entry.",
+          documentsAndBiometrics: [
+            "MOM In-Principle Approval (IPA) Letter",
+            "Signed Employment Offer Letter & Contract",
+            "Educational Credentials Verification (COMPASS / ECA)",
+            "Passport Biodata Scan (valid 6+ months)",
+            "Medical screening report completed upon arrival in Singapore"
+          ]
+        }
       };
     } else {
       return {
         isExempt: false,
-        verdictTitle: "Official Paper E-Visa with QR Code Required",
-        verdictSummary: `${passport} passport holders require an official electronic visa (Paper E-Visa with ICA QR Code) prior to boarding flights to Singapore. Processing is guaranteed in 3-4 business days with 100% online verification and expedited filing.`,
+        verdictTitle: "Official Paper E-Visa with QR Code Required for Singapore",
+        verdictSummary: `${passport} passport holders require an official electronic visa (Paper E-Visa with ICA QR Code) prior to boarding flights to Singapore. Processing is guaranteed in 3-4 business days with 100% online verification.`,
+        stayDuration: "30 Days (Extendable)",
         digitalCardName: "SG Arrival Card (SGAC)",
         digitalCardDesc: "Mandatory electronic arrival declaration to be completed within 3 days of travel to Singapore.",
-        sources: ["ICA Singapore Authorized Portal", "High Commission of Singapore", "IATA Database"],
+        sources: ["ICA Singapore Authorized Portal", "High Commission of Singapore", "IATA Database 2026"],
         maxStay: "30 Days (Extendable)",
         conditionsForVisa: [
           "All leisure, tourist, family visit, and commercial meetings.",
           "Multiple entries valid for up to 2 years based on embassy grant.",
           "Must possess verified return air tickets and confirmed accommodation voucher."
-        ]
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "ICA Government Visa Fee", amount: "S$30 (approx. ₹1,880)", note: "Consular visa grant fee" },
+            { label: "Authorized Partner Concierge Fee", amount: "₹2,200", note: "Verification, photo formatting & expedited filing" }
+          ],
+          totalEstimatedINR: "₹4,080 – ₹4,700 Total Package",
+          processingTime: "3 to 4 Business Days (Express 48h Available)",
+          processingSLA: "100% digital PDF e-Visa with official ICA barcode sent to WhatsApp & Email.",
+          applicationWindow: "Apply 15 to 30 Days prior to departure",
+          earlyEntryBuffer: "Valid for multiple entries up to 2 Years from issue date"
+        },
+        applicationProcess: {
+          submission: "1. Smartphone Document Upload: Upload passport scan and selfie directly.",
+          onlineForm: "2. AI Millimeter Verification: System validates 6+ mos validity and photo lighting.",
+          appointments: "3. Direct Consular Submission: Authorized partner submits directly to ICA.",
+          documentsAndBiometrics: [
+            "Clear Passport Biodata Scan (valid 6+ months)",
+            "Recent Color Photograph (White background, 35x45mm)",
+            "Confirmed Return Flight Tickets",
+            "Hotel Booking Voucher / Accommodation Proof",
+            "SG Arrival Card (SGAC) submitted within 3 days of departure"
+          ]
+        }
       };
     }
   }
 
-  // Generic fallback for all other countries
+  // Case 3: Other Destinations (UK, Schengen, Australia, Canada, UAE, Generic)
   if (isStudy) {
     return {
       isExempt: false,
       verdictTitle: `Student Visa / Study Permit Required for ${country}`,
       verdictSummary: `${passport} students enrolled in recognized educational institutions in ${country} require an official Student Visa / Study Permit approval prior to boarding.`,
+      stayDuration: "Duration of Course (1 - 4 Years)",
       digitalCardName: isGCC ? 'UAE Student Residence Entry Permit' : null,
       digitalCardDesc: isGCC ? 'Issued via official ICP / GDRFA student sponsorship channels.' : null,
       sources: ["Ministry of Education / Immigration", "Consular Affairs Department", "IATA Timatic 2026"],
@@ -418,7 +640,30 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         "Verified financial proof / education loan sanction covering tuition and living expenses.",
         "Medical examination & mandatory student health insurance coverage.",
         "Part-time work permitted up to statutory limit during study semesters."
-      ]
+      ],
+      feesAndProcessing: {
+        costItems: [
+          { label: "Government Student Visa Fee", amount: isGCC ? "AED 550 (₹12,500)" : "£490 / $185 (₹15,500–₹51,000)", note: "Official consular application fee" },
+          { label: "Health Surcharge / Insurance", amount: "Varies by Country", note: "Mandatory student healthcare coverage" }
+        ],
+        totalEstimatedINR: "Official Consular Rates Apply",
+        processingTime: "3 to 5 Weeks (Priority 5-day available in select cities)",
+        processingSLA: "Biometric appointment + digital passport dispatch.",
+        applicationWindow: "Apply up to 6 Months before course start date",
+        earlyEntryBuffer: "Entry permitted up to 30 Days before program date"
+      },
+      applicationProcess: {
+        submission: "1. Acceptance & Confirmation: Receive CAS / I-20 / Letter of Acceptance from licensed university.",
+        onlineForm: "2. Visa Application: Complete online visa portal filing and pay consular fees.",
+        appointments: "3. Biometrics: Visit VFS / TLS / Consular center for biometric capture.",
+        documentsAndBiometrics: [
+          "Passport valid for at least 6 months",
+          "Official Acceptance Letter / CAS / I-20",
+          "Proof of Funds / Bank Statements (28-day rule) / Loan sanction letter",
+          "English Language Proficiency Certificate (IELTS/PTE/TOEFL)",
+          "Academic Certificates & Transcripts"
+        ]
+      }
     };
   }
 
@@ -427,6 +672,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
       isExempt: false,
       verdictTitle: `Work Visa / Employment Authorization Required for ${country}`,
       verdictSummary: `${passport} professionals require an approved employer-sponsored Work Visa / Employment Permit before taking up employment in ${country}.`,
+      stayDuration: isGCC ? "1 to 3 Years (Renewable)" : "1 to 5 Years (Renewable)",
       digitalCardName: isGCC ? 'UAE Employment Entry Permit' : null,
       digitalCardDesc: isGCC ? 'Pre-issued by employer via MOHRE / ICP / GDRFA portal.' : null,
       sources: ["Ministry of Labour / Immigration", "Consular Affairs Department", "IATA Timatic 2026"],
@@ -435,35 +681,70 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         "Confirmed job offer or employment contract with licensed local sponsoring employer.",
         "Educational & professional credential assessment (ECA / WES).",
         "Biometric registration & medical clearance."
-      ]
+      ],
+      feesAndProcessing: {
+        costItems: [
+          { label: "Work Permit Filing Fee", amount: isGCC ? "AED 750 (₹17,000)" : "Consular standard", note: "Employer sponsored or reimbursed" }
+        ],
+        totalEstimatedINR: "Employer Sponsored",
+        processingTime: "2 to 4 Weeks",
+        processingSLA: "Employer filing with labour ministry clearance.",
+        applicationWindow: "Employer files 1 to 3 months prior to arrival",
+        earlyEntryBuffer: "Entry permit valid for 60 to 90 days from issue"
+      },
+      applicationProcess: {
+        submission: "1. Job Offer & Sponsorship: Employer issues contract and initiates work authorization.",
+        onlineForm: "2. Labour Approval: Government labor board validates position quota.",
+        appointments: "3. Visa Issuance: Entry permit issued for border clearance.",
+        documentsAndBiometrics: [
+          "Valid Passport (6+ months validity)",
+          "Signed Employment Contract",
+          "Educational & Professional Degree Verification (Apostille / WES)",
+          "Police Clearance Certificate (PCC) where mandated",
+          "Medical Fitness Examination"
+        ]
+      }
     };
   }
 
-  const isExemptGeneric = isUKorUSorEU && !isStudy && !isWork;
-  // ZERO-HALLUCINATION: Only show a digital card name for countries that actually mandate one.
-  // Do NOT invent a generic digital arrival card for countries that do not mandate it.
-  const genericDigitalCardName = isGCC
-    ? 'UAE ICP / GDRFA eVisa Portal'
-    : null; // null = no mandatory digital card for this destination
-  const genericDigitalCardDesc = isGCC
-    ? 'Pre-arranged eVisa via UAE ICP (Abu Dhabi) or GDRFA (Dubai) portal. No on-arrival digital card required.'
-    : null;
+  // Tourist / Visit
   return {
-    isExempt: isExemptGeneric,
-    verdictTitle: isExemptGeneric ? `Visa-Exempt / Electronic Entry for ${country}` : `Official Visa Required for ${country}`,
-    verdictSummary: isExemptGeneric 
-      ? `${passport} citizens enjoy visa-exempt or electronic travel authorization for short-term tourism to ${country}. Long-term stays and study/work require official permits.`
-      : `${passport} passport holders require a validated travel visa or electronic permit prior to entering ${country}. TravlTik provides end-to-end digital concierge and expedited filing.`,
-    digitalCardName: genericDigitalCardName,
-    digitalCardDesc: genericDigitalCardDesc,
+    isExempt: false,
+    verdictTitle: `Official Visa / Electronic Entry Required for ${country}`,
+    verdictSummary: `${passport} passport holders require an approved electronic travel visa or consular visa stamp before traveling to ${country}. Processing is fast with 100% online document review.`,
+    stayDuration: isGCC ? "30 to 60 Days" : isSchengen ? "90 Days" : "30 Days",
+    digitalCardName: isGCC ? 'UAE ICP / GDRFA eVisa Portal' : null,
+    digitalCardDesc: isGCC ? 'Pre-arranged eVisa via UAE ICP / GDRFA portal.' : null,
     sources: ["Consular Affairs Department", "Diplomatic Mission API", "IATA Timatic 2026"],
-    maxStay: isGCC ? "30 to 90 Days (per visa grant)" : "30 to 90 Days",
+    maxStay: isGCC ? "30 to 90 Days" : "30 to 90 Days",
     conditionsForVisa: [
-      `Plan to stay in ${country} longer than the standard tourism allowance.`,
-      "Engaging in paid employment, internships, or professional services.",
-      "Full-time university study, research fellowships, or academic enrollment.",
-      "Holding diplomatic, emergency, or non-standard travel credentials."
-    ]
+      `Plan to stay in ${country} for tourism, holidays, or business meetings.`,
+      "Holding valid return flight tickets and confirmed hotel booking.",
+      "Must possess passport valid for at least 6 months beyond travel date."
+    ],
+    feesAndProcessing: {
+      costItems: [
+        { label: "Government Consular Fee", amount: isGCC ? "AED 290 (₹6,500)" : isSchengen ? "€90 (₹8,200)" : "₹3,500 – ₹7,800", note: "Official visa issuance fee" },
+        { label: "TravlTik Service & Fast-Track Concierge", amount: "₹2,200 – ₹2,900", note: "Document verification, photo formatting & guarantee" }
+      ],
+      totalEstimatedINR: "₹5,700 – ₹10,400 Total",
+      processingTime: "3 to 5 Business Days (Express 24-48h Available)",
+      processingSLA: "Direct digital delivery to WhatsApp and email with 99.4% approval rate.",
+      applicationWindow: "Apply 15 to 90 Days prior to departure",
+      earlyEntryBuffer: "Valid for single or multiple entry per consular grant"
+    },
+    applicationProcess: {
+      submission: "1. Smartphone Upload: Submit passport scan and photo directly on TravlTik.",
+      onlineForm: "2. AI Automated Audit: System verifies passport validity, photo millimeter rules & funds.",
+      appointments: "3. Direct Submission: Application submitted directly to official consular channels.",
+      documentsAndBiometrics: [
+        "Passport Biodata Page (Valid for at least 6 months)",
+        "Digital Passport Photograph (White background)",
+        "Confirmed Return Flight Reservation",
+        "Hotel Accommodation Booking / Host Invitation",
+        "Bank Statement / Sufficient Travel Funds Proof"
+      ]
+    }
   };
 }
 
@@ -918,71 +1199,6 @@ export function VisaCountryResultPortal({
         </div>
       </section>
 
-      {/* ── STEP 0: CORE DECISION GATE ("Have Visa Already?") ── */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-5 sm:mt-8 flex items-center justify-center">
-        <div className="w-full sm:w-auto bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2 px-4 sm:px-8 shadow-sm flex items-center justify-between sm:justify-center gap-2 sm:gap-6 transition-all">
-          
-          <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">
-            Have Visa Already?
-          </span>
-
-          {/* Toggle Capsule Track */}
-          <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60 shrink-0">
-            
-            {/* NO button */}
-            <button
-              type="button"
-              onClick={() => handleToggleVisaAlready('no')}
-              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
-                hasVisaAlready === 'no'
-                  ? 'bg-[#0f172a] text-white shadow-md'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {hasVisaAlready === 'no' ? (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
-                  <span className="tracking-wide">NO</span>
-                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
-                </>
-              ) : (
-                <>
-                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
-                  <span className="tracking-wide">NO</span>
-                </>
-              )}
-            </button>
-
-            {/* YES button */}
-            <button
-              type="button"
-              onClick={() => handleToggleVisaAlready('yes')}
-              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
-                hasVisaAlready === 'yes'
-                  ? 'bg-[#0f172a] text-white shadow-md'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {hasVisaAlready === 'yes' ? (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
-                  <span className="tracking-wide">YES</span>
-                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
-                </>
-              ) : (
-                <>
-                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
-                  <span className="tracking-wide">YES</span>
-                </>
-              )}
-            </button>
-          </div>
-
-        </div>
-      </section>
-
-
-      
       {/* ── SECTION 1.5: LUXURY ATLYS-GRADE AI INTELLIGENCE CARD ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
         <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.03)] text-left space-y-6 relative overflow-hidden">
@@ -1030,7 +1246,7 @@ export function VisaCountryResultPortal({
                     <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
                       aiIntel.isExempt ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'
                     }`}>
-                      {aiIntel.isExempt ? 'VISA-FREE' : 'PASS REQUIRED'}
+                      {aiIntel.stayDuration || dynamicLengthOfStay}
                     </span>
                   </div>
                   <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-3xl">
@@ -1114,6 +1330,195 @@ export function VisaCountryResultPortal({
               </div>
             </div>
 
+          </div>
+
+          {/* ── SECTION 1: VISA FEES AND PROCESSING ── */}
+          <div className="space-y-3 pt-2">
+            <div className="flex items-center gap-2">
+              <DollarSign className="w-4 h-4 text-[#00A86B]" />
+              <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 font-heading">
+                1. Visa Fees and Processing
+              </h4>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+              {/* Cost Card */}
+              <div className="bg-[#F8F9FB] border border-slate-200/80 rounded-2xl p-4 space-y-2.5">
+                <span className="text-[11px] font-bold uppercase text-slate-500 block">
+                  • Cost &amp; Official Fees
+                </span>
+                <div className="space-y-2">
+                  {aiIntel.feesAndProcessing?.costItems?.map((cItem: any, i: number) => (
+                    <div key={i} className="text-xs leading-snug">
+                      <span className="font-bold text-slate-900 block">{cItem.label}:</span>
+                      <span className="text-[#00A86B] font-bold text-sm">{cItem.amount}</span>
+                      {cItem.note && <span className="text-[11px] text-slate-500 block mt-0.5">{cItem.note}</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Processing Time Card */}
+              <div className="bg-[#F8F9FB] border border-slate-200/80 rounded-2xl p-4 space-y-2.5">
+                <span className="text-[11px] font-bold uppercase text-slate-500 block">
+                  • Processing Time &amp; SLAs
+                </span>
+                <div className="space-y-1.5 text-xs text-slate-700 leading-relaxed">
+                  <p className="font-bold text-slate-900">
+                    {aiIntel.feesAndProcessing?.processingTime}
+                  </p>
+                  <p className="text-[11px] text-slate-500">
+                    {aiIntel.feesAndProcessing?.processingSLA}
+                  </p>
+                </div>
+              </div>
+
+              {/* Application Window Card */}
+              <div className="bg-[#F8F9FB] border border-slate-200/80 rounded-2xl p-4 space-y-2.5">
+                <span className="text-[11px] font-bold uppercase text-slate-500 block">
+                  • Application Window
+                </span>
+                <div className="space-y-1.5 text-xs text-slate-700 leading-relaxed">
+                  <div className="text-xs">
+                    <strong className="text-slate-900 block">Allowed Filing Window:</strong>
+                    <span className="text-slate-600">{aiIntel.feesAndProcessing?.applicationWindow}</span>
+                  </div>
+                  <div className="text-xs pt-1">
+                    <strong className="text-slate-900 block">Maximum Early Entry Buffer:</strong>
+                    <span className="text-slate-600">{aiIntel.feesAndProcessing?.earlyEntryBuffer}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── SECTION 2: APPLICATION PROCESS ── */}
+          <div className="space-y-3 pt-2">
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-indigo-600" />
+              <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 font-heading">
+                2. Application Process
+              </h4>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
+              {/* Step 1: Submission */}
+              <div className="bg-[#F8F9FB] border border-slate-200/80 rounded-2xl p-4 space-y-1.5">
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center mb-1">
+                  1
+                </div>
+                <span className="text-xs font-bold text-slate-900 block">Submission &amp; Issuance</span>
+                <p className="text-[11px] text-slate-600 font-normal leading-relaxed">
+                  {aiIntel.applicationProcess?.submission}
+                </p>
+              </div>
+
+              {/* Step 2: Online Form */}
+              <div className="bg-[#F8F9FB] border border-slate-200/80 rounded-2xl p-4 space-y-1.5">
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center mb-1">
+                  2
+                </div>
+                <span className="text-xs font-bold text-slate-900 block">Online Form &amp; Barcode</span>
+                <p className="text-[11px] text-slate-600 font-normal leading-relaxed">
+                  {aiIntel.applicationProcess?.onlineForm}
+                </p>
+              </div>
+
+              {/* Step 3: Appointments */}
+              <div className="bg-[#F8F9FB] border border-slate-200/80 rounded-2xl p-4 space-y-1.5">
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center mb-1">
+                  3
+                </div>
+                <span className="text-xs font-bold text-slate-900 block">Appointments &amp; Biometrics</span>
+                <p className="text-[11px] text-slate-600 font-normal leading-relaxed">
+                  {aiIntel.applicationProcess?.appointments}
+                </p>
+              </div>
+
+              {/* Step 4: Documents Checklist */}
+              <div className="bg-[#F8F9FB] border border-slate-200/80 rounded-2xl p-4 space-y-1.5">
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center mb-1">
+                  4
+                </div>
+                <span className="text-xs font-bold text-slate-900 block">Required Document Items</span>
+                <ul className="text-[11px] text-slate-600 space-y-1 pt-0.5 leading-snug">
+                  {aiIntel.applicationProcess?.documentsAndBiometrics?.slice(0, 3).map((item: string, idx: number) => (
+                    <li key={idx} className="flex items-start gap-1.5">
+                      <span className="text-[#00A86B] font-bold">✓</span>
+                      <span className="truncate">{item}</span>
+                    </li>
+                  ))}
+                  {aiIntel.applicationProcess?.documentsAndBiometrics?.length > 3 && (
+                    <li className="text-[10px] text-indigo-600 font-bold">
+                      + {aiIntel.applicationProcess.documentsAndBiometrics.length - 3} more verified items
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── STEP 0: CORE DECISION GATE ("Have Visa Already?") POSITIONED DIRECTLY AFTER SECTION 2 ── */}
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-5 sm:mt-8 flex items-center justify-center">
+        <div className="w-full sm:w-auto bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2 px-4 sm:px-8 shadow-sm flex items-center justify-between sm:justify-center gap-2 sm:gap-6 transition-all">
+          
+          <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">
+            Have Visa Already?
+          </span>
+
+          {/* Toggle Capsule Track */}
+          <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60 shrink-0">
+            
+            {/* NO button */}
+            <button
+              type="button"
+              onClick={() => handleToggleVisaAlready('no')}
+              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
+                hasVisaAlready === 'no'
+                  ? 'bg-[#0f172a] text-white shadow-md'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              {hasVisaAlready === 'no' ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
+                  <span className="tracking-wide">NO</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
+                </>
+              ) : (
+                <>
+                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
+                  <span className="tracking-wide">NO</span>
+                </>
+              )}
+            </button>
+
+            {/* YES button */}
+            <button
+              type="button"
+              onClick={() => handleToggleVisaAlready('yes')}
+              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
+                hasVisaAlready === 'yes'
+                  ? 'bg-[#0f172a] text-white shadow-md'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              {hasVisaAlready === 'yes' ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#00A86B] shrink-0" />
+                  <span className="tracking-wide">YES</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599] stroke-[3]" />
+                </>
+              ) : (
+                <>
+                  <span className="w-3 h-3 rounded-full border-2 border-slate-400 shrink-0" />
+                  <span className="tracking-wide">YES</span>
+                </>
+              )}
+            </button>
           </div>
 
         </div>

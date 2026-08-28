@@ -685,11 +685,11 @@ export function VisaCountryResultPortal({
   ];
 
   return (
-    <div className="w-full bg-white text-slate-800 font-sans antialiased [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
+    <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
       
       {/* ── SECTION 1: CINEMATIC ROUNDED HERO BANNER ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
-        <div className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden min-h-[340px] sm:min-h-[420px] lg:min-h-[460px] flex flex-col justify-end p-6 sm:p-10 lg:p-14 text-white shadow-2xl border border-slate-100">
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-6">
+        <div className="relative rounded-[24px] sm:rounded-[36px] overflow-hidden min-h-[360px] sm:min-h-[420px] lg:min-h-[460px] flex flex-col justify-end p-4 sm:p-8 lg:p-14 text-white shadow-xl border border-slate-100">
           
           {/* Backdrop Image with Multi-Stop Dark Gradient */}
           <img
@@ -697,43 +697,43 @@ export function VisaCountryResultPortal({
             alt={countryName}
             className="absolute inset-0 w-full h-full object-cover object-center transform scale-100 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/25" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/30" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
 
           {/* Hero Content */}
-          <div className="relative z-10 max-w-3xl space-y-4 sm:space-y-5 text-left">
+          <div className="relative z-10 max-w-3xl space-y-3 sm:space-y-5 text-left">
             
             {/* Real-time Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-xs font-semibold shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="tracking-wide">Official Consulate Rules • 2026 Entry Policy</span>
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-[11px] sm:text-xs font-semibold shadow-xs max-w-full">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+              <span className="tracking-wide truncate">Official Consulate Rules • 2026 Entry Policy</span>
             </div>
 
             {/* Country Title */}
             <div className="space-y-1">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white tracking-tight leading-[1.1] drop-shadow-sm">
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white leading-tight drop-shadow-sm">
                 {countryName} Visa &amp; Entry Requirements {flagEmoji}
               </h1>
-              <p className="text-sm sm:text-lg text-slate-200 font-normal sm:font-medium max-w-2xl leading-relaxed pt-1">
+              <p className="text-xs sm:text-base text-slate-200 font-normal sm:font-medium max-w-2xl leading-relaxed pt-0.5 sm:pt-1">
                 Check if you need a visa, maximum length of stay, passport validity rules, and verified travel entry requirements for {countryName}.
               </p>
             </div>
 
             {/* Micro Trust Pills */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2">
-              <div className="px-3 py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs font-medium text-slate-200 flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Official Consular Guidelines</span>
+            <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-stretch sm:items-center gap-1.5 sm:gap-2.5 pt-1">
+              <div className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-[11px] sm:text-xs font-medium text-slate-200 flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">Official Consular Guidelines</span>
               </div>
 
-              <div className="px-3 py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs font-medium text-slate-200 flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-blue-400" />
-                <span>Real-Time Policy Verification</span>
+              <div className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-[11px] sm:text-xs font-medium text-slate-200 flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                <span className="truncate">Real-Time Policy Verification</span>
               </div>
 
-              <div className="px-3 py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs font-medium text-slate-200 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-amber-400 fill-amber-400" />
-                <span>Instant AI Entry Resolution</span>
+              <div className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-[11px] sm:text-xs font-medium text-slate-200 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
+                <span className="truncate">Instant AI Entry Resolution</span>
               </div>
             </div>
 
@@ -743,15 +743,15 @@ export function VisaCountryResultPortal({
       </section>
 
       {/* ── STEP 0: CORE DECISION GATE ("Have Visa Already?") ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8 flex items-center justify-center">
-        <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2.5 px-6 sm:px-8 shadow-sm inline-flex items-center gap-4 sm:gap-6 transition-all">
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-5 sm:mt-8 flex items-center justify-center">
+        <div className="w-full sm:w-auto bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2 px-4 sm:px-8 shadow-sm flex items-center justify-between sm:justify-center gap-2 sm:gap-6 transition-all">
           
           <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">
             Have Visa Already?
           </span>
 
           {/* Toggle Capsule Track */}
-          <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60">
+          <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60 shrink-0">
             
             {/* NO button */}
             <button
@@ -800,7 +800,6 @@ export function VisaCountryResultPortal({
                 </>
               )}
             </button>
-
           </div>
 
         </div>
@@ -2247,24 +2246,25 @@ export function VisaCountryResultPortal({
 
           </section>
 
-          {/* ── MOBILE FLOATING STICKY ACTION BAR ── */}
-          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex items-center justify-between gap-4 shadow-2xl">
-            <div>
-              <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
+          {/* ── MOBILE FLOATING STICKY ACTION BAR (ANDROID & IOS OPTIMIZED) ── */}
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex items-center justify-between gap-3 shadow-[0_-8px_25px_rgba(0,0,0,0.08)] pb-[max(12px,env(safe-area-inset-bottom))]">
+            <div className="min-w-0 flex-1">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block truncate">
                 {countryName} Visa Assistance
               </span>
-              <span className="text-sm font-bold text-slate-900">
-                Talk to Expert
+              <span className="text-xs sm:text-sm font-extrabold text-slate-900 truncate block">
+                Talk to Verified Expert
               </span>
             </div>
 
             <a
-              href="https://wa.me/917661989366?text=Hi%20TravlTik%2C%20I%20need%20expert%20visa%20assistance"
+              href={`https://wa.me/917661989366?text=${encodeURIComponent(`Hi TravlTik, I need expert visa assistance for ${countryName}`)}`}
               target="_blank"
               rel="noreferrer"
-              className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs tracking-wide shadow-md cursor-pointer active:scale-95"
+              className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/25 active:scale-95 shrink-0 select-none cursor-pointer"
             >
-              WhatsApp Us
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>WhatsApp Us</span>
             </a>
           </div>
         </>

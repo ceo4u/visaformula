@@ -1777,9 +1777,9 @@ export function VisaCountryResultPortal({
   return (
     <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
       
-      {/* ── SECTION 1: CINEMATIC ROUNDED HERO BANNER ── */}
+      {/* ── SECTION 1: CINEMATIC CENTERED HERO BANNER ── */}
       <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-6">
-        <div className="relative rounded-[24px] sm:rounded-[36px] overflow-hidden min-h-[360px] sm:min-h-[420px] lg:min-h-[460px] flex flex-col justify-end p-4 sm:p-8 lg:p-14 text-white shadow-xl border border-slate-100">
+        <div className="relative rounded-[24px] sm:rounded-[36px] overflow-hidden min-h-[340px] sm:min-h-[400px] lg:min-h-[440px] flex flex-col items-center justify-center p-6 sm:p-10 lg:p-14 text-white shadow-xl border border-slate-100 text-center">
           
           {/* Backdrop Image with Multi-Stop Dark Gradient */}
           <img
@@ -1787,51 +1787,26 @@ export function VisaCountryResultPortal({
             alt={countryName}
             className="absolute inset-0 w-full h-full object-cover object-center transform scale-100 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/65 to-black/40" />
 
-          {/* Hero Content */}
-          <div className="relative z-10 max-w-3xl space-y-3 sm:space-y-5 text-left">
+          {/* Hero Content - Perfectly Centered & Razor Sharp */}
+          <div className="relative z-10 max-w-3xl space-y-4 mx-auto flex flex-col items-center">
             
-            {/* Real-time Badge & Prominent 'You Need' Pill */}
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-[11px] sm:text-xs font-semibold shadow-xs max-w-full">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                <span className="tracking-wide truncate">Official Consulate Rules • 2026 Entry Policy</span>
-              </div>
-
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-500 text-slate-950 font-bold text-xs shadow-md">
-                <span>⚡ You need: {aiIntel.entryStatus || dynamicVisaType}</span>
-              </div>
+            {/* Top Official Status Pill */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-xs font-bold shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse shrink-0" />
+              <span>Official 2026 / 2027 Consular Entry Policy</span>
             </div>
 
-            {/* Country Title */}
-            <div className="space-y-1">
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white leading-tight drop-shadow-sm">
-                {countryName} Visa &amp; Entry Requirements {flagEmoji}
-              </h1>
-              <p className="text-xs sm:text-base text-slate-200 font-normal sm:font-medium max-w-2xl leading-relaxed pt-0.5 sm:pt-1">
-                For {passportCountry} citizens traveling to {countryName}, you need an official <strong className="text-white font-bold underline decoration-emerald-400 underline-offset-2">{aiIntel.entryStatus || dynamicVisaType}</strong> before departure.
-              </p>
-            </div>
+            {/* Main Centered Headline */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black tracking-tight text-white leading-tight drop-shadow-md">
+              You need <span className="text-[#00E599] underline decoration-[#00E599]/50 underline-offset-4">{aiIntel.entryStatus || dynamicVisaType}</span>
+            </h1>
 
-            {/* Micro Trust Pills */}
-            <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-stretch sm:items-center gap-1.5 sm:gap-2.5 pt-1">
-              <div className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-[11px] sm:text-xs font-medium text-slate-200 flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span className="truncate">Official Consular Guidelines</span>
-              </div>
-
-              <div className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-[11px] sm:text-xs font-medium text-slate-200 flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                <span className="truncate">Real-Time Policy Verification</span>
-              </div>
-
-              <div className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-[11px] sm:text-xs font-medium text-slate-200 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
-                <span className="truncate">Instant AI Entry Resolution</span>
-              </div>
-            </div>
+            {/* Clean, Simple Subtitle */}
+            <p className="text-sm sm:text-base md:text-lg text-slate-200 font-medium max-w-2xl mx-auto leading-relaxed">
+              Official entry &amp; visa requirements for <strong className="text-white font-bold">{passportCountry}</strong> citizens traveling to <strong className="text-white font-bold">{countryName}</strong> {flagEmoji}
+            </p>
 
           </div>
 

@@ -297,7 +297,7 @@ export function VisaDocumentationPortal() {
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
                           className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2]"
-                          placeholder="Rahul Kumar"
+                          placeholder="Your Full Name"
                           required
                         />
                       </div>
@@ -308,7 +308,7 @@ export function VisaDocumentationPortal() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2]"
-                          placeholder="rahul@email.com"
+                          placeholder="yourname@example.com"
                           required
                         />
                       </div>

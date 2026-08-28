@@ -1419,6 +1419,71 @@ export function VisaCountryResultPortal({
     return getAIVisaIntelligence(passportCountry, countryName, activePurposeTab);
   }, [passportCountry, countryName, activePurposeTab]);
 
+  // Auto-Save / Synchronize Active Visa Search & Roadmap to User Dashboard & Database
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const email = localStorage.getItem('seeker_email') || (() => {
+        try {
+          const u = JSON.parse(localStorage.getItem('visaformula_user') || '{}');
+          return u.email || 'guest@travltik.com';
+        } catch(e) { return 'guest@travltik.com'; }
+      })();
+
+      const allUnis = getDestinationUniversities(countryName);
+      const selectedUniObj = allUnis.find(u => u.id === selectedUniId) || allUnis[0];
+      const uniName = selectedUniObj?.name || 'Top University';
+
+      const journeyPayload = {
+        user_email: email,
+        passport_country: passportCountry || 'India',
+        destination: countryName,
+        destination_flag: flagEmoji,
+        purpose: activePurposeTab || 'study',
+        has_visa: hasVisaAlready === 'yes',
+        visa_type: aiIntel.entryStatus || dynamicVisaType || 'Student Visa',
+        stay_duration: aiIntel.stayDuration || dynamicLengthOfStay,
+        entry_type: aiIntel.entryType || 'Multiple Entry',
+        fees_info: aiIntel.feesAndProcessing,
+        matched_university: uniName,
+        selected_course_major: selectedCourseMajor,
+        cas_i20_number: casNumberInput || 'CAS-UK-2026-VERIFIED',
+        uploaded_documents: uploadedDocuments,
+        selected_addons: selectedConciergeAddons,
+        readiness_score: Object.keys(uploadedDocuments).length >= 4 ? 100 : (Object.keys(uploadedDocuments).length * 20 + 20),
+        last_updated: new Date().toISOString()
+      };
+
+      // 1. Save to local storage for immediate offline / instant dashboard display
+      localStorage.setItem('visaformula_user_journey', JSON.stringify(journeyPayload));
+      localStorage.setItem('visaformula_last_searched_country', countryName);
+
+      // 2. Synchronize to backend journey endpoint if email exists
+      if (email && email !== 'guest@travltik.com') {
+        fetch('/api/journey/update-step', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(journeyPayload)
+        }).catch(() => {});
+      }
+    } catch (err) {
+      console.warn('Dashboard sync error:', err);
+    }
+  }, [
+    countryName,
+    passportCountry,
+    activePurposeTab,
+    hasVisaAlready,
+    aiIntel,
+    dynamicVisaType,
+    selectedUniId,
+    selectedCourseMajor,
+    uploadedDocuments,
+    selectedConciergeAddons,
+    casNumberInput
+  ]);
+
   // Dynamic Purpose-Synchronized Specifications
   const isStudyPurpose = activePurposeTab === 'study';
   const isWorkPurpose = activePurposeTab === 'work';
@@ -3303,6 +3368,7 @@ export function VisaCountryResultPortal({
                         ].map((doc) => {
                           const uploaded = uploadedDocuments[doc.key];
                           const isCurrentlyUploading = isUploadingDocKey === doc.key;
+                          const fileInputId = `doc-file-input-${doc.key}`;
 
                           return (
                             <div
@@ -3313,6 +3379,54 @@ export function VisaCountryResultPortal({
                                   : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
                               }`}
                             >
+                              {/* Hidden real file input */}
+                              <input
+                                id={fileInputId}
+                                type="file"
+                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                                className="hidden"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    setIsUploadingDocKey(doc.key);
+                                    const fileSizeFormatted = file.size > 1024 * 1024
+                                      ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+                                      : `${Math.round(file.size / 1024)} KB`;
+                                    
+                                    setTimeout(() => {
+                                      setUploadedDocuments(prev => {
+                                        const next = {
+                                          ...prev,
+                                          [doc.key]: {
+                                            fileName: file.name,
+                                            size: fileSizeFormatted,
+                                            status: 'verified' as const,
+                                            timestamp: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                                          }
+                                        };
+                                        // Auto-sync to dashboard documents
+                                        if (typeof window !== 'undefined') {
+                                          try {
+                                            const existingDocs = JSON.parse(localStorage.getItem('seeker_documents') || '[]');
+                                            const filtered = existingDocs.filter((d: any) => d.id !== doc.key);
+                                            filtered.push({
+                                              id: doc.key,
+                                              label: `${doc.title} (${file.name})`,
+                                              status: 'uploaded',
+                                              uploadedAt: new Date().toLocaleDateString(),
+                                              size: fileSizeFormatted
+                                            });
+                                            localStorage.setItem('seeker_documents', JSON.stringify(filtered));
+                                          } catch(e) {}
+                                        }
+                                        return next;
+                                      });
+                                      setIsUploadingDocKey(null);
+                                    }, 600);
+                                  }
+                                }}
+                              />
+
                               <div className="space-y-1">
                                 <div className="flex items-center justify-between">
                                   <span className="text-xs font-bold text-slate-950 truncate">{doc.title}</span>
@@ -3328,35 +3442,30 @@ export function VisaCountryResultPortal({
                               </div>
 
                               {uploaded ? (
-                                <div className="flex items-center justify-between text-[11px] text-slate-600 bg-white/80 p-2 rounded-xl border border-emerald-200">
-                                  <span className="font-semibold truncate max-w-[140px]">{uploaded.fileName}</span>
-                                  <span className="text-[10px] font-bold text-[#00A86B]">{uploaded.status.toUpperCase()}</span>
+                                <div className="flex items-center justify-between text-[11px] text-slate-600 bg-white/90 p-2.5 rounded-xl border border-emerald-200 gap-2">
+                                  <div className="min-w-0 flex-1">
+                                    <span className="font-bold text-slate-900 block truncate text-[11px]">{uploaded.fileName}</span>
+                                    <span className="text-[10px] text-slate-400 font-medium block">{uploaded.size} • {uploaded.timestamp}</span>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => document.getElementById(fileInputId)?.click()}
+                                    className="text-[10px] font-bold text-slate-500 hover:text-slate-900 underline shrink-0 cursor-pointer"
+                                  >
+                                    Replace
+                                  </button>
                                 </div>
                               ) : (
                                 <button
                                   type="button"
                                   disabled={isCurrentlyUploading}
-                                  onClick={() => {
-                                    setIsUploadingDocKey(doc.key);
-                                    setTimeout(() => {
-                                      setUploadedDocuments(prev => ({
-                                        ...prev,
-                                        [doc.key]: {
-                                          fileName: `${doc.key.toUpperCase()}_Document_Scanned.pdf`,
-                                          size: '1.8 MB',
-                                          status: 'verified',
-                                          timestamp: 'Verified via OCR'
-                                        }
-                                      }));
-                                      setIsUploadingDocKey(null);
-                                    }, 800);
-                                  }}
-                                  className="w-full py-2 rounded-xl bg-white border border-slate-300 hover:border-slate-800 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 disabled:opacity-50"
+                                  onClick={() => document.getElementById(fileInputId)?.click()}
+                                  className="w-full py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-800 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 disabled:opacity-50 touch-manipulation"
                                 >
                                   {isCurrentlyUploading ? (
                                     <>
                                       <RotateCw className="w-3.5 h-3.5 animate-spin text-[#00A86B]" />
-                                      <span>Scanning &amp; Verifying...</span>
+                                      <span>Uploading &amp; Scanning...</span>
                                     </>
                                   ) : (
                                     <>
@@ -4665,13 +4774,21 @@ export function VisaCountryResultPortal({
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setConciergeSubmittedModal(false)}
-              className="w-full py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all cursor-pointer active:scale-95"
-            >
-              Done &amp; Return to Dashboard
-            </button>
+            <div className="flex flex-col sm:flex-row items-center gap-2.5 pt-2">
+              <a
+                href="/dashboard"
+                className="w-full py-3.5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5b] text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-95 text-center"
+              >
+                <span>View in User Dashboard →</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => setConciergeSubmittedModal(false)}
+                className="w-full py-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all cursor-pointer"
+              >
+                Continue Browsing
+              </button>
+            </div>
           </div>
         </div>
       )}

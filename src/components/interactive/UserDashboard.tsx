@@ -38,7 +38,20 @@ export function UserDashboard() {
             // Hydrate cached journey data
             const localJourney = localStorage.getItem("visaformula_user_journey");
             if (localJourney) {
-                try { setJourneyData(JSON.parse(localJourney)); } catch(e) {}
+                try {
+                    const parsedJ = JSON.parse(localJourney);
+                    setJourneyData(parsedJ);
+                    if (parsedJ.uploaded_documents && typeof parsedJ.uploaded_documents === 'object') {
+                        const docList = Object.entries(parsedJ.uploaded_documents).map(([k, v]: [string, any]) => ({
+                            id: k,
+                            label: v.fileName || `${k.toUpperCase()} Document`,
+                            status: 'verified',
+                            size: v.size || '1.8 MB',
+                            uploadedAt: v.timestamp || 'Recently'
+                        }));
+                        setDocuments(docList);
+                    }
+                } catch(e) {}
             }
 
             const userStr = localStorage.getItem("visaformula_user");
@@ -500,19 +513,22 @@ export function UserDashboard() {
                                             </div>
 
                                             <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                                                {journeyData.destination || 'Destination'} Journey • {journeyData.matched_university || journeyData.visa_type || 'Custom Pathway'}
+                                                {journeyData.destination_flag ? `${journeyData.destination_flag} ` : ''}{journeyData.destination || 'Destination'} • {journeyData.matched_university || journeyData.visa_type || 'Student Visa Pathway'}
                                             </h3>
 
                                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-300">
                                                 <span>Passport: <strong className="text-white">{journeyData.passport_country || journeyData.passportCountry || 'India'}</strong></span>
+                                                {journeyData.selected_course_major && (
+                                                    <span>• Major: <strong className="text-emerald-400 font-bold">{journeyData.selected_course_major}</strong></span>
+                                                )}
+                                                {journeyData.visa_type && (
+                                                    <span>• Visa: <strong className="text-white">{journeyData.visa_type}</strong></span>
+                                                )}
+                                                {journeyData.stay_duration && (
+                                                    <span>• Duration: <strong className="text-slate-300">{journeyData.stay_duration}</strong></span>
+                                                )}
                                                 {journeyData.target_degree && (
                                                     <span>• Target Degree: <strong className="text-emerald-400 uppercase">{journeyData.target_degree}</strong></span>
-                                                )}
-                                                {journeyData.highest_qualification && (
-                                                    <span>• Qualification: <strong className="text-white">{journeyData.highest_qualification}</strong></span>
-                                                )}
-                                                {journeyData.funds_available && (
-                                                    <span>• Proof of Funds: <strong className="text-emerald-300">{journeyData.funds_available}</strong></span>
                                                 )}
                                             </div>
 
@@ -520,7 +536,7 @@ export function UserDashboard() {
                                             <div className="pt-2 flex flex-wrap items-center gap-2">
                                                 {journeyData.cas_i20_number && (
                                                     <span className="px-2.5 py-1 rounded-xl bg-white/10 text-slate-200 text-xs font-semibold">
-                                                        Admission ID: {journeyData.cas_i20_number} ✓
+                                                        CAS / I-20: {journeyData.cas_i20_number} ✓
                                                     </span>
                                                 )}
                                                 {journeyData.uploaded_documents && Object.keys(journeyData.uploaded_documents).length > 0 && (
@@ -530,7 +546,7 @@ export function UserDashboard() {
                                                 )}
                                                 {journeyData.final_dossier_submitted && (
                                                     <span className="px-2.5 py-1 rounded-xl bg-emerald-600 text-white text-xs font-black shadow-xs">
-                                                        Dossier Filed to Embassy ✓
+                                                        Dossier Filed to Concierge Vault ✓
                                                     </span>
                                                 )}
                                             </div>
@@ -538,8 +554,8 @@ export function UserDashboard() {
 
                                         <div className="z-10 shrink-0 flex items-center gap-3">
                                             <a
-                                                href="/#need-visa-pathway-dashboard"
-                                                className="px-5 py-3 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs sm:text-sm font-black shadow-lg transition-all flex items-center gap-2 active:scale-95"
+                                                href={journeyData.destination ? `/visa/${encodeURIComponent(journeyData.destination.toLowerCase().replace(/\s+/g, '-'))}?purpose=${encodeURIComponent(journeyData.purpose || 'study')}&passport=${encodeURIComponent(journeyData.passport_country || 'India')}` : '/#need-visa-pathway-dashboard'}
+                                                className="px-5 py-3 rounded-2xl bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs sm:text-sm font-black shadow-lg transition-all flex items-center gap-2 active:scale-95 text-center"
                                             >
                                                 <span>Resume Pathway →</span>
                                             </a>

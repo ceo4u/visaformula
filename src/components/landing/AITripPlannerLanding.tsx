@@ -1246,11 +1246,11 @@ export function AITripPlannerLanding() {
   const [searchPrompt, setSearchPrompt] = useState('');
   const [selectedPill, setSelectedPill] = useState<string>('student');
 
-  // Journey Engine Form State
+  // Journey Engine Form State (Clean initial states without dummy pre-selected values)
   const [passportCountry, setPassportCountry] = useState('');
   const [journeyDestination, setJourneyDestination] = useState('');
-  const [travelPurpose, setTravelPurpose] = useState('student');
-  const [serviceLookingFor, setServiceLookingFor] = useState('Student Visa & Admissions');
+  const [travelPurpose, setTravelPurpose] = useState('');
+  const [serviceLookingFor, setServiceLookingFor] = useState('');
   const [isLookingForOpen, setIsLookingForOpen] = useState(false);
   const lookingForRef = useRef<HTMLDivElement>(null);
 
@@ -1947,6 +1947,26 @@ export function AITripPlannerLanding() {
     setIsGenerating(true);
     setHasGenerated(false);
     
+    // Require user to select Purpose, Destination and Passport before searching
+    if (!serviceLookingFor && !travelPurpose) {
+      setIsLookingForOpen(true);
+      setIsJourneyDestOpen(false);
+      setIsOriginCityOpen(false);
+      return;
+    }
+    if (!journeyDestination) {
+      setIsJourneyDestOpen(true);
+      setIsLookingForOpen(false);
+      setIsOriginCityOpen(false);
+      return;
+    }
+    if (!passportCountry) {
+      setIsOriginCityOpen(true);
+      setIsLookingForOpen(false);
+      setIsJourneyDestOpen(false);
+      return;
+    }
+
     // Accurately map purpose from inputs
     let purpose = travelPurpose || 'study';
     const looking = (serviceLookingFor || '').toLowerCase();
@@ -1960,8 +1980,8 @@ export function AITripPlannerLanding() {
     setTravelPurpose(purpose);
     setHasVisaAlready('no');
 
-    const dest = journeyDestination && journeyDestination !== 'Country' ? journeyDestination : 'United Kingdom';
-    const pass = passportCountry || 'India';
+    const dest = journeyDestination;
+    const pass = passportCountry;
 
     // Auto-save search parameters to user journey
     autoSaveJourney({
@@ -1969,12 +1989,12 @@ export function AITripPlannerLanding() {
       passport_country: pass,
       purpose: purpose,
       service_type: selectedServiceType || 'Visa',
-      origin_city: originCity || 'Mumbai',
+      origin_city: originCity || pass,
       looking_for: serviceLookingFor || 'Visa & Immigration',
       has_visa: false
     });
 
-    const destSlug = dest.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'united-kingdom';
+    const destSlug = dest.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
     // Step 1: Checking treaties & fast-track
     setTimeout(() => {
@@ -2305,8 +2325,8 @@ return (
                         >
                           <div className="flex items-center gap-2 min-w-0">
                             <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                            <span className="text-xs sm:text-sm font-bold text-slate-800 truncate">
-                              {serviceLookingFor || 'Visa, Immigration, Travel...'}
+                            <span className={`text-xs sm:text-sm truncate ${serviceLookingFor ? 'font-bold text-slate-800' : 'font-normal text-slate-400'}`}>
+                              {serviceLookingFor || 'Select Purpose...'}
                             </span>
                           </div>
                           <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isLookingForOpen ? 'rotate-180 text-blue-600' : ''}`} />
@@ -2358,13 +2378,19 @@ return (
                             className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
                             <div className="flex items-center gap-2 min-w-0">
-                              <img
-                                src={`https://flagcdn.com/w40/${getCountryCodeByName(journeyDestination || 'Singapore')}.png`}
-                                alt={journeyDestination || 'Country'}
-                                className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
-                                onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
-                              />
-                              <span className="text-xs sm:text-sm font-semibold text-slate-900 truncate">
+                              {journeyDestination ? (
+                                <img
+                                  src={`https://flagcdn.com/w40/${getCountryCodeByName(journeyDestination)}.png`}
+                                  alt={journeyDestination}
+                                  className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                                />
+                              ) : (
+                                <div className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 shrink-0">
+                                  🌐
+                                </div>
+                              )}
+                              <span className={`text-xs sm:text-sm truncate ${journeyDestination ? 'font-semibold text-slate-900' : 'font-normal text-slate-400'}`}>
                                 {journeyDestination || 'Select Destination'}
                               </span>
                             </div>
@@ -2445,13 +2471,19 @@ return (
                             className="bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none"
                           >
                             <div className="flex items-center gap-2 min-w-0">
-                              <img
-                                src={`https://flagcdn.com/w40/${getCountryCodeByName(passportCountry || 'India')}.png`}
-                                alt={passportCountry || 'Country'}
-                                className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
-                                onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
-                              />
-                              <span className="text-xs sm:text-sm font-semibold text-slate-900 truncate">
+                              {passportCountry ? (
+                                <img
+                                  src={`https://flagcdn.com/w40/${getCountryCodeByName(passportCountry)}.png`}
+                                  alt={passportCountry}
+                                  className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                                />
+                              ) : (
+                                <div className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 shrink-0">
+                                  🛂
+                                </div>
+                              )}
+                              <span className={`text-xs sm:text-sm truncate ${passportCountry ? 'font-semibold text-slate-900' : 'font-normal text-slate-400'}`}>
                                 {passportCountry || 'Select Passport'}
                               </span>
                             </div>

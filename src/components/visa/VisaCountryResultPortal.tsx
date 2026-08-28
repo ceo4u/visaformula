@@ -2425,40 +2425,31 @@ export function VisaCountryResultPortal({
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] border border-emerald-200">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
                       Smart Profile Matcher
                     </span>
-                    <span className="text-xs font-medium text-slate-400">
-                      Purpose: {activePurposeTab.toUpperCase()}
+                    <span className="text-xs font-semibold text-slate-500">
+                      Category: {activePurposeTab === 'study' ? 'STUDENT VISA' : activePurposeTab === 'work' ? 'WORK VISA' : 'TOURIST VISA'}
                     </span>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-900 tracking-tight">
-                    Apply for your Visa to {countryName}
+                  <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-950 tracking-tight">
+                    {activePurposeTab === 'study'
+                      ? `Apply for your Student Visa to ${countryName}`
+                      : activePurposeTab === 'work'
+                      ? `Apply for your Work Visa to ${countryName}`
+                      : `Apply for your Tourist Visa to ${countryName}`}
                   </h3>
                 </div>
 
-                {/* Purpose Tabs Switcher */}
-                <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200/80">
-                  {[
-                    { id: 'study', label: 'Study' },
-                    { id: 'tourism', label: 'Visit / Tourism' },
-                    { id: 'work', label: 'Work' }
-                  ].map((tab) => (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      onClick={() => {
-                        setActivePurposeTab(tab.id);
-                      }}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                        activePurposeTab === tab.id
-                          ? 'bg-slate-900 text-white shadow-xs'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                      }`}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
+                {/* Purpose Category Tag Badge (No unrelated tabs shown) */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 text-white text-xs font-bold shadow-xs">
+                  <span>
+                    {activePurposeTab === 'study'
+                      ? '🎓 Student / Study Visa'
+                      : activePurposeTab === 'work'
+                      ? '💼 Work / Employment Visa'
+                      : '🏖️ Visit / Tourist Visa'}
+                  </span>
                 </div>
               </div>
 

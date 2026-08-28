@@ -1428,10 +1428,16 @@ export function VisaCountryResultPortal({
           {/* Hero Content */}
           <div className="relative z-10 max-w-3xl space-y-3 sm:space-y-5 text-left">
             
-            {/* Real-time Badge */}
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-[11px] sm:text-xs font-semibold shadow-xs max-w-full">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-              <span className="tracking-wide truncate">Official Consulate Rules • 2026 Entry Policy</span>
+            {/* Real-time Badge & Prominent 'You Need' Pill */}
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-[11px] sm:text-xs font-semibold shadow-xs max-w-full">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                <span className="tracking-wide truncate">Official Consulate Rules • 2026 Entry Policy</span>
+              </div>
+
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-500 text-slate-950 font-bold text-xs shadow-md">
+                <span>⚡ You need: {aiIntel.entryStatus || dynamicVisaType}</span>
+              </div>
             </div>
 
             {/* Country Title */}
@@ -1440,7 +1446,7 @@ export function VisaCountryResultPortal({
                 {countryName} Visa &amp; Entry Requirements {flagEmoji}
               </h1>
               <p className="text-xs sm:text-base text-slate-200 font-normal sm:font-medium max-w-2xl leading-relaxed pt-0.5 sm:pt-1">
-                Check if you need a visa, maximum length of stay, passport validity rules, and verified travel entry requirements for {countryName}.
+                For {passportCountry} citizens traveling to {countryName}, you need an official <strong className="text-white font-bold underline decoration-emerald-400 underline-offset-2">{aiIntel.entryStatus || dynamicVisaType}</strong> before departure.
               </p>
             </div>
 
@@ -1485,8 +1491,9 @@ export function VisaCountryResultPortal({
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-slate-900 text-white shadow-2xs">
-                {aiIntel.visaPillTag || (countrySlug === 'uk' || countrySlug === 'united-kingdom' ? 'CONSULAR VISA REQUIRED' : 'ELECTRONIC ENTRY / VISA REQUIRED')}
+              <span className="text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-slate-950 text-white shadow-2xs flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+                <span>YOU NEED: {aiIntel.entryStatus || 'VISA REQUIRED'}</span>
               </span>
             </div>
           </div>
@@ -1500,7 +1507,7 @@ export function VisaCountryResultPortal({
             <div className="space-y-1.5 min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2.5">
                 <h3 className="text-lg sm:text-xl md:text-2xl font-heading font-bold text-slate-950 tracking-tight leading-snug">
-                  {aiIntel.verdictTitle}
+                  You need: <span className="text-emerald-700">{aiIntel.entryStatus || dynamicVisaType}</span> for {countryName} ({passportCountry} Passport)
                 </h3>
                 <span className="text-[11px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider bg-slate-900 text-white shrink-0 shadow-2xs">
                   {aiIntel.stayDuration || dynamicLengthOfStay}

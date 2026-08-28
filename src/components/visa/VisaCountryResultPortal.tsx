@@ -1801,7 +1801,7 @@ export function VisaCountryResultPortal({
 
             {/* Main Centered Headline */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black tracking-tight text-white leading-tight drop-shadow-md">
-              You need <span className="text-[#359FC2]">{aiIntel.entryStatus || dynamicVisaType}</span>
+              You need <span className="text-white">{aiIntel.entryStatus || dynamicVisaType}</span>
             </h1>
 
             {/* Clean, Simple Subtitle */}

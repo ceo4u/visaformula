@@ -3203,7 +3203,7 @@ export function VisaCountryResultPortal({
                 {/* Section Title & Segment Controller */}
                 <div className="text-center space-y-3">
                   <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#00A86B] bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
-                    Dual Action Pathways
+                    Visa Application Pathways
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-heading font-black text-slate-950 tracking-tight">
                     How would you like to apply for your visa?
@@ -3212,37 +3212,37 @@ export function VisaCountryResultPortal({
                     Choose between connecting with certified local immigration consultants or applying directly using TravlTik&apos;s automated AI Concierge.
                   </p>
 
-                  {/* High-Contrast Segment Switch */}
-                  <div className="inline-flex p-1.5 rounded-2xl bg-slate-100 border border-slate-200 shadow-inner max-w-full overflow-x-auto">
+                  {/* Clean Segment Switch (No TAB 1/TAB 2 labels) */}
+                  <div className="inline-flex p-1.5 rounded-2xl bg-slate-100 border border-slate-200/80 shadow-inner max-w-full overflow-x-auto">
                     <button
                       type="button"
                       onClick={() => setStudentActionTab('consultants')}
-                      className={`flex items-center gap-2 px-5 sm:px-7 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+                      className={`flex items-center gap-2 px-6 sm:px-8 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap active:scale-95 ${
                         studentActionTab === 'consultants'
                           ? 'bg-slate-950 text-white shadow-md'
-                          : 'text-slate-700 hover:text-slate-950'
+                          : 'text-slate-700 hover:text-slate-950 hover:bg-slate-200/50'
                       }`}
                     >
                       <Users className="w-4 h-4 text-emerald-400" />
-                      <span>TAB 1: Find Consultants Near Me</span>
+                      <span>Find Consultants Near Me</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setStudentActionTab('self_apply')}
-                      className={`flex items-center gap-2 px-5 sm:px-7 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+                      className={`flex items-center gap-2 px-6 sm:px-8 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap active:scale-95 ${
                         studentActionTab === 'self_apply'
                           ? 'bg-slate-950 text-white shadow-md'
-                          : 'text-slate-700 hover:text-slate-950'
+                          : 'text-slate-700 hover:text-slate-950 hover:bg-slate-200/50'
                       }`}
                     >
                       <Zap className="w-4 h-4 text-amber-400" />
-                      <span>TAB 2: Self Apply (TravlTik Concierge)</span>
+                      <span>Self Apply (TravlTik Concierge)</span>
                     </button>
                   </div>
                 </div>
 
-                {/* ── TAB 1 CONTENT: FIND CONSULTANTS (SEARCH & MATCH) ── */}
+                {/* ── CONTENT: FIND CONSULTANTS (SEARCH & MATCH) ── */}
                 {studentActionTab === 'consultants' && (
                   <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-9 shadow-[0_2px_16px_rgba(0,0,0,0.03)] space-y-6 animate-fadeIn text-left">
                     
@@ -3250,9 +3250,9 @@ export function VisaCountryResultPortal({
                     <div className="space-y-1.5 border-b border-slate-100 pb-5">
                       <div className="flex items-center gap-2">
                         <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-0.5 rounded-md">
-                          Option A
+                          Verified Advisory
                         </span>
-                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Independent Advisory</span>
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Independent Legal Counsel</span>
                       </div>
                       <h4 className="text-xl font-heading font-black text-slate-950">
                         Search Verified Immigration Lawyers &amp; Study Visa Experts

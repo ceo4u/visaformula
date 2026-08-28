@@ -5,12 +5,14 @@ function PortalCustomSelect({
   value,
   onChange,
   options,
-  label
+  label,
+  placeholder = 'Select an option'
 }: {
   value: string;
   onChange: (val: string) => void;
   options: string[];
   label?: string;
+  placeholder?: string;
 }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -25,7 +27,7 @@ function PortalCustomSelect({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const currentValue = value || options[0] || '';
+  const hasValue = value && value.trim() !== '';
 
   return (
     <div className="relative space-y-1.5" ref={dropdownRef}>
@@ -33,11 +35,13 @@ function PortalCustomSelect({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`w-full h-11 px-3.5 rounded-xl border bg-white text-xs sm:text-sm font-semibold flex items-center justify-between text-slate-900 transition-all cursor-pointer shadow-2xs ${
+        className={`w-full h-11 px-3.5 rounded-xl border bg-white text-xs sm:text-sm font-semibold flex items-center justify-between transition-all cursor-pointer shadow-2xs ${
           open ? 'border-[#00A86B] ring-2 ring-emerald-500/20' : 'border-slate-200 hover:border-slate-300'
         }`}
       >
-        <span className="truncate text-left">{currentValue}</span>
+        <span className={`truncate text-left ${hasValue ? 'text-slate-900' : 'text-slate-400 font-normal'}`}>
+          {hasValue ? value : placeholder}
+        </span>
         <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-[#00A86B]' : ''}`} />
       </button>
 
@@ -45,7 +49,7 @@ function PortalCustomSelect({
         <div className="absolute top-full left-0 mt-1.5 w-full bg-white rounded-2xl border border-slate-200/90 shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 origin-top">
           <div className="max-h-56 overflow-y-auto space-y-0.5">
             {options.map((opt) => {
-              const isSelected = opt === currentValue;
+              const isSelected = opt === value;
               return (
                 <button
                   key={opt}
@@ -491,21 +495,21 @@ export function VisaCountryResultPortal({
   const [customsChecked, setCustomsChecked] = useState({ cash: true, meds: false });
   const [openArrivalStep, setOpenArrivalStep] = useState<number | null>(0);
 
-  // ── BRANCH 2: QUESTIONNAIRE STATES ──
-  const [studyQual, setStudyQual] = useState("Bachelor's Degree");
-  const [studyTarget, setStudyTarget] = useState("Master's (PG / MS)");
-  const [studyIntake, setStudyIntake] = useState("Fall 2026 (Aug - Sep)");
-  const [studyBudget, setStudyBudget] = useState("Self-Funded Liquid Funds (₹25L+)");
+  // ── BRANCH 2: QUESTIONNAIRE STATES ── (start empty — no dummy defaults)
+  const [studyQual, setStudyQual] = useState('');
+  const [studyTarget, setStudyTarget] = useState('');
+  const [studyIntake, setStudyIntake] = useState('');
+  const [studyBudget, setStudyBudget] = useState('');
 
-  const [visitPlanStatus, setVisitPlanStatus] = useState("Need Curated Tour Packages");
-  const [visitTiming, setVisitTiming] = useState("Within 30 Days");
-  const [visitTravellers, setVisitTravellers] = useState("Family with Kids / Elders");
-  const [visitStay, setVisitStay] = useState("4-5 Star Luxury Resorts");
+  const [visitPlanStatus, setVisitPlanStatus] = useState('');
+  const [visitTiming, setVisitTiming] = useState('');
+  const [visitTravellers, setVisitTravellers] = useState('');
+  const [visitStay, setVisitStay] = useState('');
 
-  const [workExp, setWorkExp] = useState("3 - 5 Years (Mid-Senior)");
-  const [workOffer, setWorkOffer] = useState("Actively Seeking Sponsoring Job");
-  const [workDomain, setWorkDomain] = useState("Tech / IT / Software / AI");
-  const [workAssess, setWorkAssess] = useState("Need WES / ACS Credential Evaluation");
+  const [workExp, setWorkExp] = useState('');
+  const [workOffer, setWorkOffer] = useState('');
+  const [workDomain, setWorkDomain] = useState('');
+  const [workAssess, setWorkAssess] = useState('');
 
   // ── ATLYS VISA RESULT PORTAL STATES ──
   const [selectedVariantId, setSelectedVariantId] = useState<string>(variants[0].id);
@@ -544,14 +548,10 @@ export function VisaCountryResultPortal({
     return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
   }, [validityDate]);
 
-  // ── PASSPORT VALIDITY CHECKER LIVE STATE ──
-  const [passportIssueDate, setPassportIssueDate] = useState('2021-04-10');
-  const [passportExpiryDate, setPassportExpiryDate] = useState('2031-04-09');
-  const [proposedTravelDate, setProposedTravelDate] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 30);
-    return d.toISOString().split('T')[0];
-  });
+  // ── PASSPORT VALIDITY CHECKER LIVE STATE ── (start empty — no dummy defaults)
+  const [passportIssueDate, setPassportIssueDate] = useState('');
+  const [passportExpiryDate, setPassportExpiryDate] = useState('');
+  const [proposedTravelDate, setProposedTravelDate] = useState('');
 
   // ── ZERO-HALLUCINATION RULE MATRIX ──
   // GCC (UAE, Saudi, Qatar, Oman, Bahrain, Kuwait): 6-month validity from ARRIVAL. NO 10-year issue rule.
@@ -1547,6 +1547,7 @@ export function VisaCountryResultPortal({
                       label="1. Highest Qualification"
                       value={studyQual}
                       onChange={setStudyQual}
+                      placeholder="Select qualification"
                       options={[
                         "12th Grade / High School",
                         "Bachelor's Degree",
@@ -1560,6 +1561,7 @@ export function VisaCountryResultPortal({
                       label={`2. Target Degree in ${countryName}`}
                       value={studyTarget}
                       onChange={setStudyTarget}
+                      placeholder="Select target degree"
                       options={[
                         "Bachelor's (UG Degree)",
                         "Master's (PG / MS)",
@@ -1573,6 +1575,7 @@ export function VisaCountryResultPortal({
                       label="3. Target Intake"
                       value={studyIntake}
                       onChange={setStudyIntake}
+                      placeholder="Select intake session"
                       options={[
                         "Fall 2026 (Aug - Sep)",
                         "Spring 2027 (Jan - Feb)",
@@ -1585,6 +1588,7 @@ export function VisaCountryResultPortal({
                       label="4. Financial Proof / Funds"
                       value={studyBudget}
                       onChange={setStudyBudget}
+                      placeholder="Select funding source"
                       options={[
                         "Self-Funded Liquid Funds (₹25L+)",
                         "Education Loan Required",
@@ -1604,6 +1608,7 @@ export function VisaCountryResultPortal({
                       label="1. Trip Planning Status"
                       value={visitPlanStatus}
                       onChange={setVisitPlanStatus}
+                      placeholder="Select trip status"
                       options={[
                         "Need Curated Tour Packages",
                         "I have my Itinerary & Hotel",
@@ -1616,6 +1621,7 @@ export function VisaCountryResultPortal({
                       label="2. Tentative Travel Timing"
                       value={visitTiming}
                       onChange={setVisitTiming}
+                      placeholder="Select travel window"
                       options={[
                         "Within 30 Days (Fast-Track)",
                         "In 1 to 3 Months",
@@ -1628,6 +1634,7 @@ export function VisaCountryResultPortal({
                       label="3. Group / Travellers"
                       value={visitTravellers}
                       onChange={setVisitTravellers}
+                      placeholder="Select group type"
                       options={[
                         "Solo Traveller",
                         "Couple / Honeymoon",
@@ -1641,6 +1648,7 @@ export function VisaCountryResultPortal({
                       label="4. Accommodation Preference"
                       value={visitStay}
                       onChange={setVisitStay}
+                      placeholder="Select accommodation"
                       options={[
                         "4-5 Star Luxury Resorts",
                         "Boutique City Hotels",
@@ -1660,6 +1668,7 @@ export function VisaCountryResultPortal({
                       label="1. Total Experience"
                       value={workExp}
                       onChange={setWorkExp}
+                      placeholder="Select experience level"
                       options={[
                         "0 - 2 Years (Entry Level)",
                         "3 - 5 Years (Mid-Senior)",
@@ -1673,6 +1682,7 @@ export function VisaCountryResultPortal({
                       label="2. Sponsoring Job Offer"
                       value={workOffer}
                       onChange={setWorkOffer}
+                      placeholder="Select job offer status"
                       options={[
                         "Actively Seeking Sponsoring Job",
                         "Have Confirmed Sponsor Offer",
@@ -1685,6 +1695,7 @@ export function VisaCountryResultPortal({
                       label="3. Industry Domain"
                       value={workDomain}
                       onChange={setWorkDomain}
+                      placeholder="Select industry"
                       options={[
                         "Tech / IT / Software / AI",
                         "Healthcare & Nursing",
@@ -1698,6 +1709,7 @@ export function VisaCountryResultPortal({
                       label="4. Credential Assessment"
                       value={workAssess}
                       onChange={setWorkAssess}
+                      placeholder="Select assessment status"
                       options={[
                         "Need WES / ACS Credential Evaluation",
                         "Already Assessed & Approved",

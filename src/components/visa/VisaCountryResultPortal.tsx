@@ -928,22 +928,24 @@ export function VisaCountryResultPortal({
               </div>
             </div>
 
-            <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-4 transition-all shadow-2xs flex items-center gap-3.5 group">
-              <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-800 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
-                <ShieldCheck className="w-5 h-5 text-emerald-600 stroke-[1.8]" />
+            {aiIntel.digitalCardName && (
+              <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-4 transition-all shadow-2xs flex items-center gap-3.5 group">
+                <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-800 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
+                  <ShieldCheck className="w-5 h-5 text-emerald-600 stroke-[1.8]" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                    Mandatory Card
+                  </span>
+                  <span className="text-xs sm:text-sm font-bold text-slate-900 block truncate">
+                    {aiIntel.digitalCardName.split('(')[0].trim()}
+                  </span>
+                  <span className="text-[11px] text-slate-500 font-medium block truncate">
+                    Free online submission
+                  </span>
+                </div>
               </div>
-              <div className="min-w-0">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                  Mandatory Card
-                </span>
-                <span className="text-xs sm:text-sm font-bold text-slate-900 block truncate">
-                  {aiIntel.digitalCardName.split('(')[0].trim()}
-                </span>
-                <span className="text-[11px] text-slate-500 font-medium block truncate">
-                  Free online submission
-                </span>
-              </div>
-            </div>
+            )}
 
             <div className="bg-[#F8F9FB] hover:bg-white border border-slate-200/80 hover:border-slate-300 rounded-2xl p-4 transition-all shadow-2xs flex items-center gap-3.5 group">
               <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-800 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
@@ -1780,17 +1782,19 @@ export function VisaCountryResultPortal({
                   </span>
                 </div>
 
-                <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-left space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                    3. Digital Requirement
-                  </span>
-                  <span className="text-sm font-bold text-slate-900 block truncate">
-                    {aiIntel.digitalCardName || 'Digital Arrival Declaration'}
-                  </span>
-                  <span className="text-[11px] font-medium text-blue-700 block">
-                    Mandatory online filing
-                  </span>
-                </div>
+                {aiIntel.digitalCardName && (
+                  <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-left space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                      3. Digital Requirement
+                    </span>
+                    <span className="text-sm font-bold text-slate-900 block truncate">
+                      {aiIntel.digitalCardName}
+                    </span>
+                    <span className="text-[11px] font-medium text-blue-700 block">
+                      Mandatory online filing
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Source Verification Footer */}

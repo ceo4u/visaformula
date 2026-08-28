@@ -1351,16 +1351,6 @@ export function VisaCountryResultPortal({
                     </button>
                   )}
                 </div>
-
-                {/* Share CTA */}
-                <button
-                  type="button"
-                  onClick={handleShareWhatsApp}
-                  className="w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-600/25 active:scale-[0.98] cursor-pointer"
-                >
-                  <Share2 className="w-4 h-4" />
-                  <span>{copiedShare ? 'Status Copied to Clipboard!' : '📱 Share Safety Checklist with Parents (WhatsApp)'}</span>
-                </button>
               </div>
 
             </div>
@@ -2469,40 +2459,7 @@ export function VisaCountryResultPortal({
 
             </div>
 
-            {/* 3. ATLYS TRUST & STATS STRIP */}
-            <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden shadow-md">
-              <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="max-w-2xl space-y-3 relative z-10 text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-emerald-300 text-xs font-semibold backdrop-blur-xs">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Guaranteed Accuracy &amp; Consular Compliance</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-white tracking-tight">
-                  Over 99.4% Approval on First Filing
-                </h3>
-
-                <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed">
-                  Every document upload is digitally encrypted with bank-grade protocols and verified with consulate accuracy before submission. Over 50 Lakh+ applications handled safely.
-                </p>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                    <span className="text-xs font-medium text-slate-400 block">Service Cover</span>
-                    <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">100% Refund</span>
-                  </div>
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                    <span className="text-xs font-medium text-slate-400 block">Data Security</span>
-                    <span className="text-sm sm:text-base font-semibold text-emerald-400 mt-0.5 block">256-Bit SSL</span>
-                  </div>
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10 col-span-2 sm:col-span-1">
-                    <span className="text-xs font-medium text-slate-400 block">Approval Record</span>
-                    <span className="text-sm sm:text-base font-semibold text-white mt-0.5 block">99.4% Highest</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 4. REQUIRED DOCUMENTS CHECKLIST */}
+            {/* 3. REQUIRED DOCUMENTS CHECKLIST */}
             <div className="space-y-4 text-left">
               <div className="space-y-1 text-center sm:text-left">
                 <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#00A86B]">

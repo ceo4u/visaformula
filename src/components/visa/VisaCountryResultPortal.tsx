@@ -3335,33 +3335,6 @@ export function VisaCountryResultPortal({
                       </div>
                     </div>
 
-                    {/* Value Proposition Strip */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-1">
-                      <div className="p-3.5 bg-slate-50/50 rounded-xl border border-slate-100 flex items-start gap-2.5">
-                        <span className="text-base shrink-0">🏛️</span>
-                        <div>
-                          <strong className="text-slate-950 font-bold block">Government Licensed</strong>
-                          <p className="text-[11px] text-slate-500 font-medium mt-0.5">ICCRC, OISC, MARA &amp; Bar registered attorneys.</p>
-                        </div>
-                      </div>
-
-                      <div className="p-3.5 bg-slate-50/50 rounded-xl border border-slate-100 flex items-start gap-2.5">
-                        <span className="text-base shrink-0">🔒</span>
-                        <div>
-                          <strong className="text-slate-950 font-bold block">Escrow Milestone Shield</strong>
-                          <p className="text-[11px] text-slate-500 font-medium mt-0.5">Payment released only after your consultation completes.</p>
-                        </div>
-                      </div>
-
-                      <div className="p-3.5 bg-slate-50/50 rounded-xl border border-slate-100 flex items-start gap-2.5">
-                        <span className="text-base shrink-0">⚡</span>
-                        <div>
-                          <strong className="text-slate-950 font-bold block">Direct Video Sessions</strong>
-                          <p className="text-[11px] text-slate-500 font-medium mt-0.5">30 or 60 min 1-on-1 strategy calls with document audit.</p>
-                        </div>
-                      </div>
-                    </div>
-
                   </div>
                 )}
 

@@ -1596,7 +1596,7 @@ export function VisaCountryResultPortal({
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-emerald-600 stroke-[2.5]" />
               <h4 className="text-sm font-bold uppercase tracking-wider text-slate-950 font-heading">
-                1. VISA FEES AND PROCESSING
+                VISA FEES AND PROCESSING
               </h4>
             </div>
 
@@ -1653,72 +1653,6 @@ export function VisaCountryResultPortal({
                 <span className="text-[11px] text-slate-500 font-medium block pt-1">
                   Flexible travel buffer
                 </span>
-              </div>
-            </div>
-          </div>
-
-          {/* ── SECTION 2: APPLICATION PROCESS ── */}
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-[#4F46E5] stroke-[2.2]" />
-              <h4 className="text-sm font-bold uppercase tracking-wider text-slate-950 font-heading">
-                2. APPLICATION PROCESS
-              </h4>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Step 1: Submission */}
-              <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
-                <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
-                  1
-                </div>
-                <h5 className="text-sm font-bold text-slate-950 font-heading mb-1.5">Submission &amp; Issuance</h5>
-                <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                  {aiIntel.applicationProcess?.submission}
-                </p>
-              </div>
-
-              {/* Step 2: Online Form */}
-              <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
-                <div className="w-8 h-8 rounded-xl bg-sky-50 text-sky-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
-                  2
-                </div>
-                <h5 className="text-sm font-bold text-slate-950 font-heading mb-1.5">Online Form &amp; Barcode</h5>
-                <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                  {aiIntel.applicationProcess?.onlineForm}
-                </p>
-              </div>
-
-              {/* Step 3: Appointments */}
-              <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
-                <div className="w-8 h-8 rounded-xl bg-violet-50 text-violet-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
-                  3
-                </div>
-                <h5 className="text-sm font-bold text-slate-950 font-heading mb-1.5">Appointments &amp; Biometrics</h5>
-                <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                  {aiIntel.applicationProcess?.appointments}
-                </p>
-              </div>
-
-              {/* Step 4: Documents Checklist */}
-              <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-3xl p-6 shadow-2xs transition-all flex flex-col justify-start h-full min-h-[190px]">
-                <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 font-bold text-xs flex items-center justify-center mb-3.5 shadow-2xs">
-                  4
-                </div>
-                <h5 className="text-sm font-bold text-slate-950 font-heading mb-1.5">Required Document Items</h5>
-                <ul className="text-xs text-slate-700 space-y-1.5 pt-0.5">
-                  {aiIntel.applicationProcess?.documentsAndBiometrics?.slice(0, 3).map((item: string, idx: number) => (
-                    <li key={idx} className="flex items-start gap-1.5">
-                      <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3] shrink-0 mt-0.5" />
-                      <span className="leading-snug text-slate-800 font-medium">{item}</span>
-                    </li>
-                  ))}
-                  {aiIntel.applicationProcess?.documentsAndBiometrics?.length > 3 && (
-                    <li className="text-xs text-indigo-700 font-bold pt-1">
-                      + {aiIntel.applicationProcess.documentsAndBiometrics.length - 3} more verified items
-                    </li>
-                  )}
-                </ul>
               </div>
             </div>
           </div>

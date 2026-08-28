@@ -1943,71 +1943,46 @@ export function AITripPlannerLanding() {
     }, 800);
   };
 
-  const handleGeneratePathway = () => {
+  const handleGeneratePathway = async (e?: React.FormEvent | React.MouseEvent) => {
+    if (e) e.preventDefault();
     setIsGenerating(true);
-    setHasGenerated(false);
-    
-    // Require user to select Purpose, Destination and Passport before searching
-    if (!serviceLookingFor && !travelPurpose) {
-      setIsLookingForOpen(true);
-      setIsJourneyDestOpen(false);
-      setIsOriginCityOpen(false);
-      return;
+
+    try {
+      const targetCountry = (journeyDestination || 'singapore').trim();
+      const passport = (passportCountry || 'india').trim();
+      let selectedPurpose = (travelPurpose || 'tourist').trim();
+
+      const looking = (serviceLookingFor || '').toLowerCase();
+      const serv = (selectedServiceType || '').toLowerCase();
+      if (looking.includes('study') || serv.includes('student')) selectedPurpose = 'study';
+      else if (looking.includes('tourist') || looking.includes('visit') || serv.includes('visit') || serv.includes('tourist')) selectedPurpose = 'tourism';
+      else if (looking.includes('work') || serv.includes('work') || serv.includes('job')) selectedPurpose = 'work';
+      else if (looking.includes('pr') || serv.includes('pr') || serv.includes('migration')) selectedPurpose = 'pr';
+      else if (looking.includes('business') || serv.includes('business')) selectedPurpose = 'business';
+
+      setTravelPurpose(selectedPurpose);
+      setHasVisaAlready('no');
+
+      // Auto-save search parameters to user journey
+      autoSaveJourney({
+        destination: targetCountry,
+        passport_country: passport,
+        purpose: selectedPurpose,
+        service_type: selectedServiceType || 'Visa',
+        origin_city: originCity || passport,
+        looking_for: serviceLookingFor || 'Visa & Immigration',
+        has_visa: false
+      });
+
+      const destSlug = targetCountry.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'singapore';
+      const destinationUrl = `/visa/${encodeURIComponent(destSlug)}?passport=${encodeURIComponent(passport.toLowerCase())}&purpose=${encodeURIComponent(selectedPurpose.toLowerCase())}`;
+
+      // Perform seamless navigation
+      window.location.assign(destinationUrl);
+    } catch (error) {
+      console.error("Navigation error:", error);
+      setIsGenerating(false);
     }
-    if (!journeyDestination) {
-      setIsJourneyDestOpen(true);
-      setIsLookingForOpen(false);
-      setIsOriginCityOpen(false);
-      return;
-    }
-    if (!passportCountry) {
-      setIsOriginCityOpen(true);
-      setIsLookingForOpen(false);
-      setIsJourneyDestOpen(false);
-      return;
-    }
-
-    // Accurately map purpose from inputs
-    let purpose = travelPurpose || 'study';
-    const looking = (serviceLookingFor || '').toLowerCase();
-    const serv = (selectedServiceType || '').toLowerCase();
-    if (looking.includes('study') || serv.includes('student')) purpose = 'study';
-    else if (looking.includes('tourist') || looking.includes('visit') || serv.includes('visit') || serv.includes('tourist')) purpose = 'tourism';
-    else if (looking.includes('work') || serv.includes('work') || serv.includes('job')) purpose = 'work';
-    else if (looking.includes('pr') || serv.includes('pr') || serv.includes('migration')) purpose = 'pr';
-    else if (looking.includes('business') || serv.includes('business')) purpose = 'business';
-
-    setTravelPurpose(purpose);
-    setHasVisaAlready('no');
-
-    const dest = journeyDestination;
-    const pass = passportCountry;
-
-    // Auto-save search parameters to user journey
-    autoSaveJourney({
-      destination: dest,
-      passport_country: pass,
-      purpose: purpose,
-      service_type: selectedServiceType || 'Visa',
-      origin_city: originCity || pass,
-      looking_for: serviceLookingFor || 'Visa & Immigration',
-      has_visa: false
-    });
-
-    const destSlug = dest.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-
-    // Step 1: Checking treaties & fast-track
-    setTimeout(() => {
-      setLoadingStep(1);
-      setLoadingProgress(50);
-    }, 150);
-
-    // Step 2: Finalizing itinerary & redirecting to dedicated visa page
-    setTimeout(() => {
-      setLoadingStep(2);
-      setLoadingProgress(100);
-      window.location.href = `/visa/${destSlug}?passport=${encodeURIComponent(pass)}&purpose=${encodeURIComponent(purpose)}`;
-    }, 400);
   };
 
   const handleNoVisaLeadSubmit = async (e: React.FormEvent) => {

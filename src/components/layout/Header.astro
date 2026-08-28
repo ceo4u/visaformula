@@ -397,154 +397,207 @@ const isHome = pathname === '/' || pathname === '';
         updateHeaderStyle();
     }
     // Dynamic Auth Header Button & Profile Dropdown Updates
-    const seekerFirst = localStorage.getItem("seeker_firstName");
-    const expertBusiness = localStorage.getItem("expert_businessName");
-    const userStr = localStorage.getItem("visaformula_user");
+    function syncAuthHeader() {
+        const seekerFirst = localStorage.getItem("seeker_firstName");
+        const expertBusiness = localStorage.getItem("expert_businessName");
+        const userStr = localStorage.getItem("visaformula_user") || localStorage.getItem("travltik_user");
 
-    const isLoggedIn = seekerFirst || expertBusiness || (userStr && userStr !== "null");
+        const isLoggedIn = Boolean(seekerFirst || expertBusiness || (userStr && userStr !== "null" && userStr !== "undefined"));
 
-    if (isLoggedIn) {
-        // Hide standard Auth buttons
         const desktopAuthButtons = document.getElementById("nav-auth-buttons-wrapper");
         const mobileAuthButtons = document.getElementById("mobile-nav-auth-buttons");
         const loggedInDivider = document.getElementById("nav-logged-in-divider");
         const mobileTopSignupBtn = document.getElementById("mobile-top-signup-btn");
-        
-        if (desktopAuthButtons) desktopAuthButtons.classList.add("hidden");
-        if (mobileAuthButtons) mobileAuthButtons.classList.add("hidden");
-        if (loggedInDivider) loggedInDivider.classList.remove("hidden");
-        if (mobileTopSignupBtn) mobileTopSignupBtn.classList.add("hidden");
-
-        // Prepare info
-        let displayName = "User Profile";
-        let displayLetters = "U";
-        let dashboardHref = "/dashboard";
-        let displayPhoto = "";
-
-        if (expertBusiness) {
-            displayName = expertBusiness;
-            displayLetters = expertBusiness.charAt(0).toUpperCase();
-            dashboardHref = "/consultant/dashboard";
-            displayPhoto = localStorage.getItem("expert_profilePhoto") || "";
-        } else if (seekerFirst) {
-            displayName = seekerFirst + " " + (localStorage.getItem("seeker_lastName") || "");
-            displayLetters = seekerFirst.charAt(0).toUpperCase();
-            dashboardHref = "/dashboard";
-            displayPhoto = localStorage.getItem("seeker_profilePhoto") || "";
-        } else if (userStr) {
-            try {
-                const u = JSON.parse(userStr);
-                if (u && u.displayName) {
-                    displayName = u.displayName;
-                    displayLetters = u.displayName.charAt(0).toUpperCase();
-                } else if (u && u.email) {
-                    displayName = u.email;
-                    displayLetters = u.email.charAt(0).toUpperCase();
-                }
-                if (u && u.photoURL) {
-                    displayPhoto = u.photoURL;
-                }
-                if (u && u.type === "expert") {
-                    dashboardHref = "/consultant/dashboard";
-                } else {
-                    dashboardHref = "/dashboard";
-                }
-            } catch(e) {}
-        }
-
-        // Show Desktop Profile Block
         const desktopProfileBlock = document.getElementById("nav-profile-block");
-        if (desktopProfileBlock) {
-            desktopProfileBlock.classList.remove("hidden");
-            const avatarLetters = document.getElementById("nav-profile-avatar-letters");
-            const avatarImg = document.getElementById("nav-profile-avatar-img");
-            const profileName = document.getElementById("nav-profile-name");
-            const pillName = document.getElementById("nav-profile-pill-name");
-            const dashboardLink = document.getElementById("nav-profile-dashboard-link");
-
-            if (profileName) profileName.textContent = displayName;
-            if (pillName) pillName.textContent = displayName.split(" ")[0];
-            if (dashboardLink) dashboardLink.setAttribute("href", dashboardHref);
-            
-            if (displayPhoto && avatarImg) {
-                avatarImg.setAttribute("src", displayPhoto);
-                avatarImg.classList.remove("hidden");
-                if (avatarLetters) avatarLetters.classList.add("hidden");
-            } else {
-                if (avatarLetters) avatarLetters.textContent = displayLetters;
-                if (avatarLetters) avatarLetters.classList.remove("hidden");
-                if (avatarImg) avatarImg.classList.add("hidden");
-            }
-        }
-
-        // Show Mobile Top Header Profile Icon Button (Next to Hamburger)
         const mobileTopProfileBtn = document.getElementById("mobile-top-profile-btn");
-        if (mobileTopProfileBtn) {
-            mobileTopProfileBtn.classList.remove("hidden");
-            mobileTopProfileBtn.classList.add("flex");
-            mobileTopProfileBtn.setAttribute("href", dashboardHref);
-            
-            const mobileTopAvatarLetters = document.getElementById("mobile-top-profile-avatar-letters");
-            const mobileTopAvatarImg = document.getElementById("mobile-top-profile-avatar-img");
+        const mobileProfileBlock = document.getElementById("mobile-nav-profile-block");
 
-            if (displayPhoto && mobileTopAvatarImg) {
-                mobileTopAvatarImg.setAttribute("src", displayPhoto);
-                mobileTopAvatarImg.classList.remove("hidden");
-                if (mobileTopAvatarLetters) mobileTopAvatarLetters.classList.add("hidden");
-            } else {
-                if (mobileTopAvatarLetters) mobileTopAvatarLetters.textContent = displayLetters;
-                if (mobileTopAvatarLetters) mobileTopAvatarLetters.classList.remove("hidden");
-                if (mobileTopAvatarImg) mobileTopAvatarImg.classList.add("hidden");
+        if (isLoggedIn) {
+            // Hide standard Auth buttons
+            if (desktopAuthButtons) {
+                desktopAuthButtons.classList.add("hidden");
+                desktopAuthButtons.style.display = "none";
+            }
+            if (mobileAuthButtons) {
+                mobileAuthButtons.classList.add("hidden");
+                mobileAuthButtons.style.display = "none";
+            }
+            if (loggedInDivider) {
+                loggedInDivider.classList.remove("hidden");
+                loggedInDivider.style.display = "block";
+            }
+            if (mobileTopSignupBtn) {
+                mobileTopSignupBtn.classList.add("hidden");
+                mobileTopSignupBtn.style.display = "none";
+            }
+
+            // Prepare info
+            let displayName = "User Profile";
+            let displayLetters = "U";
+            let dashboardHref = "/dashboard";
+            let displayPhoto = "";
+
+            if (expertBusiness) {
+                displayName = expertBusiness;
+                displayLetters = expertBusiness.charAt(0).toUpperCase();
+                dashboardHref = "/consultant/dashboard";
+                displayPhoto = localStorage.getItem("expert_profilePhoto") || "";
+            } else if (seekerFirst) {
+                displayName = seekerFirst + " " + (localStorage.getItem("seeker_lastName") || "");
+                displayLetters = seekerFirst.charAt(0).toUpperCase();
+                dashboardHref = "/dashboard";
+                displayPhoto = localStorage.getItem("seeker_profilePhoto") || "";
+            } else if (userStr) {
+                try {
+                    const u = JSON.parse(userStr);
+                    if (u && u.displayName) {
+                        displayName = u.displayName;
+                        displayLetters = u.displayName.charAt(0).toUpperCase();
+                    } else if (u && u.email) {
+                        displayName = u.email;
+                        displayLetters = u.email.charAt(0).toUpperCase();
+                    }
+                    if (u && u.photoURL) {
+                        displayPhoto = u.photoURL;
+                    }
+                    if (u && u.type === "expert") {
+                        dashboardHref = "/consultant/dashboard";
+                    } else {
+                        dashboardHref = "/dashboard";
+                    }
+                } catch(e) {}
+            }
+
+            // Show Desktop Profile Block
+            if (desktopProfileBlock) {
+                desktopProfileBlock.classList.remove("hidden");
+                desktopProfileBlock.style.display = "block";
+                const avatarLetters = document.getElementById("nav-profile-avatar-letters");
+                const avatarImg = document.getElementById("nav-profile-avatar-img");
+                const profileName = document.getElementById("nav-profile-name");
+                const pillName = document.getElementById("nav-profile-pill-name");
+                const dashboardLink = document.getElementById("nav-profile-dashboard-link");
+
+                if (profileName) profileName.textContent = displayName;
+                if (pillName) pillName.textContent = displayName.split(" ")[0];
+                if (dashboardLink) dashboardLink.setAttribute("href", dashboardHref);
+                
+                if (displayPhoto && avatarImg) {
+                    avatarImg.setAttribute("src", displayPhoto);
+                    avatarImg.classList.remove("hidden");
+                    if (avatarLetters) avatarLetters.classList.add("hidden");
+                } else {
+                    if (avatarLetters) avatarLetters.textContent = displayLetters;
+                    if (avatarLetters) avatarLetters.classList.remove("hidden");
+                    if (avatarImg) avatarImg.classList.add("hidden");
+                }
+            }
+
+            // Show Mobile Top Header Profile Icon Button (Next to Hamburger)
+            if (mobileTopProfileBtn) {
+                mobileTopProfileBtn.classList.remove("hidden");
+                mobileTopProfileBtn.classList.add("flex");
+                mobileTopProfileBtn.style.display = "flex";
+                mobileTopProfileBtn.setAttribute("href", dashboardHref);
+                
+                const mobileTopAvatarLetters = document.getElementById("mobile-top-profile-avatar-letters");
+                const mobileTopAvatarImg = document.getElementById("mobile-top-profile-avatar-img");
+
+                if (displayPhoto && mobileTopAvatarImg) {
+                    mobileTopAvatarImg.setAttribute("src", displayPhoto);
+                    mobileTopAvatarImg.classList.remove("hidden");
+                    if (mobileTopAvatarLetters) mobileTopAvatarLetters.classList.add("hidden");
+                } else {
+                    if (mobileTopAvatarLetters) mobileTopAvatarLetters.textContent = displayLetters;
+                    if (mobileTopAvatarLetters) mobileTopAvatarLetters.classList.remove("hidden");
+                    if (mobileTopAvatarImg) mobileTopAvatarImg.classList.add("hidden");
+                }
+            }
+
+            // Show Mobile Profile Block in Drawer
+            if (mobileProfileBlock) {
+                mobileProfileBlock.classList.remove("hidden");
+                mobileProfileBlock.style.display = "flex";
+                const mobileProfileName = document.getElementById("mobile-nav-profile-name");
+                const mobileDashboardLink = document.getElementById("mobile-nav-profile-dashboard-link");
+
+                if (mobileProfileName) mobileProfileName.textContent = displayName;
+                if (mobileDashboardLink) mobileDashboardLink.setAttribute("href", dashboardHref);
+            }
+        } else {
+            // NOT logged in: Ensure Auth buttons are visible, profile blocks are hidden
+            if (desktopAuthButtons) {
+                desktopAuthButtons.classList.remove("hidden");
+                desktopAuthButtons.style.display = "flex";
+            }
+            if (mobileAuthButtons) {
+                mobileAuthButtons.classList.remove("hidden");
+                mobileAuthButtons.style.display = "flex";
+            }
+            if (mobileTopSignupBtn) {
+                mobileTopSignupBtn.classList.remove("hidden");
+                mobileTopSignupBtn.style.display = "inline-flex";
+            }
+            if (loggedInDivider) {
+                loggedInDivider.classList.add("hidden");
+                loggedInDivider.style.display = "none";
+            }
+            if (desktopProfileBlock) {
+                desktopProfileBlock.classList.add("hidden");
+                desktopProfileBlock.style.display = "none";
+            }
+            if (mobileTopProfileBtn) {
+                mobileTopProfileBtn.classList.add("hidden");
+                mobileTopProfileBtn.style.display = "none";
+            }
+            if (mobileProfileBlock) {
+                mobileProfileBlock.classList.add("hidden");
+                mobileProfileBlock.style.display = "none";
             }
         }
-
-        // Show Mobile Profile Block in Drawer
-        const mobileProfileBlock = document.getElementById("mobile-nav-profile-block");
-        if (mobileProfileBlock) {
-            mobileProfileBlock.classList.remove("hidden");
-            mobileProfileBlock.style.display = "flex";
-            const mobileProfileName = document.getElementById("mobile-nav-profile-name");
-            const mobileDashboardLink = document.getElementById("mobile-nav-profile-dashboard-link");
-
-            if (mobileProfileName) mobileProfileName.textContent = displayName;
-            if (mobileDashboardLink) mobileDashboardLink.setAttribute("href", dashboardHref);
-        }
-
-        // Handle Logout triggers
-        const handleLogout = (e) => {
-            e.preventDefault();
-            localStorage.removeItem("visaformula_user");
-            localStorage.removeItem("seeker_firstName");
-            localStorage.removeItem("seeker_lastName");
-            localStorage.removeItem("seeker_email");
-            localStorage.removeItem("seeker_phone");
-            localStorage.removeItem("seeker_passportCountry");
-            localStorage.removeItem("seeker_goals");
-            localStorage.removeItem("seeker_destinations");
-            localStorage.removeItem("seeker_profilePhoto");
-            
-            localStorage.removeItem("expert_businessName");
-            localStorage.removeItem("expert_email");
-            localStorage.removeItem("expert_contactNumber");
-            localStorage.removeItem("expert_advisorType");
-            localStorage.removeItem("expert_aboutMe");
-            localStorage.removeItem("expert_portfolioLink");
-            localStorage.removeItem("expert_officeAddress");
-            localStorage.removeItem("expert_govRegNumber");
-            localStorage.removeItem("expert_expertiseTags");
-            localStorage.removeItem("expert_countriesExpertise");
-            localStorage.removeItem("expert_profilePhoto");
-            localStorage.removeItem("expert_isLoggedIn");
-            
-            window.location.href = "/";
-        };
-
-        const desktopLogoutBtn = document.getElementById("nav-profile-logout-btn");
-        const mobileLogoutBtn = document.getElementById("mobile-nav-profile-logout-btn");
-
-        if (desktopLogoutBtn) desktopLogoutBtn.addEventListener("click", handleLogout);
-        if (mobileLogoutBtn) mobileLogoutBtn.addEventListener("click", handleLogout);
     }
+
+    // Run synchronization immediately and on page events
+    syncAuthHeader();
+    document.addEventListener("DOMContentLoaded", syncAuthHeader);
+    window.addEventListener("storage", syncAuthHeader);
+
+    // Handle Logout triggers
+    const handleLogout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem("visaformula_user");
+        localStorage.removeItem("travltik_user");
+        localStorage.removeItem("seeker_firstName");
+        localStorage.removeItem("seeker_lastName");
+        localStorage.removeItem("seeker_email");
+        localStorage.removeItem("seeker_phone");
+        localStorage.removeItem("seeker_passportCountry");
+        localStorage.removeItem("seeker_goals");
+        localStorage.removeItem("seeker_destinations");
+        localStorage.removeItem("seeker_profilePhoto");
+        
+        localStorage.removeItem("expert_businessName");
+        localStorage.removeItem("expert_email");
+        localStorage.removeItem("expert_contactNumber");
+        localStorage.removeItem("expert_advisorType");
+        localStorage.removeItem("expert_aboutMe");
+        localStorage.removeItem("expert_portfolioLink");
+        localStorage.removeItem("expert_officeAddress");
+        localStorage.removeItem("expert_govRegNumber");
+        localStorage.removeItem("expert_expertiseTags");
+        localStorage.removeItem("expert_countriesExpertise");
+        localStorage.removeItem("expert_profilePhoto");
+        localStorage.removeItem("expert_isLoggedIn");
+        
+        syncAuthHeader();
+        window.location.href = "/";
+    };
+
+    const desktopLogoutBtn = document.getElementById("nav-profile-logout-btn");
+    const mobileLogoutBtn = document.getElementById("mobile-nav-profile-logout-btn");
+
+    if (desktopLogoutBtn) desktopLogoutBtn.addEventListener("click", handleLogout);
+    if (mobileLogoutBtn) mobileLogoutBtn.addEventListener("click", handleLogout);
 </script>
 
 <style is:global>

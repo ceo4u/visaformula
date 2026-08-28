@@ -33,6 +33,23 @@ const {
 
 const cleanCanonical = canonical || Astro.url.origin + Astro.url.pathname;
 const currentUrl = cleanCanonical;
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const isJobs = Astro.url.pathname === '/jobs' || Astro.url.pathname === '/jobs/';
+const isTours = Astro.url.pathname === '/tours' || Astro.url.pathname === '/tours/';
+const isEvents = Astro.url.pathname === '/events' || Astro.url.pathname === '/events/' || Astro.url.pathname.startsWith('/events');
+const isChannelPartner = Astro.url.pathname.startsWith('/channel-partner');
+const isCommunity = Astro.url.pathname.startsWith('/community');
+const isVisaCountryPage = Astro.url.pathname.startsWith('/visa/') || Astro.url.pathname.startsWith('/visa');
+const shouldHideWidgets = hideWidgets || isChannelPartner || isCommunity || isVisaCountryPage;
+
+const safeTitle = title || "The Global Immigration & Mobility Platform | Marketplace";
+const pageTitle = isHome 
+  ? "TravlTik — The Global Immigration & Mobility Platform | Marketplace" 
+  : safeTitle.includes("TravlTik")
+  ? `${safeTitle} | Global Immigration Marketplace`
+  : `${safeTitle} | TravlTik — Global Immigration Marketplace`;
+
+const ogTitle = pageTitle;
 
 const defaultSchema = {
   "@context": "https://schema.org",

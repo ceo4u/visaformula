@@ -2948,23 +2948,6 @@ export function VisaCountryResultPortal({
           {hasVisaAlready === 'no' && activePurposeTab === 'study' && (
             <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-12 text-left space-y-8 animate-fadeIn">
               
-              {/* Header Banner */}
-              <div className="bg-gradient-to-r from-slate-900 via-slate-850 to-emerald-950 text-white rounded-[32px] p-6 sm:p-10 shadow-xl border border-slate-800 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-                <div className="relative z-10 space-y-3 max-w-3xl">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-emerald-300">
-                    <GraduationCap className="w-4 h-4 text-emerald-400" />
-                    <span>Study Visa Application Roadmap (Have Visa: No)</span>
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-black tracking-tight leading-tight">
-                    Your 3-Step Journey to Study in {countryName} {flagEmoji}
-                  </h2>
-                  <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
-                    Follow this structured step-by-step roadmap to explore verified institutions, secure your official admission letter, and unlock fast-track visa filing.
-                  </p>
-                </div>
-              </div>
-
               {/* ================================================== */}
               {/* 1. STEP-BY-STEP APPLICATION ROADMAP (3 STEPS) */}
               {/* ================================================== */}

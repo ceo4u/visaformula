@@ -2392,8 +2392,8 @@ export function VisaCountryResultPortal({
                       Purpose: {activePurposeTab.toUpperCase()}
                     </span>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-heading font-semibold text-slate-900 tracking-tight text-slate-900 tracking-tight">
-                    Tell us about your trip to {countryName}
+                  <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-900 tracking-tight">
+                    Apply for your Visa to {countryName}
                   </h3>
                 </div>
 

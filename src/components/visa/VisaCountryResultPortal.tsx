@@ -1431,38 +1431,112 @@ export function VisaCountryResultPortal({
             </div>
           </div>
 
-          {/* ── PASSPORT SECURITY BANNER ── */}
-          <div className="bg-[#F4F7FE] border border-blue-100/90 rounded-2xl p-6 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden mt-6 shadow-2xs">
-            <div className="flex items-start gap-4 z-10 text-left">
-              <div className="w-12 h-12 rounded-2xl bg-white shadow-xs border border-slate-200 flex items-center justify-center text-slate-900 shrink-0">
-                <Shield className="w-6 h-6 stroke-[2.2]" />
+          {/* ── PASSPORT SECURITY BANNER (MATCHING USER REFERENCE) ── */}
+          <div className="bg-[#F8FAFF] border border-blue-100/80 rounded-3xl p-6 sm:p-0 sm:pl-8 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 relative shadow-2xs mt-6">
+            
+            {/* Left Content */}
+            <div className="flex items-center gap-4 text-left py-4 sm:py-6 z-10">
+              <div className="w-14 h-14 rounded-2xl bg-[#EEF2FF] border border-indigo-100/60 flex items-center justify-center text-[#4F46E5] shadow-xs shrink-0">
+                <Lock className="w-6 h-6 text-[#4F46E5] fill-[#4F46E5] stroke-[1.8]" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg sm:text-xl font-heading font-bold text-slate-900">
-                  Passport Security. <span className="text-slate-900">Then all else</span>
+                <h4 className="text-lg sm:text-xl font-heading font-bold text-slate-900 tracking-tight">
+                  Passport Security. <span className="text-[#4338CA]">Then all else</span>
                 </h4>
-                <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-xl">
-                  We secure your passport in a safe box and locker at all times.<br />
-                  <strong className="text-slate-800 font-semibold">Never out of our sight. 50 lakh passports securely handled already.</strong>
+                <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
+                  We secure your passport in a safe box and locker at all times.<br className="hidden sm:inline" />
+                  <strong className="text-slate-800 font-bold block sm:inline sm:mt-0 mt-0.5">Never out of our sight. 50 lakh passports securely handled already.</strong>
                 </p>
               </div>
             </div>
 
-            {/* Glowing Biometric Safe Box Visual */}
-            <div className="shrink-0 relative w-56 sm:w-64 h-32 flex items-center justify-center">
-              <div className="w-full h-full rounded-2xl bg-gradient-to-br from-[#0c1222] via-[#161f38] to-[#0f172a] p-4 flex flex-col items-center justify-center relative shadow-xl border border-slate-700/80">
-                <div className="absolute inset-0 bg-blue-500/10 rounded-2xl animate-pulse" />
-                <div className="w-18 h-20 rounded-xl bg-slate-950/90 border border-slate-600 shadow-[0_0_20px_rgba(15,23,42,0.6)] flex flex-col items-center justify-center p-2 text-center relative z-10">
-                  <span className="text-[9px] font-mono text-slate-300 font-bold uppercase tracking-widest block">PASSPORT</span>
-                  <Lock className="w-5 h-5 text-emerald-400 my-1 stroke-[2.2]" />
-                  <span className="text-[8px] text-emerald-400 font-bold font-mono">SEALED ✓</span>
-                </div>
-                <div className="absolute bottom-2 text-[10px] font-mono text-slate-400 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  <span>BIOMETRIC ESCROW VAULT</span>
-                </div>
+            {/* Right Side: Black Circular Platform with 3D Open Safe Box & Glowing Passport */}
+            <div className="w-full md:w-auto self-stretch flex items-center justify-center md:justify-end overflow-hidden shrink-0">
+              <div className="w-56 sm:w-64 md:w-72 h-36 sm:h-44 bg-gradient-to-l from-[#0a0d14] via-[#121824] to-[#1c2436] rounded-2xl md:rounded-r-none md:rounded-l-full shadow-2xl border-l border-t border-b border-slate-700/60 flex items-center justify-center relative p-3 shrink-0">
+                {/* Ambient Spotlight */}
+                <div className="absolute inset-0 bg-radial from-blue-500/20 via-transparent to-transparent pointer-events-none rounded-2xl md:rounded-l-full" />
+
+                {/* 3D Open Safe Box with Glowing Passport SVG */}
+                <svg viewBox="0 0 200 150" className="w-44 sm:w-52 h-auto drop-shadow-[0_12px_24px_rgba(0,0,0,0.8)] z-10 select-none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="lidOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#374151" />
+                      <stop offset="100%" stopColor="#111827" />
+                    </linearGradient>
+                    <linearGradient id="lidInner" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#1F2937" />
+                      <stop offset="100%" stopColor="#0B0F19" />
+                    </linearGradient>
+                    <linearGradient id="safeOuterBase" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#334155" />
+                      <stop offset="50%" stopColor="#1E293B" />
+                      <stop offset="100%" stopColor="#0F172A" />
+                    </linearGradient>
+                    <linearGradient id="safeWellGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#020617" />
+                      <stop offset="100%" stopColor="#0F172A" />
+                    </linearGradient>
+                    <linearGradient id="neonGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#38BDF8" />
+                      <stop offset="50%" stopColor="#3B82F6" />
+                      <stop offset="100%" stopColor="#6366F1" />
+                    </linearGradient>
+                    <linearGradient id="passportNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#1E3A8A" />
+                      <stop offset="100%" stopColor="#0F172A" />
+                    </linearGradient>
+                    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+                      <feGaussianBlur stdDeviation="4" result="blur" />
+                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                  </defs>
+
+                  {/* Soft base shadow */}
+                  <ellipse cx="108" cy="128" rx="65" ry="14" fill="#000000" fillOpacity="0.6" filter="blur(5px)" />
+
+                  {/* Open Hinged Lid (Upright 3D perspective) */}
+                  <path d="M 62 62 L 76 12 L 148 22 L 138 68 Z" fill="url(#lidOuter)" stroke="#475569" strokeWidth="1.5" />
+                  <path d="M 67 58 L 79 18 L 142 27 L 133 63 Z" fill="url(#lidInner)" stroke="#1E293B" strokeWidth="1" />
+                  {/* Lid hinges */}
+                  <rect x="74" y="58" width="6" height="5" rx="1.5" fill="#94A3B8" />
+                  <rect x="124" y="64" width="6" height="5" rx="1.5" fill="#94A3B8" />
+
+                  {/* Safe Box Body (Isometric Base) */}
+                  <path d="M 54 66 L 138 68 L 168 108 L 84 130 L 54 66 Z" fill="url(#safeOuterBase)" stroke="#475569" strokeWidth="1.2" />
+
+                  {/* Safe Rim Neon Blue Glow */}
+                  <path d="M 58 70 L 134 72 L 160 104 L 88 124 Z" fill="none" stroke="url(#neonGlowGrad)" strokeWidth="2.5" filter="url(#softGlow)" />
+                  <path d="M 58 70 L 134 72 L 160 104 L 88 124 Z" fill="none" stroke="#E0F2FE" strokeWidth="0.8" />
+
+                  {/* Safe Box Deep Well */}
+                  <path d="M 62 72 L 132 74 L 156 102 L 92 120 Z" fill="url(#safeWellGrad)" />
+
+                  {/* Radiant Neon Blue Light Floor */}
+                  <ellipse cx="112" cy="96" rx="34" ry="16" fill="#3B82F6" fillOpacity="0.55" filter="url(#softGlow)" />
+
+                  {/* Laser Scan Rays inside safe */}
+                  <line x1="78" y1="82" x2="146" y2="108" stroke="#38BDF8" strokeWidth="0.8" strokeOpacity="0.6" strokeDasharray="3 2" />
+                  <line x1="88" y1="114" x2="136" y2="76" stroke="#38BDF8" strokeWidth="0.8" strokeOpacity="0.6" strokeDasharray="3 2" />
+
+                  {/* Passport Book Resting on the Neon Cushion */}
+                  <g className="transition-all hover:scale-105 origin-center">
+                    {/* Shadow of passport */}
+                    <polygon points="86,88 122,82 136,104 98,112" fill="#000000" fillOpacity="0.5" />
+                    {/* Passport Cover */}
+                    <polygon points="84,86 120,80 134,102 96,110" fill="url(#passportNavy)" stroke="#60A5FA" strokeWidth="1.2" />
+                    
+                    {/* Golden Emblem on Passport */}
+                    <circle cx="110" cy="94" r="5" fill="#FBBF24" fillOpacity="0.95" />
+                    <circle cx="110" cy="94" r="3" fill="#B45309" fillOpacity="0.4" />
+                    
+                    {/* Gold text lines on passport */}
+                    <line x1="104" y1="87" x2="116" y2="85" stroke="#FDE68A" strokeWidth="1" />
+                    <rect x="103" y="101" width="14" height="2" rx="1" fill="#FBBF24" fillOpacity="0.9" />
+                  </g>
+                </svg>
               </div>
             </div>
+
           </div>
 
         </div>

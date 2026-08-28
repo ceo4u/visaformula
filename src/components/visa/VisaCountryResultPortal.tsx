@@ -124,7 +124,8 @@ import {
   ExternalLink,
   BookOpen,
   BadgeCheck,
-  HeartHandshake
+  HeartHandshake,
+  Search
 } from 'lucide-react';
 
 export interface VisaCountryData {

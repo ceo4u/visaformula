@@ -2964,204 +2964,197 @@ export function VisaCountryResultPortal({
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {isStudyPurpose ? (
-                  <>
-                    {/* Document 1: IPA Letter */}
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
-                        <FileText className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          {countryName.toLowerCase().includes('singapore')
-                            ? 'ICA Singapore In-Principle Approval (IPA) Letter'
-                            : `Official ${countryName} Student Visa / IPA Approval Letter`}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Official electronic pre-approval letter issued by immigration authorities prior to flight check-in.
-                        </p>
-                      </div>
-                    </div>
+              {/* Embassy Official Format Table */}
+              <div className="bg-white border border-slate-300 rounded-2xl overflow-hidden shadow-2xs">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-300 text-slate-700 text-xs sm:text-sm font-bold uppercase tracking-wider">
+                        <th className="py-3.5 px-4 sm:px-6 w-14 sm:w-20 text-center border-r border-slate-300">#</th>
+                        <th className="py-3.5 px-4 sm:px-6 w-48 sm:w-64 border-r border-slate-300">Document</th>
+                        <th className="py-3.5 px-4 sm:px-6">Specification &amp; Requirements</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-300 text-xs sm:text-sm text-slate-700">
+                      
+                      {/* Row 1: Visa Application Form */}
+                      <tr className="hover:bg-slate-50/50 transition-colors">
+                        <td className="py-5 px-4 sm:px-6 text-center font-bold text-slate-500 border-r border-slate-300 align-top">
+                          1
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 font-bold text-slate-900 border-r border-slate-300 align-top font-heading">
+                          Visa application form
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 align-top space-y-1.5">
+                          <div className="flex items-start gap-2">
+                            <span className="text-slate-400 font-bold">-</span>
+                            <span>Fully completed and signed by the applicant.</span>
+                          </div>
+                          {isStudyPurpose && (
+                            <div className="flex items-start gap-2">
+                              <span className="text-slate-400 font-bold">-</span>
+                              <span>Includes student visa supplementary declaration &amp; guardian details if applicant is a minor.</span>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
 
-                    {/* Document 2: University Acceptance & SOLAR */}
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                        <BookOpen className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          {countryName.toLowerCase().includes('singapore')
-                            ? 'University Acceptance & SOLAR Application Reference ID'
-                            : 'University Acceptance Letter & Enrollment Reference ID'}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Confirmed offer letter from an approved Institute of Higher Learning (IHL) with registration details.
-                        </p>
-                      </div>
-                    </div>
+                      {/* Row 2: Two recent passport-sized pictures */}
+                      <tr className="hover:bg-slate-50/50 transition-colors">
+                        <td className="py-5 px-4 sm:px-6 text-center font-bold text-slate-500 border-r border-slate-300 align-top">
+                          2
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 font-bold text-slate-900 border-r border-slate-300 align-top font-heading">
+                          Two recent passport-sized pictures
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 align-top space-y-1.5">
+                          <div className="flex items-start gap-2">
+                            <span className="text-slate-400 font-bold">-</span>
+                            <span>In colour, 3.5 x 4 cm (approx. 1.2 x 1.6 inch).</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="text-slate-400 font-bold">-</span>
+                            <span>Facing forward, white background, neutral facial expression.</span>
+                          </div>
+                        </td>
+                      </tr>
 
-                    {/* Document 3: Form 16 & Form V36 */}
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                        <FileText className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          {countryName.toLowerCase().includes('singapore')
-                            ? 'Form 16 & Form V36 e-Filing Copies'
-                            : 'Student Visa Application & Biometric Registration Forms'}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Completed and signed official immigration e-forms and applicant declaration copies.
-                        </p>
-                      </div>
-                    </div>
+                      {/* Row 3: Passport */}
+                      <tr className="hover:bg-slate-50/50 transition-colors">
+                        <td className="py-5 px-4 sm:px-6 text-center font-bold text-slate-500 border-r border-slate-300 align-top">
+                          3
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 font-bold text-slate-900 border-r border-slate-300 align-top font-heading">
+                          Passport
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 align-top space-y-1.5">
+                          <div className="flex items-start gap-2">
+                            <span className="text-slate-400 font-bold">-</span>
+                            <span>Valid for at least three (3) to six (6) months after date of return to origin.</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="text-slate-400 font-bold">-</span>
+                            <span>Containing at least two (2) blank visa pages.</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="text-slate-400 font-bold">-</span>
+                            <span>Issued within the previous ten (10) years.</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="text-slate-400 font-bold">-</span>
+                            <span>1 copy of the identification bio-data page and 1 copy of all visa stamp pages.</span>
+                          </div>
+                        </td>
+                      </tr>
 
-                    {/* Document 4: Bank Proof / Loan */}
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                        <Building2 className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Bank Proof / Educational Loan Approval Letter
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Verified proof of liquid funds, bank statements (last 6 months), or sanctioned education loan.
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                ) : isWorkPurpose ? (
-                  <>
-                    {/* Work Doc 1: MOM IPA Letter */}
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
-                        <FileText className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          {countryName.toLowerCase().includes('singapore')
-                            ? 'MOM In-Principle Approval (IPA) Letter'
-                            : `Official ${countryName} Work Pass / IPA Approval Letter`}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          {countryName.toLowerCase().includes('singapore')
-                            ? 'Official pre-approval issued by Ministry of Manpower (MOM).'
-                            : 'Official pre-approval issued by immigration and labour authorities.'}
-                        </p>
-                      </div>
-                    </div>
+                      {/* Row 4: Medical Insurance */}
+                      <tr className="hover:bg-slate-50/50 transition-colors">
+                        <td className="py-5 px-4 sm:px-6 text-center font-bold text-slate-500 border-r border-slate-300 align-top">
+                          4
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 font-bold text-slate-900 border-r border-slate-300 align-top font-heading">
+                          <div>Medical Insurance</div>
+                          <span className="text-xs text-slate-500 font-normal block mt-1">
+                            (holders of diplomatic passports are exempted)
+                          </span>
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 align-top space-y-4">
+                          <div className="flex items-start gap-2">
+                            <span className="text-slate-400 font-bold">-</span>
+                            <span>
+                              Minimum coverage 30,000 EURO (or USD $50,000 equivalent), for medical costs and emergency medical repatriation, valid across destination and transit zones during the entire duration of the issued visa.
+                            </span>
+                          </div>
+                          
+                          <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-3">
+                            <p className="text-xs text-slate-600 leading-relaxed">
+                              You can purchase insurance coverage from any insurer of your selection. However, in order to expedite and facilitate your application, TravlTik provides direct consular-approved insurance policy issuance.
+                            </p>
+                            
+                            <div>
+                              <a
+                                href="/talk-to-us"
+                                className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-[#004B87] hover:bg-[#003866] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-xs"
+                              >
+                                FIND A MEDICAL INSURANCE
+                              </a>
+                            </div>
 
-                    {/* Work Doc 2: Signed Employment Contract */}
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                        <Briefcase className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Signed Employment Contract
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          {countryName.toLowerCase().includes('singapore')
-                            ? 'Copy of signed offer letter from licensed Singapore employer.'
-                            : `Copy of signed offer letter from licensed sponsoring employer in ${countryName}.`}
-                        </p>
-                      </div>
-                    </div>
+                            <p className="text-[11px] text-slate-400 italic leading-relaxed pt-1">
+                              Disclaimer: By clicking "Find a medical insurance", you will be assisted with verified insurance partners. TravlTik does not accept liability arising from insurer underwriting decisions.
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
 
-                    {/* Work Doc 3: Educational & Credential Verification */}
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                        <GraduationCap className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Educational &amp; Credential Verification
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          {countryName.toLowerCase().includes('singapore')
-                            ? 'Recognized University degree certificates and COMPASS qualification evaluation.'
-                            : 'Recognized degree certificates and verified credential evaluation (ECA / WES).'}
-                        </p>
-                      </div>
-                    </div>
+                      {/* Row 5: Purpose Specific Required Documents */}
+                      <tr className="hover:bg-slate-50/50 transition-colors">
+                        <td className="py-5 px-4 sm:px-6 text-center font-bold text-slate-500 border-r border-slate-300 align-top">
+                          5
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 font-bold text-slate-900 border-r border-slate-300 align-top font-heading">
+                          Required Documents
+                          <span className="text-xs text-[#00A86B] font-bold block mt-1">
+                            {isStudyPurpose ? '(Student Specific)' : isWorkPurpose ? '(Employment Specific)' : '(Travel Specific)'}
+                          </span>
+                        </td>
+                        <td className="py-5 px-4 sm:px-6 align-top space-y-2.5">
+                          <p className="text-xs font-semibold text-slate-700">
+                            Additionally, and according to the purpose of the journey, applicant shall present the necessary verified documents:
+                          </p>
 
-                    {/* Work Doc 4: Passport & Photo Upload */}
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                        <Camera className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Passport &amp; Photo Upload
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          High-resolution passport biodata scan valid for at least 6 months with clear digital photo.
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#00A86B] flex items-center justify-center shrink-0">
-                        <FileText className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Original Passport / Clear Scan
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Valid for at least 6 months beyond travel date with 2 blank pages.
-                        </p>
-                      </div>
-                    </div>
+                          {isStudyPurpose ? (
+                            <div className="space-y-2 pl-1">
+                              <div className="flex items-start gap-2">
+                                <span className="text-slate-400 font-bold">-</span>
+                                <span><strong>University Acceptance Letter:</strong> Confirmed unconditional offer letter and enrollment reference ID from an approved Institute of Higher Learning.</span>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <span className="text-slate-400 font-bold">-</span>
+                                <span><strong>Financial Solvency Proof:</strong> Verified liquid bank statements (last 6 months), tuition fee receipt, or sanctioned educational loan letter.</span>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <span className="text-slate-400 font-bold">-</span>
+                                <span><strong>Academic & Language Records:</strong> Recognized degree certificates, mark sheets, and standardized language test scorecard (IELTS / PTE / TOEFL).</span>
+                              </div>
+                            </div>
+                          ) : isWorkPurpose ? (
+                            <div className="space-y-2 pl-1">
+                              <div className="flex items-start gap-2">
+                                <span className="text-slate-400 font-bold">-</span>
+                                <span><strong>Signed Employment Contract:</strong> Copy of signed offer letter with sponsoring employer credentials.</span>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <span className="text-slate-400 font-bold">-</span>
+                                <span><strong>Labour Approval & Work Authorization:</strong> In-Principle Approval (IPA), CoS, or Ministry of Labour clearance.</span>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <span className="text-slate-400 font-bold">-</span>
+                                <span><strong>Credential Verification:</strong> Recognized degree certificates and verified credential evaluation (ECA / WES).</span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="space-y-2 pl-1">
+                              <div className="flex items-start gap-2">
+                                <span className="text-slate-400 font-bold">-</span>
+                                <span><strong>Flight Itinerary:</strong> Confirmed round-trip flight booking or itinerary reservation with entry and exit dates.</span>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <span className="text-slate-400 font-bold">-</span>
+                                <span><strong>Accommodation Proof:</strong> Verified hotel booking voucher or host sponsorship letter.</span>
+                              </div>
+                              <div className="flex items-start gap-2">
+                                <span className="text-slate-400 font-bold">-</span>
+                                <span><strong>Financial Solvency Proof:</strong> Bank account statements of the last 3-6 months with bank seal and stamp.</span>
+                              </div>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
 
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                        <Camera className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          1 Passport Photo / Clean Selfie
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          White background. Take selfie on phone, our AI formats it automatically.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                        <Plane className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Confirmed Flight Itinerary
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Return or onward ticket. Don't worry, TravlTik can provide embassy itinerary holding.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 flex items-start gap-4 shadow-2xs">
-                      <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                        <Building2 className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-slate-900">
-                          Hotel Booking / Stay Proof
-                        </h4>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                          Verified hotel reservation or host invitation letter for immigration stamping.
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 

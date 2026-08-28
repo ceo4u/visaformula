@@ -1419,6 +1419,35 @@ export function VisaCountryResultPortal({
     return getAIVisaIntelligence(passportCountry, countryName, activePurposeTab);
   }, [passportCountry, countryName, activePurposeTab]);
 
+  // Dynamic Purpose-Synchronized Specifications
+  const isStudyPurpose = activePurposeTab === 'study';
+  const isWorkPurpose = activePurposeTab === 'work';
+  const isTouristPurpose = activePurposeTab === 'tourism';
+
+  const dynamicLengthOfStay = isStudyPurpose
+    ? 'Duration of Course (1 - 4 Years)'
+    : isWorkPurpose
+    ? '1 to 5 Years (Renewable)'
+    : baseData.lengthOfStay || '30 Days';
+
+  const dynamicStayCategory = isStudyPurpose
+    ? "Student's Pass / Visa"
+    : isWorkPurpose
+    ? 'Work Permit / Pass'
+    : 'Tourist & Leisure';
+
+  const dynamicValidity = isStudyPurpose
+    ? 'Full Course Duration + 90 Days'
+    : isWorkPurpose
+    ? 'Employment Contract Duration'
+    : validity;
+
+  const dynamicVisaType = isStudyPurpose
+    ? (countryName.toLowerCase().includes('singapore') ? "Student's Pass (STP via SOLAR)" : 'Student Visa / Study Permit')
+    : isWorkPurpose
+    ? (countryName.toLowerCase().includes('singapore') ? 'Employment Pass / S Pass' : 'Work Visa / Employment Permit')
+    : visaType;
+
   // Auto-Save / Synchronize Active Visa Search & Roadmap to User Dashboard & Database
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -1477,41 +1506,13 @@ export function VisaCountryResultPortal({
     hasVisaAlready,
     aiIntel,
     dynamicVisaType,
+    dynamicLengthOfStay,
     selectedUniId,
     selectedCourseMajor,
     uploadedDocuments,
     selectedConciergeAddons,
     casNumberInput
   ]);
-
-  // Dynamic Purpose-Synchronized Specifications
-  const isStudyPurpose = activePurposeTab === 'study';
-  const isWorkPurpose = activePurposeTab === 'work';
-  const isTouristPurpose = activePurposeTab === 'tourism';
-
-  const dynamicLengthOfStay = isStudyPurpose
-    ? 'Duration of Course (1 - 4 Years)'
-    : isWorkPurpose
-    ? '1 to 5 Years (Renewable)'
-    : baseData.lengthOfStay || '30 Days';
-
-  const dynamicStayCategory = isStudyPurpose
-    ? "Student's Pass / Visa"
-    : isWorkPurpose
-    ? 'Work Permit / Pass'
-    : 'Tourist & Leisure';
-
-  const dynamicValidity = isStudyPurpose
-    ? 'Full Course Duration + 90 Days'
-    : isWorkPurpose
-    ? 'Employment Contract Duration'
-    : validity;
-
-  const dynamicVisaType = isStudyPurpose
-    ? (countryName.toLowerCase().includes('singapore') ? "Student's Pass (STP via SOLAR)" : 'Student Visa / Study Permit')
-    : isWorkPurpose
-    ? (countryName.toLowerCase().includes('singapore') ? 'Employment Pass / S Pass' : 'Work Visa / Employment Permit')
-    : visaType;
 
   // Dynamic Foreign Travel Advisory Resolution
   const advisoryInfo = useMemo(() => {

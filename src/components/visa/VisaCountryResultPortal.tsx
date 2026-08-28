@@ -2260,37 +2260,213 @@ export function VisaCountryResultPortal({
               </div>
             </div>
 
-            {/* 2. 3-STEP VISUAL PROGRESSION */}
-            <div className="space-y-4 text-left">
-              <div className="space-y-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#00A86B]">
-                  Effortless 3-Step Process
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900 tracking-tight">
-                  How getting your {countryName} visa works
-                </h2>
+            {/* ================================================== */}
+            {/* 2. ATLYS-STYLE COMPARISON TIMELINE (DOING IT WITH ATLYS vs DOING IT YOURSELF) */}
+            {/* ================================================== */}
+            <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 lg:p-10 space-y-10 shadow-xs text-left overflow-x-auto">
+              
+              {/* SECTION A: DOING IT WITH ATLYS */}
+              <div className="space-y-4 min-w-[640px]">
+                <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#4F46E5] font-heading">
+                  DOING IT WITH ATLYS
+                </h3>
+
+                <div className="relative pt-10 pb-12">
+                  {/* Connecting Solid Bar */}
+                  <div className="absolute top-[84px] left-8 right-8 h-1 bg-[#4F46E5] -z-0 rounded-full" />
+
+                  {/* 4 Nodes */}
+                  <div className="grid grid-cols-4 relative z-10">
+                    
+                    {/* Node 1: Top text */}
+                    <div className="flex flex-col items-center text-center px-2">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[140px]">
+                          Submit all your documents on Atlys
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                        1
+                      </div>
+                      <div className="h-16" />
+                    </div>
+
+                    {/* Node 2: Bottom text */}
+                    <div className="flex flex-col items-center text-center px-2">
+                      <div className="h-16" />
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                        2
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[140px]">
+                          Atlys comes to collect your passport
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Node 3: Top text */}
+                    <div className="flex flex-col items-center text-center px-2">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[150px]">
+                          We constantly give you updates and a reliable ETA.
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                        3
+                      </div>
+                      <div className="h-16" />
+                    </div>
+
+                    {/* Node 4: Bottom text */}
+                    <div className="flex flex-col items-center text-center px-2">
+                      <div className="h-16" />
+                      <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
+                        4
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[150px]">
+                          When approved, we drop your passport back to you!
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                {steps.map((step, idx) => (
-                  <div key={idx} className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xs hover:shadow-xs transition-all relative overflow-hidden group">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-[#00A86B]/10 text-[#00A86B] font-bold flex items-center justify-center text-sm font-heading group-hover:scale-105 transition-transform">
-                        {step.num}
+              {/* SECTION B: DOING IT YOURSELF */}
+              <div className="space-y-4 min-w-[740px] pt-6 border-t border-slate-100">
+                <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-black font-heading">
+                  DOING IT YOURSELF
+                </h3>
+
+                <div className="relative pt-10 pb-12">
+                  {/* Connecting Solid Black Bar */}
+                  <div className="absolute top-[84px] left-6 right-6 h-1 bg-black -z-0 rounded-full" />
+
+                  {/* 8 Nodes */}
+                  <div className="grid grid-cols-8 relative z-10">
+                    
+                    {/* Node 1: Top */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Gather all your documents at home
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
-                      <span className="text-[11px] font-semibold text-slate-400 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-100">
-                        {step.badge}
-                      </span>
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        1
+                      </div>
+                      <div className="h-16" />
                     </div>
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1.5">
-                      {step.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
-                      {step.desc}
-                    </p>
+
+                    {/* Node 2: Bottom */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16" />
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        2
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Get your documents printed at a print shop
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Node 3: Top */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Get stuck in traffic driving to the embassy
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        3
+                      </div>
+                      <div className="h-16" />
+                    </div>
+
+                    {/* Node 4: Bottom */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16" />
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        4
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Spend 3+ hours at the embassy
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Node 5: Top */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Get stuck in traffic on the way back home
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        5
+                      </div>
+                      <div className="h-16" />
+                    </div>
+
+                    {/* Node 6: Bottom */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16" />
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        6
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Wait anxiously for your visa approval
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Node 7: Top */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Go back to embassy to pick up passport
+                        </span>
+                        <span className="text-slate-400 text-xs mt-1">|</span>
+                      </div>
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        7
+                      </div>
+                      <div className="h-16" />
+                    </div>
+
+                    {/* Node 8: Bottom */}
+                    <div className="flex flex-col items-center text-center px-1">
+                      <div className="h-16" />
+                      <div className="w-9 h-9 rounded-full bg-black text-white font-bold flex items-center justify-center text-xs shadow-md ring-4 ring-white">
+                        8
+                      </div>
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
+                        <span className="text-slate-400 text-xs mb-1">|</span>
+                        <span className="text-[11px] sm:text-xs font-semibold text-slate-800 leading-snug">
+                          Drive back home
+                        </span>
+                      </div>
+                    </div>
+
                   </div>
-                ))}
+                </div>
               </div>
+
             </div>
 
             {/* 3. ATLYS TRUST & STATS STRIP */}

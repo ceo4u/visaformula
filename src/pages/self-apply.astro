@@ -1071,7 +1071,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         <!-- Service Suggestions -->
         <div style="margin-top:20px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px 20px;">
           <div style="font-weight:700;font-size:15px;margin-bottom:8px;">💡 Suggested Services for You</div>
-          <p style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">Based on your visa type (Canada Student Visa), we recommend:</p>
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">Based on your selected destination and visa category, we recommend:</p>
           <div class="service-grid" style="grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));">
             <div class="suggested-service-card" onclick="toggleSuggestedService(this)" style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s ease;">
               <div style="font-size:26px;margin-bottom:4px;">📄</div>
@@ -1157,8 +1157,8 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         <!-- Order Summary -->
         <div class="order-summary">
           <div style="font-weight:700;font-size:15px;margin-bottom:8px;">Order Summary</div>
-          <div class="row"><span>Visa Type</span><span>Canada Student Visa</span></div>
-          <div class="row"><span>Applicant</span><span>Rahul Kumar (P1234567)</span></div>
+          <div class="row"><span>Visa Type</span><span id="reviewVisaType">Tourist / Visit Visa</span></div>
+          <div class="row"><span>Applicant</span><span id="reviewApplicant">Applicant Name</span></div>
           <div class="row"><span>📄 Documentation Package</span><span>₹999</span></div>
           <div class="row"><span>📝 Form Filing</span><span>₹1,499</span></div>
           <div class="row"><span>🗓️ VFS Appointment</span><span>₹499</span></div>
@@ -1304,6 +1304,22 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
       document.getElementById('progressFill').style.width = `${Math.min(progress, 100)}%`;
       document.getElementById('progressText').textContent = step <= totalSteps ? `Step ${step} of ${totalSteps}` : 'Complete!';
       document.getElementById('progressPercent').textContent = step <= totalSteps ? `${Math.round(progress)}%` : '100%';
+
+      // Update Review & Pay step summary dynamically
+      if (step === 4) {
+        const fName = document.getElementById('firstName')?.value?.trim() || '';
+        const lName = document.getElementById('lastName')?.value?.trim() || '';
+        const pNo = document.getElementById('passportNo')?.value?.trim() || '';
+        const fullName = (fName || lName) ? `${fName} ${lName}`.trim() : 'Applicant Name';
+        const applicantText = pNo ? `${fullName} (${pNo})` : fullName;
+        const reviewApplicant = document.getElementById('reviewApplicant');
+        if (reviewApplicant) reviewApplicant.textContent = applicantText;
+
+        const cText = document.querySelector('.country-card.selected .name')?.textContent?.trim() || selectedCountry || 'Target Country';
+        const vText = document.querySelector('.visa-pill.selected')?.textContent?.trim() || selectedVisa || 'Tourist Visa';
+        const reviewVisaType = document.getElementById('reviewVisaType');
+        if (reviewVisaType) reviewVisaType.textContent = `${cText} ${vText}`;
+      }
     }
 
     // ==========================================

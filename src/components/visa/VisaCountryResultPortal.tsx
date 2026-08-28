@@ -1290,43 +1290,6 @@ export function VisaCountryResultPortal({
 
           </div>
 
-          {/* Atlys-Style "Check your pincode coverage" Card */}
-          <div className="bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-6 shadow-2xs space-y-3.5">
-            <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-900">
-              <MapPin className="w-4 h-4 text-slate-900 stroke-[2.2]" />
-              <span>Check your pincode coverage</span>
-            </div>
-            
-            <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex-1 min-w-[160px] border-b-2 border-dashed border-slate-300 pb-1.5 flex items-center">
-                <input
-                  type="text"
-                  maxLength={6}
-                  value={pincode}
-                  onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
-                  placeholder="Enter 6-digit pincode"
-                  className="w-full bg-transparent text-sm sm:text-base font-mono font-bold tracking-widest text-slate-900 focus:outline-none placeholder:text-slate-400 placeholder:tracking-normal placeholder:font-sans placeholder:font-normal placeholder:text-xs"
-                />
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setPincodeStatus('supported')}
-                  className="px-4 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer active:scale-95 shadow-2xs"
-                >
-                  Enter
-                </button>
-                {pincodeStatus === 'supported' && (
-                  <span className="px-4 py-1.5 rounded-full bg-[#EEF2FF] text-[#4F46E5] border border-indigo-100 text-xs font-bold flex items-center gap-1.5 shadow-2xs animate-fade-in">
-                    <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                    <span>Supported</span>
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-
           {/* ── SECTION 1: VISA FEES AND PROCESSING ── */}
           <div className="space-y-3 pt-2">
             <div className="flex items-center gap-2">

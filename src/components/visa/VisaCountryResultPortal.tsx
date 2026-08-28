@@ -3112,37 +3112,6 @@ export function VisaCountryResultPortal({
                       ))}
                     </div>
                   </div>
-
-                  {/* 4-Stage Application Progress Tracker */}
-                  <div className="bg-gradient-to-r from-slate-50 via-slate-50/50 to-emerald-50/30 border border-slate-200/90 rounded-2xl p-5 sm:p-6 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-slate-950 uppercase tracking-wider flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-[#00A86B]" />
-                        <span>Integrated Application Tracker</span>
-                      </span>
-                      <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-100 border border-emerald-200/80 px-3 py-0.5 rounded-full flex items-center gap-1.5 shadow-2xs">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                        <span>Admission Confirmed</span>
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                      {[
-                        { stage: '1', label: '1. Profile Shortlisted', desc: 'Eligibility match 98%', status: 'Done' },
-                        { stage: '2', label: '2. Transcripts Uploaded', desc: 'Evaluated & verified', status: 'Done' },
-                        { stage: '3', label: '3. Application Filed', desc: 'Direct portal submission', status: 'Done' },
-                        { stage: '4', label: '4. Offer Letter Issued', desc: 'Unconditional acceptance', status: 'Approved' }
-                      ].map((st) => (
-                        <div key={st.stage} className="p-3.5 bg-white rounded-xl border border-slate-200/90 text-left space-y-1 shadow-2xs hover:border-emerald-300 transition-colors">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-black text-slate-950">{st.label}</span>
-                            <CheckCircle2 className="w-4 h-4 text-[#00A86B]" />
-                          </div>
-                          <p className="text-[11px] text-slate-500 font-medium leading-tight">{st.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
                 {/* ── STEP 3: RECEIVE FORM I-20 / OFFICIAL ADMISSION LETTER ── */}

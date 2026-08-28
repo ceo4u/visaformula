@@ -3188,33 +3188,61 @@ export function VisaCountryResultPortal({
                     Choose between connecting with certified local immigration consultants or applying directly online.
                   </p>
 
-                  {/* Clean Segment Switch */}
-                  <div className="inline-flex p-1.5 rounded-2xl bg-slate-100 border border-slate-200/80 shadow-inner max-w-full overflow-x-auto">
-                    <button
-                      type="button"
-                      onClick={() => setStudentActionTab('consultants')}
-                      className={`flex items-center gap-2 px-6 sm:px-8 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap active:scale-95 ${
-                        studentActionTab === 'consultants'
-                          ? 'bg-slate-950 text-white shadow-md'
-                          : 'text-slate-700 hover:text-slate-950 hover:bg-slate-200/50'
-                      }`}
-                    >
-                      <Users className="w-4 h-4 text-emerald-400" />
-                      <span>Find Consultants Near Me</span>
-                    </button>
+                  {/* Clean Segment Switch Matching Photo 1 Capsule */}
+                  <div className="pt-2 flex items-center justify-center">
+                    <div className="w-full sm:w-auto bg-white border border-slate-200/90 rounded-full py-2.5 sm:py-3 px-3 sm:px-5 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
+                      <div className="bg-slate-100 rounded-full p-1.5 inline-flex items-center gap-1.5 border border-slate-200/80 shrink-0 shadow-inner max-w-full overflow-x-auto">
+                        
+                        {/* Find Consultants Near Me */}
+                        <button
+                          type="button"
+                          onClick={() => setStudentActionTab('consultants')}
+                          className={`px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all cursor-pointer flex items-center gap-2 select-none active:scale-95 whitespace-nowrap ${
+                            studentActionTab === 'consultants'
+                              ? 'bg-slate-950 text-white shadow-md scale-[1.03]'
+                              : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60'
+                          }`}
+                        >
+                          {studentActionTab === 'consultants' ? (
+                            <>
+                              <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
+                              <span className="tracking-wide">Find Consultants Near Me</span>
+                              <Check className="w-4 h-4 text-[#00E599] stroke-[3]" />
+                            </>
+                          ) : (
+                            <>
+                              <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                              <span className="tracking-wide">Find Consultants Near Me</span>
+                            </>
+                          )}
+                        </button>
 
-                    <button
-                      type="button"
-                      onClick={() => setStudentActionTab('self_apply')}
-                      className={`flex items-center gap-2 px-6 sm:px-8 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap active:scale-95 ${
-                        studentActionTab === 'self_apply'
-                          ? 'bg-slate-950 text-white shadow-md'
-                          : 'text-slate-700 hover:text-slate-950 hover:bg-slate-200/50'
-                      }`}
-                    >
-                      <Zap className="w-4 h-4 text-[#359FC2]" />
-                      <span>Self Apply</span>
-                    </button>
+                        {/* Self Apply */}
+                        <button
+                          type="button"
+                          onClick={() => setStudentActionTab('self_apply')}
+                          className={`px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all cursor-pointer flex items-center gap-2 select-none active:scale-95 whitespace-nowrap ${
+                            studentActionTab === 'self_apply'
+                              ? 'bg-slate-950 text-white shadow-md scale-[1.03]'
+                              : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60'
+                          }`}
+                        >
+                          {studentActionTab === 'self_apply' ? (
+                            <>
+                              <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
+                              <span className="tracking-wide">Self Apply</span>
+                              <Check className="w-4 h-4 text-[#00E599] stroke-[3]" />
+                            </>
+                          ) : (
+                            <>
+                              <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                              <span className="tracking-wide">Self Apply</span>
+                            </>
+                          )}
+                        </button>
+
+                      </div>
+                    </div>
                   </div>
                 </div>
 

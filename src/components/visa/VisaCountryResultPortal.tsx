@@ -3209,10 +3209,10 @@ export function VisaCountryResultPortal({
                     How would you like to apply for your visa?
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-xl mx-auto">
-                    Choose between connecting with certified local immigration consultants or applying directly using TravlTik&apos;s automated AI Concierge.
+                    Choose between connecting with certified local immigration consultants or applying directly online.
                   </p>
 
-                  {/* Clean Segment Switch (No TAB 1/TAB 2 labels) */}
+                  {/* Clean Segment Switch */}
                   <div className="inline-flex p-1.5 rounded-2xl bg-slate-100 border border-slate-200/80 shadow-inner max-w-full overflow-x-auto">
                     <button
                       type="button"
@@ -3237,7 +3237,7 @@ export function VisaCountryResultPortal({
                       }`}
                     >
                       <Zap className="w-4 h-4 text-amber-400" />
-                      <span>Self Apply (TravlTik Concierge)</span>
+                      <span>Self Apply</span>
                     </button>
                   </div>
                 </div>

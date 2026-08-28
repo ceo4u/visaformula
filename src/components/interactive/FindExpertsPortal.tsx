@@ -228,13 +228,14 @@ export function FindExpertsPortal() {
                 const currExpertEmail = localStorage.getItem("expert_email");
                 if (currExpertName && currExpertEmail) {
                     const currKey = currExpertName.toLowerCase().trim();
-                    if (!dbKeys.has(currKey)) {
+                    const isTestAccount = currKey.includes("test") || currKey.includes("sandbox") || currKey.includes("akash co") || currKey.includes("risingat") || currKey.includes("travelandplay");
+                    if (!dbKeys.has(currKey) && !isTestAccount) {
                         const currExpertObj = {
                             id: `curr-expert-${Date.now()}`,
                             name: currExpertName,
                             role: localStorage.getItem("expert_advisorType") || "Visa Consultant",
                             city: localStorage.getItem("expert_city") || "Remote",
-                            bio: localStorage.getItem("expert_businessDescription") || "Verified Travltik Immigration Consultant.",
+                            bio: localStorage.getItem("expert_businessDescription") || "Verified TravlTik Immigration Consultant.",
                             tags: JSON.parse(localStorage.getItem("expert_services") || '["Visa Consultation", "Immigration"]'),
                             countries: [localStorage.getItem("expert_country") || "Canada"],
                             rating: 5.0,
@@ -254,7 +255,7 @@ export function FindExpertsPortal() {
             let expertUpdates: Record<string, any> = {};
             if (typeof window !== "undefined") {
                 try {
-                    const storedUpdates = localStorage.getItem("visaformula_expert_profile_updates");
+                    const storedUpdates = localStorage.getItem("travltik_expert_profile_updates") || localStorage.getItem("visaformula_expert_profile_updates");
                     if (storedUpdates) expertUpdates = JSON.parse(storedUpdates);
                 } catch (e) {}
             }

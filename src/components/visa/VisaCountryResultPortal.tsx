@@ -3242,141 +3242,126 @@ export function VisaCountryResultPortal({
                   </div>
                 </div>
 
-                {/* ── TAB 1 CONTENT: FIND CONSULTANTS ── */}
+                {/* ── TAB 1 CONTENT: FIND CONSULTANTS (SEARCH & MATCH) ── */}
                 {studentActionTab === 'consultants' && (
-                  <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6 animate-fadeIn">
+                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-9 shadow-[0_2px_16px_rgba(0,0,0,0.03)] space-y-6 animate-fadeIn text-left">
                     
-                    {/* Search & Filter Engine */}
-                    <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-3">
-                      <div className="text-xs font-bold text-slate-800 flex items-center gap-2">
-                        <Search className="w-3.5 h-3.5 text-[#00A86B]" />
-                        <span>Search Consultants Near Me &amp; Filter Specializations</span>
+                    {/* Header */}
+                    <div className="space-y-1.5 border-b border-slate-100 pb-5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-0.5 rounded-md">
+                          Option A
+                        </span>
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Independent Advisory</span>
+                      </div>
+                      <h4 className="text-xl font-heading font-black text-slate-950">
+                        Search Verified Immigration Lawyers &amp; Study Visa Experts
+                      </h4>
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                        Find ICCRC, OISC, MARA, and Bar-certified immigration consultants specializing in {countryName} student admissions, SOP review, and consular filing.
+                      </p>
+                    </div>
+
+                    {/* Search & Filter Engine Box */}
+                    <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-4">
+                      <div className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                        <Search className="w-4 h-4 text-[#00A86B]" />
+                        <span>Search Consultants Near You</span>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div>
-                          <label className="block text-[11px] font-semibold text-slate-500 mb-1">
-                            Location / City / Pincode
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                        <div className="space-y-1">
+                          <label className="block text-[11px] font-bold text-slate-600">
+                            Your City / Location / Pincode
                           </label>
                           <input
                             type="text"
                             value={consultantLocationQuery}
                             onChange={(e) => setConsultantLocationQuery(e.target.value)}
                             placeholder="e.g. Hyderabad, Mumbai, Delhi, Remote"
-                            className="w-full h-10 px-3 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
+                            className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:border-[#00A86B] focus:ring-4 focus:ring-[#00A86B]/10 transition-all shadow-2xs outline-none"
                           />
                         </div>
 
-                        <div>
-                          <label className="block text-[11px] font-semibold text-slate-500 mb-1">
-                            Country Specialization
+                        <div className="space-y-1">
+                          <label className="block text-[11px] font-bold text-slate-600">
+                            Destination Specialization
                           </label>
                           <select
                             value={consultantCountryFilter}
                             onChange={(e) => setConsultantCountryFilter(e.target.value)}
-                            className="w-full h-10 px-3 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
+                            className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:border-[#00A86B] focus:ring-4 focus:ring-[#00A86B]/10 transition-all shadow-2xs outline-none cursor-pointer"
                           >
+                            <option value={countryName}>{countryName} (Current Destination)</option>
                             <option value="All">All Countries (Global)</option>
-                            <option value="United Kingdom">United Kingdom (UKVI)</option>
-                            <option value="USA">United States (F-1 / SEVP)</option>
-                            <option value="Canada">Canada (IRCC / DLI)</option>
-                            <option value="Australia">Australia (CRICOS)</option>
-                            <option value="Germany">Germany &amp; Schengen</option>
+                            <option value="United States">United States (F-1 / SEVP)</option>
+                            <option value="United Kingdom">United Kingdom (UKVI / CAS)</option>
+                            <option value="Canada">Canada (IRCC / DLI / PAL)</option>
+                            <option value="Australia">Australia (CRICOS / Subclass 500)</option>
+                            <option value="Germany">Germany &amp; EU Blue Card</option>
                           </select>
                         </div>
 
-                        <div>
-                          <label className="block text-[11px] font-semibold text-slate-500 mb-1">
-                            Rating &amp; Credential Filter
+                        <div className="space-y-1">
+                          <label className="block text-[11px] font-bold text-slate-600">
+                            Service / Advisory Type
                           </label>
                           <select
-                            value={consultantRatingFilter}
-                            onChange={(e) => setConsultantRatingFilter(e.target.value)}
-                            className="w-full h-10 px-3 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
+                            className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:border-[#00A86B] focus:ring-4 focus:ring-[#00A86B]/10 transition-all shadow-2xs outline-none cursor-pointer"
                           >
-                            <option value="All">All Verified Experts</option>
-                            <option value="4.8">4.8★ &amp; Above</option>
-                            <option value="Top Rated">Top Rated (99%+ Success)</option>
+                            <option value="student">Study Visa &amp; Admissions Filing</option>
+                            <option value="legal">Visa Appeals &amp; Refusal Defense</option>
+                            <option value="sop">SOP &amp; Academic Document Review</option>
+                            <option value="interview">Embassy Visa Interview Prep</option>
                           </select>
+                        </div>
+                      </div>
+
+                      {/* Primary Search CTA */}
+                      <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-2 text-[11px] text-slate-500 font-semibold">
+                          <Shield className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>100% Escrow Protected • Verified Govt License Holders Only</span>
+                        </div>
+
+                        <a
+                          href={`/find-experts?category=student&country=${encodeURIComponent(consultantCountryFilter === 'All' ? countryName : consultantCountryFilter)}${consultantLocationQuery ? `&city=${encodeURIComponent(consultantLocationQuery)}` : ''}`}
+                          className="h-11 px-6 rounded-xl bg-slate-950 hover:bg-slate-900 text-white text-xs font-extrabold shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 shrink-0"
+                        >
+                          <Search className="w-4 h-4 text-emerald-400" />
+                          <span>Search Verified Experts for {countryName}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Value Proposition Strip */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-1">
+                      <div className="p-3.5 bg-slate-50/50 rounded-xl border border-slate-100 flex items-start gap-2.5">
+                        <span className="text-base shrink-0">🏛️</span>
+                        <div>
+                          <strong className="text-slate-950 font-bold block">Government Licensed</strong>
+                          <p className="text-[11px] text-slate-500 font-medium mt-0.5">ICCRC, OISC, MARA &amp; Bar registered attorneys.</p>
+                        </div>
+                      </div>
+
+                      <div className="p-3.5 bg-slate-50/50 rounded-xl border border-slate-100 flex items-start gap-2.5">
+                        <span className="text-base shrink-0">🔒</span>
+                        <div>
+                          <strong className="text-slate-950 font-bold block">Escrow Milestone Shield</strong>
+                          <p className="text-[11px] text-slate-500 font-medium mt-0.5">Payment released only after your consultation completes.</p>
+                        </div>
+                      </div>
+
+                      <div className="p-3.5 bg-slate-50/50 rounded-xl border border-slate-100 flex items-start gap-2.5">
+                        <span className="text-base shrink-0">⚡</span>
+                        <div>
+                          <strong className="text-slate-950 font-bold block">Direct Video Sessions</strong>
+                          <p className="text-[11px] text-slate-500 font-medium mt-0.5">30 or 60 min 1-on-1 strategy calls with document audit.</p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Consultant Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {VERIFIED_STUDY_CONSULTANTS
-                        .filter(c => {
-                          const matchesLoc = !consultantLocationQuery || c.city.toLowerCase().includes(consultantLocationQuery.toLowerCase());
-                          const matchesCountry = consultantCountryFilter === 'All' || c.countries.includes(consultantCountryFilter);
-                          const matchesRating = consultantRatingFilter === 'All' || c.rating >= parseFloat(consultantRatingFilter);
-                          return matchesLoc && matchesCountry && matchesRating;
-                        })
-                        .map((cons) => (
-                          <div
-                            key={cons.id}
-                            className="p-5 rounded-2xl border border-slate-200/90 bg-white hover:border-slate-300 hover:shadow-md transition-all space-y-4 text-left flex flex-col justify-between"
-                          >
-                            <div className="space-y-3">
-                              <div className="flex items-start justify-between gap-3">
-                                <div className="flex items-center gap-3">
-                                  <img
-                                    src={cons.image}
-                                    alt={cons.name}
-                                    className="w-12 h-12 rounded-2xl object-cover border border-slate-200 shadow-2xs shrink-0"
-                                  />
-                                  <div>
-                                    <div className="flex items-center gap-1.5">
-                                      <h4 className="font-bold text-sm sm:text-base text-slate-950">{cons.name}</h4>
-                                      <BadgeCheck className="w-4 h-4 text-[#00A86B] shrink-0" />
-                                    </div>
-                                    <p className="text-xs text-slate-600 font-medium">{cons.agencyName}</p>
-                                    <span className="text-[11px] text-slate-400 font-normal">{cons.city} • {cons.experience}</span>
-                                  </div>
-                                </div>
-
-                                <div className="text-right shrink-0">
-                                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold">
-                                    <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
-                                    <span>{cons.rating}</span>
-                                    <span className="text-slate-400 font-normal">({cons.reviews})</span>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* License Badge */}
-                              <div className="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 text-[11px] font-bold">
-                                🛡️ Verified License: {cons.license}
-                              </div>
-
-                              {/* Specialities tags */}
-                              <div className="flex flex-wrap gap-1.5">
-                                {cons.specialities.map((spec) => (
-                                  <span key={spec} className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-semibold">
-                                    {spec}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-
-                            {/* Booking Action */}
-                            <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
-                              <div>
-                                <span className="text-[10px] text-slate-400 font-medium block">Consultation Fee</span>
-                                <strong className="text-sm font-bold text-slate-950">{cons.fee}</strong>
-                              </div>
-
-                              <button
-                                type="button"
-                                onClick={() => setBookingModalConsultant(cons)}
-                                className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center gap-1.5 active:scale-95"
-                              >
-                                <Calendar className="w-3.5 h-3.5" />
-                                <span>Book 1-on-1 Consultation</span>
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
                   </div>
                 )}
 

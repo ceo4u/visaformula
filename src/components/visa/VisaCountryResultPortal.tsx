@@ -2954,40 +2954,38 @@ export function VisaCountryResultPortal({
               <div className="space-y-6">
 
                 {/* ── STEP 1: FIND TOP UNIVERSITY ── */}
-                <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-[0_2px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-300 space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
                     <div className="flex items-start gap-3.5">
-                      <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-sm shrink-0 shadow-md">
+                      <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-sm shrink-0 shadow-sm">
                         1
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-0.5 rounded-md">
                             Step 1 of 3
                           </span>
-                          <span className="text-xs font-bold text-slate-500">Institution Selection</span>
+                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Institution Selection</span>
                         </div>
-                        <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-950 mt-0.5">
+                        <h3 className="text-lg sm:text-xl font-heading font-black text-slate-950 mt-1">
                           Find Top University
                         </h3>
-                        <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                        <p className="text-xs text-slate-500 font-medium mt-0.5">
                           Explore SEVP-approved and top-ranked universities matching your profile &amp; budget.
                         </p>
                       </div>
                     </div>
 
                     {/* Quick Search */}
-                    <div className="flex flex-wrap items-center gap-2">
-                      <div className="relative">
-                        <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                        <input
-                          type="text"
-                          value={uniSearchQuery}
-                          onChange={(e) => setUniSearchQuery(e.target.value)}
-                          placeholder="Search universities..."
-                          className="h-9 pl-8 pr-3 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-emerald-500/20"
-                        />
-                      </div>
+                    <div className="relative min-w-[220px] sm:min-w-[260px]">
+                      <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={uniSearchQuery}
+                        onChange={(e) => setUniSearchQuery(e.target.value)}
+                        placeholder="Search universities..."
+                        className="w-full h-10 pl-9.5 pr-3.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs font-semibold text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-[#00A86B]/20 transition-all shadow-2xs"
+                      />
                     </div>
                   </div>
 
@@ -3001,53 +2999,57 @@ export function VisaCountryResultPortal({
                           <div
                             key={uni.id}
                             onClick={() => setSelectedUniId(uni.id)}
-                            className={`p-5 rounded-2xl border transition-all cursor-pointer text-left space-y-3 relative ${
+                            className={`p-5 rounded-2xl border transition-all cursor-pointer text-left flex flex-col justify-between relative duration-200 group ${
                               isSelected
-                                ? 'bg-emerald-50/40 border-emerald-400 ring-2 ring-emerald-400/20 shadow-sm'
-                                : 'bg-white border-slate-200/90 hover:border-slate-300 hover:shadow-xs'
+                                ? 'bg-emerald-50/30 border-2 border-[#00A86B] shadow-[0_4px_20px_rgba(0,168,107,0.12)] ring-2 ring-emerald-500/10'
+                                : 'bg-slate-50/40 hover:bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-sm'
                             }`}
                           >
-                            <div className="flex items-start justify-between gap-3">
-                              <div className="space-y-1 min-w-0">
-                                <div className="flex flex-wrap items-center gap-1.5">
-                                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-slate-900 text-white">
-                                    {uni.rank}
-                                  </span>
-                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900">
-                                    {uni.campusBadge}
-                                  </span>
+                            <div className="space-y-3">
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="space-y-1 min-w-0">
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md bg-slate-950 text-white shadow-2xs">
+                                      {uni.rank}
+                                    </span>
+                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200/80">
+                                      {uni.campusBadge}
+                                    </span>
+                                  </div>
+                                  <h4 className="font-heading font-extrabold text-sm sm:text-base text-slate-950 leading-snug group-hover:text-[#00A86B] transition-colors">
+                                    {uni.name}
+                                  </h4>
+                                  <div className="flex items-center gap-1 text-[11px] text-slate-500 font-semibold">
+                                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                                    <span>{uni.location}</span>
+                                  </div>
                                 </div>
-                                <h4 className="font-bold text-sm sm:text-base text-slate-950 leading-snug">
-                                  {uni.name}
-                                </h4>
-                                <div className="flex items-center gap-1 text-[11px] text-slate-500 font-medium">
-                                  <MapPin className="w-3 h-3 text-slate-400" />
-                                  <span>{uni.location}</span>
-                                </div>
+
+                                <button
+                                  type="button"
+                                  className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all ${
+                                    isSelected
+                                      ? 'bg-[#00A86B] text-white shadow-xs'
+                                      : 'bg-white border border-slate-200 text-slate-400 group-hover:border-slate-400 group-hover:text-slate-700'
+                                  }`}
+                                >
+                                  {isSelected ? <Check className="w-4 h-4 stroke-[3]" /> : <Plus className="w-4 h-4" />}
+                                </button>
                               </div>
 
-                              <button
-                                type="button"
-                                className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all ${
-                                  isSelected ? 'bg-[#00A86B] text-white shadow-xs' : 'bg-slate-100 text-slate-400'
-                                }`}
-                              >
-                                {isSelected ? <Check className="w-4 h-4 stroke-[3]" /> : <Plus className="w-4 h-4" />}
-                              </button>
+                              <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                                {uni.desc}
+                              </p>
                             </div>
 
-                            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                              {uni.desc}
-                            </p>
-
-                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[11px]">
-                              <div>
-                                <span className="text-slate-400 font-medium block">Annual Tuition:</span>
-                                <strong className="text-slate-900 font-bold">{uni.tuitionLocal} <span className="text-slate-500 font-normal">({uni.tuitionINR})</span></strong>
+                            <div className="grid grid-cols-2 gap-2 pt-3 mt-3 border-t border-slate-100 text-[11px]">
+                              <div className="bg-white p-2.5 rounded-xl border border-slate-100/90 shadow-2xs">
+                                <span className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider block">Annual Tuition</span>
+                                <strong className="text-slate-950 font-black text-xs block mt-0.5">{uni.tuitionLocal} <span className="text-slate-500 font-normal">({uni.tuitionINR})</span></strong>
                               </div>
-                              <div>
-                                <span className="text-slate-400 font-medium block">English Min.:</span>
-                                <strong className="text-slate-900 font-bold">{uni.ieltsMin}</strong>
+                              <div className="bg-white p-2.5 rounded-xl border border-slate-100/90 shadow-2xs">
+                                <span className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider block">English Min.</span>
+                                <strong className="text-slate-950 font-black text-xs block mt-0.5">{uni.ieltsMin}</strong>
                               </div>
                             </div>
                           </div>
@@ -3057,23 +3059,23 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* ── STEP 2: SELECT COURSE, APPLY & GET ADMISSION ── */}
-                <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-[0_2px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-300 space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
                     <div className="flex items-start gap-3.5">
-                      <div className="w-10 h-10 rounded-2xl bg-blue-500 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-md">
+                      <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-sm">
                         2
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-200/70 px-2.5 py-0.5 rounded-md">
                             Step 2 of 3
                           </span>
-                          <span className="text-xs font-bold text-slate-500">Course &amp; Application Tracking</span>
+                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Course &amp; Application Tracking</span>
                         </div>
-                        <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-950 mt-0.5">
+                        <h3 className="text-lg sm:text-xl font-heading font-black text-slate-950 mt-1">
                           Select Course, Apply &amp; Get Admission
                         </h3>
-                        <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                        <p className="text-xs text-slate-500 font-medium mt-0.5">
                           Choose your major, complete university applications, track admission statuses, and store all offer details safely.
                         </p>
                       </div>
@@ -3081,60 +3083,62 @@ export function VisaCountryResultPortal({
                   </div>
 
                   {/* Course Major Selector */}
-                  <div className="space-y-2">
-                    <label className="block text-xs font-bold text-slate-700">
+                  <div className="space-y-2.5">
+                    <label className="block text-xs font-black uppercase tracking-wider text-slate-700">
                       Choose Your Major / Specialization:
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {[
-                        'Computer Science & AI',
-                        'Data Science & Analytics',
-                        'Global MBA & Finance',
-                        'Robotics & Mechanical Engg',
-                        'Biotechnology & Healthcare',
-                        'Law & International Policy'
+                        { icon: '💻', name: 'Computer Science & AI' },
+                        { icon: '📊', name: 'Data Science & Analytics' },
+                        { icon: '💼', name: 'Global MBA & Finance' },
+                        { icon: '🤖', name: 'Robotics & Mechanical Engg' },
+                        { icon: '🧬', name: 'Biotechnology & Healthcare' },
+                        { icon: '⚖️', name: 'Law & International Policy' }
                       ].map((maj) => (
                         <button
-                          key={maj}
+                          key={maj.name}
                           type="button"
-                          onClick={() => setSelectedCourseMajor(maj)}
-                          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                            selectedCourseMajor === maj
-                              ? 'bg-slate-900 text-white shadow-xs'
-                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          onClick={() => setSelectedCourseMajor(maj.name)}
+                          className={`px-4 py-2.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 ${
+                            selectedCourseMajor === maj.name
+                              ? 'bg-slate-950 text-white shadow-md border border-slate-950 scale-[1.02]'
+                              : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80'
                           }`}
                         >
-                          {maj}
+                          <span>{maj.icon}</span>
+                          <span>{maj.name}</span>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   {/* 4-Stage Application Progress Tracker */}
-                  <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 space-y-4">
+                  <div className="bg-gradient-to-r from-slate-50 via-slate-50/50 to-emerald-50/30 border border-slate-200/90 rounded-2xl p-5 sm:p-6 space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">
-                        Integrated Application Tracker
+                      <span className="text-xs font-black text-slate-950 uppercase tracking-wider flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-[#00A86B]" />
+                        <span>Integrated Application Tracker</span>
                       </span>
-                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3" />
+                      <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-100 border border-emerald-200/80 px-3 py-0.5 rounded-full flex items-center gap-1.5 shadow-2xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
                         <span>Admission Confirmed</span>
                       </span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                       {[
-                        { stage: 1, label: '1. Profile Shortlisted', desc: 'Eligibility match 98%', status: 'Done' },
-                        { stage: 2, label: '2. Transcripts Uploaded', desc: 'Evaluated & verified', status: 'Done' },
-                        { stage: 3, label: '3. Application Filed', desc: 'Direct portal submission', status: 'Done' },
-                        { stage: 4, label: '4. Offer Letter Issued', desc: 'Unconditional acceptance', status: 'Approved' }
+                        { stage: '1', label: '1. Profile Shortlisted', desc: 'Eligibility match 98%', status: 'Done' },
+                        { stage: '2', label: '2. Transcripts Uploaded', desc: 'Evaluated & verified', status: 'Done' },
+                        { stage: '3', label: '3. Application Filed', desc: 'Direct portal submission', status: 'Done' },
+                        { stage: '4', label: '4. Offer Letter Issued', desc: 'Unconditional acceptance', status: 'Approved' }
                       ].map((st) => (
-                        <div key={st.stage} className="p-3 bg-white rounded-xl border border-slate-200 text-left space-y-1 shadow-2xs">
+                        <div key={st.stage} className="p-3.5 bg-white rounded-xl border border-slate-200/90 text-left space-y-1 shadow-2xs hover:border-emerald-300 transition-colors">
                           <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-slate-900">{st.label}</span>
-                            <CheckCircle className="w-4 h-4 text-[#00A86B]" />
+                            <span className="text-xs font-black text-slate-950">{st.label}</span>
+                            <CheckCircle2 className="w-4 h-4 text-[#00A86B]" />
                           </div>
-                          <p className="text-[11px] text-slate-500 font-medium">{st.desc}</p>
+                          <p className="text-[11px] text-slate-500 font-medium leading-tight">{st.desc}</p>
                         </div>
                       ))}
                     </div>
@@ -3142,20 +3146,20 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* ── STEP 3: RECEIVE FORM I-20 / OFFICIAL ADMISSION LETTER ── */}
-                <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-[0_2px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-300 space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
                     <div className="flex items-start gap-3.5">
-                      <div className="w-10 h-10 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm shrink-0 shadow-md">
+                      <div className="w-10 h-10 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm shrink-0 shadow-sm">
                         3
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-extrabold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200/70 px-2.5 py-0.5 rounded-md">
                             Step 3 of 3
                           </span>
-                          <span className="text-xs font-bold text-slate-500">Official Visa Clearance Document</span>
+                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Official Visa Clearance Document</span>
                         </div>
-                        <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-950 mt-0.5">
+                        <h3 className="text-lg sm:text-xl font-heading font-black text-slate-950 mt-1">
                           {countryName.toLowerCase().includes('united states') || countryName.toLowerCase().includes('usa')
                             ? 'Receive Form I-20 (Certificate of Eligibility)'
                             : countryName.toLowerCase().includes('united kingdom') || countryName.toLowerCase().includes('uk')
@@ -3164,7 +3168,7 @@ export function VisaCountryResultPortal({
                             ? 'Receive Letter of Acceptance (LOA) & PAL'
                             : 'Receive Official Admission Letter & In-Principle Approval (IPA)'}
                         </h3>
-                        <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                        <p className="text-xs text-slate-500 font-medium mt-0.5">
                           Secure your official Form I-20 (US), CAS (UK), LOA (Canada), or In-Principle Approval (IPA) from your institution to unlock consular visa filing.
                         </p>
                       </div>
@@ -3172,40 +3176,40 @@ export function VisaCountryResultPortal({
                   </div>
 
                   {/* Certificate Verification Box */}
-                  <div className="bg-gradient-to-br from-amber-50/70 via-white to-emerald-50/50 border border-amber-200/80 rounded-2xl p-5 sm:p-6 space-y-4">
+                  <div className="bg-gradient-to-br from-amber-500/5 via-emerald-500/5 to-slate-50 border border-amber-300/80 rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xs">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-300 text-amber-800 flex items-center justify-center font-black">
+                        <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-300 text-amber-800 flex items-center justify-center font-black text-lg">
                           📜
                         </div>
                         <div>
-                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block">
+                          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
                             Document Verification Check
                           </span>
-                          <h4 className="text-sm font-bold text-slate-900">
+                          <h4 className="text-sm sm:text-base font-black text-slate-950">
                             {countryName.toLowerCase().includes('united states') ? 'Form I-20 & SEVIS ID Record' : 'Official CAS / Acceptance Reference'}
                           </h4>
                         </div>
                       </div>
 
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-extrabold self-start sm:self-auto">
+                      <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-900 text-xs font-black self-start sm:self-auto shadow-2xs">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                         <span>Ready for Visa Submission</span>
                       </span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                      <div className="p-3 bg-white rounded-xl border border-slate-200">
-                        <span className="text-slate-400 font-medium block">Document Type:</span>
-                        <strong className="text-slate-900 font-bold">Unconditional Tier-4 / F-1 Document</strong>
+                      <div className="p-3.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs">
+                        <span className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider block">Document Type</span>
+                        <strong className="text-slate-950 font-black text-xs block mt-0.5">Unconditional Tier-4 / F-1 Document</strong>
                       </div>
-                      <div className="p-3 bg-white rounded-xl border border-slate-200">
-                        <span className="text-slate-400 font-medium block">Verification Status:</span>
-                        <strong className="text-[#00A86B] font-bold">100% Validated in Vault</strong>
+                      <div className="p-3.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs">
+                        <span className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider block">Verification Status</span>
+                        <strong className="text-[#00A86B] font-black text-xs block mt-0.5">100% Validated in Vault</strong>
                       </div>
-                      <div className="p-3 bg-white rounded-xl border border-slate-200">
-                        <span className="text-slate-400 font-medium block">Next Recommended Action:</span>
-                        <strong className="text-slate-900 font-bold">Choose Filing Path Below</strong>
+                      <div className="p-3.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs">
+                        <span className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider block">Next Action</span>
+                        <strong className="text-slate-950 font-black text-xs block mt-0.5">Choose Filing Path Below</strong>
                       </div>
                     </div>
                   </div>

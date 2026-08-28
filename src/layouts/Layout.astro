@@ -41,6 +41,18 @@ const isCommunity = Astro.url.pathname.startsWith('/community');
 const isVisaCountryPage = Astro.url.pathname.startsWith('/visa/') || Astro.url.pathname.startsWith('/visa');
 const shouldHideWidgets = hideWidgets || isChannelPartner || isCommunity || isVisaCountryPage;
 const isTransparentHeaderPage = isJobs || isTours || isEvents;
+
+const pageTitle = isHome 
+  ? "TravlTik — The Global Immigration & Mobility Platform | Marketplace" 
+  : title.includes("TravlTik")
+  ? `${title} | Global Immigration Marketplace`
+  : `${title} | TravlTik — Global Immigration Marketplace`;
+
+const ogTitle = isHome 
+  ? "TravlTik — Global Immigration Marketplace" 
+  : title.includes("TravlTik")
+  ? `${title} | Global Immigration Marketplace`
+  : `${title} | TravlTik — Global Immigration Marketplace`;
 ---
 
 <!DOCTYPE html>
@@ -50,8 +62,8 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   
   <!-- Primary Meta Tags -->
-  <title>{title} | TravlTik — Global Immigration Marketplace</title>
-  <meta name="title" content={`${title} | TravlTik — Global Immigration Marketplace`} />
+  <title>{pageTitle}</title>
+  <meta name="title" content={pageTitle} />
   <meta name="description" content={description} />
   <meta name="keywords" content={keywords} />
   <link rel="canonical" href={currentUrl} />
@@ -59,7 +71,7 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content={currentUrl} />
-  <meta property="og:title" content={`${title} | TravlTik — Global Immigration Marketplace`} />
+  <meta property="og:title" content={ogTitle} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={ogImage} />
   <meta property="og:site_name" content="TravlTik" />
@@ -67,7 +79,7 @@ const isTransparentHeaderPage = isJobs || isTours || isEvents;
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content={currentUrl} />
-  <meta name="twitter:title" content={`${title} | TravlTik — Global Immigration Marketplace`} />
+  <meta name="twitter:title" content={ogTitle} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
   

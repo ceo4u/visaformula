@@ -2265,10 +2265,10 @@ export function VisaCountryResultPortal({
             {/* ================================================== */}
             <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 lg:p-10 space-y-10 shadow-xs text-left overflow-x-auto">
               
-              {/* SECTION A: DOING IT WITH ATLYS */}
+              {/* SECTION A: DOING IT WITH TRAVLTIK */}
               <div className="space-y-4 min-w-[640px]">
                 <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#4F46E5] font-heading">
-                  DOING IT WITH ATLYS
+                  DOING IT WITH TRAVLTIK
                 </h3>
 
                 <div className="relative pt-10 pb-12">
@@ -2282,7 +2282,7 @@ export function VisaCountryResultPortal({
                     <div className="flex flex-col items-center text-center px-2">
                       <div className="h-16 flex flex-col items-center justify-end pb-2">
                         <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[140px]">
-                          Submit all your documents on Atlys
+                          Submit all your documents on TravlTik
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
@@ -2301,7 +2301,7 @@ export function VisaCountryResultPortal({
                       <div className="h-16 flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
                         <span className="text-xs sm:text-[13px] font-semibold text-slate-800 leading-tight max-w-[140px]">
-                          Atlys comes to collect your passport
+                          TravlTik comes to collect your passport
                         </span>
                       </div>
                     </div>

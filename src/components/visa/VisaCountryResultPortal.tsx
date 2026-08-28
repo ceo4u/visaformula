@@ -1436,12 +1436,12 @@ export function VisaCountryResultPortal({
             
             {/* Left Content */}
             <div className="flex items-center gap-4 text-left py-4 sm:py-6 z-10">
-              <div className="w-14 h-14 rounded-2xl bg-[#EEF2FF] border border-indigo-100/60 flex items-center justify-center text-[#4F46E5] shadow-xs shrink-0">
-                <Lock className="w-6 h-6 text-[#4F46E5] fill-[#4F46E5] stroke-[1.8]" />
+              <div className="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/20 shrink-0">
+                <Lock className="w-6 h-6 text-white stroke-[2.2]" />
               </div>
               <div className="space-y-1">
                 <h4 className="text-lg sm:text-xl font-heading font-bold text-slate-900 tracking-tight">
-                  Passport Security. <span className="text-[#4338CA]">Then all else</span>
+                  Passport Security. <span className="text-slate-900 font-bold">Then all else</span>
                 </h4>
                 <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
                   We secure your passport in a safe box and locker at all times.<br className="hidden sm:inline" />

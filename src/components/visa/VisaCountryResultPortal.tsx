@@ -3050,75 +3050,63 @@ export function VisaCountryResultPortal({
 
                 <div className="relative pt-10 pb-12">
                   {/* Connecting Solid Bar */}
-                  <div className="absolute top-[100px] left-8 right-8 h-1 bg-[#4F46E5] -z-0 rounded-full" />
+                  <div className="absolute top-[84px] left-8 right-8 h-1 bg-[#4F46E5] -z-0 rounded-full" />
 
                   {/* 4 Nodes */}
                   <div className="grid grid-cols-4 relative z-10 antialiased">
                     
                     {/* Node 1: Top text */}
                     <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-20 flex flex-col items-center justify-end pb-2">
-                        <span className="text-xs sm:text-[13px] font-bold text-slate-900 leading-tight max-w-[160px]">
-                          Submit all your documents online on TravlTik
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-normal leading-snug mt-1 max-w-[160px] hidden sm:block">
-                          Quickly scan passport &amp; upload details from your phone in 2 minutes.
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-xs sm:text-[13px] font-bold text-slate-800 leading-tight max-w-[140px]">
+                          Submit documents online on TravlTik
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
                       <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
                         1
                       </div>
-                      <div className="h-20" />
+                      <div className="h-16" />
                     </div>
 
                     {/* Node 2: Bottom text */}
                     <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-20" />
+                      <div className="h-16" />
                       <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
                         2
                       </div>
-                      <div className="h-20 flex flex-col items-center justify-start pt-2">
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-xs sm:text-[13px] font-bold text-slate-900 leading-tight max-w-[160px]">
-                          AI &amp; Expert Concierge verifies your application
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-normal leading-snug mt-1 max-w-[160px] hidden sm:block">
-                          Our team pre-screens your documents to ensure 100% consular accuracy.
+                        <span className="text-xs sm:text-[13px] font-bold text-slate-800 leading-tight max-w-[140px]">
+                          AI &amp; Concierge pre-screen application
                         </span>
                       </div>
                     </div>
 
                     {/* Node 3: Top text */}
                     <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-20 flex flex-col items-center justify-end pb-2">
-                        <span className="text-xs sm:text-[13px] font-bold text-slate-900 leading-tight max-w-[160px]">
-                          We constantly give you updates and a reliable ETA.
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-normal leading-snug mt-1 max-w-[160px] hidden sm:block">
-                          Track real-time progress through automated notifications.
+                      <div className="h-16 flex flex-col items-center justify-end pb-2">
+                        <span className="text-xs sm:text-[13px] font-bold text-slate-800 leading-tight max-w-[140px]">
+                          Real-time updates &amp; reliable ETA
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
                       <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
                         3
                       </div>
-                      <div className="h-20" />
+                      <div className="h-16" />
                     </div>
 
                     {/* Node 4: Bottom text */}
                     <div className="flex flex-col items-center text-center px-2">
-                      <div className="h-20" />
+                      <div className="h-16" />
                       <div className="w-10 h-10 rounded-full bg-[#4F46E5] text-white font-bold flex items-center justify-center text-sm shadow-md ring-4 ring-white">
                         4
                       </div>
-                      <div className="h-20 flex flex-col items-center justify-start pt-2">
+                      <div className="h-16 flex flex-col items-center justify-start pt-2">
                         <span className="text-slate-400 text-xs mb-1">|</span>
-                        <span className="text-xs sm:text-[13px] font-bold text-slate-900 leading-tight max-w-[160px]">
-                          Approved e-Visa delivered to your WhatsApp &amp; Email!
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-normal leading-snug mt-1 max-w-[160px] hidden sm:block">
-                          Download your official electronic visa instantly when approved.
+                        <span className="text-xs sm:text-[13px] font-bold text-slate-800 leading-tight max-w-[140px]">
+                          Approved e-Visa on WhatsApp &amp; Email
                         </span>
                       </div>
                     </div>

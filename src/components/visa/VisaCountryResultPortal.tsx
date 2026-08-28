@@ -878,61 +878,456 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     };
   }
 
-  // Case 5: Schengen Area
-  if (isSchengen) {
-    return {
-      isExempt: false,
-      verdictTitle: `${nationality} passport holders require a Schengen Visa for ${country}`,
-      verdictSummary: `Short-stay visa (Type C) required before departure. Valid across all 29 European Schengen states.`,
-      entryStatus: "Schengen Short-Stay Visa",
-      entryStatusSubtext: "15 Calendar Days Processing",
-      stayDuration: "Up to 90 Days",
-      stayDurationSubtext: "Within any 180-day period",
-      entryType: "Single / Multiple Entry",
-      entryTypeSubtext: "Valid in 29 Schengen states",
-      visaPillTag: "CONSULAR VISA REQUIRED",
-      digitalCardName: "Schengen Consular Portal",
-      digitalCardDesc: "Official Schengen visa sticker in passport valid across 29 European member states.",
-      sources: ["European Commission", "Consular Affairs Department", "IATA Timatic 2026"],
-      maxStay: "90 Days within 180 Days",
-      conditionsForVisa: [
-        `Tourism, business visits, or family trips across Schengen territory.`,
-        "Mandatory travel medical insurance with minimum €30,000 coverage.",
-        "Passport issued within last 10 years with 3+ months validity beyond return date."
-      ],
-      feesAndProcessing: {
-        costItems: [
-          { label: "Schengen Visa Fee (Adult)", amount: "€90 (approx. ₹8,200)", note: "Official EU consular application fee" },
-          { label: "VFS/TLS Service Fee", amount: "₹2,500 – ₹3,200", note: "Biometric collection and center logistics fee" }
+  const isCanada = cNorm.includes('canada');
+  const isAustralia = cNorm.includes('australia') || cNorm.includes('aus');
+  const isGermany = cNorm.includes('germany') || cNorm.includes('deutschland');
+  const isGreece = cNorm.includes('greece') || cNorm.includes('hellenic');
+  const isJapan = cNorm.includes('japan');
+  const isNewZealand = cNorm.includes('new zealand') || cNorm.includes('nz');
+  const isIreland = cNorm.includes('ireland');
+
+  // Case 5: Canada
+  if (isCanada) {
+    if (isStudy) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a Study Permit for Canada`,
+        verdictSummary: `Provincial Attestation Letter (PAL) & DLI Acceptance required prior to lodging IRCC application.`,
+        entryStatus: "Canada Study Permit (IRCC)",
+        entryStatusSubtext: "4–8 Weeks via IRCC Portal",
+        stayDuration: "Duration of Study + 90 Days",
+        stayDurationSubtext: "Includes off-campus work rights",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "Student TRV / eTA Sticker",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "IRCC Letter of Introduction",
+        digitalCardDesc: "Port of Entry (POE) Study Permit Introduction Letter from Immigration, Refugees and Citizenship Canada.",
+        sources: ["IRCC Canada", "Government of Canada", "IATA Timatic 2026"],
+        maxStay: "Course Duration + 90 Days",
+        conditionsForVisa: [
+          "Acceptance letter from Designated Learning Institution (DLI).",
+          "Provincial Attestation Letter (PAL) from province.",
+          "Guaranteed Investment Certificate (GIC) of CAD $20,635+ for living expenses.",
+          "Language proficiency: IELTS (Academic / General) or PTE Core."
         ],
-        totalEstimatedINR: "₹10,700 – ₹11,400 Total Consular Fees",
-        processingTime: "15 Calendar Days (Standard Consular Period)",
-        processingSLA: "Appointments scheduled at designated VFS/TLS global visa application centers.",
-        applicationWindow: "Apply up to 6 Months before planned travel",
-        earlyEntryBuffer: "Travel permitted within valid visa dates"
-      },
-      applicationProcess: {
-        submission: "1. Visa Form Filing: Complete official harmonized Schengen visa application form.",
-        onlineForm: "2. Document Preparation: Compile flight bookings, hotel reservations, 3-month bank statements & insurance.",
-        appointments: "3. VFS/TLS Biometrics: Attend appointment for biometric fingerprinting & passport submission.",
-        documentsAndBiometrics: [
-          "Passport valid for at least 3 months beyond departure date with 2 blank pages",
-          "2 Passport-sized Photos (35x45mm, white background, neutral expression)",
-          "Travel Medical Insurance (€30,000 minimum coverage)",
-          "Cover Letter with detailed day-by-day travel itinerary",
-          "Bank statements of last 3-6 months with bank seal and stamp",
-          "Confirmed round-trip flight reservations & hotel bookings"
-        ]
-      }
-    };
+        feesAndProcessing: {
+          costItems: [
+            { label: "Study Permit Application Fee", amount: "CAD $150 (approx. ₹9,200)", note: "Official IRCC processing fee" },
+            { label: "Biometrics Collection Fee", amount: "CAD $85 (approx. ₹5,200)", note: "VFS Canada biometric enrollment" }
+          ],
+          totalEstimatedINR: "CAD $235 (approx. ₹14,400)",
+          processingTime: "4 to 8 Weeks (IRCC Processing Time)",
+          processingSLA: "Complete digital submission via IRCC secure GCKey account.",
+          applicationWindow: "Apply 3 to 6 Months before term start date",
+          earlyEntryBuffer: "Travel to Canada permitted up to 30 days before classes commence"
+        },
+        applicationProcess: {
+          submission: "1. Acceptance & PAL: Secure DLI admission and provincial PAL quota.",
+          onlineForm: "2. GCKey Portal Filing: Submit online application on official IRCC portal.",
+          appointments: "3. VFS Biometrics: Book and attend biometric appointment at nearest VFS center.",
+          documentsAndBiometrics: [
+            "Valid Passport with at least 6 months validity",
+            "Letter of Acceptance (LOA) & PAL Certificate",
+            "Proof of Financial Support & CAD $20,635 GIC Certificate",
+            "Upfront Medical Exam Report (eMedical)",
+            "Statement of Purpose / Study Plan"
+          ]
+        }
+      };
+    } else if (isWork) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a Work Permit for Canada`,
+        verdictSummary: `LMIA approval or employer-specific sponsorship required before taking up employment.`,
+        entryStatus: "Canada Work Permit (LMIA / PGWP)",
+        entryStatusSubtext: "6–12 Weeks Processing",
+        stayDuration: "1 to 3 Years (Renewable)",
+        stayDurationSubtext: "Path to Express Entry PR",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "Worker TRV Foil",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "IRCC Work Authorization",
+        digitalCardDesc: "Official Port of Entry Work Permit Approval.",
+        sources: ["IRCC Canada", "ESDC", "IATA Timatic 2026"],
+        maxStay: "1 to 3 Years",
+        conditionsForVisa: [
+          "Positive LMIA from ESDC or LMIA-exempt job offer.",
+          "Signed employment contract with registered Canadian business.",
+          "Relevant qualifications and criminal background clearance."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Work Permit Fee", amount: "CAD $155 (approx. ₹9,500)", note: "IRCC worker fee" },
+            { label: "Biometrics Fee", amount: "CAD $85 (approx. ₹5,200)", note: "Fingerprints & digital photo" }
+          ],
+          totalEstimatedINR: "CAD $240 (approx. ₹14,700)",
+          processingTime: "6 to 12 Weeks Standard",
+          processingSLA: "Expedited processing under Global Skills Strategy if eligible.",
+          applicationWindow: "Apply up to 3 Months before job start",
+          earlyEntryBuffer: "Entry permitted 14 days before employment start"
+        },
+        applicationProcess: {
+          submission: "1. Employer Filing: Sponsoring enterprise registers job offer on IRCC Employer Portal.",
+          onlineForm: "2. Online Submission: Worker completes application on GCKey.",
+          appointments: "3. VFS Biometrics: Submit biometrics at VFS Global.",
+          documentsAndBiometrics: [
+            "Valid Passport with blank pages",
+            "LMIA Approval / Offer of Employment Number",
+            "Police Clearance Certificate (PCC)",
+            "Immigration Medical Exam Confirmation",
+            "Educational Credential Assessment (ECA)"
+          ]
+        }
+      };
+    } else {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a Visitor Visa for Canada`,
+        verdictSummary: `Temporary Resident Visa (TRV) required for tourism, family visits, and business trips.`,
+        entryStatus: "Canada Visitor Visa (TRV)",
+        entryStatusSubtext: "Up to 10-Year Multiple Entry",
+        stayDuration: "Up to 180 Days (6 Months)",
+        stayDurationSubtext: "Per visit",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "10-Year TRV Foil",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "IRCC TRV Sticker",
+        digitalCardDesc: "Physical visa foil in passport issued by Canadian High Commission.",
+        sources: ["IRCC Canada", "High Commission of Canada", "IATA Timatic 2026"],
+        maxStay: "Up to 6 Months per Visit",
+        conditionsForVisa: [
+          "Tourism, holidays, visiting family members or short commercial conferences.",
+          "Must demonstrate ties to home country and sufficient liquid assets.",
+          "No unauthorized work or studying allowed."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "TRV Application Fee", amount: "CAD $100 (approx. ₹6,100)", note: "Official IRCC visa fee" },
+            { label: "Biometrics Fee", amount: "CAD $85 (approx. ₹5,200)", note: "Valid for 10 years once enrolled" }
+          ],
+          totalEstimatedINR: "CAD $185 (approx. ₹11,300)",
+          processingTime: "3 to 6 Weeks via GCKey",
+          processingSLA: "10-Year multiple entry validity granted up to passport expiry.",
+          applicationWindow: "Apply 2 to 4 Months prior to trip",
+          earlyEntryBuffer: "Travel permitted anytime during valid TRV window"
+        },
+        applicationProcess: {
+          submission: "1. GCKey Online Intake: Create account and upload passport, itinerary & finances.",
+          onlineForm: "2. Document Audit: Upload proof of income, ITR, and hotel/invitation.",
+          appointments: "3. Biometrics & Passport Transmission: Attend VFS for biometrics and courier passport.",
+          documentsAndBiometrics: [
+            "Current Passport valid for 6+ months",
+            "6 Months Bank Statements with bank stamp",
+            "ITR Acknowledgement for last 2–3 years",
+            "Travel Itinerary & Hotel Reservation",
+            "Employment Verification / Leave Approval"
+          ]
+        }
+      };
+    }
   }
 
-  // Case 6: Generic / Other Destinations
+  // Case 6: Australia
+  if (isAustralia) {
+    if (isStudy) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a Student Visa (Subclass 500) for Australia`,
+        verdictSummary: `Confirmation of Enrolment (CoE) & Genuine Student (GS) criteria required under DHA rules.`,
+        entryStatus: "Australia Student Visa (Subclass 500)",
+        entryStatusSubtext: "4–6 Weeks via ImmiAccount",
+        stayDuration: "Duration of Course (Up to 5 Years)",
+        stayDurationSubtext: "Includes 48 hrs/fortnight work rights",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "Digital Visa Grant (VEVO)",
+        visaPillTag: "ELECTRONIC VISA REQUIRED",
+        digitalCardName: "DHA ImmiAccount VEVO Grant",
+        digitalCardDesc: "Department of Home Affairs Electronic Visa Grant Notification.",
+        sources: ["Department of Home Affairs (DHA)", "Study Australia", "IATA Timatic 2026"],
+        maxStay: "Course Duration + 2 Months",
+        conditionsForVisa: [
+          "Full-time enrollment in CRICOS-registered course with valid CoE.",
+          "Must pass Genuine Student (GS) assessment criteria.",
+          "Overseas Student Health Cover (OSHC) for entire stay.",
+          "Proof of living cost (AUD $29,710/yr) & tuition funds."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Subclass 500 Application Fee", amount: "AUD $1,600 (approx. ₹88,000)", note: "Official DHA visa surcharge" },
+            { label: "OSHC Health Insurance", amount: "AUD $600 – $900/yr", note: "Mandatory Australian medical protection" }
+          ],
+          totalEstimatedINR: "AUD $1,600 Base Fee",
+          processingTime: "4 to 6 Weeks Standard via ImmiAccount",
+          processingSLA: "100% paperless digital grant linked electronically to passport.",
+          applicationWindow: "Apply up to 6 Months before course start",
+          earlyEntryBuffer: "Travel to Australia permitted up to 90 days before course start date"
+        },
+        applicationProcess: {
+          submission: "1. University Offer & CoE: Pay tuition deposit to secure official electronic CoE.",
+          onlineForm: "2. ImmiAccount Filing: Complete online application on Home Affairs portal.",
+          appointments: "3. Health & Biometrics: Complete HAP health panel exam and VFS biometrics.",
+          documentsAndBiometrics: [
+            "Valid Passport with minimum 6 months validity",
+            "Electronic Confirmation of Enrolment (CoE)",
+            "Genuine Student (GS) Statement",
+            "Proof of Funds / Bank Statements & Education Loan",
+            "OSHC Health Insurance Certificate",
+            "English Proficiency Test (IELTS / PTE Academic)"
+          ]
+        }
+      };
+    } else {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a Visitor Visa (Subclass 600) for Australia`,
+        verdictSummary: `Tourist stream visa required prior to departure. 100% digital online lodgement via ImmiAccount.`,
+        entryStatus: "Australia Visitor Visa (Subclass 600)",
+        entryStatusSubtext: "3–4 Weeks Digital Processing",
+        stayDuration: "3, 6, or 12 Months",
+        stayDurationSubtext: "Per calendar visit",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "Digital VEVO Visa",
+        visaPillTag: "ELECTRONIC VISA REQUIRED",
+        digitalCardName: "DHA ImmiAccount VEVO",
+        digitalCardDesc: "Official Department of Home Affairs electronic visa grant.",
+        sources: ["DHA Australia", "Australian High Commission", "IATA Timatic 2026"],
+        maxStay: "Up to 3–12 Months per Visit",
+        conditionsForVisa: [
+          "Tourism, holidays, visiting family or friends, or informal business visits.",
+          "Must not work or provide commercial services in Australia.",
+          "Must have access to sufficient funds for entire stay."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Visitor Visa Application Fee", amount: "AUD $190 (approx. ₹10,500)", note: "Official DHA lodgement fee" }
+          ],
+          totalEstimatedINR: "AUD $190 (approx. ₹10,500)",
+          processingTime: "3 to 4 Weeks via ImmiAccount",
+          processingSLA: "Digital grant linked directly to passport number.",
+          applicationWindow: "Apply 1 to 3 Months before trip",
+          earlyEntryBuffer: "Travel permitted anytime during 1 to 3 year visa grant"
+        },
+        applicationProcess: {
+          submission: "1. ImmiAccount Registration: Create applicant account on DHA portal.",
+          onlineForm: "2. Form Submission: Complete Subclass 600 Tourist Stream declarations.",
+          appointments: "3. Biometrics Collection: Complete biometrics at VFS Australian Biometric Center.",
+          documentsAndBiometrics: [
+            "Valid Passport with 6+ months validity",
+            "6 Months Bank Statements & Tax Returns",
+            "Employment Leave Certificate / Business Registration",
+            "Detailed Travel Itinerary & Accommodation Details",
+            "Cover Letter explaining purpose of visit"
+          ]
+        }
+      };
+    }
+  }
+
+  // Case 7: Germany
+  if (isGermany) {
+    if (isStudy) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a National Visa (Type D) for Germany`,
+        verdictSummary: `University Admission, Blocked Account (€11,904/yr) & APS Certificate required for Germany.`,
+        entryStatus: "German National Visa (Type D - Study)",
+        entryStatusSubtext: "4–8 Weeks Processing",
+        stayDuration: "Duration of Study (Up to 4–5 Years)",
+        stayDurationSubtext: "Includes 140 full days work permit",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "National Visa D + Residence Permit",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "German Embassy National Visa",
+        digitalCardDesc: "Federal Republic of Germany National Visa D.",
+        sources: ["German Federal Foreign Office", "DAAD", "IATA Timatic 2026"],
+        maxStay: "Duration of Academic Degree",
+        conditionsForVisa: [
+          "Unconditional Admission Letter from German university.",
+          "Mandatory APS Certificate (Academic Evaluation Centre) for Indian applicants.",
+          "Blocked Account (Sperrkonto) with minimum €11,904/year.",
+          "Statutory or private travel health insurance."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "National Visa Fee", amount: "€75 (approx. ₹6,800)", note: "Official German consular fee" },
+            { label: "VFS Center Service Charge", amount: "₹2,200", note: "Biometrics & document submission" }
+          ],
+          totalEstimatedINR: "€75 (approx. ₹6,800) + Service Fee",
+          processingTime: "4 to 8 Weeks (German Mission Review)",
+          processingSLA: "Appointments booked via VFS Global German Visa Application Centers.",
+          applicationWindow: "Apply up to 3 Months before semester start",
+          earlyEntryBuffer: "Entry permitted 2 to 3 weeks before course start date"
+        },
+        applicationProcess: {
+          submission: "1. APS Certificate & Admission: Obtain APS verification and university acceptance.",
+          onlineForm: "2. VIDEX Form: Fill official VIDEX national visa application online.",
+          appointments: "3. VFS Biometric Appointment: Submit dossier and biometrics at VFS German VAC.",
+          documentsAndBiometrics: [
+            "Valid Passport with at least 12 months validity",
+            "APS Certificate (Original)",
+            "University Admission Letter (Zulassungsbescheid)",
+            "Proof of Blocked Account (€11,904 confirmation letter)",
+            "Curriculum Vitae (CV) & Motivation Letter",
+            "Proof of German / English Language Proficiency"
+          ]
+        }
+      };
+    }
+  }
+
+  // Case 8: Schengen Area (Including Greece - Official GVC World / EU Schengen Rules)
+  if (isSchengen || isGreece) {
+    if (isStudy) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a National Study Visa for ${country}`,
+        verdictSummary: `National Type D Study Visa required. Acceptance from accredited institution & €30,000 medical insurance required.`,
+        entryStatus: "National Study Visa (Type D)",
+        entryStatusSubtext: "15 to 45 Calendar Days Processing",
+        stayDuration: "Duration of Academic Course (1–4 Years)",
+        stayDurationSubtext: "Multi-entry European student rights",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "National Type D Sticker",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "National Type D Visa Sticker",
+        digitalCardDesc: "Official consular long-stay student visa sticker with Schengen mobility.",
+        sources: [isGreece ? "Global Visa Center World (GVCW)" : "Schengen Consular Affairs", "Ministry of Foreign Affairs", "IATA Timatic 2026"],
+        maxStay: "Duration of Academic Degree",
+        conditionsForVisa: [
+          `Formal acceptance letter from accredited institution in ${country}.`,
+          "Valid travel medical insurance with minimum €30,000 coverage valid across Schengen.",
+          "Clean criminal record certificate and medical health certificate.",
+          "Demonstrate sufficient funds to cover tuition and living expenses."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "National Type D Visa Fee", amount: "€75 (approx. ₹6,800)", note: "Official consular long-term visa fee" },
+            { label: isGreece ? "GVCW / VFS Service Fee" : "VFS / TLS Service Fee", amount: "₹2,500 – ₹3,200", note: "Biometric and center logistics" }
+          ],
+          totalEstimatedINR: "€75 (approx. ₹6,800) + Logistics",
+          processingTime: "15 to 45 Calendar Days",
+          processingSLA: isGreece ? "Processed by Greek Consular Authorities via GVCW centers." : "Processed by designated consular mission.",
+          applicationWindow: "Apply up to 6 Months before course start",
+          earlyEntryBuffer: "Travel permitted 2 to 3 weeks before classes begin"
+        },
+        applicationProcess: {
+          submission: "1. Institutional Acceptance: Secure official enrollment certificate.",
+          onlineForm: "2. National Visa Form: Fill national visa application form with photo.",
+          appointments: isGreece ? "3. GVCW Appointment: Book biometrics at GVCW Visa Application Center." : "3. VFS/TLS Appointment: Book biometrics at VAC.",
+          documentsAndBiometrics: [
+            "Valid Passport (issued within 10 years, valid for 1+ year)",
+            "University Acceptance Certificate & Receipt of Fees",
+            "Proof of Financial Means (Bank statements of last 6 months)",
+            "Travel Medical Insurance (€30,000+ coverage)",
+            "Police Clearance Certificate (PCC) apostilled / legalized",
+            "Medical Health Clearance Certificate"
+          ]
+        }
+      };
+    } else if (isWork) {
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require an Employment Visa for ${country}`,
+        verdictSummary: `National Type D Employment Visa required based on certified contract approved by Ministry of Labour.`,
+        entryStatus: "National Employment Visa (Type D)",
+        entryStatusSubtext: "30 to 60 Calendar Days",
+        stayDuration: "1 to 2 Years (Renewable)",
+        stayDurationSubtext: "Includes EU Blue Card rights",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "National Long-Stay Foil",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "National Type D Work Visa",
+        digitalCardDesc: "Official employment authorization sticker.",
+        sources: [isGreece ? "GVCW / Greek Embassy" : "Ministry of Labour & Consular Affairs", "IATA Timatic 2026"],
+        maxStay: "1 to 2 Years (Renewable)",
+        conditionsForVisa: [
+          "Signed employment agreement with registered enterprise.",
+          "Ministry of Labour / Foreign Affairs pre-approval.",
+          "Medical insurance and clear background check."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "National Type D Employment Fee", amount: "€180 (approx. ₹16,400)", note: "Official consular long-stay fee" },
+            { label: "VAC Biometric Fee", amount: "₹2,500 – ₹3,200", note: "VAC service charge" }
+          ],
+          totalEstimatedINR: "€180 (approx. ₹16,400)",
+          processingTime: "30 to 60 Calendar Days",
+          processingSLA: "Employer coordinates with national labour authorities.",
+          applicationWindow: "Apply 2 to 3 Months before job start date",
+          earlyEntryBuffer: "Travel permitted 14 days before contract start"
+        },
+        applicationProcess: {
+          submission: "1. Labour Approval: Sponsoring enterprise secures work authorization in Europe.",
+          onlineForm: "2. Visa Application: Complete long-term national D visa application.",
+          appointments: isGreece ? "3. GVCW Biometrics: Attend appointment at GVCW center." : "3. Consular Appointment: Submit biometrics.",
+          documentsAndBiometrics: [
+            "Valid Passport with at least 1 year validity",
+            "Signed Employment Contract & Ministry Pre-Approval",
+            "Apostilled Police Clearance Certificate (PCC)",
+            "Medical Certificate from authorized hospital",
+            "Professional Qualification Certificates & CV"
+          ]
+        }
+      };
+    } else {
+      // Tourism / Short Stay Type C (GVC World / Schengen Code Official)
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders require a Schengen Visa for ${country}`,
+        verdictSummary: `Short-stay visa (Type C) required before departure. Valid across all 29 European Schengen states.`,
+        entryStatus: isGreece ? "Greece Schengen Visa (Type C)" : "Schengen Short-Stay Visa",
+        entryStatusSubtext: "15 Calendar Days Processing",
+        stayDuration: "Up to 90 Days",
+        stayDurationSubtext: "Within any 180-day period",
+        entryType: "Single / Multiple Entry",
+        entryTypeSubtext: "Valid in 29 Schengen states",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "Schengen Consular Portal",
+        digitalCardDesc: "Official Schengen visa sticker in passport valid across 29 European member states.",
+        sources: [isGreece ? "Global Visa Center World (GVCW)" : "European Commission", "Consular Affairs Department", "IATA Timatic 2026"],
+        maxStay: "90 Days within 180 Days",
+        conditionsForVisa: [
+          `Tourism, business visits, or family trips across Schengen territory.`,
+          "Mandatory travel medical insurance with minimum €30,000 coverage (e.g. INSURTE / compliant provider).",
+          "Passport issued within last 10 years with 3+ months validity beyond return date and 2 blank pages."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "Schengen Visa Fee (Adult)", amount: "€90 (approx. ₹8,200)", note: "Official EU / GVCW consular fee (Children 6-12: €45)" },
+            { label: isGreece ? "GVCW Service Fee" : "VFS / TLS Service Fee", amount: "₹2,500 – ₹3,200", note: "Biometric collection and center logistics fee" }
+          ],
+          totalEstimatedINR: "€90 (approx. ₹8,200) + Logistics",
+          processingTime: "15 Calendar Days (Standard Consular Period)",
+          processingSLA: isGreece 
+            ? "Lodged at GVCW VACs across India and assessed by the Embassy of Greece in New Delhi." 
+            : "Appointments scheduled at designated VFS/TLS global visa application centers.",
+          applicationWindow: "Apply up to 6 Months before planned travel (minimum 15 working days)",
+          earlyEntryBuffer: "Travel permitted within valid visa dates"
+        },
+        applicationProcess: {
+          submission: "1. Visa Form Filing: Complete official harmonized Schengen visa application form.",
+          onlineForm: "2. Document Preparation: Compile round-trip flights, hotel vouchers, 3-6 month stamped bank statements & €30k insurance.",
+          appointments: isGreece ? "3. GVCW Biometrics: Book and attend appointment at nearest GVCW Center in India." : "3. VFS/TLS Biometrics: Attend appointment for fingerprinting & passport submission.",
+          documentsAndBiometrics: [
+            "Passport valid for at least 3 months beyond departure date with 2 blank pages (issued within 10 years)",
+            "2 Recent Passport Photos (35x40mm or 35x45mm, white background, facing forward)",
+            "Travel Medical Insurance with minimum €30,000 coverage for medical repatriation",
+            "Cover Letter with day-by-day itinerary & purpose of visit",
+            "Bank statements of last 3-6 months with original bank seal and stamp",
+            "Confirmed round-trip flight reservations & hotel accommodation bookings",
+            "Employment NOC / Salary slips of last 3 months or Student Enrollment Proof"
+          ]
+        }
+      };
+    }
+  }
+
+  // Case 9: Generic / Other Destinations
   return {
     isExempt: false,
     verdictTitle: `${nationality} passport holders require a visa for ${country}`,
     verdictSummary: `Official travel authorization required before departure. Verified online application with fast turnaround.`,
-    entryStatus: "Official E-Visa Required",
+    entryStatus: `${country} Entry Visa`,
     entryStatusSubtext: "3–5 Days Processing",
     stayDuration: "30 Days (Extendable)",
     stayDurationSubtext: "Per calendar visit",
@@ -3771,10 +4166,10 @@ export function VisaCountryResultPortal({
                 </span>
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-slate-900 tracking-tight">
                   {isStudyPurpose 
-                    ? `Documents required for ${countryName} Student Pass / Visa`
+                    ? `Documents required for ${aiIntel.entryStatus || `${countryName} Student Visa`}`
                     : isWorkPurpose
-                    ? `Documents required for ${countryName} Work Pass / Visa`
-                    : `Documents required for ${countryName} Visa`}
+                    ? `Documents required for ${aiIntel.entryStatus || `${countryName} Work Visa`}`
+                    : `Documents required for ${countryName} ${aiIntel.entryStatus || 'Visa'}`}
                 </h2>
               </div>
 

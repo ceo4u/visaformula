@@ -2977,15 +2977,24 @@ export function VisaCountryResultPortal({
                     </div>
 
                     {/* Quick Search */}
-                    <div className="relative min-w-[220px] sm:min-w-[260px]">
-                      <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <div className="relative w-full sm:w-72 md:w-80 shrink-0">
+                      <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                       <input
                         type="text"
                         value={uniSearchQuery}
                         onChange={(e) => setUniSearchQuery(e.target.value)}
-                        placeholder="Search universities..."
-                        className="w-full h-10 pl-9.5 pr-3.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs font-semibold text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-[#00A86B]/20 transition-all shadow-2xs"
+                        placeholder="Search universities by name or city..."
+                        className="w-full h-11 pl-10 pr-9 rounded-2xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-[#00A86B] focus:ring-4 focus:ring-[#00A86B]/10 transition-all shadow-2xs outline-none"
                       />
+                      {uniSearchQuery && (
+                        <button
+                          type="button"
+                          onClick={() => setUniSearchQuery('')}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center text-[10px] cursor-pointer transition-colors"
+                        >
+                          ✕
+                        </button>
+                      )}
                     </div>
                   </div>
 

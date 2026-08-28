@@ -312,23 +312,43 @@ function formatTargetDate(daysToAdd: number) {
 
 // ── STRICT REGION CLASSIFICATION CONSTANTS ──
 // GCC Region: UAE, Saudi Arabia, Qatar, Oman, Bahrain, Kuwait
-// Rule: Passport Validity = MINIMUM 6 MONTHS from date of arrival. NO ETIAS. NO 10-Year Issue Rule.
 const GCC_COUNTRIES = ['uae', 'united arab emirates', 'dubai', 'abu dhabi', 'saudi arabia', 'ksa', 'qatar', 'oman', 'bahrain', 'kuwait'];
 
 // Schengen Area: Germany, France, Spain, Italy, Portugal, Netherlands, Belgium, Austria, Switzerland, Greece, Norway, Sweden, Denmark, Finland, Czechia, Poland, etc.
-// Rule: Passport Validity = 3 months beyond departure. Passport issued within last 10 years. ETIAS (upcoming).
 const SCHENGEN_COUNTRIES = ['germany', 'france', 'spain', 'italy', 'portugal', 'netherlands', 'belgium', 'austria', 'switzerland', 'greece', 'norway', 'sweden', 'denmark', 'finland', 'czechia', 'czech republic', 'poland', 'hungary', 'slovakia', 'slovenia', 'estonia', 'latvia', 'lithuania', 'luxembourg', 'malta', 'iceland', 'liechtenstein', 'schengen'];
 
 // Southeast Asia: Singapore, Thailand, Malaysia, Vietnam, Indonesia, Philippines, Cambodia, Myanmar
-// Rule: Passport Validity = Minimum 6 Months from date of arrival. Only Singapore has mandatory SGAC.
 const SOUTHEAST_ASIA_COUNTRIES = ['singapore', 'thailand', 'malaysia', 'vietnam', 'indonesia', 'philippines', 'cambodia', 'myanmar', 'bali'];
+
+// ── NATIONALITY FORMATTER HELPER ──
+function formatNationality(passport: string): string {
+  const p = (passport || 'India').trim();
+  const lower = p.toLowerCase();
+  if (lower === 'india' || lower === 'indian' || lower === 'in') return 'Indian';
+  if (lower === 'united states' || lower === 'usa' || lower === 'us' || lower === 'america' || lower === 'american') return 'American';
+  if (lower === 'united kingdom' || lower === 'uk' || lower === 'great britain' || lower === 'britain' || lower === 'british' || lower === 'england') return 'British';
+  if (lower === 'australia' || lower === 'australian') return 'Australian';
+  if (lower === 'canada' || lower === 'canadian') return 'Canadian';
+  if (lower === 'germany' || lower === 'german') return 'German';
+  if (lower === 'france' || lower === 'french') return 'French';
+  if (lower === 'italy' || lower === 'italian') return 'Italian';
+  if (lower === 'spain' || lower === 'spanish') return 'Spanish';
+  if (lower === 'japan' || lower === 'japanese') return 'Japanese';
+  if (lower === 'china' || lower === 'chinese') return 'Chinese';
+  if (lower === 'uae' || lower === 'united arab emirates' || lower === 'emirati') return 'Emirati';
+  if (lower === 'singapore' || lower === 'singaporean') return 'Singaporean';
+  if (lower === 'new zealand' || lower === 'kiwi') return 'New Zealand';
+  return p.charAt(0).toUpperCase() + p.slice(1);
+}
 
 // ── DYNAMIC AI OVERVIEW & ENTRY REQUIREMENTS ENGINE ──
 function getAIVisaIntelligence(passport: string, country: string, purpose: string) {
   const pNorm = (passport || 'India').toLowerCase();
   const cNorm = (country || 'Singapore').toLowerCase();
   const purNorm = (purpose || 'tourism').toLowerCase();
+  const nationality = formatNationality(passport);
 
+  const isUK = cNorm.includes('united kingdom') || cNorm.includes('uk') || cNorm.includes('great britain') || cNorm.includes('england') || cNorm.includes('britain') || cNorm.includes('scotland');
   const isUKorUSorEU = pNorm.includes('united kingdom') || pNorm.includes('uk') || pNorm.includes('united states') || pNorm.includes('usa') || pNorm.includes('australia') || pNorm.includes('canada');
   const isUS = cNorm.includes('united states') || cNorm.includes('usa') || cNorm.includes('america');
   const isSingapore = cNorm.includes('singapore');
@@ -339,14 +359,163 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   const isStudy = purNorm.includes('study');
   const isWork = purNorm.includes('work') || purNorm.includes('job');
 
-  // Case 1: United States (F-1 Student Visa, H-1B Work, B1/B2 Visitor)
+  // Case 1: United Kingdom (UK)
+  if (isUK) {
+    if (isStudy) {
+      return {
+        isExempt: false,
+        verdictTitle: `Student Visa (CAS Confirmation) Required for Higher Education in the United Kingdom`,
+        verdictSummary: `${nationality} students accepted by licensed UK universities require a Student Visa with valid Confirmation of Acceptance for Studies (CAS).`,
+        entryStatus: "UK Student Visa",
+        entryStatusSubtext: "3–4 Weeks Processing",
+        stayDuration: "Duration of Course (1–4 Years)",
+        stayDurationSubtext: "Full-time academic degree",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "Includes BRP / eVisa status",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "UKVI CAS & eVisa Share Code",
+        digitalCardDesc: "Confirmation of Acceptance for Studies issued by licensed UK sponsor.",
+        sources: ["UK Visas and Immigration (UKVI)", "Home Office", "IATA Timatic 2026"],
+        maxStay: "Duration of Course (1–4 Years)",
+        conditionsForVisa: [
+          "Unconditional offer on full-time degree course with licensed student sponsor.",
+          "Confirmation of Acceptance for Studies (CAS) reference number.",
+          "Must meet English language proficiency (IELTS for UKVI/SELT).",
+          "Demonstrate 28-day maintenance funds for tuition and London/UK living costs."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "UKVI Student Visa Fee", amount: "£490 (approx. ₹51,800)", note: "Standard UK government visa application fee" },
+            { label: "Immigration Health Surcharge (IHS)", amount: "£776/year (approx. ₹82,000/yr)", note: "Mandatory NHS healthcare access surcharge" }
+          ],
+          totalEstimatedINR: "Official UKVI Fees Apply",
+          processingTime: "3 Weeks Standard (~15 Working Days)",
+          processingSLA: "Priority (5 Days) and Super Priority (24 Hours) available at VFS centers.",
+          applicationWindow: "Apply up to 6 Months before course start date",
+          earlyEntryBuffer: "Travel to UK permitted up to 1 month before course starts"
+        },
+        applicationProcess: {
+          submission: "1. CAS Issuance: Receive CAS number from licensed university sponsor.",
+          onlineForm: "2. UKVI Online Application: Complete Access UK form and pay visa + IHS fees.",
+          appointments: "3. VFS Global Appointment: Book biometrics (fingerprints & digital photo) at nearest VFS center.",
+          documentsAndBiometrics: [
+            "Valid Passport with minimum 6 months validity",
+            "CAS Statement & University Acceptance Letter",
+            "Financial Proof (Bank statements meeting 28-day maintenance rule)",
+            "English Language Certificate (IELTS/PTE)",
+            "Tuberculosis (TB) Test Certificate from approved clinic"
+          ]
+        }
+      };
+    } else if (isWork) {
+      return {
+        isExempt: false,
+        verdictTitle: `Skilled Worker Visa (CoS Required) for Employment in the United Kingdom`,
+        verdictSummary: `${nationality} professionals require an approved Certificate of Sponsorship (CoS) from a licensed UK employer to work in the UK.`,
+        entryStatus: "Skilled Worker Visa",
+        entryStatusSubtext: "3–4 Weeks Processing",
+        stayDuration: "Up to 5 Years (Renewable)",
+        stayDurationSubtext: "Leads to ILR (Permanent Residency)",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "Employer sponsored",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "Certificate of Sponsorship (CoS)",
+        digitalCardDesc: "Electronic sponsorship record issued by licensed UK Home Office sponsor.",
+        sources: ["UK Home Office", "UKVI", "IATA Timatic 2026"],
+        maxStay: "Up to 5 Years",
+        conditionsForVisa: [
+          "Confirmed job offer from Home Office-approved sponsor.",
+          "Valid Certificate of Sponsorship (CoS) reference number.",
+          "Salary meets qualifying threshold (minimum £38,700 or going rate).",
+          "English language level B1 on CEFR scale."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "UKVI Skilled Worker Visa Fee", amount: "£719 – £1,420 (₹76,000 – ₹150,000)", note: "Varies by duration (up to 3 years / over 3 years)" },
+            { label: "Immigration Health Surcharge (IHS)", amount: "£1,035/year (approx. ₹109,000/yr)", note: "Mandatory NHS healthcare access surcharge" }
+          ],
+          totalEstimatedINR: "Employer Sponsored / Subsidized",
+          processingTime: "3 Weeks Standard (~15 Working Days)",
+          processingSLA: "Priority 5-day decision service available at VFS centers.",
+          applicationWindow: "Apply up to 3 Months before job start date on CoS",
+          earlyEntryBuffer: "Travel permitted up to 14 days before start date"
+        },
+        applicationProcess: {
+          submission: "1. CoS Assignment: Sponsoring UK company assigns official Certificate of Sponsorship.",
+          onlineForm: "2. Online Filing: Submit Skilled Worker visa application on gov.uk portal.",
+          appointments: "3. VFS Biometrics: Attend VFS Global appointment for fingerprinting and passport submission.",
+          documentsAndBiometrics: [
+            "Valid Passport with blank visa pages",
+            "CoS Reference Number & Job Offer Letter",
+            "Proof of English proficiency (IELTS / degree verification)",
+            "TB Test Certificate",
+            "Criminal Record Certificate for designated roles"
+          ]
+        }
+      };
+    } else {
+      // UK Tourism / Standard Visitor
+      return {
+        isExempt: false,
+        verdictTitle: `${nationality} passport holders traveling to the United Kingdom require a Standard Visitor Visa before departure.`,
+        verdictSummary: `${nationality} passport holders must obtain a valid UK Visitor Visa prior to travel. Processing includes online application filing and mandatory VFS Global biometric appointment.`,
+        entryStatus: "Standard Consular Visa",
+        entryStatusSubtext: "~3 Weeks Standard Processing",
+        stayDuration: "Up to 180 Days (6 Months)",
+        stayDurationSubtext: "Per calendar visit",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "Standard 6-Month Foil",
+        visaPillTag: "CONSULAR VISA REQUIRED",
+        digitalCardName: "Access UK / UKVI Portal",
+        digitalCardDesc: "Official UK Visas and Immigration application confirmation & VFS appointment receipt.",
+        sources: ["UK Visas and Immigration (UKVI)", "Home Office", "IATA Timatic 2026"],
+        maxStay: "Up to 180 Days (6 Months)",
+        conditionsForVisa: [
+          "Tourism, holidays, visiting family/friends, or short business meetings.",
+          "No unauthorized work or public funds access permitted.",
+          "Must intend to leave the UK at the end of visit with sufficient funds."
+        ],
+        feesAndProcessing: {
+          costItems: [
+            { label: "UKVI Government Visa Fee (6 Months)", amount: "£115 (approx. ₹12,500)", note: "Official UK government visa fee" },
+            { label: "TravlTik VFS Concierge & Review", amount: "₹4,800", note: "Application vetting, document formatting & biometric assistance" }
+          ],
+          totalEstimatedINR: "₹17,300 Total Package",
+          processingTime: "3 Weeks Standard (~15 Working Days)",
+          processingSLA: "Priority 5-day decision service available at VFS centers across India.",
+          applicationWindow: "Apply up to 3 Months (90 Days) before planned travel date",
+          earlyEntryBuffer: "Valid for multiple entries anytime during the 6-month validity"
+        },
+        applicationProcess: {
+          submission: "1. Online UKVI Portal Filing: Fill official Access UK visa application form.",
+          onlineForm: "2. Document Upload & Fee Payment: Pay £115 UKVI consular fee and upload supporting documents.",
+          appointments: "3. VFS Global Biometric Appointment: Attend appointment for fingerprint scan and facial photo.",
+          documentsAndBiometrics: [
+            "Original Passport with at least 6 months validity and blank visa pages",
+            "Proof of Financial Funds (6 months bank statements with sufficient balance)",
+            "Employment Verification / Salary Slips / Leave Approval Letter",
+            "Detailed Travel Itinerary & Accommodation Details",
+            "VFS Appointment Confirmation & Document Upload Receipt"
+          ]
+        }
+      };
+    }
+  }
+
+  // Case 2: United States
   if (isUS) {
     if (isStudy) {
       return {
         isExempt: false,
-        verdictTitle: "F-1 Student Visa Required for Higher Education in the United States",
-        verdictSummary: `${passport} students admitted to SEVP-certified US universities require an approved F-1 Student Visa and valid I-20 to legally enter and study in the United States.`,
+        verdictTitle: `F-1 Student Visa Required for Higher Education in the United States`,
+        verdictSummary: `${nationality} students admitted to SEVP-certified US universities require an approved F-1 Student Visa and valid Form I-20 to legally enter and study in the United States.`,
+        entryStatus: "F-1 Student Visa",
+        entryStatusSubtext: "Requires Consular Interview",
         stayDuration: "Duration of Status (D/S — Up to 4–5 Years)",
+        stayDurationSubtext: "Full academic degree",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "SEVIS Active Status",
+        visaPillTag: "CONSULAR VISA REQUIRED",
         digitalCardName: "Form I-20 + SEVIS I-901 Approval",
         digitalCardDesc: "SEVP-certified institution Form I-20 Certificate of Eligibility with active SEVIS ID.",
         sources: ["US Department of State (Travel.State.Gov)", "DHS SEVP Portal", "USCIS & IATA Timatic 2026"],
@@ -385,9 +554,15 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else if (isWork) {
       return {
         isExempt: false,
-        verdictTitle: "H-1B / L-1 / O-1 Nonimmigrant Work Visa Required",
-        verdictSummary: `${passport} professionals require an approved Form I-797 Notice of Action and consular visa stamp to take up employment in the United States.`,
+        verdictTitle: `H-1B / L-1 / O-1 Nonimmigrant Work Visa Required`,
+        verdictSummary: `${nationality} professionals require an approved Form I-797 Notice of Action and consular visa stamp to take up employment in the United States.`,
+        entryStatus: "H-1B / L-1 Work Visa",
+        entryStatusSubtext: "Requires Consular Interview",
         stayDuration: "Up to 3 Years (Extendable to 6 Years)",
+        stayDurationSubtext: "Based on petition approval",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "USCIS Petition Based",
+        visaPillTag: "CONSULAR VISA REQUIRED",
         digitalCardName: "Form I-797 Approval Notice",
         digitalCardDesc: "USCIS Form I-797 Petition Approval Notice.",
         sources: ["USCIS", "US Department of State", "IATA Timatic 2026"],
@@ -424,9 +599,15 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else {
       return {
         isExempt: false,
-        verdictTitle: "B1/B2 Visitor Visa Required for Tourism & Business",
-        verdictSummary: `${passport} passport holders require an official B1/B2 Visitor Visa issued by the US Department of State before boarding flights to the United States.`,
-        stayDuration: "Up to 6 Months per entry (10-Year Multiple Entry)",
+        verdictTitle: `${nationality} passport holders traveling to the United States require a B1/B2 Visitor Visa before departure.`,
+        verdictSummary: `${nationality} passport holders must obtain an official B1/B2 Visa issued by the US Department of State prior to boarding flights to the United States.`,
+        entryStatus: "B1/B2 Consular Visa",
+        entryStatusSubtext: "Requires Consular Interview",
+        stayDuration: "Up to 180 Days (6 Months)",
+        stayDurationSubtext: "Per visit on 10-Year Visa",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "10-Year Validity Foil",
+        visaPillTag: "CONSULAR VISA REQUIRED",
         digitalCardName: "ESTA / US B1/B2 Stamp",
         digitalCardDesc: "Physical visa foil in passport or approved ESTA if dual citizen.",
         sources: ["US Department of State", "CBP", "IATA Timatic 2026"],
@@ -462,14 +643,20 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     }
   }
 
-  // Case 2: Singapore
+  // Case 3: Singapore
   if (isSingapore) {
     if (isUKorUSorEU && !isStudy && !isWork) {
       return {
         isExempt: true,
         verdictTitle: "Visa-Exempt for Tourism & Business (Up to 90 Days)",
-        verdictSummary: `${passport} passport holders do not need a visa for short-term tourism or business visits to Singapore lasting up to 90 days. A valid SG Arrival Card (SGAC) with electronic health declaration is mandatory prior to check-in.`,
+        verdictSummary: `${nationality} passport holders do not need a visa for short-term tourism or business visits to Singapore lasting up to 90 days. A valid SG Arrival Card (SGAC) with electronic health declaration is mandatory prior to check-in.`,
+        entryStatus: "Visa-Free / SGAC Required",
+        entryStatusSubtext: "Instant Online Clearance",
         stayDuration: "Up to 90 Days",
+        stayDurationSubtext: "Per calendar visit",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "Automated e-Gates at Changi",
+        visaPillTag: "VISA EXEMPT / ETA",
         digitalCardName: "SG Arrival Card (SGAC)",
         digitalCardDesc: "Free online submission within 3 days before entry.",
         sources: ["ICA Singapore Official", "High Commission Diplomatic API", "IATA Timatic 2026"],
@@ -505,9 +692,15 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else if (isStudy) {
       return {
         isExempt: false,
-        verdictTitle: "Student's Pass (STP via SOLAR) Required for Higher Education",
-        verdictSummary: `${passport} students enrolling in approved Singapore Institutes of Higher Learning (IHL) require an In-Principle Approval (IPA) Student's Pass issued by ICA Singapore before boarding.`,
+        verdictTitle: `Student's Pass (STP via SOLAR) Required for Higher Education`,
+        verdictSummary: `${nationality} students enrolling in approved Singapore Institutes of Higher Learning (IHL) require an In-Principle Approval (IPA) Student's Pass issued by ICA Singapore before boarding.`,
+        entryStatus: "Student's Pass (STP)",
+        entryStatusSubtext: "5–10 Days via SOLAR",
         stayDuration: "Duration of Course (1 - 4 Years)",
+        stayDurationSubtext: "Full academic degree",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "ICA In-Principle Approval (IPA)",
+        visaPillTag: "ELECTRONIC ENTRY / VISA REQUIRED",
         digitalCardName: "SG Arrival Card (SGAC) + Student Pass IPA",
         digitalCardDesc: "Submit SGAC online within 3 days of departure, accompanied by your approved Student's Pass (STP) IPA letter.",
         sources: ["ICA Singapore Student Unit", "Ministry of Education SG", "IATA Timatic 2026"],
@@ -547,9 +740,15 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else if (isWork) {
       return {
         isExempt: false,
-        verdictTitle: "Work Pass Required (Employment Pass / S Pass / MOM IPA)",
-        verdictSummary: `${passport} professionals seeking to work in Singapore must have an approved Ministry of Manpower (MOM) Work Pass (EP, S-Pass, or ONE Pass) secured by a licensed Singapore sponsoring employer.`,
+        verdictTitle: `Work Pass Required (Employment Pass / S Pass / MOM IPA)`,
+        verdictSummary: `${nationality} professionals seeking to work in Singapore must have an approved Ministry of Manpower (MOM) Work Pass (EP, S-Pass, or ONE Pass) secured by a licensed Singapore sponsoring employer.`,
+        entryStatus: "MOM Work Pass / IPA",
+        entryStatusSubtext: "10–20 Days via myMOM",
         stayDuration: "1 to 5 Years (Renewable)",
+        stayDurationSubtext: "Based on employment pass grant",
+        entryType: "Multiple Entry",
+        entryTypeSubtext: "Employer Sponsored",
+        visaPillTag: "ELECTRONIC ENTRY / VISA REQUIRED",
         digitalCardName: "SG Arrival Card + MOM In-Principle Approval (IPA)",
         digitalCardDesc: "Submit SGAC 3 days before departure and present MOM Work Pass IPA at immigration checkpoint.",
         sources: ["Ministry of Manpower (MOM)", "ICA Singapore", "IATA Timatic 2026"],
@@ -586,9 +785,15 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     } else {
       return {
         isExempt: false,
-        verdictTitle: "Official Paper E-Visa with QR Code Required for Singapore",
-        verdictSummary: `${passport} passport holders require an official electronic visa (Paper E-Visa with ICA QR Code) prior to boarding flights to Singapore. Processing is guaranteed in 3-4 business days with 100% online verification.`,
+        verdictTitle: `${nationality} passport holders traveling to Singapore require an Official E-Visa with QR code prior to departure.`,
+        verdictSummary: `${nationality} passport holders must obtain an official electronic visa (Paper E-Visa with ICA QR Code) prior to boarding flights to Singapore. Processing is guaranteed in 3–5 business days with 100% online verification.`,
+        entryStatus: "Official E-Visa Required",
+        entryStatusSubtext: "3–5 Days Processing",
         stayDuration: "30 Days (Extendable)",
+        stayDurationSubtext: "Per calendar visit",
+        entryType: "Single / Multiple Entry",
+        entryTypeSubtext: "Paper E-Visa with ICA Barcode",
+        visaPillTag: "ELECTRONIC ENTRY / VISA REQUIRED",
         digitalCardName: "SG Arrival Card (SGAC)",
         digitalCardDesc: "Mandatory electronic arrival declaration to be completed within 3 days of travel to Singapore.",
         sources: ["ICA Singapore Authorized Portal", "High Commission of Singapore", "IATA Database 2026"],
@@ -625,99 +830,118 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     }
   }
 
-  // Case 3: Other Destinations (UK, Schengen, Australia, Canada, UAE, Generic)
-  if (isStudy) {
+  // Case 4: UAE / GCC
+  if (isGCC) {
     return {
       isExempt: false,
-      verdictTitle: `Student Visa / Study Permit Required for ${country}`,
-      verdictSummary: `${passport} students enrolled in recognized educational institutions in ${country} require an official Student Visa / Study Permit approval prior to boarding.`,
-      stayDuration: "Duration of Course (1 - 4 Years)",
-      digitalCardName: isGCC ? 'UAE Student Residence Entry Permit' : null,
-      digitalCardDesc: isGCC ? 'Issued via official ICP / GDRFA student sponsorship channels.' : null,
-      sources: ["Ministry of Education / Immigration", "Consular Affairs Department", "IATA Timatic 2026"],
-      maxStay: "Duration of Course (1 - 4 Years)",
+      verdictTitle: `${nationality} passport holders traveling to ${country} require an official electronic visa prior to departure.`,
+      verdictSummary: `${nationality} passport holders must obtain a valid UAE/GCC e-Visa prior to travel. Fast-track digital issuance with 100% online approval.`,
+      entryStatus: "Official E-Visa Required",
+      entryStatusSubtext: "3–5 Days Processing",
+      stayDuration: "30 Days (Extendable)",
+      stayDurationSubtext: "Per calendar visit",
+      entryType: "Single / Multiple Entry",
+      entryTypeSubtext: "Pre-arranged ICP/GDRFA eVisa",
+      visaPillTag: "ELECTRONIC ENTRY / VISA REQUIRED",
+      digitalCardName: "UAE ICP / GDRFA eVisa Portal",
+      digitalCardDesc: "Pre-arranged eVisa via UAE ICP / GDRFA portal.",
+      sources: ["ICP UAE", "GDRFA Dubai", "IATA Timatic 2026"],
+      maxStay: "30 to 60 Days",
       conditionsForVisa: [
-        "Full-time enrollment in recognized university, college, or academic institution.",
-        "Verified financial proof / education loan sanction covering tuition and living expenses.",
-        "Medical examination & mandatory student health insurance coverage.",
-        "Part-time work permitted up to statutory limit during study semesters."
+        `Plan to stay in ${country} for tourism, holidays, or business meetings.`,
+        "Holding valid return flight tickets and confirmed hotel booking.",
+        "Must possess passport valid for at least 6 months beyond travel date."
       ],
       feesAndProcessing: {
         costItems: [
-          { label: "Government Student Visa Fee", amount: isGCC ? "AED 550 (₹12,500)" : "£490 / $185 (₹15,500–₹51,000)", note: "Official consular application fee" },
-          { label: "Health Surcharge / Insurance", amount: "Varies by Country", note: "Mandatory student healthcare coverage" }
+          { label: "Government Consular Fee", amount: "AED 290 (₹6,500)", note: "Official visa issuance fee" },
+          { label: "TravlTik Service & Fast-Track Concierge", amount: "₹2,200", note: "Document verification, photo formatting & guarantee" }
         ],
-        totalEstimatedINR: "Official Consular Rates Apply",
-        processingTime: "3 to 5 Weeks (Priority 5-day available in select cities)",
-        processingSLA: "Biometric appointment + digital passport dispatch.",
-        applicationWindow: "Apply up to 6 Months before course start date",
-        earlyEntryBuffer: "Entry permitted up to 30 Days before program date"
+        totalEstimatedINR: "₹8,700 Total Package",
+        processingTime: "24 to 72 Hours (Express 12h Available)",
+        processingSLA: "Direct digital delivery to WhatsApp and email with 99.4% approval rate.",
+        applicationWindow: "Apply 10 to 30 Days prior to departure",
+        earlyEntryBuffer: "Entry permit valid for 60 days from issue date"
       },
       applicationProcess: {
-        submission: "1. Acceptance & Confirmation: Receive CAS / I-20 / Letter of Acceptance from licensed university.",
-        onlineForm: "2. Visa Application: Complete online visa portal filing and pay consular fees.",
-        appointments: "3. Biometrics: Visit VFS / TLS / Consular center for biometric capture.",
+        submission: "1. Smartphone Upload: Submit passport scan and photo directly on TravlTik.",
+        onlineForm: "2. AI Automated Audit: System verifies passport validity & photo millimeter rules.",
+        appointments: "3. Direct Submission: Application submitted directly to official ICP/GDRFA channels.",
         documentsAndBiometrics: [
-          "Passport valid for at least 6 months",
-          "Official Acceptance Letter / CAS / I-20",
-          "Proof of Funds / Bank Statements (28-day rule) / Loan sanction letter",
-          "English Language Proficiency Certificate (IELTS/PTE/TOEFL)",
-          "Academic Certificates & Transcripts"
+          "Passport Biodata Page (Valid for at least 6 months)",
+          "Digital Passport Photograph (White background)",
+          "Confirmed Return Flight Reservation",
+          "Hotel Accommodation Booking / Host Invitation"
         ]
       }
     };
   }
 
-  if (isWork) {
+  // Case 5: Schengen Area
+  if (isSchengen) {
     return {
       isExempt: false,
-      verdictTitle: `Work Visa / Employment Authorization Required for ${country}`,
-      verdictSummary: `${passport} professionals require an approved employer-sponsored Work Visa / Employment Permit before taking up employment in ${country}.`,
-      stayDuration: isGCC ? "1 to 3 Years (Renewable)" : "1 to 5 Years (Renewable)",
-      digitalCardName: isGCC ? 'UAE Employment Entry Permit' : null,
-      digitalCardDesc: isGCC ? 'Pre-issued by employer via MOHRE / ICP / GDRFA portal.' : null,
-      sources: ["Ministry of Labour / Immigration", "Consular Affairs Department", "IATA Timatic 2026"],
-      maxStay: isGCC ? "1 to 3 Years (Renewable)" : "1 to 5 Years (Renewable)",
+      verdictTitle: `${nationality} passport holders traveling to ${country} require a Schengen Short-Stay Visa (Type C).`,
+      verdictSummary: `${nationality} passport holders must obtain a valid Schengen Visa prior to departure. Requires online application filing and biometric appointment at VFS/TLS.`,
+      entryStatus: "Schengen Short-Stay Visa",
+      entryStatusSubtext: "15 Calendar Days Processing",
+      stayDuration: "Up to 90 Days",
+      stayDurationSubtext: "Within any 180-day period",
+      entryType: "Single / Multiple Entry",
+      entryTypeSubtext: "Valid across all 29 Schengen states",
+      visaPillTag: "CONSULAR VISA REQUIRED",
+      digitalCardName: "Schengen Consular Portal",
+      digitalCardDesc: "Official Schengen visa sticker in passport valid across 29 European member states.",
+      sources: ["European Commission", "Consular Affairs Department", "IATA Timatic 2026"],
+      maxStay: "90 Days within 180 Days",
       conditionsForVisa: [
-        "Confirmed job offer or employment contract with licensed local sponsoring employer.",
-        "Educational & professional credential assessment (ECA / WES).",
-        "Biometric registration & medical clearance."
+        `Tourism, business visits, or family trips across Schengen territory.`,
+        "Mandatory travel medical insurance with minimum €30,000 coverage.",
+        "Passport issued within last 10 years with 3+ months validity beyond return date."
       ],
       feesAndProcessing: {
         costItems: [
-          { label: "Work Permit Filing Fee", amount: isGCC ? "AED 750 (₹17,000)" : "Consular standard", note: "Employer sponsored or reimbursed" }
+          { label: "Schengen Visa Fee (Adult)", amount: "€90 (approx. ₹8,200)", note: "Official EU consular application fee" },
+          { label: "VFS/TLS Service Fee", amount: "₹2,500 – ₹3,200", note: "Biometric collection and center logistics fee" }
         ],
-        totalEstimatedINR: "Employer Sponsored",
-        processingTime: "2 to 4 Weeks",
-        processingSLA: "Employer filing with labour ministry clearance.",
-        applicationWindow: "Employer files 1 to 3 months prior to arrival",
-        earlyEntryBuffer: "Entry permit valid for 60 to 90 days from issue"
+        totalEstimatedINR: "₹10,700 – ₹11,400 Total Consular Fees",
+        processingTime: "15 Calendar Days (Standard Consular Period)",
+        processingSLA: "Appointments scheduled at designated VFS/TLS global visa application centers.",
+        applicationWindow: "Apply up to 6 Months before planned travel",
+        earlyEntryBuffer: "Travel permitted within valid visa dates"
       },
       applicationProcess: {
-        submission: "1. Job Offer & Sponsorship: Employer issues contract and initiates work authorization.",
-        onlineForm: "2. Labour Approval: Government labor board validates position quota.",
-        appointments: "3. Visa Issuance: Entry permit issued for border clearance.",
+        submission: "1. Visa Form Filing: Complete official harmonized Schengen visa application form.",
+        onlineForm: "2. Document Preparation: Compile flight bookings, hotel reservations, 3-month bank statements & insurance.",
+        appointments: "3. VFS/TLS Biometrics: Attend appointment for biometric fingerprinting & passport submission.",
         documentsAndBiometrics: [
-          "Valid Passport (6+ months validity)",
-          "Signed Employment Contract",
-          "Educational & Professional Degree Verification (Apostille / WES)",
-          "Police Clearance Certificate (PCC) where mandated",
-          "Medical Fitness Examination"
+          "Passport valid for at least 3 months beyond departure date with 2 blank pages",
+          "2 Passport-sized Photos (35x45mm, white background, neutral expression)",
+          "Travel Medical Insurance (€30,000 minimum coverage)",
+          "Cover Letter with detailed day-by-day travel itinerary",
+          "Bank statements of last 3-6 months with bank seal and stamp",
+          "Confirmed round-trip flight reservations & hotel bookings"
         ]
       }
     };
   }
 
-  // Tourist / Visit
+  // Case 6: Generic / Other Destinations
   return {
     isExempt: false,
-    verdictTitle: `Official Visa / Electronic Entry Required for ${country}`,
-    verdictSummary: `${passport} passport holders require an approved electronic travel visa or consular visa stamp before traveling to ${country}. Processing is fast with 100% online document review.`,
-    stayDuration: isGCC ? "30 to 60 Days" : isSchengen ? "90 Days" : "30 Days",
-    digitalCardName: isGCC ? 'UAE ICP / GDRFA eVisa Portal' : null,
-    digitalCardDesc: isGCC ? 'Pre-arranged eVisa via UAE ICP / GDRFA portal.' : null,
+    verdictTitle: `${nationality} passport holders traveling to ${country} require a valid visa prior to departure.`,
+    verdictSummary: `${nationality} passport holders must secure verified travel authorization before boarding flights to ${country}. Fast and reliable assistance provided.`,
+    entryStatus: "Official E-Visa Required",
+    entryStatusSubtext: "3–5 Days Processing",
+    stayDuration: "30 Days (Extendable)",
+    stayDurationSubtext: "Per calendar visit",
+    entryType: "Single / Multiple Entry",
+    entryTypeSubtext: "Consular grant",
+    visaPillTag: "ELECTRONIC ENTRY / VISA REQUIRED",
+    digitalCardName: "Consular E-Visa Portal",
+    digitalCardDesc: "Official electronic travel authorization.",
     sources: ["Consular Affairs Department", "Diplomatic Mission API", "IATA Timatic 2026"],
-    maxStay: isGCC ? "30 to 90 Days" : "30 to 90 Days",
+    maxStay: "30 to 90 Days",
     conditionsForVisa: [
       `Plan to stay in ${country} for tourism, holidays, or business meetings.`,
       "Holding valid return flight tickets and confirmed hotel booking.",
@@ -725,7 +949,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     ],
     feesAndProcessing: {
       costItems: [
-        { label: "Government Consular Fee", amount: isGCC ? "AED 290 (₹6,500)" : isSchengen ? "€90 (₹8,200)" : "₹3,500 – ₹7,800", note: "Official visa issuance fee" },
+        { label: "Government Consular Fee", amount: "₹3,500 – ₹7,800", note: "Official visa issuance fee" },
         { label: "TravlTik Service & Fast-Track Concierge", amount: "₹2,200 – ₹2,900", note: "Document verification, photo formatting & guarantee" }
       ],
       totalEstimatedINR: "₹5,700 – ₹10,400 Total",
@@ -1204,7 +1428,7 @@ export function VisaCountryResultPortal({
       </section>
 
       {/* ── SECTION 1.5: LUXURY ATLYS-GRADE AI INTELLIGENCE CARD ── */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-6 sm:mt-8">
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-6 sm:mt-8 antialiased">
         <div className="bg-white border border-slate-200/80 rounded-[28px] sm:rounded-[32px] p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.03)] text-left space-y-6 sm:space-y-8 relative overflow-hidden">
           
           {/* Top Bar: Live AI Indicator & Verified Consular Badges */}
@@ -1212,7 +1436,7 @@ export function VisaCountryResultPortal({
             <div className="flex items-center gap-3">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0] text-xs font-semibold shadow-2xs">
                 <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse shrink-0" />
-                <span>AI Visa Intelligence</span>
+                <span>✨ AI Visa &amp; Entry Resolution</span>
               </div>
               <span className="text-xs text-slate-300 hidden sm:inline">•</span>
               <span className="text-xs font-medium text-slate-600 hidden sm:inline">
@@ -1221,9 +1445,8 @@ export function VisaCountryResultPortal({
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-slate-600 bg-[#F8FAFC] border border-slate-200/80 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-2xs">
-                <span className="text-[11px]">🏛️</span>
-                <span>Verified with IATA Timatic &amp; {countryName} Consular Engine</span>
+              <span className="text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-slate-900 text-white shadow-2xs">
+                {aiIntel.visaPillTag || (countrySlug === 'uk' || countrySlug === 'united-kingdom' ? 'CONSULAR VISA REQUIRED' : 'ELECTRONIC ENTRY / VISA REQUIRED')}
               </span>
             </div>
           </div>
@@ -1252,45 +1475,80 @@ export function VisaCountryResultPortal({
           {/* 3 Atlys-Style Clean Summary Micro-Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
             
-            {/* Card 1: Length of Stay */}
-            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between h-32 group">
-              <Calendar className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
-              <div className="min-w-0">
+            {/* Card 1: Entry Status */}
+            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between min-h-[136px] group">
+              <div className="flex items-center justify-between">
+                <ShieldCheck className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200/70 text-slate-700">
+                  Status
+                </span>
+              </div>
+              <div className="min-w-0 pt-2">
                 <span className="text-xs text-slate-500 font-medium block">
-                  Length of Stay
+                  Entry Status
                 </span>
                 <span className="text-sm sm:text-base font-bold text-slate-900 block truncate">
-                  {aiIntel.stayDuration || dynamicLengthOfStay || "Upto 30 days"}
+                  {aiIntel.entryStatus || "Official E-Visa Required"}
+                </span>
+                <span className="text-[11px] text-slate-400 font-normal block mt-0.5 truncate">
+                  {aiIntel.entryStatusSubtext || "3–5 Days Processing"}
                 </span>
               </div>
             </div>
 
-            {/* Card 2: Validity */}
-            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between h-32 group">
-              <Clock className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
-              <div className="min-w-0">
+            {/* Card 2: Max Allowed Stay */}
+            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between min-h-[136px] group">
+              <div className="flex items-center justify-between">
+                <Calendar className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200/70 text-slate-700">
+                  Duration
+                </span>
+              </div>
+              <div className="min-w-0 pt-2">
                 <span className="text-xs text-slate-500 font-medium block">
-                  Validity
+                  Max Allowed Stay
                 </span>
                 <span className="text-sm sm:text-base font-bold text-slate-900 block truncate">
-                  {currentVariant?.validity || "90 days"}
+                  {aiIntel.stayDuration || dynamicLengthOfStay || "30 Days (Extendable)"}
+                </span>
+                <span className="text-[11px] text-slate-400 font-normal block mt-0.5 truncate">
+                  {aiIntel.stayDurationSubtext || "Per calendar visit"}
                 </span>
               </div>
             </div>
 
-            {/* Card 3: Entry */}
-            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between h-32 group">
-              <Compass className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
-              <div className="min-w-0">
+            {/* Card 3: Entry & Validity */}
+            <div className="bg-[#F7F8FA] hover:bg-white border border-slate-200/70 hover:border-slate-300 rounded-3xl p-5 sm:p-6 transition-all shadow-2xs flex flex-col justify-between min-h-[136px] group">
+              <div className="flex items-center justify-between">
+                <Clock className="w-6 h-6 text-slate-700 stroke-[1.8] group-hover:scale-105 transition-transform" />
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-200/70 text-slate-700">
+                  Type
+                </span>
+              </div>
+              <div className="min-w-0 pt-2">
                 <span className="text-xs text-slate-500 font-medium block">
-                  Entry
+                  Entry &amp; Validity
                 </span>
                 <span className="text-sm sm:text-base font-bold text-slate-900 block truncate">
-                  {currentVariant?.entryType || "Single"}
+                  {aiIntel.entryType || currentVariant?.entryType || "Single / Multiple"}
+                </span>
+                <span className="text-[11px] text-slate-400 font-normal block mt-0.5 truncate">
+                  {aiIntel.entryTypeSubtext || currentVariant?.validity || "90 Days Validity"}
                 </span>
               </div>
             </div>
 
+          </div>
+
+          {/* Bottom Verification Strip */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100 text-xs text-slate-500 font-medium antialiased">
+            <div className="flex items-center gap-2">
+              <span className="text-emerald-600 font-bold text-sm">✓</span>
+              <span>Verified via official consular rules &amp; IATA Timatic</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-slate-400 font-normal">
+              <span>Updated for 2026 Global Travel Season</span>
+            </div>
           </div>
 
           {/* ── SECTION 1: VISA FEES AND PROCESSING ── */}

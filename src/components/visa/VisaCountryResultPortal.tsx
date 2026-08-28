@@ -1452,86 +1452,103 @@ export function VisaCountryResultPortal({
 
             {/* Right Side: Black Circular Platform with 3D Open Safe Box & Glowing Passport */}
             <div className="w-full md:w-auto self-stretch flex items-center justify-center md:justify-end overflow-hidden shrink-0">
-              <div className="w-56 sm:w-64 md:w-72 h-36 sm:h-44 bg-gradient-to-l from-[#0a0d14] via-[#121824] to-[#1c2436] rounded-2xl md:rounded-r-none md:rounded-l-full shadow-2xl border-l border-t border-b border-slate-700/60 flex items-center justify-center relative p-3 shrink-0">
-                {/* Ambient Spotlight */}
-                <div className="absolute inset-0 bg-radial from-blue-500/20 via-transparent to-transparent pointer-events-none rounded-2xl md:rounded-l-full" />
+              <div className="w-60 sm:w-72 md:w-80 h-40 sm:h-48 bg-gradient-to-l from-[#06080d] via-[#0f1420] to-[#182032] rounded-2xl md:rounded-r-none md:rounded-l-full shadow-2xl border-l border-t border-b border-slate-700/70 flex items-center justify-center relative p-3 shrink-0">
+                {/* Ambient Radial Spotlight */}
+                <div className="absolute inset-0 bg-radial from-blue-500/25 via-transparent to-transparent pointer-events-none rounded-2xl md:rounded-l-full" />
 
-                {/* 3D Open Safe Box with Glowing Passport SVG */}
-                <svg viewBox="0 0 200 150" className="w-44 sm:w-52 h-auto drop-shadow-[0_12px_24px_rgba(0,0,0,0.8)] z-10 select-none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* 3D Open Safe Box with Glowing Passport SVG (Ultra Sharp & High Contrast) */}
+                <svg 
+                  viewBox="0 0 220 160" 
+                  className="w-48 sm:w-56 md:w-60 h-auto drop-shadow-[0_16px_32px_rgba(0,0,0,0.85)] z-10 select-none" 
+                  fill="none" 
+                  shapeRendering="geometricPrecision"
+                  textRendering="geometricPrecision"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <defs>
-                    <linearGradient id="lidOuter" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#374151" />
-                      <stop offset="100%" stopColor="#111827" />
-                    </linearGradient>
-                    <linearGradient id="lidInner" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#1F2937" />
-                      <stop offset="100%" stopColor="#0B0F19" />
-                    </linearGradient>
-                    <linearGradient id="safeOuterBase" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#334155" />
+                    {/* Outer Lid Gradient */}
+                    <linearGradient id="lidOuterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#475569" />
                       <stop offset="50%" stopColor="#1E293B" />
                       <stop offset="100%" stopColor="#0F172A" />
                     </linearGradient>
-                    <linearGradient id="safeWellGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#020617" />
-                      <stop offset="100%" stopColor="#0F172A" />
+                    {/* Inner Lid Gradient */}
+                    <linearGradient id="lidInnerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#1E293B" />
+                      <stop offset="100%" stopColor="#0B0F19" />
                     </linearGradient>
-                    <linearGradient id="neonGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    {/* Safe Box Body Gradient */}
+                    <linearGradient id="safeBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#334155" />
+                      <stop offset="40%" stopColor="#1E293B" />
+                      <stop offset="100%" stopColor="#090D16" />
+                    </linearGradient>
+                    {/* Safe Well Deep Interior */}
+                    <linearGradient id="safeInterior" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#020617" />
+                      <stop offset="100%" stopColor="#0B132B" />
+                    </linearGradient>
+                    {/* Neon Blue Glow */}
+                    <linearGradient id="neonBlueGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stopColor="#38BDF8" />
                       <stop offset="50%" stopColor="#3B82F6" />
-                      <stop offset="100%" stopColor="#6366F1" />
+                      <stop offset="100%" stopColor="#818CF8" />
                     </linearGradient>
-                    <linearGradient id="passportNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+                    {/* Passport Leather Cover */}
+                    <linearGradient id="passportCoverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stopColor="#1E3A8A" />
+                      <stop offset="50%" stopColor="#172554" />
                       <stop offset="100%" stopColor="#0F172A" />
                     </linearGradient>
-                    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
-                      <feGaussianBlur stdDeviation="4" result="blur" />
+                    {/* Subtle Glow Filter */}
+                    <filter id="crispGlow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="3" result="blur" />
                       <feComposite in="SourceGraphic" in2="blur" operator="over" />
                     </filter>
                   </defs>
 
-                  {/* Soft base shadow */}
-                  <ellipse cx="108" cy="128" rx="65" ry="14" fill="#000000" fillOpacity="0.6" filter="blur(5px)" />
+                  {/* Soft Drop Shadow under Base */}
+                  <ellipse cx="118" cy="136" rx="72" ry="14" fill="#000000" fillOpacity="0.7" filter="blur(6px)" />
 
-                  {/* Open Hinged Lid (Upright 3D perspective) */}
-                  <path d="M 62 62 L 76 12 L 148 22 L 138 68 Z" fill="url(#lidOuter)" stroke="#475569" strokeWidth="1.5" />
-                  <path d="M 67 58 L 79 18 L 142 27 L 133 63 Z" fill="url(#lidInner)" stroke="#1E293B" strokeWidth="1" />
-                  {/* Lid hinges */}
-                  <rect x="74" y="58" width="6" height="5" rx="1.5" fill="#94A3B8" />
-                  <rect x="124" y="64" width="6" height="5" rx="1.5" fill="#94A3B8" />
+                  {/* Open Hinged Lid (Upright 3D Perspective) */}
+                  <path d="M 68 66 L 84 10 L 164 22 L 152 74 Z" fill="url(#lidOuterGrad)" stroke="#64748B" strokeWidth="1.5" />
+                  <path d="M 74 62 L 88 16 L 158 26 L 148 68 Z" fill="url(#lidInnerGrad)" stroke="#334155" strokeWidth="1" />
+                  {/* Chrome Hinges */}
+                  <rect x="82" y="62" width="7" height="6" rx="1.5" fill="#E2E8F0" stroke="#475569" strokeWidth="0.8" />
+                  <rect x="138" y="68" width="7" height="6" rx="1.5" fill="#E2E8F0" stroke="#475569" strokeWidth="0.8" />
 
-                  {/* Safe Box Body (Isometric Base) */}
-                  <path d="M 54 66 L 138 68 L 168 108 L 84 130 L 54 66 Z" fill="url(#safeOuterBase)" stroke="#475569" strokeWidth="1.2" />
+                  {/* Safe Box Body (Isometric Base Chassis) */}
+                  <path d="M 60 72 L 152 74 L 186 116 L 92 140 L 60 72 Z" fill="url(#safeBodyGrad)" stroke="#475569" strokeWidth="1.5" />
 
-                  {/* Safe Rim Neon Blue Glow */}
-                  <path d="M 58 70 L 134 72 L 160 104 L 88 124 Z" fill="none" stroke="url(#neonGlowGrad)" strokeWidth="2.5" filter="url(#softGlow)" />
-                  <path d="M 58 70 L 134 72 L 160 104 L 88 124 Z" fill="none" stroke="#E0F2FE" strokeWidth="0.8" />
+                  {/* Safe Rim Neon Blue LED Strip */}
+                  <path d="M 64 76 L 148 78 L 178 112 L 96 134 Z" fill="none" stroke="url(#neonBlueGlowGrad)" strokeWidth="3" filter="url(#crispGlow)" />
+                  <path d="M 64 76 L 148 78 L 178 112 L 96 134 Z" fill="none" stroke="#F0F9FF" strokeWidth="1" />
 
-                  {/* Safe Box Deep Well */}
-                  <path d="M 62 72 L 132 74 L 156 102 L 92 120 Z" fill="url(#safeWellGrad)" />
+                  {/* Safe Box Deep Velvet Well */}
+                  <path d="M 68 78 L 146 80 L 174 110 L 100 130 Z" fill="url(#safeInterior)" />
 
                   {/* Radiant Neon Blue Light Floor */}
-                  <ellipse cx="112" cy="96" rx="34" ry="16" fill="#3B82F6" fillOpacity="0.55" filter="url(#softGlow)" />
+                  <ellipse cx="122" cy="104" rx="40" ry="18" fill="#3B82F6" fillOpacity="0.6" filter="url(#crispGlow)" />
 
-                  {/* Laser Scan Rays inside safe */}
-                  <line x1="78" y1="82" x2="146" y2="108" stroke="#38BDF8" strokeWidth="0.8" strokeOpacity="0.6" strokeDasharray="3 2" />
-                  <line x1="88" y1="114" x2="136" y2="76" stroke="#38BDF8" strokeWidth="0.8" strokeOpacity="0.6" strokeDasharray="3 2" />
+                  {/* Biometric Laser Scan Lines */}
+                  <line x1="84" y1="88" x2="162" y2="116" stroke="#38BDF8" strokeWidth="1" strokeOpacity="0.75" strokeDasharray="3 2" />
+                  <line x1="96" y1="124" x2="152" y2="82" stroke="#38BDF8" strokeWidth="1" strokeOpacity="0.75" strokeDasharray="3 2" />
 
-                  {/* Passport Book Resting on the Neon Cushion */}
+                  {/* Luxury Navy Passport Book with Golden Crest */}
                   <g className="transition-all hover:scale-105 origin-center">
                     {/* Shadow of passport */}
-                    <polygon points="86,88 122,82 136,104 98,112" fill="#000000" fillOpacity="0.5" />
+                    <polygon points="94,96 134,89 150,113 108,122" fill="#000000" fillOpacity="0.6" />
+                    
                     {/* Passport Cover */}
-                    <polygon points="84,86 120,80 134,102 96,110" fill="url(#passportNavy)" stroke="#60A5FA" strokeWidth="1.2" />
+                    <polygon points="92,94 132,87 148,111 106,120" fill="url(#passportCoverGrad)" stroke="#93C5FD" strokeWidth="1.4" />
                     
-                    {/* Golden Emblem on Passport */}
-                    <circle cx="110" cy="94" r="5" fill="#FBBF24" fillOpacity="0.95" />
-                    <circle cx="110" cy="94" r="3" fill="#B45309" fillOpacity="0.4" />
+                    {/* Golden Crest / Emblem */}
+                    <circle cx="120" cy="102" r="5.5" fill="#FBBF24" stroke="#F59E0B" strokeWidth="0.8" />
+                    <circle cx="120" cy="102" r="3.2" fill="#D97706" fillOpacity="0.4" />
                     
-                    {/* Gold text lines on passport */}
-                    <line x1="104" y1="87" x2="116" y2="85" stroke="#FDE68A" strokeWidth="1" />
-                    <rect x="103" y="101" width="14" height="2" rx="1" fill="#FBBF24" fillOpacity="0.9" />
+                    {/* Golden Typography Lines */}
+                    <line x1="113" y1="94" x2="127" y2="92" stroke="#FDE68A" strokeWidth="1.2" strokeLinecap="round" />
+                    <rect x="112" y="110" width="16" height="2.2" rx="1.1" fill="#FBBF24" />
                   </g>
                 </svg>
               </div>

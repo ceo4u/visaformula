@@ -19,7 +19,7 @@ const upcomingCards = [
   {
     flag: "🇬🇧", country: "UK Visa", badgeColor: "bg-red-50 text-red-700 border-red-100",
     status: "confirmed" as StatusType, title: "Biometrics Appointment",
-    centre: "VFS Mumbai — Tardeo", date: "12 June 2025 · 10:30 AM",
+    centre: "VFS Mumbai — Tardeo", date: "12 June 2026 · 10:30 AM",
     applicant: "Priya Sharma", applicantColor: "text-emerald-600",
     action: "View Slip →", actionStyle: "bg-white border border-red-200 text-red-600 hover:bg-red-50",
     toastMsg: "📄 View appointment PDF",
@@ -27,7 +27,7 @@ const upcomingCards = [
   {
     flag: "🇨🇦", country: "Canada", badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
     status: "upcoming" as StatusType, title: "Biometrics & Document Submission",
-    centre: "VFS Pune — Magarpatta", date: "18 June 2025 · 2:00 PM",
+    centre: "VFS Pune — Magarpatta", date: "18 June 2026 · 2:00 PM",
     applicant: "Rajesh Patil", applicantColor: "text-emerald-600",
     action: "Slip →", actionStyle: "bg-white border border-red-200 text-red-600 hover:bg-red-50",
     toastMsg: "📄 Appointment slip",
@@ -35,7 +35,7 @@ const upcomingCards = [
   {
     flag: "🇪🇺", country: "Schengen", badgeColor: "bg-violet-50 text-violet-700 border-violet-200",
     status: "pending" as StatusType, title: "Visa Interview — France",
-    centre: "VFS Delhi — Shivaji Stadium", date: "25 June 2025 · 11:15 AM",
+    centre: "VFS Delhi — Shivaji Stadium", date: "25 June 2026 · 11:15 AM",
     applicant: "Awaiting VFS confirmation", applicantColor: "text-red-600",
     action: "Check →", actionStyle: "bg-red-50 border border-red-200 text-red-700 hover:bg-red-100",
     toastMsg: "🔄 Checking status...",
@@ -54,9 +54,9 @@ const statusLabel: Record<StatusType, string> = {
 };
 
 const historyRows = [
-  { client: "Priya Sharma",  country: "🇬🇧 UK Student Visa",     centre: "Mumbai (Tardeo)",           date: "12 Jun 2025 · 10:30 AM", status: "Confirmed", statusColor: "bg-emerald-50 text-emerald-700 border-emerald-200", action: "Download →", actionStyle: "bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100", toast: "📄 Download appointment letter" },
-  { client: "Rajesh Patil",  country: "🇨🇦 Canada PR",            centre: "Pune (Magarpatta)",         date: "18 Jun 2025 · 2:00 PM",  status: "Upcoming",  statusColor: "bg-red-50 text-red-700 border-red-200",         action: "Reschedule →", actionStyle: "bg-red-50 border border-red-200 text-red-700 hover:bg-red-100", toast: "⏰ Reschedule requested" },
-  { client: "Neha Gupta",   country: "🇪🇺 Schengen (France)",     centre: "Delhi (Shivaji Stadium)",  date: "25 Jun 2025 · 11:15 AM", status: "Pending",   statusColor: "bg-red-50 text-red-600 border-red-100",     action: "Refresh →", actionStyle: "bg-white border border-red-200 text-red-600 hover:bg-red-50", toast: "🔄 Check VFS status" },
+  { client: "Priya Sharma",  country: "🇬🇧 UK Student Visa",     centre: "Mumbai (Tardeo)",           date: "12 Jun 2026 · 10:30 AM", status: "Confirmed", statusColor: "bg-emerald-50 text-emerald-700 border-emerald-200", action: "Download →", actionStyle: "bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100", toast: "📄 Download appointment letter" },
+  { client: "Rajesh Patil",  country: "🇨🇦 Canada PR",            centre: "Pune (Magarpatta)",         date: "18 Jun 2026 · 2:00 PM",  status: "Upcoming",  statusColor: "bg-red-50 text-red-700 border-red-200",         action: "Reschedule →", actionStyle: "bg-red-50 border border-red-200 text-red-700 hover:bg-red-100", toast: "⏰ Reschedule requested" },
+  { client: "Neha Gupta",   country: "🇪🇺 Schengen (France)",     centre: "Delhi (Shivaji Stadium)",  date: "25 Jun 2026 · 11:15 AM", status: "Pending",   statusColor: "bg-red-50 text-red-600 border-red-100",     action: "Refresh →", actionStyle: "bg-white border border-red-200 text-red-600 hover:bg-red-50", toast: "🔄 Check VFS status" },
 ];
 
 const processSteps = [

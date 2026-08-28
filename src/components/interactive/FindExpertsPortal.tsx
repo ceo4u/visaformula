@@ -362,19 +362,57 @@ export function FindExpertsPortal() {
 
             // --- country: destination country ---
             const countryQuery = params.get("country") || "";
-            if (countryQuery) { setSelectedCountry(countryQuery); initCountry = countryQuery; }
+            if (countryQuery) {
+                const cLower = countryQuery.toLowerCase();
+                const matchCountry = countryFilters.find(c => {
+                    const cfLower = c.toLowerCase();
+                    return cfLower === cLower ||
+                        (cLower.includes("uk") && cfLower === "uk") ||
+                        (cLower.includes("united kingdom") && cfLower === "uk") ||
+                        (cLower.includes("united states") && cfLower === "usa") ||
+                        (cLower.includes("usa") && cfLower === "usa") ||
+                        (cLower.includes("uae") && cfLower === "uae") ||
+                        (cLower.includes("australia") && cfLower === "australia") ||
+                        (cLower.includes("canada") && cfLower === "canada") ||
+                        (cLower.includes("germany") && cfLower === "germany");
+                });
+                if (matchCountry) {
+                    setSelectedCountry(matchCountry);
+                    initCountry = matchCountry;
+                } else {
+                    setSelectedCountry(countryQuery);
+                    initCountry = countryQuery;
+                }
+            }
 
-            // --- city: consultant's city ---
-            const cityQuery = params.get("city") || "";
+            // --- city: consultant's city / location ---
+            const cityQuery = params.get("city") || params.get("location") || "";
             if (cityQuery) {
                 // Try exact match in cityFilters list first
                 const matchCity = cityFilters.find(c => c.toLowerCase() === cityQuery.toLowerCase());
                 if (matchCity) {
-                    setCity(matchCity); initCity = matchCity;
+                    setCity(matchCity);
+                    initCity = matchCity;
                 } else {
-                    // Store partial match for free-text filtering
-                    setSearchText(prev => prev ? `${prev} ${cityQuery}` : cityQuery);
-                    if (!textQuery) initQ = cityQuery;
+                    // Set as search text for free-text filtering
+                    setSearchText(cityQuery);
+                    if (!initQ) initQ = cityQuery;
+                }
+            }
+
+            // --- service: specific advisory / service filter ---
+            const serviceQuery = params.get("service") || "";
+            if (serviceQuery) {
+                const sLower = serviceQuery.toLowerCase();
+                if (sLower.includes("appeal") || sLower.includes("refusal")) {
+                    setCategory("Visa Appeals");
+                    initPurpose = "Visa Appeals";
+                } else if (sLower.includes("student") || sLower.includes("admission") || sLower.includes("study")) {
+                    setCategory("Student Visa");
+                    initPurpose = "Student Visa";
+                } else if (sLower.includes("work") || sLower.includes("permit")) {
+                    setCategory("Work Permit");
+                    initPurpose = "Work Permit";
                 }
             }
 
@@ -382,14 +420,15 @@ export function FindExpertsPortal() {
             const catQuery = params.get("category") || "";
             if (catQuery) {
                 const cat = catQuery.toLowerCase();
-                if (cat.includes("student")) {
+                if (cat.includes("student") || cat.includes("study")) {
                     setCategory("Student Visa");
                 } else if (cat.includes("work")) {
                     setCategory("Work Permit");
                 } else if (cat.includes("pr") || cat.includes("express") || cat.includes("permanent")) {
                     setCategory("PR");
+                } else if (cat.includes("appeal") || cat.includes("refusal")) {
+                    setCategory("Visa Appeals");
                 } else if (cat.includes("tourist") || cat.includes("visitor")) {
-                    // tourist/visitor — search by tag
                     initQ = initQ ? `${initQ} ${catQuery}` : catQuery;
                     setSearchText(initQ);
                 } else if (cat.includes("business") || cat.includes("investor")) {
@@ -399,7 +438,6 @@ export function FindExpertsPortal() {
                     initQ = initQ ? `${initQ} ${catQuery}` : catQuery;
                     setSearchText(initQ);
                 } else {
-                    // Generic: pass as text search
                     initQ = initQ ? `${initQ} ${catQuery}` : catQuery;
                     setSearchText(initQ);
                 }

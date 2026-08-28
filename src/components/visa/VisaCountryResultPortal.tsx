@@ -3202,8 +3202,8 @@ export function VisaCountryResultPortal({
                       <h4 className="text-xl font-heading font-black text-slate-950">
                         Search Verified Immigration Lawyers &amp; Study Visa Experts
                       </h4>
-                      <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                        Find ICCRC, OISC, MARA, and Bar-certified immigration consultants specializing in {countryName} student admissions, SOP review, and consular filing.
+                      <p className="text-xs text-slate-500 font-medium">
+                        Connect with verified immigration lawyers &amp; certified advisors specializing in {countryName}.
                       </p>
                     </div>
 
@@ -3383,10 +3383,10 @@ export function VisaCountryResultPortal({
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {[
-                          { id: 'sop_polish', name: '✨ AI & Legal Expert SOP Polish & Review', price: 1999, desc: 'Grammar, narrative strength & visa officer alignment by admissions counsel.' },
-                          { id: 'travel_insurance', name: '🛡️ Comprehensive Student Travel & Medical Insurance', price: 2499, desc: 'Covers pre-arrival emergencies, flight delays, and $100k emergency medical.' },
-                          { id: 'financial_audit', name: '🏦 CA Net Worth & 28-Day Solvency Certification', price: 3200, desc: 'Official chartered accountant report proving genuine liquid funds.' },
-                          { id: 'biometrics_booking', name: '📅 VFS / Embassy Priority Biometrics Slot Assistance', price: 1500, desc: 'Guaranteed appointment scheduling at your nearest consulate center.' }
+                          { id: 'sop_polish', name: '✨ AI & Legal Expert SOP Polish & Review', price: 1999, desc: 'Grammar, narrative strength & visa officer alignment by counsel.' },
+                          { id: 'travel_insurance', name: '🛡️ Comprehensive Student Travel & Medical Insurance', price: 2499, desc: 'Covers pre-arrival emergencies & $100k medical protection.' },
+                          { id: 'financial_audit', name: '🏦 CA Net Worth & 28-Day Solvency Certification', price: 3200, desc: 'Official CA liquidity report proving genuine funds.' },
+                          { id: 'biometrics_booking', name: '📅 VFS / Embassy Priority Biometrics Slot Assistance', price: 1500, desc: 'Priority appointment scheduling at nearest center.' }
                         ].map((addon) => {
                           const isSelected = selectedConciergeAddons.includes(addon.id);
                           return (
@@ -3498,8 +3498,8 @@ export function VisaCountryResultPortal({
                       </strong>
                       <span className="text-slate-600 font-normal">
                         {isSchengenCountry
-                          ? `Must have at least 3 months remaining validity beyond your planned departure date from ${countryName}.`
-                          : `Passport must be valid for a minimum of 6 months (180 days) from the date of arrival in ${countryName}. This is a strict immigration requirement.`
+                          ? `Valid at least 3 months beyond departure date from ${countryName}.`
+                          : `Must be valid for minimum 180 days from date of arrival in ${countryName}.`
                         }
                       </span>
                     </div>
@@ -3509,7 +3509,7 @@ export function VisaCountryResultPortal({
                     <span className="text-base shrink-0">📖</span>
                     <div>
                       <strong className="text-slate-900 font-bold block">Blank Stamp Pages:</strong>
-                      <span className="text-slate-600 font-normal">Recommended 1–2 clean blank pages for border control entry &amp; exit stamps.</span>
+                      <span className="text-slate-600 font-normal">1–2 clean blank pages required for border entry &amp; exit stamps.</span>
                     </div>
                   </li>
                 </ul>
@@ -3538,12 +3538,12 @@ export function VisaCountryResultPortal({
                         <strong className="text-slate-900 font-bold block">Stay Limit Duration:</strong>
                         <span className="text-slate-600 font-normal">
                           {isSchengenCountry
-                            ? 'Stay up to 90 days within any rolling 180-day period for short tourism & business.'
+                            ? 'Stay up to 90 days within any 180-day period.'
                             : isStudyPurpose
-                            ? `Valid for the entire Duration of Course (1 - 4 Years) with multi-entry student pass privileges in ${countryName}.`
+                            ? `Valid for entire course duration (${aiIntel.stayDuration || '1–4 Years'}) with multi-entry travel rights.`
                             : isWorkPurpose
-                            ? `Valid for 1 to 5 Years renewable employment contract duration in ${countryName}.`
-                            : `Stay up to ${baseData.lengthOfStay || '30 Days'} per visit for leisure and tourism in ${countryName}.`}
+                            ? `Valid for employment contract duration in ${countryName}.`
+                            : `Stay up to ${baseData.lengthOfStay || '30 Days'} per visit in ${countryName}.`}
                         </span>
                       </div>
                     </li>
@@ -3553,17 +3553,17 @@ export function VisaCountryResultPortal({
                       <div>
                         <strong className="text-slate-900 font-bold block">
                           {isStudyPurpose 
-                            ? 'Student Entry & Enrollment Verification:' 
+                            ? 'Enrollment Verification:' 
                             : isWorkPurpose 
-                            ? 'Work Pass IPA & Employer Sponsorship:' 
+                            ? 'Work Pass & Sponsorship Proof:' 
                             : 'Border Proof & Return Tickets:'}
                         </strong>
                         <span className="text-slate-600 font-normal">
                           {isStudyPurpose
-                            ? `Approved In-Principle Approval (IPA) letter, university SOLAR enrollment registration, and course schedule.`
+                            ? `Official CAS / I-20 and valid university enrollment records.`
                             : isWorkPurpose
-                            ? `Approved Work Pass IPA letter, signed employment contract, and employer sponsorship registration.`
-                            : 'Confirmed return/onward flight tickets & verified accommodation stay proof.'}
+                            ? `Approved Work Pass letter and signed employment agreement.`
+                            : 'Confirmed return flight tickets & verified accommodation.'}
                         </span>
                       </div>
                     </li>

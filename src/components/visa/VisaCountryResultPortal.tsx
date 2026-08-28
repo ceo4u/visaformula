@@ -973,6 +973,343 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
   };
 }
 
+export interface StudyUniversityItem {
+  id: string;
+  name: string;
+  location: string;
+  country: string;
+  rank: string;
+  tuitionLocal: string;
+  tuitionINR: string;
+  ieltsMin: string;
+  degreeLevels: string[];
+  sevpApproved: boolean;
+  dliNumber?: string;
+  majors: string[];
+  intakes: string[];
+  desc: string;
+  acceptanceRate: string;
+  heroImg: string;
+  campusBadge: string;
+}
+
+export interface StudyConsultantItem {
+  id: string;
+  name: string;
+  agencyName: string;
+  role: string;
+  city: string;
+  countries: string[];
+  rating: number;
+  reviews: number;
+  successRate: string;
+  license: string;
+  experience: string;
+  specialities: string[];
+  fee: string;
+  image: string;
+  freeCounselling: boolean;
+}
+
+function getDestinationUniversities(country: string): StudyUniversityItem[] {
+  const c = (country || 'United Kingdom').toLowerCase();
+  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain') || c.includes('scotland')) {
+    return [
+      {
+        id: 'uk-1',
+        name: 'University of Oxford',
+        location: 'Oxford, England, UK',
+        country: 'United Kingdom',
+        rank: 'QS World #3',
+        tuitionLocal: '£28,900 / yr',
+        tuitionINR: '₹30.5 Lakhs / yr',
+        ieltsMin: '7.0 (Min 6.5 in bands)',
+        degreeLevels: ["Master's (MS/MSc)", "Bachelor's (UG)", "PhD / Doctorate"],
+        sevpApproved: true,
+        dliNumber: 'UKVI Tier-4 Sponsor #OXF892',
+        majors: ['Computer Science & AI', 'Data Science & Analytics', 'Law & Jurisprudence', 'Global MBA & Finance', 'Biotechnology'],
+        intakes: ['Fall 2026 (Oct)', 'Spring 2027 (Jan)'],
+        desc: 'World premier collegiate research university with unparalleled academic heritage and global alumni network.',
+        acceptanceRate: '17%',
+        heroImg: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=80',
+        campusBadge: 'Russell Group Elite'
+      },
+      {
+        id: 'uk-2',
+        name: 'Imperial College London',
+        location: 'South Kensington, London, UK',
+        country: 'United Kingdom',
+        rank: 'QS World #6',
+        tuitionLocal: '£34,500 / yr',
+        tuitionINR: '₹36.2 Lakhs / yr',
+        ieltsMin: '6.5 (Min 6.0 in bands)',
+        degreeLevels: ["Master's (MS/MSc)", "Bachelor's (UG)", "PhD / Doctorate"],
+        sevpApproved: true,
+        dliNumber: 'UKVI Tier-4 Sponsor #IMP104',
+        majors: ['Computing & Machine Learning', 'Artificial Intelligence', 'Advanced Mechanical & Robotics', 'Fintech & Quant Finance'],
+        intakes: ['Fall 2026 (Sep)', 'Summer 2027 (Jun)'],
+        desc: 'Global leader in STEM, deep-tech research, computing innovation, and high-impact industry collaboration.',
+        acceptanceRate: '14%',
+        heroImg: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&auto=format&fit=crop&q=80',
+        campusBadge: 'Top STEM Hub'
+      },
+      {
+        id: 'uk-3',
+        name: 'University College London (UCL)',
+        location: 'Bloomsbury, London, UK',
+        country: 'United Kingdom',
+        rank: 'QS World #9',
+        tuitionLocal: '£26,400 / yr',
+        tuitionINR: '₹27.8 Lakhs / yr',
+        ieltsMin: '6.5 (Min 6.0 in bands)',
+        degreeLevels: ["Master's (MS/MSc)", "Bachelor's (UG)", "PG Diploma"],
+        sevpApproved: true,
+        dliNumber: 'UKVI Tier-4 Sponsor #UCL550',
+        majors: ['Management Science & MBA', 'Computer Science & AI', 'Biomedical Informatics', 'Economics & Policy'],
+        intakes: ['Fall 2026 (Sep)', 'Spring 2027 (Jan)'],
+        desc: "London's leading multidisciplinary university known for radical innovation, entrepreneurship, and global careers.",
+        acceptanceRate: '29%',
+        heroImg: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=600&auto=format&fit=crop&q=80',
+        campusBadge: 'London Central Campus'
+      },
+      {
+        id: 'uk-4',
+        name: 'University of Manchester',
+        location: 'Manchester, England, UK',
+        country: 'United Kingdom',
+        rank: 'QS World #32',
+        tuitionLocal: '£22,800 / yr',
+        tuitionINR: '₹24.0 Lakhs / yr',
+        ieltsMin: '6.5 (Min 6.0 in bands)',
+        degreeLevels: ["Master's (MS/MSc)", "Bachelor's (UG)"],
+        sevpApproved: true,
+        dliNumber: 'UKVI Tier-4 Sponsor #MAN302',
+        majors: ['Data Science & Analytics', 'Engineering & Robotics', 'Business Analytics & Marketing', 'Renewable Energy'],
+        intakes: ['Fall 2026 (Sep)', 'Spring 2027 (Jan)'],
+        desc: 'Pioneering red-brick university with 25 Nobel laureates and 2-Year UK Graduate Post-Study Work Route access.',
+        acceptanceRate: '35%',
+        heroImg: 'https://images.unsplash.com/photo-1592280771190-3e2e4d571952?w=600&auto=format&fit=crop&q=80',
+        campusBadge: 'High Graduate ROI'
+      }
+    ];
+  }
+  if (c.includes('united states') || c.includes('usa') || c.includes('us') || c.includes('america')) {
+    return [
+      {
+        id: 'us-1',
+        name: 'Massachusetts Institute of Technology (MIT)',
+        location: 'Cambridge, MA, USA',
+        country: 'United States',
+        rank: 'QS World #1',
+        tuitionLocal: '$58,500 / yr',
+        tuitionINR: '₹49.0 Lakhs / yr',
+        ieltsMin: '7.5 / TOEFL 100',
+        degreeLevels: ["Master's (MS)", "Bachelor's (BS)", "PhD"],
+        sevpApproved: true,
+        dliNumber: 'SEVP School Code: BOS214F00120000',
+        majors: ['Computer Science & AI', 'Robotics & Hardware', 'Quantum Computing', 'Quantitative Finance'],
+        intakes: ['Fall 2026 (Aug)', 'Spring 2027 (Jan)'],
+        desc: 'Global benchmark institution for technological breakthroughs, artificial intelligence, and startup incubators.',
+        acceptanceRate: '4%',
+        heroImg: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=80',
+        campusBadge: 'SEVP Top Certified'
+      },
+      {
+        id: 'us-2',
+        name: 'Stanford University',
+        location: 'Stanford, Silicon Valley, CA, USA',
+        country: 'United States',
+        rank: 'QS World #5',
+        tuitionLocal: '$62,000 / yr',
+        tuitionINR: '₹52.0 Lakhs / yr',
+        ieltsMin: '7.5 / TOEFL 100',
+        degreeLevels: ["Master's (MS)", "Bachelor's (BS)", "PhD"],
+        sevpApproved: true,
+        dliNumber: 'SEVP School Code: SFR214F00085000',
+        majors: ['Computer Systems & AI', 'Management Science & Engineering', 'Data Analytics', 'Biomedical Informatics'],
+        intakes: ['Fall 2026 (Sep)', 'Winter 2027 (Jan)'],
+        desc: 'Heart of Silicon Valley technology entrepreneurship, venture capital connections, and STEM OPT 3-Year extension.',
+        acceptanceRate: '3.7%',
+        heroImg: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=600&auto=format&fit=crop&q=80',
+        campusBadge: 'Silicon Valley Network'
+      },
+      {
+        id: 'us-3',
+        name: 'Columbia University',
+        location: 'New York City, NY, USA',
+        country: 'United States',
+        rank: 'QS World #22',
+        tuitionLocal: '$57,000 / yr',
+        tuitionINR: '₹47.8 Lakhs / yr',
+        ieltsMin: '7.0 / TOEFL 95',
+        degreeLevels: ["Master's (MS)", "Bachelor's (BS)", "MBA"],
+        sevpApproved: true,
+        dliNumber: 'SEVP School Code: NYC214F00012000',
+        majors: ['Business Analytics & Finance', 'Computer Science', 'Financial Engineering', 'Data Science'],
+        intakes: ['Fall 2026 (Aug)', 'Spring 2027 (Jan)'],
+        desc: 'Ivy League powerhouse in Upper Manhattan providing direct recruitment access to Wall Street and tech giants.',
+        acceptanceRate: '5.1%',
+        heroImg: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&auto=format&fit=crop&q=80',
+        campusBadge: 'Ivy League'
+      }
+    ];
+  }
+  if (c.includes('canada')) {
+    return [
+      {
+        id: 'ca-1',
+        name: 'University of Toronto',
+        location: 'Toronto, Ontario, Canada',
+        country: 'Canada',
+        rank: 'QS World #21',
+        tuitionLocal: 'CAD $49,000 / yr',
+        tuitionINR: '₹30.2 Lakhs / yr',
+        ieltsMin: '6.5 (Min 6.0 in bands)',
+        degreeLevels: ["Master's (MSc)", "Bachelor's (BSc)", "Rotman MBA"],
+        sevpApproved: true,
+        dliNumber: 'DLI #O19332746094',
+        majors: ['Computer Science & AI', 'Applied Engineering', 'Rotman Commerce & Finance', 'Health Data Science'],
+        intakes: ['Fall 2026 (Sep)', 'Winter 2027 (Jan)'],
+        desc: "Canada's #1 research university with 3-year PGWP work permit and direct pathways to Express Entry PR.",
+        acceptanceRate: '43%',
+        heroImg: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=80',
+        campusBadge: 'DLI PGWP Eligible'
+      },
+      {
+        id: 'ca-2',
+        name: 'University of British Columbia (UBC)',
+        location: 'Vancouver, BC, Canada',
+        country: 'Canada',
+        rank: 'QS World #34',
+        tuitionLocal: 'CAD $44,000 / yr',
+        tuitionINR: '₹27.1 Lakhs / yr',
+        ieltsMin: '6.5 (Min 6.0 in bands)',
+        degreeLevels: ["Master's (MSc)", "Bachelor's (BSc)"],
+        sevpApproved: true,
+        dliNumber: 'DLI #O19328526312',
+        majors: ['Data Science & AI', 'Sauder Business Analytics', 'Software Engineering', 'Sustainable Tech'],
+        intakes: ['Fall 2026 (Sep)', 'Winter 2027 (Jan)'],
+        desc: 'Premier West Coast institution with strong industry co-op placements and world-class research facilities.',
+        acceptanceRate: '48%',
+        heroImg: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=600&auto=format&fit=crop&q=80',
+        campusBadge: 'DLI PGWP Eligible'
+      }
+    ];
+  }
+  // Generic / European / Asian fallback
+  return [
+    {
+      id: 'gen-1',
+      name: `National University of ${country}`,
+      location: `Capital Campus, ${country}`,
+      country: country,
+      rank: 'QS Top 150 Accredited',
+      tuitionLocal: '$18,500 / yr',
+      tuitionINR: '₹15.5 Lakhs / yr',
+      ieltsMin: '6.0 (Min 5.5 in bands)',
+      degreeLevels: ["Master's (MS/MSc)", "Bachelor's (UG)"],
+      sevpApproved: true,
+      dliNumber: `Government Sponsor #${country.toUpperCase().slice(0,3)}-8801`,
+      majors: ['Computer Science & AI', 'Global Business Administration', 'Applied Data Science', 'Engineering Management'],
+      intakes: ['Fall 2026 (Aug)', 'Spring 2027 (Jan)'],
+      desc: `Premier national state university recognized by Ministry of Higher Education with full international student visa support.`,
+      acceptanceRate: '52%',
+      heroImg: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=80',
+      campusBadge: 'Govt. Accredited'
+    },
+    {
+      id: 'gen-2',
+      name: `${country} Institute of Technology & Management`,
+      location: `Metropolitan City, ${country}`,
+      country: country,
+      rank: 'Accredited STEM Institution',
+      tuitionLocal: '$15,000 / yr',
+      tuitionINR: '₹12.6 Lakhs / yr',
+      ieltsMin: '6.0 (Min 5.5 in bands)',
+      degreeLevels: ["Master's (MS/MSc)", "Bachelor's (UG)", "PG Diploma"],
+      sevpApproved: true,
+      dliNumber: `Accredited DLI #${country.toUpperCase().slice(0,3)}-5520`,
+      majors: ['Software & AI Engineering', 'International Management', 'Biotechnology', 'Data Analytics'],
+      intakes: ['Fall 2026 (Sep)', 'Spring 2027 (Feb)'],
+      desc: `Industry-focused technological curriculum with practical internship semesters and post-study work authorization.`,
+      acceptanceRate: '60%',
+      heroImg: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&auto=format&fit=crop&q=80',
+      campusBadge: 'STEM Certified'
+    }
+  ];
+}
+
+const VERIFIED_STUDY_CONSULTANTS: StudyConsultantItem[] = [
+  {
+    id: 'cons-1',
+    name: 'Arjun Mehta',
+    agencyName: 'Apex Study Abroad & Immigration Law',
+    role: 'Senior International Admissions & Visa Counsel',
+    city: 'Hyderabad',
+    countries: ['United Kingdom', 'Canada', 'USA', 'Australia'],
+    rating: 4.9,
+    reviews: 412,
+    successRate: '99.4%',
+    license: 'ICCRC-R705123 / OISC UK',
+    experience: '11+ Years Experience',
+    specialities: ['CAS & I-20 Verification', 'SOP Drafting & Review', 'UK & US Student Visas', '28-Day Maintenance Audit'],
+    fee: '₹999 / 30 mins',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=faces&q=80',
+    freeCounselling: true
+  },
+  {
+    id: 'cons-2',
+    name: 'Nisha Agarwal',
+    agencyName: 'Global Scholar Admissions Advisory',
+    role: 'UK Russell Group & Ivy League Specialist',
+    city: 'Delhi NCR',
+    countries: ['United Kingdom', 'USA', 'Germany', 'Singapore'],
+    rating: 4.8,
+    reviews: 328,
+    successRate: '98.9%',
+    license: 'OISC Level 2 #F2021008',
+    experience: '9+ Years Experience',
+    specialities: ['Oxford / UCL / Imperial Admissions', 'CAS Processing', 'IHS & Visa Submissions', 'VFS Biometrics Slot'],
+    fee: '₹899 / 30 mins',
+    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces&q=80',
+    freeCounselling: true
+  },
+  {
+    id: 'cons-3',
+    name: 'Karthik Reddy',
+    agencyName: 'Stanford & Ivy Legal Admissions Hub',
+    role: 'Licensed US Immigration Attorney & SEVP Advisor',
+    city: 'Bangalore',
+    countries: ['USA', 'Canada', 'United Kingdom'],
+    rating: 5.0,
+    reviews: 512,
+    successRate: '99.8%',
+    license: 'US Bar Council #BAR-CA-78912',
+    experience: '14+ Years Experience',
+    specialities: ['Form I-20 & SEVIS Filing', 'F-1 Visa Interview Prep', 'Financial Solvency Proofs', 'Refusal Overturns'],
+    fee: '₹1,499 / 30 mins',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80',
+    freeCounselling: false
+  },
+  {
+    id: 'cons-4',
+    name: 'Priya Sharma',
+    agencyName: 'Global Horizon Overseas Education',
+    role: 'Australia & Canada Study Permit Director',
+    city: 'Mumbai',
+    countries: ['Australia', 'Canada', 'United Kingdom', 'New Zealand'],
+    rating: 4.9,
+    reviews: 295,
+    successRate: '99.1%',
+    license: 'MARA Australia #1804521 / RCIC',
+    experience: '8+ Years Experience',
+    specialities: ['GTE & Genuine Student Audits', 'PGWP Pathway Planning', 'Scholarship Matching', 'Medical & Biometrics'],
+    fee: '₹799 / 30 mins',
+    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=faces&q=80',
+    freeCounselling: true
+  }
+];
+
 export function VisaCountryResultPortal({ 
   countrySlug, 
   initialPassport = 'India', 
@@ -1026,6 +1363,33 @@ export function VisaCountryResultPortal({
     }
     return formatNationality(initialPassport || 'India');
   });
+
+  // ── STUDY WORKFLOW (HAVE VISA ALREADY? -> NO) STATES ──
+  const [studentActionTab, setStudentActionTab] = useState<'consultants' | 'self_apply'>('consultants');
+  const [uniSearchQuery, setUniSearchQuery] = useState('');
+  const [uniDegreeFilter, setUniDegreeFilter] = useState('All');
+  const [uniBudgetFilter, setUniBudgetFilter] = useState('All');
+  const [selectedUniId, setSelectedUniId] = useState<string>('uk-1');
+  const [selectedCourseMajor, setSelectedCourseMajor] = useState('Computer Science & AI');
+  const [admissionTrackerStage, setAdmissionTrackerStage] = useState(1);
+  const [casNumberInput, setCasNumberInput] = useState('CAS-UKVI-892410-X');
+  const [isCasChecked, setIsCasChecked] = useState(true);
+
+  // Consultant Filter & Booking States
+  const [consultantLocationQuery, setConsultantLocationQuery] = useState('');
+  const [consultantCountryFilter, setConsultantCountryFilter] = useState('All');
+  const [consultantRatingFilter, setConsultantRatingFilter] = useState('All');
+  const [bookingModalConsultant, setBookingModalConsultant] = useState<StudyConsultantItem | null>(null);
+  const [consultantBookedToast, setConsultantBookedToast] = useState<string | null>(null);
+
+  // Self-Apply Concierge Document Vault & Addon States
+  const [uploadedDocuments, setUploadedDocuments] = useState<Record<string, { fileName: string; size: string; status: 'uploaded' | 'verified'; timestamp: string }>>({
+    passport: { fileName: 'Passport_Front_Back_Scan.pdf', size: '2.4 MB', status: 'verified', timestamp: 'Verified via OCR' },
+    transcripts: { fileName: 'Degree_Transcripts_Consolidated.pdf', size: '4.8 MB', status: 'verified', timestamp: 'Verified via OCR' }
+  });
+  const [selectedConciergeAddons, setSelectedConciergeAddons] = useState<string[]>(['sop_polish', 'travel_insurance']);
+  const [conciergeSubmittedModal, setConciergeSubmittedModal] = useState(false);
+  const [isUploadingDocKey, setIsUploadingDocKey] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -2579,6 +2943,684 @@ export function VisaCountryResultPortal({
             </div>
           </section>
 
+          {/* ── SPECIALIZED STUDENT VISA APPLICATION ROADMAP & DUAL CHOICE WORKFLOW ── */}
+          {hasVisaAlready === 'no' && activePurposeTab === 'study' && (
+            <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-12 text-left space-y-8 animate-fadeIn">
+              
+              {/* Header Banner */}
+              <div className="bg-gradient-to-r from-slate-900 via-slate-850 to-emerald-950 text-white rounded-[32px] p-6 sm:p-10 shadow-xl border border-slate-800 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="relative z-10 space-y-3 max-w-3xl">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-emerald-300">
+                    <GraduationCap className="w-4 h-4 text-emerald-400" />
+                    <span>Study Visa Application Roadmap (Have Visa: No)</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-black tracking-tight leading-tight">
+                    Your 3-Step Journey to Study in {countryName} {flagEmoji}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
+                    Follow this structured step-by-step roadmap to explore verified institutions, secure your official admission letter, and unlock fast-track visa filing.
+                  </p>
+                </div>
+              </div>
+
+              {/* ================================================== */}
+              {/* 1. STEP-BY-STEP APPLICATION ROADMAP (3 STEPS) */}
+              {/* ================================================== */}
+              <div className="space-y-6">
+
+                {/* ── STEP 1: FIND TOP UNIVERSITY ── */}
+                <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-sm shrink-0 shadow-md">
+                        1
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                            Step 1 of 3
+                          </span>
+                          <span className="text-xs font-bold text-slate-500">Institution Selection</span>
+                        </div>
+                        <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-950 mt-0.5">
+                          Find Top University
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                          Explore SEVP-approved and top-ranked universities matching your profile &amp; budget.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Quick Search */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <div className="relative">
+                        <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="text"
+                          value={uniSearchQuery}
+                          onChange={(e) => setUniSearchQuery(e.target.value)}
+                          placeholder="Search universities..."
+                          className="h-9 pl-8 pr-3 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-emerald-500/20"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* University Cards Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {getDestinationUniversities(countryName)
+                      .filter(u => !uniSearchQuery || u.name.toLowerCase().includes(uniSearchQuery.toLowerCase()) || u.desc.toLowerCase().includes(uniSearchQuery.toLowerCase()))
+                      .map((uni) => {
+                        const isSelected = selectedUniId === uni.id;
+                        return (
+                          <div
+                            key={uni.id}
+                            onClick={() => setSelectedUniId(uni.id)}
+                            className={`p-5 rounded-2xl border transition-all cursor-pointer text-left space-y-3 relative ${
+                              isSelected
+                                ? 'bg-emerald-50/40 border-emerald-400 ring-2 ring-emerald-400/20 shadow-sm'
+                                : 'bg-white border-slate-200/90 hover:border-slate-300 hover:shadow-xs'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="space-y-1 min-w-0">
+                                <div className="flex flex-wrap items-center gap-1.5">
+                                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-slate-900 text-white">
+                                    {uni.rank}
+                                  </span>
+                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900">
+                                    {uni.campusBadge}
+                                  </span>
+                                </div>
+                                <h4 className="font-bold text-sm sm:text-base text-slate-950 leading-snug">
+                                  {uni.name}
+                                </h4>
+                                <div className="flex items-center gap-1 text-[11px] text-slate-500 font-medium">
+                                  <MapPin className="w-3 h-3 text-slate-400" />
+                                  <span>{uni.location}</span>
+                                </div>
+                              </div>
+
+                              <button
+                                type="button"
+                                className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all ${
+                                  isSelected ? 'bg-[#00A86B] text-white shadow-xs' : 'bg-slate-100 text-slate-400'
+                                }`}
+                              >
+                                {isSelected ? <Check className="w-4 h-4 stroke-[3]" /> : <Plus className="w-4 h-4" />}
+                              </button>
+                            </div>
+
+                            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                              {uni.desc}
+                            </p>
+
+                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[11px]">
+                              <div>
+                                <span className="text-slate-400 font-medium block">Annual Tuition:</span>
+                                <strong className="text-slate-900 font-bold">{uni.tuitionLocal} <span className="text-slate-500 font-normal">({uni.tuitionINR})</span></strong>
+                              </div>
+                              <div>
+                                <span className="text-slate-400 font-medium block">English Min.:</span>
+                                <strong className="text-slate-900 font-bold">{uni.ieltsMin}</strong>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+
+                {/* ── STEP 2: SELECT COURSE, APPLY & GET ADMISSION ── */}
+                <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-10 h-10 rounded-2xl bg-blue-500 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-md">
+                        2
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full">
+                            Step 2 of 3
+                          </span>
+                          <span className="text-xs font-bold text-slate-500">Course &amp; Application Tracking</span>
+                        </div>
+                        <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-950 mt-0.5">
+                          Select Course, Apply &amp; Get Admission
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                          Choose your major, complete university applications, track admission statuses, and store all offer details safely.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Course Major Selector */}
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold text-slate-700">
+                      Choose Your Major / Specialization:
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        'Computer Science & AI',
+                        'Data Science & Analytics',
+                        'Global MBA & Finance',
+                        'Robotics & Mechanical Engg',
+                        'Biotechnology & Healthcare',
+                        'Law & International Policy'
+                      ].map((maj) => (
+                        <button
+                          key={maj}
+                          type="button"
+                          onClick={() => setSelectedCourseMajor(maj)}
+                          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                            selectedCourseMajor === maj
+                              ? 'bg-slate-900 text-white shadow-xs'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          }`}
+                        >
+                          {maj}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 4-Stage Application Progress Tracker */}
+                  <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">
+                        Integrated Application Tracker
+                      </span>
+                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" />
+                        <span>Admission Confirmed</span>
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      {[
+                        { stage: 1, label: '1. Profile Shortlisted', desc: 'Eligibility match 98%', status: 'Done' },
+                        { stage: 2, label: '2. Transcripts Uploaded', desc: 'Evaluated & verified', status: 'Done' },
+                        { stage: 3, label: '3. Application Filed', desc: 'Direct portal submission', status: 'Done' },
+                        { stage: 4, label: '4. Offer Letter Issued', desc: 'Unconditional acceptance', status: 'Approved' }
+                      ].map((st) => (
+                        <div key={st.stage} className="p-3 bg-white rounded-xl border border-slate-200 text-left space-y-1 shadow-2xs">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-slate-900">{st.label}</span>
+                            <CheckCircle className="w-4 h-4 text-[#00A86B]" />
+                          </div>
+                          <p className="text-[11px] text-slate-500 font-medium">{st.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── STEP 3: RECEIVE FORM I-20 / OFFICIAL ADMISSION LETTER ── */}
+                <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-10 h-10 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm shrink-0 shadow-md">
+                        3
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-extrabold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full">
+                            Step 3 of 3
+                          </span>
+                          <span className="text-xs font-bold text-slate-500">Official Visa Clearance Document</span>
+                        </div>
+                        <h3 className="text-lg sm:text-xl font-heading font-bold text-slate-950 mt-0.5">
+                          {countryName.toLowerCase().includes('united states') || countryName.toLowerCase().includes('usa')
+                            ? 'Receive Form I-20 (Certificate of Eligibility)'
+                            : countryName.toLowerCase().includes('united kingdom') || countryName.toLowerCase().includes('uk')
+                            ? 'Receive Official CAS Reference (Confirmation of Acceptance for Studies)'
+                            : countryName.toLowerCase().includes('canada')
+                            ? 'Receive Letter of Acceptance (LOA) & PAL'
+                            : 'Receive Official Admission Letter & In-Principle Approval (IPA)'}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                          Secure your official Form I-20 (US), CAS (UK), LOA (Canada), or In-Principle Approval (IPA) from your institution to unlock consular visa filing.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Certificate Verification Box */}
+                  <div className="bg-gradient-to-br from-amber-50/70 via-white to-emerald-50/50 border border-amber-200/80 rounded-2xl p-5 sm:p-6 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-300 text-amber-800 flex items-center justify-center font-black">
+                          📜
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block">
+                            Document Verification Check
+                          </span>
+                          <h4 className="text-sm font-bold text-slate-900">
+                            {countryName.toLowerCase().includes('united states') ? 'Form I-20 & SEVIS ID Record' : 'Official CAS / Acceptance Reference'}
+                          </h4>
+                        </div>
+                      </div>
+
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-extrabold self-start sm:self-auto">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                        <span>Ready for Visa Submission</span>
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                      <div className="p-3 bg-white rounded-xl border border-slate-200">
+                        <span className="text-slate-400 font-medium block">Document Type:</span>
+                        <strong className="text-slate-900 font-bold">Unconditional Tier-4 / F-1 Document</strong>
+                      </div>
+                      <div className="p-3 bg-white rounded-xl border border-slate-200">
+                        <span className="text-slate-400 font-medium block">Verification Status:</span>
+                        <strong className="text-[#00A86B] font-bold">100% Validated in Vault</strong>
+                      </div>
+                      <div className="p-3 bg-white rounded-xl border border-slate-200">
+                        <span className="text-slate-400 font-medium block">Next Recommended Action:</span>
+                        <strong className="text-slate-900 font-bold">Choose Filing Path Below</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* ================================================== */}
+              {/* 2. DUAL CHOICE ACTION TABS (POST STEP 3) */}
+              {/* ================================================== */}
+              <div className="space-y-6 pt-4">
+                
+                {/* Section Title & Segment Controller */}
+                <div className="text-center space-y-3">
+                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#00A86B] bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
+                    Dual Action Pathways
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-heading font-black text-slate-950 tracking-tight">
+                    How would you like to apply for your visa?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-xl mx-auto">
+                    Choose between connecting with certified local immigration consultants or applying directly using TravlTik&apos;s automated AI Concierge.
+                  </p>
+
+                  {/* High-Contrast Segment Switch */}
+                  <div className="inline-flex p-1.5 rounded-2xl bg-slate-100 border border-slate-200 shadow-inner max-w-full overflow-x-auto">
+                    <button
+                      type="button"
+                      onClick={() => setStudentActionTab('consultants')}
+                      className={`flex items-center gap-2 px-5 sm:px-7 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+                        studentActionTab === 'consultants'
+                          ? 'bg-slate-950 text-white shadow-md'
+                          : 'text-slate-700 hover:text-slate-950'
+                      }`}
+                    >
+                      <Users className="w-4 h-4 text-emerald-400" />
+                      <span>TAB 1: Find Consultants Near Me</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setStudentActionTab('self_apply')}
+                      className={`flex items-center gap-2 px-5 sm:px-7 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer whitespace-nowrap ${
+                        studentActionTab === 'self_apply'
+                          ? 'bg-slate-950 text-white shadow-md'
+                          : 'text-slate-700 hover:text-slate-950'
+                      }`}
+                    >
+                      <Zap className="w-4 h-4 text-amber-400" />
+                      <span>TAB 2: Self Apply (TravlTik Concierge)</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* ── TAB 1 CONTENT: FIND CONSULTANTS ── */}
+                {studentActionTab === 'consultants' && (
+                  <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6 animate-fadeIn">
+                    
+                    {/* Search & Filter Engine */}
+                    <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-3">
+                      <div className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                        <Search className="w-3.5 h-3.5 text-[#00A86B]" />
+                        <span>Search Consultants Near Me &amp; Filter Specializations</span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-[11px] font-semibold text-slate-500 mb-1">
+                            Location / City / Pincode
+                          </label>
+                          <input
+                            type="text"
+                            value={consultantLocationQuery}
+                            onChange={(e) => setConsultantLocationQuery(e.target.value)}
+                            placeholder="e.g. Hyderabad, Mumbai, Delhi, Remote"
+                            className="w-full h-10 px-3 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-semibold text-slate-500 mb-1">
+                            Country Specialization
+                          </label>
+                          <select
+                            value={consultantCountryFilter}
+                            onChange={(e) => setConsultantCountryFilter(e.target.value)}
+                            className="w-full h-10 px-3 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
+                          >
+                            <option value="All">All Countries (Global)</option>
+                            <option value="United Kingdom">United Kingdom (UKVI)</option>
+                            <option value="USA">United States (F-1 / SEVP)</option>
+                            <option value="Canada">Canada (IRCC / DLI)</option>
+                            <option value="Australia">Australia (CRICOS)</option>
+                            <option value="Germany">Germany &amp; Schengen</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-semibold text-slate-500 mb-1">
+                            Rating &amp; Credential Filter
+                          </label>
+                          <select
+                            value={consultantRatingFilter}
+                            onChange={(e) => setConsultantRatingFilter(e.target.value)}
+                            className="w-full h-10 px-3 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
+                          >
+                            <option value="All">All Verified Experts</option>
+                            <option value="4.8">4.8★ &amp; Above</option>
+                            <option value="Top Rated">Top Rated (99%+ Success)</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Consultant Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {VERIFIED_STUDY_CONSULTANTS
+                        .filter(c => {
+                          const matchesLoc = !consultantLocationQuery || c.city.toLowerCase().includes(consultantLocationQuery.toLowerCase());
+                          const matchesCountry = consultantCountryFilter === 'All' || c.countries.includes(consultantCountryFilter);
+                          const matchesRating = consultantRatingFilter === 'All' || c.rating >= parseFloat(consultantRatingFilter);
+                          return matchesLoc && matchesCountry && matchesRating;
+                        })
+                        .map((cons) => (
+                          <div
+                            key={cons.id}
+                            className="p-5 rounded-2xl border border-slate-200/90 bg-white hover:border-slate-300 hover:shadow-md transition-all space-y-4 text-left flex flex-col justify-between"
+                          >
+                            <div className="space-y-3">
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="flex items-center gap-3">
+                                  <img
+                                    src={cons.image}
+                                    alt={cons.name}
+                                    className="w-12 h-12 rounded-2xl object-cover border border-slate-200 shadow-2xs shrink-0"
+                                  />
+                                  <div>
+                                    <div className="flex items-center gap-1.5">
+                                      <h4 className="font-bold text-sm sm:text-base text-slate-950">{cons.name}</h4>
+                                      <BadgeCheck className="w-4 h-4 text-[#00A86B] shrink-0" />
+                                    </div>
+                                    <p className="text-xs text-slate-600 font-medium">{cons.agencyName}</p>
+                                    <span className="text-[11px] text-slate-400 font-normal">{cons.city} • {cons.experience}</span>
+                                  </div>
+                                </div>
+
+                                <div className="text-right shrink-0">
+                                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold">
+                                    <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
+                                    <span>{cons.rating}</span>
+                                    <span className="text-slate-400 font-normal">({cons.reviews})</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* License Badge */}
+                              <div className="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 text-[11px] font-bold">
+                                🛡️ Verified License: {cons.license}
+                              </div>
+
+                              {/* Specialities tags */}
+                              <div className="flex flex-wrap gap-1.5">
+                                {cons.specialities.map((spec) => (
+                                  <span key={spec} className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-semibold">
+                                    {spec}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Booking Action */}
+                            <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+                              <div>
+                                <span className="text-[10px] text-slate-400 font-medium block">Consultation Fee</span>
+                                <strong className="text-sm font-bold text-slate-950">{cons.fee}</strong>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => setBookingModalConsultant(cons)}
+                                className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center gap-1.5 active:scale-95"
+                              >
+                                <Calendar className="w-3.5 h-3.5" />
+                                <span>Book 1-on-1 Consultation</span>
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* ── TAB 2 CONTENT: SELF APPLY (CONCIERGE VAULT) ── */}
+                {studentActionTab === 'self_apply' && (
+                  <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[32px] p-6 sm:p-9 shadow-sm space-y-8 animate-fadeIn text-left">
+                    
+                    {/* Vault Header & Readiness Meter */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-emerald-50/80 via-white to-blue-50/80 border border-emerald-200/80">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Zap className="w-4 h-4 text-amber-500 fill-amber-400" />
+                          <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-900">
+                            TravlTik Automated Concierge &amp; Document Vault
+                          </span>
+                        </div>
+                        <h4 className="text-base sm:text-lg font-bold text-slate-950">
+                          Complete Interactive Document Storage Engine
+                        </h4>
+                        <p className="text-xs text-slate-600 font-medium">
+                          Upload your essential records to run automated OCR checks, verify biometric specifications, and auto-populate your consular visa forms.
+                        </p>
+                      </div>
+
+                      {/* Readiness Meter */}
+                      <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs shrink-0 text-center sm:text-right">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          Dossier Completeness
+                        </span>
+                        <div className="flex items-center gap-2 mt-0.5 justify-center sm:justify-end">
+                          <div className="w-24 h-2 rounded-full bg-slate-100 overflow-hidden">
+                            <div className="h-full bg-[#00A86B] rounded-full" style={{ width: `${Object.keys(uploadedDocuments).length * 20}%` }} />
+                          </div>
+                          <strong className="text-sm font-black text-slate-900">
+                            {Object.keys(uploadedDocuments).length * 20}%
+                          </strong>
+                        </div>
+                        <span className="text-[10px] text-amber-600 font-bold block mt-0.5">
+                          {5 - Object.keys(uploadedDocuments).length > 0 ? `${5 - Object.keys(uploadedDocuments).length} Critical Documents Pending` : 'All Documents Ready!'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 5 Core Document Upload Items */}
+                    <div className="space-y-3">
+                      <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                        1. Mandatory Document Vault Checklist
+                      </h5>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {[
+                          { key: 'passport', title: 'Passport Scan (Front & Back)', hint: 'Min. 6 months validity & blank pages' },
+                          { key: 'transcripts', title: 'Academic Transcripts & Degree', hint: '10th, 12th & Degree marksheets' },
+                          { key: 'financials', title: 'Financial / Loan Proof', hint: '28-day maintenance funds or loan letter' },
+                          { key: 'sop_cv', title: 'Statement of Purpose (SOP) & CV', hint: 'Academic intent & professional resume' },
+                          { key: 'english_test', title: 'English Test Scorecard', hint: 'IELTS / PTE / TOEFL score certificate' }
+                        ].map((doc) => {
+                          const uploaded = uploadedDocuments[doc.key];
+                          const isCurrentlyUploading = isUploadingDocKey === doc.key;
+
+                          return (
+                            <div
+                              key={doc.key}
+                              className={`p-4 rounded-2xl border transition-all text-left space-y-2.5 flex flex-col justify-between ${
+                                uploaded
+                                  ? 'bg-emerald-50/40 border-emerald-300'
+                                  : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                              }`}
+                            >
+                              <div className="space-y-1">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-bold text-slate-950 truncate">{doc.title}</span>
+                                  {uploaded ? (
+                                    <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
+                                  ) : (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                                      Required
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-[11px] text-slate-500 leading-tight">{doc.hint}</p>
+                              </div>
+
+                              {uploaded ? (
+                                <div className="flex items-center justify-between text-[11px] text-slate-600 bg-white/80 p-2 rounded-xl border border-emerald-200">
+                                  <span className="font-semibold truncate max-w-[140px]">{uploaded.fileName}</span>
+                                  <span className="text-[10px] font-bold text-[#00A86B]">{uploaded.status.toUpperCase()}</span>
+                                </div>
+                              ) : (
+                                <button
+                                  type="button"
+                                  disabled={isCurrentlyUploading}
+                                  onClick={() => {
+                                    setIsUploadingDocKey(doc.key);
+                                    setTimeout(() => {
+                                      setUploadedDocuments(prev => ({
+                                        ...prev,
+                                        [doc.key]: {
+                                          fileName: `${doc.key.toUpperCase()}_Document_Scanned.pdf`,
+                                          size: '1.8 MB',
+                                          status: 'verified',
+                                          timestamp: 'Verified via OCR'
+                                        }
+                                      }));
+                                      setIsUploadingDocKey(null);
+                                    }, 800);
+                                  }}
+                                  className="w-full py-2 rounded-xl bg-white border border-slate-300 hover:border-slate-800 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 disabled:opacity-50"
+                                >
+                                  {isCurrentlyUploading ? (
+                                    <>
+                                      <RotateCw className="w-3.5 h-3.5 animate-spin text-[#00A86B]" />
+                                      <span>Scanning &amp; Verifying...</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Upload className="w-3.5 h-3.5 text-slate-600" />
+                                      <span>Upload &amp; Store</span>
+                                    </>
+                                  )}
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* One-Click Concierge Add-On Services */}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                          2. One-Click Concierge Add-On Services
+                        </h5>
+                        <span className="text-[11px] text-slate-500 font-medium">Optional automated protections</span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {[
+                          { id: 'sop_polish', name: '✨ AI & Legal Expert SOP Polish & Review', price: 1999, desc: 'Grammar, narrative strength & visa officer alignment by admissions counsel.' },
+                          { id: 'travel_insurance', name: '🛡️ Comprehensive Student Travel & Medical Insurance', price: 2499, desc: 'Covers pre-arrival emergencies, flight delays, and $100k emergency medical.' },
+                          { id: 'financial_audit', name: '🏦 CA Net Worth & 28-Day Solvency Certification', price: 3200, desc: 'Official chartered accountant report proving genuine liquid funds.' },
+                          { id: 'biometrics_booking', name: '📅 VFS / Embassy Priority Biometrics Slot Assistance', price: 1500, desc: 'Guaranteed appointment scheduling at your nearest consulate center.' }
+                        ].map((addon) => {
+                          const isSelected = selectedConciergeAddons.includes(addon.id);
+                          return (
+                            <div
+                              key={addon.id}
+                              onClick={() => {
+                                setSelectedConciergeAddons(prev =>
+                                  prev.includes(addon.id) ? prev.filter(x => x !== addon.id) : [...prev, addon.id]
+                                );
+                              }}
+                              className={`p-4 rounded-2xl border transition-all cursor-pointer text-left space-y-1.5 ${
+                                isSelected
+                                  ? 'bg-slate-900 text-white border-slate-900 shadow-md'
+                                  : 'bg-slate-50/80 border-slate-200 hover:border-slate-300 text-slate-900'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <h6 className={`font-bold text-xs sm:text-sm ${isSelected ? 'text-white' : 'text-slate-950'}`}>
+                                  {addon.name}
+                                </h6>
+                                <span className={`text-xs font-black shrink-0 ${isSelected ? 'text-emerald-400' : 'text-slate-900'}`}>
+                                  +₹{addon.price.toLocaleString()}
+                                </span>
+                              </div>
+                              <p className={`text-[11px] leading-relaxed ${isSelected ? 'text-slate-300' : 'text-slate-600'}`}>
+                                {addon.desc}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Final Submission Bar */}
+                    <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-xs text-slate-500 font-medium block">Total Concierge Package:</span>
+                        <strong className="text-xl sm:text-2xl font-black text-slate-950">
+                          ₹{(2499 + selectedConciergeAddons.reduce((sum, id) => {
+                            if (id === 'sop_polish') return sum + 1999;
+                            if (id === 'travel_insurance') return sum + 2499;
+                            if (id === 'financial_audit') return sum + 3200;
+                            if (id === 'biometrics_booking') return sum + 1500;
+                            return sum;
+                          }, 0)).toLocaleString()}
+                        </strong>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setConciergeSubmittedModal(true)}
+                        className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+                      >
+                        <ShieldCheck className="w-5 h-5" />
+                        <span>Submit Complete Dossier for AI &amp; Concierge Filing</span>
+                        <ArrowRight className="w-4 h-4 stroke-[3]" />
+                      </button>
+                    </div>
+
+                  </div>
+                )}
+
+              </div>
+
+            </section>
+          )}
+
           {/* ── VISA RESULT & SPECIFICATION WORKSPACE ── */}
           <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-14">
             
@@ -3665,6 +4707,147 @@ export function VisaCountryResultPortal({
             </form>
 
           </div>
+        </div>
+      )}
+
+      {/* ── CONSULTANT BOOKING MODAL ── */}
+      {bookingModalConsultant && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-[32px] max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 text-left space-y-5 relative">
+            <button
+              type="button"
+              onClick={() => setBookingModalConsultant(null)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center cursor-pointer transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-3.5 pb-4 border-b border-slate-100">
+              <img
+                src={bookingModalConsultant.image}
+                alt={bookingModalConsultant.name}
+                className="w-14 h-14 rounded-2xl object-cover border border-slate-200 shadow-sm shrink-0"
+              />
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h3 className="font-bold text-lg text-slate-950">{bookingModalConsultant.name}</h3>
+                  <BadgeCheck className="w-4 h-4 text-[#00A86B]" />
+                </div>
+                <p className="text-xs text-slate-600 font-medium">{bookingModalConsultant.agencyName}</p>
+                <div className="inline-block px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold mt-1">
+                  🛡️ {bookingModalConsultant.license}
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  1. Select Consultation Date:
+                </label>
+                <input
+                  type="date"
+                  defaultValue="2026-09-02"
+                  className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-slate-50 font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-emerald-500/20"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  2. Select Available Slot:
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {['10:30 AM', '02:00 PM', '04:30 PM', '06:00 PM', '07:30 PM', '09:00 PM'].map((slot, idx) => (
+                    <button
+                      key={slot}
+                      type="button"
+                      className={`py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                        idx === 1
+                          ? 'bg-slate-900 text-white border-slate-900'
+                          : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      {slot}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 flex items-center justify-between text-xs">
+                <div>
+                  <span className="text-slate-400 font-medium block">Total Payable:</span>
+                  <strong className="text-slate-950 font-black text-sm">{bookingModalConsultant.fee}</strong>
+                </div>
+                <span className="text-[11px] font-bold text-[#00A86B] bg-emerald-50 px-2 py-1 rounded-lg">
+                  Protected under Escrow
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                const name = bookingModalConsultant.name;
+                setBookingModalConsultant(null);
+                setConsultantBookedToast(`🎉 Consultation with ${name} confirmed! Zoom link sent to your email.`);
+                setTimeout(() => setConsultantBookedToast(null), 5000);
+              }}
+              className="w-full py-3.5 rounded-2xl bg-[#00A86B] hover:bg-[#008f5b] text-white font-extrabold text-xs sm:text-sm shadow-md transition-all cursor-pointer active:scale-95"
+            >
+              Confirm 1-on-1 Consultation
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── CONCIERGE SUBMITTED MODAL ── */}
+      {conciergeSubmittedModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-[32px] max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 text-center space-y-4 relative">
+            <div className="w-16 h-16 rounded-3xl bg-emerald-100 text-[#00A86B] mx-auto flex items-center justify-center shadow-inner">
+              <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
+            </div>
+
+            <div className="space-y-1">
+              <h3 className="font-heading font-black text-xl text-slate-950">
+                Application Dossier Submitted!
+              </h3>
+              <p className="text-xs text-slate-600 font-medium">
+                Your documents and {countryName} student visa application have been safely ingested into the TravlTik Concierge Vault.
+              </p>
+            </div>
+
+            <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-left text-xs space-y-2">
+              <div className="flex justify-between">
+                <span className="text-slate-500 font-medium">Tracking ID:</span>
+                <strong className="text-slate-900 font-mono">TT-STU-2026-9824</strong>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500 font-medium">Target Institution:</span>
+                <strong className="text-slate-900 font-bold">{getDestinationUniversities(countryName).find(u => u.id === selectedUniId)?.name || 'University of Oxford'}</strong>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500 font-medium">Active Add-Ons:</span>
+                <strong className="text-[#00A86B] font-bold">{selectedConciergeAddons.length} Services Active</strong>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setConciergeSubmittedModal(false)}
+              className="w-full py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all cursor-pointer active:scale-95"
+            >
+              Done &amp; Return to Dashboard
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── TOAST NOTIFICATION ── */}
+      {consultantBookedToast && (
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-950 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-800 text-xs font-bold flex items-center gap-2.5 animate-in slide-in-from-bottom-5">
+          <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{consultantBookedToast}</span>
         </div>
       )}
 

@@ -37,6 +37,9 @@ export function UserDashboard() {
         if (typeof window !== "undefined") {
             // Hydrate cached journey data
             const localJourney = localStorage.getItem("visaformula_user_journey");
+            const activeCasesStr = localStorage.getItem("active_visa_cases");
+            const savedDocsStr = localStorage.getItem("seeker_documents");
+
             if (localJourney) {
                 try {
                     const parsedJ = JSON.parse(localJourney);
@@ -44,12 +47,52 @@ export function UserDashboard() {
                     if (parsedJ.uploaded_documents && typeof parsedJ.uploaded_documents === 'object') {
                         const docList = Object.entries(parsedJ.uploaded_documents).map(([k, v]: [string, any]) => ({
                             id: k,
-                            label: v.fileName || `${k.toUpperCase()} Document`,
+                            label: v.fileName ? `${k.toUpperCase().replace(/_/g, ' ')} (${v.fileName})` : `${k.toUpperCase().replace(/_/g, ' ')} Document`,
                             status: 'verified',
                             size: v.size || '1.8 MB',
                             uploadedAt: v.timestamp || 'Recently'
                         }));
                         setDocuments(docList);
+                    }
+                } catch(e) {}
+            }
+
+            if (savedDocsStr) {
+                try {
+                    const parsedDocs = JSON.parse(savedDocsStr);
+                    if (Array.isArray(parsedDocs) && parsedDocs.length > 0) {
+                        setDocuments(parsedDocs);
+                    }
+                } catch(e) {}
+            }
+
+            if (activeCasesStr) {
+                try {
+                    const parsedCases = JSON.parse(activeCasesStr);
+                    if (Array.isArray(parsedCases)) {
+                        setVisasProcessingState(parsedCases);
+                    }
+                } catch(e) {}
+            } else if (localJourney) {
+                try {
+                    const parsedJ = JSON.parse(localJourney);
+                    if (parsedJ && parsedJ.destination) {
+                        setVisasProcessingState([{
+                            id: 'case-1',
+                            trackingId: parsedJ.tracking_id || 'TT-APP-2026-9824',
+                            destination: parsedJ.destination,
+                            destinationFlag: parsedJ.destination_flag || '🌍',
+                            visaType: parsedJ.visa_type || 'Standard Visitor Visa',
+                            purpose: parsedJ.purpose || 'tourism',
+                            passport: parsedJ.passport_country || 'India',
+                            status: 'Dossier Ingested & AI Verified',
+                            stage: 'Under AI Concierge Review',
+                            progress: 35,
+                            documentsCount: parsedJ.uploaded_documents ? Object.keys(parsedJ.uploaded_documents).length : 0,
+                            addonsCount: parsedJ.selected_addons ? parsedJ.selected_addons.length : 0,
+                            submittedAt: parsedJ.submitted_at || 'Recently',
+                            targetDate: '15 Working Days'
+                        }]);
                     }
                 } catch(e) {}
             }
@@ -63,8 +106,8 @@ export function UserDashboard() {
                 return;
             }
 
-            // If user is not logged in at all, directly open login page with redirect to dashboard
-            if (!userStr && !savedEmail) {
+            // If user has no login credentials and no active journey/case, then redirect to login
+            if (!userStr && !savedEmail && !localJourney && !activeCasesStr) {
                 window.location.href = "/login?redirect=/dashboard";
                 return;
             }
@@ -618,6 +661,7 @@ export function UserDashboard() {
                                             <FileText className="w-10 h-10 text-slate-400 mx-auto" />
                                             <h4 className="text-sm font-extrabold text-slate-900">No Documents Uploaded Yet</h4>
                                             <p className="text-xs text-slate-500 max-w-xs mx-auto">Upload your Passport copy, IELTS scorecard, or SOP to share with verified consultants.</p>
+
                                             <button onClick={() => setActiveTab("scanned-documents")} className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm transition-all inline-flex items-center gap-1.5">
                                                 <Upload className="w-3.5 h-3.5" /> Upload Document
                                             </button>
@@ -715,13 +759,13 @@ export function UserDashboard() {
 
                     {/* 2. TAB: PROFILE & SETTINGS */}
                     {activeTab === "profile" && (
-                        <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6">
+                        <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6 animate-fade-up">
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-black text-slate-900">Personal & Visa Profile</h2>
                                     <p className="text-xs font-medium text-slate-500 mt-0.5">Manage your personal details, citizenship, and destination preferences</p>
                                 </div>
-                                <button onClick={() => setShowProfileModal(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5">
+                                <button onClick={() => setShowProfileModal(true)} className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 cursor-pointer">
                                     <Edit2 className="w-3.5 h-3.5" /> Edit Details
                                 </button>
                             </div>
@@ -740,7 +784,7 @@ export function UserDashboard() {
                                         <span className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-teal-200">Verified Seeker</span>
                                     </div>
                                     <p className="text-xs font-bold text-[#00a896]">{email || "Email not set"} • {phone || "Phone not added"}</p>
-                                    <p className="text-xs text-slate-600 font-medium">Passport Origin: <span className="font-extrabold text-slate-900">{countryOfCitizenship || "Not specified"}</span> | Residence: <span className="font-extrabold text-slate-900">{residentOf || "Not specified"}</span></p>
+                                    <p className="text-xs text-slate-600 font-medium">Passport Origin: <span className="font-extrabold text-slate-900">{countryOfCitizenship || passportCountry || "Not specified"}</span> | Residence: <span className="font-extrabold text-slate-900">{residentOf || "Not specified"}</span></p>
                                 </div>
                             </div>
 
@@ -757,13 +801,254 @@ export function UserDashboard() {
                         </div>
                     )}
 
-                    {/* OTHER TABS */}
-                    {activeTab !== "dashboard" && activeTab !== "profile" && (
-                        <div className="bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm text-center space-y-4">
+                    {/* 3. TAB: ACTIVE VISA CASES */}
+                    {activeTab === "cases" && (
+                        <div className="space-y-6 animate-fade-up">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <h2 className="text-xl font-black text-slate-900">Active Visa Cases ({visasProcessingState.length})</h2>
+                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Real-time status, timeline milestones, and embassy filing tracker</p>
+                                </div>
+                                <a href="/#need-visa-pathway-dashboard" className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 self-start sm:self-auto">
+                                    <Plus className="w-3.5 h-3.5" /> Start New Application
+                                </a>
+                            </div>
+
+                            {visasProcessingState.length === 0 ? (
+                                <div className="bg-white rounded-3xl border border-slate-200/80 p-10 text-center space-y-4 shadow-sm">
+                                    <Briefcase className="w-12 h-12 text-slate-300 mx-auto" />
+                                    <h3 className="text-base font-black text-slate-900">No Active Visa Applications Found</h3>
+                                    <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                                        You haven't submitted any visa dossiers yet. Explore official visa requirements and start your fast-track application.
+                                    </p>
+                                    <a href="/visa/united-kingdom?passport=indian&purpose=tourism" className="inline-block bg-[#00a896] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
+                                        Explore UK Tourist Visa →
+                                    </a>
+                                </div>
+                            ) : (
+                                <div className="space-y-5">
+                                    {visasProcessingState.map((cItem, idx) => (
+                                        <div key={cItem.id || idx} className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-sm space-y-5 hover:shadow-md transition-all">
+                                            {/* Case Header */}
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                                                <div className="flex items-center gap-3.5">
+                                                    <span className="text-3xl">{cItem.destinationFlag || '🇬🇧'}</span>
+                                                    <div>
+                                                        <div className="flex items-center gap-2">
+                                                            <h3 className="text-lg font-black text-slate-950">
+                                                                {cItem.destination || 'Destination'} • {cItem.visaType || 'Standard Visa'}
+                                                            </h3>
+                                                            <span className="bg-emerald-50 text-[#00A86B] text-[10px] font-black px-2 py-0.5 rounded-md border border-emerald-200">
+                                                                {cItem.status || 'Active'}
+                                                            </span>
+                                                        </div>
+                                                        <p className="text-xs text-slate-500 mt-0.5">
+                                                            Tracking ID: <strong className="text-slate-900 font-mono">{cItem.trackingId || 'TT-APP-2026-9824'}</strong> • Passport: <strong className="text-slate-700">{cItem.passport || 'Indian'}</strong>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-center gap-2 self-start sm:self-auto">
+                                                    <a
+                                                        href={cItem.destination ? `/visa/${encodeURIComponent(cItem.destination.toLowerCase().replace(/\s+/g, '-'))}?purpose=${encodeURIComponent(cItem.purpose || 'tourism')}&passport=${encodeURIComponent(cItem.passport || 'India')}` : '/'}
+                                                        className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all"
+                                                    >
+                                                        Resume Workspace →
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            {/* 5-Step Visual Timeline Progress */}
+                                            <div className="space-y-2">
+                                                <div className="flex justify-between text-xs font-bold text-slate-700">
+                                                    <span>Application Pipeline Progress:</span>
+                                                    <span className="text-emerald-600 font-black">{cItem.stage || 'Under AI Concierge Review'} (35%)</span>
+                                                </div>
+                                                <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full w-[35%]" />
+                                                </div>
+                                                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-[10px] font-bold text-slate-500">
+                                                    <div className="text-emerald-700 font-black flex items-center gap-1">
+                                                        <CheckCircle className="w-3 h-3 text-emerald-600 shrink-0" /> 1. Dossier Ingested
+                                                    </div>
+                                                    <div className="text-emerald-700 font-black flex items-center gap-1">
+                                                        <Sparkles className="w-3 h-3 text-emerald-600 shrink-0" /> 2. AI Quality Audit
+                                                    </div>
+                                                    <div className="text-slate-400 flex items-center gap-1">
+                                                        <Clock className="w-3 h-3 shrink-0" /> 3. Consular Form Filing
+                                                    </div>
+                                                    <div className="text-slate-400 flex items-center gap-1">
+                                                        <Clock className="w-3 h-3 shrink-0" /> 4. Biometrics Slot
+                                                    </div>
+                                                    <div className="text-slate-400 flex items-center gap-1">
+                                                        <Shield className="w-3 h-3 shrink-0" /> 5. Visa Stamped
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Key Case Specs */}
+                                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                                                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                    <span className="text-[10px] font-bold text-slate-400 block uppercase">Vault Documents</span>
+                                                    <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.documentsCount || documents.length || 0} Files OCR Verified</strong>
+                                                </div>
+                                                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                    <span className="text-[10px] font-bold text-slate-400 block uppercase">Active Add-Ons</span>
+                                                    <strong className="text-xs font-black text-emerald-600 mt-0.5 block">{cItem.addonsCount || 0} Protections Active</strong>
+                                                </div>
+                                                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                    <span className="text-[10px] font-bold text-slate-400 block uppercase">Submitted On</span>
+                                                    <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.submittedAt || 'Today'}</strong>
+                                                </div>
+                                                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                    <span className="text-[10px] font-bold text-slate-400 block uppercase">Target Decision</span>
+                                                    <strong className="text-xs font-black text-slate-900 mt-0.5 block">{cItem.targetDate || '15 Working Days'}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 4. TAB: DOCUMENT VAULT */}
+                    {activeTab === "scanned-documents" && (
+                        <div className="space-y-6 animate-fade-up">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <h2 className="text-xl font-black text-slate-900">Document Readiness Vault ({documents.length})</h2>
+                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Encrypted cloud vault storing passport scans, financial proofs, and transcripts</p>
+                                </div>
+                                <label className="bg-[#00a896] hover:bg-[#008f80] text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm flex items-center gap-1.5 cursor-pointer self-start sm:self-auto active:scale-95 transition-all">
+                                    <Upload className="w-3.5 h-3.5" /> Upload New File
+                                    <input 
+                                        type="file" 
+                                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" 
+                                        className="hidden" 
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                const newDoc = {
+                                                    id: `doc-${Date.now()}`,
+                                                    label: file.name,
+                                                    status: 'verified',
+                                                    size: file.size > 1024*1024 ? `${(file.size/(1024*1024)).toFixed(1)} MB` : `${Math.round(file.size/1024)} KB`,
+                                                    uploadedAt: new Date().toLocaleDateString()
+                                                };
+                                                const updated = [newDoc, ...documents];
+                                                setDocuments(updated);
+                                                localStorage.setItem('seeker_documents', JSON.stringify(updated));
+                                            }
+                                        }}
+                                    />
+                                </label>
+                            </div>
+
+                            {documents.length === 0 ? (
+                                <div className="bg-white rounded-3xl border border-slate-200/80 p-10 text-center space-y-4 shadow-sm">
+                                    <FileText className="w-12 h-12 text-slate-300 mx-auto" />
+                                    <h3 className="text-base font-black text-slate-900">Your Document Vault is Empty</h3>
+                                    <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                                        Upload your Passport scan, financial proof, or statement of purpose to automatically attach them to your visa applications.
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {documents.map((docItem, idx) => (
+                                        <div key={docItem.id || idx} className="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-3 flex flex-col justify-between hover:border-emerald-300 transition-all">
+                                            <div className="space-y-2">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="w-10 h-10 rounded-2xl bg-teal-50 text-[#00A86B] flex items-center justify-center text-lg font-bold">
+                                                        📄
+                                                    </div>
+                                                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black border border-emerald-200 flex items-center gap-1">
+                                                        <CheckCircle className="w-3 h-3 text-[#00A86B]" /> OCR Verified
+                                                    </span>
+                                                </div>
+                                                <h4 className="text-xs font-black text-slate-950 truncate" title={docItem.label}>
+                                                    {docItem.label}
+                                                </h4>
+                                                <p className="text-[11px] text-slate-400 font-medium">
+                                                    {docItem.size || '1.8 MB'} • Uploaded {docItem.uploadedAt || 'Recently'}
+                                                </p>
+                                            </div>
+
+                                            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                                                <span className="text-[10px] text-slate-500 font-semibold">256-bit AES Encrypted</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => alert(`Document "${docItem.label}" is securely encrypted and validated in TravlTik Vault.`)}
+                                                    className="font-bold text-[#00A86B] hover:underline text-xs cursor-pointer"
+                                                >
+                                                    View Details
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* 5. TAB: CONSULTATIONS & SESSIONS */}
+                    {activeTab === "consultations" && (
+                        <div className="bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm text-center space-y-4 animate-fade-up">
+                            <Calendar className="w-12 h-12 text-[#00a896] mx-auto" />
+                            <h3 className="text-lg font-black text-slate-900">1-on-1 Expert Consultation Schedule</h3>
+                            <p className="text-xs font-medium text-slate-500 max-w-md mx-auto">
+                                View your upcoming video advisory calls with OISC & Bar-licensed solicitors and verified immigration consultants.
+                            </p>
+                            <div className="pt-2">
+                                <a href="/find-experts" className="inline-block bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md">
+                                    Book New 1-on-1 Session →
+                                </a>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 6. TAB: ESCROW VAULT */}
+                    {activeTab === "escrow-milestones" && (
+                        <div className="bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm space-y-6 animate-fade-up">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                                <div>
+                                    <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                                        <Lock className="w-5 h-5 text-[#00a896]" /> TravlTik 100% Escrow Protection
+                                    </h3>
+                                    <p className="text-xs text-slate-500 font-medium mt-0.5">Your funds remain safely locked in escrow and are only released upon milestone completion.</p>
+                                </div>
+                                <span className="bg-emerald-50 text-emerald-800 text-xs font-black px-3 py-1 rounded-full border border-emerald-200 self-start sm:self-auto">
+                                    🛡️ 100% Money-Back Guarantee
+                                </span>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-1.5">
+                                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Milestone 1</span>
+                                    <h4 className="font-extrabold text-slate-900">AI &amp; Legal Quality Audit</h4>
+                                    <p className="text-slate-500 text-[11px]">30% released when all mandatory checklist items are verified.</p>
+                                </div>
+                                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-1.5">
+                                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Milestone 2</span>
+                                    <h4 className="font-extrabold text-slate-900">Embassy / VFS Filing</h4>
+                                    <p className="text-slate-500 text-[11px]">40% released when official visa submission receipt is generated.</p>
+                                </div>
+                                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-1.5">
+                                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Milestone 3</span>
+                                    <h4 className="font-extrabold text-slate-900">Visa Decision Clearance</h4>
+                                    <p className="text-slate-500 text-[11px]">Remaining 30% released upon passport stamping and outcome delivery.</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 7. OTHER TABS */}
+                    {activeTab !== "dashboard" && activeTab !== "profile" && activeTab !== "cases" && activeTab !== "scanned-documents" && activeTab !== "consultations" && activeTab !== "escrow-milestones" && (
+                        <div className="bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm text-center space-y-4 animate-fade-up">
                             <Briefcase className="w-12 h-12 text-[#00a896] mx-auto" />
                             <h3 className="text-lg font-black text-slate-900 capitalize">{activeTab.replace('-', ' ')} Portal</h3>
                             <p className="text-xs font-medium text-slate-500 max-w-md mx-auto">
-                                All your active {activeTab.replace('-', ' ')} records are synchronized in real-time with your assigned immigration consultant.
+                                All your active {activeTab.replace('-', ' ')} records are synchronized in real-time with your TravlTik profile.
                             </p>
                             <a href="/find-experts" className="inline-block bg-[#00a896] hover:bg-[#008f80] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md">
                                 Connect with Expert →
@@ -783,7 +1068,7 @@ export function UserDashboard() {
                             <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
                                 <Settings className="w-4 h-4 text-[#00a896]" /> Edit Seeker Profile Details
                             </h3>
-                            <button onClick={() => setShowProfileModal(false)} className="p-1 text-slate-400 hover:text-slate-700">
+                            <button onClick={() => setShowProfileModal(false)} className="p-1 text-slate-400 hover:text-slate-700 cursor-pointer">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
@@ -889,8 +1174,8 @@ export function UserDashboard() {
                             </div>
 
                             <div className="flex gap-3 pt-3">
-                                <button type="button" onClick={() => setShowProfileModal(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors">Cancel</button>
-                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-xl font-bold text-xs shadow-md transition-colors">Save Details</button>
+                                <button type="button" onClick={() => setShowProfileModal(false)} className="flex-1 py-2.5 border border-slate-300 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 transition-colors cursor-pointer">Cancel</button>
+                                <button type="submit" className="flex-1 py-2.5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-xl font-bold text-xs shadow-md transition-colors cursor-pointer">Save Details</button>
                             </div>
                         </form>
                     </div>

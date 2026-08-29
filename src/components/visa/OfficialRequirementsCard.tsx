@@ -459,12 +459,12 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
       {/* ── BOTTOM CARD: PROCESSING & TIMING (Exact Match to Reference Design) ── */}
       {data && (
-        <div className="bg-[#eaf8f6] border border-[#a8e6dd] rounded-2xl sm:rounded-3xl p-5 sm:p-6 text-left space-y-2.5">
-          <h4 className="text-xs font-black uppercase tracking-widest text-[#008f80]">
+        <div className="bg-[#f4f6f8] border border-slate-200/90 rounded-2xl sm:rounded-3xl p-5 sm:p-6 text-left space-y-2.5 shadow-2xs">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
             PROCESSING &amp; TIMING
           </h4>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs sm:text-sm font-bold text-slate-800">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs sm:text-sm font-bold text-slate-900">
             <div>
               <span>{data.processing_and_timing.apply_window}</span>
             </div>
@@ -477,7 +477,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           </div>
 
           {data.processing_and_timing.center_notes && (
-            <p className="text-[11px] text-slate-500 font-medium pt-1 border-t border-teal-200/50">
+            <p className="text-[11px] text-slate-500 font-medium pt-2 border-t border-slate-200/70">
               {data.processing_and_timing.center_notes}
             </p>
           )}

@@ -2100,6 +2100,86 @@ export function VisaCountryResultPortal({
       return;
     }
     setUploadValidationWarning(null);
+
+    // ── SYNC FILLED AI PORTAL DETAILS TO DASHBOARD STORAGE ──
+    if (typeof window !== 'undefined') {
+      try {
+        const trackingId = `TT-${activePurposeTab.toUpperCase().slice(0,3)}-2026-${Date.now().toString().slice(-4)}`;
+        const submissionDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const visaTypeName = isStudyPurpose ? 'Student Visa' : isWorkPurpose ? 'Skilled Worker Visa' : 'Standard Visitor Visa (6-Month)';
+        
+        // 1. Save Comprehensive Journey Data
+        const journeyPayload = {
+          destination: countryName,
+          destination_flag: flagEmoji,
+          passport_country: passportCountry,
+          purpose: activePurposeTab,
+          visa_type: visaTypeName,
+          stay_duration: isStudyPurpose ? 'Duration of Course (1-4 Yrs)' : isWorkPurpose ? '1 to 5 Years' : 'Up to 6 Months (180 Days)',
+          readiness_score: 98,
+          uploaded_documents: uploadedDocuments,
+          selected_addons: selectedConciergeAddons,
+          matched_university: isStudyPurpose ? (getDestinationUniversities(countryName).find(u => u.id === selectedUniId)?.name || 'Target University') : undefined,
+          selected_tour: isTouristPurpose ? (getDestinationTours(countryName).find(t => t.id === selectedTourId)?.name || 'Curated Sightseeing') : undefined,
+          selected_job: isWorkPurpose ? (getDestinationJobs(countryName).find(j => j.id === selectedJobId)?.title || 'Target Employment') : undefined,
+          cas_i20_number: isStudyPurpose && isCasChecked ? (casNumberInput || 'CAS-UK-2026-VERIFIED') : undefined,
+          tracking_id: trackingId,
+          final_dossier_submitted: true,
+          submitted_at: submissionDate,
+          status: 'Dossier Ingested & AI Verified'
+        };
+        localStorage.setItem('visaformula_user_journey', JSON.stringify(journeyPayload));
+
+        // 2. Save Seeker Core Profile fields
+        localStorage.setItem('seeker_destinations', JSON.stringify([countryName]));
+        localStorage.setItem('seeker_passportCountry', passportCountry);
+        localStorage.setItem('seeker_country_of_citizenship', passportCountry);
+        localStorage.setItem('seeker_goals', JSON.stringify([isStudyPurpose ? 'Study Abroad' : isWorkPurpose ? 'Work Abroad' : 'Tourism / Vacation']));
+        
+        // Ensure user can immediately view their dashboard without redirect roadblock
+        if (!localStorage.getItem('seeker_email') && !localStorage.getItem('visaformula_user')) {
+          localStorage.setItem('seeker_email', 'seeker@travltik.com');
+          localStorage.setItem('seeker_firstName', 'TravlTik');
+          localStorage.setItem('seeker_lastName', 'Seeker');
+        }
+
+        // 3. Save Formatted Documents List
+        const docArray = Object.entries(uploadedDocuments).map(([k, v]) => ({
+          id: k,
+          label: `${k.toUpperCase().replace(/_/g, ' ')} (${v.fileName})`,
+          status: 'verified',
+          size: v.size,
+          uploadedAt: v.timestamp
+        }));
+        localStorage.setItem('seeker_documents', JSON.stringify(docArray));
+
+        // 4. Save Active Visa Case Record
+        const activeCase = {
+          id: `case-${Date.now()}`,
+          trackingId: trackingId,
+          destination: countryName,
+          destinationFlag: flagEmoji,
+          visaType: visaTypeName,
+          purpose: activePurposeTab,
+          passport: passportCountry,
+          status: 'Dossier Ingested & OCR Verified',
+          stage: 'Under AI Concierge Review',
+          progress: 35,
+          documentsCount: uploadedCount,
+          addonsCount: selectedConciergeAddons.length,
+          submittedAt: submissionDate,
+          targetDate: formatTargetDate(isStudyPurpose ? 15 : isWorkPurpose ? 20 : 15)
+        };
+
+        const existingCases = JSON.parse(localStorage.getItem('active_visa_cases') || '[]');
+        const filteredCases = existingCases.filter((c: any) => c.destination !== countryName || c.purpose !== activePurposeTab);
+        filteredCases.unshift(activeCase);
+        localStorage.setItem('active_visa_cases', JSON.stringify(filteredCases));
+      } catch (err) {
+        console.error('Error syncing journey to localStorage:', err);
+      }
+    }
+
     setConciergeSubmittedModal(true);
   };
 

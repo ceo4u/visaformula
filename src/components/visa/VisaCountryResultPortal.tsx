@@ -1636,6 +1636,263 @@ function getDestinationUniversities(country: string): StudyUniversityItem[] {
   ];
 }
 
+interface TourItem {
+  id: string;
+  name: string;
+  location: string;
+  duration: string;
+  rating: number;
+  reviews: number;
+  category: string;
+  desc: string;
+  priceUSD: string;
+  priceINR: string;
+  heroImg: string;
+}
+
+interface SponsoringJobItem {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  salary: string;
+  domain: string;
+  type: string;
+  visaType: string;
+  experience: string;
+  desc: string;
+  sponsorshipBadge: string;
+}
+
+function getDestinationTours(country: string): TourItem[] {
+  const c = (country || 'United Kingdom').toLowerCase();
+  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('scotland') || c.includes('britain')) {
+    return [
+      {
+        id: 'uk-tour-1',
+        name: 'London Royal Landmarks & Tower Experience',
+        location: 'London, England, UK',
+        duration: '1 Full Day',
+        rating: 4.9,
+        reviews: 1240,
+        category: 'Heritage & Sightseeing',
+        desc: 'Buckingham Palace, Tower Bridge, Westminster Abbey & Thames River Cruise.',
+        priceUSD: '$89',
+        priceINR: '₹7,490',
+        heroImg: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&auto=format&fit=crop&q=80'
+      },
+      {
+        id: 'uk-tour-2',
+        name: 'Stonehenge, Windsor Castle & Bath Day Tour',
+        location: 'Wiltshire & Somerset, UK',
+        duration: '10 Hours',
+        rating: 4.8,
+        reviews: 980,
+        category: 'Ancient History',
+        desc: 'Visit mysterious prehistoric stone monoliths, royal state apartments, and natural Roman thermal baths.',
+        priceUSD: '$115',
+        priceINR: '₹9,650',
+        heroImg: 'https://images.unsplash.com/photo-1599837565318-67429bde7162?w=600&auto=format&fit=crop&q=80'
+      },
+      {
+        id: 'uk-tour-3',
+        name: 'Scottish Highlands, Loch Ness & Glencoe Expedition',
+        location: 'Edinburgh & Inverness, Scotland',
+        duration: '2 Days / 1 Night',
+        rating: 4.9,
+        reviews: 620,
+        category: 'Nature & Landscapes',
+        desc: 'Dramatic mountain scenery, historic medieval castles, and iconic Loch Ness panoramic boat tour.',
+        priceUSD: '$185',
+        priceINR: '₹15,490',
+        heroImg: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&auto=format&fit=crop&q=80'
+      }
+    ];
+  }
+
+  if (c.includes('greece')) {
+    return [
+      {
+        id: 'gr-tour-1',
+        name: 'Athens Acropolis, Parthenon & Plaka Walking Tour',
+        location: 'Athens, Greece',
+        duration: 'Half Day (4h)',
+        rating: 4.9,
+        reviews: 1450,
+        category: 'Ancient Heritage',
+        desc: 'Skip-the-line guided entrance to the iconic Acropolis hill, Parthenon temple, and picturesque neoclassical Plaka alleys.',
+        priceUSD: '$65',
+        priceINR: '₹5,450',
+        heroImg: 'https://images.unsplash.com/photo-1555993539-1732916b8235?w=600&auto=format&fit=crop&q=80'
+      },
+      {
+        id: 'gr-tour-2',
+        name: 'Santorini Caldera Luxury Catamaran Sunset Cruise',
+        location: 'Santorini, Cyclades, Greece',
+        duration: '5 Hours',
+        rating: 5.0,
+        reviews: 890,
+        category: 'Island Cruise',
+        desc: 'Sail around volcano hot springs, Red Beach snorkeling, Greek BBQ meal onboard, and magical Oia sunset.',
+        priceUSD: '$135',
+        priceINR: '₹11,300',
+        heroImg: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&auto=format&fit=crop&q=80'
+      },
+      {
+        id: 'gr-tour-3',
+        name: 'Delphi Archaeological Sanctuary Day Trip',
+        location: 'Delphi & Mount Parnassus, Greece',
+        duration: 'Full Day (9h)',
+        rating: 4.8,
+        reviews: 510,
+        category: 'UNESCO Heritage',
+        desc: 'Explore the ancient navel of the world, Temple of Apollo, and renowned archaeological museum in the mountains.',
+        priceUSD: '$89',
+        priceINR: '₹7,490',
+        heroImg: 'https://images.unsplash.com/photo-1503152394-c571994fd383?w=600&auto=format&fit=crop&q=80'
+      }
+    ];
+  }
+
+  // Generic fallback
+  return [
+    {
+      id: 'gen-tour-1',
+      name: `${country} Capital Highlights & Cultural Heritage Tour`,
+      location: `Metropolitan Center, ${country}`,
+      duration: 'Full Day (7h)',
+      rating: 4.8,
+      reviews: 420,
+      category: 'City Tour',
+      desc: `Comprehensive guided city sightseeing covering historic monuments, national museums, and top local food markets in ${country}.`,
+      priceUSD: '$75',
+      priceINR: '₹6,290',
+      heroImg: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&auto=format&fit=crop&q=80'
+    },
+    {
+      id: 'gen-tour-2',
+      name: `${country} Scenic Natural Landscapes & Day Expedition`,
+      location: `Regional Coast & Mountains, ${country}`,
+      duration: '1 Full Day',
+      rating: 4.9,
+      reviews: 310,
+      category: 'Nature & Adventure',
+      desc: `Explore breathtaking national parks, panoramic mountain vistas, and coastal heritage sights with private transfer.`,
+      priceUSD: '$95',
+      priceINR: '₹7,990',
+      heroImg: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80'
+    }
+  ];
+}
+
+function getDestinationJobs(country: string): SponsoringJobItem[] {
+  const c = (country || 'United Kingdom').toLowerCase();
+  if (c.includes('uk') || c.includes('united kingdom') || c.includes('england') || c.includes('britain')) {
+    return [
+      {
+        id: 'uk-job-1',
+        title: 'Senior AI & Full-Stack Cloud Engineer',
+        company: 'Synthetix Systems UK Ltd.',
+        location: 'London, UK (Hybrid)',
+        salary: '£68,000 – £82,000 / yr',
+        domain: 'Tech / IT / Software / AI',
+        type: 'Full-time Permanent',
+        visaType: 'Skilled Worker Visa (CoS Sponsoring)',
+        experience: '3 - 6 Years',
+        desc: 'Lead modern cloud microservices & AI pipeline development. Official A-rated UKVI sponsor providing Certificate of Sponsorship (CoS).',
+        sponsorshipBadge: 'Visa Sponsorship Confirmed'
+      },
+      {
+        id: 'uk-job-2',
+        title: 'NHS Registered Clinical Staff Nurse (Band 5/6)',
+        company: 'National Health Service (NHS Trust)',
+        location: 'Manchester / Birmingham, UK',
+        salary: '£36,500 – £44,000 / yr',
+        domain: 'Healthcare & Nursing',
+        type: 'Full-time NHS Staff',
+        visaType: 'Health & Care Worker Visa',
+        experience: '2+ Years (NMC CBT/OSCE Support)',
+        desc: 'Provide acute nursing care within state-of-the-art NHS hospital. Eligible for reduced visa fees and full NHS healthcare exemption.',
+        sponsorshipBadge: 'Health & Care Fast-Track'
+      },
+      {
+        id: 'uk-job-3',
+        title: 'Fintech Quantitative Risk & Data Analyst',
+        company: 'Vanguard Capital Markets UK',
+        location: 'Canary Wharf, London, UK',
+        salary: '£62,000 – £75,000 / yr',
+        domain: 'Banking, Finance & Accounting',
+        type: 'Full-time Permanent',
+        visaType: 'Skilled Worker Visa',
+        experience: '3 - 5 Years',
+        desc: 'Portfolio analytics, credit risk modelling, and algorithmic data auditing. Direct sponsor license on UKVI register.',
+        sponsorshipBadge: 'Direct Sponsor License'
+      }
+    ];
+  }
+
+  if (c.includes('greece') || c.includes('germany') || c.includes('france') || c.includes('europe')) {
+    return [
+      {
+        id: 'eu-job-1',
+        title: 'Cloud DevOps & Infrastructure Architect',
+        company: 'EuroTech Solutions SE',
+        location: `${country} (Remote / Onsite)`,
+        salary: '€65,000 – €80,000 / yr',
+        domain: 'Tech / IT / Software / AI',
+        type: 'Full-time Permanent',
+        visaType: 'EU Blue Card / National Work Visa (Type D)',
+        experience: '3+ Years',
+        desc: 'Manage enterprise multi-cloud clusters and CI/CD pipelines. Employer provides official labour ministry work permit pre-approval.',
+        sponsorshipBadge: 'EU Blue Card Eligible'
+      },
+      {
+        id: 'eu-job-2',
+        title: 'Hospital Staff Practitioner & Medical Specialist',
+        company: `${country} Healthcare Foundation`,
+        location: `Capital Medical Center, ${country}`,
+        salary: '€48,000 – €62,000 / yr',
+        domain: 'Healthcare & Nursing',
+        type: 'Full-time',
+        visaType: 'National Type D Medical Work Visa',
+        experience: '2+ Years',
+        desc: 'Clinical patient management and diagnostic treatment. Fast-track residency sponsorship under national shortage occupations list.',
+        sponsorshipBadge: 'National Visa Sponsored'
+      }
+    ];
+  }
+
+  // Generic fallback
+  return [
+    {
+      id: 'gen-job-1',
+      title: 'Senior Software & AI Systems Engineer',
+      company: `Global Technologies ${country}`,
+      location: `Capital City, ${country}`,
+      salary: '$60,000 – $75,000 / yr',
+      domain: 'Tech / IT / Software / AI',
+      type: 'Full-time Permanent',
+      visaType: `${country} Employment Entry Permit`,
+      experience: '3+ Years',
+      desc: `Full-stack engineering & enterprise application development with complete expatriate visa sponsorship and relocation support.`,
+      sponsorshipBadge: 'Visa Sponsorship Confirmed'
+    },
+    {
+      id: 'gen-job-2',
+      title: 'International Business & Finance Manager',
+      company: `Continental Trade Group`,
+      location: `Commercial District, ${country}`,
+      salary: '$50,000 – $65,000 / yr',
+      domain: 'Banking, Finance & Accounting',
+      type: 'Full-time',
+      visaType: `${country} Work Resident Visa`,
+      experience: '4+ Years',
+      desc: `Corporate financial planning, cross-border trade accounting, and financial reporting. Full residency visa sponsorship provided.`,
+      sponsorshipBadge: 'Work Permit Provided'
+    }
+  ];
+}
+
 const VERIFIED_STUDY_CONSULTANTS: StudyConsultantItem[] = [
   {
     id: 'cons-1',
@@ -1771,6 +2028,20 @@ export function VisaCountryResultPortal({
   const [admissionTrackerStage, setAdmissionTrackerStage] = useState(1);
   const [casNumberInput, setCasNumberInput] = useState('');
   const [isCasChecked, setIsCasChecked] = useState(false);
+
+  // ── TOURISM WORKFLOW STATES ──
+  const [tourismActionTab, setTourismActionTab] = useState<'consultants' | 'self_apply'>('consultants');
+  const [tourSearchQuery, setTourSearchQuery] = useState('');
+  const [selectedTourId, setSelectedTourId] = useState<string>('uk-tour-1');
+  const [itineraryGenerated, setItineraryGenerated] = useState(false);
+  const [flightPnrBooked, setFlightPnrBooked] = useState(false);
+
+  // ── WORK WORKFLOW STATES ──
+  const [workActionTab, setWorkActionTab] = useState<'consultants' | 'self_apply'>('consultants');
+  const [jobSearchQuery, setJobSearchQuery] = useState('');
+  const [selectedJobId, setSelectedJobId] = useState<string>('uk-job-1');
+  const [jobDomainFilter, setJobDomainFilter] = useState('All');
+  const [skillAssessed, setSkillAssessed] = useState(false);
 
   // Consultant Filter & Booking States
   const [consultantLocationQuery, setConsultantLocationQuery] = useState('');
@@ -3638,6 +3909,605 @@ export function VisaCountryResultPortal({
                       </button>
                     </div>
 
+                  </div>
+                )}
+
+              </div>
+
+            </section>
+          )}
+
+          {/* ── SPECIALIZED TOURIST VISA APPLICATION ROADMAP & DUAL CHOICE WORKFLOW ── */}
+          {hasVisaAlready === 'no' && activePurposeTab === 'tourism' && (
+            <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-12 text-left space-y-8 animate-fadeIn">
+              
+              {/* 1. STEP-BY-STEP TOURISM ROADMAP */}
+              <div className="space-y-6">
+
+                {/* ── STEP 1: SELECT CURATED EXPERIENCES & ITINERARY ── */}
+                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                        1
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md">
+                            Step 1
+                          </span>
+                          <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
+                            Curated Itinerary &amp; Highlights in {countryName}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quick Search */}
+                    <div className="relative w-full sm:w-64 shrink-0">
+                      <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      <input
+                        type="text"
+                        value={tourSearchQuery}
+                        onChange={(e) => setTourSearchQuery(e.target.value)}
+                        placeholder="Search attraction, city..."
+                        className="w-full h-9 pl-8 pr-7 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none"
+                      />
+                      {tourSearchQuery && (
+                        <button
+                          type="button"
+                          onClick={() => setTourSearchQuery('')}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center text-[9px] cursor-pointer"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Tours Cards Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                    {getDestinationTours(countryName)
+                      .filter(t => !tourSearchQuery || t.name.toLowerCase().includes(tourSearchQuery.toLowerCase()) || t.desc.toLowerCase().includes(tourSearchQuery.toLowerCase()))
+                      .map((tour) => {
+                        const isSelected = selectedTourId === tour.id;
+                        return (
+                          <div
+                            key={tour.id}
+                            onClick={() => setSelectedTourId(tour.id)}
+                            className={`rounded-2xl border transition-all cursor-pointer overflow-hidden flex flex-col justify-between ${
+                              isSelected
+                                ? 'bg-emerald-50/40 border-2 border-[#00A86B] shadow-xs'
+                                : 'bg-slate-50/50 hover:bg-white border-slate-200/80 hover:border-slate-300'
+                            }`}
+                          >
+                            <div className="h-28 w-full overflow-hidden relative">
+                              <img src={tour.heroImg} alt={tour.name} className="w-full h-full object-cover" />
+                              <span className="absolute top-2 left-2 text-[9px] font-black uppercase px-2 py-0.5 rounded bg-slate-950/80 text-white backdrop-blur-xs">
+                                {tour.category}
+                              </span>
+                            </div>
+                            <div className="p-3.5 space-y-1.5 flex-1 flex flex-col justify-between">
+                              <div>
+                                <h4 className="font-heading font-extrabold text-xs sm:text-sm text-slate-950 line-clamp-1">
+                                  {tour.name}
+                                </h4>
+                                <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+                                  {tour.desc}
+                                </p>
+                              </div>
+                              <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs font-bold">
+                                <span className="text-slate-500 text-[11px]">⏱️ {tour.duration}</span>
+                                <span className="text-emerald-700 font-extrabold">{tour.priceINR}</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+
+                {/* ── STEP 2: VERIFIABLE FLIGHT & HOTEL PROOF ── */}
+                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                        2
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md">
+                            Step 2
+                          </span>
+                          <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
+                            Verifiable Flight Itinerary &amp; Hotel Proof for Visa
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
+                      <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                      <span>Embassy &amp; VFS Compliant</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                          <span>✈️</span> Flight Reservation with Verifiable PNR
+                        </span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700">Official Hold</span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        Hold confirmed return flight itinerary without paying full non-refundable ticket fares before visa approval.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setFlightPnrBooked(!flightPnrBooked)}
+                        className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          flightPnrBooked ? 'bg-emerald-100 text-emerald-900 font-extrabold' : 'bg-slate-900 hover:bg-slate-800 text-white'
+                        }`}
+                      >
+                        {flightPnrBooked ? 'Flight PNR Attached ✓' : 'Generate Verifiable Flight PNR'}
+                      </button>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                          <span>🏨</span> Free-Cancellation Hotel Proof
+                        </span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700">Instant Voucher</span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        Get verified hotel reservation vouchers covering all intended Schengen or international travel dates.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setItineraryGenerated(!itineraryGenerated)}
+                        className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          itineraryGenerated ? 'bg-emerald-100 text-emerald-900 font-extrabold' : 'bg-slate-900 hover:bg-slate-800 text-white'
+                        }`}
+                      >
+                        {itineraryGenerated ? 'Hotel Vouchers Attached ✓' : 'Generate Hotel Booking Proof'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── STEP 3: DUAL CHOICE (CONSULTANTS OR SELF-APPLY) ── */}
+                <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white rounded-[24px] p-5 sm:p-6 shadow-sm space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-0.5 rounded-md">
+                          Step 3 • Choose Filing Path
+                        </span>
+                      </div>
+                      <h4 className="text-lg font-heading font-black text-white">
+                        How would you like to apply for your {countryName} Tourist Visa?
+                      </h4>
+                    </div>
+
+                    <div className="inline-flex p-1 bg-white/10 backdrop-blur-md rounded-full border border-white/15 shrink-0 self-start sm:self-auto">
+                      <button
+                        type="button"
+                        onClick={() => setTourismActionTab('consultants')}
+                        className={`px-5 py-2 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+                          tourismActionTab === 'consultants' ? 'bg-white text-slate-950 shadow-md font-black' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        Find Consultants
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setTourismActionTab('self_apply')}
+                        className={`px-5 py-2 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+                          tourismActionTab === 'self_apply' ? 'bg-white text-slate-950 shadow-md font-black' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        Self Apply Concierge
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CONTENT: TOURIST CONSULTANTS */}
+                {tourismActionTab === 'consultants' && (
+                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-5 text-left">
+                    <div className="border-b border-slate-100 pb-4 space-y-1">
+                      <h4 className="text-xl font-heading font-black text-slate-950">
+                        Verified Tourist Visa Filing Lawyers &amp; Agents for {countryName}
+                      </h4>
+                      <p className="text-xs text-slate-500 font-medium">
+                        Connect with top-rated travel visa filing specialists to manage your embassy documentation and slot booking.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {VERIFIED_STUDY_CONSULTANTS.slice(0, 2).map((c) => (
+                        <div key={c.id} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between space-y-3">
+                          <div className="flex items-start gap-3">
+                            <img src={c.image} alt={c.name} className="w-12 h-12 rounded-xl object-cover" />
+                            <div className="min-w-0">
+                              <h5 className="font-bold text-sm text-slate-900 truncate">{c.name}</h5>
+                              <span className="text-[11px] text-slate-500 block truncate">{c.agencyName}</span>
+                              <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 mt-1 inline-block">
+                                ⭐ {c.rating} ({c.reviews} reviews) • {c.successRate} Success
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setBookingModalConsultant(c)}
+                            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer"
+                          >
+                            Book Consultation ({c.fee})
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* CONTENT: TOURIST SELF-APPLY CONCIERGE */}
+                {tourismActionTab === 'self_apply' && (
+                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6 text-left">
+                    <div className="border-b border-slate-100 pb-4 space-y-1">
+                      <h4 className="text-xl font-heading font-black text-slate-950">
+                        Self-Apply Tourist Visa Concierge &amp; Document Vault
+                      </h4>
+                      <p className="text-xs text-slate-500 font-medium">
+                        Upload your core travel documents for automated OCR validation, checklist auditing, and VFS submission.
+                      </p>
+                    </div>
+
+                    {/* Document Slots */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {[
+                        { key: 'passport', title: 'Passport Scan (Front & Back)', hint: 'Min. 6 months validity & 2 blank pages' },
+                        { key: 'flights', title: 'Confirmed Flight & Hotel Proof', hint: 'Round-trip tickets & lodging evidence' },
+                        { key: 'bank_statement', title: 'Bank Statement & Funds', hint: 'Last 3-6 months with bank seal' },
+                        { key: 'leave_noc', title: 'Employer Leave NOC / ITR', hint: 'Approved leave letter & tax returns' },
+                        { key: 'insurance', title: 'Travel Medical Insurance', hint: '€30,000+ emergency medical cover' },
+                        { key: 'itinerary', title: 'Day-by-Day Travel Itinerary', hint: 'Trip activity plan & cover letter' }
+                      ].map((doc) => {
+                        const uploaded = uploadedDocuments[doc.key];
+                        return (
+                          <div key={doc.key} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 space-y-2 flex flex-col justify-between">
+                            <div className="space-y-1">
+                              <span className="text-xs font-bold text-slate-900 block truncate">{doc.title}</span>
+                              <span className="text-[10px] text-slate-500 block">{doc.hint}</span>
+                            </div>
+                            {uploaded ? (
+                              <div className="flex items-center justify-between text-xs bg-white p-2 rounded-xl border border-emerald-200">
+                                <span className="font-bold text-slate-900 truncate text-[11px]">{uploaded.fileName}</span>
+                                <span className="text-[10px] text-emerald-700 font-bold">✓</span>
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setUploadedDocuments(prev => ({
+                                    ...prev,
+                                    [doc.key]: { fileName: `${doc.key}_document.pdf`, size: '1.8 MB', status: 'verified', timestamp: 'Verified via OCR' }
+                                  }));
+                                }}
+                                className="w-full py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold cursor-pointer"
+                              >
+                                📤 Upload &amp; Store
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Final Submission Bar */}
+                    <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-xs text-slate-500 font-medium block">Tourist Visa Concierge Filing:</span>
+                        <strong className="text-xl sm:text-2xl font-black text-slate-950">₹1,999 Total</strong>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setConciergeSubmittedModal(true)}
+                        className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+                      >
+                        <ShieldCheck className="w-5 h-5" />
+                        <span>Submit Tourist Dossier for VFS &amp; Embassy Filing</span>
+                        <ArrowRight className="w-4 h-4 stroke-[3]" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+
+            </section>
+          )}
+
+          {/* ── SPECIALIZED WORK VISA APPLICATION ROADMAP & DUAL CHOICE WORKFLOW ── */}
+          {hasVisaAlready === 'no' && activePurposeTab === 'work' && (
+            <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-12 text-left space-y-8 animate-fadeIn">
+              
+              {/* 1. STEP-BY-STEP WORK ROADMAP */}
+              <div className="space-y-6">
+
+                {/* ── STEP 1: BROWSE SPONSORING JOBS & EMPLOYER NETWORK ── */}
+                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                        1
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md">
+                            Step 1
+                          </span>
+                          <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
+                            Sponsoring Employers &amp; Open Roles in {countryName}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quick Search */}
+                    <div className="relative w-full sm:w-64 shrink-0">
+                      <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      <input
+                        type="text"
+                        value={jobSearchQuery}
+                        onChange={(e) => setJobSearchQuery(e.target.value)}
+                        placeholder="Search job title, role..."
+                        className="w-full h-9 pl-8 pr-7 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none"
+                      />
+                      {jobSearchQuery && (
+                        <button
+                          type="button"
+                          onClick={() => setJobSearchQuery('')}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center text-[9px] cursor-pointer"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Jobs Cards Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                    {getDestinationJobs(countryName)
+                      .filter(j => !jobSearchQuery || j.title.toLowerCase().includes(jobSearchQuery.toLowerCase()) || j.desc.toLowerCase().includes(jobSearchQuery.toLowerCase()))
+                      .map((job) => {
+                        const isSelected = selectedJobId === job.id;
+                        return (
+                          <div
+                            key={job.id}
+                            onClick={() => setSelectedJobId(job.id)}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2.5 ${
+                              isSelected
+                                ? 'bg-emerald-50/40 border-2 border-[#00A86B] shadow-xs'
+                                : 'bg-slate-50/50 hover:bg-white border-slate-200/80 hover:border-slate-300'
+                            }`}
+                          >
+                            <div className="space-y-1.5">
+                              <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 inline-block">
+                                {job.sponsorshipBadge}
+                              </span>
+                              <h4 className="font-heading font-black text-xs sm:text-sm text-slate-950 line-clamp-1">
+                                {job.title}
+                              </h4>
+                              <span className="text-[11px] font-semibold text-slate-600 block truncate">{job.company} • {job.location}</span>
+                              <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+                                {job.desc}
+                              </p>
+                            </div>
+
+                            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold">
+                              <span className="text-emerald-700 font-extrabold">{job.salary}</span>
+                              <span className="text-slate-400 text-[10px]">{job.type}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+
+                {/* ── STEP 2: CREDENTIAL & POINTS ASSESSMENT ── */}
+                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                        2
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md">
+                            Step 2
+                          </span>
+                          <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
+                            Points Calculation &amp; Skills Assessment ({countryName})
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
+                      <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                      <span>70 Points Threshold Met</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                      <span className="text-xs font-bold text-slate-900 block">Job Offer from Sponsor</span>
+                      <span className="text-emerald-700 font-extrabold text-xs block">+20 Points (Mandatory)</span>
+                      <p className="text-[10px] text-slate-500">Certificate of Sponsorship (CoS) from licensed employer.</p>
+                    </div>
+
+                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                      <span className="text-xs font-bold text-slate-900 block">Appropriate Skill Level</span>
+                      <span className="text-emerald-700 font-extrabold text-xs block">+20 Points (RQF Level 3+)</span>
+                      <p className="text-[10px] text-slate-500">Degree or professional equivalent occupation code.</p>
+                    </div>
+
+                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                      <span className="text-xs font-bold text-slate-900 block">English Language (B1+)</span>
+                      <span className="text-emerald-700 font-extrabold text-xs block">+10 Points (SELT/Degree)</span>
+                      <p className="text-[10px] text-slate-500">IELTS for UKVI or accredited English degree.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── STEP 3: DUAL CHOICE (WORK SOLICITORS OR SELF-APPLY) ── */}
+                <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white rounded-[24px] p-5 sm:p-6 shadow-sm space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-0.5 rounded-md">
+                          Step 3 • Choose Filing Path
+                        </span>
+                      </div>
+                      <h4 className="text-lg font-heading font-black text-white">
+                        How would you like to apply for your {countryName} Work Visa?
+                      </h4>
+                    </div>
+
+                    <div className="inline-flex p-1 bg-white/10 backdrop-blur-md rounded-full border border-white/15 shrink-0 self-start sm:self-auto">
+                      <button
+                        type="button"
+                        onClick={() => setWorkActionTab('consultants')}
+                        className={`px-5 py-2 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+                          workActionTab === 'consultants' ? 'bg-white text-slate-950 shadow-md font-black' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        Find Work Solicitors
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setWorkActionTab('self_apply')}
+                        className={`px-5 py-2 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+                          workActionTab === 'self_apply' ? 'bg-white text-slate-950 shadow-md font-black' : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        Self Apply Concierge
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CONTENT: WORK SOLICITORS */}
+                {workActionTab === 'consultants' && (
+                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-5 text-left">
+                    <div className="border-b border-slate-100 pb-4 space-y-1">
+                      <h4 className="text-xl font-heading font-black text-slate-950">
+                        Licensed Work Visa Solicitors &amp; Corporate Immigration Counsel
+                      </h4>
+                      <p className="text-xs text-slate-500 font-medium">
+                        Connect with licensed immigration solicitors specialized in Skilled Worker visas, CoS audits, and employment residency.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {VERIFIED_STUDY_CONSULTANTS.slice(0, 2).map((c) => (
+                        <div key={c.id} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between space-y-3">
+                          <div className="flex items-start gap-3">
+                            <img src={c.image} alt={c.name} className="w-12 h-12 rounded-xl object-cover" />
+                            <div className="min-w-0">
+                              <h5 className="font-bold text-sm text-slate-900 truncate">{c.name}</h5>
+                              <span className="text-[11px] text-slate-500 block truncate">{c.agencyName}</span>
+                              <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 mt-1 inline-block">
+                                ⭐ {c.rating} ({c.reviews} reviews) • {c.license}
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setBookingModalConsultant(c)}
+                            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer"
+                          >
+                            Book Legal Consultation ({c.fee})
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* CONTENT: WORK SELF-APPLY CONCIERGE */}
+                {workActionTab === 'self_apply' && (
+                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6 text-left">
+                    <div className="border-b border-slate-100 pb-4 space-y-1">
+                      <h4 className="text-xl font-heading font-black text-slate-950">
+                        Self-Apply Work Visa Concierge &amp; Document Vault
+                      </h4>
+                      <p className="text-xs text-slate-500 font-medium">
+                        Upload your employment records, CoS reference, and identity proofs for complete AI validation and legal audit.
+                      </p>
+                    </div>
+
+                    {/* Document Slots */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {[
+                        { key: 'passport', title: 'Passport Scan (Full Validity)', hint: 'Valid for full contract duration' },
+                        { key: 'cos_contract', title: 'Certificate of Sponsorship (CoS) / Job Offer', hint: 'Official electronic reference & contract' },
+                        { key: 'degree_transcripts', title: 'Degree & Professional Transcripts', hint: 'Apostilled or evaluated degrees' },
+                        { key: 'english_test', title: 'English Proficiency (SELT B1+)', hint: 'IELTS / PTE / Ecctis Certificate' },
+                        { key: 'tb_screening', title: 'TB Clearance & Medical Certificate', hint: 'UKVI / Embassy approved clinic' },
+                        { key: 'pcc', title: 'Police Clearance Certificate (PCC)', hint: 'Clean criminal record from RPO' }
+                      ].map((doc) => {
+                        const uploaded = uploadedDocuments[doc.key];
+                        return (
+                          <div key={doc.key} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 space-y-2 flex flex-col justify-between">
+                            <div className="space-y-1">
+                              <span className="text-xs font-bold text-slate-900 block truncate">{doc.title}</span>
+                              <span className="text-[10px] text-slate-500 block">{doc.hint}</span>
+                            </div>
+                            {uploaded ? (
+                              <div className="flex items-center justify-between text-xs bg-white p-2 rounded-xl border border-emerald-200">
+                                <span className="font-bold text-slate-900 truncate text-[11px]">{uploaded.fileName}</span>
+                                <span className="text-[10px] text-emerald-700 font-bold">✓</span>
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setUploadedDocuments(prev => ({
+                                    ...prev,
+                                    [doc.key]: { fileName: `${doc.key}_document.pdf`, size: '2.1 MB', status: 'verified', timestamp: 'Verified via OCR' }
+                                  }));
+                                }}
+                                className="w-full py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold cursor-pointer"
+                              >
+                                📤 Upload &amp; Store
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Final Submission Bar */}
+                    <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-xs text-slate-500 font-medium block">Work Visa Legal Concierge Filing:</span>
+                        <strong className="text-xl sm:text-2xl font-black text-slate-950">₹3,499 Total</strong>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setConciergeSubmittedModal(true)}
+                        className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+                      >
+                        <ShieldCheck className="w-5 h-5" />
+                        <span>Submit Work Visa Dossier for Legal &amp; VFS Filing</span>
+                        <ArrowRight className="w-4 h-4 stroke-[3]" />
+                      </button>
+                    </div>
                   </div>
                 )}
 

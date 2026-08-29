@@ -219,69 +219,53 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
     return {
       passport_country: from,
       destination_country: 'United Kingdom',
-      purpose_of_visit: 'Higher Studies',
+      purpose_of_visit: 'Student Visa',
       visa_type: 'UK Student Visa (Student Route)',
-      source_url: 'https://www.gov.uk/student-visa',
+      source_url: 'https://www.gov.uk/student-visa/documents-you-must-provide',
       official_source_name: 'UK Visas & Immigration (UKVI) official sources',
       documents_required: [
         {
           title: 'Valid Passport',
-          description: 'Valid for the full duration of your studies in the UK with at least 1 blank visa page.',
+          description: 'Must be valid for your full period of stay in the UK and contain at least 1 blank page for the entry vignette.',
           is_mandatory: true
         },
         {
           title: 'Confirmation of Acceptance for Studies (CAS)',
-          description: 'Official 14-digit reference number issued by a licensed UK Student Sponsor university.',
+          description: 'A unique 14-digit reference number provided by your UK licensed university sponsor upon unconditional acceptance.',
+          is_mandatory: true
+        },
+        {
+          title: 'Proof of English Language Capability',
+          description: 'SELT certificate (IELTS Academic/PTE Academic) or confirmation on CAS that university assessed English proficiency.',
           is_mandatory: true
         },
         {
           title: 'Tuberculosis (TB) Test Certificate',
-          description: 'Valid TB clearance certificate from an approved IOM/UKVI clinic in India.',
+          description: 'Required if residing in a UKVI listed country for 6+ months. Certificate must be from a UKVI-approved clinic.',
           is_mandatory: true
         },
         {
-          title: 'English Language Proficiency Proof',
-          description: 'IELTS Academic, PTE Academic, or University English waiver stated on your CAS.',
-          is_mandatory: true
-        },
-        {
-          title: 'Academic Certificates & Transcripts',
-          description: 'Original degree marksheets and certificates listed under CAS evidence.',
-          is_mandatory: true
+          title: 'ATAS Certificate',
+          description: 'Academic Technology Approval Scheme clearance required for specific sensitive postgraduate STEM/tech courses.',
+          is_mandatory: false
         }
       ],
       financial_proofs: [
         {
-          type: 'Living Costs & Tuition Maintenance',
-          minimum_balance_or_amount: '£1,334/month (London) or £1,023/month (Outside London) up to 9 months + Unpaid Tuition',
-          time_frame: 'Held consecutively for at least 28 days ending within 31 days of application date',
-          notes: 'Bank statements must be from an approved UKVI financial institution with bank stamp.'
-        },
-        {
-          type: 'Immigration Health Surcharge (IHS)',
-          minimum_balance_or_amount: '£776 per year of study',
-          time_frame: 'Paid upfront during online application',
-          notes: 'Grants full access to the UK National Health Service (NHS).'
-        },
-        {
-          type: 'Parental Consent & Sponsorship (If Sponsored)',
-          minimum_balance_or_amount: null,
-          time_frame: 'Current',
-          notes: 'Birth certificate, signed letter of consent, and sponsor bank statements if using parent accounts.'
+          type: 'Bank Statement / Official Financial Sponsorship',
+          minimum_balance_or_amount: 'Tuition Fee Balance + Living Allowance (£1,529/mo London or £1,171/mo Non-London)',
+          time_frame: 'Held for 28 consecutive days minimum',
+          notes: 'Bank statement must be dated within 31 days of application submission. Account must allow immediate cash withdrawal.'
         }
       ],
       other_requirements: [
         {
-          category: 'ATAS Certificate',
-          details: 'Mandatory for postgraduate research and sensitive STEM disciplines before CAS assignment.'
+          category: 'Immigration Health Surcharge (IHS)',
+          details: 'Mandatory healthcare fee paid online during visa application setup for access to NHS medical services.'
         },
         {
-          category: 'Biometrics at VFS Global',
-          details: 'Mandatory in-person appointment for digital facial photograph and 10-digit fingerprint scanning.'
-        },
-        {
-          category: 'Work Rights During Studies',
-          details: 'Up to 20 hours per week during term time and full-time during official vacation periods.'
+          category: 'Biometrics Appointment',
+          details: 'Mandatory in-person appointment at VFS Global / TLScontact center to submit fingerprints and digital facial photograph.'
         }
       ],
       how_to_apply: [

@@ -29,31 +29,46 @@ const getGeminiApiKey = (): string => {
   return '';
 };
 
-export interface AIRequirementItem {
+export interface DocumentRequiredItem {
   title: string;
   description: string;
+  is_mandatory: boolean;
 }
 
-export interface AIRequirementsData {
-  fromCountry: string;
-  toCountry: string;
-  purpose: string;
-  visaType: string;
-  officialSource: string;
-  entryAndDocumentRequirements: AIRequirementItem[];
-  supportingDocuments: AIRequirementItem[];
-  howToApply: string[];
+export interface FinancialProofItem {
+  type: string;
+  minimum_balance_or_amount: string | null;
+  time_frame: string;
+  notes: string;
+}
+
+export interface OtherRequirementItem {
+  category: string;
+  details: string;
+}
+
+export interface StructuredVisaRequirements {
+  passport_country: string;
+  destination_country: string;
+  purpose_of_visit: string;
+  visa_type: string;
+  source_url: string;
+  official_source_name: string;
+  documents_required: DocumentRequiredItem[];
+  financial_proofs: FinancialProofItem[];
+  other_requirements: OtherRequirementItem[];
+  how_to_apply: string[];
   costs: {
-    visaFee: string;
-    serviceFee: string;
-    totalFee: string;
-    feeNote: string;
+    visa_fee: string;
+    service_fee: string;
+    total_fee: string;
+    notes: string;
   };
-  processingAndTiming: {
-    applyWindow: string;
-    decisionTime: string;
-    maxExtension: string;
-    centerNote?: string;
+  processing_and_timing: {
+    apply_window: string;
+    decision_time: string;
+    max_extension: string;
+    center_notes?: string;
   };
 }
 
@@ -79,8 +94,8 @@ export function cleanCountryName(str: string): string {
   return s.split(/[-_\s]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
-// Built-in verified database matching official GVCW, VFS & UKVI regulations
-function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: string): AIRequirementsData {
+// Built-in verified database matching official GVCW, VFS, UKVI & Consular regulations
+function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: string): StructuredVisaRequirements {
   const from = cleanCountryName(rawFrom);
   const to = cleanCountryName(rawTo);
   const toLower = to.toLowerCase();
@@ -90,193 +105,94 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
   const isGreece = toLower.includes('greece');
   const isSchengen = isGreece || ['france', 'germany', 'italy', 'spain', 'netherlands', 'switzerland', 'austria', 'portugal', 'belgium', 'sweden'].some(c => toLower.includes(c));
   const isUSA = toLower.includes('united states') || toLower.includes('usa');
-  const isCanada = toLower.includes('canada');
 
-  // Case 1: UK - Higher Studies
-  if (isUK && (purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('education') || purposeLower.includes('higher'))) {
-    return {
-      fromCountry: from,
-      toCountry: 'United Kingdom',
-      purpose: 'Higher Studies',
-      visaType: 'UK Student Visa (Student Route)',
-      officialSource: 'UK Visas & Immigration (UKVI) official sources',
-      entryAndDocumentRequirements: [
-        {
-          title: 'Valid Passport',
-          description: 'Valid for the full duration of your studies in the UK with at least 1 blank page for visa vignette.'
-        },
-        {
-          title: 'Confirmation of Acceptance for Studies (CAS)',
-          description: 'Official 14-digit reference number issued by a licensed UK Student Sponsor university.'
-        },
-        {
-          title: 'Tuberculosis (TB) Test Certificate',
-          description: 'Valid TB test certificate from an approved UKVI clinic in India (valid for 6 months).'
-        },
-        {
-          title: 'English Language Proficiency Proof',
-          description: 'IELTS Academic, PTE Academic, or University English waiver assessed on your CAS.'
-        },
-        {
-          title: 'Academic Certificates & Transcripts',
-          description: 'Original certificates and marksheets listed by your institution under CAS evidence.'
-        }
-      ],
-      supportingDocuments: [
-        {
-          title: 'Financial Maintenance Proof',
-          description: 'Bank statements showing course fees + living costs (£1,334/mo London, £1,023/mo outside) held for 28 consecutive days.'
-        },
-        {
-          title: 'Immigration Health Surcharge (IHS)',
-          description: 'Paid receipt for NHS healthcare access during your study period in the UK (£776/year).'
-        },
-        {
-          title: 'Consent Letter & Birth Certificate (If Sponsored)',
-          description: 'Letter of financial sponsorship and birth certificate if using parental bank accounts.'
-        },
-        {
-          title: 'ATAS Certificate (If Applicable)',
-          description: 'Academic Technology Approval Scheme clearance for sensitive STEM / research postgraduate subjects.'
-        }
-      ],
-      howToApply: [
-        'Obtain unconditional offer & official CAS letter from UK university.',
-        'Complete UKVI online visa application form & pay visa fee + IHS.',
-        'Upload supporting academic & 28-day financial documents to VFS Global.',
-        'Attend VFS Global appointment for biometrics (fingerprints & digital photo).',
-        'Receive UKVI decision letter and collect passport with entry vignette or eVisa.'
-      ],
-      costs: {
-        visaFee: '£490 (approx. ₹52,400)',
-        serviceFee: '£776 / yr (IHS Healthcare)',
-        totalFee: '£1,266+ (Visa + 1st Year IHS)',
-        feeNote: 'Payable online directly at official UKVI portal; exchange rates apply.'
-      },
-      processingAndTiming: {
-        applyWindow: 'Apply up to 6 months before course start date.',
-        decisionTime: 'Decision: Standard 3 weeks (15 working days).',
-        maxExtension: 'Priority Service: 5 working days | Super Priority: 24 hours available.',
-        centerNote: 'Applications submitted via VFS Global across major Indian metropolitan hubs.'
-      }
-    };
-  }
-
-  // Case 2: UK - Tourism / Standard Visitor
-  if (isUK) {
-    return {
-      fromCountry: from,
-      toCountry: 'United Kingdom',
-      purpose: 'Tourism / Vacation',
-      visaType: 'Standard Visitor Visa (6 Months)',
-      officialSource: 'UK Visas & Immigration (UKVI) official sources',
-      entryAndDocumentRequirements: [
-        {
-          title: 'Valid Passport',
-          description: 'Valid for the entire duration of your stay in the UK with at least 1 blank page.'
-        },
-        {
-          title: 'Online Application Form',
-          description: 'Completed UKVI Standard Visitor form with accurate travel history.'
-        },
-        {
-          title: 'Travel & Accommodation Itinerary',
-          description: 'Planned itinerary, hotel bookings, or invitation letter with host address proof.'
-        },
-        {
-          title: 'Proof of Employment / Occupation',
-          description: 'Employer letter confirming role, salary, length of employment, and approved leave.'
-        }
-      ],
-      supportingDocuments: [
-        {
-          title: 'Financial Sufficiency Proof',
-          description: 'Bank statements for the past 6 months showing consistent balance and income source.'
-        },
-        {
-          title: 'Income Tax Returns (ITR)',
-          description: 'ITR-V acknowledgements for the last 2 assessment years.'
-        },
-        {
-          title: 'Ties to Home Country',
-          description: 'Proof of property, ongoing employment, or family commitments ensuring return.'
-        }
-      ],
-      howToApply: [
-        'Complete UKVI online application form.',
-        'Pay visa application fee online.',
-        'Upload supporting financial and travel documents to VFS Global.',
-        'Attend biometric appointment at nearest VFS center.',
-        'Collect passport with 6-month multiple-entry visa sticker.'
-      ],
-      costs: {
-        visaFee: '£115 (approx. ₹12,300)',
-        serviceFee: '₹2,500 – ₹3,500',
-        totalFee: '£115 + VFS Logistics',
-        feeNote: 'Payable online at official UKVI portal; VFS add-on services optional.'
-      },
-      processingAndTiming: {
-        applyWindow: 'Apply up to 3 months prior to planned travel date.',
-        decisionTime: 'Decision: Standard 3 weeks (15 working days).',
-        maxExtension: 'Priority processing (5 working days) available at additional fee.',
-        centerNote: 'VFS Global centers operate across 10+ Indian cities.'
-      }
-    };
-  }
-
-  // Case 3: Greece - Tourism
+  // Case 1: Greece - Tourism (Official GVC World & Greek Embassy in New Delhi)
   if (isGreece) {
     return {
-      fromCountry: from,
-      toCountry: 'Greece',
-      purpose: 'Tourism / Vacation',
-      visaType: 'Short-stay Schengen Visa (Type C)',
-      officialSource: 'Greek official sources (GVCW & Embassy of Greece in New Delhi)',
-      entryAndDocumentRequirements: [
+      passport_country: from,
+      destination_country: 'Greece',
+      purpose_of_visit: 'Tourism / Vacation',
+      visa_type: 'Short-stay Schengen Visa (Type C)',
+      source_url: 'https://in-gr.gvcworld.eu/en/visa-info-tourism',
+      official_source_name: 'Greek official sources (GVCW & Embassy of Greece in New Delhi)',
+      documents_required: [
         {
           title: 'Passport',
-          description: 'Valid at least 3 months after the planned return; issued within previous 10 years; at least 2 blank pages.'
+          description: 'Valid at least 3 months after the planned return; issued within previous 10 years; at least 2 blank pages.',
+          is_mandatory: true
         },
         {
           title: 'Visa application form',
-          description: 'Fully completed and signed.'
+          description: 'Fully completed and signed in English or Greek.',
+          is_mandatory: true
         },
         {
           title: 'Photos',
-          description: 'Two recent colour passport photos, 3.5 x 4 cm, forward-facing, light/white background.'
+          description: 'Two recent colour passport photos, 3.5 x 4 cm, forward-facing, light/white background.',
+          is_mandatory: true
         },
         {
           title: 'Travel medical insurance',
-          description: 'Minimum €30,000; covers all Schengen states and the full intended stay, including medical repatriation.'
+          description: 'Minimum €30,000; covers all Schengen states and the full intended stay, including medical repatriation.',
+          is_mandatory: true
         },
         {
           title: 'Travel & accommodation',
-          description: 'Return/round-trip reservation and lodging evidence for the trip / each Schengen destination where applicable.'
+          description: 'Return/round-trip reservation and lodging evidence for the trip / each Schengen destination where applicable.',
+          is_mandatory: true
         }
       ],
-      supportingDocuments: [
+      financial_proofs: [
         {
-          title: 'Financial means',
-          description: 'Bank statement showing the last 3 months\' movements.'
+          type: 'Financial means',
+          minimum_balance_or_amount: '€50 per day of intended stay',
+          time_frame: 'Bank statement showing the last 3 months\' movements',
+          notes: 'Must contain original bank seal and signature.'
         },
         {
-          title: 'Income evidence',
-          description: 'For employed applicants: last 3 months payslips, employment contract and employer holiday approval.'
+          type: 'Income evidence',
+          minimum_balance_or_amount: null,
+          time_frame: 'Last 3 months payslips',
+          notes: 'Accompanied by employment contract and employer holiday approval.'
         },
         {
-          title: 'Tax / employment evidence',
-          description: 'Indian income-tax return acknowledgement for the last two assessment years (as listed by the Embassy).'
+          type: 'Tax / employment evidence',
+          minimum_balance_or_amount: null,
+          time_frame: 'Last two assessment years',
+          notes: 'Indian income-tax return (ITR-V) acknowledgement (as listed by the Embassy).'
         },
         {
-          title: 'If self-employed',
-          description: 'Company registration certificate and relevant income tax assessment documentation.'
+          type: 'If self-employed',
+          minimum_balance_or_amount: null,
+          time_frame: 'Current assessment year',
+          notes: 'Company registration certificate and relevant income tax assessment documentation.'
         },
         {
-          title: 'Tourism evidence',
-          description: 'Travel-agency booking certificate or other appropriate document indicating the travel plans.'
+          type: 'Tourism evidence',
+          minimum_balance_or_amount: null,
+          time_frame: 'Duration of trip',
+          notes: 'Travel-agency booking certificate or other appropriate document indicating the travel plans.'
         }
       ],
-      howToApply: [
+      other_requirements: [
+        {
+          category: 'Health & Travel Insurance',
+          details: 'Mandatory minimum €30,000 policy covering hospitalization and medical repatriation across all 29 Schengen states.'
+        },
+        {
+          category: 'Biometrics & Physical Appointments',
+          details: 'Mandatory in-person appointment at Global Visa Center World (GVCW) for fingerprinting and live facial photograph.'
+        },
+        {
+          category: 'Application Window',
+          details: 'Applications can be lodged up to 6 months before the planned travel date (minimum 15 working days).'
+        },
+        {
+          category: 'Consular Processing & Dispatch',
+          details: 'Decision takes up to 15 calendar days from receipt at Embassy of Greece in New Delhi. Non-Delhi VACs require 5 extra days for courier.'
+        }
+      ],
+      how_to_apply: [
         'Check requirements & prepare documents.',
         'Complete the Greece online application form and print it.',
         'Book a GVCW Visa Application Center appointment.',
@@ -284,201 +200,263 @@ function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpose: str
         'Track the application and collect passport.'
       ],
       costs: {
-        visaFee: '€90',
-        serviceFee: '€30',
-        totalFee: '€120',
-        feeNote: 'Payable in INR at the VAC; exchange rate and fees may change.'
+        visa_fee: '€90',
+        service_fee: '€30',
+        total_fee: '€120',
+        notes: 'Payable in INR at the VAC; exchange rate and fees may change.'
       },
-      processingAndTiming: {
-        applyWindow: 'Apply up to 6 months before travel.',
-        decisionTime: 'Decision: up to 15 days after admissible receipt by Embassy.',
-        maxExtension: 'May extend to 45 calendar days in individual cases.',
-        centerNote: 'Applications from non-New-Delhi VACs: allow additional dispatch time; GVCW notes 5 extra days for those centers.'
+      processing_and_timing: {
+        apply_window: 'Apply up to 6 months before travel.',
+        decision_time: 'Decision: up to 15 days after admissible receipt by Embassy.',
+        max_extension: 'May extend to 45 calendar days in individual cases.',
+        center_notes: 'Applications from non-New-Delhi VACs: allow additional dispatch time; GVCW notes 5 extra days for those centers.'
       }
     };
   }
 
-  // Case 4: Other Schengen
-  if (isSchengen) {
+  // Case 2: UK - Higher Studies (Official UKVI & VFS Global)
+  if (isUK && (purposeLower.includes('study') || purposeLower.includes('student') || purposeLower.includes('education') || purposeLower.includes('higher'))) {
     return {
-      fromCountry: from,
-      toCountry: to,
-      purpose: purposeLower.includes('study') ? 'Higher Studies' : 'Tourism / Vacation',
-      visaType: purposeLower.includes('study') ? `${to} National Student Visa (Type D)` : 'Short-stay Schengen Visa (Type C)',
-      officialSource: `Official Consular Affairs & VFS / TLScontact for ${to}`,
-      entryAndDocumentRequirements: [
+      passport_country: from,
+      destination_country: 'United Kingdom',
+      purpose_of_visit: 'Higher Studies',
+      visa_type: 'UK Student Visa (Student Route)',
+      source_url: 'https://www.gov.uk/student-visa',
+      official_source_name: 'UK Visas & Immigration (UKVI) official sources',
+      documents_required: [
         {
           title: 'Valid Passport',
-          description: 'Valid for at least 3 months beyond departure date, issued within last 10 years with 2 blank pages.'
+          description: 'Valid for the full duration of your studies in the UK with at least 1 blank visa page.',
+          is_mandatory: true
         },
         {
-          title: 'Official Visa Form',
-          description: 'Fully completed harmonized Schengen / National visa application form.'
+          title: 'Confirmation of Acceptance for Studies (CAS)',
+          description: 'Official 14-digit reference number issued by a licensed UK Student Sponsor university.',
+          is_mandatory: true
         },
         {
-          title: 'Passport Photos',
-          description: '2 recent passport photos (3.5 x 4.5 cm), white background, 80% face coverage.'
+          title: 'Tuberculosis (TB) Test Certificate',
+          description: 'Valid TB clearance certificate from an approved IOM/UKVI clinic in India.',
+          is_mandatory: true
+        },
+        {
+          title: 'English Language Proficiency Proof',
+          description: 'IELTS Academic, PTE Academic, or University English waiver stated on your CAS.',
+          is_mandatory: true
+        },
+        {
+          title: 'Academic Certificates & Transcripts',
+          description: 'Original degree marksheets and certificates listed under CAS evidence.',
+          is_mandatory: true
+        }
+      ],
+      financial_proofs: [
+        {
+          type: 'Living Costs & Tuition Maintenance',
+          minimum_balance_or_amount: '£1,334/month (London) or £1,023/month (Outside London) up to 9 months + Unpaid Tuition',
+          time_frame: 'Held consecutively for at least 28 days ending within 31 days of application date',
+          notes: 'Bank statements must be from an approved UKVI financial institution with bank stamp.'
+        },
+        {
+          type: 'Immigration Health Surcharge (IHS)',
+          minimum_balance_or_amount: '£776 per year of study',
+          time_frame: 'Paid upfront during online application',
+          notes: 'Grants full access to the UK National Health Service (NHS).'
+        },
+        {
+          type: 'Parental Consent & Sponsorship (If Sponsored)',
+          minimum_balance_or_amount: null,
+          time_frame: 'Current',
+          notes: 'Birth certificate, signed letter of consent, and sponsor bank statements if using parent accounts.'
+        }
+      ],
+      other_requirements: [
+        {
+          category: 'ATAS Certificate',
+          details: 'Mandatory for postgraduate research and sensitive STEM disciplines before CAS assignment.'
+        },
+        {
+          category: 'Biometrics at VFS Global',
+          details: 'Mandatory in-person appointment for digital facial photograph and 10-digit fingerprint scanning.'
+        },
+        {
+          category: 'Work Rights During Studies',
+          details: 'Up to 20 hours per week during term time and full-time during official vacation periods.'
+        }
+      ],
+      how_to_apply: [
+        'Secure unconditional offer & official CAS letter from UK university.',
+        'Complete UKVI online visa application form & pay visa fee + IHS.',
+        'Upload supporting academic & 28-day financial documents to VFS portal.',
+        'Attend VFS Global appointment for biometrics and passport submission.',
+        'Receive UKVI decision letter and collect passport with visa vignette or eVisa.'
+      ],
+      costs: {
+        visa_fee: '£490 (approx. ₹52,400)',
+        service_fee: '£776 / yr (IHS Healthcare)',
+        total_fee: '£1,266+ (Visa + 1st Year IHS)',
+        notes: 'Payable online directly at official UKVI portal; exchange rates apply.'
+      },
+      processing_and_timing: {
+        apply_window: 'Apply up to 6 months before course start date.',
+        decision_time: 'Decision: Standard 3 weeks (15 working days).',
+        max_extension: 'Priority Service (5 working days) | Super Priority (24 hours) available.',
+        center_notes: 'Applications submitted via VFS Global centers across 10+ Indian cities.'
+      }
+    };
+  }
+
+  // Case 3: Other Schengen Destinations
+  if (isSchengen) {
+    return {
+      passport_country: from,
+      destination_country: to,
+      purpose_of_visit: purposeLower.includes('study') ? 'Higher Studies' : 'Tourism / Vacation',
+      visa_type: purposeLower.includes('study') ? `${to} National Long-Stay Visa (Type D)` : 'Short-stay Schengen Visa (Type C)',
+      source_url: `https://www.vfsglobal.com/`,
+      official_source_name: `Official Consular Affairs & VFS Global for ${to}`,
+      documents_required: [
+        {
+          title: 'Valid Passport',
+          description: 'Valid for at least 3 months beyond departure date, issued within last 10 years with 2 blank pages.',
+          is_mandatory: true
+        },
+        {
+          title: 'Harmonized Visa Application Form',
+          description: 'Fully completed online, printed, and signed.',
+          is_mandatory: true
+        },
+        {
+          title: 'Biometric Photographs',
+          description: '2 recent photos (3.5 x 4.5 cm), white background, 80% face coverage.',
+          is_mandatory: true
         },
         {
           title: 'Travel Medical Insurance',
-          description: 'Minimum €30,000 cover valid across all 29 Schengen states with repatriation.'
+          description: 'Minimum €30,000 cover valid across all 29 Schengen states including medical evacuation.',
+          is_mandatory: true
         },
         {
-          title: 'Flight & Hotel Bookings',
-          description: 'Confirmed round-trip flights and hotel bookings covering all destinations.'
+          title: 'Round-trip Travel & Lodging',
+          description: 'Confirmed flight reservations and accommodation for the entire duration.',
+          is_mandatory: true
         }
       ],
-      supportingDocuments: [
+      financial_proofs: [
         {
-          title: 'Financial Proof',
-          description: '3 to 6 months bank statement with original bank seal and signature.'
+          type: 'Bank Statements',
+          minimum_balance_or_amount: '€45 – €70 per day of intended stay',
+          time_frame: 'Last 3 to 6 months',
+          notes: 'Original bank stamp and signature required on every statement page.'
         },
         {
-          title: 'Employment & Income',
-          description: 'Salary slips of last 3 months, leave sanction letter, and ITR for past 2 years.'
-        },
-        {
-          title: 'Purpose Evidence',
-          description: 'Detailed day-by-day itinerary or university acceptance letter.'
+          type: 'Proof of Income & Employment',
+          minimum_balance_or_amount: null,
+          time_frame: 'Last 3 months salary slips + 2 years ITR',
+          notes: 'NOC / Leave sanction letter from employer confirming approved leave dates.'
         }
       ],
-      howToApply: [
+      other_requirements: [
+        {
+          category: 'Biometric Collection',
+          details: 'Mandatory 10-finger biometric scan and photograph at VFS / TLS center.'
+        },
+        {
+          category: 'Schengen 90/180 Rule',
+          details: 'Permitted stay of up to 90 days within any 180-day rolling window across the Schengen Area.'
+        }
+      ],
+      how_to_apply: [
         'Check requirements & prepare documents.',
-        'Complete the online visa application form.',
+        'Complete online visa application form.',
         'Book appointment at authorized VFS / TLS center.',
         'Submit biometrics and dossier at appointment.',
         'Track consular dispatch and collect passport.'
       ],
       costs: {
-        visaFee: '€90',
-        serviceFee: '€30',
-        totalFee: '€120',
-        feeNote: 'Payable in local currency at VAC submission.'
+        visa_fee: '€90',
+        service_fee: '€30',
+        total_fee: '€120',
+        notes: 'Payable in local currency at VAC submission.'
       },
-      processingAndTiming: {
-        applyWindow: 'Apply up to 6 months before travel date.',
-        decisionTime: 'Decision: up to 15 calendar days from receipt.',
-        maxExtension: 'May extend to 45 calendar days during peak periods.'
+      processing_and_timing: {
+        apply_window: 'Apply up to 6 months before travel date.',
+        decision_time: 'Decision: up to 15 calendar days from consular receipt.',
+        max_extension: 'May extend to 45 calendar days during peak periods.'
       }
     };
   }
 
-  // Case 5: USA
-  if (isUSA) {
-    return {
-      fromCountry: from,
-      toCountry: 'United States',
-      purpose: purposeLower.includes('study') ? 'Higher Studies' : 'Tourism / Vacation',
-      visaType: purposeLower.includes('study') ? 'F-1 Academic Student Visa' : 'B1/B2 Visitor Visa (10 Years)',
-      officialSource: 'U.S. Department of State & Consular Affairs',
-      entryAndDocumentRequirements: [
-        {
-          title: 'Valid Passport',
-          description: 'Valid for travel to the United States with at least 6 months validity beyond intended stay.'
-        },
-        {
-          title: 'DS-160 Barcode Confirmation',
-          description: 'Online Nonimmigrant Visa Application confirmation page with barcode.'
-        },
-        {
-          title: 'Form I-20 / Travel Plan',
-          description: purposeLower.includes('study') ? 'Official Certificate of Eligibility (Form I-20) signed by DSO.' : 'Detailed travel purpose and accommodation plans.'
-        },
-        {
-          title: 'SEVIS I-901 Receipt (For Students)',
-          description: 'Paid SEVIS I-901 fee receipt ($350 USD) for official student registration.'
-        }
-      ],
-      supportingDocuments: [
-        {
-          title: 'Financial Capability Proof',
-          description: 'Bank statements, loan sanction letter, or financial affidavit covering total estimated costs.'
-        },
-        {
-          title: 'Academic Transcripts & Test Scores',
-          description: 'GRE/GMAT, TOEFL/IELTS/PTE scores and original degree transcripts.'
-        },
-        {
-          title: 'Strong Home Ties Evidence',
-          description: 'Evidence of economic, social, or family ties ensuring return upon completion.'
-        }
-      ],
-      howToApply: [
-        'Complete DS-160 application form online.',
-        'Create account and pay MRV visa fee online ($185 USD).',
-        'Schedule OFC Biometric & Consular Interview appointments.',
-        'Attend OFC for fingerprinting & photo.',
-        'Attend consular interview at US Embassy/Consulate.'
-      ],
-      costs: {
-        visaFee: '$185 USD (approx. ₹15,400)',
-        serviceFee: purposeLower.includes('study') ? '$350 USD (SEVIS Fee)' : '$0',
-        totalFee: purposeLower.includes('study') ? '$535 USD Total' : '$185 USD Total',
-        feeNote: 'Payable online via US Visa Scheduling portal.'
-      },
-      processingAndTiming: {
-        applyWindow: 'Apply up to 365 days before academic program start.',
-        decisionTime: 'Decision: Immediate at interview (passport issued in 3–5 days).',
-        maxExtension: 'Subject to consular appointment wait times.'
-      }
-    };
-  }
-
-  // Generic Default
+  // Generic Destination Fallback
   return {
-    fromCountry: from,
-    toCountry: to,
-    purpose: rawPurpose || 'Tourism / Vacation',
-    visaType: `${to} Entry Visa`,
-    officialSource: `Official Consular Mission & Ministry of Foreign Affairs of ${to}`,
-    entryAndDocumentRequirements: [
+    passport_country: from,
+    destination_country: to,
+    purpose_of_visit: rawPurpose || 'Tourism / Vacation',
+    visa_type: `${to} Entry Visa / Electronic Authorization`,
+    source_url: `https://www.vfsglobal.com`,
+    official_source_name: `Official Consular Mission & Ministry of Foreign Affairs of ${to}`,
+    documents_required: [
       {
-        title: 'Valid Passport',
-        description: 'Valid for at least 6 months beyond travel date with at least 2 blank pages.'
+        title: 'Original Passport',
+        description: 'Valid for at least 6 months beyond travel date with at least 2 blank pages.',
+        is_mandatory: true
       },
       {
         title: 'Visa Application Form',
-        description: 'Complete digital visa application form.'
+        description: 'Complete digital visa application form with accurate traveler details.',
+        is_mandatory: true
       },
       {
-        title: 'Passport Photo',
-        description: 'Recent clear photograph on white background.'
+        title: 'Digital Passport Photo',
+        description: 'Recent clear photograph on white background meeting consulate millimeter specs.',
+        is_mandatory: true
       },
       {
-        title: 'Flight & Hotel Reservation',
-        description: 'Confirmed round-trip ticket and accommodation proof.'
+        title: 'Confirmed Travel & Lodging',
+        description: 'Confirmed round-trip ticket and accommodation proof or invitation.',
+        is_mandatory: true
       }
     ],
-    supportingDocuments: [
+    financial_proofs: [
       {
-        title: 'Bank Statement',
-        description: '3 to 6 months bank statement showing liquidity.'
+        type: 'Bank Statements',
+        minimum_balance_or_amount: 'Sufficient funds covering estimated stay',
+        time_frame: 'Last 3 to 6 months',
+        notes: 'Signed and stamped by issuing banking institution.'
       },
       {
-        title: 'Employment Proof',
-        description: 'NOC / Leave sanction letter from employer or business registration.'
-      },
-      {
-        title: 'Travel Itinerary',
-        description: 'Day-by-day travel plan and purpose explanation.'
+        type: 'Employment & Occupation Proof',
+        minimum_balance_or_amount: null,
+        time_frame: 'Current',
+        notes: 'Employer NOC, salary slips, or business registration documents.'
       }
     ],
-    howToApply: [
+    other_requirements: [
+      {
+        category: 'Travel Insurance',
+        details: 'Comprehensive emergency medical policy covering hospitalization and repatriation.'
+      },
+      {
+        category: 'Biometrics & Submission',
+        details: 'Digital upload or in-person biometric appointment based on consular route.'
+      }
+    ],
+    how_to_apply: [
       'Check requirements & prepare documents.',
       'Complete online application form.',
       'Submit application & fee online or at VAC.',
       'Track status and receive visa grant.'
     ],
     costs: {
-      visaFee: '₹3,500 – ₹7,800',
-      serviceFee: '₹1,500 – ₹2,500',
-      totalFee: '₹5,000 – ₹10,300',
-      feeNote: 'Consular and processing fees combined.'
+      visa_fee: '₹3,500 – ₹7,800',
+      service_fee: '₹1,500 – ₹2,500',
+      total_fee: '₹5,000 – ₹10,300',
+      notes: 'Consular and processing fees combined.'
     },
-    processingAndTiming: {
-      applyWindow: 'Apply 15 to 90 days before departure.',
-      decisionTime: 'Decision: 3 to 5 business days.',
-      maxExtension: 'Subject to consular review.'
+    processing_and_timing: {
+      apply_window: 'Apply 15 to 90 days before departure.',
+      decision_time: 'Decision: 3 to 5 business days.',
+      max_extension: 'Subject to consular review.'
     }
   };
 }
@@ -498,48 +476,65 @@ export const POST: APIRoute = async ({ request }) => {
     if (apiKey) {
       try {
         const ai = new GoogleGenAI({ apiKey });
-        const prompt = `You are an expert immigration officer and consular AI.
-Provide official visa and travel requirements for a citizen of "${fromCountry}" traveling to "${toCountry}" for "${purpose}".
-Refer to official Embassy, VFS Global, GVCW (Global Visa Center World), UKVI, TLScontact, or Ministry sources.
+        const prompt = `You are an elite, autonomous AI Web Scraping & Data Extraction Agent for TravlTik (travltik.com), specialized in global immigration processing, embassy systems, and VFS Global portals.
 
-Return ONLY a valid JSON object matching this exact structure:
+Extract and synthesize official visa requirements for:
+1. Origin / Passport Country: "${fromCountry}"
+2. Destination Country: "${toCountry}"
+3. Purpose of Visit: "${purpose}"
+
+Strictly categorize every single requirement item into THREE distinct structural buckets:
+Bucket A: DOCUMENTS REQUIRED CHECKLIST (title, description, is_mandatory)
+Bucket B: FINANCIAL PROOFS & MEANS OF SUBSISTENCE (type, minimum_balance_or_amount, time_frame, notes)
+Bucket C: OTHER IMPORTANT REQUIREMENTS & MANDATES (category, details)
+
+Return ONLY a valid JSON object matching this exact schema:
 {
-  "fromCountry": "${fromCountry}",
-  "toCountry": "${toCountry}",
-  "purpose": "${purpose}",
-  "visaType": "e.g. UK Student Visa (Student Route) or Short-stay Schengen Visa (Type C)",
-  "officialSource": "e.g. UK Visas & Immigration (UKVI) official sources or Greek official sources (GVCW & Embassy)",
-  "entryAndDocumentRequirements": [
-    { "title": "Passport", "description": "Valid at least 3 months after the planned return..." },
-    { "title": "Visa application form", "description": "Fully completed and signed." },
-    { "title": "Photos", "description": "Two recent colour passport photos, 3.5 x 4 cm, white background." },
-    { "title": "Travel medical insurance", "description": "Minimum €30,000 coverage or NHS surcharge." },
-    { "title": "Travel & accommodation", "description": "Return reservation and lodging evidence." }
+  "passport_country": "${fromCountry}",
+  "destination_country": "${toCountry}",
+  "purpose_of_visit": "${purpose}",
+  "visa_type": "Official visa category (e.g., Short-stay Schengen Visa (Type C) or UK Student Visa)",
+  "source_url": "Official portal URL (e.g., https://in-gr.gvcworld.eu/en/visa-info-tourism or https://www.gov.uk/student-visa)",
+  "official_source_name": "Name of official authority (e.g., Greek official sources (GVCW & Embassy) or UKVI)",
+  "documents_required": [
+    {
+      "title": "Document title",
+      "description": "Specific requirements, validity rules, blank pages, or photo dimensions",
+      "is_mandatory": true
+    }
   ],
-  "supportingDocuments": [
-    { "title": "Financial means", "description": "Bank statement showing the last 3 to 6 months movements." },
-    { "title": "Income evidence", "description": "Payslips, employment contract and employer holiday approval." },
-    { "title": "Tax / employment evidence", "description": "Income-tax return acknowledgement for last two assessment years." },
-    { "title": "Academic / Purpose Proof", "description": "CAS letter, admission letter or itinerary." }
+  "financial_proofs": [
+    {
+      "type": "Bank Statement / Income Evidence / Tax Return / Sponsorship",
+      "minimum_balance_or_amount": "Amount with currency or null",
+      "time_frame": "e.g., Last 3 or 6 months",
+      "notes": "Bank stamp, sealing rules, or employer NOC"
+    }
   ],
-  "howToApply": [
-    "Check requirements & prepare documents.",
-    "Complete the online application form and print it.",
-    "Book an appointment at the official visa center.",
-    "Attend in person for submission and biometrics.",
-    "Track the application and collect passport."
+  "other_requirements": [
+    {
+      "category": "Travel Insurance / Biometrics / Processing Time / Entry Rules",
+      "details": "Specific actionable instructions or threshold criteria"
+    }
+  ],
+  "how_to_apply": [
+    "Step 1...",
+    "Step 2...",
+    "Step 3...",
+    "Step 4...",
+    "Step 5..."
   ],
   "costs": {
-    "visaFee": "e.g. £490 or €90",
-    "serviceFee": "e.g. £776 or €30",
-    "totalFee": "e.g. £1,266 or €120",
-    "feeNote": "Payable online or in INR at the VAC; exchange rate and fees may change."
+    "visa_fee": "e.g. €90 or £490",
+    "service_fee": "e.g. €30 or £776",
+    "total_fee": "e.g. €120 or £1,266",
+    "notes": "Payment notes and currency conversion"
   },
-  "processingAndTiming": {
-    "applyWindow": "Apply up to 6 months before travel.",
-    "decisionTime": "Decision: up to 3 weeks (UKVI) / 15 days (Schengen).",
-    "maxExtension": "May extend to 45 calendar days in individual cases.",
-    "centerNote": "Additional transit time for regional VACs."
+  "processing_and_timing": {
+    "apply_window": "e.g. Apply up to 6 months before travel.",
+    "decision_time": "e.g. Decision: up to 15 calendar days.",
+    "max_extension": "e.g. May extend to 45 calendar days.",
+    "center_notes": "Courier transit notes for regional centers."
   }
 }`;
 
@@ -555,8 +550,8 @@ Return ONLY a valid JSON object matching this exact structure:
         const text = response.text ? response.text.trim() : '';
         if (text) {
           const parsed = JSON.parse(text);
-          parsed.fromCountry = cleanCountryName(parsed.fromCountry || fromCountry);
-          parsed.toCountry = cleanCountryName(parsed.toCountry || toCountry);
+          parsed.passport_country = cleanCountryName(parsed.passport_country || fromCountry);
+          parsed.destination_country = cleanCountryName(parsed.destination_country || toCountry);
           return new Response(JSON.stringify({ success: true, data: parsed, source: 'gemini-ai' }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }

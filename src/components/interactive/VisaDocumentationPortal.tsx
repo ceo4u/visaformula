@@ -14,8 +14,8 @@ const checklists: Record<VisaCountry, { title: string; docs: DocumentItem[] }> =
   canada: {
     title: "🇨🇦 Canada Student Visa",
     docs: [
-      { name: "Valid Passport", desc: "Min 6 months validity · All pages scanned", icon: "🛂", status: "ready" },
-      { name: "Passport-Size Photos", desc: "2 photos · White background · 35mm × 45mm", icon: "📸", status: "ready" },
+      { name: "Valid Passport", desc: "Min 6 months validity · All pages scanned", icon: "🛂", status: "missing" },
+      { name: "Passport-Size Photos", desc: "2 photos · White background · 35mm × 45mm", icon: "📸", status: "missing" },
       { name: "Proof of Funds", desc: "Bank statements showing CAD $10,000+ · Notarised", icon: "🏦", status: "missing" },
       { name: "Statement of Purpose (SOP)", desc: "500–1000 words · Why Canada, career goals", icon: "✍️", status: "missing" },
     ],
@@ -23,7 +23,7 @@ const checklists: Record<VisaCountry, { title: string; docs: DocumentItem[] }> =
   uk: {
     title: "🇬🇧 UK Student Visa",
     docs: [
-      { name: "Valid Passport", desc: "Min 6 months validity · Scan of bio page", icon: "🛂", status: "ready" },
+      { name: "Valid Passport", desc: "Min 6 months validity · Scan of bio page", icon: "🛂", status: "missing" },
       { name: "CAS Letter", desc: "Confirmation of Acceptance for Studies from UK university", icon: "📋", status: "missing" },
       { name: "Tuberculosis Test Certificate", desc: "From UKVI approved clinic", icon: "🩺", status: "missing" },
     ],
@@ -31,15 +31,15 @@ const checklists: Record<VisaCountry, { title: string; docs: DocumentItem[] }> =
   uae: {
     title: "🇦🇪 UAE Tourist Visa",
     docs: [
-      { name: "Passport Copy", desc: "Clear colour scan of first & last page", icon: "🛂", status: "ready" },
-      { name: "Passport Photo", desc: "White background, no glasses", icon: "📸", status: "ready" },
+      { name: "Passport Copy", desc: "Clear colour scan of first & last page", icon: "🛂", status: "missing" },
+      { name: "Passport Photo", desc: "White background, no glasses", icon: "📸", status: "missing" },
       { name: "Hotel Booking", desc: "Confirmed stay booking in UAE", icon: "🏨", status: "missing" },
     ],
   },
   aus: {
     title: "🇦🇺 Australia Work Visa",
     docs: [
-      { name: "Passport", desc: "Scan of valid passport bio page", icon: "🛂", status: "ready" },
+      { name: "Passport", desc: "Scan of valid passport bio page", icon: "🛂", status: "missing" },
       { name: "Skill Assessment", desc: "Approved assessment result by relevant body", icon: "📜", status: "missing" },
       { name: "English Score", desc: "IELTS / PTE scorecard", icon: "🗣️", status: "missing" },
     ],
@@ -47,7 +47,7 @@ const checklists: Record<VisaCountry, { title: string; docs: DocumentItem[] }> =
   sch: {
     title: "🇪🇺 Schengen Tourist Visa",
     docs: [
-      { name: "Passport", desc: "Min 2 blank pages, 3 months validity beyond return", icon: "🛂", status: "ready" },
+      { name: "Passport", desc: "Min 2 blank pages, 3 months validity beyond return", icon: "🛂", status: "missing" },
       { name: "Travel Insurance", desc: "Minimum €30,000 coverage for medical emergencies", icon: "🩺", status: "missing" },
       { name: "Flight Reservation", desc: "Round trip flight details", icon: "✈️", status: "missing" },
     ],

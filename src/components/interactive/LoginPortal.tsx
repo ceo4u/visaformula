@@ -258,15 +258,15 @@ function LoginPortalContent() {
                     <div className="grid grid-cols-2 gap-2.5">
                         <a
                             href="/signup/seeker"
-                            className="bg-black hover:bg-slate-900 text-white font-bold py-3 px-3 rounded-2xl text-xs transition-all shadow-sm flex items-center justify-center text-center cursor-pointer"
+                            className="bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-3 px-3 rounded-2xl text-xs transition-all shadow-sm flex items-center justify-center text-center cursor-pointer"
                         >
-                            Register as Seeker
+                            Register as Traveller
                         </a>
                         <a
                             href="/signup/expert"
                             className="bg-white hover:bg-slate-50 text-slate-900 font-bold py-3 px-3 rounded-2xl text-xs border border-slate-200 transition-all shadow-2xs flex items-center justify-center text-center cursor-pointer"
                         >
-                            Register as Expert
+                            Register as Service Provider
                         </a>
                     </div>
                 </div>

@@ -69,8 +69,8 @@ export default function RegisterStart() {
             onChange={(e) => setFormData({ ...formData, role: e.target.value })}
             className="w-full px-4 py-2.5 text-xs font-semibold border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-900 outline-none cursor-pointer"
           >
-            <option value="seeker">Visa Applicant (Seeker)</option>
-            <option value="expert">Migration Consultant / Expert</option>
+            <option value="seeker">Traveller</option>
+            <option value="expert">Service Provider</option>
           </select>
         </div>
 

@@ -175,10 +175,14 @@ export function ConsultantDashboard() {
             // Check if Expert profile is incomplete based on registration starting details
             const hasBizName = Boolean(localStorage.getItem("expert_businessName") || localStorage.getItem("expert_firstName"));
             const hasOfficeAddress = Boolean(localStorage.getItem("expert_officeAddress")) && localStorage.getItem("expert_officeAddress") !== "Location Not Specified";
-            const hasPhone = Boolean(localStorage.getItem("expert_phone"));
+            const hasPhone = Boolean(localStorage.getItem("expert_contactNumber") || localStorage.getItem("expert_phone"));
             const hasCountries = Boolean(localStorage.getItem("expert_countriesExpertise"));
 
-            setIsProfileIncomplete(!hasBizName || !hasOfficeAddress || !hasPhone || !hasCountries);
+            const isIncomplete = !hasBizName || !hasOfficeAddress || !hasPhone || !hasCountries;
+            setIsProfileIncomplete(isIncomplete);
+            if (isIncomplete) {
+                setIsEditingProfile(true);
+            }
 
             // Load real Leads from localStorage
             try {
@@ -311,9 +315,10 @@ export function ConsultantDashboard() {
 
         // Update active user & profile updates dictionary
         try {
+            const currentEmail = localStorage.getItem("expert_email") || "";
             localStorage.setItem("visaformula_user", JSON.stringify({
                 name: formName,
-                email: localStorage.getItem("expert_email") || "",
+                email: currentEmail,
                 role: "expert",
                 advisor_type: formRole,
                 type: "expert"
@@ -341,11 +346,35 @@ export function ConsultantDashboard() {
                 return x;
             });
             localStorage.setItem("visaformula_all_experts", JSON.stringify(updatedAll));
+
+            // Sync to Neon PostgreSQL Database
+            if (currentEmail) {
+                fetch("/api/expert/update-profile", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: currentEmail,
+                        business_name: formName,
+                        contact_number: formPhone,
+                        advisor_type: formRole,
+                        about_me: formBio,
+                        portfolio_link: formPortfolio,
+                        office_address: finalFullAddress,
+                        city: formCityName,
+                        state: formState,
+                        country: formCountry,
+                        gov_registration_number: formGovReg,
+                        expertise_tags: formTagsArray,
+                        countries_expertise: formCountries,
+                        profile_photo: formImage
+                    })
+                }).catch(err => console.warn("Background DB sync warning:", err));
+            }
         } catch (e) {}
 
         setIsProfileIncomplete(false);
         setIsEditingProfile(false);
-        triggerToast("Profile & Location details updated successfully!");
+        triggerToast("Profile details saved & activated live on Find Experts directory!");
     };
 
     const handleCreateAd = (e: React.FormEvent) => {
@@ -1542,16 +1571,15 @@ export function ConsultantDashboard() {
                             {/* Business Name & Type of Business */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
-                                    <label className="text-xs font-bold text-slate-700 mb-1 flex items-center justify-between" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                                        <span>Business / Consultancy Name *</span>
-                                        <span className="text-[10px] text-slate-400 font-semibold flex items-center gap-1"><Lock className="w-3 h-3 text-slate-400" /> Non-editable</span>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                        Business / Consultancy Name *
                                     </label>
                                     <input 
                                         type="text" 
                                         value={formName} 
-                                        disabled
-                                        readOnly
-                                        className="w-full px-3.5 py-2.5 border border-slate-200 bg-slate-100 rounded-xl text-xs font-bold text-slate-500 cursor-not-allowed outline-none select-none" 
+                                        onChange={(e) => setFormName(e.target.value)}
+                                        placeholder="e.g. Apex Global Visa & Immigration"
+                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-[#00a896]" 
                                         required
                                     />
                                 </div>

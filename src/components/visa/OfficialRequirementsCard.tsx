@@ -213,50 +213,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           </div>
         </div>
 
-        {/* CUSTOM PURPOSE OF TRAVEL DROPDOWN */}
-        <div className="w-full md:w-auto space-y-1 text-left border-t md:border-t-0 md:border-l border-slate-200 md:pl-8 pt-3 md:pt-0 relative" ref={dropdownRef}>
+        {/* PURPOSE OF TRAVEL (Clean Display) */}
+        <div className="w-full md:w-auto space-y-1 text-left border-t md:border-t-0 md:border-l border-slate-200 md:pl-8 pt-3 md:pt-0">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
             PURPOSE OF TRAVEL
           </span>
-          
-          {/* Trigger Button */}
-          <button
-            type="button"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-1.5 text-sm sm:text-base font-extrabold text-slate-900 hover:text-emerald-700 transition-colors cursor-pointer focus:outline-none select-none py-0.5"
-          >
+          <div className="text-sm sm:text-base font-extrabold text-slate-900 py-0.5">
             <span>{currentOption.label}</span>
-            <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180 text-slate-800' : ''}`} />
-          </button>
-
-          {/* Floating Dropdown Menu */}
-          {isDropdownOpen && (
-            <div className="absolute top-full left-0 md:left-4 mt-2 w-56 sm:w-64 bg-white rounded-2xl p-1.5 border border-slate-200/90 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
-              {PURPOSE_OPTIONS.map((opt) => {
-                const isSelected = opt.id === selectedPurpose;
-                return (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => {
-                      setSelectedPurpose(opt.id);
-                      setIsDropdownOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl text-left transition-all cursor-pointer ${
-                      isSelected 
-                        ? 'bg-emerald-50 text-emerald-950 font-bold' 
-                        : 'text-slate-700 hover:bg-slate-50 hover:text-slate-950 font-semibold'
-                    }`}
-                  >
-                    <span className="text-xs sm:text-sm">{opt.label}</span>
-                    {isSelected && (
-                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[3]" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          </div>
         </div>
 
         {/* Requirements Checked Badge */}

@@ -3553,7 +3553,7 @@ export function VisaCountryResultPortal({
                     <div className="w-full sm:w-auto bg-white border border-slate-200/90 rounded-full py-2.5 sm:py-3 px-3 sm:px-5 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
                       <div className="bg-slate-100 rounded-full p-1.5 inline-flex items-center gap-1.5 border border-slate-200/80 shrink-0 shadow-inner max-w-full overflow-x-auto">
                         
-                        {/* Find Consultants Near Me */}
+                        {/* Find Consultants */}
                         <button
                           type="button"
                           onClick={() => setStudentActionTab('consultants')}
@@ -3566,13 +3566,13 @@ export function VisaCountryResultPortal({
                           {studentActionTab === 'consultants' ? (
                             <>
                               <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
-                              <span className="tracking-wide">Find Consultants Near Me</span>
+                              <span className="tracking-wide">Find Consultants</span>
                               <Check className="w-4 h-4 text-[#00E599] stroke-[3]" />
                             </>
                           ) : (
                             <>
                               <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
-                              <span className="tracking-wide">Find Consultants Near Me</span>
+                              <span className="tracking-wide">Find Consultants</span>
                             </>
                           )}
                         </button>
@@ -4116,7 +4116,7 @@ export function VisaCountryResultPortal({
                     <div className="w-full sm:w-auto bg-white border border-slate-200/90 rounded-full py-2.5 sm:py-3 px-3 sm:px-5 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
                       <div className="bg-slate-100 rounded-full p-1.5 inline-flex items-center gap-1.5 border border-slate-200/80 shrink-0 shadow-inner max-w-full overflow-x-auto">
                         
-                        {/* Find Consultants Near Me */}
+                        {/* Find Consultants */}
                         <button
                           type="button"
                           onClick={() => setTourismActionTab('consultants')}
@@ -4129,13 +4129,13 @@ export function VisaCountryResultPortal({
                           {tourismActionTab === 'consultants' ? (
                             <>
                               <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
-                              <span className="tracking-wide">Find Consultants Near Me</span>
+                              <span className="tracking-wide">Find Consultants</span>
                               <Check className="w-4 h-4 text-[#00E599] stroke-[3]" />
                             </>
                           ) : (
                             <>
                               <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
-                              <span className="tracking-wide">Find Consultants Near Me</span>
+                              <span className="tracking-wide">Find Consultants</span>
                             </>
                           )}
                         </button>
@@ -4660,7 +4660,7 @@ export function VisaCountryResultPortal({
                     <div className="w-full sm:w-auto bg-white border border-slate-200/90 rounded-full py-2.5 sm:py-3 px-3 sm:px-5 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
                       <div className="bg-slate-100 rounded-full p-1.5 inline-flex items-center gap-1.5 border border-slate-200/80 shrink-0 shadow-inner max-w-full overflow-x-auto">
                         
-                        {/* Find Consultants Near Me */}
+                        {/* Find Consultants */}
                         <button
                           type="button"
                           onClick={() => setWorkActionTab('consultants')}
@@ -4673,13 +4673,13 @@ export function VisaCountryResultPortal({
                           {workActionTab === 'consultants' ? (
                             <>
                               <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
-                              <span className="tracking-wide">Find Solicitors Near Me</span>
+                              <span className="tracking-wide">Find Consultants</span>
                               <Check className="w-4 h-4 text-[#00E599] stroke-[3]" />
                             </>
                           ) : (
                             <>
                               <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
-                              <span className="tracking-wide">Find Solicitors Near Me</span>
+                              <span className="tracking-wide">Find Consultants</span>
                             </>
                           )}
                         </button>

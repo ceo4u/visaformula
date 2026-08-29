@@ -154,6 +154,16 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
     }
   };
 
+  const cleanPurposeLabel = useMemo(() => {
+    const p = (data?.purpose_of_visit || selectedPurpose || '').trim();
+    if (p.toLowerCase().includes('tour')) return 'Tourism';
+    if (p.toLowerCase().includes('study') || p.toLowerCase().includes('student')) return 'Higher Studies';
+    if (p.toLowerCase().includes('work') || p.toLowerCase().includes('employ')) return 'Employment';
+    if (p.toLowerCase().includes('business')) return 'Business';
+    if (p.toLowerCase().includes('family') || p.toLowerCase().includes('friend')) return 'Family Visit';
+    return p;
+  }, [data?.purpose_of_visit, selectedPurpose]);
+
   const currentOption = PURPOSE_OPTIONS.find(opt => opt.id === selectedPurpose) || PURPOSE_OPTIONS[0];
 
   return (
@@ -282,56 +292,18 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
       </div>
 
-      {/* ── MAIN HEADLINE ── */}
-      <div className="space-y-1.5 text-left pt-1 flex flex-col md:flex-row md:items-baseline justify-between gap-2">
-        <div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0a1b39] tracking-tight leading-tight">
-            Travel Requirements: {cleanFrom} → {cleanTo}
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
-            {data?.purpose_of_visit || selectedPurpose} • {data?.visa_type || 'Official Entry Visa'} • Information checked against {data?.official_source_name || `${cleanTo} official consular sources`}
-          </p>
-        </div>
-
-        {/* Filter View Tabs */}
-        <div className="inline-flex items-center gap-1 p-1 bg-slate-200/70 rounded-xl text-xs font-bold self-start md:self-auto shrink-0">
-          <button
-            type="button"
-            onClick={() => setActiveTab('all')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-              activeTab === 'all' ? 'bg-white text-slate-900 shadow-2xs font-extrabold' : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            All Requirements
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('documents')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-              activeTab === 'documents' ? 'bg-white text-slate-900 shadow-2xs font-extrabold' : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            Documents Checklist
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('financials')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-              activeTab === 'financials' ? 'bg-white text-slate-900 shadow-2xs font-extrabold' : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            Financial Proofs
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('mandates')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-              activeTab === 'mandates' ? 'bg-white text-slate-900 shadow-2xs font-extrabold' : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            Mandates &amp; Insurance
-          </button>
-        </div>
+      {/* ── MAIN HEADLINE & SUBTITLE (Clean, Uncrowded Typography) ── */}
+      <div className="space-y-2 text-left pt-1">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0a1b39] tracking-tight leading-tight">
+          Travel Requirements: {cleanFrom} <span className="text-slate-400 font-normal">→</span> {cleanTo}
+        </h2>
+        <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed max-w-4xl">
+          <span className="font-bold text-slate-700">{cleanPurposeLabel}</span>
+          {' '}•{' '}
+          <span className="font-semibold text-slate-600">{data?.visa_type || 'Official Entry Visa'}</span>
+          {' '}•{' '}
+          <span>Information checked against {data?.official_source_name || `${cleanTo} official consular sources`}</span>
+        </p>
       </div>
 
       {/* ── MAIN CONTENT GRID ── */}

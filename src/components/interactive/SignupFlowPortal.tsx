@@ -82,69 +82,77 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                         </div>
 
                         {/* Two Role Choice Cards */}
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 py-2">
+                        <div className="flex flex-col sm:flex-row items-stretch justify-center gap-6 sm:gap-8 py-2">
                             
-                            {/* Traveller Option (Vibrant Teal / Emerald Theme) */}
+                            {/* Traveller Option (Exact Travl Logo Green Theme: #00A86B) */}
                             <div 
                                 onClick={() => setMode("seeker")} 
-                                className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-teal-50/50 hover:bg-teal-50/90 p-6 rounded-2xl border border-teal-200/90 hover:border-[#00a896] hover:shadow-xl hover:shadow-teal-500/15 transition-all font-sans"
+                                className="group flex flex-col items-center justify-between text-center cursor-pointer w-full sm:w-[260px] bg-emerald-50/40 hover:bg-emerald-50/80 p-6 rounded-3xl border-2 border-[#00A86B]/30 hover:border-[#00A86B] hover:shadow-xl hover:shadow-[#00A86B]/15 transition-all font-sans"
                             >
-                                <div className="relative circle-float-1">
-                                    <div className="absolute inset-[-6px] rounded-full border-2 border-teal-400/40 pulse-ring" />
-                                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-[#00a896] to-emerald-500 flex items-center justify-center shadow-lg shadow-teal-600/30 group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
-                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="w-10 h-10 sm:w-12 sm:h-12">
-                                            <circle cx="12" cy="8" r="3.5" fill="#ffffff" opacity="0.3" />
-                                            <circle cx="12" cy="8" r="3.5" stroke="#ffffff" strokeWidth="2" fill="none" />
-                                            <path d="M5 20c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" fill="none" />
-                                            <path d="M16 4l1.5 1.5L16 7" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M17.5 5.5H15" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                                        </svg>
+                                <div className="flex flex-col items-center">
+                                    <div className="relative circle-float-1 mb-1">
+                                        <div className="absolute inset-[-6px] rounded-full border-2 border-[#00A86B]/30 pulse-ring" />
+                                        <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-[#00A86B] flex items-center justify-center shadow-lg shadow-[#00A86B]/30 group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
+                                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="w-9 h-9 sm:w-10 sm:h-10">
+                                                <circle cx="12" cy="8" r="3.5" fill="#ffffff" opacity="0.3" />
+                                                <circle cx="12" cy="8" r="3.5" stroke="#ffffff" strokeWidth="2" fill="none" />
+                                                <path d="M5 20c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" fill="none" />
+                                                <path d="M16 4l1.5 1.5L16 7" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M17.5 5.5H15" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                                            </svg>
+                                        </div>
                                     </div>
+                                    <h2 className="mt-3 text-lg font-black tracking-tight text-[#00A86B] transition-colors">
+                                        Traveller
+                                    </h2>
+                                    <span className="text-xs text-slate-500 max-w-[210px] mt-1 mb-5 font-medium leading-relaxed">
+                                        Find visas, self apply &amp; book verified experts
+                                    </span>
                                 </div>
-                                <h2 className="mt-4 text-lg font-bold tracking-tight text-slate-900 group-hover:text-[#00a896] transition-colors">
-                                    Traveller
-                                </h2>
-                                <span className="text-xs text-slate-500 max-w-[200px] mt-1 mb-4 font-medium leading-relaxed">
-                                    Find visas, self apply &amp; book verified experts
-                                </span>
-                                <button className="w-full sm:w-auto bg-[#00a896] hover:bg-[#008f80] text-white px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
-                                    Register as Traveller <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+
+                                <button className="w-full bg-[#00A86B] hover:bg-[#00925c] text-white py-2.5 px-6 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
+                                    <span>Register</span>
+                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </button>
                             </div>
 
                             {/* Divider */}
-                            <div className="flex flex-row sm:flex-col items-center gap-2 text-slate-400 font-bold text-xs tracking-widest font-sans">
+                            <div className="flex flex-row sm:flex-col items-center justify-center gap-2 text-slate-400 font-bold text-xs tracking-widest font-sans self-center">
                                 <div className="w-12 sm:w-px h-px sm:h-10 bg-slate-200" />
-                                <span>OR</span>
+                                <span className="text-[11px] font-extrabold text-slate-400">OR</span>
                                 <div className="w-12 sm:w-px h-px sm:h-10 bg-slate-200" />
                             </div>
 
                             {/* Service Provider Option */}
                             <a 
                                 href="/signup/expert"
-                                className="group flex flex-col items-center text-center cursor-pointer w-full sm:w-auto bg-slate-50 hover:bg-slate-100/80 p-6 rounded-2xl border border-slate-200 hover:border-slate-800 hover:shadow-xl transition-all font-sans"
+                                className="group flex flex-col items-center justify-between text-center cursor-pointer w-full sm:w-[260px] bg-slate-50 hover:bg-slate-100/90 p-6 rounded-3xl border-2 border-slate-200 hover:border-slate-800 hover:shadow-xl transition-all font-sans"
                             >
-                                <div className="relative circle-float-2">
-                                    <div className="absolute inset-[-6px] rounded-full border-2 border-slate-300 pulse-ring" />
-                                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#0c1a2e] flex items-center justify-center shadow-lg group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
-                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="w-10 h-10 sm:w-12 sm:h-12">
-                                            <rect x="5" y="2" width="14" height="20" rx="3" fill="#ffffff" opacity="0.2" />
-                                            <rect x="5" y="2" width="14" height="20" rx="3" stroke="#ffffff" strokeWidth="2" fill="none" />
-                                            <circle cx="12" cy="10" r="2.5" stroke="#ffffff" strokeWidth="2" fill="none" />
-                                            <path d="M8.5 16c0-1.5 1.6-2.8 3.5-2.8s3.5 1.3 3.5 2.8" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" fill="none" />
-                                            <circle cx="16" cy="5" r="0.9" fill="#ffffff" />
-                                            <circle cx="16" cy="7.5" r="0.9" fill="#ffffff" />
-                                        </svg>
+                                <div className="flex flex-col items-center">
+                                    <div className="relative circle-float-2 mb-1">
+                                        <div className="absolute inset-[-6px] rounded-full border-2 border-slate-300 pulse-ring" />
+                                        <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-[#0c1a2e] flex items-center justify-center shadow-lg group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
+                                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="w-9 h-9 sm:w-10 sm:h-10">
+                                                <rect x="5" y="2" width="14" height="20" rx="3" fill="#ffffff" opacity="0.2" />
+                                                <rect x="5" y="2" width="14" height="20" rx="3" stroke="#ffffff" strokeWidth="2" fill="none" />
+                                                <circle cx="12" cy="10" r="2.5" stroke="#ffffff" strokeWidth="2" fill="none" />
+                                                <path d="M8.5 16c0-1.5 1.6-2.8 3.5-2.8s3.5 1.3 3.5 2.8" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" fill="none" />
+                                                <circle cx="16" cy="5" r="0.9" fill="#ffffff" />
+                                                <circle cx="16" cy="7.5" r="0.9" fill="#ffffff" />
+                                            </svg>
+                                        </div>
                                     </div>
+                                    <h2 className="mt-3 text-lg font-black tracking-tight text-slate-900 group-hover:text-[#0c1a2e] transition-colors">
+                                        Service Provider
+                                    </h2>
+                                    <span className="text-xs text-slate-500 max-w-[210px] mt-1 mb-5 font-medium leading-relaxed">
+                                        Grow your global client consulting practice
+                                    </span>
                                 </div>
-                                <h2 className="mt-4 text-lg font-bold tracking-tight text-slate-900 group-hover:text-[#0c1a2e] transition-colors">
-                                    Service Provider
-                                </h2>
-                                <span className="text-xs text-slate-500 max-w-[200px] mt-1 mb-4 font-medium leading-relaxed">
-                                    Grow your global client consulting practice
-                                </span>
-                                <button className="w-full sm:w-auto bg-[#0c1a2e] hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
-                                    Register as Service Provider <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+
+                                <button className="w-full bg-[#0c1a2e] hover:bg-slate-800 text-white py-2.5 px-6 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
+                                    <span>Register</span>
+                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </button>
                             </a>
 

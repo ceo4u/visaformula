@@ -28,7 +28,7 @@ const isHome = pathname === '/' || pathname === '';
         </div>
 
         <!-- Desktop Navigation Links (Centered) -->
-        <nav class="hidden lg:flex items-center gap-4 xl:gap-8 font-plus-jakarta">
+        <nav aria-label="Main navigation" class="hidden lg:flex items-center gap-4 xl:gap-8 font-plus-jakarta">
             <!-- 1. Find Experts -->
             <div class="relative py-3 group">
                 <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
@@ -162,14 +162,14 @@ const isHome = pathname === '/' || pathname === '';
                 </a>
             </div>
 
-            <!-- Desktop Profile Dropdown (visible when logged in) -->
-            <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta">
+            <!-- Desktop Profile Dropdown (hydrated dynamically on client) -->
+            <div id="nav-profile-block" class="relative hidden py-2 group font-plus-jakarta" aria-hidden="true">
                 <button id="nav-profile-trigger" class="flex items-center gap-2.5 pl-1.5 pr-3.5 py-1.5 border rounded-full transition-all focus:outline-none shadow-2xs bg-slate-50 hover:bg-slate-100 text-slate-900 border-slate-200">
                     <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#00A86B] text-white shadow-2xs shrink-0" id="nav-profile-avatar-container">
                         <img id="nav-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                        <span class="font-bold text-xs" id="nav-profile-avatar-letters">U</span>
+                        <span class="font-bold text-xs" id="nav-profile-avatar-letters"></span>
                     </div>
-                    <span id="nav-profile-pill-name" class="font-medium text-xs max-w-[110px] truncate">My Account</span>
+                    <span id="nav-profile-pill-name" class="font-medium text-xs max-w-[110px] truncate"></span>
                     <ChevronDown class="w-3.5 h-3.5 shrink-0 text-slate-400" />
                 </button>
                 
@@ -178,7 +178,7 @@ const isHome = pathname === '/' || pathname === '';
                     <div class="bg-white rounded-xl border border-slate-100 shadow-xl p-2.5 flex flex-col gap-1.5">
                         <div class="px-3.5 py-2 border-b border-slate-100">
                             <div class="text-[10px] text-slate-400 font-bold tracking-wider">Signed in as</div>
-                            <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name">User Profile</div>
+                            <div class="text-sm font-bold text-black truncate mt-0.5" id="nav-profile-name"></div>
                         </div>
                         <a id="nav-profile-dashboard-link" href="/dashboard" class="flex items-center gap-2 px-3 py-2 rounded-lg text-[14px] font-semibold text-slate-700 hover:text-[#00A86B] hover:bg-emerald-50/70 transition-all group/item">
                             <LayoutDashboard class="w-4 h-4 text-slate-400 group-hover/item:text-[#00A86B] transition-colors" />
@@ -198,15 +198,15 @@ const isHome = pathname === '/' || pathname === '';
             <a href="/signup" id="mobile-top-signup-btn" class="bg-slate-900 hover:bg-slate-800 text-white !text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-[13px] sm:text-sm font-extrabold transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 inline-flex items-center justify-center whitespace-nowrap">
                 Sign Up
             </a>
-            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-slate-200 bg-[#00A86B] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm">
+            <a href="/dashboard" id="mobile-top-profile-btn" class="hidden items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-slate-200 bg-[#00A86B] text-white hover:scale-105 transition-all overflow-hidden shrink-0 shadow-sm" aria-hidden="true">
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
-                <span class="font-black text-xs sm:text-sm text-white bg-[#00A86B] w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters">U</span>
+                <span class="font-black text-xs sm:text-sm text-white bg-[#00A86B] w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters"></span>
             </a>
         </div>
     </div>
 
     <!-- Mobile Drawer Menu -->
-    <div id="mobile-menu-drawer" class="hidden lg:hidden w-full bg-white border-t border-gray-100 shadow-lg max-h-[calc(100vh-64px)] overflow-y-auto z-40 transition-all duration-300">
+    <div id="mobile-menu-drawer" aria-label="Mobile navigation" aria-hidden="true" class="hidden lg:hidden w-full bg-white border-t border-gray-100 shadow-lg max-h-[calc(100vh-64px)] overflow-y-auto z-40 transition-all duration-300">
         <div class="flex flex-col py-4 px-4 gap-1">
             
             <!-- Mobile Find Consultants Accordion -->

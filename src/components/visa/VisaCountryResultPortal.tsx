@@ -3921,10 +3921,12 @@ export function VisaCountryResultPortal({
           {hasVisaAlready === 'no' && activePurposeTab === 'tourism' && (
             <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-12 text-left space-y-8 animate-fadeIn">
               
-              {/* 1. STEP-BY-STEP TOURISM ROADMAP */}
+              {/* ================================================== */}
+              {/* 1. STEP-BY-STEP APPLICATION ROADMAP (3 STEPS) */}
+              {/* ================================================== */}
               <div className="space-y-6">
 
-                {/* ── STEP 1: SELECT CURATED EXPERIENCES & ITINERARY ── */}
+                {/* ── STEP 1: EXPLORE SIGHTS & EXPERIENCES (CLEAN & COMPACT) ── */}
                 <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
                     <div className="flex items-center gap-3">
@@ -3937,7 +3939,7 @@ export function VisaCountryResultPortal({
                             Step 1
                           </span>
                           <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
-                            Curated Itinerary &amp; Highlights in {countryName}
+                            Explore Top Attractions &amp; Sights
                           </h3>
                         </div>
                       </div>
@@ -3950,7 +3952,7 @@ export function VisaCountryResultPortal({
                         type="text"
                         value={tourSearchQuery}
                         onChange={(e) => setTourSearchQuery(e.target.value)}
-                        placeholder="Search attraction, city..."
+                        placeholder="Search attraction or city..."
                         className="w-full h-9 pl-8 pr-7 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none"
                       />
                       {tourSearchQuery && (
@@ -3965,7 +3967,7 @@ export function VisaCountryResultPortal({
                     </div>
                   </div>
 
-                  {/* Tours Cards Grid */}
+                  {/* Tours Cards Grid (Compact & Crisp) */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                     {getDestinationTours(countryName)
                       .filter(t => !tourSearchQuery || t.name.toLowerCase().includes(tourSearchQuery.toLowerCase()) || t.desc.toLowerCase().includes(tourSearchQuery.toLowerCase()))
@@ -4007,209 +4009,440 @@ export function VisaCountryResultPortal({
                   </div>
                 </div>
 
-                {/* ── STEP 2: VERIFIABLE FLIGHT & HOTEL PROOF ── */}
-                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                {/* ── STEP 2: SELECT TRAVEL STYLE (CHIPS) ── */}
+                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-3.5">
+                  <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
+                    <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                      2
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-200/70 px-2 py-0.5 rounded-md">
+                        Step 2
+                      </span>
+                      <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
+                        Select Travel Style &amp; Itinerary Type
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* Travel Style Chips */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {[
+                      { icon: '🏖️', name: 'Leisure & Sightseeing' },
+                      { icon: '🏛️', name: 'Heritage & UNESCO Culture' },
+                      { icon: '👨‍👩‍👧', name: 'Family Vacation & Theme Parks' },
+                      { icon: '💍', name: 'Honeymoon & Romantic Getaways' },
+                      { icon: '🎒', name: 'Solo Adventure & Hiking' },
+                      { icon: '💼', name: 'Business & Bleisure Travel' }
+                    ].map((style) => (
+                      <button
+                        key={style.name}
+                        type="button"
+                        onClick={() => setVisitPlanStatus(style.name)}
+                        className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
+                          visitPlanStatus === style.name
+                            ? 'bg-slate-950 text-white shadow-sm border border-slate-950 scale-[1.02]'
+                            : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80'
+                        }`}
+                      >
+                        <span>{style.icon}</span>
+                        <span>{style.name}</span>
+                        {visitPlanStatus === style.name && <Check className="w-3.5 h-3.5 text-emerald-400 ml-1" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── STEP 3: FLIGHT & HOTEL PROOF CLEARANCE ── */}
+                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-3.5">
+                  <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
+                    <div className="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                      3
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200/70 px-2 py-0.5 rounded-md">
+                        Step 3
+                      </span>
+                      <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
+                        Verifiable Flight Itinerary &amp; Hotel Lodging Clearance
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* Compact Status Card */}
+                  <div className="bg-gradient-to-r from-emerald-50/70 via-slate-50 to-emerald-50/40 border border-emerald-200/80 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
-                        2
+                      <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm shrink-0">
+                        ✓
                       </div>
                       <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md">
-                            Step 2
-                          </span>
-                          <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
-                            Verifiable Flight Itinerary &amp; Hotel Proof for Visa
-                          </h3>
-                        </div>
+                        <h4 className="text-xs sm:text-sm font-bold text-slate-950">
+                          Flight Reservation PNR &amp; Lodging Proof Validated
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          Official embassy and VFS compliant booking documentation attached. Choose your filing pathway below.
+                        </p>
                       </div>
                     </div>
 
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
-                      <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                      <span>Embassy &amp; VFS Compliant</span>
-                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-bold shrink-0 self-start sm:self-auto shadow-2xs">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Ready for Visa Submission</span>
+                    </span>
                   </div>
+                </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
-                          <span>✈️</span> Flight Reservation with Verifiable PNR
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700">Official Hold</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
-                        Hold confirmed return flight itinerary without paying full non-refundable ticket fares before visa approval.
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => setFlightPnrBooked(!flightPnrBooked)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                          flightPnrBooked ? 'bg-emerald-100 text-emerald-900 font-extrabold' : 'bg-slate-900 hover:bg-slate-800 text-white'
-                        }`}
-                      >
-                        {flightPnrBooked ? 'Flight PNR Attached ✓' : 'Generate Verifiable Flight PNR'}
-                      </button>
-                    </div>
+              </div>
 
-                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
-                          <span>🏨</span> Free-Cancellation Hotel Proof
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700">Instant Voucher</span>
+              {/* ================================================== */}
+              {/* 2. DUAL CHOICE ACTION TABS (POST STEP 3) */}
+              {/* ================================================== */}
+              <div className="space-y-6 pt-4">
+                
+                {/* Section Title & Segment Controller */}
+                <div className="text-center space-y-3">
+                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#00A86B] bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
+                    Visa Application Pathways
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-heading font-black text-slate-950 tracking-tight">
+                    How would you like to apply for your {countryName} Tourist Visa?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-xl mx-auto">
+                    Choose between connecting with certified local travel visa experts or applying directly online.
+                  </p>
+
+                  {/* Clean Segment Switch Matching Capsule */}
+                  <div className="pt-2 flex items-center justify-center">
+                    <div className="w-full sm:w-auto bg-white border border-slate-200/90 rounded-full py-2.5 sm:py-3 px-3 sm:px-5 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
+                      <div className="bg-slate-100 rounded-full p-1.5 inline-flex items-center gap-1.5 border border-slate-200/80 shrink-0 shadow-inner max-w-full overflow-x-auto">
+                        
+                        {/* Find Consultants Near Me */}
+                        <button
+                          type="button"
+                          onClick={() => setTourismActionTab('consultants')}
+                          className={`px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all cursor-pointer flex items-center gap-2 select-none active:scale-95 whitespace-nowrap ${
+                            tourismActionTab === 'consultants'
+                              ? 'bg-slate-950 text-white shadow-md scale-[1.03]'
+                              : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60'
+                          }`}
+                        >
+                          {tourismActionTab === 'consultants' ? (
+                            <>
+                              <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
+                              <span className="tracking-wide">Find Consultants Near Me</span>
+                              <Check className="w-4 h-4 text-[#00E599] stroke-[3]" />
+                            </>
+                          ) : (
+                            <>
+                              <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                              <span className="tracking-wide">Find Consultants Near Me</span>
+                            </>
+                          )}
+                        </button>
+
+                        {/* Self Apply */}
+                        <button
+                          type="button"
+                          onClick={() => setTourismActionTab('self_apply')}
+                          className={`px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all cursor-pointer flex items-center gap-2 select-none active:scale-95 whitespace-nowrap ${
+                            tourismActionTab === 'self_apply'
+                              ? 'bg-slate-950 text-white shadow-md scale-[1.03]'
+                              : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60'
+                          }`}
+                        >
+                          {tourismActionTab === 'self_apply' ? (
+                            <>
+                              <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
+                              <span className="tracking-wide">Self Apply</span>
+                              <Check className="w-4 h-4 text-[#00E599] stroke-[3]" />
+                            </>
+                          ) : (
+                            <>
+                              <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                              <span className="tracking-wide">Self Apply</span>
+                            </>
+                          )}
+                        </button>
+
                       </div>
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
-                        Get verified hotel reservation vouchers covering all intended Schengen or international travel dates.
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => setItineraryGenerated(!itineraryGenerated)}
-                        className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                          itineraryGenerated ? 'bg-emerald-100 text-emerald-900 font-extrabold' : 'bg-slate-900 hover:bg-slate-800 text-white'
-                        }`}
-                      >
-                        {itineraryGenerated ? 'Hotel Vouchers Attached ✓' : 'Generate Hotel Booking Proof'}
-                      </button>
                     </div>
                   </div>
                 </div>
 
-                {/* ── STEP 3: DUAL CHOICE (CONSULTANTS OR SELF-APPLY) ── */}
-                <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white rounded-[24px] p-5 sm:p-6 shadow-sm space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-0.5 rounded-md">
-                          Step 3 • Choose Filing Path
-                        </span>
-                      </div>
-                      <h4 className="text-lg font-heading font-black text-white">
-                        How would you like to apply for your {countryName} Tourist Visa?
-                      </h4>
-                    </div>
-
-                    <div className="inline-flex p-1 bg-white/10 backdrop-blur-md rounded-full border border-white/15 shrink-0 self-start sm:self-auto">
-                      <button
-                        type="button"
-                        onClick={() => setTourismActionTab('consultants')}
-                        className={`px-5 py-2 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
-                          tourismActionTab === 'consultants' ? 'bg-white text-slate-950 shadow-md font-black' : 'text-slate-300 hover:text-white'
-                        }`}
-                      >
-                        Find Consultants
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setTourismActionTab('self_apply')}
-                        className={`px-5 py-2 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
-                          tourismActionTab === 'self_apply' ? 'bg-white text-slate-950 shadow-md font-black' : 'text-slate-300 hover:text-white'
-                        }`}
-                      >
-                        Self Apply Concierge
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* CONTENT: TOURIST CONSULTANTS */}
+                {/* ── CONTENT: FIND TOURIST CONSULTANTS ── */}
                 {tourismActionTab === 'consultants' && (
-                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-5 text-left">
-                    <div className="border-b border-slate-100 pb-4 space-y-1">
+                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-9 shadow-[0_2px_16px_rgba(0,0,0,0.03)] space-y-6 animate-fadeIn text-left">
+                    
+                    {/* Header */}
+                    <div className="space-y-1.5 border-b border-slate-100 pb-5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-0.5 rounded-md">
+                          Verified Advisory
+                        </span>
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Independent Legal Counsel</span>
+                      </div>
                       <h4 className="text-xl font-heading font-black text-slate-950">
-                        Verified Tourist Visa Filing Lawyers &amp; Agents for {countryName}
+                        Search Verified Tourist Visa Filing Experts &amp; Lawyers
                       </h4>
                       <p className="text-xs text-slate-500 font-medium">
-                        Connect with top-rated travel visa filing specialists to manage your embassy documentation and slot booking.
+                        Connect with verified immigration lawyers &amp; certified advisors specializing in {countryName} visitor visas.
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {VERIFIED_STUDY_CONSULTANTS.slice(0, 2).map((c) => (
-                        <div key={c.id} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between space-y-3">
-                          <div className="flex items-start gap-3">
-                            <img src={c.image} alt={c.name} className="w-12 h-12 rounded-xl object-cover" />
-                            <div className="min-w-0">
-                              <h5 className="font-bold text-sm text-slate-900 truncate">{c.name}</h5>
-                              <span className="text-[11px] text-slate-500 block truncate">{c.agencyName}</span>
-                              <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 mt-1 inline-block">
-                                ⭐ {c.rating} ({c.reviews} reviews) • {c.successRate} Success
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => setBookingModalConsultant(c)}
-                            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer"
-                          >
-                            Book Consultation ({c.fee})
-                          </button>
+                    {/* Search & Filter Engine Box */}
+                    <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-4">
+                      <div className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                        <Search className="w-4 h-4 text-[#00A86B]" />
+                        <span>Search Consultants Near You</span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 items-end">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-slate-700">
+                            Your City / Location / Pincode
+                          </label>
+                          <input
+                            type="text"
+                            value={consultantLocationQuery}
+                            onChange={(e) => setConsultantLocationQuery(e.target.value)}
+                            placeholder="e.g. Hyderabad, Mumbai, Delhi, Remote"
+                            className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-2xs outline-none"
+                          />
                         </div>
-                      ))}
+
+                        <div>
+                          <PortalCustomSelect
+                            label="Destination Specialization"
+                            value={consultantCountryFilter}
+                            onChange={setConsultantCountryFilter}
+                            placeholder="Select Destination"
+                            options={[
+                              `${countryName} (Current Destination)`,
+                              "All Countries (Global)",
+                              "United Kingdom (UKVI Visitor)",
+                              "Schengen Area (Type C 90-Day)",
+                              "United States (B1/B2)",
+                              "Canada (TRV / Visitor)",
+                              "Australia & New Zealand (eVisitor)"
+                            ]}
+                          />
+                        </div>
+
+                        <div>
+                          <PortalCustomSelect
+                            label="Service / Advisory Type"
+                            value={consultantServiceType}
+                            onChange={setConsultantServiceType}
+                            placeholder="Select Service"
+                            options={[
+                              "Tourist Visa Filing & Appointment",
+                              "Refusal Defense & Reapplication",
+                              "Cover Letter & Financials Audit",
+                              "Express Biometric Booking"
+                            ]}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Primary Search CTA */}
+                      <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-2 text-[11px] text-slate-500 font-semibold">
+                          <Shield className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>100% Escrow Protected • Verified Govt License Holders Only</span>
+                        </div>
+
+                        <a
+                          href={`/find-experts?category=tourist&country=${encodeURIComponent(consultantCountryFilter.includes('All Countries') ? countryName : consultantCountryFilter.split('(')[0].trim())}${consultantLocationQuery ? `&city=${encodeURIComponent(consultantLocationQuery)}` : ''}${consultantServiceType ? `&service=${encodeURIComponent(consultantServiceType)}` : ''}`}
+                          className="h-11 px-6 rounded-xl bg-slate-950 hover:bg-slate-900 text-white text-xs font-extrabold shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 shrink-0"
+                        >
+                          <Search className="w-4 h-4 text-emerald-400" />
+                          <span>Search Verified Experts for {countryName}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
                     </div>
+
                   </div>
                 )}
 
-                {/* CONTENT: TOURIST SELF-APPLY CONCIERGE */}
+                {/* ── TAB 2 CONTENT: SELF APPLY (CONCIERGE VAULT) ── */}
                 {tourismActionTab === 'self_apply' && (
-                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6 text-left">
-                    <div className="border-b border-slate-100 pb-4 space-y-1">
-                      <h4 className="text-xl font-heading font-black text-slate-950">
-                        Self-Apply Tourist Visa Concierge &amp; Document Vault
-                      </h4>
-                      <p className="text-xs text-slate-500 font-medium">
-                        Upload your core travel documents for automated OCR validation, checklist auditing, and VFS submission.
-                      </p>
+                  <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6 animate-fadeIn text-left">
+                    
+                    {/* Core Document Upload Items */}
+                    <div className="space-y-3">
+                      <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                        1. Mandatory Document Vault Checklist
+                      </h5>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {[
+                          { key: 'passport', title: 'Passport Scan (Front & Back)', hint: 'Min. 6 months validity & blank pages' },
+                          { key: 'flights_hotel', title: 'Flight Itinerary & Hotel Proof', hint: 'Confirmed return PNR & hotel vouchers' },
+                          { key: 'bank_statements', title: 'Bank Statements (6 Months)', hint: 'Official bank stamp & liquid funds' },
+                          { key: 'leave_noc', title: 'Employer Leave NOC / ITR', hint: 'Approved leave letter & tax returns' },
+                          { key: 'insurance', title: 'Travel Medical Insurance', hint: '€30,000+ emergency medical cover' },
+                          { key: 'itinerary', title: 'Day-by-Day Travel Itinerary', hint: 'Trip activity plan & cover letter' }
+                        ].map((doc) => {
+                          const uploaded = uploadedDocuments[doc.key];
+                          const isCurrentlyUploading = isUploadingDocKey === doc.key;
+                          const fileInputId = `tour-doc-file-input-${doc.key}`;
+
+                          return (
+                            <div
+                              key={doc.key}
+                              className={`p-4 rounded-2xl border transition-all text-left space-y-2.5 flex flex-col justify-between ${
+                                uploaded
+                                  ? 'bg-emerald-50/40 border-emerald-300'
+                                  : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                              }`}
+                            >
+                              <input
+                                id={fileInputId}
+                                type="file"
+                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                                className="hidden"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    setIsUploadingDocKey(doc.key);
+                                    const fileSizeFormatted = file.size > 1024 * 1024
+                                      ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+                                      : `${Math.round(file.size / 1024)} KB`;
+                                    
+                                    setTimeout(() => {
+                                      setUploadedDocuments(prev => ({
+                                        ...prev,
+                                        [doc.key]: {
+                                          fileName: file.name,
+                                          size: fileSizeFormatted,
+                                          status: 'verified' as const,
+                                          timestamp: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                                        }
+                                      }));
+                                      setIsUploadingDocKey(null);
+                                    }, 600);
+                                  }
+                                }}
+                              />
+
+                              <div className="space-y-1">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-bold text-slate-950 truncate">{doc.title}</span>
+                                  {uploaded ? (
+                                    <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
+                                  ) : (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                                      Required
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-[11px] text-slate-500 leading-tight">{doc.hint}</p>
+                              </div>
+
+                              {uploaded ? (
+                                <div className="flex items-center justify-between text-[11px] text-slate-600 bg-white/90 p-2.5 rounded-xl border border-emerald-200 gap-2">
+                                  <div className="min-w-0 flex-1">
+                                    <span className="font-bold text-slate-900 block truncate text-[11px]">{uploaded.fileName}</span>
+                                    <span className="text-[10px] text-slate-400 font-medium block">{uploaded.size} • {uploaded.timestamp}</span>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => document.getElementById(fileInputId)?.click()}
+                                    className="text-[10px] font-bold text-slate-500 hover:text-slate-900 underline shrink-0 cursor-pointer"
+                                  >
+                                    Replace
+                                  </button>
+                                </div>
+                              ) : (
+                                <button
+                                  type="button"
+                                  disabled={isCurrentlyUploading}
+                                  onClick={() => document.getElementById(fileInputId)?.click()}
+                                  className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs active:scale-95"
+                                >
+                                  {isCurrentlyUploading ? (
+                                    <>
+                                      <span className="w-3.5 h-3.5 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                                      <span>Verifying via OCR...</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Upload className="w-3.5 h-3.5 text-slate-500" />
+                                      <span>Upload &amp; Store</span>
+                                    </>
+                                  )}
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
 
-                    {/* Document Slots */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      {[
-                        { key: 'passport', title: 'Passport Scan (Front & Back)', hint: 'Min. 6 months validity & 2 blank pages' },
-                        { key: 'flights', title: 'Confirmed Flight & Hotel Proof', hint: 'Round-trip tickets & lodging evidence' },
-                        { key: 'bank_statement', title: 'Bank Statement & Funds', hint: 'Last 3-6 months with bank seal' },
-                        { key: 'leave_noc', title: 'Employer Leave NOC / ITR', hint: 'Approved leave letter & tax returns' },
-                        { key: 'insurance', title: 'Travel Medical Insurance', hint: '€30,000+ emergency medical cover' },
-                        { key: 'itinerary', title: 'Day-by-Day Travel Itinerary', hint: 'Trip activity plan & cover letter' }
-                      ].map((doc) => {
-                        const uploaded = uploadedDocuments[doc.key];
-                        return (
-                          <div key={doc.key} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 space-y-2 flex flex-col justify-between">
-                            <div className="space-y-1">
-                              <span className="text-xs font-bold text-slate-900 block truncate">{doc.title}</span>
-                              <span className="text-[10px] text-slate-500 block">{doc.hint}</span>
-                            </div>
-                            {uploaded ? (
-                              <div className="flex items-center justify-between text-xs bg-white p-2 rounded-xl border border-emerald-200">
-                                <span className="font-bold text-slate-900 truncate text-[11px]">{uploaded.fileName}</span>
-                                <span className="text-[10px] text-emerald-700 font-bold">✓</span>
+                    {/* Concierge Addons */}
+                    <div className="space-y-3 pt-2">
+                      <div className="flex items-center justify-between">
+                        <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                          2. Smart Concierge Add-Ons (Optional)
+                        </h5>
+                        <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                          Instant Approval Boosters
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        {[
+                          { id: 'flight_reservation', name: 'Verifiable Flight Itinerary', price: 1499, desc: 'Hold confirmed return ticket with live PNR for embassy filing.' },
+                          { id: 'travel_insurance', name: '€30,000 Travel Medical Cover', price: 2499, desc: '100% compliant emergency health & repatriation policy.' },
+                          { id: 'cover_letter', name: 'Expert Cover Letter Drafting', price: 999, desc: 'Tailored visa application cover letter addressing consular rules.' },
+                          { id: 'vfs_concierge', name: 'VFS Appointment Slot Concierge', price: 1500, desc: 'Automated monitoring & booking for prime slot openings.' }
+                        ].map((addon) => {
+                          const isSelected = selectedConciergeAddons.includes(addon.id);
+                          return (
+                            <div
+                              key={addon.id}
+                              onClick={() => {
+                                setSelectedConciergeAddons(prev =>
+                                  prev.includes(addon.id) ? prev.filter(x => x !== addon.id) : [...prev, addon.id]
+                                );
+                              }}
+                              className={`p-3.5 rounded-2xl border transition-all cursor-pointer text-left space-y-1.5 select-none ${
+                                isSelected
+                                  ? 'bg-slate-950 text-white border-slate-950 shadow-md'
+                                  : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <h6 className={`text-xs font-bold truncate ${isSelected ? 'text-white' : 'text-slate-900'}`}>
+                                  {addon.name}
+                                </h6>
+                                <span className={`text-xs font-black shrink-0 ${isSelected ? 'text-emerald-400' : 'text-slate-900'}`}>
+                                  +₹{addon.price.toLocaleString()}
+                                </span>
                               </div>
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setUploadedDocuments(prev => ({
-                                    ...prev,
-                                    [doc.key]: { fileName: `${doc.key}_document.pdf`, size: '1.8 MB', status: 'verified', timestamp: 'Verified via OCR' }
-                                  }));
-                                }}
-                                className="w-full py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold cursor-pointer"
-                              >
-                                📤 Upload &amp; Store
-                              </button>
-                            )}
-                          </div>
-                        );
-                      })}
+                              <p className={`text-[11px] leading-relaxed ${isSelected ? 'text-slate-300' : 'text-slate-600'}`}>
+                                {addon.desc}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     {/* Final Submission Bar */}
                     <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
-                        <span className="text-xs text-slate-500 font-medium block">Tourist Visa Concierge Filing:</span>
-                        <strong className="text-xl sm:text-2xl font-black text-slate-950">₹1,999 Total</strong>
+                        <span className="text-xs text-slate-500 font-medium block">Total Concierge Package:</span>
+                        <strong className="text-xl sm:text-2xl font-black text-slate-950">
+                          ₹{(1999 + selectedConciergeAddons.reduce((sum, id) => {
+                            if (id === 'flight_reservation') return sum + 1499;
+                            if (id === 'travel_insurance') return sum + 2499;
+                            if (id === 'cover_letter') return sum + 999;
+                            if (id === 'vfs_concierge') return sum + 1500;
+                            return sum;
+                          }, 0)).toLocaleString()}
+                        </strong>
                       </div>
 
                       <button
@@ -4218,10 +4451,11 @@ export function VisaCountryResultPortal({
                         className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                       >
                         <ShieldCheck className="w-5 h-5" />
-                        <span>Submit Tourist Dossier for VFS &amp; Embassy Filing</span>
+                        <span>Submit Complete Dossier for AI &amp; Concierge Filing</span>
                         <ArrowRight className="w-4 h-4 stroke-[3]" />
                       </button>
                     </div>
+
                   </div>
                 )}
 
@@ -4234,10 +4468,12 @@ export function VisaCountryResultPortal({
           {hasVisaAlready === 'no' && activePurposeTab === 'work' && (
             <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-12 text-left space-y-8 animate-fadeIn">
               
-              {/* 1. STEP-BY-STEP WORK ROADMAP */}
+              {/* ================================================== */}
+              {/* 1. STEP-BY-STEP WORK ROADMAP (3 STEPS) */}
+              {/* ================================================== */}
               <div className="space-y-6">
 
-                {/* ── STEP 1: BROWSE SPONSORING JOBS & EMPLOYER NETWORK ── */}
+                {/* ── STEP 1: SPONSORING EMPLOYERS (CLEAN & COMPACT) ── */}
                 <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
                     <div className="flex items-center gap-3">
@@ -4250,7 +4486,7 @@ export function VisaCountryResultPortal({
                             Step 1
                           </span>
                           <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
-                            Sponsoring Employers &amp; Open Roles in {countryName}
+                            Find Sponsoring Employers &amp; Open Roles
                           </h3>
                         </div>
                       </div>
@@ -4263,7 +4499,7 @@ export function VisaCountryResultPortal({
                         type="text"
                         value={jobSearchQuery}
                         onChange={(e) => setJobSearchQuery(e.target.value)}
-                        placeholder="Search job title, role..."
+                        placeholder="Search job title, company..."
                         className="w-full h-9 pl-8 pr-7 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none"
                       />
                       {jobSearchQuery && (
@@ -4278,7 +4514,7 @@ export function VisaCountryResultPortal({
                     </div>
                   </div>
 
-                  {/* Jobs Cards Grid */}
+                  {/* Jobs Cards Grid (Compact & Crisp) */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                     {getDestinationJobs(countryName)
                       .filter(j => !jobSearchQuery || j.title.toLowerCase().includes(jobSearchQuery.toLowerCase()) || j.desc.toLowerCase().includes(jobSearchQuery.toLowerCase()))
@@ -4317,185 +4553,440 @@ export function VisaCountryResultPortal({
                   </div>
                 </div>
 
-                {/* ── STEP 2: CREDENTIAL & POINTS ASSESSMENT ── */}
-                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                {/* ── STEP 2: SELECT OCCUPATION DOMAIN (CHIPS) ── */}
+                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-3.5">
+                  <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
+                    <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                      2
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-200/70 px-2 py-0.5 rounded-md">
+                        Step 2
+                      </span>
+                      <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
+                        Select Industry Domain &amp; Speciality
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* Domain Selector Chips */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {[
+                      { icon: '💻', name: 'Tech / Software & AI' },
+                      { icon: '🏥', name: 'Healthcare & Nursing' },
+                      { icon: '📈', name: 'Finance, Quant & Banking' },
+                      { icon: '🏗️', name: 'Engineering & Construction' },
+                      { icon: '🧪', name: 'Life Sciences & Biotech' },
+                      { icon: '⚖️', name: 'Corporate Legal & Advisory' }
+                    ].map((dom) => (
+                      <button
+                        key={dom.name}
+                        type="button"
+                        onClick={() => setWorkDomain(dom.name)}
+                        className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 select-none ${
+                          workDomain === dom.name
+                            ? 'bg-slate-950 text-white shadow-sm border border-slate-950 scale-[1.02]'
+                            : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80'
+                        }`}
+                      >
+                        <span>{dom.icon}</span>
+                        <span>{dom.name}</span>
+                        {workDomain === dom.name && <Check className="w-3.5 h-3.5 text-emerald-400 ml-1" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── STEP 3: WORK AUTHORIZATION & POINTS CLEARANCE ── */}
+                <div className="bg-white border border-slate-200/90 rounded-[24px] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-3.5">
+                  <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
+                    <div className="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                      3
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200/70 px-2 py-0.5 rounded-md">
+                        Step 3
+                      </span>
+                      <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
+                        Certificate of Sponsorship &amp; 70-Points Clearance
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* Compact Status Card */}
+                  <div className="bg-gradient-to-r from-emerald-50/70 via-slate-50 to-emerald-50/40 border border-emerald-200/80 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
-                        2
+                      <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm shrink-0">
+                        ✓
                       </div>
                       <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md">
-                            Step 2
-                          </span>
-                          <h3 className="text-base sm:text-lg font-heading font-black text-slate-950">
-                            Points Calculation &amp; Skills Assessment ({countryName})
-                          </h3>
-                        </div>
+                        <h4 className="text-xs sm:text-sm font-bold text-slate-950">
+                          CoS Sponsor Reference &amp; Skills Equivalency Validated
+                        </h4>
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          70-point threshold satisfied under Points-Based Immigration System. Choose your filing pathway below.
+                        </p>
                       </div>
                     </div>
 
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
-                      <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                      <span>70 Points Threshold Met</span>
-                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-bold shrink-0 self-start sm:self-auto shadow-2xs">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Ready for Visa Submission</span>
+                    </span>
                   </div>
+                </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
-                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-                      <span className="text-xs font-bold text-slate-900 block">Job Offer from Sponsor</span>
-                      <span className="text-emerald-700 font-extrabold text-xs block">+20 Points (Mandatory)</span>
-                      <p className="text-[10px] text-slate-500">Certificate of Sponsorship (CoS) from licensed employer.</p>
-                    </div>
+              </div>
 
-                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-                      <span className="text-xs font-bold text-slate-900 block">Appropriate Skill Level</span>
-                      <span className="text-emerald-700 font-extrabold text-xs block">+20 Points (RQF Level 3+)</span>
-                      <p className="text-[10px] text-slate-500">Degree or professional equivalent occupation code.</p>
-                    </div>
+              {/* ================================================== */}
+              {/* 2. DUAL CHOICE ACTION TABS (POST STEP 3) */}
+              {/* ================================================== */}
+              <div className="space-y-6 pt-4">
+                
+                {/* Section Title & Segment Controller */}
+                <div className="text-center space-y-3">
+                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#00A86B] bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
+                    Visa Application Pathways
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-heading font-black text-slate-950 tracking-tight">
+                    How would you like to apply for your {countryName} Work Visa?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-xl mx-auto">
+                    Choose between connecting with licensed corporate solicitors or applying directly online.
+                  </p>
 
-                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-                      <span className="text-xs font-bold text-slate-900 block">English Language (B1+)</span>
-                      <span className="text-emerald-700 font-extrabold text-xs block">+10 Points (SELT/Degree)</span>
-                      <p className="text-[10px] text-slate-500">IELTS for UKVI or accredited English degree.</p>
+                  {/* Clean Segment Switch Matching Capsule */}
+                  <div className="pt-2 flex items-center justify-center">
+                    <div className="w-full sm:w-auto bg-white border border-slate-200/90 rounded-full py-2.5 sm:py-3 px-3 sm:px-5 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
+                      <div className="bg-slate-100 rounded-full p-1.5 inline-flex items-center gap-1.5 border border-slate-200/80 shrink-0 shadow-inner max-w-full overflow-x-auto">
+                        
+                        {/* Find Consultants Near Me */}
+                        <button
+                          type="button"
+                          onClick={() => setWorkActionTab('consultants')}
+                          className={`px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all cursor-pointer flex items-center gap-2 select-none active:scale-95 whitespace-nowrap ${
+                            workActionTab === 'consultants'
+                              ? 'bg-slate-950 text-white shadow-md scale-[1.03]'
+                              : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60'
+                          }`}
+                        >
+                          {workActionTab === 'consultants' ? (
+                            <>
+                              <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
+                              <span className="tracking-wide">Find Solicitors Near Me</span>
+                              <Check className="w-4 h-4 text-[#00E599] stroke-[3]" />
+                            </>
+                          ) : (
+                            <>
+                              <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                              <span className="tracking-wide">Find Solicitors Near Me</span>
+                            </>
+                          )}
+                        </button>
+
+                        {/* Self Apply */}
+                        <button
+                          type="button"
+                          onClick={() => setWorkActionTab('self_apply')}
+                          className={`px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all cursor-pointer flex items-center gap-2 select-none active:scale-95 whitespace-nowrap ${
+                            workActionTab === 'self_apply'
+                              ? 'bg-slate-950 text-white shadow-md scale-[1.03]'
+                              : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60'
+                          }`}
+                        >
+                          {workActionTab === 'self_apply' ? (
+                            <>
+                              <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] shrink-0 animate-pulse" />
+                              <span className="tracking-wide">Self Apply</span>
+                              <Check className="w-4 h-4 text-[#00E599] stroke-[3]" />
+                            </>
+                          ) : (
+                            <>
+                              <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 shrink-0" />
+                              <span className="tracking-wide">Self Apply</span>
+                            </>
+                          )}
+                        </button>
+
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* ── STEP 3: DUAL CHOICE (WORK SOLICITORS OR SELF-APPLY) ── */}
-                <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white rounded-[24px] p-5 sm:p-6 shadow-sm space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-0.5 rounded-md">
-                          Step 3 • Choose Filing Path
-                        </span>
-                      </div>
-                      <h4 className="text-lg font-heading font-black text-white">
-                        How would you like to apply for your {countryName} Work Visa?
-                      </h4>
-                    </div>
-
-                    <div className="inline-flex p-1 bg-white/10 backdrop-blur-md rounded-full border border-white/15 shrink-0 self-start sm:self-auto">
-                      <button
-                        type="button"
-                        onClick={() => setWorkActionTab('consultants')}
-                        className={`px-5 py-2 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
-                          workActionTab === 'consultants' ? 'bg-white text-slate-950 shadow-md font-black' : 'text-slate-300 hover:text-white'
-                        }`}
-                      >
-                        Find Work Solicitors
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setWorkActionTab('self_apply')}
-                        className={`px-5 py-2 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
-                          workActionTab === 'self_apply' ? 'bg-white text-slate-950 shadow-md font-black' : 'text-slate-300 hover:text-white'
-                        }`}
-                      >
-                        Self Apply Concierge
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* CONTENT: WORK SOLICITORS */}
+                {/* ── CONTENT: FIND WORK SOLICITORS ── */}
                 {workActionTab === 'consultants' && (
-                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-5 text-left">
-                    <div className="border-b border-slate-100 pb-4 space-y-1">
+                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-9 shadow-[0_2px_16px_rgba(0,0,0,0.03)] space-y-6 animate-fadeIn text-left">
+                    
+                    {/* Header */}
+                    <div className="space-y-1.5 border-b border-slate-100 pb-5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2.5 py-0.5 rounded-md">
+                          Verified Advisory
+                        </span>
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Independent Legal Counsel</span>
+                      </div>
                       <h4 className="text-xl font-heading font-black text-slate-950">
-                        Licensed Work Visa Solicitors &amp; Corporate Immigration Counsel
+                        Search Licensed Work Visa Solicitors &amp; Corporate Counsel
                       </h4>
                       <p className="text-xs text-slate-500 font-medium">
-                        Connect with licensed immigration solicitors specialized in Skilled Worker visas, CoS audits, and employment residency.
+                        Connect with licensed solicitors specialized in Skilled Worker visas, CoS audits, and employment residency in {countryName}.
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {VERIFIED_STUDY_CONSULTANTS.slice(0, 2).map((c) => (
-                        <div key={c.id} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between space-y-3">
-                          <div className="flex items-start gap-3">
-                            <img src={c.image} alt={c.name} className="w-12 h-12 rounded-xl object-cover" />
-                            <div className="min-w-0">
-                              <h5 className="font-bold text-sm text-slate-900 truncate">{c.name}</h5>
-                              <span className="text-[11px] text-slate-500 block truncate">{c.agencyName}</span>
-                              <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 mt-1 inline-block">
-                                ⭐ {c.rating} ({c.reviews} reviews) • {c.license}
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => setBookingModalConsultant(c)}
-                            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer"
-                          >
-                            Book Legal Consultation ({c.fee})
-                          </button>
+                    {/* Search & Filter Engine Box */}
+                    <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-4">
+                      <div className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                        <Search className="w-4 h-4 text-[#00A86B]" />
+                        <span>Search Solicitors Near You</span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 items-end">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-slate-700">
+                            Your City / Location / Pincode
+                          </label>
+                          <input
+                            type="text"
+                            value={consultantLocationQuery}
+                            onChange={(e) => setConsultantLocationQuery(e.target.value)}
+                            placeholder="e.g. Hyderabad, Mumbai, Delhi, Remote"
+                            className="w-full h-11 px-3.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-2xs outline-none"
+                          />
                         </div>
-                      ))}
+
+                        <div>
+                          <PortalCustomSelect
+                            label="Destination Specialization"
+                            value={consultantCountryFilter}
+                            onChange={setConsultantCountryFilter}
+                            placeholder="Select Destination"
+                            options={[
+                              `${countryName} (Current Destination)`,
+                              "All Countries (Global)",
+                              "United Kingdom (Skilled Worker / CoS)",
+                              "Germany & EU Blue Card",
+                              "United States (H-1B / L-1 / O-1)",
+                              "Canada (GTS / LMIA / ICT)",
+                              "Australia (TSS 482 / PR 186)"
+                            ]}
+                          />
+                        </div>
+
+                        <div>
+                          <PortalCustomSelect
+                            label="Service / Advisory Type"
+                            value={consultantServiceType}
+                            onChange={setConsultantServiceType}
+                            placeholder="Select Service"
+                            options={[
+                              "Skilled Worker & Work Permit Filing",
+                              "CoS Compliance & Sponsor Audit",
+                              "Points-Based Legal Assessment",
+                              "Dependant & Settlement Visas"
+                            ]}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Primary Search CTA */}
+                      <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-2 text-[11px] text-slate-500 font-semibold">
+                          <Shield className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>100% Escrow Protected • OISC &amp; Bar Licensed Counsel Only</span>
+                        </div>
+
+                        <a
+                          href={`/find-experts?category=work&country=${encodeURIComponent(consultantCountryFilter.includes('All Countries') ? countryName : consultantCountryFilter.split('(')[0].trim())}${consultantLocationQuery ? `&city=${encodeURIComponent(consultantLocationQuery)}` : ''}${consultantServiceType ? `&service=${encodeURIComponent(consultantServiceType)}` : ''}`}
+                          className="h-11 px-6 rounded-xl bg-slate-950 hover:bg-slate-900 text-white text-xs font-extrabold shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 shrink-0"
+                        >
+                          <Search className="w-4 h-4 text-emerald-400" />
+                          <span>Search Verified Solicitors for {countryName}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
                     </div>
+
                   </div>
                 )}
 
-                {/* CONTENT: WORK SELF-APPLY CONCIERGE */}
+                {/* ── TAB 2 CONTENT: SELF APPLY (CONCIERGE VAULT) ── */}
                 {workActionTab === 'self_apply' && (
-                  <div className="bg-white border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6 text-left">
-                    <div className="border-b border-slate-100 pb-4 space-y-1">
-                      <h4 className="text-xl font-heading font-black text-slate-950">
-                        Self-Apply Work Visa Concierge &amp; Document Vault
-                      </h4>
-                      <p className="text-xs text-slate-500 font-medium">
-                        Upload your employment records, CoS reference, and identity proofs for complete AI validation and legal audit.
-                      </p>
+                  <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6 animate-fadeIn text-left">
+                    
+                    {/* Core Document Upload Items */}
+                    <div className="space-y-3">
+                      <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                        1. Mandatory Document Vault Checklist
+                      </h5>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {[
+                          { key: 'passport', title: 'Passport Scan (Full Validity)', hint: 'Valid for full employment contract' },
+                          { key: 'cos_contract', title: 'Certificate of Sponsorship (CoS)', hint: 'Official electronic reference & job contract' },
+                          { key: 'transcripts', title: 'Degree & Academic Transcripts', hint: 'Apostilled degrees & credential evaluation' },
+                          { key: 'english_test', title: 'English Proficiency (SELT B1+)', hint: 'IELTS for UKVI / PTE Academic scorecard' },
+                          { key: 'tb_screening', title: 'TB Clearance & Medical Certificate', hint: 'UKVI / Embassy approved medical clinic' },
+                          { key: 'pcc', title: 'Police Clearance Certificate (PCC)', hint: 'Clean criminal record from RPO / Passport office' }
+                        ].map((doc) => {
+                          const uploaded = uploadedDocuments[doc.key];
+                          const isCurrentlyUploading = isUploadingDocKey === doc.key;
+                          const fileInputId = `work-doc-file-input-${doc.key}`;
+
+                          return (
+                            <div
+                              key={doc.key}
+                              className={`p-4 rounded-2xl border transition-all text-left space-y-2.5 flex flex-col justify-between ${
+                                uploaded
+                                  ? 'bg-emerald-50/40 border-emerald-300'
+                                  : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                              }`}
+                            >
+                              <input
+                                id={fileInputId}
+                                type="file"
+                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                                className="hidden"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    setIsUploadingDocKey(doc.key);
+                                    const fileSizeFormatted = file.size > 1024 * 1024
+                                      ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+                                      : `${Math.round(file.size / 1024)} KB`;
+                                    
+                                    setTimeout(() => {
+                                      setUploadedDocuments(prev => ({
+                                        ...prev,
+                                        [doc.key]: {
+                                          fileName: file.name,
+                                          size: fileSizeFormatted,
+                                          status: 'verified' as const,
+                                          timestamp: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                                        }
+                                      }));
+                                      setIsUploadingDocKey(null);
+                                    }, 600);
+                                  }
+                                }}
+                              />
+
+                              <div className="space-y-1">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-bold text-slate-950 truncate">{doc.title}</span>
+                                  {uploaded ? (
+                                    <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
+                                  ) : (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                                      Required
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-[11px] text-slate-500 leading-tight">{doc.hint}</p>
+                              </div>
+
+                              {uploaded ? (
+                                <div className="flex items-center justify-between text-[11px] text-slate-600 bg-white/90 p-2.5 rounded-xl border border-emerald-200 gap-2">
+                                  <div className="min-w-0 flex-1">
+                                    <span className="font-bold text-slate-900 block truncate text-[11px]">{uploaded.fileName}</span>
+                                    <span className="text-[10px] text-slate-400 font-medium block">{uploaded.size} • {uploaded.timestamp}</span>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => document.getElementById(fileInputId)?.click()}
+                                    className="text-[10px] font-bold text-slate-500 hover:text-slate-900 underline shrink-0 cursor-pointer"
+                                  >
+                                    Replace
+                                  </button>
+                                </div>
+                              ) : (
+                                <button
+                                  type="button"
+                                  disabled={isCurrentlyUploading}
+                                  onClick={() => document.getElementById(fileInputId)?.click()}
+                                  className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs active:scale-95"
+                                >
+                                  {isCurrentlyUploading ? (
+                                    <>
+                                      <span className="w-3.5 h-3.5 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                                      <span>Verifying via OCR...</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Upload className="w-3.5 h-3.5 text-slate-500" />
+                                      <span>Upload &amp; Store</span>
+                                    </>
+                                  )}
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
 
-                    {/* Document Slots */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      {[
-                        { key: 'passport', title: 'Passport Scan (Full Validity)', hint: 'Valid for full contract duration' },
-                        { key: 'cos_contract', title: 'Certificate of Sponsorship (CoS) / Job Offer', hint: 'Official electronic reference & contract' },
-                        { key: 'degree_transcripts', title: 'Degree & Professional Transcripts', hint: 'Apostilled or evaluated degrees' },
-                        { key: 'english_test', title: 'English Proficiency (SELT B1+)', hint: 'IELTS / PTE / Ecctis Certificate' },
-                        { key: 'tb_screening', title: 'TB Clearance & Medical Certificate', hint: 'UKVI / Embassy approved clinic' },
-                        { key: 'pcc', title: 'Police Clearance Certificate (PCC)', hint: 'Clean criminal record from RPO' }
-                      ].map((doc) => {
-                        const uploaded = uploadedDocuments[doc.key];
-                        return (
-                          <div key={doc.key} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 space-y-2 flex flex-col justify-between">
-                            <div className="space-y-1">
-                              <span className="text-xs font-bold text-slate-900 block truncate">{doc.title}</span>
-                              <span className="text-[10px] text-slate-500 block">{doc.hint}</span>
-                            </div>
-                            {uploaded ? (
-                              <div className="flex items-center justify-between text-xs bg-white p-2 rounded-xl border border-emerald-200">
-                                <span className="font-bold text-slate-900 truncate text-[11px]">{uploaded.fileName}</span>
-                                <span className="text-[10px] text-emerald-700 font-bold">✓</span>
+                    {/* Concierge Addons */}
+                    <div className="space-y-3 pt-2">
+                      <div className="flex items-center justify-between">
+                        <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                          2. Smart Concierge Add-Ons (Optional)
+                        </h5>
+                        <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                          Instant Approval Boosters
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        {[
+                          { id: 'points_audit', name: 'Points & Eligibility Legal Audit', price: 2999, desc: 'Detailed legal evaluation of salary threshold, SOC code & CoS.' },
+                          { id: 'contract_review', name: 'Employment Contract Review', price: 3499, desc: 'Solicitor review of employment clauses & visa sponsorship rights.' },
+                          { id: 'relocation_banking', name: 'Relocation & National Insurance', price: 2499, desc: 'Pre-landing social security setup, tax code & bank account opening.' },
+                          { id: 'vfs_biometrics', name: 'VFS Biometrics Concierge', price: 1500, desc: 'Priority appointment scheduling & biometric passport fast-track.' }
+                        ].map((addon) => {
+                          const isSelected = selectedConciergeAddons.includes(addon.id);
+                          return (
+                            <div
+                              key={addon.id}
+                              onClick={() => {
+                                setSelectedConciergeAddons(prev =>
+                                  prev.includes(addon.id) ? prev.filter(x => x !== addon.id) : [...prev, addon.id]
+                                );
+                              }}
+                              className={`p-3.5 rounded-2xl border transition-all cursor-pointer text-left space-y-1.5 select-none ${
+                                isSelected
+                                  ? 'bg-slate-950 text-white border-slate-950 shadow-md'
+                                  : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <h6 className={`text-xs font-bold truncate ${isSelected ? 'text-white' : 'text-slate-900'}`}>
+                                  {addon.name}
+                                </h6>
+                                <span className={`text-xs font-black shrink-0 ${isSelected ? 'text-emerald-400' : 'text-slate-900'}`}>
+                                  +₹{addon.price.toLocaleString()}
+                                </span>
                               </div>
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setUploadedDocuments(prev => ({
-                                    ...prev,
-                                    [doc.key]: { fileName: `${doc.key}_document.pdf`, size: '2.1 MB', status: 'verified', timestamp: 'Verified via OCR' }
-                                  }));
-                                }}
-                                className="w-full py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold cursor-pointer"
-                              >
-                                📤 Upload &amp; Store
-                              </button>
-                            )}
-                          </div>
-                        );
-                      })}
+                              <p className={`text-[11px] leading-relaxed ${isSelected ? 'text-slate-300' : 'text-slate-600'}`}>
+                                {addon.desc}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     {/* Final Submission Bar */}
                     <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
-                        <span className="text-xs text-slate-500 font-medium block">Work Visa Legal Concierge Filing:</span>
-                        <strong className="text-xl sm:text-2xl font-black text-slate-950">₹3,499 Total</strong>
+                        <span className="text-xs text-slate-500 font-medium block">Total Concierge Package:</span>
+                        <strong className="text-xl sm:text-2xl font-black text-slate-950">
+                          ₹{(3499 + selectedConciergeAddons.reduce((sum, id) => {
+                            if (id === 'points_audit') return sum + 2999;
+                            if (id === 'contract_review') return sum + 3499;
+                            if (id === 'relocation_banking') return sum + 2499;
+                            if (id === 'vfs_biometrics') return sum + 1500;
+                            return sum;
+                          }, 0)).toLocaleString()}
+                        </strong>
                       </div>
 
                       <button
@@ -4504,10 +4995,11 @@ export function VisaCountryResultPortal({
                         className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                       >
                         <ShieldCheck className="w-5 h-5" />
-                        <span>Submit Work Visa Dossier for Legal &amp; VFS Filing</span>
+                        <span>Submit Complete Dossier for AI &amp; Concierge Filing</span>
                         <ArrowRight className="w-4 h-4 stroke-[3]" />
                       </button>
                     </div>
+
                   </div>
                 )}
 

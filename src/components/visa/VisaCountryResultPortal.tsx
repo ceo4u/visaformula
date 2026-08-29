@@ -1769,8 +1769,8 @@ export function VisaCountryResultPortal({
   const [selectedUniId, setSelectedUniId] = useState<string>('uk-1');
   const [selectedCourseMajor, setSelectedCourseMajor] = useState('Computer Science & AI');
   const [admissionTrackerStage, setAdmissionTrackerStage] = useState(1);
-  const [casNumberInput, setCasNumberInput] = useState('CAS-UKVI-892410-X');
-  const [isCasChecked, setIsCasChecked] = useState(true);
+  const [casNumberInput, setCasNumberInput] = useState('');
+  const [isCasChecked, setIsCasChecked] = useState(false);
 
   // Consultant Filter & Booking States
   const [consultantLocationQuery, setConsultantLocationQuery] = useState('');
@@ -1781,11 +1781,8 @@ export function VisaCountryResultPortal({
   const [consultantBookedToast, setConsultantBookedToast] = useState<string | null>(null);
 
   // Self-Apply Concierge Document Vault & Addon States
-  const [uploadedDocuments, setUploadedDocuments] = useState<Record<string, { fileName: string; size: string; status: 'uploaded' | 'verified'; timestamp: string }>>({
-    passport: { fileName: 'Passport_Front_Back_Scan.pdf', size: '2.4 MB', status: 'verified', timestamp: 'Verified via OCR' },
-    transcripts: { fileName: 'Degree_Transcripts_Consolidated.pdf', size: '4.8 MB', status: 'verified', timestamp: 'Verified via OCR' }
-  });
-  const [selectedConciergeAddons, setSelectedConciergeAddons] = useState<string[]>(['sop_polish', 'travel_insurance']);
+  const [uploadedDocuments, setUploadedDocuments] = useState<Record<string, { fileName: string; size: string; status: 'uploaded' | 'verified'; timestamp: string }>>({});
+  const [selectedConciergeAddons, setSelectedConciergeAddons] = useState<string[]>([]);
   const [conciergeSubmittedModal, setConciergeSubmittedModal] = useState(false);
   const [isUploadingDocKey, setIsUploadingDocKey] = useState<string | null>(null);
 

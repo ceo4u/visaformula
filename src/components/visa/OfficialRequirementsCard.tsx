@@ -81,6 +81,14 @@ function getCountryCode(country: string): string {
   return 'un';
 }
 
+const PURPOSE_OPTIONS = [
+  { id: 'Tourism / Vacation', label: 'Tourism / Vacation', icon: '🏖️', desc: 'Holiday, leisure, sightseeing & short travel' },
+  { id: 'Higher Studies', label: 'Higher Studies', icon: '🎓', desc: 'University, degree programs & CAS student route' },
+  { id: 'Employment / Work', label: 'Employment / Work', icon: '💼', desc: 'Skilled work, sponsored jobs & employment permits' },
+  { id: 'Business Visit', label: 'Business Visit', icon: '🤝', desc: 'Meetings, conferences, client deals & exhibitions' },
+  { id: 'Family / Friends Visit', label: 'Family / Friends Visit', icon: '👨‍👩‍👧', desc: 'Visiting relatives, private hosts & dependents' },
+];
+
 export const OfficialRequirementsCard: React.FC<Props> = ({
   countryName,
   passportCountry,
@@ -96,14 +104,28 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
     if (p.includes('study') || p.includes('student') || p.includes('education') || p.includes('higher')) return 'Higher Studies';
     if (p.includes('work') || p.includes('job') || p.includes('employment')) return 'Employment / Work';
     if (p.includes('business')) return 'Business Visit';
-    if (p.includes('family')) return 'Family / Friends Visit';
+    if (p.includes('family') || p.includes('friend')) return 'Family / Friends Visit';
     return 'Tourism / Vacation';
   }, [purpose]);
 
   const [selectedPurpose, setSelectedPurpose] = useState<string>(initialPurposeLabel);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [data, setData] = useState<StructuredVisaRequirements | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'all' | 'documents' | 'financials' | 'mandates'>('all');
+
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     fetchRequirements(selectedPurpose);
@@ -132,11 +154,13 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
     }
   };
 
+  const currentOption = PURPOSE_OPTIONS.find(opt => opt.id === selectedPurpose) || PURPOSE_OPTIONS[0];
+
   return (
     <div className="w-full bg-[#f8fafc] rounded-[24px] sm:rounded-[32px] p-4 sm:p-7 md:p-9 border border-slate-200/90 shadow-sm space-y-6 text-slate-800 font-sans">
       
       {/* ── TOP SELECTOR BAR (Clean Reference Aesthetics) ── */}
-      <div className="bg-white rounded-2xl sm:rounded-3xl px-5 sm:px-7 py-4 sm:py-5 border border-slate-200/90 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-5">
+      <div className="bg-white rounded-2xl sm:rounded-3xl px-5 sm:px-7 py-4 sm:py-5 border border-slate-200/90 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-5 relative z-30">
         
         {/* From & To Pills */}
         <div className="flex items-center gap-4 w-full md:w-auto">
@@ -179,25 +203,62 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           </div>
         </div>
 
-        {/* PURPOSE OF TRAVEL */}
-        <div className="w-full md:w-auto space-y-1 text-left border-t md:border-t-0 md:border-l border-slate-200 md:pl-8 pt-3 md:pt-0">
+        {/* CUSTOM PURPOSE OF TRAVEL DROPDOWN */}
+        <div className="w-full md:w-auto space-y-1 text-left border-t md:border-t-0 md:border-l border-slate-200 md:pl-8 pt-3 md:pt-0 relative" ref={dropdownRef}>
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
             PURPOSE OF TRAVEL
           </span>
-          <div className="relative inline-flex items-center">
-            <select
-              value={selectedPurpose}
-              onChange={(e) => setSelectedPurpose(e.target.value)}
-              className="appearance-none text-sm sm:text-base font-extrabold text-slate-900 bg-transparent pr-6 py-0 border-none outline-none cursor-pointer focus:ring-0"
-            >
-              <option value="Tourism / Vacation">Tourism / Vacation</option>
-              <option value="Higher Studies">Higher Studies</option>
-              <option value="Employment / Work">Employment / Work</option>
-              <option value="Business Visit">Business Visit</option>
-              <option value="Family / Friends Visit">Family / Friends Visit</option>
-            </select>
-            <ChevronDown className="w-4 h-4 text-slate-400 pointer-events-none -ml-4" />
-          </div>
+          
+          {/* Trigger Button */}
+          <button
+            type="button"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center gap-2 text-sm sm:text-base font-extrabold text-slate-900 bg-slate-50/80 hover:bg-slate-100/80 px-3 py-1.5 -ml-3 rounded-xl border border-transparent hover:border-slate-200 transition-all cursor-pointer focus:outline-none select-none"
+          >
+            <span className="text-base">{currentOption.icon}</span>
+            <span>{currentOption.label}</span>
+            <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180 text-slate-700' : ''}`} />
+          </button>
+
+          {/* Floating Dropdown Menu */}
+          {isDropdownOpen && (
+            <div className="absolute top-full left-0 md:left-4 mt-2 w-72 sm:w-80 bg-white/95 backdrop-blur-md rounded-2xl p-1.5 border border-slate-200/90 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
+              {PURPOSE_OPTIONS.map((opt) => {
+                const isSelected = opt.id === selectedPurpose;
+                return (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedPurpose(opt.id);
+                      setIsDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl text-left transition-all cursor-pointer ${
+                      isSelected 
+                        ? 'bg-emerald-50/90 text-emerald-950 border border-emerald-200/60 shadow-2xs' 
+                        : 'text-slate-700 hover:bg-slate-100/80 hover:text-slate-950'
+                    }`}
+                  >
+                    <div className="flex items-start gap-2.5 min-w-0">
+                      <span className="text-lg leading-none mt-0.5">{opt.icon}</span>
+                      <div className="min-w-0">
+                        <div className={`text-xs sm:text-sm leading-snug ${isSelected ? 'font-black text-emerald-950' : 'font-extrabold text-slate-900'}`}>
+                          {opt.label}
+                        </div>
+                        <div className="text-[11px] text-slate-400 truncate font-medium">
+                          {opt.desc}
+                        </div>
+                      </div>
+                    </div>
+
+                    {isSelected && (
+                      <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[3]" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Requirements Checked Badge */}

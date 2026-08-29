@@ -223,16 +223,15 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 text-sm sm:text-base font-extrabold text-slate-900 bg-slate-50/80 hover:bg-slate-100/80 px-3 py-1.5 -ml-3 rounded-xl border border-transparent hover:border-slate-200 transition-all cursor-pointer focus:outline-none select-none"
+            className="flex items-center gap-1.5 text-sm sm:text-base font-extrabold text-slate-900 hover:text-emerald-700 transition-colors cursor-pointer focus:outline-none select-none py-0.5"
           >
-            <span className="text-base">{currentOption.icon}</span>
             <span>{currentOption.label}</span>
-            <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180 text-slate-700' : ''}`} />
+            <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180 text-slate-800' : ''}`} />
           </button>
 
           {/* Floating Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="absolute top-full left-0 md:left-4 mt-2 w-72 sm:w-80 bg-white/95 backdrop-blur-md rounded-2xl p-1.5 border border-slate-200/90 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
+            <div className="absolute top-full left-0 md:left-4 mt-2 w-56 sm:w-64 bg-white rounded-2xl p-1.5 border border-slate-200/90 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
               {PURPOSE_OPTIONS.map((opt) => {
                 const isSelected = opt.id === selectedPurpose;
                 return (
@@ -243,26 +242,15 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                       setSelectedPurpose(opt.id);
                       setIsDropdownOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl text-left transition-all cursor-pointer ${
+                    className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl text-left transition-all cursor-pointer ${
                       isSelected 
-                        ? 'bg-emerald-50/90 text-emerald-950 border border-emerald-200/60 shadow-2xs' 
-                        : 'text-slate-700 hover:bg-slate-100/80 hover:text-slate-950'
+                        ? 'bg-emerald-50 text-emerald-950 font-bold' 
+                        : 'text-slate-700 hover:bg-slate-50 hover:text-slate-950 font-semibold'
                     }`}
                   >
-                    <div className="flex items-start gap-2.5 min-w-0">
-                      <span className="text-lg leading-none mt-0.5">{opt.icon}</span>
-                      <div className="min-w-0">
-                        <div className={`text-xs sm:text-sm leading-snug ${isSelected ? 'font-black text-emerald-950' : 'font-extrabold text-slate-900'}`}>
-                          {opt.label}
-                        </div>
-                        <div className="text-[11px] text-slate-400 truncate font-medium">
-                          {opt.desc}
-                        </div>
-                      </div>
-                    </div>
-
+                    <span className="text-xs sm:text-sm">{opt.label}</span>
                     {isSelected && (
-                      <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[3]" />
+                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[3]" />
                     )}
                   </button>
                 );

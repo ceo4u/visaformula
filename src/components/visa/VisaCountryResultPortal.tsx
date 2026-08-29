@@ -304,6 +304,31 @@ const COUNTRY_DATABASE: Record<string, Partial<VisaCountryData>> = {
   },
 };
 
+// Aliases mapping for direct access
+COUNTRY_DATABASE['united-kingdom'] = COUNTRY_DATABASE.uk;
+COUNTRY_DATABASE['united_kingdom'] = COUNTRY_DATABASE.uk;
+COUNTRY_DATABASE['great-britain'] = COUNTRY_DATABASE.uk;
+COUNTRY_DATABASE['britain'] = COUNTRY_DATABASE.uk;
+COUNTRY_DATABASE['england'] = COUNTRY_DATABASE.uk;
+COUNTRY_DATABASE['united-states'] = {
+  countryName: 'United States',
+  flagEmoji: '🇺🇸',
+  heroImage: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=1600&auto=format&fit=crop&q=85',
+  lengthOfStay: 'Up to 6 Months (180 Days)',
+  validity: '10 Years',
+  entryType: 'Multiple Entry',
+  visaType: 'B1/B2 Visitor Visa',
+  processingDays: 21,
+  governmentFeeINR: 15500,
+  serviceFeeINR: 4900,
+  variants: [
+    { id: 'us-b1b2', label: 'B1/B2 10-Year Multiple Entry', stay: '180 Days/Visit', govFee: 15500, servFee: 4900, popular: true },
+    { id: 'us-priority', label: 'Emergency Interview Slot Concierge', stay: '180 Days/Visit', govFee: 24000, servFee: 7500 }
+  ]
+};
+COUNTRY_DATABASE['usa'] = COUNTRY_DATABASE['united-states'];
+COUNTRY_DATABASE['us'] = COUNTRY_DATABASE['united-states'];
+
 function formatTargetDate(daysToAdd: number) {
   const d = new Date();
   d.setDate(d.getDate() + daysToAdd);
@@ -2056,6 +2081,27 @@ export function VisaCountryResultPortal({
   const [selectedConciergeAddons, setSelectedConciergeAddons] = useState<string[]>([]);
   const [conciergeSubmittedModal, setConciergeSubmittedModal] = useState(false);
   const [isUploadingDocKey, setIsUploadingDocKey] = useState<string | null>(null);
+  const [uploadValidationWarning, setUploadValidationWarning] = useState<string | null>(null);
+
+  const handleConciergeSubmit = (requiredDocKeys: string[], vaultElementId?: string) => {
+    const uploadedCount = Object.keys(uploadedDocuments).length;
+    const missingDocs = requiredDocKeys.filter(k => !uploadedDocuments[k]);
+
+    if (uploadedCount === 0 || missingDocs.length > 0) {
+      const msg = `⚠️ Action Required: Please upload your mandatory documents (${uploadedCount} of ${requiredDocKeys.length} uploaded) before submitting your dossier.`;
+      setUploadValidationWarning(msg);
+      if (vaultElementId && typeof document !== 'undefined') {
+        const el = document.getElementById(vaultElementId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+      setTimeout(() => setUploadValidationWarning(null), 6000);
+      return;
+    }
+    setUploadValidationWarning(null);
+    setConciergeSubmittedModal(true);
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -3707,10 +3753,21 @@ export function VisaCountryResultPortal({
                   <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6 animate-fadeIn text-left">
                     
                     {/* 5 Core Document Upload Items */}
-                    <div className="space-y-3">
-                      <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
-                        1. Mandatory Document Vault Checklist
-                      </h5>
+                    <div className="space-y-3" id="student-doc-vault">
+                      <div className="flex items-center justify-between">
+                        <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+                          <span>1. Mandatory Document Vault Checklist</span>
+                        </h5>
+                        <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
+                          Object.keys(uploadedDocuments).length >= 5
+                            ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                            : Object.keys(uploadedDocuments).length > 0
+                            ? 'bg-blue-50 text-blue-800 border-blue-200'
+                            : 'bg-amber-50 text-amber-800 border-amber-200'
+                        }`}>
+                          {Object.keys(uploadedDocuments).length} of 5 Uploaded
+                        </span>
+                      </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         {[
@@ -3722,6 +3779,7 @@ export function VisaCountryResultPortal({
                         ].map((doc) => {
                           const uploaded = uploadedDocuments[doc.key];
                           const isCurrentlyUploading = isUploadingDocKey === doc.key;
+                          const isMissingAfterAttempt = !uploaded && !!uploadValidationWarning;
                           const fileInputId = `doc-file-input-${doc.key}`;
 
                           return (
@@ -3730,6 +3788,8 @@ export function VisaCountryResultPortal({
                               className={`p-4 rounded-2xl border transition-all text-left space-y-2.5 flex flex-col justify-between ${
                                 uploaded
                                   ? 'bg-emerald-50/40 border-emerald-300'
+                                  : isMissingAfterAttempt
+                                  ? 'bg-amber-50/40 border-2 border-amber-400 ring-2 ring-amber-200/80 shadow-sm'
                                   : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
                               }`}
                             >
@@ -3758,7 +3818,6 @@ export function VisaCountryResultPortal({
                                             timestamp: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                                           }
                                         };
-                                        // Auto-sync to dashboard documents
                                         if (typeof window !== 'undefined') {
                                           try {
                                             const existingDocs = JSON.parse(localStorage.getItem('seeker_documents') || '[]');
@@ -3776,6 +3835,7 @@ export function VisaCountryResultPortal({
                                         return next;
                                       });
                                       setIsUploadingDocKey(null);
+                                      setUploadValidationWarning(null);
                                     }, 600);
                                   }
                                 }}
@@ -3787,8 +3847,12 @@ export function VisaCountryResultPortal({
                                   {uploaded ? (
                                     <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
                                   ) : (
-                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
-                                      Required
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                      isMissingAfterAttempt
+                                        ? 'bg-amber-200 text-amber-950 font-black'
+                                        : 'bg-amber-100 text-amber-800'
+                                    }`}>
+                                      {isMissingAfterAttempt ? 'Upload Required !' : 'Required'}
                                     </span>
                                   )}
                                 </div>
@@ -3883,6 +3947,14 @@ export function VisaCountryResultPortal({
                       </div>
                     </div>
 
+                    {/* Validation Warning Alert */}
+                    {uploadValidationWarning && (
+                      <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 text-xs font-extrabold flex items-center gap-3 animate-pulse shadow-sm">
+                        <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
+                        <span>{uploadValidationWarning}</span>
+                      </div>
+                    )}
+
                     {/* Final Submission Bar */}
                     <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
@@ -3900,7 +3972,7 @@ export function VisaCountryResultPortal({
 
                       <button
                         type="button"
-                        onClick={() => setConciergeSubmittedModal(true)}
+                        onClick={() => handleConciergeSubmit(['passport', 'transcripts', 'financials', 'sop_cv', 'english_test'], 'student-doc-vault')}
                         className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                       >
                         <ShieldCheck className="w-5 h-5" />
@@ -4270,10 +4342,21 @@ export function VisaCountryResultPortal({
                   <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6 animate-fadeIn text-left">
                     
                     {/* Core Document Upload Items */}
-                    <div className="space-y-3">
-                      <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
-                        1. Mandatory Document Vault Checklist
-                      </h5>
+                    <div className="space-y-3" id="tourist-doc-vault">
+                      <div className="flex items-center justify-between">
+                        <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+                          <span>1. Mandatory Document Vault Checklist</span>
+                        </h5>
+                        <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
+                          Object.keys(uploadedDocuments).length >= 6
+                            ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                            : Object.keys(uploadedDocuments).length > 0
+                            ? 'bg-blue-50 text-blue-800 border-blue-200'
+                            : 'bg-amber-50 text-amber-800 border-amber-200'
+                        }`}>
+                          {Object.keys(uploadedDocuments).length} of 6 Uploaded
+                        </span>
+                      </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         {[
@@ -4286,6 +4369,7 @@ export function VisaCountryResultPortal({
                         ].map((doc) => {
                           const uploaded = uploadedDocuments[doc.key];
                           const isCurrentlyUploading = isUploadingDocKey === doc.key;
+                          const isMissingAfterAttempt = !uploaded && !!uploadValidationWarning;
                           const fileInputId = `tour-doc-file-input-${doc.key}`;
 
                           return (
@@ -4294,6 +4378,8 @@ export function VisaCountryResultPortal({
                               className={`p-4 rounded-2xl border transition-all text-left space-y-2.5 flex flex-col justify-between ${
                                 uploaded
                                   ? 'bg-emerald-50/40 border-emerald-300'
+                                  : isMissingAfterAttempt
+                                  ? 'bg-amber-50/40 border-2 border-amber-400 ring-2 ring-amber-200/80 shadow-sm'
                                   : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
                               }`}
                             >
@@ -4321,6 +4407,7 @@ export function VisaCountryResultPortal({
                                         }
                                       }));
                                       setIsUploadingDocKey(null);
+                                      setUploadValidationWarning(null);
                                     }, 600);
                                   }
                                 }}
@@ -4332,8 +4419,12 @@ export function VisaCountryResultPortal({
                                   {uploaded ? (
                                     <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
                                   ) : (
-                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
-                                      Required
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                      isMissingAfterAttempt
+                                        ? 'bg-amber-200 text-amber-950 font-black'
+                                        : 'bg-amber-100 text-amber-800'
+                                    }`}>
+                                      {isMissingAfterAttempt ? 'Upload Required !' : 'Required'}
                                     </span>
                                   )}
                                 </div>
@@ -4430,6 +4521,14 @@ export function VisaCountryResultPortal({
                       </div>
                     </div>
 
+                    {/* Validation Warning Alert */}
+                    {uploadValidationWarning && (
+                      <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 text-xs font-extrabold flex items-center gap-3 animate-pulse shadow-sm">
+                        <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
+                        <span>{uploadValidationWarning}</span>
+                      </div>
+                    )}
+
                     {/* Final Submission Bar */}
                     <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
@@ -4447,7 +4546,7 @@ export function VisaCountryResultPortal({
 
                       <button
                         type="button"
-                        onClick={() => setConciergeSubmittedModal(true)}
+                        onClick={() => handleConciergeSubmit(['passport', 'flights_hotel', 'bank_statements', 'leave_noc', 'insurance', 'itinerary'], 'tourist-doc-vault')}
                         className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                       >
                         <ShieldCheck className="w-5 h-5" />
@@ -4814,10 +4913,21 @@ export function VisaCountryResultPortal({
                   <div className="bg-white/90 backdrop-blur-xl border border-slate-200 rounded-[32px] p-6 sm:p-9 shadow-sm space-y-6 animate-fadeIn text-left">
                     
                     {/* Core Document Upload Items */}
-                    <div className="space-y-3">
-                      <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
-                        1. Mandatory Document Vault Checklist
-                      </h5>
+                    <div className="space-y-3" id="work-doc-vault">
+                      <div className="flex items-center justify-between">
+                        <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+                          <span>1. Mandatory Document Vault Checklist</span>
+                        </h5>
+                        <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
+                          Object.keys(uploadedDocuments).length >= 6
+                            ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                            : Object.keys(uploadedDocuments).length > 0
+                            ? 'bg-blue-50 text-blue-800 border-blue-200'
+                            : 'bg-amber-50 text-amber-800 border-amber-200'
+                        }`}>
+                          {Object.keys(uploadedDocuments).length} of 6 Uploaded
+                        </span>
+                      </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         {[
@@ -4830,6 +4940,7 @@ export function VisaCountryResultPortal({
                         ].map((doc) => {
                           const uploaded = uploadedDocuments[doc.key];
                           const isCurrentlyUploading = isUploadingDocKey === doc.key;
+                          const isMissingAfterAttempt = !uploaded && !!uploadValidationWarning;
                           const fileInputId = `work-doc-file-input-${doc.key}`;
 
                           return (
@@ -4838,6 +4949,8 @@ export function VisaCountryResultPortal({
                               className={`p-4 rounded-2xl border transition-all text-left space-y-2.5 flex flex-col justify-between ${
                                 uploaded
                                   ? 'bg-emerald-50/40 border-emerald-300'
+                                  : isMissingAfterAttempt
+                                  ? 'bg-amber-50/40 border-2 border-amber-400 ring-2 ring-amber-200/80 shadow-sm'
                                   : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
                               }`}
                             >
@@ -4865,6 +4978,7 @@ export function VisaCountryResultPortal({
                                         }
                                       }));
                                       setIsUploadingDocKey(null);
+                                      setUploadValidationWarning(null);
                                     }, 600);
                                   }
                                 }}
@@ -4876,8 +4990,12 @@ export function VisaCountryResultPortal({
                                   {uploaded ? (
                                     <CheckCircle2 className="w-4 h-4 text-[#00A86B] shrink-0" />
                                   ) : (
-                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
-                                      Required
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                      isMissingAfterAttempt
+                                        ? 'bg-amber-200 text-amber-950 font-black'
+                                        : 'bg-amber-100 text-amber-800'
+                                    }`}>
+                                      {isMissingAfterAttempt ? 'Upload Required !' : 'Required'}
                                     </span>
                                   )}
                                 </div>
@@ -4974,6 +5092,14 @@ export function VisaCountryResultPortal({
                       </div>
                     </div>
 
+                    {/* Validation Warning Alert */}
+                    {uploadValidationWarning && (
+                      <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 text-xs font-extrabold flex items-center gap-3 animate-pulse shadow-sm">
+                        <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
+                        <span>{uploadValidationWarning}</span>
+                      </div>
+                    )}
+
                     {/* Final Submission Bar */}
                     <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
@@ -4991,7 +5117,7 @@ export function VisaCountryResultPortal({
 
                       <button
                         type="button"
-                        onClick={() => setConciergeSubmittedModal(true)}
+                        onClick={() => handleConciergeSubmit(['passport', 'cos_contract', 'transcripts', 'english_test', 'tb_screening', 'pcc'], 'work-doc-vault')}
                         className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                       >
                         <ShieldCheck className="w-5 h-5" />
@@ -6200,18 +6326,22 @@ export function VisaCountryResultPortal({
                 Application Dossier Submitted!
               </h3>
               <p className="text-xs text-slate-600 font-medium">
-                Your documents and {countryName} student visa application have been safely ingested into the TravlTik Concierge Vault.
+                Your {Object.keys(uploadedDocuments).length} verified documents and {countryName} {activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist Visa'} application have been safely ingested into TravlTik Concierge Vault.
               </p>
             </div>
 
             <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-left text-xs space-y-2">
               <div className="flex justify-between">
                 <span className="text-slate-500 font-medium">Tracking ID:</span>
-                <strong className="text-slate-900 font-mono">TT-STU-2026-9824</strong>
+                <strong className="text-slate-900 font-mono">TT-{activePurposeTab.toUpperCase().slice(0,3)}-2026-9824</strong>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500 font-medium">Target Institution:</span>
-                <strong className="text-slate-900 font-bold">{getDestinationUniversities(countryName).find(u => u.id === selectedUniId)?.name || 'University of Oxford'}</strong>
+                <span className="text-slate-500 font-medium">Destination / Country:</span>
+                <strong className="text-slate-900 font-bold">{countryName} ({passportCountry} Citizen)</strong>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500 font-medium">Verified Documents:</span>
+                <strong className="text-emerald-700 font-bold">{Object.keys(uploadedDocuments).length} Files Encrypted &amp; Stored</strong>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500 font-medium">Active Add-Ons:</span>

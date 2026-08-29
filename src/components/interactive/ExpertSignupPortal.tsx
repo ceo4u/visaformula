@@ -572,7 +572,7 @@ function ExpertSignupPortalContent() {
 
               <button
                 onClick={() => setCurrentStep(1)}
-                className="w-full py-3.5 px-5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md cursor-pointer active:scale-98 text-sm"
+                className="w-full py-3.5 px-5 bg-[#0c1a2e] hover:bg-slate-800 text-white rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all shadow-md cursor-pointer active:scale-98 text-sm"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 <Mail className="w-4.5 h-4.5" />
@@ -621,7 +621,7 @@ function ExpertSignupPortalContent() {
             {/* STEP HEADER & WIZARD PROGRESS BAR */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
-                <span className="bg-teal-100 text-[#00a896] text-[10px] font-bold px-3 py-1 rounded-full border border-teal-200 uppercase tracking-wider" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <span className="bg-slate-900 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   STEP {currentStep}
                 </span>
                 <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -637,7 +637,7 @@ function ExpertSignupPortalContent() {
               </div>
 
               <div className="text-right">
-                <span className="text-xs font-black text-[#00a896] bg-teal-50 px-3 py-1.5 rounded-xl border border-teal-200">
+                <span className="text-xs font-black text-slate-900 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
                   {currentStep}/3
                 </span>
               </div>
@@ -646,7 +646,7 @@ function ExpertSignupPortalContent() {
             {/* Progress Bar Indicator */}
             <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
               <div
-                className="bg-[#00a896] h-full transition-all duration-300 ease-out"
+                className="bg-slate-900 h-full transition-all duration-300 ease-out"
                 style={{ width: `${(currentStep / 3) * 100}%` }}
               />
             </div>
@@ -896,7 +896,7 @@ function ExpertSignupPortalContent() {
                   <button
                     type="button"
                     onClick={() => goToNextStep(2)}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+                    className="w-full sm:w-auto px-8 py-3.5 bg-[#0c1a2e] hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                   >
                     <span>Next Step</span>
                     <ArrowRight className="w-4 h-4" />
@@ -922,8 +922,8 @@ function ExpertSignupPortalContent() {
                           onClick={() => toggleService(svc)}
                           className={`px-3.5 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer flex items-center gap-1.5 ${
                             isSelected
-                              ? 'bg-[#00a896] text-white border-[#00a896] shadow-2xs'
-                              : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100'
+                              ? 'bg-[#0c1a2e] text-white border-[#0c1a2e] shadow-xs'
+                              : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                           }`}
                         >
                           {isSelected && <CheckSquare className="w-3.5 h-3.5 text-white" />}
@@ -935,7 +935,7 @@ function ExpertSignupPortalContent() {
                     <button
                       type="button"
                       onClick={() => setShowAddCustomService(true)}
-                      className="px-3.5 py-2 rounded-xl text-xs font-extrabold border border-dashed border-[#00a896] text-[#00a896] bg-teal-50/50 hover:bg-teal-50 transition-all cursor-pointer flex items-center gap-1"
+                      className="px-3.5 py-2 rounded-xl text-xs font-extrabold border border-dashed border-slate-400 text-slate-700 bg-slate-50 hover:bg-slate-100 transition-all cursor-pointer flex items-center gap-1"
                     >
                       <Plus className="w-3.5 h-3.5" />
                     </button>
@@ -959,12 +959,12 @@ function ExpertSignupPortalContent() {
                         value={customServiceInput}
                         onChange={(e) => setCustomServiceInput(e.target.value)}
                         placeholder="Enter custom service name"
-                        className="flex-1 px-3.5 py-2 border border-slate-300 rounded-xl text-xs font-semibold outline-none focus:border-[#00a896]"
+                        className="flex-1 px-3.5 py-2 border border-slate-300 rounded-xl text-xs font-semibold outline-none focus:border-slate-900"
                       />
                       <button
                         type="button"
                         onClick={handleAddCustomService}
-                        className="bg-[#00a896] text-white px-4 py-2 rounded-xl text-xs font-bold"
+                        className="bg-[#0c1a2e] text-white px-4 py-2 rounded-xl text-xs font-bold"
                       >
                         Add
                       </button>
@@ -985,8 +985,8 @@ function ExpertSignupPortalContent() {
                           onClick={() => toggleCountry(c.name)}
                           className={`px-3.5 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer flex items-center gap-2 ${
                             isSelected
-                              ? 'bg-[#00a896] text-white border-[#00a896] shadow-2xs'
-                              : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100'
+                              ? 'bg-[#0c1a2e] text-white border-[#0c1a2e] shadow-xs'
+                              : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                           }`}
                         >
                           <span>{c.flag}</span>
@@ -1010,8 +1010,8 @@ function ExpertSignupPortalContent() {
                           onClick={() => toggleLanguage(lang)}
                           className={`px-3.5 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer flex items-center gap-1.5 ${
                             isSelected
-                              ? 'bg-[#00a896] text-white border-[#00a896] shadow-2xs'
-                              : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100'
+                              ? 'bg-[#0c1a2e] text-white border-[#0c1a2e] shadow-xs'
+                              : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                           }`}
                         >
                           {isSelected && <CheckSquare className="w-3.5 h-3.5 text-white" />}
@@ -1032,7 +1032,7 @@ function ExpertSignupPortalContent() {
                         name="consultMode"
                         checked={consultationMode === "Online"}
                         onChange={() => setConsultationMode("Online")}
-                        className="accent-[#00a896]"
+                        className="accent-[#0c1a2e]"
                       />
                       <span>Online</span>
                     </label>
@@ -1043,7 +1043,7 @@ function ExpertSignupPortalContent() {
                         name="consultMode"
                         checked={consultationMode === "In Office"}
                         onChange={() => setConsultationMode("In Office")}
-                        className="accent-[#00a896]"
+                        className="accent-[#0c1a2e]"
                       />
                       <span>In Office</span>
                     </label>
@@ -1054,7 +1054,7 @@ function ExpertSignupPortalContent() {
                         name="consultMode"
                         checked={consultationMode === "Both"}
                         onChange={() => setConsultationMode("Both")}
-                        className="accent-[#00a896]"
+                        className="accent-[#0c1a2e]"
                       />
                       <span>Both</span>
                     </label>
@@ -1075,7 +1075,7 @@ function ExpertSignupPortalContent() {
                   <button
                     type="button"
                     onClick={() => goToNextStep(3)}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+                    className="w-full sm:w-auto px-8 py-3.5 bg-[#0c1a2e] hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                   >
                     <span>Next Step</span>
                     <ArrowRight className="w-4 h-4" />
@@ -1286,7 +1286,7 @@ function ExpertSignupPortalContent() {
                   <button
                     type="button"
                     onClick={handleCompleteAndContinue}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+                    className="w-full sm:w-auto px-8 py-3.5 bg-[#0c1a2e] hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
                   >
                     <span>Complete & Continue</span>
                     <ArrowRight className="w-4 h-4" />
@@ -1309,7 +1309,7 @@ function ExpertSignupPortalContent() {
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="w-14 h-14 bg-teal-50 border border-teal-200 text-[#00a896] rounded-2xl flex items-center justify-center mx-auto shadow-2xs">
+              <div className="w-14 h-14 bg-slate-100 border border-slate-200 text-slate-900 rounded-2xl flex items-center justify-center mx-auto shadow-2xs">
                 <Mail className="w-7 h-7" />
               </div>
 
@@ -1328,7 +1328,7 @@ function ExpertSignupPortalContent() {
                         setTempEmail(emailAddress);
                         setIsEditingEmail(true);
                       }}
-                      className="text-[#00a896] hover:text-[#008f80] text-xs font-extrabold flex items-center gap-1 cursor-pointer transition-colors"
+                      className="text-slate-900 hover:underline text-xs font-extrabold flex items-center gap-1 cursor-pointer transition-colors"
                       title="Edit Email Address"
                     >
                       <Edit2 className="w-3 h-3" />
@@ -1342,7 +1342,7 @@ function ExpertSignupPortalContent() {
                       value={tempEmail}
                       onChange={(e) => setTempEmail(e.target.value)}
                       placeholder="Enter correct email"
-                      className="px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-[#00a896] w-full max-w-[210px]"
+                      className="px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-slate-900 w-full max-w-[210px]"
                       style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       autoFocus
                     />
@@ -1357,7 +1357,7 @@ function ExpertSignupPortalContent() {
                           sendVerificationEmail(newEmail);
                         }
                       }}
-                      className="px-3 py-1.5 bg-[#00a896] hover:bg-[#008f80] text-white rounded-xl text-xs font-extrabold shadow-xs cursor-pointer transition-all active:scale-95"
+                      className="px-3 py-1.5 bg-[#0c1a2e] hover:bg-slate-800 text-white rounded-xl text-xs font-extrabold shadow-xs cursor-pointer transition-all active:scale-95"
                     >
                       Save & Send Code
                     </button>
@@ -1389,7 +1389,7 @@ function ExpertSignupPortalContent() {
                     value={digit}
                     onChange={(e) => handleDigitChange(e.target.value, idx)}
                     onKeyDown={(e) => handleDigitKeyDown(e, idx)}
-                    className="w-10 h-12 text-center text-lg font-black bg-slate-50 border border-slate-300 rounded-xl focus:border-[#00a896] outline-none"
+                    className="w-10 h-12 text-center text-lg font-black bg-slate-50 border border-slate-300 rounded-xl focus:border-slate-900 outline-none"
                   />
                 ))}
               </div>
@@ -1403,7 +1403,7 @@ function ExpertSignupPortalContent() {
                       setResendCooldown(30);
                       sendVerificationEmail(emailAddress);
                     }}
-                    className="text-[#00a896] font-bold hover:underline cursor-pointer"
+                    className="text-slate-900 font-bold hover:underline cursor-pointer"
                   >
                     Resend Verification Code
                   </button>
@@ -1414,7 +1414,7 @@ function ExpertSignupPortalContent() {
                 type="button"
                 onClick={handleVerifyOtp}
                 disabled={verifyingOtp}
-                className="w-full py-3.5 bg-[#00a896] hover:bg-[#008f80] text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer active:scale-98 disabled:bg-slate-300"
+                className="w-full py-3.5 bg-[#0c1a2e] hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-md transition-all cursor-pointer active:scale-98 disabled:bg-slate-300"
               >
                 {verifyingOtp ? "Verifying Code..." : "Verify Code & Finish"}
               </button>

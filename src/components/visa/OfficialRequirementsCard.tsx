@@ -448,217 +448,214 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
           <p className="text-xs font-bold text-slate-500">Extracting official consular and VFS visa guidelines...</p>
         </div>
       ) : data ? (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        <div className="space-y-6">
           
-          {/* ── 1ST COLUMN: OFFICIAL HOW TO APPLY & COSTS ── */}
-          <div id="section-visa-process" className="lg:col-span-4 space-y-5 scroll-mt-24">
-            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-6 text-left">
-              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          {/* ── 1. OFFICIAL HOW TO APPLY (FULL-WIDTH CLEAN VECTOR ICON LIST AS SHOWN IN PHOTO) ── */}
+          <div id="section-visa-process" className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200/90 shadow-2xs space-y-6 text-left scroll-mt-24">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+              <div className="flex items-center gap-3.5">
+                <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
                 </div>
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Official How to Apply</h3>
-                  <span className="text-[11px] text-slate-400 font-medium block">Step-by-Step Sovereign Consular Workflow</span>
+                  <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Official How to Apply</h3>
+                  <span className="text-xs text-slate-400 font-semibold block">Step-by-Step Sovereign Consular Workflow</span>
                 </div>
               </div>
 
-              {/* Vector Line Icon Step List (Design Matching Photo) */}
-              <div className="space-y-5 pt-1">
-                {data.how_to_apply?.map((step, idx) => {
-                  const visual = getStepVisual(step, idx);
-                  const sLow = step.toLowerCase();
-                  const isInterviewMilestone = sLow.includes('interview') || sLow.includes('biometric') || sLow.includes('vac');
-
-                  return (
-                    <div key={idx} className="flex items-start gap-4 group transition-all">
-                      {/* Colorful Outlined Vector Icon */}
-                      <div className="shrink-0 pt-0.5 transition-transform duration-200 group-hover:scale-110">
-                        {visual.icon}
-                      </div>
-
-                      {/* Step Text */}
-                      <div className="space-y-1 min-w-0 flex-1">
-                        {isInterviewMilestone && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-100/90 px-2 py-0.5 rounded-md mb-0.5">
-                            <span>🎯 Crucial Milestone</span>
-                          </span>
-                        )}
-                        <p className="text-xs sm:text-[13.5px] font-bold text-slate-800 leading-snug group-hover:text-slate-950 transition-colors">
-                          {step}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
+              {/* Integrated Fee Pill */}
+              <div className="flex items-center gap-3 bg-slate-50 border border-slate-200/80 px-4 py-2 rounded-2xl shrink-0">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Fees:</span>
+                <span className="text-base sm:text-lg font-black text-[#009e86]">
+                  {data.costs.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, '').replace(/\s*Reference/gi, '').trim() : data.costs.visa_fee}
+                </span>
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-lg bg-[#5b45d9] text-white flex items-center justify-center shrink-0 shadow-2xs">
-                  <CreditCard className="w-4 h-4" />
-                </div>
-                <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Costs &amp; Visa Fees</h3>
+            {/* Vector Line Icon Step List (Clean Minimalist Photo Style) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 pt-2">
+              {data.how_to_apply?.map((step, idx) => {
+                const visual = getStepVisual(step, idx);
+                const sLow = step.toLowerCase();
+                const isInterviewMilestone = sLow.includes('interview') || sLow.includes('biometric') || sLow.includes('vac');
+
+                return (
+                  <div key={idx} className="flex items-start gap-4 group transition-all">
+                    {/* Colorful Outlined Vector Icon */}
+                    <div className="shrink-0 pt-0.5 transition-transform duration-200 group-hover:scale-110">
+                      {visual.icon}
+                    </div>
+
+                    {/* Step Text */}
+                    <div className="space-y-1 min-w-0 flex-1">
+                      {isInterviewMilestone && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-100/90 px-2 py-0.5 rounded-md mb-1">
+                          <span>🎯 Crucial Milestone</span>
+                        </span>
+                      )}
+                      <p className="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed group-hover:text-slate-950 transition-colors">
+                        {step}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Fee Notes Breakdown */}
+            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 font-medium">
+              <div className="flex items-center gap-4 flex-wrap">
+                <span><strong>Official Visa Fee:</strong> {data.costs.visa_fee}</span>
+                <span>•</span>
+                <span><strong>VAC / Logistics Fee:</strong> {data.costs.service_fee}</span>
               </div>
-              <div className="space-y-2.5 pt-1 text-xs sm:text-sm font-bold text-slate-800">
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-600">Official Visa Fee:</span>
-                  <span className="font-extrabold text-slate-900">{data.costs.visa_fee}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-600">VAC / Logistics Fee:</span>
-                  <span className="font-extrabold text-slate-900">{data.costs.service_fee}</span>
-                </div>
-                <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-sm sm:text-base">
-                  <strong className="text-slate-900 font-extrabold">Total Fees</strong>
-                  <strong className="text-[#009e86] font-black text-base sm:text-lg">
-                    {data.costs.total_fee ? data.costs.total_fee.replace(/\s*Total\s*Reference/gi, '').replace(/\s*Reference/gi, '').trim() : data.costs.visa_fee}
-                  </strong>
-                </div>
-                <p className="text-[10px] text-slate-400 font-medium pt-1">{data.costs.notes}</p>
-              </div>
+              <span className="text-[11px] text-slate-400">{data.costs.notes}</span>
             </div>
           </div>
 
-          {/* ── 2ND COLUMN: DOCUMENTS REQUIRED CHECKLIST ── */}
-          <div id="section-documents" className="lg:col-span-4 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-5 h-full flex flex-col justify-between scroll-mt-24">
-            <div className="space-y-5">
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-lg bg-[#009e86] text-white flex items-center justify-center shrink-0 shadow-2xs">
-                  <FileText className="w-4 h-4" />
+          {/* ── 2. DOCUMENTS & FINANCIAL PROOFS (DIRECTLY BELOW HOW TO APPLY) ── */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+            
+            {/* DOCUMENTS REQUIRED CHECKLIST (7 cols) */}
+            <div id="section-documents" className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-5 h-full flex flex-col justify-between scroll-mt-24">
+              <div className="space-y-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#009e86] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Documents Required Checklist</h3>
+                    <span className="text-[11px] text-slate-400 font-medium block">{data.documents_required?.length || 0} Core Identification Items</span>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Documents Required Checklist</h3>
-                  <span className="text-[11px] text-slate-400 font-medium block">{data.documents_required?.length || 0} Core Identification Items</span>
-                </div>
-              </div>
 
-              <div className="space-y-3 pt-1">
-                {data.documents_required?.map((item, idx) => {
-                  const docId = `doc_req_${idx}_${item.title}`.replace(/\s+/g, '_');
-                  const isChecked = Boolean(checkedDocs[docId]?.ready);
-                  const timestamp = checkedDocs[docId]?.timestamp;
+                <div className="space-y-3 pt-1">
+                  {data.documents_required?.map((item, idx) => {
+                    const docId = `doc_req_${idx}_${item.title}`.replace(/\s+/g, '_');
+                    const isChecked = Boolean(checkedDocs[docId]?.ready);
+                    const timestamp = checkedDocs[docId]?.timestamp;
 
-                  return (
-                    <div 
-                      key={idx} 
-                      onClick={() => toggleDocReady(docId)}
-                      className={`p-3 rounded-2xl border transition-all cursor-pointer text-left ${
-                        isChecked 
-                          ? 'bg-emerald-50/50 border-emerald-300 ring-1 ring-emerald-400/20' 
-                          : 'bg-slate-50/50 border-slate-200/80 hover:bg-slate-100/70'
-                      }`}
-                    >
-                      <div className="flex items-start gap-2.5">
-                        <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
-                          isChecked ? 'bg-emerald-600 text-white' : 'border border-slate-300 bg-white text-transparent'
-                        }`}>
-                          <Check className="w-3.5 h-3.5 stroke-[3]" />
-                        </div>
-                        <div className="space-y-0.5 min-w-0 flex-1">
-                          <div className="flex items-center justify-between gap-1">
-                            <strong className={`text-xs sm:text-sm font-extrabold block leading-snug ${
-                              isChecked ? 'text-emerald-950' : 'text-slate-900'
-                            }`}>{item.title}</strong>
-                            {item.is_mandatory && (
-                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">Mandatory</span>
+                    return (
+                      <div 
+                        key={idx} 
+                        onClick={() => toggleDocReady(docId)}
+                        className={`p-3 rounded-2xl border transition-all cursor-pointer text-left ${
+                          isChecked 
+                            ? 'bg-emerald-50/50 border-emerald-300 ring-1 ring-emerald-400/20' 
+                            : 'bg-slate-50/50 border-slate-200/80 hover:bg-slate-100/70'
+                        }`}
+                      >
+                        <div className="flex items-start gap-2.5">
+                          <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
+                            isChecked ? 'bg-emerald-600 text-white' : 'border border-slate-300 bg-white text-transparent'
+                          }`}>
+                            <Check className="w-3.5 h-3.5 stroke-[3]" />
+                          </div>
+                          <div className="space-y-0.5 min-w-0 flex-1">
+                            <div className="flex items-center justify-between gap-1">
+                              <strong className={`text-xs sm:text-sm font-extrabold block leading-snug ${
+                                isChecked ? 'text-emerald-950' : 'text-slate-900'
+                              }`}>{item.title}</strong>
+                              {item.is_mandatory && (
+                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">Mandatory</span>
+                              )}
+                            </div>
+                            <p className="text-xs text-slate-500 font-normal leading-relaxed">{item.description}</p>
+                            {isChecked && timestamp && (
+                              <div className="pt-1 text-[10px] font-bold text-emerald-700 flex items-center gap-1">
+                                <span>✓ Document ready · Recorded on {timestamp}</span>
+                              </div>
                             )}
                           </div>
-                          <p className="text-xs text-slate-500 font-normal leading-relaxed">{item.description}</p>
-                          {isChecked && timestamp && (
-                            <div className="pt-1 text-[10px] font-bold text-emerald-700 flex items-center gap-1">
-                              <span>✓ Document ready · Recorded on {timestamp}</span>
-                            </div>
-                          )}
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-slate-100">
-              <button 
-                onClick={handleSaveChecklistToProfile}
-                className="w-full py-2.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm"
-              >
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Verify Documents &amp; Sync to Dashboard</span>
-              </button>
-            </div>
-          </div>
-
-          {/* ── 3RD COLUMN: FINANCIAL PROOFS & MEANS ── */}
-          <div id="section-financials" className="lg:col-span-4 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-5 h-full flex flex-col justify-between">
-            <div className="space-y-5">
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-lg bg-[#5b45d9] text-white flex items-center justify-center shrink-0 shadow-2xs">
-                  <CreditCard className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Financial Proofs &amp; Means</h3>
-                  <span className="text-[11px] text-slate-400 font-medium block">Liquidity &amp; Income Verification</span>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div className="space-y-3 pt-1">
-                {data.financial_proofs?.map((item, idx) => {
-                  const finId = `fin_proof_${idx}_${item.type}`.replace(/\s+/g, '_');
-                  const isChecked = Boolean(checkedDocs[finId]?.ready);
-                  const timestamp = checkedDocs[finId]?.timestamp;
-
-                  return (
-                    <div 
-                      key={idx} 
-                      onClick={() => toggleDocReady(finId)}
-                      className={`p-3.5 rounded-2xl border transition-all cursor-pointer text-left ${
-                        isChecked 
-                          ? 'bg-indigo-50/50 border-indigo-300 ring-1 ring-indigo-400/20' 
-                          : 'bg-slate-50/50 border-slate-200/80 hover:bg-slate-100/70'
-                      }`}
-                    >
-                      <div className="flex items-start gap-2.5">
-                        <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
-                          isChecked ? 'bg-[#5b45d9] text-white' : 'border border-slate-300 bg-white text-transparent'
-                        }`}>
-                          <Check className="w-3.5 h-3.5 stroke-[3]" />
-                        </div>
-                        <div className="space-y-1 min-w-0 flex-1">
-                          <strong className="text-xs sm:text-sm font-extrabold text-slate-900 block leading-snug">{item.type}</strong>
-                          {item.minimum_balance_or_amount && (
-                            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-950 text-[11px] font-bold">
-                              <span>Threshold:</span>
-                              <strong>{item.minimum_balance_or_amount}</strong>
-                            </div>
-                          )}
-                          <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                            <span className="text-slate-400">Duration: </span>{item.time_frame}
-                          </p>
-                          <p className="text-[11px] text-slate-500 font-normal leading-relaxed bg-white p-2 rounded-xl border border-slate-100">{item.notes}</p>
-                          {isChecked && timestamp && (
-                            <div className="pt-1 text-[10px] font-bold text-indigo-700 flex items-center gap-1">
-                              <span>✓ Balance verified · Recorded on {timestamp}</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="pt-4 border-t border-slate-100">
+                <button 
+                  onClick={handleSaveChecklistToProfile}
+                  className="w-full py-2.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Verify Documents &amp; Sync to Dashboard</span>
+                </button>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100">
-              <button 
-                onClick={handleSaveChecklistToProfile}
-                className="w-full py-2.5 bg-[#5b45d9] hover:bg-[#4a36be] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm"
-              >
-                <CheckCircle2 className="w-3.5 h-3.5 text-white" />
-                <span>Verify Financials &amp; Sync to Dashboard</span>
-              </button>
+            {/* FINANCIAL PROOFS & MEANS (5 cols) */}
+            <div id="section-financials" className="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-2xs space-y-5 h-full flex flex-col justify-between">
+              <div className="space-y-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#5b45d9] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                    <CreditCard className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-extrabold text-slate-900 tracking-tight">Financial Proofs &amp; Means</h3>
+                    <span className="text-[11px] text-slate-400 font-medium block">Liquidity &amp; Income Verification</span>
+                  </div>
+                </div>
+
+                <div className="space-y-3 pt-1">
+                  {data.financial_proofs?.map((item, idx) => {
+                    const finId = `fin_proof_${idx}_${item.type}`.replace(/\s+/g, '_');
+                    const isChecked = Boolean(checkedDocs[finId]?.ready);
+                    const timestamp = checkedDocs[finId]?.timestamp;
+
+                    return (
+                      <div 
+                        key={idx} 
+                        onClick={() => toggleDocReady(finId)}
+                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer text-left ${
+                          isChecked 
+                            ? 'bg-indigo-50/50 border-indigo-300 ring-1 ring-indigo-400/20' 
+                            : 'bg-slate-50/50 border-slate-200/80 hover:bg-slate-100/70'
+                        }`}
+                      >
+                        <div className="flex items-start gap-2.5">
+                          <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
+                            isChecked ? 'bg-[#5b45d9] text-white' : 'border border-slate-300 bg-white text-transparent'
+                          }`}>
+                            <Check className="w-3.5 h-3.5 stroke-[3]" />
+                          </div>
+                          <div className="space-y-1 min-w-0 flex-1">
+                            <strong className="text-xs sm:text-sm font-extrabold text-slate-900 block leading-snug">{item.type}</strong>
+                            {item.minimum_balance_or_amount && (
+                              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-950 text-[11px] font-bold">
+                                <span>Threshold:</span>
+                                <strong>{item.minimum_balance_or_amount}</strong>
+                              </div>
+                            )}
+                            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                              <span className="text-slate-400">Duration: </span>{item.time_frame}
+                            </p>
+                            <p className="text-[11px] text-slate-500 font-normal leading-relaxed bg-white p-2 rounded-xl border border-slate-100">{item.notes}</p>
+                            {isChecked && timestamp && (
+                              <div className="pt-1 text-[10px] font-bold text-indigo-700 flex items-center gap-1">
+                                <span>✓ Balance verified · Recorded on {timestamp}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100">
+                <button 
+                  onClick={handleSaveChecklistToProfile}
+                  className="w-full py-2.5 bg-[#5b45d9] hover:bg-[#4a36be] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                  <span>Verify Financials &amp; Sync to Dashboard</span>
+                </button>
+              </div>
             </div>
+
           </div>
         </div>
       ) : null}
